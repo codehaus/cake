@@ -2,62 +2,72 @@
 	<path id="maven-ant-tasks.classpath" path="maven-ant-tasks-2.0.9.jar" />
 	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
 	<artifact:pom id="cake.asm" file="lib/cake-asm-3.1.pom" />
+	<artifact:pom id="cake.forkjoin" file="lib/cake-forkjoin-0.1.pom" />
 	<artifact:pom id="cake.picocontainer" file="lib/cake-picocontainer-1.3.pom" />
 
-	<target name="setup">
-		<mkdir dir="target" />
-
-		<artifact:pom id="maven.project" file="lib/cake-asm-3.1.pom" />
-
-		<echo>The version is ${cake.asm.version}</echo>
-	</target>
 	<target name="install" depends="asm,pico">
 		<artifact:install file="target/cake-asm-3.1.jar">
 			<pom refid="cake.asm" />
 		</artifact:install>
-
+		<artifact:install file="target/cake-forkjoin-0.1.jar">
+			<pom refid="cake.forkjoin" />
+		</artifact:install>
 		<artifact:install file="target/cake-picocontainer-1.3.jar">
 			<pom refid="cake.picocontainer" />
 		</artifact:install>
 	</target>
 	<target name="deploy" depends="install">
-    	  <artifact:install-provider artifactId="wagon-webdav" version="1.0-beta-2"/>
-
-		  <artifact:deploy file="target/cake-asm-3.1.jar">
-		    <remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
-		       <authentication username="kasper" password="winner"/>
-		    </remoteRepository>
-		    <pom refid="cake.asm"/>
-		  </artifact:deploy>
-			  <artifact:deploy file="target/cake-picocontainer-1.3.jar">
-			    <remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
-			       <authentication username="kasper" password=""/>
-			    </remoteRepository>
-			    <pom refid="cake.picocontainer"/>
-			  </artifact:deploy>
+		<artifact:install-provider artifactId="wagon-webdav" version="1.0-beta-2" />
+<!--
+		<artifact:deploy file="target/cake-asm-3.1.jar">
+			<remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
+				<authentication username="kasper" password="" />
+			</remoteRepository>
+			<pom refid="cake.asm" />
+		</artifact:deploy>
+		<artifact:deploy file="target/cake-picocontainer-1.3.jar">
+			<remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
+				<authentication username="kasper" password="" />
+			</remoteRepository>
+			<pom refid="cake.picocontainer" />
+		</artifact:deploy>
+		-->
+		<artifact:deploy file="target/cake-forkjoin-0.1.jar">
+			<remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
+				<authentication username="kasper" password="winner" />
+			</remoteRepository>
+			<pom refid="cake.forkjoin" />
+		</artifact:deploy>
 	</target>
-	<target name="asm" depends="setup">
-		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc6.jar" />
+	<target name="asm">
+		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc7.jar" />
 		<jarjar jarfile="target/cake-asm-3.1.jar">
 			<zipfileset src="lib/asm-3.1.jar" />
 			<rule pattern="org.objectweb.asm.**" result="org.codehaus.cake.internal.asm.@1" />
 			<keep pattern="org.objectweb.asm.*" />
 			<keep pattern="org.objectweb.asm.signature.*" />
 		</jarjar>
-		<exec dir="." executable="cmd" os="Windows NT">
-			<arg line="/c mvn install:install-file -DgroupId=org.codehaus.cake.internal -DartifactId=cake-asm -Dversion=3.1 -Dpackaging=jar -DgeneratePom=true -Dfile=target/cake-asm-3.1.jar" />
-		</exec>
 	</target>
-	<target name="pico" depends="setup">
-		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc6.jar" />
+	<target name="pico">
+		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc7.jar" />
 		<jarjar jarfile="target/cake-picocontainer-1.3.jar">
 			<zipfileset src="lib/picocontainer-1.3.jar" />
 			<rule pattern="org.picocontainer.**" result="org.codehaus.cake.internal.picocontainer.@1" />
 			<keep pattern="org.picocontainer.defaults.*" />
 			<keep pattern="org.picocontainer.*" />
 		</jarjar>
-		<exec dir="." executable="cmd" os="Windows NT">
-			<arg line="/c mvn install:install-file -DgroupId=org.codehaus.cake.internal -DartifactId=cake-picocontainer -Dversion=1.3 -Dpackaging=jar -DgeneratePom=true -Dfile=target/cake-picocontainer-1.3.jar" />
-		</exec>
+	</target>
+	<target name="jsr166y">
+		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc7.jar" />
+		<jarjar jarfile="target/cake-forkjoin-tmp.jar">
+			<zipfileset src="lib/jsr166y.jar" />
+			<rule pattern="jsr166y.forkjoin.**" result="org.codehaus.cake.forkjoin.@1" />
+			<rule pattern="jsr166y.*" result="org.codehaus.cake.internal.concurrent.@1" />
+		</jarjar>
+		<jarjar jarfile="target/cake-forkjoin-0.1.jar">
+			<zipfileset src="target/cake-forkjoin-tmp.jar" />
+			<rule pattern="org.codehaus.cake.forkjoin.Ops*" result="org.codehaus.cake.ops.Ops@1" />
+		</jarjar>
+		<delete file="target/cake-forkjoin-tmp.jar" />
 	</target>
 </project>
