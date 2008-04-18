@@ -1,14 +1,10 @@
 <project default="install" name="cake-bootstrap" xmlns:artifact="urn:maven-artifact-ant">
 	<path id="maven-ant-tasks.classpath" path="maven-ant-tasks-2.0.9.jar" />
 	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
-	<artifact:pom id="cake.asm" file="lib/cake-asm-3.1.pom" />
 	<artifact:pom id="cake.forkjoin" file="lib/cake-forkjoin-0.1.pom" />
 	<artifact:pom id="cake.picocontainer" file="lib/cake-picocontainer-1.3.pom" />
 
-	<target name="install" depends="asm,pico">
-		<artifact:install file="target/cake-asm-3.1.jar">
-			<pom refid="cake.asm" />
-		</artifact:install>
+	<target name="install" depends="pico">
 		<artifact:install file="target/cake-forkjoin-0.1.jar">
 			<pom refid="cake.forkjoin" />
 		</artifact:install>
@@ -18,35 +14,19 @@
 	</target>
 	<target name="deploy" depends="install">
 		<artifact:install-provider artifactId="wagon-webdav" version="1.0-beta-2" />
-<!--
-		<artifact:deploy file="target/cake-asm-3.1.jar">
-			<remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
-				<authentication username="kasper" password="" />
-			</remoteRepository>
-			<pom refid="cake.asm" />
-		</artifact:deploy>
+		
 		<artifact:deploy file="target/cake-picocontainer-1.3.jar">
 			<remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
 				<authentication username="kasper" password="" />
 			</remoteRepository>
 			<pom refid="cake.picocontainer" />
 		</artifact:deploy>
-		-->
 		<artifact:deploy file="target/cake-forkjoin-0.1.jar">
 			<remoteRepository url="dav:https://dav.codehaus.org/repository/cake">
 				<authentication username="kasper" password="winner" />
 			</remoteRepository>
 			<pom refid="cake.forkjoin" />
 		</artifact:deploy>
-	</target>
-	<target name="asm">
-		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc7.jar" />
-		<jarjar jarfile="target/cake-asm-3.1.jar">
-			<zipfileset src="lib/asm-3.1.jar" />
-			<rule pattern="org.objectweb.asm.**" result="org.codehaus.cake.internal.asm.@1" />
-			<keep pattern="org.objectweb.asm.*" />
-			<keep pattern="org.objectweb.asm.signature.*" />
-		</jarjar>
 	</target>
 	<target name="pico">
 		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="jarjar-1.0rc7.jar" />
