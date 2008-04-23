@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2004-2008 Kasper Nielsen.
+  
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy of
+  the License at
+  
+  http://cake.codehaus.org/LICENSE
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.cake</groupId>
+  <artifactId>cake-parent</artifactId>
+  <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Cake</name>
+  <description>Cake provides multi-core tools.</description>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://cake.codehaus.org/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <organization>
+    <name>The Codehaus</name>
+    <url>http://www.codehaus.org/</url>
+  </organization>
+  <url>http://www.apache.org/</url>
+  <inceptionYear>2008</inceptionYear>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/CAKE</url>
+  </issueManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>Cake Announce List</name>
+      <subscribe>http://xircles.codehaus.org/lists/announce@cake.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/announce@cake.codehaus.org/unsubscribe</unsubscribe>
+      <post>announce@cake.codehaus.org</post>
+      <archive>http://archive.cake.codehaus.org/announce</archive>
+    </mailingList>
+
+    <mailingList>
+      <name>Cake Developer List</name>
+      <subscribe>http://xircles.codehaus.org/lists/dev@cake.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/dev@cake.codehaus.org/unsubscribe</unsubscribe>
+      <post>dev@cake.codehaus.org</post>
+      <archive>http://archive.cake.codehaus.org/dev</archive>
+    </mailingList>
+
+    <mailingList>
+      <name>Cake Scm List</name>
+      <subscribe>http://xircles.codehaus.org/lists/scm@cake.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/scm@cake.codehaus.org/unsubscribe</unsubscribe>
+      <post>scm@cake.codehaus.org</post>
+      <archive>http://archive.cake.codehaus.org/scm</archive>
+    </mailingList>
+
+    <mailingList>
+      <name>Cake User List</name>
+      <subscribe>http://xircles.codehaus.org/lists/user@cake.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/user@cake.codehaus.org/unsubscribe</unsubscribe>
+      <post>user@cake.codehaus.org</post>
+      <archive>http://archive.cake.codehaus.org/user</archive>
+    </mailingList>
+
+  </mailingLists>
+
+  <distributionManagement>
+    <!-- 
+      <repository>
+      <id>cake.staging</id>
+      <url>
+      scp://people.apache.org/www/people.apache.org/builds/cake/${project.version}/staging-repo
+      </url>
+      </repository>
+    -->
+    <repository>
+      <id>codehaus.org</id>
+      <name>Codehaus Cake Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/cake/</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>Codehaus Cake Snapshot Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/cake/</url>
+    </snapshotRepository>
+    <site>
+      <id>codehaus.org</id>
+      <url>dav:https://dav.codehaus.org/cake</url>
+    </site>
+  </distributionManagement>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF-8</encoding>
+          <optimize>false</optimize>
+          <debug>true</debug>
+          <showDeprecation>true</showDeprecation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <!-- We want to sign the artifact, the POM, and all attached artifacts -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <passphrase>${gpg.passphrase}</passphrase>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- We want to deploy the artifact to a staging location for perusal -->
+          <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <configuration>
+              <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
+              <updateReleaseInfo>true</updateReleaseInfo>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- END SNIPPET: release-profile -->
+  </profiles>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/pom/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/pom/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/pom/trunk</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>kasper</id>
+      <name>Kasper Nielsen</name>
+      <email>kasper@codehaus.org</email>
+      <organization />
+      <roles>
+        <role>Despot</role>
+      </roles>
+    </developer>
+  </developers>
+</project>
