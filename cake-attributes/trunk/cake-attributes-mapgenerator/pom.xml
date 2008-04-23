@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake</groupId>
+    <artifactId>cake-attributes-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>cake-attributes-mapgenerator</artifactId>
+  <name>Cake Attributes MapGenerator</name>
+  <description>This library contains class that are used across all Cake projects</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cake.internal</groupId>
+      <artifactId>cake-asm</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>cake-attributes</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.test</groupId>
+      <artifactId>cake-test-util</artifactId>
+      <scope>test</scope>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-attributes/trunk/cake-attributes</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-attributes/trunk/cake-attributes</developerConnection>
+    <url>http://svn.codehaus.org/cake/attributes/trunk/cake-attributes</url>
+  </scm>
+</project>
