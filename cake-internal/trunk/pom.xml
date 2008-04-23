@@ -17,6 +17,12 @@
   <inceptionYear>2004</inceptionYear>
   <distributionManagement>
     <repository>
+      <id>cake.staging</id>
+      <url>
+        scp://people.apache.org/www/people.apache.org/builds/cake/${project.version}/staging-repo
+      </url>
+    </repository>
+    <repository>
       <id>codehaus.org</id>
       <name>Cake's release repository</name>
       <url>dav:https://dav.codehaus.org/repository/cake</url>

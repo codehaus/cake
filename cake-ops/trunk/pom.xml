@@ -22,6 +22,6 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/trun</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-ops/trunk</developerConnection>
-    <url>http://svn.codehaus.org/cake/pom/trunk</url>
+    <url>http://svn.codehaus.org/cake/cake-ops/trunk</url>
   </scm>
 </project>
