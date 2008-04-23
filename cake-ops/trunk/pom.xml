@@ -19,4 +19,9 @@
       <version>0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/trun</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-ops/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/pom/trunk</url>
+  </scm>
 </project>
