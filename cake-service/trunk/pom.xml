@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake</groupId>
+    <artifactId>cake-parent</artifactId>
+    <version>1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <groupId>org.codehaus.service</groupId>
+  <artifactId>cake-service-parent</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <name>Cake Service Parent</name>
+  <packaging>pom</packaging>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-service/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-service/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/cake-service/trunk</url>
+  </scm>
+  <modules>
+    <module>cake-service-api</module>
+    <module>cake-service-impl</module>
+    <module>cake-service-tck</module>
+  </modules>
+</project>
