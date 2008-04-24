@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake.internal</groupId>
+    <artifactId>cake-bootstrap-pom</artifactId>
+    <version>0.1</version>
+  </parent>
+
+  <artifactId>cake-internal-picocontainer</artifactId>
+  <version>1.3</version>
+  <name>Cake Asm 1.3</name>
+  <description>Cake Asm</description>
+</project>

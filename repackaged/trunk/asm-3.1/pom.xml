@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake.internal</groupId>
+    <artifactId>cake-bootstrap-pom</artifactId>
+    <version>0.1</version>
+  </parent>
+
+  <artifactId>cake-internal-asm</artifactId>
+  <version>3.1</version>
+  <name>Cake Asm 3.1</name>
+  <description>Cake Asm</description>
+    <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/repackaged/trunk/asm-3.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/repackaged/trunk/asm-3.1</developerConnection>
+    <url>http://svn.codehaus.org/cake/repackaged/trunk/asm-3.1</url>
+  </scm>
+</project>
