@@ -11,7 +11,7 @@
   <version>3.1</version>
   <name>Cake Asm 3.1</name>
   <description>Cake Asm</description>
-    <scm>
+  <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/repackaged/trunk/asm-3.1</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/repackaged/trunk/asm-3.1</developerConnection>
     <url>http://svn.codehaus.org/cake/repackaged/trunk/asm-3.1</url>

@@ -11,4 +11,9 @@
   <version>1.3</version>
   <name>Cake Asm 1.3</name>
   <description>Cake Asm</description>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/repackaged/trunk/picocontainer-1.3</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/repackaged/trunk/picocontainer-1.3</developerConnection>
+    <url>http://svn.codehaus.org/cake/repackaged/trunk/picocontainer-1.3</url>
+  </scm>
 </project>
