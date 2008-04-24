@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake</groupId>
+    <artifactId>cake-parent</artifactId>
+    <version>1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>cake-trunks</artifactId>
+  <version>1</version>
+  <name>Cake trunks Parent</name>
+  <packaging>pom</packaging>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/trunks</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/trunks</developerConnection>
+    <url>http://svn.codehaus.org/cake/trunks</url>
+  </scm>
+  <modules>
+    <module>cake-attributes</module>
+    <module>cake-forkjoin</module>
+    <module>cake-management</module>
+    <module>cake-ops</module>
+    <module>cake-util</module>
+  </modules>
+</project>
