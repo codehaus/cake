@@ -21,6 +21,8 @@
     <module>cake-forkjoin</module>
     <module>cake-management</module>
     <module>cake-ops</module>
+    <module>cake-service</module>
+    <module>cake-test</module>
     <module>cake-util</module>
   </modules>
 </project>
