@@ -74,8 +74,8 @@ public class ManagementConfiguration {
 
     /**
      * Sets the specific domain that MBeans should register under. If no domain is
-     * specified the container will use a default name. For example, {@link org.coconut.map.CacheMXBean}
-     * is registered under {@link org.coconut.map.CacheMXBean#DEFAULT_JMX_DOMAIN}.
+     * specified the container will use a default name. For example, {@link org.codehaus.cake.cache.CacheMXBean}
+     * is registered under {@link org.codehaus.cake.cache.CacheMXBean#DEFAULT_JMX_DOMAIN}.
      * 
      * @param domain
      *            the domain name

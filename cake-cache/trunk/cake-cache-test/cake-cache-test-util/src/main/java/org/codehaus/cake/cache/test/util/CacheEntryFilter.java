@@ -1,7 +1,5 @@
-/* Copyright 2004 - 2007 Kasper Nielsen <kasper@codehaus.org> Licensed under 
- * the Apache 2.0 License, see http://coconut.codehaus.org/license.
- */
-
+/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
+ * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.util;
 
 import static org.junit.Assert.assertEquals;
@@ -21,9 +19,6 @@ public class CacheEntryFilter implements Predicate<CacheEntry<Integer, String>> 
 
     private volatile CacheEntry<Integer, String> lastEntry;
 
-    /**
-     * @see org.coconut.predicate.Predicate#evaluate(java.lang.Object)
-     */
     public boolean op(CacheEntry<Integer, String> element) {
         lastEntry = element;
         return accept;

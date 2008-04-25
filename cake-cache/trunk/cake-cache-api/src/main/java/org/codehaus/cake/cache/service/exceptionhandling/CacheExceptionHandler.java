@@ -31,7 +31,7 @@ import org.codehaus.cake.service.exceptionhandling.ExceptionHandler;
  * called when a programmatic error arises from which an application cannot normally
  * recover. This could, for example, be some user provided callback that fails in some
  * mysterious way. Or even worse that the cache implementation contains a bug. Of course,
- * this is highly unlikely if using one of the default implementation provided by Coconut
+ * this is highly unlikely if using one of the default implementation provided by Cake
  * Cache;).
  * <li>{@link #warning(CacheExceptionContext)} which is called whenever a some kind of
  * inconsistency arrises in the system. Normally this always indicates a non-critical

@@ -56,15 +56,16 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * Removes all entries from this cache. This method will not attempt to remove entries that are
      * stored externally, for example, on disk. The cache will be empty after this call returns.
      * <p>
-     * A {@link org.coconut.map.service.event.CacheEntryEvent.ItemDeleted} event will be raised for
-     * each mapping that is removed when the cache is cleared. When all entries have been removed
-     * from the cache a single {@link org.coconut.map.service.event.CacheEvent.CacheCleared} will be
-     * raised. This event is only raised if the state of the cache changed (cache was non-empty).
+     * A {@link org.codehaus.cake.cache.service.event.CacheEntryEvent.ItemDeleted} event will be
+     * raised for each mapping that is removed when the cache is cleared. When all entries have been
+     * removed from the cache a single
+     * {@link org.codehaus.cake.cache.service.event.CacheEvent.CacheCleared} will be raised. This
+     * event is only raised if the state of the cache changed (cache was non-empty).
      * <p>
      * If the reason for clearing the cache is to get rid of stale data another alternative, if the
      * cache has a CacheLoader defined, might be to use
-     * {@link org.coconut.map.service.loading.CacheLoadingService#forceLoadAll()} which will reload
-     * all elements that current in the cache.
+     * {@link org.codehaus.cake.cache.service.loading.CacheLoadingService#forceLoadAll()} which will
+     * reload all elements that current in the cache.
      * <p>
      * If the cache has been shutdown calls to this method is ignored
      * 
@@ -138,9 +139,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
     /**
      * Works as {@link #get(Object)} with the following modifications.
      * <p>
-     * If the cache has a configured {@link org.coconut.map.service.loading.CacheLoader}. And no
-     * mapping exists for the specified key or the specific mapping has expired. The cache will
-     * transparently attempt to load a value for the specified key through the cache loader.
+     * If the cache has a configured CacheLoader. And no mapping exists for the specified key or the
+     * specific mapping has expired. The cache will transparently attempt to load a value for the
+     * specified key through the cache loader.
      * <p>
      * The number of cache hits will increase by 1 if a valid mapping is present. Otherwise the
      * number of cache misses will be increased by 1.

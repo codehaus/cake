@@ -65,10 +65,11 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     /**
      * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
      * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefault()} will be returned instead.
+     * {@link Attribute#getDefault()} will be returned instead.
      * 
-     * @param attributes
-     *            the attribute map for which to retrieve the value of this attribute
+     * @param withAttributes
+     *            the object containing an attribute map for which to retrieve the value of this
+     *            attribute
      * @return the value of this attribute
      */
     public final T get(WithAttributes withAttributes) {
@@ -80,8 +81,9 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      * this attribute from the map. If this attribute is not set in the map, the specified default
      * value will be returned.
      * 
-     * @param attributes
-     *            the attribute map for which to retrieve the value of this attribute
+     * @param withAttributes
+     *            the object containing an attribute map for which to retrieve the value of this
+     *            attribute
      * @return the value of this attribute
      */
 

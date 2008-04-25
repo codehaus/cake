@@ -15,7 +15,6 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
  */
 public class ScheduableTrimmerExample {
     static class TrimToSize implements Runnable {
-        // all coconut cache implementations extend AbstractCache
         private final MemoryStoreService c;
 
         private final int threshold;

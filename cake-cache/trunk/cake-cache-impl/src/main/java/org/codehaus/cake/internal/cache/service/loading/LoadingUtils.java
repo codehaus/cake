@@ -9,7 +9,7 @@ import org.codehaus.cake.cache.service.loading.CacheLoadingService;
  * Various utilities used for the loading service.
  * <p>
  * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to
- * the compatibility of this class between different releases of Coconut Cache.
+ * the compatibility of this class between different releases of Cake Cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: LoadingUtils.java 526 2007-12-27 01:32:16Z kasper $

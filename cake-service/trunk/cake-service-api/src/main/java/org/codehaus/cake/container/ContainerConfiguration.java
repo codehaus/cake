@@ -95,7 +95,7 @@ public abstract class ContainerConfiguration<T> {
      * {@link ManagedGroup}.
      * <p>
      * Attaches the specified instance to the service map of the container. This object can then
-     * later be retrived by calling {@link org.coconut.map.Container#getService(Class)}.
+     * later be retrived by calling {@link org.codehaus.cake.container.Container#getService(Class)}.
      * 
      * <pre>
      * ContainerServiceManagerConfiguration csmc;
@@ -327,7 +327,7 @@ public abstract class ContainerConfiguration<T> {
      * auditting, ... etc. In this case this special logger will take precedence over this specified
      * logger when logging for the service.
      * <p>
-     * All available containers in Coconut Container strives to be very conservertive about what is
+     * All available containers in Cake strives to be very conservertive about what is
      * logged, log as little as possible. That is, we actually recommend running with log level set
      * at {@link org.codehaus.cake.util.Logger.Level#Info} even in production.
      * 

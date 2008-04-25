@@ -48,7 +48,7 @@ public class CacheExceptionHandlingConfiguration<K, V> {
      * Sets the exception handler that should be used to handle all exceptions and
      * warnings. If no exception handler is set using this method the cache should use the
      * one specified to
-     * {@link org.coconut.map.configuration.CacheConfiguration#setDefaultLogger(Logger)}.
+     * {@link org.codehaus.cake.cache.CacheConfiguration#setDefaultLogger(Logger)}.
      * If a logger has not been set using that method either. The cache will, unless
      * otherwise specified, use an instance of
      * {@link CacheExceptionHandlers#defaultLoggingExceptionHandler()} to handle
@@ -70,7 +70,7 @@ public class CacheExceptionHandlingConfiguration<K, V> {
      * <p>
      * If no logger has been set using this method. The exception handling service will
      * used the default logger returned from
-     * {@link org.coconut.map.configuration.CacheConfiguration#getDefaultLogger()}. If no
+     * {@link org.codehaus.cake.cache.CacheConfiguration#getDefaultLogger()}. If no
      * default logger has been set, output will be sent to {@link System#err}.
      * 
      * @param log

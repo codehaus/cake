@@ -87,8 +87,8 @@ public class CacheLoadingConfiguration<K, V> {
      * {@link CacheLoadingService} are called.
      * <p>
      * Some implementations might also check the predicate on calls to
-     * {@link org.coconut.cache.Cache#getFromIndex(Object)},{@link org.coconut.cache.Cache#getAll(Collection)},
-     * {@link org.coconut.cache.Cache#getEntry(Object)}, but this is not required.
+     * {@link org.codehaus.cake.cache.Cache#getAll(Collection)},
+     * {@link org.codehaus.cake.cache.Cache#getEntry(Object)}, but this is not required.
      * 
      * @param selector
      *            the needs reload predicate
