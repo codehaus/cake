@@ -43,26 +43,19 @@ public interface AttributeMap {
     <T> T get(Attribute<T> key, T defaultValue);
 
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link BooleanAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
-     * <tt>{@link BooleanAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate
-     * that the attribute-map contains no mapping for the key; it's also possible that the
-     * attribute-map explicitly maps the key to <tt>{@link BooleanAttribute#getDefaultValue()}</tt>.
-     * The <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two
-     * cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
+     * Returns the boolean value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link BooleanAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>{@link BooleanAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>{@link BooleanAttribute#getDefaultValue()}</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
      * @return the value to which this map maps the specified attribute, or
-     *         <tt>{@link BooleanAttribute#getDefaultValue()}</tt> if the map contains no mapping
-     *         for this attribute.
+     *         <tt>{@link BooleanAttribute#getDefaultValue()}</tt> if the map contains no mapping for
+     *         this attribute.
      * @throws ClassCastException
      *             if the asssociated value is of another type then a boolean (or <Boolean>)
      * @throws NullPointerException
@@ -71,22 +64,75 @@ public interface AttributeMap {
      */
     boolean get(BooleanAttribute attribute);
 
+    /**
+     * Returns the boolean value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a boolean (or <Boolean>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
     boolean get(BooleanAttribute attribute, boolean defaultValue);
 
     /**
+     * Associates the specified boolean value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link BooleanAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    boolean put(BooleanAttribute attribute, boolean value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link BooleanAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    boolean remove(BooleanAttribute attribute);
+
+        /**
      * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link ByteAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
+     * returned by the specified attributes {@link ByteAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
      * <tt>{@link ByteAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
-     * the attribute-map contains no mapping for the key; it's also possible that the attribute-map
+     * this map contains no mapping for the key; it's also possible that this map
      * explicitly maps the key to <tt>{@link ByteAttribute#getDefaultValue()}</tt>. The
      * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
@@ -101,22 +147,75 @@ public interface AttributeMap {
      */
     byte get(ByteAttribute attribute);
 
+    /**
+     * Returns the byte value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a byte (or <Byte>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
     byte get(ByteAttribute attribute, byte defaultValue);
 
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link CharAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
+     * Associates the specified byte value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link ByteAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    byte put(ByteAttribute attribute, byte value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link ByteAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    byte remove(ByteAttribute attribute);
+
+        /**
+     * Returns the char value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link CharAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
      * <tt>{@link CharAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
-     * the attribute-map contains no mapping for the key; it's also possible that the attribute-map
+     * this map contains no mapping for the key; it's also possible that this map
      * explicitly maps the key to <tt>{@link CharAttribute#getDefaultValue()}</tt>. The
      * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
@@ -131,29 +230,81 @@ public interface AttributeMap {
      */
     char get(CharAttribute attribute);
 
-    char get(CharAttribute attribute, char defaultValue);
-
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link DoubleAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
-     * <tt>{@link DoubleAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate
-     * that the attribute-map contains no mapping for the key; it's also possible that the
-     * attribute-map explicitly maps the key to <tt>{@link DoubleAttribute#getDefaultValue()}</tt>.
-     * The <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two
-     * cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
+     * Returns the char value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
      * @return the value to which this map maps the specified attribute, or
-     *         <tt>{@link DoubleAttribute#getDefaultValue()}</tt> if the map contains no mapping
-     *         for this attribute.
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a char (or <Character>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
+    char get(CharAttribute attribute, char defaultValue);
+
+    /**
+     * Associates the specified char value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link CharAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    char put(CharAttribute attribute, char value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link CharAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    char remove(CharAttribute attribute);
+
+        /**
+     * Returns the double value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link DoubleAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>{@link DoubleAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>{@link DoubleAttribute#getDefaultValue()}</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>{@link DoubleAttribute#getDefaultValue()}</tt> if the map contains no mapping for
+     *         this attribute.
      * @throws ClassCastException
      *             if the asssociated value is of another type then a double (or <Double>)
      * @throws NullPointerException
@@ -162,29 +313,81 @@ public interface AttributeMap {
      */
     double get(DoubleAttribute attribute);
 
-    double get(DoubleAttribute attribute, double defaultValue);
-
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link FloatAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
-     * <tt>{@link FloatAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate
-     * that the attribute-map contains no mapping for the key; it's also possible that the
-     * attribute-map explicitly maps the key to <tt>{@link FloatAttribute#getDefaultValue()}</tt>.
-     * The <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two
-     * cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
+     * Returns the double value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
      * @return the value to which this map maps the specified attribute, or
-     *         <tt>{@link FloatAttribute#getDefaultValue()}</tt> if the map contains no mapping
-     *         for this attribute.
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a double (or <Double>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
+    double get(DoubleAttribute attribute, double defaultValue);
+
+    /**
+     * Associates the specified double value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link DoubleAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    double put(DoubleAttribute attribute, double value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link DoubleAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    double remove(DoubleAttribute attribute);
+
+        /**
+     * Returns the float value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link FloatAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>{@link FloatAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>{@link FloatAttribute#getDefaultValue()}</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>{@link FloatAttribute#getDefaultValue()}</tt> if the map contains no mapping for
+     *         this attribute.
      * @throws ClassCastException
      *             if the asssociated value is of another type then a float (or <Float>)
      * @throws NullPointerException
@@ -193,22 +396,75 @@ public interface AttributeMap {
      */
     float get(FloatAttribute attribute);
 
+    /**
+     * Returns the float value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a float (or <Float>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
     float get(FloatAttribute attribute, float defaultValue);
 
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link IntAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
+     * Associates the specified float value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link FloatAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    float put(FloatAttribute attribute, float value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link FloatAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    float remove(FloatAttribute attribute);
+
+        /**
+     * Returns the int value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link IntAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
      * <tt>{@link IntAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
-     * the attribute-map contains no mapping for the key; it's also possible that the attribute-map
+     * this map contains no mapping for the key; it's also possible that this map
      * explicitly maps the key to <tt>{@link IntAttribute#getDefaultValue()}</tt>. The
      * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
@@ -223,22 +479,75 @@ public interface AttributeMap {
      */
     int get(IntAttribute attribute);
 
+    /**
+     * Returns the int value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a int (or <Integer>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
     int get(IntAttribute attribute, int defaultValue);
 
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link LongAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
+     * Associates the specified int value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link IntAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    int put(IntAttribute attribute, int value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link IntAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    int remove(IntAttribute attribute);
+
+        /**
+     * Returns the long value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link LongAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
      * <tt>{@link LongAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
-     * the attribute-map contains no mapping for the key; it's also possible that the attribute-map
+     * this map contains no mapping for the key; it's also possible that this map
      * explicitly maps the key to <tt>{@link LongAttribute#getDefaultValue()}</tt>. The
      * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
@@ -253,29 +562,81 @@ public interface AttributeMap {
      */
     long get(LongAttribute attribute);
 
-    long get(LongAttribute attribute, long defaultValue);
-
     /**
-     * Returns the byte value to which this attribute-map maps the specified key. Returns the value
-     * returned by the specified attributes {@link ShortAttribute#getDefaultValue()} method if the
-     * attribute-map contains no mapping for the specified attribute. A return value of
-     * <tt>{@link ShortAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate
-     * that the attribute-map contains no mapping for the key; it's also possible that the
-     * attribute-map explicitly maps the key to <tt>{@link ShortAttribute#getDefaultValue()}</tt>.
-     * The <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two
-     * cases.
-     * <p>
-     * More formally, if this attributemap contains a mapping from a attribute <tt>a</tt> to a
-     * value <tt>v</tt> such that <tt>(key==null ? k==null :
-     * key.equals(k))</tt>, then this
-     * method returns <tt>v</tt>; otherwise it returns <tt>0</tt>. (There can be at most one
-     * such mapping.)
+     * Returns the long value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
      * 
      * @param attribute
      *            attribute whose associated value is to be returned.
      * @return the value to which this map maps the specified attribute, or
-     *         <tt>{@link ShortAttribute#getDefaultValue()}</tt> if the map contains no mapping
-     *         for this attribute.
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a long (or <Long>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
+    long get(LongAttribute attribute, long defaultValue);
+
+    /**
+     * Associates the specified long value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link LongAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    long put(LongAttribute attribute, long value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link LongAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    long remove(LongAttribute attribute);
+
+        /**
+     * Returns the short value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link ShortAttribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>{@link ShortAttribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>{@link ShortAttribute#getDefaultValue()}</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>{@link ShortAttribute#getDefaultValue()}</tt> if the map contains no mapping for
+     *         this attribute.
      * @throws ClassCastException
      *             if the asssociated value is of another type then a short (or <Short>)
      * @throws NullPointerException
@@ -284,8 +645,68 @@ public interface AttributeMap {
      */
     short get(ShortAttribute attribute);
 
+    /**
+     * Returns the short value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the asssociated value is of another type then a short (or <Short>)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
     short get(ShortAttribute attribute, short defaultValue);
 
+    /**
+     * Associates the specified short value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link ShortAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    short put(ShortAttribute attribute, short value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link ShortAttribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    short remove(ShortAttribute attribute);
+
+    
     /**
      * Returns <tt>true</tt> if this map contains no attribute-value mappings.
      * 
@@ -295,39 +716,8 @@ public interface AttributeMap {
 
     <T> T put(Attribute<T> key, T value);
 
-    boolean put(BooleanAttribute attribute, boolean value);
-
-    byte put(ByteAttribute attribute, byte value);
-
-    char put(CharAttribute attribute, char value);
-
-    double put(DoubleAttribute attribute, double value);
-
-    float put(FloatAttribute attribute, float value);
-
-    int put(IntAttribute attribute, int value);
-
-    long put(LongAttribute attribute, long value);
-
-    short put(ShortAttribute attribute, short value);
 
     <T> T remove(Attribute<T> key);
-
-    boolean remove(BooleanAttribute key);
-
-    byte remove(ByteAttribute key);
-
-    char remove(CharAttribute key);
-
-    double remove(DoubleAttribute key);
-
-    float remove(FloatAttribute key);
-
-    int remove(IntAttribute key);
-
-    long remove(LongAttribute key);
-
-    short remove(ShortAttribute key);
 
     /**
      * Returns the number of attribite-value mappings in this attributemap. If the map contains more
@@ -338,5 +728,4 @@ public interface AttributeMap {
     int size();
 
     Collection<Object> values();
-
 }
