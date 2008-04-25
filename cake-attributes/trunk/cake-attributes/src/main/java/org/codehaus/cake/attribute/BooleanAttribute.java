@@ -31,11 +31,10 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     private final transient boolean defaultValue;
 
     /**
-     * Creates a new BooleanAttribute with a generated name and a default value of
-     * <tt>$defaultValueNoCast</tt>.
+     * Creates a new BooleanAttribute with a generated name and a default value of <tt>false</tt>.
      * 
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if false is not a valid value according to {@link #checkValid(boolean)}
      */
     public BooleanAttribute() {
         this(false);
@@ -56,15 +55,14 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     }
 
     /**
-     * Creates a new BooleanAttribute with a default value of <tt>$defaultValueNoCast</tt>.
+     * Creates a new BooleanAttribute with a default value of <tt>false</tt>.
      * 
      * @param name
      *            the name of the attribute
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to
-     *             {@link #checkValid(boolean)}
+     *             if false is not a valid value according to {@link #checkValid(boolean)}
      */
     public BooleanAttribute(String name) {
         this(name, false);
@@ -131,33 +129,35 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     }
 
     /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>boolean</tt>.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the map. Otherwise
-     *         {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map.
+     *         Otherwise {@link #getDefaultValue()}
      */
-    public boolean get(WithAttributes attributes) {
-        return attributes.getAttributes().get(this);
+    public boolean get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
     }
 
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>boolean</tt>.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute if this attribute is present in the map. Otherwise the
      *         specified default value
      */
-    public boolean get(WithAttributes attributes, boolean defaultValue) {
-        return attributes.getAttributes().get(this, defaultValue);
+    public boolean get(WithAttributes withAttributes, boolean defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Returns the default scalar value of this attribute. This is equivalent to calling
+     * Returns the default primitive value of this attribute. This is equivalent to calling
      * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
@@ -187,8 +187,7 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     }
 
     /**
-     * Analogous to {@link #set(AttributeMap, Boolean)} except taking a primitive boolean as
-     * parameter.
+     * Sets the specified value in the specified attribute map.
      * 
      * @param attributes
      *            the attribute map to set the value in.
@@ -196,7 +195,7 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
      *            the value that should be set
      * @return the specified attribute map
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Boolean)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(boolean)}
      */
     public AttributeMap set(AttributeMap attributes, boolean value) {
         if (attributes == null) {
@@ -212,7 +211,8 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     }
 
     /**
-     * Analogous to {@link #singleton(Boolean)} except taking a primitive boolean as parameter.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

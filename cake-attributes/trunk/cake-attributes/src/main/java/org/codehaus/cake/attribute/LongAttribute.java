@@ -30,11 +30,10 @@ public abstract class LongAttribute extends Attribute<Long> implements Comparato
     private final transient long defaultValue;
 
     /**
-     * Creates a new LongAttribute with a generated name and a default value of
-     * <tt>$defaultValueNoCast</tt>.
+     * Creates a new LongAttribute with a generated name and a default value of <tt>0</tt>.
      * 
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if 0 is not a valid value according to {@link #checkValid(long)}
      */
     public LongAttribute() {
         this(0L);
@@ -55,15 +54,14 @@ public abstract class LongAttribute extends Attribute<Long> implements Comparato
     }
 
     /**
-     * Creates a new LongAttribute with a default value of <tt>$defaultValueNoCast</tt>.
+     * Creates a new LongAttribute with a default value of <tt>0</tt>.
      * 
      * @param name
      *            the name of the attribute
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to
-     *             {@link #checkValid(long)}
+     *             if 0 is not a valid value according to {@link #checkValid(long)}
      */
     public LongAttribute(String name) {
         this(name, 0L);
@@ -129,33 +127,35 @@ public abstract class LongAttribute extends Attribute<Long> implements Comparato
     }
 
     /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>long</tt>.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the map. Otherwise
-     *         {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map.
+     *         Otherwise {@link #getDefaultValue()}
      */
-    public long get(WithAttributes attributes) {
-        return attributes.getAttributes().get(this);
+    public long get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
     }
 
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>long</tt>.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute if this attribute is present in the map. Otherwise the
      *         specified default value
      */
-    public long get(WithAttributes attributes, long defaultValue) {
-        return attributes.getAttributes().get(this, defaultValue);
+    public long get(WithAttributes withAttributes, long defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Returns the default scalar value of this attribute. This is equivalent to calling
+     * Returns the default primitive value of this attribute. This is equivalent to calling
      * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
@@ -184,7 +184,7 @@ public abstract class LongAttribute extends Attribute<Long> implements Comparato
     }
 
     /**
-     * Analogous to {@link #set(AttributeMap, Long)} except taking a primitive long as parameter.
+     * Sets the specified value in the specified attribute map.
      * 
      * @param attributes
      *            the attribute map to set the value in.
@@ -192,7 +192,7 @@ public abstract class LongAttribute extends Attribute<Long> implements Comparato
      *            the value that should be set
      * @return the specified attribute map
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Long)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(long)}
      */
     public AttributeMap set(AttributeMap attributes, long value) {
         if (attributes == null) {
@@ -208,7 +208,8 @@ public abstract class LongAttribute extends Attribute<Long> implements Comparato
     }
 
     /**
-     * Analogous to {@link #singleton(Long)} except taking a primitive long as parameter.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

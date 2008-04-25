@@ -30,11 +30,10 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
     private final transient float defaultValue;
 
     /**
-     * Creates a new FloatAttribute with a generated name and a default value of
-     * <tt>$defaultValueNoCast</tt>.
+     * Creates a new FloatAttribute with a generated name and a default value of <tt>0</tt>.
      * 
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if 0 is not a valid value according to {@link #checkValid(float)}
      */
     public FloatAttribute() {
         this(0F);
@@ -55,15 +54,14 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
     }
 
     /**
-     * Creates a new FloatAttribute with a default value of <tt>$defaultValueNoCast</tt>.
+     * Creates a new FloatAttribute with a default value of <tt>0</tt>.
      * 
      * @param name
      *            the name of the attribute
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to
-     *             {@link #checkValid(float)}
+     *             if 0 is not a valid value according to {@link #checkValid(float)}
      */
     public FloatAttribute(String name) {
         this(name, 0F);
@@ -97,7 +95,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
      * Analogous to {@link #checkValid(Float)} except taking a primitive float.
      * <p>
      * The default implementation fails if the specified value is either
-     * {@link Float#NEGATIVE_INFINITY}, {@link Float#POSITIVE_INFINITY} or {@link {object}#NaN}.
+     * {@link Float#NEGATIVE_INFINITY}, {@link Float#POSITIVE_INFINITY} or {@link Float#NaN}.
      * 
      * @param value
      *            the value to check
@@ -132,33 +130,35 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
     }
 
     /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>float</tt>.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the map. Otherwise
-     *         {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map.
+     *         Otherwise {@link #getDefaultValue()}
      */
-    public float get(WithAttributes attributes) {
-        return attributes.getAttributes().get(this);
+    public float get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
     }
 
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>float</tt>.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute if this attribute is present in the map. Otherwise the
      *         specified default value
      */
-    public float get(WithAttributes attributes, float defaultValue) {
-        return attributes.getAttributes().get(this, defaultValue);
+    public float get(WithAttributes withAttributes, float defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Returns the default scalar value of this attribute. This is equivalent to calling
+     * Returns the default primitive value of this attribute. This is equivalent to calling
      * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
@@ -199,7 +199,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
     }
 
     /**
-     * Analogous to {@link #set(AttributeMap, Float)} except taking a primitive float as parameter.
+     * Sets the specified value in the specified attribute map.
      * 
      * @param attributes
      *            the attribute map to set the value in.
@@ -207,7 +207,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
      *            the value that should be set
      * @return the specified attribute map
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Float)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(float)}
      */
     public AttributeMap set(AttributeMap attributes, float value) {
         if (attributes == null) {
@@ -223,7 +223,8 @@ public abstract class FloatAttribute extends Attribute<Float> implements Compara
     }
 
     /**
-     * Analogous to {@link #singleton(Float)} except taking a primitive float as parameter.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

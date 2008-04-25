@@ -16,26 +16,24 @@
 package org.codehaus.cake.attribute;
 
 import java.util.Comparator;
-
 /**
- * An implementation of an {@link Attribute} mapping to a double. This implementation adds a number
- * of methods that works on primitive doubles instead of their object counterpart.
+ * An implementation of an {@link Attribute} mapping to a double. This implementation adds a number of
+ * methods that works on primitive doubles instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: DoubleAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public abstract class DoubleAttribute extends Attribute<Double> implements
-        Comparator<WithAttributes> {
-
+         Comparator<WithAttributes> {
+         
     /** The default value of this attribute. */
     private final transient double defaultValue;
 
     /**
-     * Creates a new DoubleAttribute with a generated name and a default value of
-     * <tt>$defaultValueNoCast</tt>.
+     * Creates a new DoubleAttribute with a generated name and a default value of <tt>0</tt>.
      * 
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if 0 is not a valid value according to {@link #checkValid(double)}
      */
     public DoubleAttribute() {
         this(0D);
@@ -56,15 +54,14 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     }
 
     /**
-     * Creates a new DoubleAttribute with a default value of <tt>$defaultValueNoCast</tt>.
+     * Creates a new DoubleAttribute with a default value of <tt>0</tt>.
      * 
      * @param name
      *            the name of the attribute
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to
-     *             {@link #checkValid(double)}
+     *             if 0 is not a valid value according to {@link #checkValid(double)}
      */
     public DoubleAttribute(String name) {
         this(name, 0D);
@@ -87,18 +84,18 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
         super(name, Double.TYPE, defaultValue);
         this.defaultValue = defaultValue;
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public final void checkValid(Double o) {
         checkValid(o.doubleValue());
     }
-
+    
     /**
      * Analogous to {@link #checkValid(Double)} except taking a primitive double.
      * <p>
      * The default implementation fails if the specified value is either
-     * {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY} or {@link {object}#NaN}.
+     * {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY} or {@link Double#NaN}.
      * 
      * @param value
      *            the value to check
@@ -111,14 +108,15 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
                     + ", type = " + getClass() + ", value = " + value + "]");
         }
     }
-
+    
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
         double thisVal = get(w1);
         double anotherVal = get(w2);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
-
+    
+    
     /**
      * Creates a value instance of this attribute from the specified string.
      * 
@@ -133,33 +131,35 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     }
 
     /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>double</tt>.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the map. Otherwise
+     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
      *         {@link #getDefaultValue()}
      */
-    public double get(WithAttributes attributes) {
-        return attributes.getAttributes().get(this);
+    public double get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
     }
-
+    
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>double</tt>.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute if this attribute is present in the map. Otherwise the
      *         specified default value
      */
-    public double get(WithAttributes attributes, double defaultValue) {
-        return attributes.getAttributes().get(this, defaultValue);
+    public double get(WithAttributes withAttributes, double defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Returns the default scalar value of this attribute. This is equivalent to calling
+     * Returns the default primitive value of this attribute. This is equivalent to calling
      * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
@@ -179,7 +179,6 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     protected boolean isNaNInfinity(double value) {
         return Double.isNaN(value) || Double.isInfinite(value);
     }
-
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Double value) {
@@ -200,8 +199,7 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     }
 
     /**
-     * Analogous to {@link #set(AttributeMap, Double)} except taking a primitive double as
-     * parameter.
+     * Sets the specified value in the specified attribute map.
      * 
      * @param attributes
      *            the attribute map to set the value in.
@@ -209,7 +207,7 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
      *            the value that should be set
      * @return the specified attribute map
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Double)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(double)}
      */
     public AttributeMap set(AttributeMap attributes, double value) {
         if (attributes == null) {
@@ -223,9 +221,10 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     public AttributeMap set(WithAttributes attributes, double value) {
         return set(attributes.getAttributes(), value);
     }
-
+  
     /**
-     * Analogous to {@link #singleton(Double)} except taking a primitive double as parameter.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

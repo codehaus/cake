@@ -30,11 +30,10 @@ public abstract class IntAttribute extends Attribute<Integer> implements Compara
     private final transient int defaultValue;
 
     /**
-     * Creates a new IntAttribute with a generated name and a default value of
-     * <tt>$defaultValueNoCast</tt>.
+     * Creates a new IntAttribute with a generated name and a default value of <tt>0</tt>.
      * 
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if 0 is not a valid value according to {@link #checkValid(int)}
      */
     public IntAttribute() {
         this(0);
@@ -55,14 +54,14 @@ public abstract class IntAttribute extends Attribute<Integer> implements Compara
     }
 
     /**
-     * Creates a new IntAttribute with a default value of <tt>$defaultValueNoCast</tt>.
+     * Creates a new IntAttribute with a default value of <tt>0</tt>.
      * 
      * @param name
      *            the name of the attribute
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if 0 is not a valid value according to {@link #checkValid(int)}
      */
     public IntAttribute(String name) {
         this(name, 0);
@@ -128,33 +127,35 @@ public abstract class IntAttribute extends Attribute<Integer> implements Compara
     }
 
     /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>int</tt>.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the map. Otherwise
-     *         {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map.
+     *         Otherwise {@link #getDefaultValue()}
      */
-    public int get(WithAttributes attributes) {
-        return attributes.getAttributes().get(this);
+    public int get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
     }
 
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>int</tt>.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute if this attribute is present in the map. Otherwise the
      *         specified default value
      */
-    public int get(WithAttributes attributes, int defaultValue) {
-        return attributes.getAttributes().get(this, defaultValue);
+    public int get(WithAttributes withAttributes, int defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Returns the default scalar value of this attribute. This is equivalent to calling
+     * Returns the default primitive value of this attribute. This is equivalent to calling
      * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
@@ -183,7 +184,7 @@ public abstract class IntAttribute extends Attribute<Integer> implements Compara
     }
 
     /**
-     * Analogous to {@link #set(AttributeMap, Integer)} except taking a primitive int as parameter.
+     * Sets the specified value in the specified attribute map.
      * 
      * @param attributes
      *            the attribute map to set the value in.
@@ -191,7 +192,7 @@ public abstract class IntAttribute extends Attribute<Integer> implements Compara
      *            the value that should be set
      * @return the specified attribute map
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Integer)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(int)}
      */
     public AttributeMap set(AttributeMap attributes, int value) {
         if (attributes == null) {
@@ -207,7 +208,8 @@ public abstract class IntAttribute extends Attribute<Integer> implements Compara
     }
 
     /**
-     * Analogous to {@link #singleton(Integer)} except taking a primitive int as parameter.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

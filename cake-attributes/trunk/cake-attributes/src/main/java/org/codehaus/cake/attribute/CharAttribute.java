@@ -31,11 +31,10 @@ public abstract class CharAttribute extends Attribute<Character> implements
     private final transient char defaultValue;
 
     /**
-     * Creates a new CharAttribute with a generated name and a default value of
-     * <tt>$defaultValueNoCast</tt>.
+     * Creates a new CharAttribute with a generated name and a default value of <tt>0</tt>.
      * 
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to {@link #checkValid(int)}
+     *             if 0 is not a valid value according to {@link #checkValid(char)}
      */
     public CharAttribute() {
         this((char) 0);
@@ -56,15 +55,14 @@ public abstract class CharAttribute extends Attribute<Character> implements
     }
 
     /**
-     * Creates a new CharAttribute with a default value of <tt>$defaultValueNoCast</tt>.
+     * Creates a new CharAttribute with a default value of <tt>0</tt>.
      * 
      * @param name
      *            the name of the attribute
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if $defaultValueNoCast is not a valid value according to
-     *             {@link #checkValid(char)}
+     *             if 0 is not a valid value according to {@link #checkValid(char)}
      */
     public CharAttribute(String name) {
         this(name, (char) 0);
@@ -133,33 +131,35 @@ public abstract class CharAttribute extends Attribute<Character> implements
     }
 
     /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>char</tt>.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the map. Otherwise
-     *         {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map.
+     *         Otherwise {@link #getDefaultValue()}
      */
-    public char get(WithAttributes attributes) {
-        return attributes.getAttributes().get(this);
+    public char get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
     }
 
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>char</tt>.
      * 
-     * @param attributes
+     * @param withAttributes
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute if this attribute is present in the map. Otherwise the
      *         specified default value
      */
-    public char get(WithAttributes attributes, char defaultValue) {
-        return attributes.getAttributes().get(this, defaultValue);
+    public char get(WithAttributes withAttributes, char defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Returns the default scalar value of this attribute. This is equivalent to calling
+     * Returns the default primitive value of this attribute. This is equivalent to calling
      * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
@@ -188,8 +188,7 @@ public abstract class CharAttribute extends Attribute<Character> implements
     }
 
     /**
-     * Analogous to {@link #set(AttributeMap, Character)} except taking a primitive char as
-     * parameter.
+     * Sets the specified value in the specified attribute map.
      * 
      * @param attributes
      *            the attribute map to set the value in.
@@ -197,7 +196,7 @@ public abstract class CharAttribute extends Attribute<Character> implements
      *            the value that should be set
      * @return the specified attribute map
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Character)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(char)}
      */
     public AttributeMap set(AttributeMap attributes, char value) {
         if (attributes == null) {
@@ -213,7 +212,8 @@ public abstract class CharAttribute extends Attribute<Character> implements
     }
 
     /**
-     * Analogous to {@link #singleton(Character)} except taking a primitive char as parameter.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from
