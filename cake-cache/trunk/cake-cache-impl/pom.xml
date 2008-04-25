@@ -12,21 +12,26 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake.cache</groupId>
+      <groupId>${pom.groupId}</groupId>
       <artifactId>cake-cache-api</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+        <dependency>
+      <groupId>org.codehaus.cake</groupId>
+      <artifactId>cake-attributes-mapgenerator</artifactId>
+      <version>0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.service</groupId>
       <artifactId>cake-service-impl</artifactId>
+      <version>0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.cake.cache.test</groupId>
+      <groupId>${pom.groupId}.test</groupId>
       <artifactId>cake-cache-test-tck</artifactId>
+      <version>${pom.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <description>
-    This library contains class that are used across all Cake projects
-  </description>
-
+  <description>This library contains class that are used across all Cake projects</description>
 </project>

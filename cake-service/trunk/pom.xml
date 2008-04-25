@@ -7,7 +7,7 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <groupId>org.codehaus.service</groupId>
+  <groupId>org.codehaus.cake.service</groupId>
   <artifactId>cake-service-parent</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>Cake Service Parent</name>

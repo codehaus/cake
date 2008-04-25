@@ -11,12 +11,14 @@
   <name>Cake Service TCK</name>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake.service</groupId>
+      <groupId>${pom.groupId}</groupId>
       <artifactId>cake-service-api</artifactId>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
+      <version>0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

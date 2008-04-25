@@ -9,13 +9,12 @@
   </parent>
   <artifactId>cake-cache-examples</artifactId>
   <name>Cake Cache Examples</name>
-  <description>
-    This library contains usage examples for Cake Cache
-  </description>
+  <description>This library contains usage examples for Cake Cache</description>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake.cache</groupId>
+      <groupId>${pom.groupId}</groupId>
       <artifactId>cake-cache-impl</artifactId>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
 </project>

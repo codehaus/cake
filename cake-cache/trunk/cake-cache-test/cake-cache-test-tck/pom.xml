@@ -17,6 +17,7 @@
     <dependency>
       <groupId>org.codehaus.cake.service</groupId>
       <artifactId>cake-service-tck</artifactId>
+      <version>0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

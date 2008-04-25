@@ -13,10 +13,12 @@
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
+      <version>0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.cache</groupId>
       <artifactId>cake-cache-api</artifactId>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
 </project>

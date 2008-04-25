@@ -4,11 +4,12 @@
   <parent>
     <groupId>org.codehaus.cake</groupId>
     <artifactId>cake-parent</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>org.codehaus.cake.cache</groupId>
   <artifactId>cake-cache-parent</artifactId>
+  <version>0.1-SNAPSHOT</version>
   <name>Cake Cache (pom)</name>
   <description>Root Pom for Cake Cache</description>
   <packaging>pom</packaging>
