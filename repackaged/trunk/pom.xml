@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.codehaus.cake.internal</groupId>
   <artifactId>cake-repacked-parent</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   <name>Cake Repackaged Parent</name>
   <packaging>pom</packaging>
   <scm>
