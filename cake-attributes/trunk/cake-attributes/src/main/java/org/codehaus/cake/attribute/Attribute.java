@@ -19,28 +19,34 @@ import java.util.concurrent.atomic.AtomicLong;
  * @see AttributeMap
  */
 public abstract class Attribute<T> implements Serializable {
-    /* All fields are transient because attributes should be a singleton. */
+    /* All fields are transient because all attribute implementations should be singletons. */
 
-    static final AtomicLong NAME = new AtomicLong();
+    private static final AtomicLong NAME = new AtomicLong();
 
     /** The type of this attribute, as returned {@link #getType()}. */
     private final transient Class<T> clazz;
 
     /** The default value of this attribute. */
     private final transient T defaultValue;
+
+    /** The hashcode of this attribute. */
     private final transient int hashCode;
+
     /** The name of this attribute. */
     private final transient String name;
 
     /**
-     * Creates a new AbstractAttribute.
+     * Creates a new Attribute.
      * 
-     * @param name
-     *            the name of the attribute
      * @param clazz
      *            the type of this attribute
      * @param defaultValue
      *            the default value of this attribute
+     * @throws IllegalArgumentException
+     *             if the specified default value is not valid according to
+     *             {@link #checkValid(Object)}
+     * @throws NullPointerException
+     *             if the specified class is null
      */
     Attribute(Class<T> clazz, T defaultValue) {
         if (clazz == null) {
@@ -62,6 +68,11 @@ public abstract class Attribute<T> implements Serializable {
      *            the type of this attribute
      * @param defaultValue
      *            the default value of this attribute
+     * @throws IllegalArgumentException
+     *             if the specified default value is not valid according to
+     *             {@link #checkValid(Object)}
+     * @throws NullPointerException
+     *             if the specified name or class is null
      */
     Attribute(String name, Class<T> clazz, T defaultValue) {
         if (name == null) {
@@ -123,6 +134,7 @@ public abstract class Attribute<T> implements Serializable {
         return clazz;
     }
 
+    /** {@inheritDoc} */
     public final int hashCode() {
         return hashCode;
     }
@@ -171,7 +183,5 @@ public abstract class Attribute<T> implements Serializable {
     @Override
     public String toString() {
         return name;
-        // "Attribute [name='" + name + "', type='" + getType() + "', defaultValue='"
-        // + getDefault() + "'";
     }
 }

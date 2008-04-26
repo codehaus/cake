@@ -15,9 +15,13 @@ import org.codehaus.cake.internal.asm.Type;
 
 public enum PrimType {
     BOOLEAN(Boolean.class, BooleanAttribute.class, Type.BOOLEAN_TYPE, Opcodes.ILOAD,
-            Opcodes.ISTORE, Opcodes.IRETURN), BYTE(Byte.class, ByteAttribute.class, Type.BYTE_TYPE,
-            Opcodes.ILOAD, Opcodes.ISTORE, Opcodes.IRETURN), CHAR(Character.class,
-            CharAttribute.class, Type.CHAR_TYPE, Opcodes.ILOAD, Opcodes.ISTORE, Opcodes.IRETURN),
+            Opcodes.ISTORE, Opcodes.IRETURN),
+
+    BYTE(Byte.class, ByteAttribute.class, Type.BYTE_TYPE, Opcodes.ILOAD, Opcodes.ISTORE,
+            Opcodes.IRETURN),
+
+    CHAR(Character.class, CharAttribute.class, Type.CHAR_TYPE, Opcodes.ILOAD, Opcodes.ISTORE,
+            Opcodes.IRETURN),
 
     DOUBLE(Double.class, DoubleAttribute.class, Type.DOUBLE_TYPE, Opcodes.DLOAD, Opcodes.DSTORE,
             Opcodes.DRETURN) {
@@ -25,7 +29,6 @@ public enum PrimType {
             return 2;
         }
     },
-
     FLOAT(Float.class, FloatAttribute.class, Type.FLOAT_TYPE, Opcodes.FLOAD, Opcodes.FSTORE,
             Opcodes.FRETURN),
 
