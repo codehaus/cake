@@ -14,6 +14,10 @@ import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 public class CacheAttributes {
     /* Entry attributes */
 
+    /**
+     * The <tt>Cost attribute</tt> is used to indicate the cost of retrieving an item.
+     * 
+     */
     public static final DoubleAttribute ENTRY_COST = new CostAttribute();
 
     static final TimeInstanceAttribute ENTRY_DATE_ACCESSED = new DateCreatedAttribute();
