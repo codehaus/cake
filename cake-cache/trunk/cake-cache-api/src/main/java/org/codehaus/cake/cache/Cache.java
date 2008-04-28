@@ -18,7 +18,6 @@ import org.codehaus.cake.container.Container;
  * <p>
  * Currently two implementations exist: {@link org.codehaus.cake.cache.defaults.UnsynchronizedCache}
  * and {@link org.codehaus.cake.cache.defaults.SynchronizedCache}.
- * 
  * <p>
  * The three collection views, which allow a cache's contents to be viewed as a set of keys,
  * collection of values, or set of key-value mappings only shows values contained in the actual
@@ -37,7 +36,7 @@ import org.codehaus.cake.container.Container;
  * and <tt>hashCode</tt> methods, but instead inherit the identity-based versions from class
  * <tt>Object</tt>. Nore, are they generally serializable.
  * <p>
- * Unlike {@link java.util.HashMap}, an instance of <tt>Cache</tt> does NOT allow <tt>null</tt>
+ * Unlike {@link java.util.HashMap}, <tt>Cache</tt> implementations does NOT allow <tt>null</tt>
  * to be used as a key or value. It is the authors belief that allowing null values (or keys) does
  * more harm then good, by masking what are almost always usage errors. If nulls are absolutely
  * needed the <a href="http://today.java.net/today/2004/12/10/refactor.pdf">Null Object Pattern</a>

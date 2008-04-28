@@ -39,7 +39,7 @@ public interface ServiceManager {
      * @param serviceType
      *            the type of service to retrieve
      * @return a service of the specified type
-     * @throws IllegalArgumentException
+     * @throws UnsupportedOperationException
      *             if no service of the specified type exist
      * @throws NullPointerException
      *             if the specified service type is null
