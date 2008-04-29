@@ -1,4 +1,4 @@
-package org.codehaus.cake.cache.policy;
+package org.codehaus.cake.cache.policy.spi;
 
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
@@ -18,8 +18,8 @@ import org.codehaus.cake.container.lifecycle.Startable;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> implements
-        ReplacementPolicy<K, V> {
+public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends
+        AbstractReplacementPolicy<K, V> {
     private CacheEntry<K, V> head;
     private final ObjectAttribute<CacheEntry<K, V>> nextPointer = new ObjectAttribute("next",
             CacheEntry.class) {};

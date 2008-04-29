@@ -1,4 +1,4 @@
-package org.codehaus.cake.cache.policy;
+package org.codehaus.cake.cache.policy.spi;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import org.codehaus.cake.cache.CacheEntry;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractArrayReplacementPolicy<K, V> implements ReplacementPolicy<K, V> {
+public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V>  {
     private final IntAttribute index = new IntAttribute("index", 0) {};
     private ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
 
@@ -82,6 +82,4 @@ public abstract class AbstractArrayReplacementPolicy<K, V> implements Replacemen
     }
 
     protected void swap(int prevIndex, int newIndex) {}
-
-    public void touch(CacheEntry<K, V> entry) {}
 }

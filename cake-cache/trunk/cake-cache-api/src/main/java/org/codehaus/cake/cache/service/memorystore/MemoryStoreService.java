@@ -4,10 +4,7 @@ package org.codehaus.cake.cache.service.memorystore;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.CacheAttributes;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheServices;
 
 /**
  * The memory store service controls the size of the cache and what entries to evict at runtime.

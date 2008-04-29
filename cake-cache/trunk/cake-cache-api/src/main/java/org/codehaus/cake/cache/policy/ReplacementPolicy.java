@@ -1,6 +1,5 @@
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 
 /**
