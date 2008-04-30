@@ -36,22 +36,18 @@ public class DefaultAttributeMap implements AttributeMap {
         }
     }
 
-    @Override
     public Set<Attribute> attributeSet() {
         return (Set) map.keySet();
     }
 
-    @Override
     public void clear() {
         map.clear();
     }
 
-    @Override
     public boolean contains(Attribute<?> attribute) {
         return map.containsKey(attribute);
     }
 
-    @Override
     public Set<Entry<Attribute, Object>> entrySet() {
         return map.entrySet();
     }
@@ -68,7 +64,6 @@ public class DefaultAttributeMap implements AttributeMap {
         return m.entrySet().equals(entrySet());
     }
 
-    @Override
     public <T> T get(Attribute<T> key) {
         if (map.containsKey(key)) {
             return (T) map.get(key);
@@ -77,7 +72,6 @@ public class DefaultAttributeMap implements AttributeMap {
         }
     }
 
-    @Override
     public <T> T get(Attribute<T> key, T defaultValue) {
         if (map.containsKey(key)) {
             return (T) map.get(key);
@@ -223,12 +217,10 @@ public class DefaultAttributeMap implements AttributeMap {
         return map.hashCode();
     }
 
-    @Override
     public boolean isEmpty() {
         return map.isEmpty();
     }
 
-    @Override
     public <T> T put(Attribute<T> key, T value) {
         if (map.containsKey(key)) {
             return (T) map.put(key, value);
@@ -290,7 +282,6 @@ public class DefaultAttributeMap implements AttributeMap {
 
     }
 
-    @Override
     public <T> T remove(Attribute<T> key) {
         if (map.containsKey(key)) {
             return (T) map.remove(key);
@@ -299,61 +290,51 @@ public class DefaultAttributeMap implements AttributeMap {
         }
     }
 
-    @Override
     public boolean remove(BooleanAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Boolean) prev;
     }
 
-    @Override
     public byte remove(ByteAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Byte) prev;
 
     }
 
-    @Override
     public char remove(CharAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Character) prev;
     }
 
-    @Override
     public double remove(DoubleAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Double) prev;
     }
 
-    @Override
     public float remove(FloatAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Float) prev;
     }
 
-    @Override
     public int remove(IntAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Integer) prev;
     }
 
-    @Override
     public long remove(LongAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Long) prev;
     }
 
-    @Override
     public short remove(ShortAttribute key) {
         Object prev = map.remove(key);
         return prev == null ? key.getDefaultValue() : (Short) prev;
     }
 
-    @Override
     public int size() {
         return map.size();
     }
 
-    @Override
     public Collection<Object> values() {
         return map.values();
     }

@@ -16,7 +16,6 @@ public class LIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
     public static final String NAME = "LIFO";
 
     /** {@inheritDoc} */
-    @Override
     public boolean add(CacheEntry<K, V> entry) {
         addTail(entry);
         return true;
@@ -27,7 +26,6 @@ public class LIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
     public void touch(CacheEntry<K, V> entry) {}
 
     /** {@inheritDoc} */
-    @Override
     public CacheEntry<K, V> evictNext() {
         return removeHead();
     }

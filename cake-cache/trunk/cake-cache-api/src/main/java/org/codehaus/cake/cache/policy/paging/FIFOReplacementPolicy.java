@@ -17,7 +17,6 @@ public class FIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
     public static final String NAME = "FIFO";
     
     /** {@inheritDoc} */
-    @Override
     public boolean add(CacheEntry<K, V> entry) {
         addHead(entry);
         return true;
@@ -28,7 +27,6 @@ public class FIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
     public void touch(CacheEntry<K, V> entry) {}
 
     /** {@inheritDoc} */
-    @Override
     public CacheEntry<K, V> evictNext() {
         return removeHead();
     }

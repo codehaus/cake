@@ -24,7 +24,6 @@ public abstract class AbstractInternalContainer implements Container {
         runState = composer.get(RunState.class);
     }
 
-    @Override
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return runState.awaitTermination(timeout, unit);
     }
@@ -35,7 +34,6 @@ public abstract class AbstractInternalContainer implements Container {
         return sm.getAllServices();
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -52,17 +50,14 @@ public abstract class AbstractInternalContainer implements Container {
         return sm.hasService(type);
     }
 
-    @Override
     public boolean isShutdown() {
         return runState.isAtLeastShutdown();
     }
 
-    @Override
     public boolean isStarted() {
         return runState.isAtLeastRunning();
     }
 
-    @Override
     public boolean isTerminated() {
         return runState.isTerminated();
     }
@@ -75,12 +70,10 @@ public abstract class AbstractInternalContainer implements Container {
         runState.isRunningLazyStart(true);
     }
 
-    @Override
     public void shutdown() {
         runState.shutdown(false);
     }
 
-    @Override
     public void shutdownNow() {
         runState.shutdown(true);
     }

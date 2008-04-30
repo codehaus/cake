@@ -40,25 +40,21 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
 
     public void terminated() {}
 
-    @Override
     public void initialize(Cache<K, V> cache, CacheConfiguration<K, V> conf) {
         // TODO Auto-generated method stub
     }
 
-    @Override
     public V loadFailed(Throwable cause, K key, AttributeMap map) {
         fatal("", cause);
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
     public void serviceManagerShutdownFailed(Throwable cause, Object lifecycle) {
         fatal("", cause);
         
     }
 
-    @Override
     public void startFailed(CacheConfiguration<K, V> configuration, Object service, Throwable cause) {
         fatal("", cause);
     }

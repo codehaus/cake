@@ -52,7 +52,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         return peek((K) key) != null;
     }
 
-    @Override
     public final Set<Entry<K, V>> entrySet() {
         return views.entrySet();
     }
@@ -71,7 +70,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         return size() == 0;
     }
 
-    @Override
     public final Set<K> keySet() {
         return views.keySet();
     }
@@ -112,7 +110,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         memoryCache.removeAll();
     }
 
-    @Override
     public final Collection<V> values() {
         return views.values();
     }

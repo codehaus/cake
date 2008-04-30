@@ -47,7 +47,7 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
         return update(key, value, params, null);
     }
 
-    @Override
+    
     public AttributeMap getAttributes() {
         AttributeMap am = new DefaultAttributeMap();
         for (Info i : map.values()) {
@@ -56,24 +56,24 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
         return am;
     }
 
-    @Override
+    
     public <T> T getDefaultValue(Attribute<T> attribute) {
         Info i = map.get(attribute);
         return i == null ? attribute.getDefault() : (T) i.defaultValue;
     }
 
-    @Override
+    
     public <T> void registerAttribute(Attribute<T> attribute) {
         map.put(attribute, new Info(attribute, true, true, attribute.getDefault()));
         updateAttributes();
     }
 
-    @Override
+    
     public AttributeMap remove(AttributeMap params) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    
     public <T> void setDefaultValue(Attribute<T> attribute, T defaultValue) {
         map.put(attribute, new Info(attribute, true, true, defaultValue));
     }

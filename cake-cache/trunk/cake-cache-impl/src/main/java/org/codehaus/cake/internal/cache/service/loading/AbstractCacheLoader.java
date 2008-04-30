@@ -46,7 +46,6 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K
             this.op = op;
         }
 
-        @Override
         public V load(K key, AttributeMap attributes) throws Exception {
             return op.op(key);
         }
@@ -59,13 +58,11 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K
             this.op = op;
         }
 
-        @Override
         public V load(K key, AttributeMap attributes) throws Exception {
             return op.op(key, attributes);
         }
     }
 
-    @Override
     public void loadAsync(Map<? extends K, AttributeMap> map) {
         for (Map.Entry<? extends K, AttributeMap> e : map.entrySet()) {
             loadAsync(e.getKey(), e.getValue());

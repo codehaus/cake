@@ -18,7 +18,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     @Test
     public void evictorSize() {
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            @Override
+            
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(10, a.getMaximumSize());
                 assertEquals(Long.MAX_VALUE, a.getMaximumVolume());
@@ -38,7 +38,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
 
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            @Override
+            
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(Integer.MAX_VALUE, a.getMaximumSize());
                 assertEquals(4, a.getSize());
@@ -61,7 +61,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     @Test
     public void evictorSizeNegTrim() {
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            @Override
+            
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(5, a.getMaximumSize());
                 assertEquals(6, a.getSize());
@@ -96,7 +96,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     public void evictorVolumeAndSize() {
         conf.withAttributes().add(ENTRY_SIZE);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            @Override
+            
             public void op(MemoryStoreService<Integer, String> a) {
                 a.trimToSize(-5);
                 a.trimToVolume(-50);

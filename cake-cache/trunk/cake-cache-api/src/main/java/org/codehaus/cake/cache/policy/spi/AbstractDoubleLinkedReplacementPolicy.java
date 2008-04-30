@@ -216,7 +216,6 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends
      * Removes the specified previous entry from the linked list. Next add is called with the
      * specified newEntry, Finally, the specified newEntry is returned.
      */
-    @Override
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         remove(previous);
         add(newEntry);

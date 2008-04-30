@@ -11,7 +11,6 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
         this.manager = manager;
     }
 
-    @Override
     public <T> void registerService(Class<T> key, T service) {
         manager.services.put(key, service);
     

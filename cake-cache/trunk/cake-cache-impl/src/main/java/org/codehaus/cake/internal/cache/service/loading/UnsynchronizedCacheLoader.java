@@ -22,14 +22,12 @@ public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         this.cache = cache;
     }
 
-    @Override
     public CacheEntry<K, V> load(K key, AttributeMap map) {
         map = new DefaultAttributeMap(map);
         V value = doLoad(loader, key, map);
         return cache.valueLoaded(key, value, map);
     }
 
-    @Override
     public void loadAsync(K key, AttributeMap map) {
         load(key, map);
     }

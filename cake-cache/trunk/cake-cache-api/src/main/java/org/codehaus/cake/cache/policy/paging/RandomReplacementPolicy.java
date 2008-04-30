@@ -21,7 +21,6 @@ public class RandomReplacementPolicy<K, V> extends AbstractArrayReplacementPolic
     private final Random rnd = new Random();
 
     /** {@inheritDoc} */
-    @Override
     public CacheEntry<K, V> evictNext() {
         int size = size();
         return size == 0 ? null : removeByIndex(rnd.nextInt(size));

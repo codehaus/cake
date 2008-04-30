@@ -32,7 +32,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         entry.getAttributes().put(this.index, index);
     }
 
-    @Override
     public boolean add(CacheEntry<K, V> entry) {
         int i = size;
         if (i >= queue.length)
@@ -48,7 +47,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         return true;
     }
 
-    @Override
     public void clear() {
         for (int i = 0; i < size; i++) {
             queue[i] = null;
@@ -56,7 +54,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         size = 0;
     }
 
-    @Override
     public CacheEntry<K, V> evictNext() {
         if (size == 0)
             return null;
@@ -69,7 +66,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         return result;
     }
 
-    @Override
     public void remove(CacheEntry<K, V> entry) {
         removeAt(indexOf(entry));
     }
@@ -102,7 +98,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         return null;
     }
 
-    @Override
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         remove(previous);
         add(newEntry);

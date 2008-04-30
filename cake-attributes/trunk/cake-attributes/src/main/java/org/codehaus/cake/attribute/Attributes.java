@@ -119,7 +119,6 @@ public final class Attributes {
             return false;
         }
 
-        @Override
         public Set<Entry<Attribute, Object>> entrySet() {
             return Collections.EMPTY_SET;
         }
@@ -327,7 +326,6 @@ public final class Attributes {
             return "{}";
         }
 
-        @Override
         public Collection<Object> values() {
             return Collections.EMPTY_SET;
         }
@@ -366,7 +364,6 @@ public final class Attributes {
             return map.contains(attribute);
         }
 
-        @Override
         public Set<Entry<Attribute, Object>> entrySet() {
             return Collections.unmodifiableSet(map.entrySet());
         }
@@ -539,7 +536,6 @@ public final class Attributes {
             return map.toString();
         }
 
-        @Override
         public Collection<Object> values() {
             return Collections.unmodifiableCollection(map.values());
         }
@@ -587,7 +583,6 @@ public final class Attributes {
             return this.attribute == attribute;
         }
 
-        @Override
         public Set<Entry<Attribute, Object>> entrySet() {
             return Collections
                     .<Map.Entry<Attribute, Object>> singleton(new AttributeHelper.SimpleImmutableEntry<Attribute, Object>(

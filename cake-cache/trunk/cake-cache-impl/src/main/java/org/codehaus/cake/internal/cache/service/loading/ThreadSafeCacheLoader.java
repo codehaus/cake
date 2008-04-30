@@ -51,7 +51,6 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V>  {
         return future;
     }
 
-    @Override
     public CacheEntry<K, V> load(K key, AttributeMap attributes) {
         LoadableFutureTask<K, V> ft = createFuture(key, attributes);
         ft.run();

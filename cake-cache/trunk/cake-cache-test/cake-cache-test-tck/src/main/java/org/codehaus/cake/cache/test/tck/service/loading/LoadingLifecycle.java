@@ -30,7 +30,6 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
 
         volatile int count;
 
-        @Override
         public Object load(Object key, AttributeMap attributes) throws Exception {
             return "foo";
         }
@@ -45,7 +44,6 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
 
         volatile int count;
 
-        @Override
         public boolean op(Object a) {
             return true;
         }

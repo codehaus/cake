@@ -225,7 +225,6 @@ public class AttributeTest {
 
     static WithAttributes withAtr(final AttributeMap map) {
         return new WithAttributes() {
-            @Override
             public AttributeMap getAttributes() {
                 return map;
             }

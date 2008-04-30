@@ -65,18 +65,15 @@ import org.codehaus.cake.internal.util.CollectionUtils;
         final Iterator<CacheEntry<K, V>> iter = cache.iterator();
         return new Iterator<Map.Entry<K, V>>() {
 
-            @Override
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
-            @Override
             public Map.Entry<K, V> next() {
                 CacheEntry<K, V> current = iter.next();
                 return current;
             }
 
-            @Override
             public void remove() {
                 iter.remove();
             }

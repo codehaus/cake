@@ -61,13 +61,11 @@ public final class DefaultMemoryStoreMXBean implements MemoryStoreMXBean {
         service.trimToVolume(capacity);
     }
 
-    @Override
     @ManagedAttribute(description = "The current volume of the cache")
     public long getVolume() {
         return service.getVolume();
     }
 
-    @Override
     @ManagedAttribute(description = "The current size of the cache")
     public int getSize() {
         return service.getSize();

@@ -21,18 +21,15 @@ class Values<K, V> extends AbstractCollectionView<V> {
         final Iterator<CacheEntry<K, V>> iter = cache.iterator();
         return new Iterator<V>() {
 
-            @Override
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
-            @Override
             public V next() {
                 CacheEntry<K, V> current = iter.next();
                 return current.getValue();
             }
 
-            @Override
             public void remove() {
                 iter.remove();
             }

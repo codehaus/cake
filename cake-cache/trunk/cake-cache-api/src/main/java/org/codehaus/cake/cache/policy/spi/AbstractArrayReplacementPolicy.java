@@ -18,7 +18,6 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
     private final IntAttribute index = new IntAttribute("index", 0) {};
     private ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
 
-    @Override
     public boolean add(CacheEntry<K, V> entry) {
         addAndReturnIndex(entry);
         return true;
@@ -65,7 +64,6 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
         return lastIndex;
     }
 
-    @Override
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         replaceIt(previous, newEntry);
         return newEntry;

@@ -17,7 +17,6 @@ public class MRUReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementP
     public static final String NAME = "MRU";
     
     /** {@inheritDoc} */
-    @Override
     public boolean add(CacheEntry<K, V> entry) {
         addHead(entry);
         return true;
@@ -30,7 +29,6 @@ public class MRUReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementP
     }
 
     /** {@inheritDoc} */
-    @Override
     public CacheEntry<K, V> evictNext() {
         return removeHead();
     }

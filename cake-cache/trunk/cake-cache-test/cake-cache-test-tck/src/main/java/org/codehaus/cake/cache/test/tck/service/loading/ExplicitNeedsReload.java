@@ -61,7 +61,6 @@ public class ExplicitNeedsReload extends AbstractCacheTCKTest {
         volatile boolean result;
         CacheEntry<Integer, String> latest;
 
-        @Override
         public boolean op(CacheEntry<Integer, String> a) {
             latest = a;
             return result && (a.getKey() % 2 == 1);

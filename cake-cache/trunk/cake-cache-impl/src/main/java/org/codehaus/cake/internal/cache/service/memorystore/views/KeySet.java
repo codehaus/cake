@@ -35,18 +35,18 @@ class KeySet<K, V> extends AbstractSetView<K> {
         final Iterator<CacheEntry<K, V>> iter = cache.iterator();
         return new Iterator<K>() {
 
-            @Override
+
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
-            @Override
+            
             public K next() {
                 CacheEntry<K, V> current = iter.next();
                 return current.getKey();
             }
 
-            @Override
+            
             public void remove() {
                 iter.remove();
             }

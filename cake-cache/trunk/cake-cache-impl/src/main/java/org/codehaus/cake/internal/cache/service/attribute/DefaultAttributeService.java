@@ -22,24 +22,20 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
         this.clock = clock;
     }
 
-    @Override
     public AttributeMap getAttributes() {
         return new DefaultAttributeMap(defaults);
     }
 
-    @Override
     public <T> T getDefaultValue(Attribute<T> attribute) {
         return defaults.get(attribute);
     }
 
-    @Override
     public <T> void setDefaultValue(Attribute<T> attribute, T defaultValue) {
         // shouldn't expose map to .set
         attribute.checkValid(defaultValue);
         defaults.put(attribute, defaultValue);
     }
 
-    @Override
     public AttributeMap create(K key, V value, AttributeMap params) {
         AttributeMap map = new DefaultAttributeMap(defaults);
         if (defaults.contains(ENTRY_DATE_CREATED)) {
@@ -56,13 +52,11 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
         return map;
     }
 
-    @Override
     public AttributeMap remove(AttributeMap params) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
     public AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
         AttributeMap map = new DefaultAttributeMap(defaults);
         for (Map.Entry<Attribute, Object> entry : params.entrySet()) {
@@ -79,7 +73,6 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
         return map;
     }
 
-    @Override
     public <T> void registerAttribute(Attribute<T> attribute) {
     // TODO Auto-generated method stub
 

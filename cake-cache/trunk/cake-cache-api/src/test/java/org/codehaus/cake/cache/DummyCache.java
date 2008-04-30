@@ -288,17 +288,14 @@ public class DummyCache<K, V> implements Cache<K, V> {
         return new CacheServices<K, V>(this);
     }
 
-    @Override
     public CacheServices<K, V> with() {
         return new CacheServices<K, V>(this);
     }
 
-    @Override
     public Map<Class<?>, Object> getAllServices() {
         return Collections.EMPTY_MAP;
     }
 
-    @Override
     public boolean hasService(Class<?> serviceType) {
         return false;
     }

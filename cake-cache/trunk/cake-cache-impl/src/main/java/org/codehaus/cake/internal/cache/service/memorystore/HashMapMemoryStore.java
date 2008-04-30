@@ -61,7 +61,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return map.size() == 0 ? null : map.values().iterator().next();
     }
 
-    @Override
+    
     public CacheEntry<K, V> get(Object key) {
         CacheEntry<K, V> entry = map.get(key);
         if (entry != null && policy != null) {
@@ -70,7 +70,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return entry;
     }
 
-    @Override
+    
     public CacheEntry<K, V> peek(Object key) {
         return map.get(key);
     }
@@ -124,7 +124,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return new EntryPair(prev, keepNew ? entry : null);
     }
 
-    @Override
+    
     public Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(
             Map<K, Entry<V, AttributeMap>> data) {
         HashMap result = new HashMap<CacheEntry<K, V>, CacheEntry<K, V>>();
@@ -136,7 +136,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return result;
     }
 
-    @Override
+    
     public DefaultEntry<K, V> remove(Object key, Object value) {
         if (value == null) {
             DefaultEntry<K, V> entry = map.remove(key);
@@ -157,7 +157,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
     }
 
-    @Override
+    
     public ParallelArray<CacheEntry<K, V>> removeAll(Collection entries) {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(entries.size(), CacheEntry.class,
                 ParallelArray.defaultExecutor());
@@ -187,22 +187,22 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
     }
 
-    @Override
+    
     public CacheEntry<K, V> removeAny(Predicate<? super CacheEntry<K, V>> selector) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    
     public ParallelArray<CacheEntry<K, V>> removeEntries(Collection entries) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    
     public ParallelArray<CacheEntry<K, V>> removeValues(Collection entries) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+    
     public ParallelArray<CacheEntry<K, V>> trim() {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
                 ParallelArray.defaultExecutor());
@@ -233,63 +233,63 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         Integer size;
         Comparator comparator;
 
-        @Override
+        
         public int getMaximumSize() {
             return HashMapMemoryStore.this.getMaximumSize();
         }
 
-        @Override
+        
         public long getMaximumVolume() {
             return HashMapMemoryStore.this.getMaximumVolume();
         }
 
-        @Override
+        
         public int getSize() {
             return HashMapMemoryStore.this.getSize();
         }
 
-        @Override
+        
         public long getVolume() {
             return HashMapMemoryStore.this.getVolume();
         }
 
-        @Override
+        
         public boolean isDisabled() {
             return HashMapMemoryStore.this.isDisabled();
         }
 
-        @Override
+        
         public void setDisabled(boolean isDisabled) {
             throw new UnsupportedOperationException("cannot call this method from here");
         }
 
-        @Override
+        
         public void setMaximumSize(int maximumSize) {
             throw new UnsupportedOperationException("cannot call this method from here");
         }
 
-        @Override
+        
         public void setMaximumVolume(long maximumVolume) {
             throw new UnsupportedOperationException("cannot call this method from here");
         }
 
-        @Override
+        
         public void trimToSize(int size) {
             this.size = size;
         }
 
-        @Override
+        
         public void trimToVolume(long volume) {
             this.volume = volume;
         }
 
-        @Override
+        
         public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
             this.size = size;
             this.comparator = comparator;
         }
 
-        @Override
+        
         public void trimToVolume(long volume, Comparator<? extends CacheEntry<K, V>> comparator) {
             this.volume = volume;
             this.comparator = comparator;
@@ -310,7 +310,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return entry;
     }
 
-    @Override
+    
     public ParallelArray<CacheEntry<K, V>> removeAll() {
         ParallelArray<CacheEntry<K, V>> array = (ParallelArray) ParallelArray.createUsingHandoff(
                 map.values().toArray(new DefaultEntry[0]), ParallelArray.defaultExecutor());
@@ -335,7 +335,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
 
         /** {@inheritDoc} */
-        @Override
+        
         public boolean equals(Object o) {
             if (!(o instanceof Map.Entry)) {
                 return false;
@@ -355,7 +355,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
 
         /** {@inheritDoc} */
-        @Override
+        
         public int hashCode() {
             return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
@@ -377,17 +377,17 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             return getAttributes().get(attribute);
         }
 
-        @Override
+        
         public AttributeMap getAttributes() {
             return attributes;
         }
 
-        @Override
+        
         public boolean isDead() {
             return false;
         }
 
-        @Override
+        
         public CacheEntry<K, V> safe() {
             return this;
         }
@@ -397,7 +397,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
 
         /** {@inheritDoc} */
-        @Override
+        
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(key);
@@ -421,29 +421,29 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
     }
 
-    @Override
+    
     public int size() {
         return map.size();
     }
 
-    @Override
+    
     public Iterator<CacheEntry<K, V>> iterator() {
         final Iterator<DefaultEntry<K, V>> iter = map.values().iterator();
         return new Iterator<CacheEntry<K, V>>() {
             DefaultEntry<K, V> current;
 
-            @Override
+            
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
-            @Override
+            
             public CacheEntry<K, V> next() {
                 current = iter.next();
                 return current;
             }
 
-            @Override
+            
             public void remove() {
                 iter.remove();
                 removeEntry(current, false);
@@ -451,7 +451,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         };
     }
 
-    @Override
+    
     public EntryPair<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
         CacheEntry<K, V> prev = map.get(key);
         if (oldValue == null && prev != null || oldValue != null && prev != null
@@ -461,7 +461,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return new EntryPair<K, V>(prev, null);
     }
 
-    @Override
+    
     public int getMaximumSize() {
         return maximumSize;
     }
@@ -472,32 +472,32 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         serviceRegistrant.registerService(MemoryStoreService.class, this);
     }
 
-    @Override
+    
     public long getMaximumVolume() {
         return maximumVolume;
     }
 
-    @Override
+    
     public int getSize() {
         return map.size();
     }
 
-    @Override
+    
     public long getVolume() {
         return volume;
     }
 
-    @Override
+    
     public boolean isDisabled() {
         return isDisabled;
     }
 
-    @Override
+    
     public void setDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
     }
 
-    @Override
+    
     public void setMaximumSize(int maximumSize) {
         if (maximumSize <= 0) {
             throw new IllegalArgumentException();
@@ -505,7 +505,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         this.maximumSize = maximumSize;
     }
 
-    @Override
+    
     public void setMaximumVolume(long maximumVolume) {
         if (maximumVolume <= 0) {
             throw new IllegalArgumentException();
@@ -513,7 +513,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         this.maximumVolume = maximumVolume;
     }
 
-    @Override
+    
     public void trimToSize(int size) {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
                 ParallelArray.defaultExecutor());
@@ -524,7 +524,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         trimToSize(pa, size, null);
     }
 
-    @Override
+    
     public void trimToVolume(long volume) {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
                 ParallelArray.defaultExecutor());
@@ -535,7 +535,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         trimToVolume(pa, volume, null);
     }
 
-    @Override
+    
     public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
         if (comparator == null) {
             throw new NullPointerException("comparator is null");
@@ -594,7 +594,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
     }
 
-    @Override
+    
     public void trimToVolume(long volume, Comparator<? extends CacheEntry<K, V>> comparator) {
         if (comparator == null) {
             throw new NullPointerException("comparator is null");

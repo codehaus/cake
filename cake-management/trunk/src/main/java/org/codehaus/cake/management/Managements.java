@@ -46,73 +46,73 @@ public final class Managements {
         }
         return new ManagedGroup() {
 
-            @Override
+            
             public ManagedGroup add(Object o) {
                 group.add(o);
                 return this;
             }
 
-            @Override
+            
             public ManagedGroup addChild(String name, String description) {
                 return group.addChild(name, description);
             }
 
-            @Override
+            
             public Collection<ManagedGroup> getChildren() {
                 return group.getChildren();
             }
 
-            @Override
+            
             public String getDescription() {
                 return group.getDescription();
             }
 
-            @Override
+            
             public String getName() {
                 return group.getName();
             }
 
-            @Override
+            
             public ObjectName getObjectName() {
                 return group.getObjectName();
             }
 
-            @Override
+            
             public Collection<?> getObjects() {
                 return group.getObjects();
             }
 
-            @Override
+            
             public ManagedGroup getParent() {
                 return group.getParent();
             }
 
-            @Override
+            
             public MBeanServer getServer() {
                 return group.getServer();
             }
 
-            @Override
+            
             public boolean isRegistered() {
                 return group.isRegistered();
             }
 
-            @Override
+            
             public void register(MBeanServer server, ObjectName objectName) throws JMException {
                 group.register(server, objectName);
             }
 
-            @Override
+            
             public void remove() {
                 group.remove();
             }
 
-            @Override
+            
             public String toString() {
                 return group.toString();
             }
 
-            @Override
+            
             public void unregister() throws JMException {
                 group.unregister();
             }

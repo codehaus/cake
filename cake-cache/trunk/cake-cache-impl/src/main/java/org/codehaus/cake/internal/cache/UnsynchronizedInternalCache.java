@@ -77,13 +77,13 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return entry;
     }
 
-    @Override
+    
     public Iterator<CacheEntry<K, V>> iterator() {
         lazyStart();
         return memoryCache.iterator();
     }
 
-    @Override
+    
     public CacheEntry<K, V> peekEntry(K key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -92,7 +92,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return memoryCache.peek(key);
     }
 
-    @Override
+    
     public CacheEntry<K, V> put(K key, V value, AttributeMap attributes) {
         checkPut(key, value, attributes);
         return put(key, value, attributes, false);
@@ -128,14 +128,14 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         listener.afterPutAll(started, trimmed.asList(), (Map) result, false);
     }
 
-    @Override
+    
     public V putIfAbsent(K key, V value) {
         checkKeyValue(key, value);
         CacheEntry<K, V> prev = put(key, value, Attributes.EMPTY_ATTRIBUTE_MAP, true);
         return prev == null ? null : prev.getValue();
     }
 
-    @Override
+    
     public V remove(Object key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -144,13 +144,13 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return removed == null ? null : removed.getValue();
     }
 
-    @Override
+    
     public boolean remove(Object key, Object value) {
         checkKeyValue(key, value);
         return removeByKey(key, value) != null;
     }
 
-    @Override
+    
     public void removeAll(Collection<? extends K> keys) {
         if (keys == null) {
             throw new NullPointerException("collection is null");
@@ -233,7 +233,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return list.size() > 0;
     }
 
-    @Override
+    
     public V replace(K key, V value) {
         checkKeyValue(key, value);
         CacheEntry<K, V> prev = replace(key, null, value, Attributes.EMPTY_ATTRIBUTE_MAP)
@@ -241,7 +241,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return prev == null ? null : prev.getValue();
     }
 
-    @Override
+    
     public boolean replace(K key, V oldValue, V newValue) {
         checkReplace(key, oldValue, newValue);
         CacheEntry<K, V> newEntry = replace(key, oldValue, newValue, Attributes.EMPTY_ATTRIBUTE_MAP)
@@ -260,7 +260,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return memoryCache.size();
     }
 
-    @Override
+    
     public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
         if (value != null) {
             long started = listener.beforePut(key, value, false);

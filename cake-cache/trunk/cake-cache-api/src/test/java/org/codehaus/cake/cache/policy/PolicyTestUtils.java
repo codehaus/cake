@@ -81,7 +81,6 @@ public final class PolicyTestUtils {
             super(key, value);
         }
 
-        @Override
         public AttributeMap getAttributes() {
             return map;
         }
