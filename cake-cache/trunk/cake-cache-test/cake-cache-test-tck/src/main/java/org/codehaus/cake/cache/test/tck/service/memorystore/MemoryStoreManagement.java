@@ -103,7 +103,7 @@ public class MemoryStoreManagement extends AbstractManagementTest {
         assertSize(9);
         mxBean().trimToSize(1);
         assertSize(1);
-        put(10, 15);
+        put(20, 25);
         assertSize(7);
 
         mxBean().trimToSize(-3);
