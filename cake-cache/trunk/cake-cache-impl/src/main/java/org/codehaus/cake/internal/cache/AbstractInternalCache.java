@@ -13,7 +13,6 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheMXBean;
 import org.codehaus.cake.cache.CacheServices;
-import org.codehaus.cake.container.lifecycle.Stoppable;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.listener.DefaultCacheListener;
 import org.codehaus.cake.internal.cache.service.listener.InternalCacheListener;
@@ -21,11 +20,12 @@ import org.codehaus.cake.internal.cache.service.management.DefaultCacheMXBean;
 import org.codehaus.cake.internal.cache.service.memorystore.HashMapMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViews;
-import org.codehaus.cake.internal.container.AbstractInternalContainer;
-import org.codehaus.cake.internal.container.Composer;
+import org.codehaus.cake.internal.service.AbstractInternalContainer;
+import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
+import org.codehaus.cake.service.Stoppable;
 
 public abstract class AbstractInternalCache<K, V> extends AbstractInternalContainer implements
         InternalCache<K, V>, Manageable {
@@ -108,7 +108,7 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
     }
 
     @Stoppable
-    public final void stop() throws Exception {
+    public final void stop() {
         memoryCache.removeAll();
     }
 

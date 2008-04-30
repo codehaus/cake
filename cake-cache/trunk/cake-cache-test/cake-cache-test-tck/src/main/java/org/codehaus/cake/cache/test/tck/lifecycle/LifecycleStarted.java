@@ -6,8 +6,8 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.container.Container;
-import org.codehaus.cake.container.lifecycle.Started;
+import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.util.Logger.Level;
@@ -43,7 +43,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void cacheArg() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started3());
+        conf.addService(new Started8());
         init();
         prestart();
     }
@@ -65,7 +65,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
         prestart();
     }
 
-    @Test(expected = RuntimeException1.class)
+    @Test
     public void runtimeExceptionMethod() {
         try {
             latch = new CountDownLatch(0);
@@ -74,11 +74,11 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
             init();
             prestart();
         } finally {
-            exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Fatal);
+            exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Error);
         }
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void exceptionMethod() {
         try {
             latch = new CountDownLatch(0);
@@ -87,38 +87,38 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
             init();
             prestart();
         } finally {
-            exceptionHandler.eat(Exception1.INSTANCE, Level.Fatal);
+            exceptionHandler.eat(Exception1.INSTANCE, Level.Error);
         }
 
     }
 
     public class Started1 {
-        @Started
+        @AfterStart
         public void start() {
             latch.countDown();
         }
     }
 
     public class Started2 {
-        @Started
+        @AfterStart
         public void start1() {
             latch.countDown();
         }
 
-        @Started
+        @AfterStart
         public void start2() {
             latch.countDown();
         }
     }
 
-    public class Started3 {
-        @Started
+    public class Started8 {
+        @AfterStart
         public void start(Cache cache) {
             assertSame(c, cache);
             latch.countDown();
         }
 
-        @Started
+        @AfterStart
         public void start(Container cache) {
             assertSame(c, cache);
             latch.countDown();
@@ -126,7 +126,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     public class Started4 {
-        @Started
+        @AfterStart
         public void hullabulla(Cache cache, MemoryStoreService ms, CacheLoadingService ls) {
             assertSame(c, cache);
             assertSame(withMemoryStore(), ms);
@@ -136,21 +136,21 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     public class Started5 {
-        @Started
+        @AfterStart
         public void hullabulla(Cache cache, CacheLoadingService ls) {
             fail("should not have been run");
         }
     }
 
     public class Started6 {
-        @Started
+        @AfterStart
         public void hullabulla(Cache cache, CacheLoadingService ls) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
     public class Started7 {
-        @Started
+        @AfterStart
         public void hullabulla(Cache cache, CacheLoadingService ls) throws Exception {
             throw Exception1.INSTANCE;
         }

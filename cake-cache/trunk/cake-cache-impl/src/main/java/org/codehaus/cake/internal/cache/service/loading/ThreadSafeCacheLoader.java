@@ -10,14 +10,13 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
-import org.codehaus.cake.container.lifecycle.DisposableService;
-import org.codehaus.cake.container.lifecycle.Stoppable;
 import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
+import org.codehaus.cake.service.Disposable;
+import org.codehaus.cake.service.Stoppable;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
-public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> implements
-        DisposableService {
+public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V>  {
 
     private final InternalCache<K, V> cache;
 
@@ -74,13 +73,13 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> imple
         }
     }
 
-    @Override
+    @Disposable
     public void dispose() {
         futures.clear();
     }
 
     @Stoppable
-    public void stop() throws Exception {
+    public void stop() {
         for (Future<?> f : futures.values()) {
             f.cancel(false);
         }

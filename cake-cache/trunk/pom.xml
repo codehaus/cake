@@ -32,4 +32,10 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+    <modules>
+    <module>cake-cache-api</module>
+    <module>cake-cache-impl</module>
+    <module>cake-cache-test</module>
+    <module>cake-cache-examples</module>
+  </modules>
 </project>

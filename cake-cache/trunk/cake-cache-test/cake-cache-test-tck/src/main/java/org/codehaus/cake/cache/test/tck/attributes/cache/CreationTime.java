@@ -4,9 +4,6 @@ package org.codehaus.cake.cache.test.tck.attributes.cache;
 
 import static org.codehaus.cake.cache.CacheAttributes.ENTRY_DATE_CREATED;
 
-import java.util.Map;
-
-import org.codehaus.cake.cache.Cache;
 import org.junit.Test;
 
 /**

@@ -1,21 +1,18 @@
-package org.codehaus.cake.internal.container;
+package org.codehaus.cake.internal.service;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.codehaus.cake.container.ContainerConfiguration;
 import org.codehaus.cake.internal.UseInternals;
-import org.codehaus.cake.internal.container.phases.DisposePhase;
-import org.codehaus.cake.internal.container.phases.StartPhase;
-import org.codehaus.cake.internal.container.phases.StartedPhase;
-import org.codehaus.cake.internal.container.phases.StopPhase;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
 import org.codehaus.cake.internal.service.DefaultServiceManager;
 import org.codehaus.cake.internal.service.DefaultServiceRegistrant;
+import org.codehaus.cake.internal.service.LifecycleManager;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.ServiceRegistrant;
 
@@ -38,12 +35,9 @@ public class Composer {
         container = baseContainer.makeChildContainer();
         container.registerComponentInstance(this);
         container.registerComponentInstance(new ContainerInfo(clazz, configuration));
-        container.registerComponentImplementation(StopPhase.class);
-        container.registerComponentImplementation(DisposePhase.class);
-        container.registerComponentImplementation(StartedPhase.class);
-        container.registerComponentImplementation(StartPhase.class);
-        container.registerComponentImplementation(ServiceManager.class,
-                DefaultServiceManager.class);
+        container.registerComponentImplementation(LifecycleManager.class);
+        container
+                .registerComponentImplementation(ServiceManager.class, DefaultServiceManager.class);
         container.registerComponentImplementation(ServiceRegistrant.class,
                 DefaultServiceRegistrant.class);
     }
@@ -51,9 +45,11 @@ public class Composer {
     public void registerImplementation(Class<?> clazz) {
         container.registerComponentImplementation(clazz);
     }
-    public void registerImplementation(Object key,Class<?> clazz) {
-        container.registerComponentImplementation(key,clazz);
+
+    public void registerImplementation(Object key, Class<?> clazz) {
+        container.registerComponentImplementation(key, clazz);
     }
+
     public void registerInstance(Object value) {
         container.registerComponentInstance(value, value);
     }
@@ -78,8 +74,12 @@ public class Composer {
         T service = (T) container.getComponentInstanceOfType(serviceType);
         return service;
     }
+
     public Object getFromKeyIfAvailable(Object key) {
-        return  container.getComponentInstance(key);
+        return container.getComponentInstance(key);
+    }
+    public List<?> prepareStart() {
+        return prepareStart(get(ContainerConfiguration.class));
     }
     public List<?> prepareStart(ContainerConfiguration conf) {
         List result = new LinkedList(container.getComponentInstances());

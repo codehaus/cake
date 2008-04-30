@@ -2,7 +2,6 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.operations;
 
-import org.codehaus.cake.cache.Cache;
 
 
 public class CacheOps {

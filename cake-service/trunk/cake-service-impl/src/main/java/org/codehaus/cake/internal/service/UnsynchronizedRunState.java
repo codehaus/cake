@@ -1,28 +1,20 @@
-package org.codehaus.cake.internal.container.runstate;
+package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.internal.container.RunState;
-import org.codehaus.cake.internal.container.phases.StartPhase;
-import org.codehaus.cake.internal.container.phases.StartedPhase;
-import org.codehaus.cake.internal.container.phases.StopPhase;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 
 public class UnsynchronizedRunState extends RunState {
     // private final SynchronizedRunState runState;
 
-    private StartPhase startPhase;
-    private StartedPhase startedPhase;
-    private StopPhase shutdownPhase;
+    private final LifecycleManager lifecycleManager;
+
     int state;
     private Throwable startupException;
 
-    public UnsynchronizedRunState(ContainerInfo info, StartedPhase started, StartPhase startPhase,
-            StopPhase stopPhase) {
+    public UnsynchronizedRunState(ContainerInfo info, LifecycleManager lifecycleManager) {
         super(info);
-        this.startPhase = startPhase;
-        this.shutdownPhase = stopPhase;
-        this.startedPhase = started;
+        this.lifecycleManager = lifecycleManager;
     }
 
     public boolean tryStart() {
@@ -39,16 +31,18 @@ public class UnsynchronizedRunState extends RunState {
             return false;
         this.state = state;
         if (state == STARTING) {
-            startPhase.start(this);
+            lifecycleManager.start(this);
         } else if (state == RUNNING) {
-            //startedPhase.run(this);
+            // startedPhase.run(this);
+        } else if (state == TERMINATED) {
+
         }
         return true;
     }
 
     public void shutdown(boolean shutdownNow) {
         if (!isAtLeastShutdown()) {
-            shutdownPhase.runPhaseSilent(this);
+            lifecycleManager.runShutdown(this);
             transitionToShutdown();
             transitionToTerminated();
         }

@@ -2,8 +2,6 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.core.keyset;
 
-import java.util.Set;
-
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

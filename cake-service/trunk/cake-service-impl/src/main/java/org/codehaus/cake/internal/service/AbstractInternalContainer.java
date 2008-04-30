@@ -1,10 +1,10 @@
-package org.codehaus.cake.internal.container;
+package org.codehaus.cake.internal.service;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.container.Container;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
 
 public abstract class AbstractInternalContainer implements Container {

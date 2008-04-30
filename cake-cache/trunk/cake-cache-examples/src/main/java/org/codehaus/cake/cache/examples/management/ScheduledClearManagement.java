@@ -9,10 +9,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.container.lifecycle.Started;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
 public class ScheduledClearManagement implements Manageable {
@@ -41,7 +41,7 @@ public class ScheduledClearManagement implements Manageable {
         sf = ses.schedule(runnable, scheduleMs, TimeUnit.MILLISECONDS);
     }
 
-    @Started
+    @AfterStart
     public synchronized void started(final Cache<?, ?> cache, ExecutorsService executors) {
         ses = executors.getScheduledExecutorService(this);
         runnable = new Runnable() {

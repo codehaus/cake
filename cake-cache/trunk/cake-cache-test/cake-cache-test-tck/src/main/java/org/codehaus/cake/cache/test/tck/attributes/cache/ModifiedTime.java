@@ -4,8 +4,6 @@ package org.codehaus.cake.cache.test.tck.attributes.cache;
 
 import static org.codehaus.cake.cache.CacheAttributes.ENTRY_DATE_MODIFIED;
 
-import java.util.Map;
-
 import org.junit.Test;
 
 public class ModifiedTime extends AbstractAttributeTest {

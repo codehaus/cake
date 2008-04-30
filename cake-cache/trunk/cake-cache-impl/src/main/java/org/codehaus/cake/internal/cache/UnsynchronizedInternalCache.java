@@ -12,7 +12,6 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.container.Container;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
@@ -20,13 +19,14 @@ import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
 import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
 import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViews;
 import org.codehaus.cake.internal.cache.util.EntryPair;
-import org.codehaus.cake.internal.container.Composer;
-import org.codehaus.cake.internal.container.runstate.UnsynchronizedRunState;
+import org.codehaus.cake.internal.service.Composer;
+import org.codehaus.cake.internal.service.UnsynchronizedRunState;
 import org.codehaus.cake.internal.service.executor.DefaultExecutorService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.CollectionOps;
 import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.service.Container;
 
 public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V> {
 

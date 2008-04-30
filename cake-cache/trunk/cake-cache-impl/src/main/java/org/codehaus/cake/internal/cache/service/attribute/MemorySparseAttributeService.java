@@ -23,7 +23,7 @@ import org.codehaus.cake.internal.cache.service.attribute.factories.CostAttribut
 import org.codehaus.cake.internal.cache.service.attribute.factories.CreationTimeAttributeFactory;
 import org.codehaus.cake.internal.cache.service.attribute.factories.ModificationTimeAttributeFactory;
 import org.codehaus.cake.internal.cache.service.attribute.factories.SizeAttributeFactory;
-import org.codehaus.cake.internal.container.Composer;
+import org.codehaus.cake.internal.service.Composer;
 
 public class MemorySparseAttributeService<K, V> implements CacheAttributeService,
         InternalAttributeService<K, V> {

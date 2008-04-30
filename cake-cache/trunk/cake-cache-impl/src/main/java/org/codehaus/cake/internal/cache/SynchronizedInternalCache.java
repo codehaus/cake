@@ -4,7 +4,7 @@ package org.codehaus.cake.internal.cache;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.internal.container.Composer;
+import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.internal.service.spi.GlobalServiceMutex;
 

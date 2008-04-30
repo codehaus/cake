@@ -12,18 +12,17 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.container.ContainerConfiguration;
-import org.codehaus.cake.container.lifecycle.Startable;
-import org.codehaus.cake.container.lifecycle.StartableService;
 import org.codehaus.cake.internal.cache.service.management.DefaultCacheLoadingMXBean;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceRegistrant;
+import org.codehaus.cake.service.Startable;
 
 public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, V>,
-        StartableService, Manageable, CompositeService {
+         Manageable, CompositeService {
 
     private Cache<K, V> cache;
 
@@ -62,7 +61,6 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
         return entry == null || (needsReloadFilter != null && needsReloadFilter.op(entry));
     }
 
-    @Override
     @Startable
     public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant)
             throws Exception {

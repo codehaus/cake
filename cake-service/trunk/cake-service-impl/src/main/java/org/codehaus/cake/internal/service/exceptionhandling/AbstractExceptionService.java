@@ -1,11 +1,10 @@
 package org.codehaus.cake.internal.service.exceptionhandling;
 
-import org.codehaus.cake.container.Container;
-import org.codehaus.cake.container.ContainerConfiguration;
-import org.codehaus.cake.container.lifecycle.DisposableService;
 import org.codehaus.cake.internal.service.debug.InternalDebugService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.internal.util.LazyLogger;
+import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Loggers;
@@ -149,11 +148,5 @@ public abstract class AbstractExceptionService<T extends Container> implements
         public String getMessage() {
             return message;
         }
-    }
-
-    @Override
-    public void disposeFailed(DisposableService service, Throwable cause) {
-        error("Disposal of service failed [service=" + service + ", type= " + service.getClass()
-                + "]", cause);
     }
 }

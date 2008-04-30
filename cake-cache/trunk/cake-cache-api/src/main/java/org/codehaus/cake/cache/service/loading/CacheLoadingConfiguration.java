@@ -2,9 +2,6 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.service.loading;
 
-import java.util.Collection;
-
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;

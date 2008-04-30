@@ -1,4 +1,4 @@
-package org.codehaus.cake.container.lifecycle;
+package org.codehaus.cake.service;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -12,12 +12,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Stoppable {
-    /**
-     * Stops the service.
-     * 
-     * @param shutdown
-     *            shutdown helper
-     * @throws Exception
-     *             if this service could not shutdown properly
-     */
+
 }

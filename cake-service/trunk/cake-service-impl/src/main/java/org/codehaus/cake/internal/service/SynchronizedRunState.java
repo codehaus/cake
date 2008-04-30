@@ -1,11 +1,10 @@
-package org.codehaus.cake.internal.container.runstate;
+package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.codehaus.cake.internal.container.RunState;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 public final class SynchronizedRunState extends RunState {
     // Order among values matters

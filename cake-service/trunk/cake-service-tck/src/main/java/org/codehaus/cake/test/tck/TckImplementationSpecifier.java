@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.codehaus.cake.container.Container;
+import org.codehaus.cake.service.Container;
 
 /**
  * This class is used to indicate the implementing class of a {@link Container}.

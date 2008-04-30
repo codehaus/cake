@@ -5,10 +5,9 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingConfiguration;
-import org.codehaus.cake.container.ContainerConfiguration;
-import org.codehaus.cake.container.lifecycle.DisposableService;
 import org.codehaus.cake.internal.service.exceptionhandling.AbstractExceptionService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 
 public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService<Cache<K, V>>
@@ -31,8 +30,6 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
     }
 
     public void checkExceptions(boolean failIfShutdown) {}
-
-    public void disposeFailed(DisposableService service, Throwable cause) {}
 
     public void startFailed(Object service, ContainerConfiguration<Cache<K, V>> configuration,
             Throwable cause) {}

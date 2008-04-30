@@ -1,6 +1,6 @@
 package org.codehaus.cake.test.tck;
 
-import org.codehaus.cake.container.ContainerConfiguration;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.test.tck.service.executors.WorkerService;
 import org.junit.internal.runners.CompositeRunner;
 import org.junit.internal.runners.InitializationError;

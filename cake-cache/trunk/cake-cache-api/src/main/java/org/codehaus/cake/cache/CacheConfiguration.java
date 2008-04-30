@@ -5,7 +5,7 @@ import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingC
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.store.CacheStoreConfiguration;
-import org.codehaus.cake.container.ContainerConfiguration;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 import org.codehaus.cake.util.Clock;

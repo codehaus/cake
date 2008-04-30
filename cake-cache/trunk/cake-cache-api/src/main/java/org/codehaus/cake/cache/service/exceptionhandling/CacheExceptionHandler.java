@@ -4,7 +4,6 @@ package org.codehaus.cake.cache.service.exceptionhandling;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandler;
 

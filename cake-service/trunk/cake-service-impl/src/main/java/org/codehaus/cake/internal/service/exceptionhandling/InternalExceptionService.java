@@ -2,9 +2,8 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.internal.service.exceptionhandling;
 
-import org.codehaus.cake.container.ContainerConfiguration;
-import org.codehaus.cake.container.lifecycle.DisposableService;
 import org.codehaus.cake.internal.service.debug.InternalDebugService;
+import org.codehaus.cake.service.ContainerConfiguration;
 
 /**
  * An exception service available as an internal service at runtime.
@@ -22,8 +21,6 @@ import org.codehaus.cake.internal.service.debug.InternalDebugService;
 public interface InternalExceptionService<T> extends InternalDebugService {
 
     void checkExceptions(boolean failIfShutdown);
-
-    void disposeFailed(DisposableService service, Throwable cause);
 
     void error(String msg);
 

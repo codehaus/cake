@@ -1,10 +1,7 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.container;
+package org.codehaus.cake.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -15,16 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
-import org.codehaus.cake.util.Loggers.Commons;
-import org.codehaus.cake.util.Loggers.JDK;
-import org.codehaus.cake.util.Loggers.Log4j;
 
 /**
  * This class is the primary class used for representing the configuration of a container. All
@@ -410,27 +401,6 @@ public abstract class ContainerConfiguration<T> {
     public ContainerConfiguration setType(Class<? extends T> type) {
         this.type = type;
         return this;
-    }
-
-    /**
-     * Returns a XML-based string representation of this configuration. This xml-based string can
-     * used as input to {@link #loadConfigurationFrom(InputStream)} or to create a similar
-     * configuration.
-     * 
-     * @return a XML-based string representation of this configuration
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        ByteArrayOutputStream sos = new ByteArrayOutputStream();
-        try {
-            // new XmlConfigurator().write(this, sos);
-        } catch (Exception e) {
-            PrintStream ps = new PrintStream(sos);
-            ps.println("An xml-based representation of this container could not be created");
-            e.printStackTrace(ps);
-        }
-        return new String(sos.toByteArray());
     }
 
     /**

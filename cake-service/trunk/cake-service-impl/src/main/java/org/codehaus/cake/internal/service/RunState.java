@@ -1,4 +1,4 @@
-package org.codehaus.cake.internal.container;
+package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.TimeUnit;
 

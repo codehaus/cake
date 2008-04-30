@@ -6,7 +6,6 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.M1_NULL;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;

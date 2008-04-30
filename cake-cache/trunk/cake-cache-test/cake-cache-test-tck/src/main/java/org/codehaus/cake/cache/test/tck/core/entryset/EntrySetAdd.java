@@ -3,9 +3,7 @@
 package org.codehaus.cake.cache.test.tck.core.entryset;
 
 import java.util.Collections;
-import java.util.Set;
 
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

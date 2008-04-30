@@ -1,6 +1,5 @@
 package org.codehaus.cake.cache.service.exceptionhandling;
 
-import org.codehaus.cake.service.exceptionhandling.ExceptionHandler;
 import org.codehaus.cake.util.Logger;
 
 /**

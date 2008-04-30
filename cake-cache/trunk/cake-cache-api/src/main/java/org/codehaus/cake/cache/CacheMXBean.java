@@ -2,9 +2,6 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache;
 
-import javax.management.MBeanServer;
-
-import org.codehaus.cake.service.management.ManagementConfiguration;
 
 /**
  * The management interface for a {@link Cache}. Some cache implementations might define

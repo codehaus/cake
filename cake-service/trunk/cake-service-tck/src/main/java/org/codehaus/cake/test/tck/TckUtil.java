@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.codehaus.cake.container.Container;
-import org.codehaus.cake.container.ContainerConfiguration;
+import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ContainerConfiguration;
 
 public class TckUtil {
 

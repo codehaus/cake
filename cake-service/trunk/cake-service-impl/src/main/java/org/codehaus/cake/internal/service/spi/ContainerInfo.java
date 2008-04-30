@@ -2,9 +2,9 @@ package org.codehaus.cake.internal.service.spi;
 
 import java.util.UUID;
 
-import org.codehaus.cake.container.Container;
-import org.codehaus.cake.container.ContainerConfiguration;
 import org.codehaus.cake.internal.UseInternals;
+import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ContainerConfiguration;
 
 @UseInternals
 public class ContainerInfo {

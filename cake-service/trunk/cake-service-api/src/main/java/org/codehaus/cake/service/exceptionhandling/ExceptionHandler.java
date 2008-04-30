@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.service.exceptionhandling;
 
-import org.codehaus.cake.container.ContainerConfiguration;
+import org.codehaus.cake.service.ContainerConfiguration;
 
 /**
  * The purpose of this class is to have one central place where all exceptions that arise within a

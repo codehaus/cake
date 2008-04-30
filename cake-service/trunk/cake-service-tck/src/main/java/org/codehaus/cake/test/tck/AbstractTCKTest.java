@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
 
-import org.codehaus.cake.container.Container;
-import org.codehaus.cake.container.ContainerConfiguration;
+import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.test.container.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;

@@ -14,8 +14,8 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheServices;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.container.Container;
 import org.codehaus.cake.internal.cache.SynchronizedInternalCache;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
 

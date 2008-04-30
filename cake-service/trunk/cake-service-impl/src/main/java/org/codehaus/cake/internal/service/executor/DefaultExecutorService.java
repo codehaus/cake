@@ -5,16 +5,15 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.container.ContainerConfiguration;
-import org.codehaus.cake.container.lifecycle.Startable;
-import org.codehaus.cake.container.lifecycle.StartableService;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceRegistrant;
+import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
-public class DefaultExecutorService implements ExecutorsService, StartableService {
+public class DefaultExecutorService implements ExecutorsService {
     private final ExecutorsManager manager;
 
     public DefaultExecutorService(ExecutorsConfiguration conf) {
@@ -57,7 +56,6 @@ public class DefaultExecutorService implements ExecutorsService, StartableServic
         return manager.getScheduledExecutorService(service, attributes);
     }
 
-    @Override
     @Startable
     public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant)
             throws Exception {

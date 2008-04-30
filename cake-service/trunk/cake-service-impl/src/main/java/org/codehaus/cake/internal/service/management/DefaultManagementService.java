@@ -10,8 +10,7 @@ import java.util.List;
 import javax.management.JMException;
 import javax.management.MBeanServer;
 
-import org.codehaus.cake.container.lifecycle.Stoppable;
-import org.codehaus.cake.internal.container.Composer;
+import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.debug.InternalDebugService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
@@ -20,6 +19,7 @@ import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.ManagedVisitor;
 import org.codehaus.cake.management.Managements;
+import org.codehaus.cake.service.Stoppable;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 
 /**
@@ -34,7 +34,7 @@ import org.codehaus.cake.service.management.ManagementConfiguration;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: DefaultCacheManagementService.java 537 2007-12-30 19:21:20Z kasper $
  */
-public class DefaultManagementService extends DefaultManagedGroup implements CompositeService{
+public class DefaultManagementService extends DefaultManagedGroup implements CompositeService {
 
     /** Whether or not this service has been shutdown. */
     private volatile boolean isShutdown;
@@ -44,7 +44,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
 
     private final String containerType;
     private final InternalDebugService debugService;
-    
+
     /**
      * Creates a new AbstractManagementService.
      * 
@@ -74,7 +74,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
         }
     }
 
-    public void register(Composer composer,  List objects) throws JMException {
+    public void register(Composer composer, List objects) throws JMException {
         debugService.debug("  Manageable.manage()");
         ManagedGroup group = Managements.delegatedManagedGroup(this);
         for (Object o : objects) {
@@ -82,7 +82,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
                 Manageable m = (Manageable) o;
                 debugService.debug("  Managing " + m);
                 m.manage(group);
-            } 
+            }
         }
 
         try {

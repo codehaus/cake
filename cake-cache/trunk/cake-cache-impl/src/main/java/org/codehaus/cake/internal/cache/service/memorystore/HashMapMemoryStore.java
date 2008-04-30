@@ -18,21 +18,20 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.container.ContainerConfiguration;
-import org.codehaus.cake.container.lifecycle.Startable;
-import org.codehaus.cake.container.lifecycle.StartableService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.InternalCacheEntry;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.util.EntryPair;
-import org.codehaus.cake.internal.util.CollectionUtils.SimpleImmutableEntry;
+import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
+import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceRegistrant;
+import org.codehaus.cake.service.Startable;
 
 public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implements
-        MemoryStoreService<K, V>, StartableService {
+        MemoryStoreService<K, V> {
 
     private Map<K, DefaultEntry<K, V>> map = new HashMap<K, DefaultEntry<K, V>>();
     private final InternalCacheExceptionService<K, V> ies;
@@ -320,26 +319,59 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return array;
     }
 
-    static class DefaultEntry<K, V> extends SimpleImmutableEntry<K, V> implements CacheEntry<K, V>,
-            InternalCacheEntry<K, V> {
+    static class DefaultEntry<K, V> implements CacheEntry<K, V>, InternalCacheEntry<K, V> {
 
         private final AttributeMap attributes;
+        /** The key of the entry. */
+        private final K key;
+
+        /** The value of the entry. */
+        private final V value;
 
         public DefaultEntry(K key, V value, AttributeMap attributes) {
-            super(key, value);
+            this.key = key;
+            this.value = value;
             this.attributes = attributes;
         }
 
+        /** {@inheritDoc} */
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Map.Entry)) {
+                return false;
+            }
+            Map.Entry e = (Map.Entry) o;
+            return CollectionUtils.eq(key, e.getKey()) && CollectionUtils.eq(value, e.getValue());
+        }
+
+        /** {@inheritDoc} */
+        public K getKey() {
+            return key;
+        }
+
+        /** {@inheritDoc} */
+        public V getValue() {
+            return value;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int hashCode() {
+            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
+        }
+
+        /** {@inheritDoc} */
+        public V setValue(V value) {
+            throw new UnsupportedOperationException();
+        }
 
         public long get(LongAttribute attribute) {
             return getAttributes().get(attribute);
         }
 
-
         public double get(DoubleAttribute attribute) {
             return getAttributes().get(attribute);
         }
-
 
         public int get(IntAttribute attribute) {
             return getAttributes().get(attribute);
@@ -362,6 +394,30 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
 
         public <T> T get(Attribute<T> attribute) {
             return getAttributes().get(attribute);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(key);
+            sb.append("=");
+            sb.append(value);
+            sb.append(" [");
+            
+            Iterator<Map.Entry<Attribute, Object> > i = attributes.entrySet().iterator();
+            if (!i.hasNext()) {
+                return sb.append("]").toString();
+            }
+            for (;;) {
+                Map.Entry<Attribute, Object> e = i.next();
+                sb.append(e.getKey());
+                sb.append("=");
+                sb.append(e.getValue());
+                if (! i.hasNext())
+                return sb.append(']').toString();
+                sb.append(", ");
+            }
         }
     }
 
@@ -410,7 +466,6 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return maximumSize;
     }
 
-    @Override
     @Startable
     public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant)
             throws Exception {

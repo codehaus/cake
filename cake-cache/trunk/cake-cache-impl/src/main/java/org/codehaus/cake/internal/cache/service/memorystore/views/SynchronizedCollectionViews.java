@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.cake.container.Container;
 import org.codehaus.cake.internal.cache.InternalCache;
+import org.codehaus.cake.service.Container;
 
 public class SynchronizedCollectionViews<K, V> implements CollectionViews<K, V> {
     private Set<Map.Entry<K, V>> entrySet;
