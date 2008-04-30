@@ -234,7 +234,7 @@ public class Checker {
 
     void check(DefaultAttributeConfiguration i, Object value) {
         // System.out.println(map);
-        Attribute<?> a = i.getAttribute();
+        Attribute a = i.getAttribute();
         assertEquals(!i.isHidden(), map.contains(a));
         assertEquals(!i.isHidden(), map.attributeSet().contains(a));
 
