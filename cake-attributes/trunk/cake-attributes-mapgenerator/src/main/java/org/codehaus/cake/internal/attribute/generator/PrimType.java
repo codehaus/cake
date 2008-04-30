@@ -103,7 +103,7 @@ public enum PrimType {
         return storeCode;
     }
 
-    public static PrimType from(Attribute<?> a) {
+    public static PrimType from(Attribute a) {
         if (a instanceof LongAttribute) {
             return LONG;
         } else if (a instanceof DoubleAttribute) {
