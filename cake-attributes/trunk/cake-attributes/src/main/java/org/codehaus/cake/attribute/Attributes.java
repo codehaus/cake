@@ -549,7 +549,7 @@ public final class Attributes {
         private static final long serialVersionUID = -6979724477215052911L;
 
         /** The singleton key. */
-        private final Attribute<?> attribute;
+        private final Attribute attribute;
 
         /** The singleton value. */
         private final Object value;
