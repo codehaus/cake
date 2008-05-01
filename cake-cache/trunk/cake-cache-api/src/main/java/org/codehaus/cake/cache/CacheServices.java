@@ -1,8 +1,8 @@
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.cache.service.attribute.CacheAttributeService;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.attribute.CacheAttributeService;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
 

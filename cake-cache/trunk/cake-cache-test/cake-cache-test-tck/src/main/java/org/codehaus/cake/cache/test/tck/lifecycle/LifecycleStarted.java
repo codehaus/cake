@@ -3,8 +3,8 @@ package org.codehaus.cake.cache.test.tck.lifecycle;
 import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;

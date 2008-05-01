@@ -1,7 +1,7 @@
-package org.codehaus.cake.cache.service.store;
+package org.codehaus.cake.cache.store;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 public interface SimpleCacheStore<K, V> extends SimpleCacheLoader<K, V> {
 

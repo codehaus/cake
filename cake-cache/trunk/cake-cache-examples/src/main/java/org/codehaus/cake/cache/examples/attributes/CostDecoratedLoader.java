@@ -5,7 +5,7 @@ package org.codehaus.cake.cache.examples.attributes;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheAttributes;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 public class CostDecoratedLoader<K, V> implements SimpleCacheLoader<K, V> {
     private final SimpleCacheLoader<K, V> realLoader;

@@ -1,4 +1,4 @@
-package org.codehaus.cake.cache.service.attribute;
+package org.codehaus.cake.cache.attribute;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;

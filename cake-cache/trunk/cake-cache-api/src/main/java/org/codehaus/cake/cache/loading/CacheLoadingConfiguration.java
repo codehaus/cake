@@ -1,6 +1,6 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.cache.service.loading;
+package org.codehaus.cake.cache.loading;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.ops.Ops.Op;

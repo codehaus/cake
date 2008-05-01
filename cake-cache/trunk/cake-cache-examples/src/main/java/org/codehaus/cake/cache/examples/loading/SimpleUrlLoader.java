@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 public class SimpleUrlLoader implements SimpleCacheLoader<String, String> {
     public String load(String key, AttributeMap ignore) throws Exception {

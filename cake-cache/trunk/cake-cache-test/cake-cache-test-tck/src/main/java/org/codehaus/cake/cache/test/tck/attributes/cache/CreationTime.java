@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_DATE_CREATED;
+import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_CREATED;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class CreationTime extends AbstractAttributeTest {
     public CreationTime() {
-        super(ENTRY_DATE_CREATED);
+        super(ENTRY_TIME_CREATED);
     }
 
     /**
@@ -46,10 +46,10 @@ public class CreationTime extends AbstractAttributeTest {
     @SuppressWarnings("unchecked")
     @Test
     public void loadedAttributes() {
-        loader.withLoader(M1).addAttribute(ENTRY_DATE_CREATED, 5l);
-        loader.withLoader(M2).addAttribute(ENTRY_DATE_CREATED, 6l);
-        loader.withLoader(M3).addAttribute(ENTRY_DATE_CREATED, 7l);
-        loader.withLoader(M4).addAttribute(ENTRY_DATE_CREATED, 8l);
+        loader.withLoader(M1).addAttribute(ENTRY_TIME_CREATED, 5l);
+        loader.withLoader(M2).addAttribute(ENTRY_TIME_CREATED, 6l);
+        loader.withLoader(M3).addAttribute(ENTRY_TIME_CREATED, 7l);
+        loader.withLoader(M4).addAttribute(ENTRY_TIME_CREATED, 8l);
 
         assertGet(M1);
         assertAttribute(M1, 5l);

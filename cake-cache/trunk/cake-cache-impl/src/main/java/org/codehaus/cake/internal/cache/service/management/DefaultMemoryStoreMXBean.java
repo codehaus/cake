@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache.service.management;
 
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreMXBean;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreMXBean;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 

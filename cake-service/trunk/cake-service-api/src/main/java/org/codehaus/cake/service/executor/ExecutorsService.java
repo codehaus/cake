@@ -41,7 +41,7 @@ public interface ExecutorsService {
      * @param service
      *            the service that needs a ExecutorService
      * @param attributes
-     *            a map of attributes that can be used to determind whuch type of executor
+     *            a map of attributes that can be used to determine which type of executor
      *            service should be returned
      * @return a scheduled for the specified service
      */
@@ -62,7 +62,7 @@ public interface ExecutorsService {
      * @param service
      *            the service that needs a ForkJoinExecutor
      * @param attributes
-     *            a map of attributes that can be used to determind whuch type of forkjoin
+     *            a map of attributes that can be used to determine which type of forkjoin
      *            executor should be returned
      * @return a ForkJoinExecutor for the specified service
      */
@@ -83,7 +83,7 @@ public interface ExecutorsService {
      * @param service
      *            the service that needs a ScheduledExecutorService
      * @param attributes
-     *            a map of attributes that can be used to determind whuch type of
+     *            a map of attributes that can be used to determine which type of
      *            scheduled executor service should be returned
      * @return a ScheduledExecutorService for the specified service
      */

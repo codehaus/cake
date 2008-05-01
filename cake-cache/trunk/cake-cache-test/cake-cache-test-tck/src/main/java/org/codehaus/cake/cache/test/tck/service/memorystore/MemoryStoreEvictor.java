@@ -4,8 +4,8 @@ import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
 
 import java.util.Random;
 
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.policy.Policies;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.LongOps;
 import org.codehaus.cake.ops.Ops.LongOp;

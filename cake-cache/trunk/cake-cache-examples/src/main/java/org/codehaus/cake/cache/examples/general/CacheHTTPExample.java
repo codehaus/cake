@@ -11,7 +11,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.defaults.UnsynchronizedCache;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>

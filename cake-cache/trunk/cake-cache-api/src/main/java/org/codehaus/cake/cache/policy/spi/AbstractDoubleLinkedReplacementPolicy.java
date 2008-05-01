@@ -2,7 +2,7 @@ package org.codehaus.cake.cache.policy.spi;
 
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeService;
+import org.codehaus.cake.cache.attribute.CacheAttributeService;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double

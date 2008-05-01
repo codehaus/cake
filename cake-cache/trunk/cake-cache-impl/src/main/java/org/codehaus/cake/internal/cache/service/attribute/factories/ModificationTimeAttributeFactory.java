@@ -1,6 +1,6 @@
 package org.codehaus.cake.internal.cache.service.attribute.factories;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_DATE_MODIFIED;
+import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_MODIFIED;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
@@ -10,7 +10,7 @@ public final class ModificationTimeAttributeFactory<K, V> extends AbstractAttrib
     private final Clock clock;
 
     public ModificationTimeAttributeFactory(InternalExceptionService ies, Clock clock) {
-        super(ENTRY_DATE_MODIFIED, ies);
+        super(ENTRY_TIME_MODIFIED, ies);
         if (clock == null) {
             throw new NullPointerException("clock is null");
         }
@@ -19,14 +19,14 @@ public final class ModificationTimeAttributeFactory<K, V> extends AbstractAttrib
 
     @Override
     public Object op(K key, V value, AttributeMap user, AttributeMap existing) {
-        long modificationTime = user.get(ENTRY_DATE_MODIFIED);
+        long modificationTime = user.get(ENTRY_TIME_MODIFIED);
         final long time;
         if (modificationTime > 0) {
             time = modificationTime;
         } else {
             time = clock.timestamp();
         }
-        if (!ENTRY_DATE_MODIFIED.isValid(modificationTime)) {
+        if (!ENTRY_TIME_MODIFIED.isValid(modificationTime)) {
             illegalAttribute(key, modificationTime, time);
         }
         return time;

@@ -1,11 +1,11 @@
-package org.codehaus.cake.cache.service.store;
+package org.codehaus.cake.cache.store;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.store.jdbm.JdbmCacheStore;
-import org.codehaus.cake.cache.service.store.jdbm.JdbmCacheStoreConfiguration;
+import org.codehaus.cake.cache.store.jdbm.JdbmCacheStore;
+import org.codehaus.cake.cache.store.jdbm.JdbmCacheStoreConfiguration;
 
 public class CacheStoreConfiguration<K, V> {
 

@@ -11,6 +11,4 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Stoppable {
-
-}
+public @interface Stoppable {}

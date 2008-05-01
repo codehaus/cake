@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.defaults.SynchronizedCache;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>

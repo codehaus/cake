@@ -18,12 +18,13 @@ import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 
 /**
- * This class is the primary class used for representing the configuration of a container. All
- * general-purpose <tt>Container</tt> implementation classes should have a constructor with a
- * single argument taking a class extending ContainerConfiguration.
+ * This class is the primary class used for representing the configuration of a container.
  * <p>
- * This class is not meant to be directly instantiated, instead it should be overriden with a
+ * This class is not meant to be directly instantiated, instead it should be overridden with a
  * configuration object for a concrete container type.
+ * <p>
+ * All general-purpose <tt>Container</tt> implementation classes should have a constructor with a
+ * single argument taking a concrete class extending ContainerConfiguration.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $
@@ -80,13 +81,13 @@ public abstract class ContainerConfiguration<T> {
     /**
      * Registers a object for the container. Only objects of type {@link MapLifecycle} or
      * {@link Manageable}, are valid. If the object is of type {@link MapLifecycle} the container
-     * will invoke the respectic lifecycle methods on the object. If the object is of type
+     * will invoke the respective lifecycle methods on the object. If the object is of type
      * {@link Manageable} and management is enabled for the container (see
      * {@link MapManagementConfiguration#setEnabled(boolean)}). It can be registered with a
      * {@link ManagedGroup}.
      * <p>
      * Attaches the specified instance to the service map of the container. This object can then
-     * later be retrived by calling {@link org.codehaus.cake.container.Container#getService(Class)}.
+     * later be retrieved by calling {@link org.codehaus.cake.container.Container#getService(Class)}.
      * 
      * <pre>
      * ContainerServiceManagerConfiguration csmc;
@@ -107,7 +108,7 @@ public abstract class ContainerConfiguration<T> {
      *             in case of an argument of invalid type or if the object has already been
      *             registered.
      */
-    public ContainerConfiguration addService(Object o) {
+    public ContainerConfiguration<T> addService(Object o) {
         if (o == null) {
             throw new NullPointerException("o is null");
         } else if (registeredServices.containsKey(o)) {
@@ -160,12 +161,13 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the objects that have been registered through {@link #add(Object)}.
+     * Returns the objects that have been registered through {@link #add(Object)}. The service will
+     * be returned in the same order as the they have been added.
      * 
      * @return the objects that have been registered
      */
     public List<Object> getServices() {
-        return new ArrayList(registeredServices.keySet());
+        return new ArrayList<Object>(registeredServices.keySet());
     }
 
     /**
@@ -303,7 +305,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws NullPointerException
      *             if the specified clock is <tt>null</tt>
      */
-    public ContainerConfiguration setClock(Clock clock) {
+    public ContainerConfiguration<T> setClock(Clock clock) {
         if (clock == null) {
             throw new NullPointerException("clock is null");
         }
@@ -312,15 +314,15 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Sets the default loggger for this container. If for some reason the container or one of its
+     * Sets the default logger for this container. If for some reason the container or one of its
      * services needs to notify users of some kind of events this logger should be used. Some
      * services might allow to set a special logger. For example, for logging timing informations,
-     * auditting, ... etc. In this case this special logger will take precedence over this specified
+     * auditing, ... etc. In this case this special logger will take precedence over this specified
      * logger when logging for the service.
      * <p>
-     * All available containers in Cake strives to be very conservertive about what is
-     * logged, log as little as possible. That is, we actually recommend running with log level set
-     * at {@link org.codehaus.cake.util.Logger.Level#Info} even in production.
+     * All available containers in Cake strives to be very conservative about what is logged, log as
+     * little as possible. That is, we actually recommend running with log level set at
+     * {@link org.codehaus.cake.util.Logger.Level#Info} even in production.
      * 
      * @param logger
      *            the logger to use
@@ -330,7 +332,7 @@ public abstract class ContainerConfiguration<T> {
      * @see Commons
      * @see Log4j
      */
-    public ContainerConfiguration setDefaultLogger(Logger logger) {
+    public ContainerConfiguration<T> setDefaultLogger(Logger logger) {
         this.defaultLogger = logger;
         return this;
     }
@@ -353,7 +355,7 @@ public abstract class ContainerConfiguration<T> {
      * @see #getName()
      * @see Container#getName()
      */
-    public ContainerConfiguration setName(String name) {
+    public ContainerConfiguration<T> setName(String name) {
         if ("".equals(name)) {
             throw new IllegalArgumentException("cannot set the empty string as name");
         } else if (name != null) {
@@ -382,7 +384,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
      */
-    public ContainerConfiguration setProperty(String key, String value) {
+    public ContainerConfiguration<T> setProperty(String key, String value) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
@@ -398,7 +400,7 @@ public abstract class ContainerConfiguration<T> {
      *            the type of container
      * @return this configuration
      */
-    public ContainerConfiguration setType(Class<? extends T> type) {
+    public ContainerConfiguration<T> setType(Class<? extends T> type) {
         this.type = type;
         return this;
     }

@@ -1,4 +1,4 @@
-package org.codehaus.cake.cache.service.attribute;
+package org.codehaus.cake.cache.attribute;
 
 public interface AttributeService2 {
 

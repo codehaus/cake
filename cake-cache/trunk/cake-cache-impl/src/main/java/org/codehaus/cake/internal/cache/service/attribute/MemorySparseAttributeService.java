@@ -1,8 +1,8 @@
 package org.codehaus.cake.internal.cache.service.attribute;
 
 import static org.codehaus.cake.cache.CacheAttributes.ENTRY_COST;
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_DATE_CREATED;
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_DATE_MODIFIED;
+import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_CREATED;
+import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_MODIFIED;
 import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
 
 import java.lang.reflect.Constructor;
@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeService;
+import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.attribute.CacheAttributeService;
 import org.codehaus.cake.internal.attribute.generator.DefaultAttributeConfiguration;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator;
 import org.codehaus.cake.internal.cache.service.attribute.factories.AbstractAttributeFactory;
@@ -97,9 +97,9 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
     private void updateAttributes() {
         factories = new AbstractAttributeFactory[map.size()];
         int count = 0;
-        composer.registerImplementation(ENTRY_DATE_CREATED, CreationTimeAttributeFactory.class);
+        composer.registerImplementation(ENTRY_TIME_CREATED, CreationTimeAttributeFactory.class);
         composer
-                .registerImplementation(ENTRY_DATE_MODIFIED, ModificationTimeAttributeFactory.class);
+                .registerImplementation(ENTRY_TIME_MODIFIED, ModificationTimeAttributeFactory.class);
         composer.registerImplementation(ENTRY_SIZE, SizeAttributeFactory.class);
         composer.registerImplementation(ENTRY_COST, CostAttributeFactory.class);
         for (Info i : map.values()) {

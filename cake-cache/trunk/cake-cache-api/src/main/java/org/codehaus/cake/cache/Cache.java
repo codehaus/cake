@@ -63,7 +63,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * <p>
      * If the reason for clearing the cache is to get rid of stale data another alternative, if the
      * cache has a CacheLoader defined, might be to use
-     * {@link org.codehaus.cake.cache.service.loading.CacheLoadingService#forceLoadAll()} which will
+     * {@link org.codehaus.cake.cache.loading.CacheLoadingService#forceLoadAll()} which will
      * reload all elements that current in the cache.
      * <p>
      * If the cache has been shutdown calls to this method is ignored
@@ -290,7 +290,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * return <tt>true</tt>.))
      * <p>
      * It is often more effective to specify a
-     * {@link org.codehaus.cake.cache.service.loading.CacheLoader} that implicitly loads values then
+     * {@link org.codehaus.cake.cache.loading.CacheLoader} that implicitly loads values then
      * to explicitly add them to cache using the various <tt>put</tt> and <tt>putAll</tt>
      * methods.
      * 

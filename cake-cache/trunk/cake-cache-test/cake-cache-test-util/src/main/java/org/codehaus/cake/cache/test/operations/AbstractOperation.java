@@ -3,8 +3,8 @@
 package org.codehaus.cake.cache.test.operations;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.ops.Ops.Generator;
 
 public abstract class AbstractOperation<K, V> implements Runnable {

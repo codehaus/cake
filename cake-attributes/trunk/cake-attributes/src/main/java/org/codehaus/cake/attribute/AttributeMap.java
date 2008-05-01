@@ -23,7 +23,7 @@ public interface AttributeMap {
     void clear();
 
     /**
-     * Returns <tt>true</tt> if this attributemap contains a mapping for the specified attribute.
+     * Returns <tt>true</tt> if this attribute map contains a mapping for the specified attribute.
      * More formally, returns <tt>true</tt> if and only if this map contains a mapping for a
      * attribute <tt>a</tt> such that <tt>(attribute==a)</tt>. (There can be at most one such
      * mapping.)
@@ -720,7 +720,7 @@ public interface AttributeMap {
     <T> T remove(Attribute<T> key);
 
     /**
-     * Returns the number of attribite-value mappings in this attributemap. If the map contains more
+     * Returns the number of attribute-value mappings in this attribute map. If the map contains more
      * than <tt>Integer.MAX_VALUE</tt> elements, returns <tt>Integer.MAX_VALUE</tt>.
      * 
      * @return the number of attribute-value mappings in this map

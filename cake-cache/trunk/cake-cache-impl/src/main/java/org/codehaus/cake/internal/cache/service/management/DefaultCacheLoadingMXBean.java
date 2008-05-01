@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache.service.management;
 
-import org.codehaus.cake.cache.service.loading.CacheLoadingMXBean;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoadingMXBean;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**

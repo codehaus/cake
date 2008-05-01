@@ -103,6 +103,9 @@ public abstract class Attribute<T> implements Serializable {
         }
     }
 
+    /** 
+     * @return true if the specified object is the same as this, otherwise false
+     */
     public final boolean equals(Object obj) {
         return obj == this;
     }
@@ -155,7 +158,7 @@ public abstract class Attribute<T> implements Serializable {
 
     /**
      * Returns whether or not the specified value is valid for this attribute. This method can be
-     * overriden to only accept certain values.
+     * overridden to only accept certain values.
      * 
      * @param value
      *            the specified value to check

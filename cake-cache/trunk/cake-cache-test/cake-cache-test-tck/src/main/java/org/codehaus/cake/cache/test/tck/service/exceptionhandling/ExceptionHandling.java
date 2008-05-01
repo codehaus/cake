@@ -6,7 +6,7 @@ import java.util.logging.LogManager;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
+import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.test.util.throwables.Exception1;

@@ -5,7 +5,8 @@ package org.codehaus.cake.service;
 import java.util.Map;
 
 /**
- * An interface giving access to services.
+ * 
+ * This is the entry-point for accessing other services, An interface giving access to services.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheServiceManagerService.java 537 2007-12-30 19:21:20Z kasper $
@@ -13,12 +14,15 @@ import java.util.Map;
 public interface ServiceManager {
 
     /**
-     * Returns whether or not this manager contains a service of the specified type.
+     * Returns whether or not this service manager contains a service of the specified type.
      * 
      * @param serviceType
      *            the type of service
-     * @return true if this cache has a service of the specified type registered,
-     *         otherwise false
+     * @return true if this service manager contains a service of the specified type, otherwise
+     *         false
+     * @throws NullPointerException
+     *             if the specified service type is null
+     * 
      * @see ServiceManager#getAllServices()
      */
     boolean hasService(Class<?> serviceType);
@@ -31,8 +35,8 @@ public interface ServiceManager {
     Map<Class<?>, Object> getAllServices();
 
     /**
-     * Returns a service of the specified type or throws a
-     * {@link UnsupportedOperationException} if no such service exists.
+     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if
+     * no such service exists.
      * 
      * @param <T>
      *            the type of service to retrieve

@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheAttributes;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 public class TestCacheLoader implements SimpleCacheLoader<Integer, String> {
 

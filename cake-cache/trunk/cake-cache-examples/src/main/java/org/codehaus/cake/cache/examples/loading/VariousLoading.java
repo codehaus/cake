@@ -5,7 +5,7 @@ package org.codehaus.cake.cache.examples.loading;
 
 //START SNIPPET: Class
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 
 public class VariousLoading {
     public static void main(String[] args) {

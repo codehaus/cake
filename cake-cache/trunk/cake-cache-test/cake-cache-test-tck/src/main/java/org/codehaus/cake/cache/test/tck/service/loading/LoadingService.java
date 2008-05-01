@@ -2,8 +2,8 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.test.util.TestUtil;
