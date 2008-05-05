@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
 import org.codehaus.cake.forkjoin.ForkJoinPool;
+import org.codehaus.cake.service.Stoppable;
 
 /**
  * This class is reponsible for creating instances of {@link ExecutorService},
@@ -82,6 +83,7 @@ public class ExecutorsManager {
         return p;
     }
 
+    @Stoppable
     public void shutdown() {
         synchronized (poolLock) {
             isShutdown = true;

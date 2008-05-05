@@ -40,5 +40,4 @@ public class ExecutorsConfiguration {
         this.executeManager = executeManager;
         return this;
     }
-
 }

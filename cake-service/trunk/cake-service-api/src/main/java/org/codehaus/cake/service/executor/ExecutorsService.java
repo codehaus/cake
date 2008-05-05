@@ -6,14 +6,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
 import org.codehaus.cake.service.ServiceManager;
 
 /**
- * This is the main interface for scheduling and executing tasks at runtime.
+ * This is the main service interface for scheduling and executing tasks at runtime.
  * <p>
- * An instance of this interface can be retrieved by using
- * {@link ServiceManager#getService(Class)} to look it up.
+ * An instance of this interface can be retrieved by using {@link ServiceManager#getService(Class)}
+ * to look it up.
  * 
  * <pre>
  * ServiceManager&lt;?, ?&gt; sm = someContainer;
@@ -41,8 +42,8 @@ public interface ExecutorsService {
      * @param service
      *            the service that needs a ExecutorService
      * @param attributes
-     *            a map of attributes that can be used to determine which type of executor
-     *            service should be returned
+     *            a map of attributes that can be used to determine which type of executor service
+     *            should be returned
      * @return a scheduled for the specified service
      */
     ExecutorService getExecutorService(Object service, AttributeMap attributes);
@@ -62,14 +63,24 @@ public interface ExecutorsService {
      * @param service
      *            the service that needs a ForkJoinExecutor
      * @param attributes
-     *            a map of attributes that can be used to determine which type of forkjoin
-     *            executor should be returned
+     *            a map of attributes that can be used to determine which type of forkjoin executor
+     *            should be returned
      * @return a ForkJoinExecutor for the specified service
      */
     ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes);
 
+//    /**
+//     * Returns the default ScheduledExecutorService. A call to this method is equivalent to calling
+//     * <tt>getScheduledExecutorService(null)</tt>.
+//     * 
+//     * @return the default ScheduledExecutorService
+//     */
+//    ScheduledExecutorService getScheduledExecutorService();
+
     /**
-     * Returns a ScheduledExecutorService for the specified service.
+     * Returns a ScheduledExecutorService for the specified service. A call to this method is
+     * equivalent to calling
+     * <tt>getScheduledExecutorService(service, {@link Attributes#EMPTY_ATTRIBUTE_MAP}</tt>
      * 
      * @param service
      *            the service that needs a ScheduledExecutorService
@@ -83,8 +94,8 @@ public interface ExecutorsService {
      * @param service
      *            the service that needs a ScheduledExecutorService
      * @param attributes
-     *            a map of attributes that can be used to determine which type of
-     *            scheduled executor service should be returned
+     *            a map of attributes that can be used to determine which type of scheduled executor
+     *            service should be returned
      * @return a ScheduledExecutorService for the specified service
      */
     ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes);
