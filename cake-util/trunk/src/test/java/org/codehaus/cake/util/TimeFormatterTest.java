@@ -60,7 +60,7 @@ public class TimeFormatterTest {
 
     @Test
     public void shortFormat() {
-        TimeFormatter tf = TimeFormatter.DEFAULT_TIME_FORMATTER;
+        TimeFormatter tf = TimeFormatter.DEFAULT;
         assertTrue(tf.formatNanos(1000L).equals("0,001 ms")
                 || tf.formatNanos(1000L).equals("0.001 ms"));
         assertTrue(tf.formatNanos(12321033L).equals("12,321 ms")
@@ -72,7 +72,7 @@ public class TimeFormatterTest {
 
     @Test
     public void uptimeFormat() {
-        tf = TimeFormatter.UPTIME_TIME_FORMATTER;
+        tf = TimeFormatter.UPTIME;
         assertEquals("11 day(s), 14:25:43 hours", tf.formatNanos(1002343410000000L));
         assertEquals("11 day(s), 14:25:43 hours", tf.format(1002343, TimeUnit.SECONDS));
         assertEquals("11 day(s), 14:25:00 hours", tf.format(1002300, TimeUnit.SECONDS));

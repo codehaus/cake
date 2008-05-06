@@ -64,7 +64,7 @@ public class LifecycleManager {
         }
         ies.info(info.getContainerTypeName() + " started [name = " + info.getContainerName()
                 + ", startup time = "
-                + TimeFormatter.DEFAULT_TIME_FORMATTER.formatNanos(System.nanoTime() - startTime)
+                + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime)
                 + "]");
     }
 

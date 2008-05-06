@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class TimeFormatter {
 
-    public static TimeFormatter DEFAULT_TIME_FORMATTER = new ShortFormat();
+    public static TimeFormatter DEFAULT = new DefaultFormatter();
 
     private final static String[] NAME = new String[] { "nanosecond", "microsecond", "millisecond",
             "second", "minute", "hour", "day" };
@@ -21,12 +21,12 @@ public abstract class TimeFormatter {
 
     private final static DecimalFormat NN = new DecimalFormat("00");
 
-    private final static String[] SI_NAMES = new String[] { "ns", "µs", "ms", "s", "min", "h", "d" };
+    private final static String[] SI_NAMES = new String[] { "ns", "ï¿½s", "ms", "s", "min", "h", "d" };
 
     /**
      * A <tt>TimeFormatter</tt> that will format time the same was as the unix 'uptime' command.
      */
-    public static TimeFormatter UPTIME_TIME_FORMATTER = new UptimeFormatter();
+    public static TimeFormatter UPTIME = new UptimeFormatter();
 
     private final static DecimalFormat Z = new DecimalFormat("##0.000");
 
@@ -34,6 +34,7 @@ public abstract class TimeFormatter {
      * Formats the specified time parameters.
      * 
      * @param nano
+     *            the nanoseconds part
      * @return the formatter string
      */
     protected String doFormat(int nano) {
@@ -129,7 +130,7 @@ public abstract class TimeFormatter {
         return SI_NAMES[unit.ordinal()];
     }
 
-    static class ShortFormat extends UptimeFormatter {
+    static class DefaultFormatter extends UptimeFormatter {
 
         @Override
         protected String doFormat(int millies, int micros, int nano) {
