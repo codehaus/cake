@@ -31,8 +31,8 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         failure = null;
         failText = null;
         clock = new DeterministicClock();
-        clock.setTimestamp(10);
-        clock.setRelativeTime(1000);
+        clock.setTimeOfDay(10);
+        clock.setNanoTime(1000);
         conf = newConfiguration();
         conf.setClock(clock);
         c = newContainer();

@@ -26,7 +26,7 @@ public final class CreationTimeAttributeFactory<K, V> extends AbstractAttributeF
         } else if (existing != null) {
             time = existing.get(ENTRY_TIME_CREATED);
         } else {
-            time = clock.timestamp();
+            time = clock.timeOfDay();
         }
         if (!ENTRY_TIME_CREATED.isValid(creationTime)) {
             illegalAttribute(key, creationTime, time);

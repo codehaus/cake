@@ -39,10 +39,10 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
     public AttributeMap create(K key, V value, AttributeMap params) {
         AttributeMap map = new DefaultAttributeMap(defaults);
         if (defaults.contains(ENTRY_TIME_CREATED)) {
-            map.put(ENTRY_TIME_CREATED, clock.timestamp());
+            map.put(ENTRY_TIME_CREATED, clock.timeOfDay());
         }
         if (defaults.contains(ENTRY_TIME_MODIFIED)) {
-            map.put(ENTRY_TIME_MODIFIED, clock.timestamp());
+            map.put(ENTRY_TIME_MODIFIED, clock.timeOfDay());
         }
         for (Map.Entry<Attribute, Object> entry : params.entrySet()) {
             if (defaults.contains(entry.getKey())) {
@@ -68,7 +68,7 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
             map.put(ENTRY_TIME_CREATED, previous.get(ENTRY_TIME_CREATED));
         }
         if (defaults.contains(ENTRY_TIME_MODIFIED)) {
-            map.put(ENTRY_TIME_MODIFIED, clock.timestamp());
+            map.put(ENTRY_TIME_MODIFIED, clock.timeOfDay());
         }
         return map;
     }

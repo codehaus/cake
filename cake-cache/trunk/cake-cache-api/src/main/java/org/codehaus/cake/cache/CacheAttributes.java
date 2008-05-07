@@ -62,7 +62,7 @@ public class CacheAttributes {
      * <li>
      * If no element is currently mapped for the key and a clock is set through
      * {@link CacheConfiguration#setClock(org.codehaus.cake.util.Clock)} a timestamp is obtained by
-     * calling {@link org.codehaus.cake.util.Clock#timestamp()}.
+     * calling {@link org.codehaus.cake.util.Clock#timeOfDay()}.
      * </li>
      * <li>
      * Finally, if no clock was set when constructing the cache, System#currentTimeMillis() is used

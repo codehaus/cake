@@ -25,7 +25,7 @@ public class CreationTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         c.clear();
         put(M1);
         assertAttribute(M1, 11l);
@@ -71,11 +71,11 @@ public class CreationTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         c.put(M1.getKey(), M2.getValue());
         assertAttribute(M1, 10l);
 
@@ -92,7 +92,7 @@ public class CreationTime extends AbstractAttributeTest {
         assertAttribute(M1, 10l);
         assertAttribute(M2, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         putAll(M1, M2);
         assertAttribute(M1, 10l);
         assertAttribute(M2, 10l);
@@ -110,11 +110,11 @@ public class CreationTime extends AbstractAttributeTest {
         putIfAbsent(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         putIfAbsent(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         putIfAbsent(M1.getKey(), M2.getValue());
         assertAttribute(M1, 10l);
 
@@ -130,7 +130,7 @@ public class CreationTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         remove(M1);
         put(M1);
         assertAttribute(M1, 11l);
@@ -144,11 +144,11 @@ public class CreationTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         replace(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         replace(M1.getKey(), M2.getValue());
         assertAttribute(M1, 10l);
 

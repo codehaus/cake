@@ -24,7 +24,7 @@ public final class ModificationTimeAttributeFactory<K, V> extends AbstractAttrib
         if (modificationTime > 0) {
             time = modificationTime;
         } else {
-            time = clock.timestamp();
+            time = clock.timeOfDay();
         }
         if (!ENTRY_TIME_MODIFIED.isValid(modificationTime)) {
             illegalAttribute(key, modificationTime, time);

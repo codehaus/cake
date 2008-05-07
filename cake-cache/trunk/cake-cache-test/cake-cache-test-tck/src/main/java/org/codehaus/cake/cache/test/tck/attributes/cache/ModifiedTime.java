@@ -21,11 +21,11 @@ public class ModifiedTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         put(M1);
         assertAttribute(M1, 11l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         c.put(M1.getKey(), M2.getValue());
         assertAttribute(M1, 12l);
 
@@ -43,7 +43,7 @@ public class ModifiedTime extends AbstractAttributeTest {
         assertAttribute(M2, 10l);
         assertAttribute(M3, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         putAll(M1, M2);
         assertAttribute(M1, 11l);
         assertAttribute(M2, 11l);
@@ -62,11 +62,11 @@ public class ModifiedTime extends AbstractAttributeTest {
         putIfAbsent(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         putIfAbsent(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         putIfAbsent(M1.getKey(), M2.getValue());
         assertAttribute(M1, 10l);
 
@@ -82,15 +82,15 @@ public class ModifiedTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         replace(M1);
         assertAttribute(M1, 11l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         replace(M1.getKey(), M2.getValue());
         assertAttribute(M1, 12l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         replace(M1.getKey(), M2.getValue(), M3.getValue());
         assertAttribute(M1, 13l);
 
@@ -107,7 +107,7 @@ public class ModifiedTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         remove(M1);
         put(M1);
         assertAttribute(M1, 11l);
@@ -121,7 +121,7 @@ public class ModifiedTime extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1, 10l);
 
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         c.clear();
         put(M1);
         assertAttribute(M1, 11l);
@@ -135,7 +135,7 @@ public class ModifiedTime extends AbstractAttributeTest {
         assertGet(M1);
         assertAttribute(M1, 10l);
         
-        clock.incrementTimestamp();
+        clock.incrementTimeOfDay();
         forceLoad(M1);
         assertAttribute(M1, 11l);
     }
