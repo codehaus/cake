@@ -22,10 +22,9 @@
       <version>${pom.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.cake.test</groupId>
-      <artifactId>cake-test-util</artifactId>
-      <scope>test</scope>
-      <version>0.1-SNAPSHOT</version>
+      <groupId>org.jmock</groupId>
+      <artifactId>jmock-junit4</artifactId>
+      <version>2.4.0</version>
     </dependency>
   </dependencies>
   <scm>
