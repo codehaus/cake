@@ -26,6 +26,12 @@
       <id>codehaus</id>
       <name>Codehaus Release Repo</name>
       <url>http://dist.codehaus.org/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
     <repository>
       <id>codehaus-snapshot</id>
@@ -34,6 +40,9 @@
       <releases>
         <enabled>false</enabled>
       </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 </project>
