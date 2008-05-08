@@ -1,9 +1,9 @@
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_COST;
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_CREATED;
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_MODIFIED;
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.COST;
+import static org.codehaus.cake.cache.CacheEntry.TIME_CREATED;
+import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -97,11 +97,11 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
     private void updateAttributes() {
         factories = new AbstractAttributeFactory[map.size()];
         int count = 0;
-        composer.registerImplementation(ENTRY_TIME_CREATED, CreationTimeAttributeFactory.class);
+        composer.registerImplementation(TIME_CREATED, CreationTimeAttributeFactory.class);
         composer
-                .registerImplementation(ENTRY_TIME_MODIFIED, ModificationTimeAttributeFactory.class);
-        composer.registerImplementation(ENTRY_SIZE, SizeAttributeFactory.class);
-        composer.registerImplementation(ENTRY_COST, CostAttributeFactory.class);
+                .registerImplementation(TIME_MODIFIED, ModificationTimeAttributeFactory.class);
+        composer.registerImplementation(SIZE, SizeAttributeFactory.class);
+        composer.registerImplementation(COST, CostAttributeFactory.class);
         for (Info i : map.values()) {
             AbstractAttributeFactory f = (AbstractAttributeFactory) composer
                     .getFromKeyIfAvailable(i.getAttribute());

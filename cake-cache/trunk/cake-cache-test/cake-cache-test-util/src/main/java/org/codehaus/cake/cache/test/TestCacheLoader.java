@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.CacheAttributes;
+import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 public class TestCacheLoader implements SimpleCacheLoader<Integer, String> {
@@ -20,7 +20,7 @@ public class TestCacheLoader implements SimpleCacheLoader<Integer, String> {
     public TestCacheLoader(Attribute... attributes) {
         if (attributes.length > 0) {
             for (Attribute a : attributes) {
-                if (a != CacheAttributes.ENTRY_SIZE) {
+                if (a != CacheEntry.SIZE) {
                     throw new IllegalArgumentException("Unknown attribute " + a);
                 }
                 l.add(a);
@@ -35,8 +35,8 @@ public class TestCacheLoader implements SimpleCacheLoader<Integer, String> {
     public String load(Integer key, AttributeMap attributes) throws Exception {
         String result = doLoad(key, attributes);
         list.add(new RequestInfo(key, attributes, result));
-        if (l.contains(CacheAttributes.ENTRY_SIZE)) {
-            CacheAttributes.ENTRY_SIZE.set(attributes, key.longValue());
+        if (l.contains(CacheEntry.SIZE)) {
+            CacheEntry.SIZE.set(attributes, key.longValue());
         }
         return result;
     }

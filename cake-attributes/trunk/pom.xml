@@ -5,12 +5,20 @@
     <groupId>org.codehaus.cake</groupId>
     <artifactId>cake-parent</artifactId>
     <version>1-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../pom/pom.xml</relativePath>
   </parent>
   <artifactId>cake-attributes-parent</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>Cake Attributes Parent</name>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cake.test</groupId>
+      <artifactId>cake-test-util</artifactId>
+      <scope>test</scope>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/cake-attributes/trunk</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-attributes/trunk</developerConnection>

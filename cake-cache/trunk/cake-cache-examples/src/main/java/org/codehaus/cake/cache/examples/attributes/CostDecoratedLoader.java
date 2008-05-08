@@ -4,7 +4,7 @@
 package org.codehaus.cake.cache.examples.attributes;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.CacheAttributes;
+import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 public class CostDecoratedLoader<K, V> implements SimpleCacheLoader<K, V> {
@@ -20,7 +20,7 @@ public class CostDecoratedLoader<K, V> implements SimpleCacheLoader<K, V> {
     public V load(K key, AttributeMap attributes) throws Exception {
         long start = System.nanoTime();
         V v = realLoader.load(key, attributes);
-        CacheAttributes.ENTRY_COST.set(attributes, System.nanoTime() - start);
+        CacheEntry.COST.set(attributes, System.nanoTime() - start);
         return v;
     }
 }
