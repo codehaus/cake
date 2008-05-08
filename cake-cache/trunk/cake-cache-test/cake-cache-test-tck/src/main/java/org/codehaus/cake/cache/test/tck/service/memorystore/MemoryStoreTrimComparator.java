@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -47,8 +47,8 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
     @Test
     public void trimToVolumeComparator() {
         loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(ENTRY_SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setPolicy(Policies.newLRU());
         init();
         assertGet(M1, M2, M3, M4, M5, M6, M7, M8, M9);

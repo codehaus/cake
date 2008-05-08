@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_CREATED;
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_MODIFIED;
+import static org.codehaus.cake.cache.CacheEntry.TIME_CREATED;
+import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
 
 import java.util.Map;
 
@@ -38,11 +38,11 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
 
     public AttributeMap create(K key, V value, AttributeMap params) {
         AttributeMap map = new DefaultAttributeMap(defaults);
-        if (defaults.contains(ENTRY_TIME_CREATED)) {
-            map.put(ENTRY_TIME_CREATED, clock.timeOfDay());
+        if (defaults.contains(TIME_CREATED)) {
+            map.put(TIME_CREATED, clock.timeOfDay());
         }
-        if (defaults.contains(ENTRY_TIME_MODIFIED)) {
-            map.put(ENTRY_TIME_MODIFIED, clock.timeOfDay());
+        if (defaults.contains(TIME_MODIFIED)) {
+            map.put(TIME_MODIFIED, clock.timeOfDay());
         }
         for (Map.Entry<Attribute, Object> entry : params.entrySet()) {
             if (defaults.contains(entry.getKey())) {
@@ -64,11 +64,11 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
                 map.put(entry.getKey(), entry.getValue());
             }
         }
-        if (defaults.contains(ENTRY_TIME_CREATED)) {
-            map.put(ENTRY_TIME_CREATED, previous.get(ENTRY_TIME_CREATED));
+        if (defaults.contains(TIME_CREATED)) {
+            map.put(TIME_CREATED, previous.get(TIME_CREATED));
         }
-        if (defaults.contains(ENTRY_TIME_MODIFIED)) {
-            map.put(ENTRY_TIME_MODIFIED, clock.timeOfDay());
+        if (defaults.contains(TIME_MODIFIED)) {
+            map.put(TIME_MODIFIED, clock.timeOfDay());
         }
         return map;
     }

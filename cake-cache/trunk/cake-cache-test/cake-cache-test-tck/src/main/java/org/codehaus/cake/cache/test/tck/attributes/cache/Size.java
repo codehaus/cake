@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Iterator;
 
@@ -18,12 +18,12 @@ import org.junit.Test;
  */
 public class Size extends AbstractAttributeTest {
     public Size() {
-        super(ENTRY_SIZE);
+        super(SIZE);
     }
     @SuppressWarnings("unchecked")
     @Test
     public void iterator() {
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(5));// size=key+1
+        loader.setAttribute(SIZE, LongOps.add(5));// size=key+1
         init();
         assertGet(M1);
         Iterator iter=c.values().iterator();
@@ -34,7 +34,7 @@ public class Size extends AbstractAttributeTest {
     @SuppressWarnings("unchecked")
     @Test
     public void volume() {
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         init();
         assertGet(M1);
         assertVolume(2);

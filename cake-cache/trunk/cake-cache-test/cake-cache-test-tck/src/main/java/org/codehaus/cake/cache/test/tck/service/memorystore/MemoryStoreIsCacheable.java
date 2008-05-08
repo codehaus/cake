@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Arrays;
 
@@ -77,15 +77,15 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
 
     @Test
     public void loadVolume() {
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(ENTRY_SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setIsCacheableFilter(ivalue);
         init();
         assertGet(M1, M2);
         assertSize(2);
         assertVolume(5);
 
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(2));// size=key+2
+        loader.setAttribute(SIZE, LongOps.add(2));// size=key+2
         loader.withLoader(M1).setValue("C");
         withLoading().withKey(M1.getKey()).forceLoad();
         assertSize(1);

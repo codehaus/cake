@@ -1,6 +1,6 @@
 package org.codehaus.cake.internal.cache.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -118,7 +118,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             }
         }
         if (keepNew) {
-            volume += ENTRY_SIZE.get(entry);
+            volume += SIZE.get(entry);
             map.put(key, entry);
         }
         return new EntryPair(prev, keepNew ? entry : null);
@@ -180,7 +180,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
 
     private void removeEntry(DefaultEntry<K, V> entry, boolean isEvicted) {
         if (entry != null) {
-            volume -= ENTRY_SIZE.get(entry);
+            volume -= SIZE.get(entry);
             if (!isEvicted && policy != null) {
                 policy.remove(entry);
             }

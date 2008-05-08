@@ -3,7 +3,7 @@
 
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asMap;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asSet;
 
@@ -262,8 +262,8 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
     public void isCacheEntry() throws InterruptedException {
         final BlockingQueue<Object> q = new LinkedBlockingQueue<Object>();
 
-        conf.withAttributes().add(ENTRY_SIZE);
-        loader.withLoader(M1).addAttribute(ENTRY_SIZE, 4l);
+        conf.withAttributes().add(SIZE);
+        loader.withLoader(M1).addAttribute(SIZE, 4l);
         conf.withMemoryStore().setPolicy(new LRUReplacementPolicy<Integer,String>() {
             @Override
             public boolean add(CacheEntry<Integer,String> entry) {
@@ -282,7 +282,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         CacheEntry<Integer, String> ce = (CacheEntry<Integer, String>) o;
         assertSame(M1.getKey(), ce.getKey());
         assertSame(M1.getValue(), ce.getValue());
-        assertEquals(ce.getAttributes(), ENTRY_SIZE.singleton(4));
+        assertEquals(ce.getAttributes(), SIZE.singleton(4));
     }
 
 }

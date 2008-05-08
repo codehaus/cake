@@ -2,13 +2,13 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_TIME_MODIFIED;
+import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
 
 import org.junit.Test;
 
 public class ModifiedTime extends AbstractAttributeTest {
     public ModifiedTime() {
-        super(ENTRY_TIME_MODIFIED);
+        super(TIME_MODIFIED);
     }
 
 
@@ -146,10 +146,10 @@ public class ModifiedTime extends AbstractAttributeTest {
     @SuppressWarnings("unchecked")
     @Test
     public void loadedAttribute() {
-        loader.withLoader(M1).addAttribute(ENTRY_TIME_MODIFIED, 5l);
-        loader.withLoader(M2).addAttribute(ENTRY_TIME_MODIFIED, 6l);
-        loader.withLoader(M3).addAttribute(ENTRY_TIME_MODIFIED, 7l);
-        loader.withLoader(M4).addAttribute(ENTRY_TIME_MODIFIED, 8l);
+        loader.withLoader(M1).addAttribute(TIME_MODIFIED, 5l);
+        loader.withLoader(M2).addAttribute(TIME_MODIFIED, 6l);
+        loader.withLoader(M3).addAttribute(TIME_MODIFIED, 7l);
+        loader.withLoader(M4).addAttribute(TIME_MODIFIED, 8l);
 
 
         assertGet(M1);

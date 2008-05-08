@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_COST;
+import static org.codehaus.cake.cache.CacheEntry.COST;
 
 import org.codehaus.cake.attribute.Attributes;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class Cost extends AbstractAttributeTest {
     public Cost() {
-        super(ENTRY_COST);
+        super(COST);
     }
 
     /**

@@ -54,7 +54,7 @@ public interface MemoryStoreService<K, V> /* extends Map<K,V> */{
      *         limit.
      * @see #setMaximumVolume(long)
      * @see Cache#volume()
-     * @see CacheAttributes#SIZE
+     * @see CacheEntry#SIZE
      * @see #getVolume()
      */
     long getMaximumVolume();
@@ -71,10 +71,10 @@ public interface MemoryStoreService<K, V> /* extends Map<K,V> */{
      * Returns the current volume of this cache. If the current volume of this cache is greater then
      * Long.MAX_VALUE, this method returns Long.MAX_VALUE.
      * <p>
-     * The volume is defined as the sum of all entries {@link CacheAttributes#SIZE}.
+     * The volume is defined as the sum of all entries {@link CacheEntry#SIZE}.
      * 
      * @return the current volume of this cache
-     * @see CacheAttributes#SIZE
+     * @see CacheEntry#SIZE
      */
     long getVolume();
 
@@ -168,7 +168,7 @@ public interface MemoryStoreService<K, V> /* extends Map<K,V> */{
      * <pre>
      * Cache&lt;?, ?&gt; c = someCache;
      * MemoryStoreService&lt;?, ?&gt; mss = c.with().memoryStore();
-     * mss.trimToSize((int) (mss.getSize() * 0.7), CacheAttributes.ENTRY_DATE_CREATED);
+     * mss.trimToSize((int) (mss.getSize() * 0.7), CacheEntry.ENTRY_DATE_CREATED);
      * </pre>
      * 
      * @param size
@@ -204,11 +204,11 @@ public interface MemoryStoreService<K, V> /* extends Map<K,V> */{
      * <pre>
      * Cache&lt;?, ?&gt; c = someCache;
      * MemoryStoreService&lt;?, ?&gt; mss = c.with().memoryStore();
-     * mss.trimToVolume((long) (mss.getVolume() * 0.5), CacheAttributes.ENTRY_COST);
+     * mss.trimToVolume((long) (mss.getVolume() * 0.5), CacheEntry.ENTRY_COST);
      * </pre>
      * 
      * The example assumes that the cache is configured to use the
-     * {@link CacheAttributes#COST} attribute.
+     * {@link CacheEntry#COST} attribute.
      * 
      * @param size
      *            if positive of 0, the size to the trim the cache down to, otherwise the number of

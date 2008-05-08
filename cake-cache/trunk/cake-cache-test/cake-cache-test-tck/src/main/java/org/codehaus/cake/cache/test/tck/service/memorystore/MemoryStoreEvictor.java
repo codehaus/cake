@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Random;
 
@@ -34,8 +34,8 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
 
     @Test
     public void evictorVolume() {
-        conf.withAttributes().add(ENTRY_SIZE);
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
 
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
             
@@ -94,7 +94,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
 
     @Test
     public void evictorVolumeAndSize() {
-        conf.withAttributes().add(ENTRY_SIZE);
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
             
             public void op(MemoryStoreService<Integer, String> a) {
@@ -110,7 +110,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         for (int i = 0; i < 100; i++) {
             loader.add(i, "" + i);
         }
-        loader.setAttribute(ENTRY_SIZE, new LongOp() {
+        loader.setAttribute(SIZE, new LongOp() {
             public long op(long a) {
                 return r.nextInt(20);
             }

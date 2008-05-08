@@ -57,7 +57,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  *             sb.append((char) str);
  *         }
  *         in.close();
- *         CacheAttributes.setCost(attributes, System.currentTimeMillis() - start);
+ *         CacheEntry.setCost(attributes, System.currentTimeMillis() - start);
  *         return sb.toString();
  *     }
  * }

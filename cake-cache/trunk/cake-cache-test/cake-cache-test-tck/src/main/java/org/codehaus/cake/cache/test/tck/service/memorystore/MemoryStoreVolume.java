@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.LongOps;
@@ -10,8 +10,8 @@ import org.junit.Test;
 public class MemoryStoreVolume extends AbstractCacheTCKTest {
     @Before
     public void before() {
-        conf.withAttributes().add(ENTRY_SIZE);
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         init();
     }
 
@@ -42,7 +42,7 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
     public void update() {
         assertGet(M1, M3, M5);
         assertVolume(12);
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(2));// size=key+1
+        loader.setAttribute(SIZE, LongOps.add(2));// size=key+1
         forceLoad(M3);
         assertVolume(13);
         forceLoadAll();
@@ -63,13 +63,13 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
     public void defaultSizes() {
         newConfigurationClean();
         conf.withLoading().setLoader(loader);
-        conf.withAttributes().add(ENTRY_SIZE);
+        conf.withAttributes().add(SIZE);
         init();
         put(M1);
         assertVolume(1);
         putAll(M1, M2);
         assertVolume(2);
-        loader.withLoader(M3).addAttribute(ENTRY_SIZE, 8l);
+        loader.withLoader(M3).addAttribute(SIZE, 8l);
         get(M3);
         assertVolume(10);
         c.clear();

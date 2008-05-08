@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
@@ -73,8 +73,8 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
 
     @Test
     public void trimToVolume() {
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(ENTRY_SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setPolicy(Policies.newLRU());
         init();
         c.get(1);
@@ -109,8 +109,8 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
     }
     @Test
     public void trimToVolumeNegative() {
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(ENTRY_SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setPolicy(Policies.newLRU());
         init();
         c.get(1);

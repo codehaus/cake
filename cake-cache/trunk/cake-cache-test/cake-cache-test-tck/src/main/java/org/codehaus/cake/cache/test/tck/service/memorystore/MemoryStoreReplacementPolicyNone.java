@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheAttributes.ENTRY_SIZE;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.LongOps;
@@ -41,7 +41,7 @@ public class MemoryStoreReplacementPolicyNone extends AbstractCacheTCKTest {
 
     @Test
     public void maximumVolumeDefaultSizes() {
-        conf.withAttributes().add(ENTRY_SIZE);
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setMaximumVolume(3);
         init();
         put(M1, M2, M3, M4);
@@ -55,8 +55,8 @@ public class MemoryStoreReplacementPolicyNone extends AbstractCacheTCKTest {
 
     @Test
     public void maximumVolume() {
-        loader.setAttribute(ENTRY_SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(ENTRY_SIZE);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setMaximumVolume(7);
         init();
         assertGet(M1, M2, M3);
