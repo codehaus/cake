@@ -17,7 +17,7 @@
       <version>${pom.version}</version>
     </dependency>
         <dependency>
-      <groupId>org.codehaus.cake</groupId>
+      <groupId>org.codehaus.cake.attributes</groupId>
       <artifactId>cake-attributes-mapgenerator</artifactId>
       <version>0.1-SNAPSHOT</version>
     </dependency>
