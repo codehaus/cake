@@ -12,6 +12,13 @@
   <version>0.1-SNAPSHOT</version>
   <name>Cake Service Parent</name>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cake.test</groupId>
+      <artifactId>cake-test-util</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/cake-service/trunk</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-service/trunk</developerConnection>
@@ -22,4 +29,19 @@
     <module>cake-service-impl</module>
     <module>cake-service-tck</module>
   </modules>
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus Release Repo</name>
+      <url>http://dist.codehaus.org/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

@@ -7,10 +7,11 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+  <groupId>org.codehaus.cake.ops</groupId>
   <artifactId>cake-ops</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>Cake Ops</name>
-  <description>This library contains class that are used across all Cake projects</description>
+  <description>This library contains the Cake Ops package</description>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
@@ -20,8 +21,23 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/trun</connection>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/trunk</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-ops/trunk</developerConnection>
     <url>http://svn.codehaus.org/cake/cake-ops/trunk</url>
   </scm>
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus Release Repo</name>
+      <url>http://dist.codehaus.org/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

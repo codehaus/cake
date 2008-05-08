@@ -73,7 +73,7 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
         return map;
     }
 
-    public <T> void registerAttribute(Attribute<T> attribute) {
+    public <T> void add(Attribute<T> attribute) {
     // TODO Auto-generated method stub
 
     }

@@ -237,7 +237,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends
      *            the CacheAttributeService
      */
     public void start(CacheAttributeService service) {
-        service.registerAttribute(prevPointer);
-        service.registerAttribute(nextPointer);
+        service.add(prevPointer);
+        service.add(nextPointer);
     }
 }

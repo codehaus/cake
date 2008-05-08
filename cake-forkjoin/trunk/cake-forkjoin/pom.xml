@@ -2,24 +2,19 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.cake</groupId>
+    <groupId>org.codehaus.cake.forkjoin</groupId>
     <artifactId>cake-forkjoin-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cake-forkjoin</artifactId>
   <name>Cake ForkJoin</name>
-  <description>This library contains class that are used across all Cake projects</description>
+  <description>This library contains the Cake ForkJoin package</description>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake</groupId>
+      <groupId>org.codehaus.cake.ops</groupId>
       <artifactId>cake-ops</artifactId>
       <version>0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/cake/cake-forkjoin/trunk/cake-forkjoin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-forkjoin/trunk/cake-forkjoin</developerConnection>
-    <url>http://svn.codehaus.org/cake/forkjoin/trunk/cake-forkjoin</url>
-  </scm>
 </project>

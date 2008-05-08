@@ -19,4 +19,19 @@
   <modules>
     <module>cake-test-util</module>
   </modules>
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus Release Repo</name>
+      <url>http://dist.codehaus.org/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

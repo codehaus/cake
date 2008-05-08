@@ -12,7 +12,7 @@ public class CacheAttributeConfiguration {
 		return new DefaultAttributeMap(attributes);
 	}
 
-	public <T> CacheAttributeConfiguration add(Attribute<T> a, T defaultValue) {
+	<T> CacheAttributeConfiguration add(Attribute<T> a, T defaultValue) {
 		a.checkValid(defaultValue);
 		if (attributes.contains(a)) {
 			throw new IllegalArgumentException(

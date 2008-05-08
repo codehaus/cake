@@ -32,10 +32,30 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-    <modules>
+  <modules>
     <module>cake-cache-api</module>
     <module>cake-cache-impl</module>
     <module>cake-cache-test</module>
     <module>cake-cache-examples</module>
   </modules>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-cache/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-cache/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/cake-cache/trunk</url>
+  </scm>
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus Release Repo</name>
+      <url>http://dist.codehaus.org/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

@@ -63,7 +63,7 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
     }
 
     
-    public <T> void registerAttribute(Attribute<T> attribute) {
+    public <T> void add(Attribute<T> attribute) {
         map.put(attribute, new Info(attribute, true, true, attribute.getDefault()));
         updateAttributes();
     }
