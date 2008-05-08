@@ -7,9 +7,7 @@
     <version>0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <groupId>org.codehaus.cake.test</groupId>
   <artifactId>cake-test-util</artifactId>
-  <version>0.1-SNAPSHOT</version>
   <name>Cake Test Util</name>
   <dependencies>
     <dependency>
