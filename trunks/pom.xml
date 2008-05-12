@@ -29,21 +29,49 @@
           </links>
           <showPackage>false</showPackage>
           <showProtected>true</showProtected>
-
         </configuration>
       </plugin>
     </plugins>
   </reporting>
-  <modules>
-    <module>cake-attributes</module>
-    <module>cake-cache</module>
-    <module>cake-forkjoin</module>
-    <module>cake-management</module>
-    <module>cake-ops</module>
-    <module>cake-service</module>
-    <module>cake-test</module>
-    <module>cake-util</module>
-  </modules>
+
+
+  <profiles>
+    <profile>
+      <id>normal</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>cake-attributes</module>
+        <module>cake-cache</module>
+        <module>cake-forkjoin</module>
+        <module>cake-management</module>
+        <module>cake-ops</module>
+        <module>cake-service</module>
+        <module>cake-test</module>
+        <module>cake-util</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>coverage</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>coverage</name>
+        </property>
+      </activation>
+      <modules>
+        <module>cake-attributes</module>
+        <module>cake-cache</module>
+        <module>cake-management</module>
+        <module>cake-ops</module>
+        <module>cake-service</module>
+        <module>cake-util</module>
+      </modules>
+    </profile>
+  </profiles>
+
+
   <repositories>
     <repository>
       <id>codehaus.releases</id>

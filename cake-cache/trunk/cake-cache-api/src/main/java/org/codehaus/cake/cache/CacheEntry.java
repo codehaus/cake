@@ -57,12 +57,12 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public static final DoubleAttribute COST = new CostAttribute();
+    public static final DoubleAttribute COST = new Caches.CostAttribute();
 
     /**
      * Currently not in use.
      */
-    public static final TimeInstanceAttribute TIME_ACCESSED = new TimeCreatedAttribute();
+    public static final TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeCreatedAttribute();
 
     /**
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also
@@ -104,7 +104,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * 
      * The creation time value is of type <tt>long</tt> and between 1 and {@link Long#MAX_VALUE}.
      */
-    public static final TimeInstanceAttribute TIME_CREATED = new TimeCreatedAttribute();
+    public static final TimeInstanceAttribute TIME_CREATED = new Caches.TimeCreatedAttribute();
 
     /**
      * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is
@@ -112,165 +112,26 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * <p>
      * The mapped value must be of a type <tt>long</tt> between 1 and {@link Long#MAX_VALUE}.
      */
-    public static final TimeInstanceAttribute TIME_MODIFIED = new TimeModificedAttribute();
+    public static final TimeInstanceAttribute TIME_MODIFIED = new Caches.TimeModificedAttribute();
 
     /**
      * The size of the cache entry.
      */
-    public static final LongAttribute SIZE = new SizeAttribute();
+    public static final LongAttribute SIZE = new Caches.SizeAttribute();
 
     /**
      * The size of the cache entry.
      */
-    public static final LongAttribute HITS = new HitsAttribute();
+    public static final LongAttribute HITS = new Caches.HitsAttribute();
 
+    
+    public static final LongAttribute VERSION = new Caches.VersionAttribute();
+    
     // public static final TimeInstanceAttribute ENTRY_TIME_TO_LIVE = ENTRY_DATE_MODIFIED;
 
     // cost of retrieving the item
     // time to live
     // expiration time = time to live + System.timestamp
     // Logger <-detailed logging about an entry.
-
-    static final class CostAttribute extends DoubleAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new CostAttribute. */
-        private CostAttribute() {
-            super("Cost", 1.0);
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return COST;
-        }
-    }
-
-    static final class DateAccessedAttribute extends TimeInstanceAttribute {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new DateCreatedAttribute. */
-        DateAccessedAttribute() {
-            super("Date Accessed");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TIME_ACCESSED;
-        }
-    }
-
-    static final class TimeCreatedAttribute extends TimeInstanceAttribute {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new DateCreatedAttribute. */
-        TimeCreatedAttribute() {
-            super("Date Created");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TIME_CREATED;
-        }
-    }
-
-    static final class TimeModificedAttribute extends TimeInstanceAttribute {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new DateCreatedAttribute. */
-        TimeModificedAttribute() {
-            super("Date Modified");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TIME_MODIFIED;
-        }
-    }
-
-    /**
-     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped
-     * value must be of a type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
-     */
-    static final class HitsAttribute extends LongAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new SizeAttribute. */
-        private HitsAttribute() {
-            super("Hits");
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public boolean isValid(long hits) {
-            return hits >= 0;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return HITS;
-        }
-    }
-
-    static final class SizeAttribute extends LongAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new SizeAttribute. */
-        private SizeAttribute() {
-            super("Size", 1);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void checkValid(long value) {
-            if (value < 0) {
-                throw new IllegalArgumentException("invalid size (size = " + value + ")");
-            }
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public boolean isValid(long value) {
-            return value >= 0;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return SIZE;
-        }
-    }
-
-    /**
-     * This key can be used to indicate how long time an object should live. The time-to-live value
-     * should be a long between 1 and {@link Long#MAX_VALUE} measured in nanoseconds. Use
-     * {@link java.util.concurrent.TimeUnit} to convert between different time units.
-     * 
-     */
-    static final class TimeToLiveAttribute extends DurationAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** The singleton instance of this attribute. */
-        public static final TimeToLiveAttribute TIME_TO_LIVE = new TimeToLiveAttribute();
-
-        /** Creates a new TimeToLiveAttribute. */
-        private TimeToLiveAttribute() {
-            super("TimeToLive");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TIME_TO_LIVE;
-        }
-    }
 
 }

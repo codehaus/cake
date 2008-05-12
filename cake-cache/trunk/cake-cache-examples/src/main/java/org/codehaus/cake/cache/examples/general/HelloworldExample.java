@@ -4,7 +4,7 @@
 package org.codehaus.cake.cache.examples.general;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.defaults.UnsynchronizedCache;
+import org.codehaus.cake.cache.UnsynchronizedCache;
 
 // START SNIPPET: class
 

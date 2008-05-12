@@ -6,7 +6,7 @@ package org.codehaus.cake.cache.examples.memoryStore;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.defaults.SynchronizedCache;
+import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 
 /**

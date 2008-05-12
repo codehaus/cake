@@ -16,8 +16,8 @@ import org.codehaus.cake.service.Container;
  * future use can be made by accessing the cached copy rather than refetching or recomputing the
  * original data, so that the average access time is lowered.
  * <p>
- * Currently two implementations exist: {@link org.codehaus.cake.cache.defaults.UnsynchronizedCache}
- * and {@link org.codehaus.cake.cache.defaults.SynchronizedCache}.
+ * Currently two implementations exist: {@link org.codehaus.cake.cache.UnsynchronizedCache}
+ * and {@link org.codehaus.cake.cache.SynchronizedCache}.
  * <p>
  * The three collection views, which allow a cache's contents to be viewed as a set of keys,
  * collection of values, or set of key-value mappings only shows values contained in the actual

@@ -1,5 +1,7 @@
 package org.codehaus.cake.cache;
 
+import java.lang.management.ManagementFactory;
+
 import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandlingConfiguration;
 import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
@@ -20,9 +22,8 @@ import org.codehaus.cake.util.Logger;
  * cache can hold a maximum of 1000 elements and uses a least-recently-used policy to determine
  * which elements to evict when the specified maximum size has been reached. Finally, the cache and
  * all of its services are registered as a mbean with the
- * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer platform
+ * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform
  * <tt>MBeanServer</tt>} using the name of the cache.
- * 
  * <pre>
  * CacheConfiguration&lt;String, Integer&gt; cc = CacheConfiguration.newConfiguration(&quot;MyCache&quot;);
  * cc.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(1000);

@@ -23,10 +23,6 @@ public class FIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void touch(CacheEntry<K, V> entry) {}
-
-    /** {@inheritDoc} */
     public CacheEntry<K, V> evictNext() {
         return removeHead();
     }

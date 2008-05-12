@@ -14,9 +14,13 @@ import org.codehaus.cake.cache.CacheEntry;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V>  {
+public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V> {
     private final IntAttribute index = new IntAttribute("index", 0) {};
     private ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
+
+    public AbstractArrayReplacementPolicy() {
+        attachToEntry(index);
+    }
 
     public boolean add(CacheEntry<K, V> entry) {
         addAndReturnIndex(entry);

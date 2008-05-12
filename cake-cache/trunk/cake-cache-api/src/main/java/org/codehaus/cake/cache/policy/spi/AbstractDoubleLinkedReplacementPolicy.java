@@ -2,7 +2,6 @@ package org.codehaus.cake.cache.policy.spi;
 
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.attribute.CacheAttributeService;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double
@@ -26,6 +25,11 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends
             CacheEntry.class) {};
 
     private CacheEntry<K, V> tail;
+
+    public AbstractDoubleLinkedReplacementPolicy() {
+        attachToEntry(prevPointer);
+        attachToEntry(nextPointer);
+    }
 
     /**
      * Adds the specified entry to the front of the list.
@@ -228,16 +232,5 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends
 
     private void setPrev(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
         entry.getAttributes().put(prevPointer, next);
-    }
-
-    /**
-     * Registers the necessary hooks into the cache for this replacement policy.
-     * 
-     * @param service
-     *            the CacheAttributeService
-     */
-    public void start(CacheAttributeService service) {
-        service.add(prevPointer);
-        service.add(nextPointer);
     }
 }

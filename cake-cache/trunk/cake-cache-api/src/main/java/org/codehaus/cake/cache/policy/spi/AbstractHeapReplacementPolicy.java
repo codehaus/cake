@@ -24,6 +24,11 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
 
     private final IntAttribute index = new IntAttribute("index", 0) {};
 
+    public AbstractHeapReplacementPolicy() {
+        attachToEntry(index);
+    }
+
+    
     private int indexOf(CacheEntry<K, V> entry) {
         return index.get(entry);
     }

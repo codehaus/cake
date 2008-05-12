@@ -5,7 +5,7 @@ package org.codehaus.cake.cache.examples.guides.quickstart;
 
 //START SNIPPET: helloworld
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.defaults.UnsynchronizedCache;
+import org.codehaus.cake.cache.UnsynchronizedCache;
 
 public class HelloWorldCache {
     public static void main(String[] args) {

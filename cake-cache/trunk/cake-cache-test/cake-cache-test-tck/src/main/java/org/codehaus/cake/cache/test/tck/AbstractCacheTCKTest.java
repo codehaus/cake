@@ -14,7 +14,6 @@ import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.attribute.CacheAttributeService;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.service.exceptionhandling.TestExceptionHandler;
@@ -81,10 +80,6 @@ public class AbstractCacheTCKTest extends
 
     protected String replace(Map.Entry<Integer, String> e) {
         return c.replace(e.getKey(), e.getValue());
-    }
-
-    protected final CacheAttributeService withAttributes() {
-        return c.getService(CacheAttributeService.class);
     }
 
     protected <T> T getAttribute(Map.Entry<Integer, String> entry, Attribute<T> atr) {

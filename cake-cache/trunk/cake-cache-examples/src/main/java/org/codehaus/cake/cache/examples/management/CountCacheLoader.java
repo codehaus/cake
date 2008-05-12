@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.defaults.SynchronizedCache;
+import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;

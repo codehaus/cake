@@ -9,16 +9,21 @@ import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.attribute.CacheAttributeService;
+import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.codehaus.cake.util.Clock;
 
-public class DefaultAttributeService<K, V> implements CacheAttributeService,
-        InternalAttributeService<K, V> {
+public class DefaultAttributeService<K, V> implements 
+        InternalAttributeService<K, V>, InternalCacheAttributeService {
     private final AttributeMap defaults;
     private final Clock clock;
 
     public DefaultAttributeService(CacheAttributeConfiguration configuration, Clock clock) {
-        defaults = new DefaultAttributeMap(configuration.getAllAttributes());
+        defaults = new DefaultAttributeMap();
+        for (Object o : configuration.getAllAttributes()) {
+            Attribute a = ((Attribute) o);
+            defaults.put(a, a.getDefault());
+
+        }
         this.clock = clock;
     }
 
@@ -76,5 +81,11 @@ public class DefaultAttributeService<K, V> implements CacheAttributeService,
     public <T> void add(Attribute<T> attribute) {
     // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void attachToPolicy(Attribute<?> attribute) {
+        // TODO Auto-generated method stub
+        
     }
 }

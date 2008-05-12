@@ -1,9 +1,9 @@
 package org.codehaus.cake.internal.cache.service.attribute;
 
 import static org.codehaus.cake.cache.CacheEntry.COST;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 import static org.codehaus.cake.cache.CacheEntry.TIME_CREATED;
 import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
-import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.attribute.CacheAttributeService;
 import org.codehaus.cake.internal.attribute.generator.DefaultAttributeConfiguration;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator;
 import org.codehaus.cake.internal.cache.service.attribute.factories.AbstractAttributeFactory;
@@ -25,8 +24,7 @@ import org.codehaus.cake.internal.cache.service.attribute.factories.Modification
 import org.codehaus.cake.internal.cache.service.attribute.factories.SizeAttributeFactory;
 import org.codehaus.cake.internal.service.Composer;
 
-public class MemorySparseAttributeService<K, V> implements CacheAttributeService,
-        InternalAttributeService<K, V> {
+public class MemorySparseAttributeService<K, V> implements InternalAttributeService<K, V> {
     private final static AtomicLong al = new AtomicLong();
     private Composer composer;
     private Constructor<AttributeMap> constructor;
@@ -37,8 +35,9 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
 
     public MemorySparseAttributeService(Composer composer, CacheAttributeConfiguration configuration) {
         this.composer = composer;
-        for (Map.Entry<Attribute, Object> e : configuration.getAllAttributes().entrySet()) {
-            map.put(e.getKey(), new Info(e.getKey(), false, false, e.getValue()));
+        for (Object o : configuration.getAllAttributes()) {
+            Attribute a = (Attribute) o;
+            map.put(a, new Info(a, false, false, a.getDefault()));
         }
         updateAttributes();
     }
@@ -47,7 +46,6 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
         return update(key, value, params, null);
     }
 
-    
     public AttributeMap getAttributes() {
         AttributeMap am = new DefaultAttributeMap();
         for (Info i : map.values()) {
@@ -56,24 +54,20 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
         return am;
     }
 
-    
     public <T> T getDefaultValue(Attribute<T> attribute) {
         Info i = map.get(attribute);
         return i == null ? attribute.getDefault() : (T) i.defaultValue;
     }
 
-    
     public <T> void add(Attribute<T> attribute) {
         map.put(attribute, new Info(attribute, true, true, attribute.getDefault()));
         updateAttributes();
     }
 
-    
     public AttributeMap remove(AttributeMap params) {
         throw new UnsupportedOperationException();
     }
 
-    
     public <T> void setDefaultValue(Attribute<T> attribute, T defaultValue) {
         map.put(attribute, new Info(attribute, true, true, defaultValue));
     }
@@ -92,14 +86,14 @@ public class MemorySparseAttributeService<K, V> implements CacheAttributeService
         return null;
     }
 
- //   private static Map<Class, Set<DefaultAttributeConfiguration>> constructors = new WeakHashMap<Class, DefaultAttributeConfiguration>();
+    // private static Map<Class, Set<DefaultAttributeConfiguration>> constructors = new
+    // WeakHashMap<Class, DefaultAttributeConfiguration>();
 
     private void updateAttributes() {
         factories = new AbstractAttributeFactory[map.size()];
         int count = 0;
         composer.registerImplementation(TIME_CREATED, CreationTimeAttributeFactory.class);
-        composer
-                .registerImplementation(TIME_MODIFIED, ModificationTimeAttributeFactory.class);
+        composer.registerImplementation(TIME_MODIFIED, ModificationTimeAttributeFactory.class);
         composer.registerImplementation(SIZE, SizeAttributeFactory.class);
         composer.registerImplementation(COST, CostAttributeFactory.class);
         for (Info i : map.values()) {

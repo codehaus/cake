@@ -1,6 +1,5 @@
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.cache.attribute.CacheAttributeService;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.service.ServiceManager;
@@ -58,17 +57,6 @@ public class CacheServices<K, V> {
      */
     public ExecutorsService executors() {
         return getService(ExecutorsService.class);
-    }
-
-    /**
-     * Returns the attribute service.
-     * 
-     * @return the attribute service for the cache
-     * @throws UnsupportedOperationException
-     *             if no attribute service is available
-     */
-    public CacheAttributeService attributes() {
-        return getService(CacheAttributeService.class);
     }
 
     /**

@@ -10,7 +10,7 @@ import java.net.URL;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.defaults.UnsynchronizedCache;
+import org.codehaus.cake.cache.UnsynchronizedCache;
 import org.codehaus.cake.cache.loading.SimpleCacheLoader;
 
 /**

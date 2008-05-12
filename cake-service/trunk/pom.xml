@@ -24,11 +24,32 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-service/trunk</developerConnection>
     <url>http://svn.codehaus.org/cake/cake-service/trunk</url>
   </scm>
-  <modules>
-    <module>cake-service-api</module>
-    <module>cake-service-impl</module>
-    <module>cake-service-tck</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>normal</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>cake-service-api</module>
+        <module>cake-service-impl</module>
+        <module>cake-service-tck</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>coverage</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>coverage</name>
+        </property>
+      </activation>
+      <modules>
+        <module>cake-service-api</module>
+        <module>cake-service-impl</module>
+      </modules>
+    </profile>
+  </profiles>
   <repositories>
     <repository>
       <id>codehaus</id>

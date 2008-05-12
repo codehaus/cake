@@ -6,7 +6,7 @@ package org.codehaus.cake.cache.examples.management;
 // START SNIPPET: class
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.defaults.SynchronizedCache;
+import org.codehaus.cake.cache.SynchronizedCache;
 
 public class EnableManagement {
     public static void main(String[] args) throws InterruptedException {

@@ -3,6 +3,7 @@ package org.codehaus.cake.cache.defaults;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.test.tck.TckImplementationSpecifier;
 import org.junit.Ignore;
 import org.junit.Test;

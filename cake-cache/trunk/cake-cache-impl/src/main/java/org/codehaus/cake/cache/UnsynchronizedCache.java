@@ -1,6 +1,6 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.cache.defaults;
+package org.codehaus.cake.cache;
 
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -14,47 +14,32 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheServices;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
-import org.codehaus.cake.internal.cache.SynchronizedInternalCache;
+import org.codehaus.cake.internal.cache.UnsynchronizedInternalCache;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
 /**
- * A <tt>synchronized</tt> {@link Cache} implementation.
+ * An <tt>unsynchronized</tt> {@link Cache} implementation.
  * <p>
- * It is imperative that the user manually synchronize on the cache when iterating over any of its
- * collection views:
- * 
- * <pre>
- *  Cache c = new SynchronizedCache();
- *      ...
- *  Set s = c.keySet();  // Needn't be in synchronized block
- *      ...
- *  synchronized(c) {  // Synchronizing on c, not s!
- *      Iterator i = s.iterator(); // Must be in synchronized block
- *      while (i.hasNext())
- *          foo(i.next());
- *  }
- * </pre>
- * 
- * Failure to follow this advice may result in non-deterministic behavior.
+ * If multiple threads access this cache concurrently, and at least one of the threads modifies the
+ * cache structurally, it <i>must</i> be synchronized externally. (A structural modification is any
+ * operation that adds, deletes or changes one or more mappings.) This is typically accomplished by
+ * synchronizing on some object that naturally encapsulates the cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: SynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
+ * @version $Id: UnsynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>
  *            the type of mapped values
  */
 @Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class,
-        ServiceManager.class, ExecutorsService.class })
-public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<K, V> {
-    private SynchronizedInternalCache<K, V> cache;
+        ServiceManager.class })
+public class UnsynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<K, V> {
+    private final UnsynchronizedInternalCache<K, V> cache;
 
-    /**
-     * Creates a new UnsynchronizedCache with a default configuration.
-     */
-    public SynchronizedCache() {
+    /** Creates a new UnsynchronizedCache with a default configuration. */
+    public UnsynchronizedCache() {
         this(CacheConfiguration.<K, V> newConfiguration());
     }
 
@@ -66,8 +51,8 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
      * @throws NullPointerException
      *             if the specified configuration is <code>null</code>
      */
-    public SynchronizedCache(CacheConfiguration<K, V> conf) {
-        this.cache = SynchronizedInternalCache.create(conf, this);
+    public UnsynchronizedCache(CacheConfiguration<K, V> conf) {
+        this.cache = UnsynchronizedInternalCache.create(conf, this);
     }
 
     /** {@inheritDoc} */
@@ -94,12 +79,6 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
     public Set<Entry<K, V>> entrySet() {
         return cache.entrySet();
     }
-
-    /** {@inheritDoc} */
-    public boolean equals(Object obj) {
-        return cache.equals(obj);
-    }
-
 
     /** {@inheritDoc} */
     public V get(Object key) {
@@ -129,11 +108,6 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType) {
         return cache.getService(serviceType);
-    }
-
-    /** {@inheritDoc} */
-    public int hashCode() {
-        return cache.hashCode();
     }
 
     /** {@inheritDoc} */
@@ -238,7 +212,7 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
 
     /** {@inheritDoc} */
     @Override
-    public synchronized String toString() {
+    public String toString() {
         return super.toString();
     }
 

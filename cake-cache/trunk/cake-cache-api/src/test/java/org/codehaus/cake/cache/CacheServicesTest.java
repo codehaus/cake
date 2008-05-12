@@ -4,7 +4,6 @@ package org.codehaus.cake.cache;
 
 import static org.junit.Assert.assertSame;
 
-import org.codehaus.cake.cache.attribute.CacheAttributeService;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.service.executor.ExecutorsService;
@@ -39,24 +38,6 @@ public class CacheServicesTest {
     @Before
     public void setupCache() {
         cache = context.mock(Cache.class);
-    }
-
-    /**
-     * Tests {@link CacheServices#event()}.
-     */
-    @Test
-    public void attributes() {
-        final CacheAttributeService service = TestUtil.dummy(CacheAttributeService.class);
-        context.checking(new Expectations() {
-            {
-                one(cache).with();
-                will(returnValue(new CacheServices(cache)));
-                one(cache).getService(CacheAttributeService.class);
-                will(returnValue(service));
-            }
-        });
-        CacheAttributeService ces = cache.with().attributes();
-        assertSame(service, ces);
     }
 
     /**

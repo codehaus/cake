@@ -15,7 +15,6 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.util.TimeFormatter;
 
 public class LifecycleManager {
-
     private final List<LifecycleObject> list = new LinkedList<LifecycleObject>();
     private final InternalExceptionService ies;
     Composer composer;
@@ -64,8 +63,7 @@ public class LifecycleManager {
         }
         ies.info(info.getContainerTypeName() + " started [name = " + info.getContainerName()
                 + ", startup time = "
-                + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime)
-                + "]");
+                + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime) + "]");
     }
 
     private void doStart(RunState state) {
@@ -76,8 +74,8 @@ public class LifecycleManager {
             }
         }
         for (LifecycleObject lo : list) {
-            lo.startRun(composer.get(ContainerConfiguration.class), new DefaultServiceRegistrant(
-                    composer.get(DefaultServiceManager.class)));
+            lo.startRun(allServices, composer.get(ContainerConfiguration.class),
+                    new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class)));
         }
         if (composer.hasService(DefaultManagementService.class)) {
             try {

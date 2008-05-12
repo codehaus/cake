@@ -1,38 +1,34 @@
 package org.codehaus.cake.cache.attribute;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.cache.CacheEntry;
 
 public class CacheAttributeConfiguration {
 
-	private AttributeMap attributes = new DefaultAttributeMap();
+    private List attributes = new ArrayList();
 
-	public AttributeMap getAllAttributes() {
-		return new DefaultAttributeMap(attributes);
-	}
+    public List getAllAttributes() {
+        return new ArrayList(attributes);
+    }
 
-	<T> CacheAttributeConfiguration add(Attribute<T> a, T defaultValue) {
-		a.checkValid(defaultValue);
-		if (attributes.contains(a)) {
-			throw new IllegalArgumentException(
-					"Attribute has already been added [Attribute =" + a + "");
-		}
-		attributes.put(a, defaultValue);
-		return this;
-	}
+    public CacheAttributeConfiguration add(Attribute... a) {
+        for (Attribute aa : a) {
+            if (attributes.contains(aa)) {
+                throw new IllegalArgumentException("Attribute has already been added [Attribute ="
+                        + aa + "");
+            }
+        }
+        for (Attribute aa : a) {
+            attributes.add(aa);
+        }
+        return this;
+    }
 
-	public CacheAttributeConfiguration add(Attribute... a) {
-		for (Attribute aa : a) {
-			if (attributes.contains(aa)) {
-				throw new IllegalArgumentException(
-						"Attribute has already been added [Attribute =" + aa
-								+ "");
-			}
-		}
-		for (Attribute aa : a) {
-			attributes.put(aa, aa.getDefault());
-		}
-		return this;
-	}
+    public static void main(String[] args) {
+        CacheEntry ce = null;
+        CacheEntry.COST.get(ce);
+    }
 }

@@ -6,7 +6,7 @@ package org.codehaus.cake.cache.examples.general;
 // START SNIPPET: class
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.defaults.UnsynchronizedCache;
+import org.codehaus.cake.cache.UnsynchronizedCache;
 
 public class SetNameExample {
     public static void main(String[] args) {

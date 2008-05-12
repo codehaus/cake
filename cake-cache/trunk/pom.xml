@@ -32,12 +32,34 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <modules>
-    <module>cake-cache-api</module>
-    <module>cake-cache-impl</module>
-    <module>cake-cache-test</module>
-    <module>cake-cache-examples</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>normal</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>cake-cache-api</module>
+        <module>cake-cache-impl</module>
+        <module>cake-cache-test</module>
+        <module>cake-cache-examples</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>coverage</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>coverage</name>
+        </property>
+      </activation>
+      <modules>
+        <module>cake-cache-api</module>
+        <module>cake-cache-impl</module>
+
+      </modules>
+    </profile>
+  </profiles>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/cake-cache/trunk</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-cache/trunk</developerConnection>

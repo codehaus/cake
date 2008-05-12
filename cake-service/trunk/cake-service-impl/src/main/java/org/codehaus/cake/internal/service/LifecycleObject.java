@@ -4,7 +4,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
@@ -49,7 +51,9 @@ public class LifecycleObject {
             IllegalAccessException, InvocationTargetException {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         for (Object o : parameters) {
-            mpc.registerComponentInstance(o);
+            if (o != null && mpc.getComponentAdapterOfType(o.getClass()) == null) {
+                mpc.registerComponentInstance(o);
+            }
         }
         Object[] obs = new Object[m.getParameterTypes().length];
         for (int i = 0; i < m.getParameterTypes().length; i++) {
@@ -71,7 +75,8 @@ public class LifecycleObject {
         }
     }
 
-    public void startRun(ContainerConfiguration configuration, ServiceRegistrant registrant) {
+    public void startRun(List all, ContainerConfiguration configuration,
+            ServiceRegistrant registrant) {
         ArrayList al = new ArrayList();
         al.add(configuration);
         al.add(registrant);
@@ -79,10 +84,15 @@ public class LifecycleObject {
             al.add(o);
         }
         for (Method m : o.getClass().getMethods()) {
+            boolean isInternal = m.getAnnotation(UseInternals.class) != null;
             Annotation a = m.getAnnotation(Startable.class);
             if (a != null) {
                 try {
-                    matchAndInvoke(m, al);
+                    if (isInternal) {
+                        matchAndInvoke(m, all);
+                    } else {
+                        matchAndInvoke(m, al);
+                    }
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
                     state.trySetStartupException(cause);
