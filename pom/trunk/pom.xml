@@ -36,7 +36,7 @@
     <name>The Codehaus</name>
     <url>http://www.codehaus.org/</url>
   </organization>
-  <url>http://www.apache.org/</url>
+  <url>http://cake.codehaus.org/</url>
   <inceptionYear>2008</inceptionYear>
 
   <issueManagement>
@@ -142,6 +142,21 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.atlassian.maven.plugins</groupId>
+        <artifactId>maven-clover-plugin</artifactId>
+        <configuration>
+<!-- <targetPercentage>80%</targetPercentage> -->          
+          <includesTestSourceRoots>false</includesTestSourceRoots>
+          <licenseLocation>${user.home}/.licenses/clover.license</licenseLocation>
+          <excludes>
+            <exclude>**/tck/service/**/*.java</exclude>
+            <!-- <exclude>**/examples/**/*.java</exclude> -->
+            <!-- <exclude>**/test/**/*.java</exclude>  -->
+          </excludes>
+          <jdk>1.5</jdk>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -165,15 +180,17 @@
             </executions>
           </plugin>
           <!-- We want to deploy the artifact to a staging location for perusal -->
-          <plugin>
+          <!-- 
+            <plugin>
             <inherited>true</inherited>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
             <configuration>
-              <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
-              <updateReleaseInfo>true</updateReleaseInfo>
+            <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
+            <updateReleaseInfo>true</updateReleaseInfo>
             </configuration>
-          </plugin>
+            </plugin>
+          -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -203,6 +220,23 @@
     </profile>
     <!-- END SNIPPET: release-profile -->
   </profiles>
+
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus Release Repo</name>
+      <url>http://dist.codehaus.org/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/pom/trunk</connection>
