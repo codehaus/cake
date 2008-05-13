@@ -332,6 +332,10 @@ public class AbstractCacheTCKTest extends
         return c.getEntry(e.getKey());
     }
 
+    protected void put(Map.Entry<Integer, String> entry
+            ) {
+        c.put(entry.getKey(), entry.getValue());
+    }
     protected void put(Map.Entry<Integer, String>... entries) {
         for (Map.Entry<Integer, String> entry : entries) {
             c.put(entry.getKey(), entry.getValue());

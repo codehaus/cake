@@ -21,7 +21,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
 
     @After
     public void after() {
-    // assertEquals(0, latch.getCount());
+        // assertEquals(0, latch.getCount());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
 
     public class Started8 {
         @AfterStart
-        public void start(Cache cache) {
+        public void start(Cache<?, ?> cache) {
             assertSame(c, cache);
             latch.countDown();
         }
@@ -127,7 +127,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
 
     public class Started4 {
         @AfterStart
-        public void hullabulla(Cache cache, MemoryStoreService ms, CacheLoadingService ls) {
+        public void hullabulla(Cache<?, ?> cache, MemoryStoreService<?, ?> ms, CacheLoadingService<?, ?> ls) {
             assertSame(c, cache);
             assertSame(withMemoryStore(), ms);
             assertSame(withLoading(), ls);
@@ -137,21 +137,21 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
 
     public class Started5 {
         @AfterStart
-        public void hullabulla(Cache cache, CacheLoadingService ls) {
+        public void hullabulla(Cache<?, ?> cache, CacheLoadingService<?, ?> ls) {
             fail("should not have been run");
         }
     }
 
     public class Started6 {
         @AfterStart
-        public void hullabulla(Cache cache, CacheLoadingService ls) {
+        public void hullabulla(Cache<?, ?> cache, CacheLoadingService<?, ?> ls) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
     public class Started7 {
         @AfterStart
-        public void hullabulla(Cache cache, CacheLoadingService ls) throws Exception {
+        public void hullabulla(Cache<?, ?> cache, CacheLoadingService<?, ?> ls) throws Exception {
             throw Exception1.INSTANCE;
         }
     }

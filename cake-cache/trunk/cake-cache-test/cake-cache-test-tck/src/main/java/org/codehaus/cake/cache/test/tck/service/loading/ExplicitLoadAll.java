@@ -17,9 +17,9 @@ import org.junit.Test;
  */
 public class ExplicitLoadAll extends AbstractCacheTCKTest {
 
-    public static final Attribute ATR1 = new ObjectAttribute("ATR1", String.class, "0") {};
-    public static final Attribute ATR2 = new ObjectAttribute("ATR2", String.class, "1") {};
-    public static final Attribute ATR3 = new ObjectAttribute("ATR3", String.class, "2") {};
+    public static final Attribute<String> ATR1 = new ObjectAttribute("ATR1", String.class, "0") {};
+    public static final Attribute<String> ATR2 = new ObjectAttribute("ATR2", String.class, "1") {};
+    public static final Attribute<String> ATR3 = new ObjectAttribute("ATR3", String.class, "2") {};
 
     @Test
     public void withLoadAll() {
@@ -47,7 +47,6 @@ public class ExplicitLoadAll extends AbstractCacheTCKTest {
         assertPeek(entry(M1, "3"));
         withLoading().withAll().forceLoad();
         assertLoadCount(4);
-
     }
 
 }

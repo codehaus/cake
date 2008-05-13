@@ -11,5 +11,5 @@ import org.junit.runners.Suite;
  * @version $Id: LoadingSuite.java 522 2007-12-24 11:24:35Z kasper $
  */
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { Cost.class, CreationTime.class, ModifiedTime.class, Size.class })
+@Suite.SuiteClasses( { Cost.class, TimeCreated.class, TimeModified.class, Size.class })
 public class CacheAttributesSuite {}

@@ -12,8 +12,8 @@ import org.junit.Test;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CreationTime.java 542 2008-01-02 21:50:05Z kasper $
  */
-public class CreationTime extends AbstractAttributeTest {
-    public CreationTime() {
+public class TimeCreated extends AbstractAttributeTest {
+    public TimeCreated() {
         super(TIME_CREATED);
     }
 

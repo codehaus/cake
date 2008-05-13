@@ -6,11 +6,10 @@ import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
 
 import org.junit.Test;
 
-public class ModifiedTime extends AbstractAttributeTest {
-    public ModifiedTime() {
+public class TimeModified extends AbstractAttributeTest {
+    public TimeModified() {
         super(TIME_MODIFIED);
     }
-
 
     /**
      * Tests that timestamp is set for modification date. This also tests that put of the same
