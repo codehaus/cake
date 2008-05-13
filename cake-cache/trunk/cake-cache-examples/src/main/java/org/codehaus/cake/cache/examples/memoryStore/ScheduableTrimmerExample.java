@@ -15,7 +15,7 @@ import org.codehaus.cake.cache.memorystore.MemoryStoreService;
  */
 public class ScheduableTrimmerExample {
     static class TrimToSize implements Runnable {
-        private final MemoryStoreService c;
+        private final MemoryStoreService<?, ?> c;
 
         private final int threshold;
 
@@ -25,13 +25,12 @@ public class ScheduableTrimmerExample {
             if (cache == null) {
                 throw new NullPointerException("cache is null");
             } else if (threshold < 0) {
-                throw new IllegalArgumentException("threshold must be non negative, was "
-                        + threshold);
+                throw new IllegalArgumentException("threshold must be non negative, was " + threshold);
             } else if (trimTo < 0) {
                 throw new IllegalArgumentException("trimTo must be non negative, was " + trimTo);
             } else if (trimTo >= threshold) {
-                throw new IllegalArgumentException("trimTo must smaller then threshold, was "
-                        + trimTo + " and " + threshold);
+                throw new IllegalArgumentException("trimTo must smaller then threshold, was " + trimTo + " and "
+                        + threshold);
             }
             this.threshold = threshold;
             this.trimTo = trimTo;
@@ -48,8 +47,8 @@ public class ScheduableTrimmerExample {
 
     public static void main(String[] args) {
         SynchronizedCache<String, String> c = new SynchronizedCache<String, String>();
-        c.with().executors().getScheduledExecutorService(null).scheduleAtFixedRate(
-                new TrimToSize(c, 1100, 1000), 0, 1, TimeUnit.SECONDS);
+        c.with().executors().getScheduledExecutorService(null).scheduleAtFixedRate(new TrimToSize(c, 1100, 1000), 0, 1,
+                TimeUnit.SECONDS);
 
         // other code
         c.shutdown();
