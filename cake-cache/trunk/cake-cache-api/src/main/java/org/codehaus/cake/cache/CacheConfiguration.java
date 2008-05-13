@@ -151,7 +151,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
     public Cache<K,V> newInstance() {
         return super.newInstance();
     }
-    
+
     /**
      * Creates a new CacheConfiguration with default settings and the specified name as the name of
      * the cache .
