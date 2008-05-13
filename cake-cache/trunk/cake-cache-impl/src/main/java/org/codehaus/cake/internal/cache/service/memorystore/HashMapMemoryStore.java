@@ -12,9 +12,6 @@ import java.util.Map.Entry;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
@@ -32,22 +29,22 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 
-public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implements
-        MemoryStoreService<K, V>, CompositeService {
+public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implements MemoryStoreService<K, V>,
+        CompositeService {
 
     private Map<K, DefaultEntry<K, V>> map = new HashMap<K, DefaultEntry<K, V>>();
     private final InternalCacheExceptionService<K, V> ies;
-    private final InternalAttributeService attributeService;
+    private final InternalAttributeService<K, V> attributeService;
     private int maximumSize;
     private long maximumVolume;
     private long volume;
-    private final ReplacementPolicy policy;
+    private final ReplacementPolicy<K, V> policy;
     private final Predicate isCacheable;
     private boolean isDisabled;
     private Procedure<MemoryStoreService<K, V>> evictor;
 
     public HashMapMemoryStore(MemoryStoreConfiguration<K, V> storeConfiguration,
-            InternalAttributeService attributeService, InternalCacheExceptionService<K, V> ies) {
+            InternalAttributeService<K, V> attributeService, InternalCacheExceptionService<K, V> ies) {
         this.attributeService = attributeService;
         this.ies = ies;
 
@@ -78,7 +75,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     public EntryPair<K, V> put(K key, V value, AttributeMap attributes, boolean isAbsent) {
         final DefaultEntry<K, V> prev = map.get(key);
         if (isDisabled || isAbsent && prev != null) {
-            return new EntryPair(prev, null);
+            return new EntryPair<K, V>(prev, null);
         }
 
         final AttributeMap atr;
@@ -121,15 +118,13 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             volume += SIZE.get(entry);
             map.put(key, entry);
         }
-        return new EntryPair(prev, keepNew ? entry : null);
+        return new EntryPair<K, V>(prev, keepNew ? entry : null);
     }
 
-    public Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(
-            Map<K, Entry<V, AttributeMap>> data) {
+    public Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(Map<K, Entry<V, AttributeMap>> data) {
         HashMap result = new HashMap<CacheEntry<K, V>, CacheEntry<K, V>>();
         for (Map.Entry<K, Entry<V, AttributeMap>> s : data.entrySet()) {
-            EntryPair<K, V> ss = put(s.getKey(), s.getValue().getKey(), s.getValue().getValue(),
-                    false);
+            EntryPair<K, V> ss = put(s.getKey(), s.getValue().getKey(), s.getValue().getValue(), false);
             result.put(ss.getPrevious(), ss.getNew());
         }
         return result;
@@ -156,8 +151,8 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public ParallelArray<CacheEntry<K, V>> removeAll(Collection entries) {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(entries.size(), CacheEntry.class,
-                ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(entries.size(), CacheEntry.class, ParallelArray
+                .defaultExecutor());
         for (Object o : entries) {
             DefaultEntry<K, V> entry = remove(o, null);
             if (entry != null) {
@@ -197,8 +192,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public ParallelArray<CacheEntry<K, V>> trim() {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
-                ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
         while (map.size() > maximumSize || volume > maximumVolume) {
             if (evictor == null) {
                 pa.asList().add(evictNext());
@@ -212,8 +206,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                     trimToSize(pa, t.size);
                 }
                 if (pa.size() == 0) {
-                    ies
-                            .warning("Custom Evictor failed to reduce the size of the cache, manually removing 1 element");
+                    ies.warning("Custom Evictor failed to reduce the size of the cache, manually removing 1 element");
                     pa.asList().add(evictNext());
                 }
             }
@@ -292,8 +285,8 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public ParallelArray<CacheEntry<K, V>> removeAll() {
-        ParallelArray<CacheEntry<K, V>> array = (ParallelArray) ParallelArray.createUsingHandoff(
-                map.values().toArray(new DefaultEntry[0]), ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> array = (ParallelArray) ParallelArray.createUsingHandoff(map.values().toArray(
+                new DefaultEntry[0]), ParallelArray.defaultExecutor());
         map.clear();
         clearEntries();
         return array;
@@ -345,18 +338,6 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             throw new UnsupportedOperationException();
         }
 
-        public long get(LongAttribute attribute) {
-            return getAttributes().get(attribute);
-        }
-
-        public double get(DoubleAttribute attribute) {
-            return getAttributes().get(attribute);
-        }
-
-        public int get(IntAttribute attribute) {
-            return getAttributes().get(attribute);
-        }
-
         public AttributeMap getAttributes() {
             return attributes;
         }
@@ -367,10 +348,6 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
 
         public CacheEntry<K, V> safe() {
             return this;
-        }
-
-        public <T> T get(Attribute<T> attribute) {
-            return getAttributes().get(attribute);
         }
 
         /** {@inheritDoc} */
@@ -425,8 +402,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
 
     public EntryPair<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
         CacheEntry<K, V> prev = map.get(key);
-        if (oldValue == null && prev != null || oldValue != null && prev != null
-                && oldValue.equals(prev.getValue())) {
+        if (oldValue == null && prev != null || oldValue != null && prev != null && oldValue.equals(prev.getValue())) {
             return put(key, newValue, attributes, false);
         }
         return new EntryPair<K, V>(prev, null);
@@ -437,8 +413,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     @Startable
-    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant)
-            throws Exception {
+    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
         serviceRegistrant.registerService(MemoryStoreService.class, this);
     }
 
@@ -477,8 +452,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public void trimToSize(int size) {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
-                ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
         trimToSize(pa, size);
     }
 
@@ -487,8 +461,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public void trimToVolume(long volume) {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
-                ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
         trimToVolume(pa, volume);
     }
 
@@ -500,14 +473,13 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         if (comparator == null) {
             throw new NullPointerException("comparator is null");
         }
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
-                ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
         trimToSize(pa, size, (Comparator) comparator);
     }
 
     ParallelArray<CacheEntry<K, V>> all() {
-        return (ParallelArray) ParallelArray.createFromCopy(map.values().toArray(
-                new CacheEntry[map.size()]), ParallelArray.defaultExecutor());
+        return (ParallelArray) ParallelArray.createFromCopy(map.values().toArray(new CacheEntry[map.size()]),
+                ParallelArray.defaultExecutor());
     }
 
     private void trimToVolume(ParallelArray<CacheEntry<K, V>> pa, long volume, Comparator comparator) {
@@ -558,12 +530,10 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         if (comparator == null) {
             throw new NullPointerException("comparator is null");
         }
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class,
-                ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
         trimToVolume(pa, volume, (Comparator) comparator);
     }
 
-    @Override
     public Collection<?> getChildServices() {
         return Arrays.asList(policy);
     }
