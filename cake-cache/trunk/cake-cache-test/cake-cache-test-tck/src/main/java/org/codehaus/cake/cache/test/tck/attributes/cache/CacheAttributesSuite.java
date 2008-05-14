@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
-import org.codehaus.cake.test.tck.ServiceSuite;
+import org.codehaus.cake.service.test.tck.ServiceSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

@@ -278,22 +278,24 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
     public static <K, V> UnsynchronizedInternalCache<K, V> create(
             CacheConfiguration<K, V> configuration, Cache<K, V> cache) {
         Composer composer = newComposer(configuration);
+        
+        //Common components
+        composer.registerImplementation(DefaultExecutorService.class);
+        composer.registerImplementation(UnsynchronizedRunState.class);
+        if (configuration.withManagement().isEnabled()) {
+            composer.registerImplementation(DefaultManagementService.class);
+        }
+        
+        //Cache components
         composer.registerInstance(Cache.class, cache);
         composer.registerInstance(Container.class, cache);
         composer.registerImplementation(UnsynchronizedCollectionViews.class);
-        composer.registerImplementation(UnsynchronizedRunState.class);
         composer.registerImplementation(DefaultAttributeService.class);
         //composer.registerImplementation(MemorySparseAttributeService.class);
-        composer.registerImplementation(DefaultExecutorService.class);
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(UnsynchronizedCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);
         }
-        if (configuration.withManagement().isEnabled()) {
-            composer.registerImplementation(DefaultManagementService.class);
-        }
-
-        // composer.registerInternalImplementation(UnsynchronizedMemoryStoreService.class);
 
         return new UnsynchronizedInternalCache<K, V>(composer);
     }

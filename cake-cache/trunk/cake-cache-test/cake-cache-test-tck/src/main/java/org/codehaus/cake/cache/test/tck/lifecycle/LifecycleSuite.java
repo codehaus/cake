@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.lifecycle;
 
-import org.codehaus.cake.test.tck.ServiceSuite;
+import org.codehaus.cake.service.test.tck.ServiceSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -11,5 +11,5 @@ import org.junit.runners.Suite;
  * @version $Id: LoadingSuite.java 522 2007-12-24 11:24:35Z kasper $
  */
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { LifecycleStarted.class })
+@Suite.SuiteClasses( { LifecycleStart.class, LifecycleStarted.class })
 public class LifecycleSuite {}

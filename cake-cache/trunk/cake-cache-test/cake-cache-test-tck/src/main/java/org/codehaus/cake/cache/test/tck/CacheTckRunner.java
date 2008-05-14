@@ -7,9 +7,9 @@ import org.codehaus.cake.cache.test.tck.lifecycle.LifecycleSuite;
 import org.codehaus.cake.cache.test.tck.service.loading.LoadingSuite;
 import org.codehaus.cake.cache.test.tck.service.management.ManagementSuite;
 import org.codehaus.cake.cache.test.tck.service.memorystore.SuiteMemoryStore;
-import org.codehaus.cake.test.tck.ServiceSuite;
-import org.codehaus.cake.test.tck.TckRunner;
-import org.codehaus.cake.test.tck.service.executors.ExecutorsSuite;
+import org.codehaus.cake.service.test.tck.ServiceSuite;
+import org.codehaus.cake.service.test.tck.TckRunner;
+import org.codehaus.cake.service.test.tck.service.executors.ExecutorsSuite;
 import org.junit.internal.runners.InitializationError;
 
 public class CacheTckRunner extends TckRunner {

@@ -1,11 +1,10 @@
-package org.codehaus.cake.cache.defaults;
+package org.codehaus.cake.cache;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.cache.UnsynchronizedCache;
 import org.codehaus.cake.cache.test.tck.CacheTckRunner;
-import org.codehaus.cake.test.tck.TckImplementationSpecifier;
+import org.codehaus.cake.service.test.tck.TckImplementationSpecifier;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -18,13 +18,12 @@ import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.service.exceptionhandling.TestExceptionHandler;
 import org.codehaus.cake.cache.test.service.loading.TestLoader;
-import org.codehaus.cake.test.tck.AbstractTCKTest;
+import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.After;
 
-public class AbstractCacheTCKTest extends
-        AbstractTCKTest<Cache<Integer, String>, CacheConfiguration<Integer, String>> {
+public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>, CacheConfiguration<Integer, String>> {
     public static final Map.Entry<Integer, String> M1 = CollectionTestUtil.M1;
 
     public static final Map.Entry<Integer, String> M2 = CollectionTestUtil.M2;
@@ -45,15 +44,15 @@ public class AbstractCacheTCKTest extends
 
     @After
     public void noExceptions() {
-        exceptionHandler.assertCleared();
+        if (exceptionHandler != null) {
+            exceptionHandler.assertCleared();
+        }
     }
-    protected final CacheLoadingService<Integer,String> withLoading() {
+
+    protected final CacheLoadingService<Integer, String> withLoading() {
         return c.getService(CacheLoadingService.class);
     }
-    public void prestart() {
-        size();
-    }
-    
+
     protected final MemoryStoreService<Integer, String> withMemoryStore() {
         return c.getService(MemoryStoreService.class);
     }
@@ -85,13 +84,15 @@ public class AbstractCacheTCKTest extends
     protected <T> T getAttribute(Map.Entry<Integer, String> entry, Attribute<T> atr) {
         return c.peekEntry(entry.getKey()).getAttributes().get(atr);
     }
+
     protected <T> T getAttribute(CacheEntry<Integer, String> entry, Attribute<T> atr) {
-        return  entry.getAttributes().get(atr);
+        return entry.getAttributes().get(atr);
     }
 
     public void assertLoadCount(int count) {
         assertEquals(count, loader.totalLoads());
     }
+
     @Override
     protected CacheConfiguration<Integer, String> newConfiguration() {
         super.newConfiguration();
@@ -235,8 +236,8 @@ public class AbstractCacheTCKTest extends
 
     public AbstractCacheTCKTest assertValidSizeAndVolume() {
         assertTrue("[volume =" + withMemoryStore().getVolume() + ", maximum volume="
-                + withMemoryStore().getMaximumVolume() + "]",
-                withMemoryStore().getVolume() <= withMemoryStore().getMaximumVolume());
+                + withMemoryStore().getMaximumVolume() + "]", withMemoryStore().getVolume() <= withMemoryStore()
+                .getMaximumVolume());
         assertTrue(withMemoryStore().getSize() <= withMemoryStore().getMaximumSize());
         assertTrue(c.size() <= withMemoryStore().getMaximumSize());
         return this;
@@ -317,6 +318,7 @@ public class AbstractCacheTCKTest extends
         }
         return result;
     }
+
     protected Map<Integer, String> getAll(Map.Entry<Integer, String>... entries) {
         Collection<Integer> keys = new ArrayList<Integer>();
         for (Map.Entry<Integer, String> e : entries) {
@@ -324,6 +326,7 @@ public class AbstractCacheTCKTest extends
         }
         return c.getAll(keys);
     }
+
     protected CacheEntry<Integer, String> peekEntry(Map.Entry<Integer, String> e) {
         return c.peekEntry(e.getKey());
     }
@@ -332,10 +335,10 @@ public class AbstractCacheTCKTest extends
         return c.getEntry(e.getKey());
     }
 
-    protected void put(Map.Entry<Integer, String> entry
-            ) {
+    protected void put(Map.Entry<Integer, String> entry) {
         c.put(entry.getKey(), entry.getValue());
     }
+
     protected void put(Map.Entry<Integer, String>... entries) {
         for (Map.Entry<Integer, String> entry : entries) {
             c.put(entry.getKey(), entry.getValue());
@@ -462,7 +465,8 @@ public class AbstractCacheTCKTest extends
         if (force || entry.getValue() != null) {
             assertEquals(entry.getKey(), loader.getLatestKey());
             if (map == null) {
-                // assertEquals(Attributes.EMPTY_ATTRIBUTE_MAP, loader.getLatestAttributeMap());
+                // assertEquals(Attributes.EMPTY_ATTRIBUTE_MAP,
+                // loader.getLatestAttributeMap());
             } else {
                 assertEquals(map, loader.getLatestAttributeMap());
             }

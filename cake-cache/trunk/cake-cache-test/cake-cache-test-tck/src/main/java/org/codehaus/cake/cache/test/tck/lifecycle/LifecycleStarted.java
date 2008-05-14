@@ -21,7 +21,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
 
     @After
     public void after() {
-        // assertEquals(0, latch.getCount());
+         assertEquals(0, latch.getCount());
     }
 
     @Test
