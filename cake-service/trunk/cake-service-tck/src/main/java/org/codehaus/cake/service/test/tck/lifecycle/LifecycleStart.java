@@ -11,7 +11,6 @@ import org.junit.After;
 import org.junit.Test;
 
 public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfiguration> {
-    int countdown;
     private CountDownLatch latch = new CountDownLatch(0);
 
     @After
@@ -43,13 +42,6 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
         prestart();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void unknownObject() {
-        conf.addService(new Started4());
-        newContainer();
-        prestart();
-    }
-
     public class Started1 {
         @Startable
         public void start() {
@@ -64,13 +56,13 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
         }
 
         @Startable
-        public void start2() {
+        public void start2(ServiceRegistrant registrant) {
+            assertNotNull(registrant);
             latch.countDown();
         }
     }
 
     public class Started3 {
-
         @Startable
         public void start(ContainerConfiguration configuration) {
             assertSame(conf, configuration);
@@ -83,11 +75,4 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
             latch.countDown();
         }
     }
-
-    public class Started4 {
-        @Startable
-        public void start(Object unknown) {
-        }
-    }
-
 }

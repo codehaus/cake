@@ -10,7 +10,7 @@ public class UnsynchronizedRunState extends RunState {
     private final LifecycleManager lifecycleManager;
 
     private int state;
-    
+
     private Throwable startupException;
 
     public UnsynchronizedRunState(ContainerInfo info, LifecycleManager lifecycleManager) {
@@ -19,6 +19,7 @@ public class UnsynchronizedRunState extends RunState {
     }
 
     public boolean tryStart() {
+        checkExceptions();
         if (isStarting()) {
             throw new IllegalStateException(
                     "Cannot invoke this method from CacheLifecycle.start(Map services), should be invoked from CacheLifecycle.started(Cache c)");
@@ -53,6 +54,7 @@ public class UnsynchronizedRunState extends RunState {
     public void trySetStartupException(Throwable cause) {
         if (startupException == null) {
             startupException = cause;
+            // this.state=SHUTDOWN;
         }
     }
 
@@ -64,7 +66,7 @@ public class UnsynchronizedRunState extends RunState {
     public void checkExceptions() {
         Throwable re = startupException;
         if (re != null) {
-            throw new IllegalStateException("Cache failed to start previously", re);
+            throw new IllegalStateException(containerType + " failed while starting previously", re);
         }
     }
 

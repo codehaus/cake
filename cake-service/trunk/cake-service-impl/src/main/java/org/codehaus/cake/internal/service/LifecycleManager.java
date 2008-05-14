@@ -21,8 +21,7 @@ public class LifecycleManager {
     DefaultServiceManager dsm;
     ContainerInfo info;
 
-    public LifecycleManager(InternalExceptionService ies, ContainerConfiguration conf,
-            Composer composer) {
+    public LifecycleManager(InternalExceptionService ies, ContainerConfiguration conf, Composer composer) {
         this.ies = ies;
         this.composer = composer;
         dsm = composer.get(DefaultServiceManager.class);
@@ -32,12 +31,10 @@ public class LifecycleManager {
     public void start(RunState state) {
         long startTime = System.nanoTime();
         if (ies.isDebugEnabled()) {
-            ies.debug("Starting " + info.getContainerTypeName() + " [name = "
-                    + info.getContainerName() + "]");
+            ies.debug("Starting " + info.getContainerTypeName() + " [name = " + info.getContainerName() + "]");
             if (ies.isTraceEnabled()) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("  ------------" + info.getContainerTypeName()
-                        + " was started by this call--------------\n");
+                sb.append("  ------------" + info.getContainerTypeName() + " was started by this call--------------\n");
                 StackTraceElement[] trace = Thread.currentThread().getStackTrace();
                 ArrayUtils.reverse(trace);
                 int length = trace.length;
@@ -58,11 +55,13 @@ public class LifecycleManager {
             state.trySetStartupException(e);
             runShutdown(state);
             throw e;
+        } catch (Error e) {
+            state.trySetStartupException(e);
+            throw e;
         } finally {
             composer = null;
         }
-        ies.info(info.getContainerTypeName() + " started [name = " + info.getContainerName()
-                + ", startup time = "
+        ies.info(info.getContainerTypeName() + " started [name = " + info.getContainerName() + ", startup time = "
                 + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime) + "]");
     }
 
@@ -74,8 +73,8 @@ public class LifecycleManager {
             }
         }
         for (LifecycleObject lo : list) {
-            lo.startRun(allServices, composer.get(ContainerConfiguration.class),
-                    new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class)));
+            lo.startRun(allServices, composer.get(ContainerConfiguration.class), new DefaultServiceRegistrant(composer
+                    .get(DefaultServiceManager.class)));
         }
         if (composer.hasService(DefaultManagementService.class)) {
             try {

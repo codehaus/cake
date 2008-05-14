@@ -1,33 +1,24 @@
 package org.codehaus.cake.internal.service;
 
-import java.util.Map;
-
 import org.codehaus.cake.service.ServiceRegistrant;
 
 public class DefaultServiceRegistrant implements ServiceRegistrant {
-    private DefaultServiceManager manager;
+    private final DefaultServiceManager manager;
 
     public DefaultServiceRegistrant(DefaultServiceManager manager) {
         this.manager = manager;
     }
 
     public <T> void registerService(Class<T> key, T service) {
+        if (key == null) {
+            throw new NullPointerException("key is null");
+        } else if (service == null) {
+            throw new NullPointerException("service is null");
+        }
+        if (manager.services.containsKey(key)) {
+            throw new IllegalArgumentException("A service with the specified key has already been registered [key= "
+                    + key + "]");
+        }
         manager.services.put(key, service);
-    
-    }
-
-    /** {@inheritDoc} */
-    public Map<Class<?>, Object> getAllServices() {
-        throw new UnsupportedOperationException("Can only register services");
-    }
-
-    /** {@inheritDoc} */
-    public final <T> T getService(Class<T> serviceType) {
-        throw new UnsupportedOperationException("Can only register services");
-    }
-
-    /** {@inheritDoc} */
-    public final boolean hasService(Class<?> type) {
-        throw new UnsupportedOperationException("Can only register services");
     }
 }

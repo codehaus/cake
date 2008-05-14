@@ -9,7 +9,6 @@ import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.store.CacheStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
@@ -17,7 +16,6 @@ import org.junit.After;
 import org.junit.Test;
 
 public class LifecycleStart extends AbstractCacheTCKTest {
-    int countdown;
     private CountDownLatch latch = new CountDownLatch(0);
 
     @After
@@ -26,69 +24,36 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     }
 
     @Test
-    public void noArg() {
+    public void allConfigurations() {
         latch = new CountDownLatch(1);
-        conf.addService(new Started1());
-        init();
-        prestart();
-    }
-
-    @Test
-    public void twoMethod() {
-        latch = new CountDownLatch(2);
-        conf.addService(new Started2());
-        init();
-        prestart();
-    }
-
-    @Test
-    public void allArgs() {
-        latch = new CountDownLatch(3);
-        conf.addService(new Started3());
+        conf.addService(new AllConfigurations());
         init();
         prestart();
     }
 
     @Test(expected = IllegalStateException.class)
     public void unknownConfiguration() {
-        conf.addService(new Started4());
+        conf.addService(new CustomConfiguration());
         init();
         prestart();
     }
 
     @Test
-    public void userConf() {
+    public void customConfiguration() {
+        latch = new CountDownLatch(1);
         conf = new TestConfiguration();
-        conf.addService(new Started4());
+        conf.addService(new CustomConfiguration());
         init();
         prestart();
     }
 
-    public class Started1 {
+    public class AllConfigurations {
         @Startable
-        public void start() {
+        public void start(CacheConfiguration configuration, CacheExceptionHandlingConfiguration a1,
+                CacheAttributeConfiguration a2, CacheLoadingConfiguration a3, ManagementConfiguration a4,
+                MemoryStoreConfiguration a5, ExecutorsConfiguration a6, CacheStoreConfiguration a7) {
             latch.countDown();
-        }
-    }
-
-    public class Started2 {
-        @Startable
-        public void start1() {
-            latch.countDown();
-        }
-
-        @Startable
-        public void start2() {
-            latch.countDown();
-        }
-    }
-
-    public class Started3 {
-        @Startable
-        public void start(CacheExceptionHandlingConfiguration a1, CacheAttributeConfiguration a2,
-                CacheLoadingConfiguration a3, ManagementConfiguration a4, MemoryStoreConfiguration a5,
-                ExecutorsConfiguration a6, CacheStoreConfiguration a7) {
-            latch.countDown();
+            assertSame(conf, configuration);
             assertSame(a1, conf.withExceptionHandling());
             assertSame(a2, conf.withAttributes());
             assertSame(a3, conf.withLoading());
@@ -97,27 +62,9 @@ public class LifecycleStart extends AbstractCacheTCKTest {
             assertSame(a6, conf.withExecutors());
             assertSame(a7, conf.withStore());
         }
-
-        @Startable
-        public void start(CacheConfiguration configuration) {
-            assertSame(conf, configuration);
-            latch.countDown();
-        }
-
-        @Startable
-        public void start(ServiceRegistrant registrant) {
-            assertNotNull(registrant);
-            latch.countDown();
-        }
     }
 
-    public class Started4 {
-        @Startable
-        public void start(CacheConfiguration configuration) {
-            assertSame(conf, configuration);
-            latch.countDown();
-        }
-
+    public class CustomConfiguration {
         @Startable
         public void start(TestFoo registrant) {
             assertNotNull(registrant);

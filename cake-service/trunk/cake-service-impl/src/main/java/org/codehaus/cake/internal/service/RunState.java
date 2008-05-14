@@ -11,7 +11,7 @@ public abstract class RunState {
     protected static final int SHUTDOWN = 4;
     protected static final int STOPPING = 8;
     protected static final int TERMINATED = 16;
-    private final String containerType;
+    final String containerType;
     private final String containerName;
 
     public RunState(ContainerInfo info) {

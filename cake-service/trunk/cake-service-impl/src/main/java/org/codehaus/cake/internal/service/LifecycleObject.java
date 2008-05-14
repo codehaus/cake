@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.cake.internal.UseInternals;
-import org.codehaus.cake.internal.picocontainer.ComponentAdapter;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
@@ -124,15 +123,21 @@ public class LifecycleObject {
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
                     state.trySetStartupException(cause);
-                    ies.error("Start of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
-                            + "]", cause);
                     if (cause instanceof Error) {
                         throw (Error) cause;
                     }
+                    if (cause instanceof RuntimeException) {
+                        throw (RuntimeException) cause;
+                    }
+                    throw new IllegalStateException("Failed to start", cause);
+                    // ies.error("Start of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                    // + "]", cause);
                 } catch (IllegalAccessException e) {
                     state.trySetStartupException(e);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
-                            + "]", e.getCause());
+                    throw new IllegalStateException("Could not start cache", e);
+                    // ies.error("@AfterStart for service failed [service=" + o + ", type=" + o.getClass() + ", method="
+                    // + m
+                    // + "]", e);
                 }
             }
         }

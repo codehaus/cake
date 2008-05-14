@@ -7,7 +7,7 @@ package org.codehaus.cake.service;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
  */
-public interface ServiceRegistrant extends ServiceManager {
+public interface ServiceRegistrant {
 
     /**
      * Registers the specified service. The service can then later be retrieved by calls to
