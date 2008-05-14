@@ -1,13 +1,13 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.test.tck.service.executors;
+package org.codehaus.cake.service.test.tck.service.executors;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.service.executor.ExecutorsService;
-import org.codehaus.cake.test.tck.RequireService;
+import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;
 
 @RequireService( { ExecutorsService.class })

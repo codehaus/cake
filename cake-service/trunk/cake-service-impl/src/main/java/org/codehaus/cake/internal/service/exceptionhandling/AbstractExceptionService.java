@@ -10,8 +10,8 @@ import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Loggers;
 import org.codehaus.cake.util.Logger.Level;
 
-public abstract class AbstractExceptionService<T extends Container> implements
-        InternalDebugService, InternalExceptionService<T> {
+public abstract class AbstractExceptionService<T extends Container> implements InternalDebugService,
+        InternalExceptionService<T> {
     /** The cache for which exceptions should be handled. */
     private volatile T container;
 
@@ -19,8 +19,8 @@ public abstract class AbstractExceptionService<T extends Container> implements
 
     private final Logger infoLogger;// might be null
 
-    public AbstractExceptionService(ContainerInfo info,
-            ContainerConfiguration<?> containerConfiguration, Logger exceptionLogger) {
+    public AbstractExceptionService(ContainerInfo info, ContainerConfiguration<?> containerConfiguration,
+            Logger exceptionLogger) {
         Logger infoLogger = containerConfiguration.getDefaultLogger();
         this.infoLogger = infoLogger == null ? Loggers.NULL_LOGGER : infoLogger;
 
@@ -29,23 +29,35 @@ public abstract class AbstractExceptionService<T extends Container> implements
             logger = infoLogger;
         }
         if (logger == null) {
-            String loggerName = info.getContainerType().getPackage().getName() + "."
-                    + info.getContainerName();
+            String loggerName = info.getContainerType().getPackage().getName() + "." + info.getContainerName();
             // String infoMsg = CacheInternals.lookup(DefaultCacheExceptionService.class,
             // "noLogger",
             // name, loggerName);
             String infoMsg = "no logger defined";
-            logger = new LazyLogger(loggerName, infoMsg);
+            logger = new LazyLogger(loggerName, infoMsg, AbstractExceptionService.class.getName());
         }
         this.exceptionLogger = logger;
     }
 
-    public void initialize(T container) {
-        this.container = container;
+    protected ExceptionContext<T> createContext(String message, Level level) {
+        return createContext(null, message, level);
     }
 
-    public void warning(String warning) {
-        handle(createContext(warning, Level.Warn));
+    protected ExceptionContext<T> createContext(Throwable cause) {
+        Level level = cause instanceof Exception && !(cause instanceof RuntimeException) ? Level.Error : Level.Fatal;
+        return createContext(cause, level);
+    }
+
+    protected ExceptionContext<T> createContext(Throwable cause, Level level) {
+        return createContext(cause, cause.getMessage(), level);
+    }
+
+    protected ExceptionContext<T> createContext(Throwable cause, String message, Level level) {
+        return new DefaultExceptionContext(cause, message, level);
+    }
+
+    public void debug(String str) {
+        infoLogger.debug(str);
     }
 
     /** {@inheritDoc} */
@@ -70,30 +82,12 @@ public abstract class AbstractExceptionService<T extends Container> implements
 
     protected abstract void handle(ExceptionContext<T> context);
 
-    protected ExceptionContext<T> createContext(Throwable cause) {
-        Level level = cause instanceof Exception && !(cause instanceof RuntimeException) ? Level.Error
-                : Level.Fatal;
-        return createContext(cause, level);
-    }
-
-    protected ExceptionContext<T> createContext(String message, Level level) {
-        return createContext(null, message, level);
-    }
-
-    protected ExceptionContext<T> createContext(Throwable cause, Level level) {
-        return createContext(cause, cause.getMessage(), level);
-    }
-
-    protected ExceptionContext<T> createContext(Throwable cause, String message, Level level) {
-        return new DefaultExceptionContext(cause, message, level);
-    }
-
-    public void debug(String str) {
-        infoLogger.debug(str);
-    }
-
     public void info(String str) {
         infoLogger.info(str);
+    }
+
+    public void initialize(T container) {
+        this.container = container;
     }
 
     /** {@inheritDoc} */
@@ -109,6 +103,10 @@ public abstract class AbstractExceptionService<T extends Container> implements
     /** {@inheritDoc} */
     public void trace(String str) {
         infoLogger.trace(str);
+    }
+
+    public void warning(String warning) {
+        handle(createContext(warning, Level.Warn));
     }
 
     private class DefaultExceptionContext extends ExceptionContext<T> {

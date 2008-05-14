@@ -9,8 +9,7 @@ import javax.management.ObjectName;
 import org.codehaus.cake.management.ManagedVisitor;
 
 /**
- * This class is used to configure how a container can be remotely monitored and managed
- * using JMX.
+ * This class is used to configure how a container can be remotely monitored and managed using JMX.
  * <p>
  * Remote management (JMX) is turned off by default and you need to call
  * {@link #setEnabled(boolean)} to enable it.
@@ -73,8 +72,8 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets the specific domain that MBeans should register under. If no domain is
-     * specified the container will use a default name. For example, {@link org.codehaus.cake.cache.CacheMXBean}
+     * Sets the specific domain that MBeans should register under. If no domain is specified the
+     * container will use a default name. For example, {@link org.codehaus.cake.cache.CacheMXBean}
      * is registered under {@link org.codehaus.cake.cache.CacheMXBean#DEFAULT_JMX_DOMAIN}.
      * 
      * @param domain
@@ -89,8 +88,8 @@ public class ManagementConfiguration {
         try {
             new ObjectName(domain + ":type=foo");
         } catch (MalformedObjectNameException e) {
-            throw new IllegalArgumentException(
-                    "The specified domain results in an illegal objectname, " + e.getMessage());
+            throw new IllegalArgumentException("The specified domain is not a valid domain name, "
+                    + e.getMessage());
         }
         this.domain = domain;
         return this;
@@ -110,8 +109,8 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets the {@link MBeanServer}} that MBeans should register with. If no MBeanServer
-     * is set and this service is enabled; the
+     * Sets the {@link MBeanServer}} that MBeans should register with. If no MBeanServer is set and
+     * this service is enabled; the
      * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform MBeanServer}
      * will be used.
      * 
@@ -126,13 +125,13 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets a ManagedGroupVisitor that will used to register all the. Normal users will
+     * Sets a ManagedVisitor that will used to register all managed objects. Normal users will
      * seldom need to use this method. But if you need some kind of non standard naming of
-     * {@link javax.management.ObjectName ObjectNames}, wants to only register a specific
-     * service or any other special thing. You can use this method to specify a special
-     * registrant that will visit each service.
+     * {@link javax.management.ObjectName ObjectNames}, wants to only register a specific service
+     * or another hierarchy then the one used by default by the container. This method can be used
+     * specify a special registrant.
      * <p>
-     * If no registrant is specified a default registrant will be used.
+     * If no registrant is specified the containers default registrant will be used.
      * 
      * @param registrant
      *            the registrant

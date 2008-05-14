@@ -1,4 +1,4 @@
-package org.codehaus.cake.test.tck;
+package org.codehaus.cake.service.test.tck;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,18 +13,18 @@ public class TckUtil {
     static Class<? extends ContainerConfiguration> configuration;
 
     static {
-        try {
-            InputStream is = TckRunner.class.getClassLoader().getResourceAsStream("defaulttestclass");
-            if (is != null) {
+        InputStream is = TckRunner.class.getClassLoader().getResourceAsStream("defaulttestclass");
+        if (is != null) {
+            try {
                 Properties p = new Properties();
                 p.load(is);
                 containerImplementation = (Class) Class.forName(p.getProperty("container"));
                 configuration = (Class) Class.forName(p.getProperty("configuration"));
+            } catch (IOException e) {
+                throw new Error(e);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (ClassNotFoundException e) {
-            // ignore, user has not defined a class
-        } catch (IOException e) {
-            throw new Error(e);
         }
     }
 

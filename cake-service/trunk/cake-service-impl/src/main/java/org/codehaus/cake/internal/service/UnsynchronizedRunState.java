@@ -9,7 +9,8 @@ public class UnsynchronizedRunState extends RunState {
 
     private final LifecycleManager lifecycleManager;
 
-    int state;
+    private int state;
+    
     private Throwable startupException;
 
     public UnsynchronizedRunState(ContainerInfo info, LifecycleManager lifecycleManager) {

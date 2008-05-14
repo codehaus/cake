@@ -1,6 +1,6 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.test.container.util;
+package org.codehaus.cake.service.test.util;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.forkjoin.ForkJoinExecutor;
 import org.codehaus.cake.service.executor.ExecutorsManager;
 
 public class ThreadServiceTestHelper extends ExecutorsManager {
@@ -72,6 +73,10 @@ public class ThreadServiceTestHelper extends ExecutorsManager {
 
     public ScheduledExecutorService getScheduledExecutorService(Object service,
             AttributeMap attributes) {
+        throw new UnsupportedOperationException();
+    }
+
+    public ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes) {
         throw new UnsupportedOperationException();
     }
 

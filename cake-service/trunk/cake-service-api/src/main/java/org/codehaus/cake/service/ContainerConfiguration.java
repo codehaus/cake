@@ -18,13 +18,15 @@ import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 
 /**
- * This class is the primary class used for representing the configuration of a container.
+ * This class is the primary class used for representing the configuration of a
+ * container.
  * <p>
- * This class is not meant to be directly instantiated, instead it should be overridden with a
- * configuration object for a concrete container type.
+ * This class is not meant to be directly instantiated, instead it should be
+ * overridden with a configuration object for a concrete container type.
  * <p>
- * All general-purpose <tt>Container</tt> implementation classes should have a constructor with a
- * single argument taking a concrete class extending ContainerConfiguration.
+ * All general-purpose <tt>Container</tt> implementation classes should have a
+ * constructor with a single argument taking a concrete class extending
+ * ContainerConfiguration.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $
@@ -64,30 +66,33 @@ public abstract class ContainerConfiguration<T> {
      * @throws NullPointerException
      *             if the specified configuration object is null
      * @throws IllegalArgumentException
-     *             if another configuration of the same type is already registered
+     *             if another configuration of the same type is already
+     *             registered
      */
-    public <U> ContainerConfiguration<T> addConfiguration(U configuration) {
+    public final <U> ContainerConfiguration<T> addConfiguration(U configuration) {
         if (configuration == null) {
             throw new NullPointerException("configuration is null");
         }
         if (configurations.containsKey(configuration.getClass())) {
-            throw new IllegalArgumentException("A configuration of type "
-                    + configuration.getClass() + " has already been added");
+            throw new IllegalArgumentException("A configuration of type " + configuration.getClass()
+                    + " has already been added");
         }
         configurations.put(configuration.getClass(), configuration);
         return this;
     }
 
     /**
-     * Registers a object for the container. Only objects of type {@link MapLifecycle} or
-     * {@link Manageable}, are valid. If the object is of type {@link MapLifecycle} the container
-     * will invoke the respective lifecycle methods on the object. If the object is of type
+     * Registers a object for the container. Only objects of type
+     * {@link MapLifecycle} or {@link Manageable}, are valid. If the object is
+     * of type {@link MapLifecycle} the container will invoke the respective
+     * lifecycle methods on the object. If the object is of type
      * {@link Manageable} and management is enabled for the container (see
-     * {@link MapManagementConfiguration#setEnabled(boolean)}). It can be registered with a
-     * {@link ManagedGroup}.
+     * {@link MapManagementConfiguration#setEnabled(boolean)}). It can be
+     * registered with a {@link ManagedGroup}.
      * <p>
-     * Attaches the specified instance to the service map of the container. This object can then
-     * later be retrieved by calling {@link org.codehaus.cake.container.Container#getService(Class)}.
+     * Attaches the specified instance to the service map of the container. This
+     * object can then later be retrieved by calling
+     * {@link org.codehaus.cake.container.Container#getService(Class)}.
      * 
      * <pre>
      * ContainerServiceManagerConfiguration csmc;
@@ -98,15 +103,15 @@ public abstract class ContainerConfiguration<T> {
      * assert &quot;fooboo&quot; = c.getService(String.class);
      * </pre>
      * 
-     * If the specified key conflicts with the key-type of any of the build in service an exception
-     * will be thrown when the container is constructed.
+     * If the specified key conflicts with the key-type of any of the build in
+     * service an exception will be thrown when the container is constructed.
      * 
      * @param o
      *            the object to register
      * @return this configuration
      * @throws IllegalArgumentException
-     *             in case of an argument of invalid type or if the object has already been
-     *             registered.
+     *             in case of an argument of invalid type or if the object has
+     *             already been registered.
      */
     public ContainerConfiguration<T> addService(Object o) {
         if (o == null) {
@@ -123,12 +128,13 @@ public abstract class ContainerConfiguration<T> {
      * 
      * @return a collection of all service configuration objects
      */
-    public Set<Object> getConfigurations() {
+    public final Set<Object> getConfigurations() {
         return new HashSet<Object>(configurations.values());
     }
 
     /**
-     * Returns the {@link org.codehaus.cake.util.Clock} that the container should use.
+     * Returns the {@link org.codehaus.cake.util.Clock} that the container
+     * should use.
      * 
      * @return the Clock that the container should use
      * @see #setClock(Clock)
@@ -138,11 +144,11 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the default logger configured for this container or <tt>null</tt> if no default
-     * logger has been configured.
+     * Returns the default logger configured for this container or <tt>null</tt>
+     * if no default logger has been configured.
      * 
-     * @return the default logger configured for this container or null if no default logger has
-     *         been configured
+     * @return the default logger configured for this container or null if no
+     *         default logger has been configured
      * @see #setDefaultLogger(Logger)
      */
     public Logger getDefaultLogger() {
@@ -152,7 +158,8 @@ public abstract class ContainerConfiguration<T> {
     /**
      * Returns the name of the container.
      * 
-     * @return the name of the container, or <tt>null</tt> if no name has been set.
+     * @return the name of the container, or <tt>null</tt> if no name has been
+     *         set.
      * @see #setName(String)
      * @see Container#getName()
      */
@@ -161,8 +168,9 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the objects that have been registered through {@link #add(Object)}. The service will
-     * be returned in the same order as the they have been added.
+     * Returns the objects that have been registered through
+     * {@link #add(Object)}. The service will be returned in the same order as
+     * the they have been added.
      * 
      * @return the objects that have been registered
      */
@@ -181,13 +189,14 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the property value for the specified key or <tt>null</tt> if no such property
-     * exists. A <tt>null</tt> can also indicate that the key was explicitly mapped to
-     * <tt>null</tt>.
+     * Returns the property value for the specified key or <tt>null</tt> if no
+     * such property exists. A <tt>null</tt> can also indicate that the key
+     * was explicitly mapped to <tt>null</tt>.
      * 
      * @param key
      *            the key for which to retrieve the value
-     * @return the value of the property or <tt>null</tt> if no such property exists
+     * @return the value of the property or <tt>null</tt> if no such property
+     *         exists
      * @throws NullPointerException
      *             if key is <tt>null</tt>
      */
@@ -196,16 +205,17 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the property value for the specified key or the specified default value if no such
-     * property exists. A property does not exists if it is mapped to <tt>null</tt> either
-     * explicitly or because no such entry exists.
+     * Returns the property value for the specified key or the specified default
+     * value if no such property exists. A property does not exists if it is
+     * mapped to <tt>null</tt> either explicitly or because no such entry
+     * exists.
      * 
      * @param key
      *            the key for which to retrieve the value
      * @param defaultValue
      *            the default value to return if the property does not exist
-     * @return the value of the property or the specified default value if the property does not
-     *         exist
+     * @return the value of the property or the specified default value if the
+     *         property does not exist
      * @throws NullPointerException
      *             if key is <tt>null</tt>
      */
@@ -220,22 +230,23 @@ public abstract class ContainerConfiguration<T> {
     /**
      * Returns the type of container set by {@link #setContainerType(Class)}.
      * 
-     * @return the type of container set by {@link #setContainerType(Class)} or <code>null</code>
-     *         if no type has been set
+     * @return the type of container set by {@link #setContainerType(Class)} or
+     *         <code>null</code> if no type has been set
      */
     public Class<? extends T> getType() {
         return type;
     }
 
     /**
-     * Creates a new Container of the type set using {@link #setContainerType(Class)} from this
-     * configuration.
+     * Creates a new Container of the type set using
+     * {@link #setContainerType(Class)} from this configuration.
      * 
      * @return the newly created Container
      * @throws IllegalArgumentException
      *             if a container of the specified type could not be created
      * @throws IllegalStateException
-     *             if no container has been set using {@link #setContainerType(Class)}
+     *             if no container has been set using
+     *             {@link #setContainerType(Class)}
      */
     public T newInstance() {
         Class<? extends T> type = getType();
@@ -246,10 +257,11 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Creates a new container instance of the specified type using this configuration.
+     * Creates a new container instance of the specified type using this
+     * configuration.
      * <p>
-     * The behavior of this operation is undefined if this configuration is modified while the
-     * operation is in progress.
+     * The behavior of this operation is undefined if this configuration is
+     * modified while the operation is in progress.
      * 
      * @param containerType
      *            the type of container that should be created
@@ -265,21 +277,29 @@ public abstract class ContainerConfiguration<T> {
         if (type == null) {
             throw new NullPointerException("type is null");
         }
-        final Constructor<T> c;
+        Constructor<T> c = null;
+        Class clazz = getClass();
+        while (!clazz.equals(ContainerConfiguration.class)) {
+            try {
+                c = (Constructor<T>) type.getDeclaredConstructor(clazz);
+            } catch (NoSuchMethodException e) {
+            }
+            clazz = clazz.getSuperclass();
+        }
+        if (c == null) {
+            throw new IllegalArgumentException("Could not create container instance, no public contructor "
+                    + "taking a single ContainerConfiguration instance for the specified class [class = " + type + "]");
+        }
         try {
             c = (Constructor<T>) type.getDeclaredConstructor(getClass());
         } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException(
-                    "Could not create container instance, no public contructor "
-                            + "taking a single ContainerConfiguration instance for the specified class [class = "
-                            + type + "]", e);
+
         }
         try {
             return (S) c.newInstance(this);
         } catch (InstantiationException e) {
-            throw new IllegalArgumentException(
-                    "Could not create container instance, specified clazz [class = " + type
-                            + "] is an interface or an abstract class", e);
+            throw new IllegalArgumentException("Could not create container instance, specified clazz [class = " + type
+                    + "] is an interface or an abstract class", e);
         } catch (IllegalAccessException e) {
             throw new IllegalArgumentException("Could not create instance of " + type, e);
         } catch (InvocationTargetException e) {
@@ -292,10 +312,11 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Sets the {@link org.codehaus.cake.util.Clock} that the container should use. Normally users
-     * should not need to set this, only if they want to provide another timing mechanism then the
-     * built-in {@link java.lang.System#currentTimeMillis()} and {@link java.lang.System#nanoTime()}.
-     * For example, a custom NTP protocol.
+     * Sets the {@link org.codehaus.cake.util.Clock} that the container should
+     * use. Normally users should not need to set this, only if they want to
+     * provide another timing mechanism then the built-in
+     * {@link java.lang.System#currentTimeMillis()} and
+     * {@link java.lang.System#nanoTime()}. For example, a custom NTP protocol.
      * <p>
      * This method is also useful for tests that rely on exact timing of events.
      * 
@@ -314,14 +335,16 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Sets the default logger for this container. If for some reason the container or one of its
-     * services needs to notify users of some kind of events this logger should be used. Some
-     * services might allow to set a special logger. For example, for logging timing informations,
-     * auditing, ... etc. In this case this special logger will take precedence over this specified
-     * logger when logging for the service.
+     * Sets the default logger for this container. If for some reason the
+     * container or one of its services needs to notify users of some kind of
+     * events this logger should be used. Some services might allow to set a
+     * special logger. For example, for logging timing informations, auditing,
+     * ... etc. In this case this special logger will take precedence over this
+     * specified logger when logging for the service.
      * <p>
-     * All available containers in Cake strives to be very conservative about what is logged, log as
-     * little as possible. That is, we actually recommend running with log level set at
+     * All available containers in Cake strives to be very conservative about
+     * what is logged, log as little as possible. That is, we actually recommend
+     * running with log level set at
      * {@link org.codehaus.cake.util.Logger.Level#Info} even in production.
      * 
      * @param logger
@@ -338,20 +361,23 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Sets the name of the container. The name should be unique among other configured containers.
-     * The name must consists only of alphanumeric characters and '_' or '-'.
+     * Sets the name of the container. The name should be unique among other
+     * configured containers. The name must consists only of alphanumeric
+     * characters and '_' or '-'.
      * <p>
-     * If no name is set in the configuration, any container implementation must generate a name for
-     * the container. How exactly the name is generated is implementation specific. But the
-     * recommended way is to use {@link UUID#randomUUID()} or a similar mechanism to generate a
-     * random name.
+     * If no name is set in the configuration, any container implementation must
+     * generate a name for the container. How exactly the name is generated is
+     * implementation specific. But the recommended way is to use
+     * {@link UUID#randomUUID()} or a similar mechanism to generate a random
+     * name.
      * 
      * @param name
      *            the name of the container
      * @return this configuration
      * @throws IllegalArgumentException
-     *             if the specified name is the empty string or if the name contains other
-     *             characters then alphanumeric characters and '_' or '-'
+     *             if the specified name is the empty string or if the name
+     *             contains other characters then alphanumeric characters and
+     *             '_' or '-'
      * @see #getName()
      * @see Container#getName()
      */
@@ -361,8 +387,7 @@ public abstract class ContainerConfiguration<T> {
         } else if (name != null) {
             if (!Pattern.matches("[\\da-zA-Z\\x5F\\x2D]+", name)) {
                 throw new IllegalArgumentException(
-                        "not a valid name, must only contain alphanumeric characters and '_' or '-', was "
-                                + name);
+                        "not a valid name, must only contain alphanumeric characters and '_' or '-', was " + name);
             }
         }
         this.name = name;
@@ -370,8 +395,9 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Some container implementations might allow additional properties to be set then those defined
-     * by this class. This method can be used to set these additional properties.
+     * Some container implementations might allow additional properties to be
+     * set then those defined by this class. This method can be used to set
+     * these additional properties.
      * 
      * @param key
      *            the key of the property
@@ -419,8 +445,7 @@ public abstract class ContainerConfiguration<T> {
     protected <U> U getConfigurationOfType(Class<U> configurationType) {
         Object o = configurations.get(configurationType);
         if (o == null) {
-            throw new IllegalArgumentException("Unknown service configuration [ type = "
-                    + configurationType + "]");
+            throw new IllegalArgumentException("Unknown service configuration [ type = " + configurationType + "]");
         }
         return (U) o;
     }

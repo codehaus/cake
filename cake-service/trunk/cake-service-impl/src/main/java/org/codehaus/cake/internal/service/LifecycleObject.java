@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.cake.internal.UseInternals;
+import org.codehaus.cake.internal.picocontainer.ComponentAdapter;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
+import org.codehaus.cake.internal.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.AfterStart;
@@ -47,7 +49,7 @@ public class LifecycleObject {
         return hasAnnotation(Stoppable.class) || hasAnnotation(Disposable.class);
     }
 
-    private void matchAndInvoke(Method m, Iterable parameters) throws IllegalArgumentException,
+    private void matchAndInvoke(Method m, Iterable parameters, boolean start) throws IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         for (Object o : parameters) {
@@ -57,10 +59,37 @@ public class LifecycleObject {
         }
         Object[] obs = new Object[m.getParameterTypes().length];
         for (int i = 0; i < m.getParameterTypes().length; i++) {
-            Object oo = mpc.getComponentInstanceOfType(m.getParameterTypes()[i]);
+            Class type = m.getParameterTypes()[i];
+            if (type.equals(Object.class)) {
+                RuntimeException e = new IllegalStateException("Cannot depend on an Object as a parameter [method ="
+                        + m.toString() + "]");
+                state.trySetStartupException(e);
+                throw e;
+            }
+
+            Object oo = null;
+            try {
+                oo = mpc.getComponentInstanceOfType(type);
+            } catch (AmbiguousComponentResolutionException ee) {
+                RuntimeException e = new IllegalStateException("Method " + m + "." + ee.getMessage());
+                state.trySetStartupException(e);
+                throw e;
+            }
             if (oo == null) {
-                RuntimeException e = new IllegalStateException("No service registered for type "
-                        + m.getParameterTypes()[i]);
+                final RuntimeException e;
+                if (start) {
+                    if (Container.class.isAssignableFrom(type)) {
+                        e = new IllegalStateException("An instance of " + type.getSimpleName()
+                                + " is not available while running methods annotated with @"
+                                + Startable.class.getSimpleName() + ". The @" + AfterStart.class.getSimpleName()
+                                + " annotation can be used instead if a " + type.getSimpleName() + " is needed.");
+                    } else {
+                        e = new IllegalStateException("An object of type " + type.getName()
+                                + " is not available for methods with @" + Startable.class.getSimpleName());
+                    }
+                } else {
+                    e = new IllegalStateException("No service registered for type " + type.getName());
+                }
                 state.trySetStartupException(e);
                 throw e;
             }
@@ -75,8 +104,7 @@ public class LifecycleObject {
         }
     }
 
-    public void startRun(List all, ContainerConfiguration configuration,
-            ServiceRegistrant registrant) {
+    public void startRun(List all, ContainerConfiguration configuration, ServiceRegistrant registrant) {
         ArrayList al = new ArrayList();
         al.add(configuration);
         al.add(registrant);
@@ -89,22 +117,22 @@ public class LifecycleObject {
             if (a != null) {
                 try {
                     if (isInternal) {
-                        matchAndInvoke(m, all);
+                        matchAndInvoke(m, all, true);
                     } else {
-                        matchAndInvoke(m, al);
+                        matchAndInvoke(m, al, true);
                     }
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
                     state.trySetStartupException(cause);
-                    ies.error("Start of service failed [service=" + o + ", type=" + o.getClass()
-                            + ", method=" + m + "]", cause);
+                    ies.error("Start of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                            + "]", cause);
                     if (cause instanceof Error) {
                         throw (Error) cause;
                     }
                 } catch (IllegalAccessException e) {
                     state.trySetStartupException(e);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass()
-                            + ", method=" + m + "]", e.getCause());
+                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                            + "]", e.getCause());
                 }
             }
         }
@@ -120,19 +148,19 @@ public class LifecycleObject {
             Annotation a = m.getAnnotation(AfterStart.class);
             if (a != null) {
                 try {
-                    matchAndInvoke(m, al);
+                    matchAndInvoke(m, al, false);
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
                     state.trySetStartupException(cause);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass()
-                            + ", method=" + m + "]", cause);
+                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                            + "]", cause);
                     if (cause instanceof Error) {
                         throw (Error) cause;
                     }
                 } catch (IllegalAccessException e) {
                     state.trySetStartupException(e);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass()
-                            + ", method=" + m + "]", e.getCause());
+                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                            + "]", e.getCause());
                 }
             }
         }
@@ -143,23 +171,22 @@ public class LifecycleObject {
             Annotation a = m.getAnnotation(Stoppable.class);
             if (a != null) {
                 if (m.getParameterTypes().length > 0) {
-                    ies
-                            .error(Stoppable.class
-                                    + " annotation does not accept arguments, method will not be run [service="
-                                    + o + ", type=" + o.getClass() + ", method=" + m + "]");
+                    ies.error(Stoppable.class
+                            + " annotation does not accept arguments, method will not be run [service=" + o + ", type="
+                            + o.getClass() + ", method=" + m + "]");
                 } else {
                     try {
                         m.invoke(o);
                     } catch (InvocationTargetException e) {
                         Throwable cause = e.getCause();
-                        ies.error("Disposal of service failed [service=" + o + ", type="
-                                + o.getClass() + ", method=" + m + "]", cause);
+                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
+                                + m + "]", cause);
                         if (cause instanceof Error) {
                             throw (Error) cause;
                         }
                     } catch (IllegalAccessException e) {
-                        ies.error("Disposal of service failed [service=" + o + ", type="
-                                + o.getClass() + ", method=" + m + "]", e.getCause());
+                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
+                                + m + "]", e.getCause());
                     }
                 }
             }
@@ -171,23 +198,22 @@ public class LifecycleObject {
             Annotation a = m.getAnnotation(Disposable.class);
             if (a != null) {
                 if (m.getParameterTypes().length > 0) {
-                    ies
-                            .error(Disposable.class
-                                    + " annotation does not accept arguments, method will not be run [service="
-                                    + o + ", type=" + o.getClass() + ", method=" + m + "]");
+                    ies.error(Disposable.class
+                            + " annotation does not accept arguments, method will not be run [service=" + o + ", type="
+                            + o.getClass() + ", method=" + m + "]");
                 } else {
                     try {
                         m.invoke(o);
                     } catch (InvocationTargetException e) {
                         Throwable cause = e.getCause();
-                        ies.error("Disposal of service failed [service=" + o + ", type="
-                                + o.getClass() + ", method=" + m + "]", cause);
+                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
+                                + m + "]", cause);
                         if (cause instanceof Error) {
                             throw (Error) cause;
                         }
                     } catch (IllegalAccessException e) {
-                        ies.error("Disposal of service failed [service=" + o + ", type="
-                                + o.getClass() + ", method=" + m + "]", e.getCause());
+                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
+                                + m + "]", e.getCause());
                     }
                 }
             }

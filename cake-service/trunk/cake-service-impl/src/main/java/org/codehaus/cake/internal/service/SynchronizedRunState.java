@@ -6,21 +6,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.service.Container;
+
 public final class SynchronizedRunState extends RunState {
+    private final LifecycleManager lifecycleManager;
+    
+    private final Object mutex;
+
     // Order among values matters
     private final AtomicReference<Throwable> startupException = new AtomicReference<Throwable>();
-    /** CountDownLatch used for signalling termination. */
+
+    private final AtomicInteger state = new AtomicInteger();
+
+    /** CountDownLatch used for signaling termination. */
     private final CountDownLatch terminationLatch = new CountDownLatch(1);
-    final AtomicInteger state = new AtomicInteger();
-    public SynchronizedRunState(ContainerInfo info) {
+
+    public SynchronizedRunState(Container container, ContainerInfo info, LifecycleManager lifecycleManager) {
         super(info);
-    }
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return terminationLatch.await(timeout, unit);
+        this.lifecycleManager = lifecycleManager;
+        mutex = container;
     }
 
-    public void trySetStartupException(Throwable cause) {
-        startupException.compareAndSet(null, cause);
+    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+        return terminationLatch.await(timeout, unit);
     }
 
     public void checkExceptions() {
@@ -30,12 +38,33 @@ public final class SynchronizedRunState extends RunState {
         }
     }
 
+    @Override
+    protected int get() {
+        return state.get();
+    }
+
+    public void shutdown(boolean shutdownNow) {
+        synchronized (mutex) {
+            if (!isAtLeastShutdown()) {
+                transitionToShutdown();
+            }
+        }
+    }
+
     public boolean transitionTo(int state) {
         for (;;) {
             int s = get();
             if (s >= state)
                 return false;
             if (this.state.compareAndSet(s, state)) {
+                if (state == STARTING) {
+                    lifecycleManager.start(this);
+                }
+                if (state == SHUTDOWN) {
+                    lifecycleManager.runShutdown(this);
+                    this.state.set(TERMINATED);
+                    state = TERMINATED;
+                }
                 if (state == TERMINATED) {
                     terminationLatch.countDown();
                 }
@@ -44,29 +73,17 @@ public final class SynchronizedRunState extends RunState {
         }
     }
 
+    public void trySetStartupException(Throwable cause) {
+        startupException.compareAndSet(null, cause);
+    }
+
     public boolean tryStart() {
-        Object mutex = this;// cache
         synchronized (mutex) {
             if (isStarting()) {
                 throw new IllegalStateException(
-                        "Cannot invoke this method from CacheLifecycle.start(Map services), should be invoked from CacheLifecycle.started(Cache c)");
+                        "Cannot invoke this method from a Startable service, should be invoked from an AfterStart method");
             }
             return transitionToStarting();
         }
-    }
-
-    public void shutdown(boolean shutdownNow) {
-        Object mutex = this;// cache
-        synchronized (mutex) {
-            if (!isAtLeastShutdown()) {
-                System.out.println("shutdown");
-                // throw new UnsupportedOperationException();
-            }
-        }
-    }
-
-    @Override
-    protected int get() {
-        return state.get();
     }
 }

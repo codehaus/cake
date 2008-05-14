@@ -1,4 +1,4 @@
-package org.codehaus.cake.test.tck;
+package org.codehaus.cake.service.test.tck;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

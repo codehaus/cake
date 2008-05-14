@@ -1,4 +1,4 @@
-package org.codehaus.cake.test.tck;
+package org.codehaus.cake.service.test.tck;
 
 import java.util.concurrent.TimeUnit;
 
@@ -7,7 +7,7 @@ import junit.framework.AssertionFailedError;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsService;
-import org.codehaus.cake.test.container.util.ThreadServiceTestHelper;
+import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.junit.After;
 import org.junit.Assert;
@@ -111,7 +111,9 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         conf = (T) TckUtil.newConfiguration();
         return conf;
     }
-
+    public final void prestart() {
+        c.hasService(Object.class);
+    }
     protected T newConfiguration() {
         newConfigurationClean();
         return conf;
