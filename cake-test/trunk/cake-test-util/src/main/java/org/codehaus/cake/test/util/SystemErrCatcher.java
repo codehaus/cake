@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 public final class SystemErrCatcher {
-    private final StringBuffer sb = new StringBuffer();
+    private StringBuffer sb = new StringBuffer();
 
     private final PrintStream old;
 
@@ -18,6 +18,10 @@ public final class SystemErrCatcher {
 
     public String toString() {
         return sb.toString();
+    }
+
+    public void clear() {
+        sb = new StringBuffer();
     }
 
     public void terminate() {
