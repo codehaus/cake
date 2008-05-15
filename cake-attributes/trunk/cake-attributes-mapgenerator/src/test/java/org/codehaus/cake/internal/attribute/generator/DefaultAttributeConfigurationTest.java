@@ -36,7 +36,7 @@ public class DefaultAttributeConfigurationTest {
         new DefaultAttributeConfiguration(I_1, false, false).toString();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void hashCodeEquals() {
         DefaultAttributeConfiguration dac = new DefaultAttributeConfiguration(I_1, true, false);
         DefaultAttributeConfiguration dac2 = new DefaultAttributeConfiguration(dac);
