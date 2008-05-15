@@ -6,6 +6,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.M1;
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_SET;
 import static org.codehaus.cake.test.util.CollectionTestUtil.M2;
 import static org.codehaus.cake.test.util.CollectionTestUtil.M6;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -84,9 +85,8 @@ public class CollectionUtilsTest {
         assertFalse(i.isEmpty());
         assertTrue(new CollectionUtils.ImmutableCollection(new HashSet()).isEmpty());
         assertEquals(col.size(), i.size());
-
-        assertEquals(col.toArray(), i.toArray());
-        assertEquals(col.toArray(new Integer[3]), i.toArray(new Integer[3]));
+        assertArrayEquals(col.toArray(), i.toArray());
+        assertArrayEquals(col.toArray(new Integer[3]), i.toArray(new Integer[3]));
         assertEquals(col.toString(), i.toString());
         assertEquals(col.toString(), i.toString());
         try {
