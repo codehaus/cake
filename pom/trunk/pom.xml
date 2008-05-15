@@ -118,48 +118,32 @@
           <showDeprecation>true</showDeprecation>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover-plugin</artifactId>
-        <configuration>
-<!-- <targetPercentage>80%</targetPercentage> -->          
-          <includesTestSourceRoots>false</includesTestSourceRoots>
-          <licenseLocation>${user.home}/.licenses/clover.license</licenseLocation>
-          <excludes>
-            <exclude>**/tck/service/**/*.java</exclude>
-            <!-- <exclude>**/examples/**/*.java</exclude> -->
-            <!-- <exclude>**/test/**/*.java</exclude>  -->
-          </excludes>
-          <jdk>1.5</jdk>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <id>coverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-clover-plugin</artifactId>
+            <configuration>
+              <!-- <targetPercentage>80%</targetPercentage> -->
+              <includesTestSourceRoots>false</includesTestSourceRoots>
+              <licenseLocation>${user.home}/.licenses/clover.license</licenseLocation>
+              <excludes>
+                <exclude>**/tck/service/**/*.java</exclude>
+                <!-- <exclude>**/examples/**/*.java</exclude> -->
+                <!-- <exclude>**/test/**/*.java</exclude>  -->
+              </excludes>
+              <jdk>1.5</jdk>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>release</id>
       <build>
@@ -236,8 +220,6 @@
       </releases>
     </repository>
   </repositories>
-
-
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/pom/trunk</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/pom/trunk</developerConnection>
