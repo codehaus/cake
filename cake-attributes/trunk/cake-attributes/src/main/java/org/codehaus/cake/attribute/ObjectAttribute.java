@@ -1,8 +1,12 @@
 package org.codehaus.cake.attribute;
 
 public abstract class ObjectAttribute<T> extends Attribute<T> {
+    public ObjectAttribute(Class<T> clazz) {
+        this(clazz, null);
+    }
+
     public ObjectAttribute(Class<T> clazz, T defaultValue) {
-        this("", clazz, defaultValue);
+        super(clazz, defaultValue);
     }
 
     /**
@@ -32,8 +36,8 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Checks if the specified value is valid for this attribute. If the specified value is not
-     * valid this method will throw an {@link IllegalArgumentException}.
+     * Checks if the specified value is valid for this attribute. If the specified value is not valid this method will
+     * throw an {@link IllegalArgumentException}.
      * 
      * @param value
      *            the value to check
@@ -42,8 +46,7 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      */
     public void checkValid(T value) {
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute " + getName()
-                    + ", value = " + value);
+            throw new IllegalArgumentException("Illegal value for attribute " + getName() + ", value = " + value);
         }
     }
 
@@ -63,13 +66,12 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link Attribute#getDefault()} will be returned instead.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of this attribute from
+     * the map. If this attribute is not set in the map, the value of {@link Attribute#getDefault()} will be returned
+     * instead.
      * 
      * @param withAttributes
-     *            the object containing an attribute map for which to retrieve the value of this
-     *            attribute
+     *            the object containing an attribute map for which to retrieve the value of this attribute
      * @return the value of this attribute
      */
     public final T get(WithAttributes withAttributes) {
@@ -77,13 +79,11 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the specified default
-     * value will be returned.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of this attribute from
+     * the map. If this attribute is not set in the map, the specified default value will be returned.
      * 
      * @param withAttributes
-     *            the object containing an attribute map for which to retrieve the value of this
-     *            attribute
+     *            the object containing an attribute map for which to retrieve the value of this attribute
      * @return the value of this attribute
      */
 
@@ -96,13 +96,12 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Returns whether or not the specified value is valid for this attribute. This method can be
-     * overriden to only accept certain values.
+     * Returns whether or not the specified value is valid for this attribute. This method can be overriden to only
+     * accept certain values.
      * 
      * @param value
      *            the specified value to check
-     * @return <code>true</code> if the specified value is valid for this attribute, otherwise
-     *         <code>false</code>
+     * @return <code>true</code> if the specified value is valid for this attribute, otherwise <code>false</code>
      */
     public boolean isValid(T value) {
         return true; // all values are accepted by default.
@@ -128,14 +127,14 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
         return attributes;
     }
 
-    public <S extends WithAttributes> S set(S attributes, T value) {
-        set(attributes.getAttributes(), value);
-        return attributes;
+    public <S extends WithAttributes> AttributeMap set(S attributes, T value) {
+        return set(attributes.getAttributes(), value);
+        //return attributes;
     }
 
     /**
-     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
-     * returned map is immutable.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is
+     * immutable.
      * 
      * @param value
      *            the value to create the singleton from
