@@ -15,22 +15,21 @@
  */
 package org.codehaus.cake.attribute;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
 
+
+import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
-
 /**
  * Various tests for {@link CharAttribute}.
- * 
+ *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CharAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class CharAttributeTest extends AtrStubs {
-    static final CharAttribute ATR0 = new CharAttribute("a0", (char) 0) {};
-    static final CharAttribute ATR1 = new CharAttribute("a1", (char) 1) {};
+    static final CharAttribute ATR0 = new CharAttribute("a0",(char) 0) {};
+    static final CharAttribute ATR1 = new CharAttribute("a1",(char) 1) {};
     static final CharAttribute ATR100 = new CharAttribute("a100", (char) 100) {};
 
     static final CharAttribute NON_NEGATIVE = new CharAttribute("a50", (char) 50) {
@@ -45,18 +44,17 @@ public final class CharAttributeTest extends AtrStubs {
         assertEquals((char) 0, new CharAttribute() {}.getDefault().charValue());
         assertEquals((char) 0, new CharAttribute("a") {}.getDefaultValue());
         assertFalse(new CharAttribute() {}.getName().equals(new CharAttribute() {}.getName()));
-        assertFalse(new CharAttribute((char) 3) {}.getName().equals(
-                new CharAttribute((char) 3) {}.getName()));
+        assertFalse(new CharAttribute((char) 3) {}.getName().equals(new CharAttribute((char) 3) {}.getName()));
         assertTrue(new CharAttribute("a") {}.getName().equals(new CharAttribute("a") {}.getName()));
         assertEquals((char) 3, new CharAttribute((char) 3) {}.getDefaultValue());
         assertEquals((char) 0, ATR0.getDefaultValue());
         assertEquals((char) 100, ATR100.getDefaultValue());
         assertEquals((char) 100, ATR100.getDefault().charValue());
         assertEquals("a100", ATR100.getName());
-
+        
         assertSame(Character.TYPE, ATR100.getType());
     }
-
+    
     @Test
     public void checkValid() {
         ATR100.checkValid(Character.MIN_VALUE);
@@ -71,7 +69,7 @@ public final class CharAttributeTest extends AtrStubs {
     public void checkValidIAE() {
         NON_NEGATIVE.checkValid((char) 4);
     }
-
+    
     @Test
     public void comparator() {
         WithAttributes wa1 = withAtr(ATR1.singleton((char) 1));
@@ -87,7 +85,7 @@ public final class CharAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
     }
-
+    
     @Test
     public void fromString() {
         assertEquals('f', ATR100.fromString("f"));
@@ -139,10 +137,17 @@ public final class CharAttributeTest extends AtrStubs {
     @Test
     public void set() {
         AttributeMap am = new DefaultAttributeMap();
-        assertEquals((char) 10, ATR100.set(am, (char) 10).get(ATR100));
-        assertEquals((char) -111, ATR100.set(withAtr(am), (char) -111).get(ATR100));
-        assertEquals((char) 111, ATR100.set(am, Character.valueOf((char) 111)).get(ATR100));
-        assertEquals(Character.MAX_VALUE, ATR100.set(am, Character.MAX_VALUE).get(ATR100));
+        ATR100.set(am, (char) 10);
+        assertEquals((char) 10, am.get(ATR100));
+        
+        ATR100.set(withAtr(am), (char) -111);
+        assertEquals((char) -111, am.get(ATR100));
+        
+        ATR100.set(am, Character.valueOf((char) 111));
+        assertEquals((char) 111, am.get(ATR100));
+        
+        ATR100.set(am, Character.MAX_VALUE);
+        assertEquals(Character.MAX_VALUE, am.get(ATR100));
     }
 
     @Test(expected = IllegalArgumentException.class)

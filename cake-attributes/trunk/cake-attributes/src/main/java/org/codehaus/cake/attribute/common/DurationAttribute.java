@@ -77,12 +77,12 @@ public abstract class DurationAttribute extends LongAttribute {
         return value > 0;
     }
 
-    public AttributeMap set(AttributeMap attributes, Long duration, TimeUnit unit) {
-        return set(attributes, duration.longValue(), unit);
+    public void set(AttributeMap attributes, Long duration, TimeUnit unit) {
+         set(attributes, duration.longValue(), unit);
     }
 
-    public AttributeMap set(AttributeMap attributes, long duration, TimeUnit unit) {
-        return set(attributes, convertFrom(duration, unit));
+    public void set(AttributeMap attributes, long duration, TimeUnit unit) {
+         set(attributes, convertFrom(duration, unit));
     }
 
     /**

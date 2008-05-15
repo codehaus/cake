@@ -16,7 +16,6 @@
 package org.codehaus.cake.attribute;
 
 import java.util.Comparator;
-
 /**
  * An implementation of an {@link Attribute} mapping to a byte. This implementation adds a number of
  * methods that works on primitive bytes instead of their object counterpart.
@@ -24,8 +23,9 @@ import java.util.Comparator;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ByteAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class ByteAttribute extends Attribute<Byte> implements Comparator<WithAttributes> {
-
+public abstract class ByteAttribute extends Attribute<Byte> implements
+         Comparator<WithAttributes> {
+         
     /** The default value of this attribute. */
     private final transient byte defaultValue;
 
@@ -84,13 +84,13 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
         super(name, Byte.TYPE, defaultValue);
         this.defaultValue = defaultValue;
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public final void checkValid(Byte o) {
         checkValid(o.byteValue());
     }
-
+    
     /**
      * Analogous to {@link #checkValid(Byte)} except taking a primitive byte.
      * 
@@ -105,14 +105,15 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
                     + ", type = " + getClass() + ", value = " + value + "]");
         }
     }
-
+    
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
         byte thisVal = get(w1);
         byte anotherVal = get(w2);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
-
+    
+    
     /**
      * Creates a value instance of this attribute from the specified string.
      * 
@@ -127,14 +128,24 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
     }
 
     /**
+     * Returns the default primitive value of this attribute. This is equivalent to calling
+     * {@link #getDefault()}, but returning a primitive int instead.
+     * 
+     * @return the default value of this attribute
+     */
+    public byte getDefaultValue() {
+        return defaultValue;
+    }
+    
+    /**
      * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
      * this attribute from the map. If this attribute is not set in the map, the value of
      * {@link #getDefaultValue()} will be returned instead.
      * 
      * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map.
-     *         Otherwise {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
+     *         {@link #getDefaultValue()}
      */
     public byte get(WithAttributes withAttributes) {
         return withAttributes.getAttributes().get(this);
@@ -154,24 +165,10 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
-    /**
-     * Returns the default primitive value of this attribute. This is equivalent to calling
-     * {@link #getDefault()}, but returning a primitive int instead.
-     * 
-     * @return the default value of this attribute
-     */
-    public byte getDefaultValue() {
-        return defaultValue;
-    }
 
-    /** {@inheritDoc} */
-    @Override
-    public final boolean isValid(Byte value) {
-        return isValid(value.byteValue());
-    }
-
-    /**
-     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive byte as parameter.
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive byte as
+     * parameter.
      * <p>
      * The default version returns true for all parameters
      * 
@@ -181,6 +178,11 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
      */
     public boolean isValid(byte value) {
         return true;
+    }
+    /** {@inheritDoc} */
+    @Override
+    public final boolean isValid(Byte value) {
+        return isValid(value.byteValue());
     }
 
     /**
@@ -194,17 +196,16 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
      * @throws IllegalArgumentException
      *             if the specified value is not valid accordingly to {@link #checkValid(byte)}
      */
-    public AttributeMap set(AttributeMap attributes, byte value) {
+    public void set(AttributeMap attributes, byte value) {
         if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
         checkValid(value);
         attributes.put(this, value);
-        return attributes;
     }
 
-    public AttributeMap set(WithAttributes attributes, byte value) {
-        return set(attributes.getAttributes(), value);
+    public void set(WithAttributes attributes, byte value) {
+        set(attributes.getAttributes(), value);
     }
 
     /**

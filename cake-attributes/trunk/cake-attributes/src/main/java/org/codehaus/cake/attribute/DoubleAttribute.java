@@ -131,6 +131,16 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     }
 
     /**
+     * Returns the default primitive value of this attribute. This is equivalent to calling
+     * {@link #getDefault()}, but returning a primitive int instead.
+     * 
+     * @return the default value of this attribute
+     */
+    public double getDefaultValue() {
+        return defaultValue;
+    }
+    
+    /**
      * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
      * this attribute from the map. If this attribute is not set in the map, the value of
      * {@link #getDefaultValue()} will be returned instead.
@@ -143,7 +153,7 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     public double get(WithAttributes withAttributes) {
         return withAttributes.getAttributes().get(this);
     }
-    
+
     /**
      * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>double</tt>.
      * 
@@ -159,33 +169,6 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     }
 
     /**
-     * Returns the default primitive value of this attribute. This is equivalent to calling
-     * {@link #getDefault()}, but returning a primitive int instead.
-     * 
-     * @return the default value of this attribute
-     */
-    public double getDefaultValue() {
-        return defaultValue;
-    }
-
-    /**
-     * Returns <code>true</code> if the specified value is either {@link Double#NEGATIVE_INFINITY},
-     * {@link Double#POSITIVE_INFINITY} or {@link Double#NaN}. Otherwise, false
-     * 
-     * @param value
-     *            the value to check
-     * @return whether or not the specified value is Infinity or NaN
-     */
-    protected boolean isNaNInfinity(double value) {
-        return Double.isNaN(value) || Double.isInfinite(value);
-    }
-    /** {@inheritDoc} */
-    @Override
-    public final boolean isValid(Double value) {
-        return isValid(value.doubleValue());
-    }
-
-    /**
      * Works as {@link Attribute#isValid(Object)} except taking a primitive double. The default
      * implementation returns <code>false</code> for {@link Double#NEGATIVE_INFINITY},
      * {@link Double#POSITIVE_INFINITY} and {@link Double#NaN}.
@@ -196,6 +179,11 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
      */
     public boolean isValid(double value) {
         return !isNaNInfinity(value);
+    }
+    /** {@inheritDoc} */
+    @Override
+    public final boolean isValid(Double value) {
+        return isValid(value.doubleValue());
     }
 
     /**
@@ -209,19 +197,18 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid accordingly to {@link #checkValid(double)}
      */
-    public AttributeMap set(AttributeMap attributes, double value) {
+    public void set(AttributeMap attributes, double value) {
         if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
         checkValid(value);
         attributes.put(this, value);
-        return attributes;
     }
 
-    public AttributeMap set(WithAttributes attributes, double value) {
-        return set(attributes.getAttributes(), value);
+    public void set(WithAttributes attributes, double value) {
+        set(attributes.getAttributes(), value);
     }
-  
+
     /**
      * Returns an AttributeMap containing only this attribute mapping to the specified value. The
      * returned map is immutable.
@@ -232,5 +219,17 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
      */
     public AttributeMap singleton(double value) {
         return super.singleton(value);
+    }
+  
+    /**
+     * Returns <code>true</code> if the specified value is either {@link Double#NEGATIVE_INFINITY},
+     * {@link Double#POSITIVE_INFINITY} or {@link Double#NaN}. Otherwise, false
+     * 
+     * @param value
+     *            the value to check
+     * @return whether or not the specified value is Infinity or NaN
+     */
+    protected boolean isNaNInfinity(double value) {
+        return Double.isNaN(value) || Double.isInfinite(value);
     }
 }

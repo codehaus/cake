@@ -16,16 +16,16 @@
 package org.codehaus.cake.attribute;
 
 import java.util.Comparator;
-
 /**
- * An implementation of an {@link Attribute} mapping to a short. This implementation adds a number
- * of methods that works on primitive shorts instead of their object counterpart.
+ * An implementation of an {@link Attribute} mapping to a short. This implementation adds a number of
+ * methods that works on primitive shorts instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ShortAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class ShortAttribute extends Attribute<Short> implements Comparator<WithAttributes> {
-
+public abstract class ShortAttribute extends Attribute<Short> implements
+         Comparator<WithAttributes> {
+         
     /** The default value of this attribute. */
     private final transient short defaultValue;
 
@@ -84,13 +84,13 @@ public abstract class ShortAttribute extends Attribute<Short> implements Compara
         super(name, Short.TYPE, defaultValue);
         this.defaultValue = defaultValue;
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public final void checkValid(Short o) {
         checkValid(o.shortValue());
     }
-
+    
     /**
      * Analogous to {@link #checkValid(Short)} except taking a primitive short.
      * 
@@ -105,14 +105,15 @@ public abstract class ShortAttribute extends Attribute<Short> implements Compara
                     + ", type = " + getClass() + ", value = " + value + "]");
         }
     }
-
+    
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
         short thisVal = get(w1);
         short anotherVal = get(w2);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
-
+    
+    
     /**
      * Creates a value instance of this attribute from the specified string.
      * 
@@ -127,14 +128,24 @@ public abstract class ShortAttribute extends Attribute<Short> implements Compara
     }
 
     /**
+     * Returns the default primitive value of this attribute. This is equivalent to calling
+     * {@link #getDefault()}, but returning a primitive int instead.
+     * 
+     * @return the default value of this attribute
+     */
+    public short getDefaultValue() {
+        return defaultValue;
+    }
+    
+    /**
      * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
      * this attribute from the map. If this attribute is not set in the map, the value of
      * {@link #getDefaultValue()} will be returned instead.
      * 
      * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map.
-     *         Otherwise {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
+     *         {@link #getDefaultValue()}
      */
     public short get(WithAttributes withAttributes) {
         return withAttributes.getAttributes().get(this);
@@ -154,24 +165,10 @@ public abstract class ShortAttribute extends Attribute<Short> implements Compara
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
-    /**
-     * Returns the default primitive value of this attribute. This is equivalent to calling
-     * {@link #getDefault()}, but returning a primitive int instead.
-     * 
-     * @return the default value of this attribute
-     */
-    public short getDefaultValue() {
-        return defaultValue;
-    }
 
-    /** {@inheritDoc} */
-    @Override
-    public final boolean isValid(Short value) {
-        return isValid(value.shortValue());
-    }
-
-    /**
-     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive short as parameter.
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive short as
+     * parameter.
      * <p>
      * The default version returns true for all parameters
      * 
@@ -181,6 +178,11 @@ public abstract class ShortAttribute extends Attribute<Short> implements Compara
      */
     public boolean isValid(short value) {
         return true;
+    }
+    /** {@inheritDoc} */
+    @Override
+    public final boolean isValid(Short value) {
+        return isValid(value.shortValue());
     }
 
     /**
@@ -194,17 +196,16 @@ public abstract class ShortAttribute extends Attribute<Short> implements Compara
      * @throws IllegalArgumentException
      *             if the specified value is not valid accordingly to {@link #checkValid(short)}
      */
-    public AttributeMap set(AttributeMap attributes, short value) {
+    public void set(AttributeMap attributes, short value) {
         if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
         checkValid(value);
         attributes.put(this, value);
-        return attributes;
     }
 
-    public AttributeMap set(WithAttributes attributes, short value) {
-        return set(attributes.getAttributes(), value);
+    public void set(WithAttributes attributes, short value) {
+        set(attributes.getAttributes(), value);
     }
 
     /**

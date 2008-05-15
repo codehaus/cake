@@ -79,10 +79,17 @@ public class DurationAttributeTest {
     @Test
     public void set() {
         AttributeMap am = newMap();
-        assertEquals(10l, DA.set(am, 10l, TimeUnit.NANOSECONDS).get(DA));
-        assertEquals(10000l, DA.set(am, 10l, TimeUnit.MICROSECONDS).get(DA));
-        assertEquals(10000l, DA.set(am, Long.valueOf(10), TimeUnit.MICROSECONDS).get(DA));
-        assertEquals(Long.MAX_VALUE, DA.set(am, Long.MAX_VALUE, TimeUnit.MICROSECONDS).get(DA));
+        DA.set(am, 10l, TimeUnit.NANOSECONDS);
+        assertEquals(10l, am.get(DA));
+        
+        DA.set(am, 10l, TimeUnit.MICROSECONDS);
+        assertEquals(10000l, am.get(DA));
+        
+        DA.set(am, Long.valueOf(10), TimeUnit.MICROSECONDS);
+        assertEquals(10000l, am.get(DA));
+        
+        DA.set(am, Long.MAX_VALUE, TimeUnit.MICROSECONDS);
+        assertEquals(Long.MAX_VALUE, am.get(DA));
     }
 
     @Test

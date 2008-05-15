@@ -121,8 +121,11 @@ public final class BooleanAttributeTest extends AtrStubs {
     @Test
     public void set() {
         AttributeMap am = new DefaultAttributeMap();
-        assertTrue(ATR1.set(am, true).get(ATR1));
-        assertFalse(ATR1.set(withAtr(am), false).get(ATR1));
+        ATR1.set(am, true);
+        assertTrue(am.get(ATR1));
+        
+        ATR1.set(withAtr(am), false);
+        assertFalse(am.get(ATR1));
     }
 
     @Test(expected = IllegalArgumentException.class)
