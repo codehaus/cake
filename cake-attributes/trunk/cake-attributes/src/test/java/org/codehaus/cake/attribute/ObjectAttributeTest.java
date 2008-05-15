@@ -115,8 +115,10 @@ public final class ObjectAttributeTest extends AtrStubs {
     @Test
     public void set() {
         AttributeMap am = new DefaultAttributeMap();
-        assertTrue((Boolean) NON_NULL.set(am, true).get(NON_NULL));
-        assertFalse((Boolean) NON_NULL.set(withAtr(am), false).get(NON_NULL));
+        NON_NULL.set(am, true);
+        assertTrue((Boolean) am.get(NON_NULL));
+        NON_NULL.set(withAtr(am), false);
+        assertFalse((Boolean) am.get(NON_NULL));
     }
 
     @Test(expected = IllegalArgumentException.class)

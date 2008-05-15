@@ -118,18 +118,17 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      * @throws IllegalArgumentException
      *             if the specified value is not valid accordingly to {@link #checkValid(Object)}
      */
-    public AttributeMap set(AttributeMap attributes, T value) {
+    public void set(AttributeMap attributes, T value) {
         if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
         checkValid(value);
         attributes.put(this, value);
-        return attributes;
     }
 
-    public <S extends WithAttributes> AttributeMap set(S attributes, T value) {
-        return set(attributes.getAttributes(), value);
-        //return attributes;
+    //<S extends WithAttributes> S set(S withAttribute, T value)
+    public void set(WithAttributes withAttributes, T value) {
+         set(withAttributes.getAttributes(), value);
     }
 
     /**
