@@ -6,14 +6,14 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.util.ArrayUtils;
 
-public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V>
-        implements Comparator<CacheEntry<K, V>> {
+//TODO shouldn't implement Comparator, much better just to add a method
+public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V> implements
+        Comparator<CacheEntry<K, V>> {
 
     /**
-     * Priority queue represented as a balanced binary heap: the two children of queue[n] are
-     * queue[2*n+1] and queue[2*(n+1)]. The priority queue is ordered by comparator For each node n
-     * in the heap and each descendant d of n, n <= d. The element with the lowest value is in
-     * queue[0], assuming the queue is nonempty.
+     * Priority queue represented as a balanced binary heap: the two children of queue[n] are queue[2*n+1] and
+     * queue[2*(n+1)]. The priority queue is ordered by comparator For each node n in the heap and each descendant d of
+     * n, n <= d. The element with the lowest value is in queue[0], assuming the queue is nonempty.
      */
     private CacheEntry[] queue = new CacheEntry[0];
     private final Comparator<? super CacheEntry<K, V>> comparator = this;
@@ -28,7 +28,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         attachToEntry(index);
     }
 
-    
     private int indexOf(CacheEntry<K, V> entry) {
         return index.get(entry);
     }
@@ -45,7 +44,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         if (i == 0) {
             queue[0] = entry;
             setIndexOf(entry, 0);
-
         } else {
             siftUp(i, entry);
         }
@@ -78,12 +76,11 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
     /**
      * Removes the ith element from queue.
      * 
-     * Normally this method leaves the elements at up to i-1, inclusive, untouched. Under these
-     * circumstances, it returns null. Occasionally, in order to maintain the heap invariant, it
-     * must swap a later element of the list with one earlier than i. Under these circumstances,
-     * this method returns the element that was previously at the end of the list and is now at some
-     * position before i. This fact is used by iterator.remove so as to avoid missing traversing
-     * elements.
+     * Normally this method leaves the elements at up to i-1, inclusive, untouched. Under these circumstances, it
+     * returns null. Occasionally, in order to maintain the heap invariant, it must swap a later element of the list
+     * with one earlier than i. Under these circumstances, this method returns the element that was previously at the
+     * end of the list and is now at some position before i. This fact is used by iterator.remove so as to avoid missing
+     * traversing elements.
      */
     private CacheEntry<K, V> removeAt(int i) {
         assert i >= 0 && i < size;
@@ -104,17 +101,24 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
     }
 
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        remove(previous);
-        add(newEntry);
+        int i = comparator.compare(previous, newEntry);
+        int index = indexOf(previous);
+        setIndexOf(newEntry, index);
+        queue[index] = newEntry;
+        if (i > 0) {
+            siftUp(index, newEntry);
+        } else if (0 < i) {
+            siftDown(index, newEntry);
+        }
         return newEntry;
     }
 
     /**
-     * Inserts item x at position k, maintaining heap invariant by promoting x up the tree until it
-     * is greater than or equal to its parent, or is the root.
+     * Inserts item x at position k, maintaining heap invariant by promoting x up the tree until it is greater than or
+     * equal to its parent, or is the root.
      * 
-     * To simplify and speed up coercions and comparisons. the Comparable and Comparator versions
-     * are separated into different methods that are otherwise identical. (Similarly for siftDown.)
+     * To simplify and speed up coercions and comparisons. the Comparable and Comparator versions are separated into
+     * different methods that are otherwise identical. (Similarly for siftDown.)
      * 
      * @param k
      *            the position to fill
@@ -135,9 +139,15 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         setIndexOf(x, k);
     }
 
+    protected void siftDown(CacheEntry<K, V> x) {
+        siftDown(indexOf(x), x);
+    }
+    protected void siftUp(CacheEntry<K, V> x) {
+        siftUp(indexOf(x), x);
+    }
     /**
-     * Inserts item x at position k, maintaining heap invariant by demoting x down the tree
-     * repeatedly until it is less than or equal to its children or is a leaf.
+     * Inserts item x at position k, maintaining heap invariant by demoting x down the tree repeatedly until it is less
+     * than or equal to its children or is a leaf.
      * 
      * @param k
      *            the position to fill
@@ -150,8 +160,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
             int child = (k << 1) + 1;
             CacheEntry<K, V> c = queue[child];
             int right = child + 1;
-            if (right < size
-                    && comparator.compare((CacheEntry<K, V>) c, (CacheEntry<K, V>) queue[right]) > 0)
+            if (right < size && comparator.compare((CacheEntry<K, V>) c, (CacheEntry<K, V>) queue[right]) > 0)
                 c = queue[child = right];
             if (comparator.compare(x, (CacheEntry<K, V>) c) <= 0)
                 break;

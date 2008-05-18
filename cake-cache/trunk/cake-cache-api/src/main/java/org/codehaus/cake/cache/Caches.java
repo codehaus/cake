@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.common.DurationAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.internal.util.CollectionUtils;
 
@@ -24,59 +23,6 @@ import org.codehaus.cake.internal.util.CollectionUtils;
  * @version $Id: CacheServices.java 469 2007-11-17 14:32:25Z kasper $
  */
 public final class Caches {
-
-    /**
-     * The empty cache (immutable). This cache is serializable.
-     * 
-     * @see #emptyCache()
-     */
-    final static Cache EMPTY_CACHE = new EmptyCache();
-
-    /**
-     * Returns the empty cache (immutable). This cache is serializable.
-     * <p>
-     * This example illustrates the type-safe way to obtain an empty cache:
-     * 
-     * <pre>
-     * Cache&lt;Integer, String&gt; c = Caches.emptyCache();
-     * </pre>
-     * 
-     * Implementation note: Implementations of this method need not create a separate <tt>Cache</tt>
-     * object for each call. Using this method is likely to have comparable cost to using the
-     * like-named field. (Unlike this method, the field does not provide type safety.)
-     * 
-     * @see #EMPTY_CACHE
-     */
-    public static <K, V> Cache<K, V> emptyCache() {
-        return EMPTY_CACHE;
-    }
-
-    /**
-     * Returns a Runnable that when executed will call the clear method on the specified cache.
-     * <p>
-     * The following example shows how this can be used to clear the cache every hour.
-     * 
-     * <pre>
-     * Cache c;
-     * ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-     * ses.scheduleAtFixedRate(Caches.runClear(c), 0, 60 * 60, TimeUnit.SECONDS);
-     * </pre>
-     * 
-     * @param cache
-     *            the cache on which to call evict
-     * @return a runnable where invocation of the run method will clear the specified cache
-     * @throws NullPointerException
-     *             if the specified cache is <tt>null</tt>.
-     */
-    public static Runnable clearAsRunnable(Cache<?, ?> cache) {
-        return new ClearRunnable(cache);
-    }
-
-    // /CLOVER:OFF
-    /** Cannot instantiate. */
-    private Caches() {}
-
-    // /CLOVER:ON
 
     /**
      * A runnable used for calling clear on a cache.
@@ -105,8 +51,175 @@ public final class Caches {
         }
     }
 
+    static final class CostAttribute extends DoubleAttribute {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new CostAttribute. */
+        CostAttribute() {
+            super("Cost", 1.0);
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.COST;
+        }
+    }
+
+    static final class TimeAccessedAttribute extends TimeInstanceAttribute {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new DateCreatedAttribute. */
+        TimeAccessedAttribute() {
+            super("AccessTime");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.TIME_ACCESSED;
+        }
+    }
+
     /**
-     * The empty cache. 
+     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped value must be of a
+     * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
+     */
+    static final class HitsAttribute extends LongAttribute {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new SizeAttribute. */
+        HitsAttribute() {
+            super("Hits");
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean isValid(long hits) {
+            return hits >= 0;
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.HITS;
+        }
+    }
+
+    static final class SizeAttribute extends LongAttribute {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new SizeAttribute. */
+        SizeAttribute() {
+            super("Size", 1);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void checkValid(long value) {
+            if (value < 0) {
+                throw new IllegalArgumentException("invalid size (size = " + value + ")");
+            }
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean isValid(long value) {
+            return value >= 0;
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.SIZE;
+        }
+    }
+
+    static final class TimeCreatedAttribute extends TimeInstanceAttribute {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new DateCreatedAttribute. */
+        TimeCreatedAttribute() {
+            super("CreationTime");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.TIME_CREATED;
+        }
+    }
+
+    static final class TimeModificedAttribute extends TimeInstanceAttribute {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new DateCreatedAttribute. */
+        TimeModificedAttribute() {
+            super("ModificationTime");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.TIME_MODIFIED;
+        }
+    }
+
+    /**
+     * This key can be used to indicate how long time an object should live. The time-to-live value should be a long
+     * between 1 and {@link Long#MAX_VALUE} measured in nanoseconds. Use {@link java.util.concurrent.TimeUnit} to
+     * convert between different time units.
+     * 
+     */
+    // static final class TimeToLiveAttribute extends DurationAttribute {
+    //
+    // /** serialVersionUID. */
+    // private static final long serialVersionUID = -2353351535602223603L;
+    //
+    // /** The singleton instance of this attribute. */
+    // public static final TimeToLiveAttribute TIME_TO_LIVE = new TimeToLiveAttribute();
+    //
+    // /** Creates a new TimeToLiveAttribute. */
+    // TimeToLiveAttribute() {
+    // super("TimeToLive");
+    // }
+    //
+    // /** @return Preserves singleton property */
+    // private Object readResolve() {
+    // return TIME_TO_LIVE;
+    // }
+    // }
+    /**
+     * The <tt>Version</tt> attribute indicates the number of hits for a cache element. The mapped value must be of a
+     * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
+     */
+    static final class VersionAttribute extends LongAttribute {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -235335135602223603L;
+
+        /** Creates a new SizeAttribute. */
+        VersionAttribute() {
+            super("Version", 1);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean isValid(long hits) {
+            return hits > 0;
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.VERSION;
+        }
+    }
+
+    /**
+     * The empty cache.
      */
     static class EmptyCache<K, V> extends AbstractMap<K, V> implements Cache<K, V>, Serializable {
 
@@ -154,11 +267,7 @@ public final class Caches {
             if (serviceType == null) {
                 throw new NullPointerException("serviceType is null");
             }
-            T t = (T) getAllServices().get(serviceType);
-            if (t == null) {
-                throw new IllegalArgumentException("Unknown service " + serviceType);
-            }
-            return t;
+            throw new UnsupportedOperationException("Unknown service " + serviceType);
         }
 
         /** {@inheritDoc} */
@@ -207,9 +316,7 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public void removeAll(Collection<? extends K> keys) {
-
-        }
+        public void removeAll(Collection<? extends K> keys) {}
 
         /** {@inheritDoc} */
         public V replace(K key, V value) {
@@ -221,195 +328,66 @@ public final class Caches {
             return false;
         }
 
-        public CacheServices<K, V> services() {
-            return new CacheServices<K, V>(this);
-        }
+        /** {@inheritDoc} */
+        public void shutdown() {}
 
         /** {@inheritDoc} */
-        public void shutdown() {
-
-        }
-
-        /** {@inheritDoc} */
-        public void shutdownNow() {
-
-        }
-
-        /** {@inheritDoc} */
-        public long volume() {
-            return 0;
-        }
+        public void shutdownNow() {}
 
         /** {@inheritDoc} */
         public CacheServices<K, V> with() {
             return new CacheServices<K, V>(this);
         }
     }
-    
-    static final class CostAttribute extends DoubleAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new CostAttribute. */
-        CostAttribute() {
-            super("Cost", 1.0);
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.COST;
-        }
-    }
-
-    static final class DateAccessedAttribute extends TimeInstanceAttribute {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new DateCreatedAttribute. */
-        DateAccessedAttribute() {
-            super("Date Accessed");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.TIME_ACCESSED;
-        }
-    }
-
-    static final class TimeCreatedAttribute extends TimeInstanceAttribute {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new DateCreatedAttribute. */
-        TimeCreatedAttribute() {
-            super("Date Created");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.TIME_CREATED;
-        }
-    }
-
-    static final class TimeModificedAttribute extends TimeInstanceAttribute {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new DateCreatedAttribute. */
-        TimeModificedAttribute() {
-            super("Date Modified");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.TIME_MODIFIED;
-        }
-    }
 
     /**
-     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped
-     * value must be of a type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
-     */
-    static final class HitsAttribute extends LongAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new SizeAttribute. */
-         HitsAttribute() {
-            super("Hits");
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public boolean isValid(long hits) {
-            return hits >= 0;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.HITS;
-        }
-    }
-
-    /**
-     * The <tt>Version</tt> attribute indicates the number of hits for a cache element. The mapped
-     * value must be of a type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
-     */
-    static final class VersionAttribute extends LongAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -235335135602223603L;
-
-        /** Creates a new SizeAttribute. */
-        VersionAttribute() {
-            super("version");
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public boolean isValid(long hits) {
-            return hits >= 0;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.VERSION;
-        }
-    }
-    static final class SizeAttribute extends LongAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new SizeAttribute. */
-         SizeAttribute() {
-            super("Size", 1);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void checkValid(long value) {
-            if (value < 0) {
-                throw new IllegalArgumentException("invalid size (size = " + value + ")");
-            }
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public boolean isValid(long value) {
-            return value >= 0;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.SIZE;
-        }
-    }
-
-    /**
-     * This key can be used to indicate how long time an object should live. The time-to-live value
-     * should be a long between 1 and {@link Long#MAX_VALUE} measured in nanoseconds. Use
-     * {@link java.util.concurrent.TimeUnit} to convert between different time units.
+     * The empty cache (immutable). This cache is serializable.
      * 
+     * @see #emptyCache()
      */
-    static final class TimeToLiveAttribute extends DurationAttribute {
+    final static Cache EMPTY_CACHE = new EmptyCache();
 
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** The singleton instance of this attribute. */
-        public static final TimeToLiveAttribute TIME_TO_LIVE = new TimeToLiveAttribute();
-
-        /** Creates a new TimeToLiveAttribute. */
-         TimeToLiveAttribute() {
-            super("TimeToLive");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TIME_TO_LIVE;
-        }
+    /**
+     * Returns a Runnable that when executed will call the clear method on the specified cache.
+     * <p>
+     * The following example shows how this can be used to clear the cache every hour.
+     * 
+     * <pre>
+     * Cache c;
+     * ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+     * ses.scheduleAtFixedRate(Caches.runClear(c), 0, 60 * 60, TimeUnit.SECONDS);
+     * </pre>
+     * 
+     * @param cache
+     *            the cache on which to call evict
+     * @return a runnable where invocation of the run method will clear the specified cache
+     * @throws NullPointerException
+     *             if the specified cache is <tt>null</tt>.
+     */
+    public static Runnable clearAsRunnable(Cache<?, ?> cache) {
+        return new ClearRunnable(cache);
     }
+
+    /**
+     * Returns the empty cache (immutable). This cache is serializable.
+     * <p>
+     * This example illustrates the type-safe way to obtain an empty cache:
+     * 
+     * <pre>
+     * Cache&lt;Integer, String&gt; c = Caches.emptyCache();
+     * </pre>
+     * 
+     * Implementation note: Implementations of this method need not create a separate <tt>Cache</tt> object for each
+     * call. Using this method is likely to have comparable cost to using the like-named field. (Unlike this method, the
+     * field does not provide type safety.)
+     * 
+     * @see #EMPTY_CACHE
+     */
+    public static <K, V> Cache<K, V> emptyCache() {
+        return EMPTY_CACHE;
+    }
+
+    // /CLOVER:OFF
+    /** Cannot instantiate. */
+    private Caches() {}
 }

@@ -9,13 +9,13 @@ import org.codehaus.cake.attribute.common.DurationAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 
 /**
- * A <tt>CacheEntry</tt> describes a value-key mapping much like {@link java.util.Map.Entry}.
- * However, this interface extends with a map of attribute->value pairs. Holding information such as
- * creation time, access patterns, size, cost etc.
+ * A <tt>CacheEntry</tt> describes a value-key mapping much like {@link java.util.Map.Entry}. However, this interface
+ * extends with a map of attribute->value pairs. Holding information such as creation time, access patterns, size, cost
+ * etc.
  * <p>
- * Unless otherwise specified a cache entry obtained from a cache is always an immmutable copy of
- * the existing entry. If the value for a given key is updated while another thread holds a cache
- * entry for the key. It will not be reflected in calls to {@link #getValue()}.
+ * Unless otherwise specified a cache entry obtained from a cache is always an immmutable copy of the existing entry. If
+ * the value for a given key is updated while another thread holds a cache entry for the key. It will not be reflected
+ * in calls to {@link #getValue()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheEntry.java 536 2007-12-30 00:14:25Z kasper $
@@ -29,17 +29,17 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     // long get(LongAttribute attribute);
     // double get(DoubleAttribute attribute);
     // int get(IntAttribute attribute);
-    
+
     /* Entry attributes */
 
     /**
-     * The <tt>Cost attribute</tt> can be used to indicate the cost of retrieving an entry. The
-     * idea is that when memory is sparse the cache can choose to evict entries that are less costly
-     * to retrieve again. Currently this attribute is not used by any of the build in replacement
-     * policies.
+     * The <tt>Cost attribute</tt> is used to indicate the cost of retrieving an entry. The idea is that when memory
+     * is sparse the cache can choose to evict entries that are least costly to retrieve again. Currently this attribute
+     * is not used by any of the build in replacement policies.
      * <p>
-     * While not required the unit of this attribute is most often <tt>time</tt>. For example,
-     * how many milliseconds does it take to retrieve the entry.
+     * A frequent used unit for this attribute is time. For example, how many milliseconds does it take to retrieve the
+     * entry. However, any unit can be used. Because policies only use the relative cost difference between entries to
+     * determine what entries to evict.
      * <p>
      * <blockquote> <table border>
      * <tr>
@@ -52,8 +52,12 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * <tr>
      * <td>Valid Values</td>
-     * <td>All values, except {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY}
-     * and {@link Double#NaN}</td>
+     * <td>All values, except {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY} and
+     * {@link Double#NaN}</td>
+     * </tr>
+     * <tr>
+     * <td>Unit</td>
+     * <td>Primarily <tt>time</tt>, but any unit is acceptable</td>
      * </tr>
      * </table> </blockquote>
      */
@@ -62,29 +66,19 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     /**
      * Currently not in use.
      */
-    public static final TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeCreatedAttribute();
+    public static final TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeAccessedAttribute();
 
     /**
-     * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also
-     * the value returned by {@link System#currentTimeMillis()}. <p/> The
+     * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
+     * {@link System#currentTimeMillis()}. <p/> The following list describes how this attribute is obtained.
      * <ul>
-     * <li>
-     * If the entry is being loaded and the cache loader and this attribute has been set with a
-     * positive value (>0). This value will be used to as the entrys creation time.
+     * <li> If the entry is being loaded and the <tt>TIME_CREATED</tt> attribute has been set the cache will use this
+     * value.</li>
+     * <li> Else if this entry is replacing an existing entry the creation time from the existing entry will be used.
      * </li>
-     * <li>
-     * If a mapping already exists in the cache for the given key, the creation time is inherited
-     * from this entry (the entry that is being replaced).
-     * </li>
-     * <li>
-     * If no element is currently mapped for the key and a clock is set through
-     * {@link CacheConfiguration#setClock(org.codehaus.cake.util.Clock)} a timestamp is obtained by
-     * calling {@link org.codehaus.cake.util.Clock#timeOfDay()}.
-     * </li>
-     * <li>
-     * Finally, if no clock was set when constructing the cache, System#currentTimeMillis() is used
-     * for obtaining a timestamp.
-     * </li>
+     * <li> Else if a clock is set through {@link CacheConfiguration#setClock(org.codehaus.cake.util.Clock)} a timestamp
+     * is obtained by calling {@link org.codehaus.cake.util.Clock#timeOfDay()}. </li>
+     * <li> Else System#currentTimeMillis() is used for obtaining a timestamp. </li>
      * </ul>
      * <p>
      * <blockquote> <table border>
@@ -100,15 +94,17 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * <td>Valid Values</td>
      * <td>All positive values (>0)</td>
      * </tr>
+     * <tr>
+     * <td>Unit</td>
+     * <td>Milliseconds</td>
+     * </tr>
      * </table> </blockquote>
-     * 
-     * The creation time value is of type <tt>long</tt> and between 1 and {@link Long#MAX_VALUE}.
      */
     public static final TimeInstanceAttribute TIME_CREATED = new Caches.TimeCreatedAttribute();
 
     /**
-     * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is
-     * also the value returned by {@link System#currentTimeMillis()}.
+     * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is also the value
+     * returned by {@link System#currentTimeMillis()}.
      * <p>
      * The mapped value must be of a type <tt>long</tt> between 1 and {@link Long#MAX_VALUE}.
      */
@@ -120,13 +116,69 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     public static final LongAttribute SIZE = new Caches.SizeAttribute();
 
     /**
-     * The size of the cache entry.
+     * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
+     * {@link Cache#getEntry(Object)} or {@link Cache#getAll(java.util.Collection)}.
+     * 
+     * <p/> The following list describes how this attribute is obtained.
+     * <ul>
+     * <li> If the entry is being loaded and the <tt>HITS</tt> attribute has been set the cache will use this value.</li>
+     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry will be used. </li>
+     * <li> Else if this entry is accessed through <tt>get</tt>, <tt>getEntry</tt> or <tt>getAll</tt> the hit
+     * count is incremented by 1</li>
+     * </ul>
+     * <p>
+     * <blockquote> <table border>
+     * <tr>
+     * <td>Type</td>
+     * <td>long</td>
+     * </tr>
+     * <tr>
+     * <td>Default Value</td>
+     * <td>0</td>
+     * </tr>
+     * <tr>
+     * <td>Valid Values</td>
+     * <td>All positive values (>0)</td>
+     * </tr>
+     * <tr>
+     * <td>Unit</td>
+     * <td>Number of Accesses</td>
+     * </tr>
+     * </table> </blockquote>
      */
     public static final LongAttribute HITS = new Caches.HitsAttribute();
 
-    
+    /**
+     * A count of how many times the value of an entry has been modified.
+     * 
+     * <p/> The following list describes how this attribute is obtained.
+     * <ul>
+     * <li> If the entry is being loaded and the <tt>VERSION</tt> attribute has been set the cache will use this value.</li>
+     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry + 1 will be used. </li>
+     * <li> Else the version is initialized to 1</li>
+     * </ul>
+     * <p>
+     * <blockquote> <table border>
+     * <tr>
+     * <td>Type</td>
+     * <td>long</td>
+     * </tr>
+     * <tr>
+     * <td>Default Value</td>
+     * <td>1</td>
+     * </tr>
+     * <tr>
+     * <td>Valid Values</td>
+     * <td>All positive values (>0)</td>
+     * </tr>
+     * <tr>
+     * <td>Unit</td>
+     * <td>Number of Modfications</td>
+     * </tr>
+     * </table> </blockquote>
+     */
     public static final LongAttribute VERSION = new Caches.VersionAttribute();
-    
+
     // public static final TimeInstanceAttribute ENTRY_TIME_TO_LIVE = ENTRY_DATE_MODIFIED;
 
     // cost of retrieving the item

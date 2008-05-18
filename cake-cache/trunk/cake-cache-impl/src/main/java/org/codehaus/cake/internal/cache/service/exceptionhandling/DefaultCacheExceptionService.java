@@ -10,18 +10,16 @@ import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 
-public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService<Cache<K, V>>
-        implements InternalCacheExceptionService<K, V> {
+public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService<Cache<K, V>> implements
+        InternalCacheExceptionService<K, V> {
     /** The CacheExceptionHandler configured for this cache. */
     private CacheExceptionHandler<K, V> exceptionHandler;
 
-    public DefaultCacheExceptionService(ContainerInfo info,
-            ContainerConfiguration<Cache<K, V>> containerConfiguration,
+    public DefaultCacheExceptionService(ContainerInfo info, ContainerConfiguration<Cache<K, V>> containerConfiguration,
             CacheExceptionHandlingConfiguration<K, V> configuration) {
         super(info, containerConfiguration, configuration.getExceptionLogger());
         CacheExceptionHandler<K, V> exceptionHandler = configuration.getExceptionHandler();
-        this.exceptionHandler = exceptionHandler == null ? new CacheExceptionHandler<K, V>()
-                : exceptionHandler;
+        this.exceptionHandler = exceptionHandler == null ? new CacheExceptionHandler<K, V>() : exceptionHandler;
     }
 
     @Override
@@ -29,19 +27,8 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
         exceptionHandler.handle(context);
     }
 
-    public void checkExceptions(boolean failIfShutdown) {}
-
-    public void startFailed(Object service, ContainerConfiguration<Cache<K, V>> configuration,
-            Throwable cause) {}
-
-    public boolean startupFailed() {
-        return false;
-    }
-
-    public void terminated() {}
-
     public void initialize(Cache<K, V> cache, CacheConfiguration<K, V> conf) {
-        // TODO Auto-generated method stub
+    // TODO Auto-generated method stub
     }
 
     public V loadFailed(Throwable cause, K key, AttributeMap map) {
@@ -52,11 +39,12 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
 
     public void serviceManagerShutdownFailed(Throwable cause, Object lifecycle) {
         fatal("", cause);
-        
+
     }
 
     public void startFailed(CacheConfiguration<K, V> configuration, Object service, Throwable cause) {
         fatal("", cause);
     }
 
+    public void terminated() {}
 }

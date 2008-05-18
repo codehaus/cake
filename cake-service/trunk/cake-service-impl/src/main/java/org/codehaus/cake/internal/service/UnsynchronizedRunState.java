@@ -54,7 +54,6 @@ public class UnsynchronizedRunState extends RunState {
     public void trySetStartupException(Throwable cause) {
         if (startupException == null) {
             startupException = cause;
-            // this.state=SHUTDOWN;
         }
     }
 

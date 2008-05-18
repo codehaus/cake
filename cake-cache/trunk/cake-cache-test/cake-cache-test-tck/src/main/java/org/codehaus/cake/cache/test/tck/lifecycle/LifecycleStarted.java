@@ -12,6 +12,7 @@ import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.util.Logger.Level;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LifecycleStarted extends AbstractCacheTCKTest {
@@ -66,6 +67,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     @Test
+    @Ignore
     public void runtimeExceptionMethod() {
         try {
             latch = new CountDownLatch(0);
@@ -79,6 +81,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     @Test
+    @Ignore
     public void exceptionMethod() {
         try {
             latch = new CountDownLatch(0);

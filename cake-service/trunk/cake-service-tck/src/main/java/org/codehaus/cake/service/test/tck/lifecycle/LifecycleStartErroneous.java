@@ -38,11 +38,6 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
         }
     }
 
-    /**
-     * Same as {@link #unknownObject()} except that it checks that the original exception is rethrown for subsequent
-     * invocation of container methods.
-     * 
-     */
     @Test
     public void unknown() throws Throwable {
         conf.addService(new StartUnknown());
@@ -85,6 +80,27 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
     }
 
     @Test
+    public void startContainer() throws Throwable {
+        conf.addService(new StartContainer());
+        newContainer();
+        Throwable cause = null;
+        try {
+            prestart();
+            fail("should fail");
+        } catch (IllegalStateException ok) {
+            cause = ok;
+        }
+
+        // check that we throw the same exception again when invoking method
+        try {
+            c.getAllServices();
+            fail("should fail");
+        } catch (IllegalStateException t) {
+            assertSame(cause, t.getCause());
+        }
+    }
+        
+    @Test
     public void startException() throws Throwable {
         conf.addService(new StartException());
         newContainer();
@@ -103,6 +119,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
             assertSame(Exception1.INSTANCE, t.getCause());
         }
     }
+
     @Test
     public void startError() throws Throwable {
         conf.addService(new StartError());
@@ -122,6 +139,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
             assertSame(Error1.INSTANCE, t.getCause());
         }
     }
+
     @Test
     public void startThrowable() throws Throwable {
         conf.addService(new StartThrowable());
@@ -141,6 +159,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
             assertSame(Throwable1.INSTANCE, t.getCause());
         }
     }
+
     public class StartRuntimeException {
         @Startable
         public void start(ContainerConfiguration conf) {
@@ -162,6 +181,11 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
         }
     }
 
+    public class StartContainer {
+        @Startable
+        public void start(Container conf) {}
+    }
+
     public class StartThrowable {
         @Startable
         public void start(ContainerConfiguration conf) throws Throwable {
@@ -179,8 +203,8 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
         public void start(Integer unknown) {}
     }
 
-    public class Start {
+    public class StartPackageProtected {
         @Startable
-        public void start(Integer unknown) {}
+        void start(Integer unknown) {}
     }
 }

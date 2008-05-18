@@ -15,6 +15,7 @@ import org.codehaus.cake.cache.CacheServices;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.SynchronizedInternalCache;
+import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
@@ -22,8 +23,7 @@ import org.codehaus.cake.service.executor.ExecutorsService;
 /**
  * A <tt>synchronized</tt> {@link Cache} implementation.
  * <p>
- * It is imperative that the user manually synchronize on the cache when iterating over any of its
- * collection views:
+ * It is imperative that the user manually synchronize on the cache when iterating over any of its collection views:
  * 
  * <pre>
  *  Cache c = new SynchronizedCache();
@@ -46,8 +46,8 @@ import org.codehaus.cake.service.executor.ExecutorsService;
  * @param <V>
  *            the type of mapped values
  */
-@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class,
-        ServiceManager.class, ExecutorsService.class })
+@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
+        ExecutorsService.class, Manageable.class })
 public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<K, V> {
     private SynchronizedInternalCache<K, V> cache;
 
@@ -99,7 +99,6 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
     public boolean equals(Object obj) {
         return cache.equals(obj);
     }
-
 
     /** {@inheritDoc} */
     public V get(Object key) {

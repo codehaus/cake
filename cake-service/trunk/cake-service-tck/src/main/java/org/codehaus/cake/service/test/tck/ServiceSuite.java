@@ -2,54 +2,62 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.service.test.tck;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.codehaus.cake.service.Container.SupportedServices;
 import org.junit.internal.runners.InitializationError;
+import org.junit.runner.Description;
+import org.junit.runner.manipulation.Filter;
+import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runners.Suite;
 
 @SuppressWarnings("deprecation")
 public class ServiceSuite extends Suite {
+    private final Set<Class> supportedServices;
 
     public ServiceSuite(Class<?> klass) throws InitializationError {
         super(klass);
-        // TODO Auto-generated constructor stub
+
+        supportedServices = new HashSet(Arrays.asList(TckUtil.containerImplementation.getAnnotation(
+                SupportedServices.class).value()));
+        filter();
     }
 
-/*
-    public ServiceSuite(Class<?> klass)  {
-        this(klass, getAnnotatedClasses(klass));
+    boolean isSupported(Object service) {
+        return supportedServices.contains(service);
     }
 
-    public ServiceSuite(Class<?> klass, Class[] annotatedClasses) throws InitializationError {
-        super(klass, Request.classes(klass.getName(), annotatedClasses).getRunner());
-    }
-    private static Class[] getAnnotatedClasses(Class<?> klass) throws InitializationError {
-        SuiteClasses annotation = klass.getAnnotation(SuiteClasses.class);
-        if (annotation == null)
-            throw new InitializationError(String.format(
-                    "class '%s' must have a SuiteClasses annotation", klass.getName()));
-        List<Class> l = new ArrayList(Arrays.asList(CacheTCKRunner.tt.getAnnotation(SupportedServices.class)
-                .value()));
-        ArrayList<Class> classes = new ArrayList<Class>(Arrays.asList(annotation.value()));
-        if (CacheTCKRunner.tt.getAnnotation(NotThreadSafe.class) != null) {
-            l.add(NotThreadSafe.class);
-        } else { // assume its ThreadSafe
-            l.add(ThreadSafe.class);
-        }
-        for (Iterator<Class> iterator = classes.iterator(); iterator.hasNext();) {
-            Class<?> c = iterator.next();
-            RequireService r = c.getAnnotation(RequireService.class);
-            if (r != null) {
-                for (Class<?> cl : r.value()) {
-                    //xor?
-                    if (r.isAvailable() && !l.contains(cl)) {
-                        iterator.remove();
-                    }
-                    if (!r.isAvailable() && l.contains(cl)) {
-                        iterator.remove();
-                    }
+    private void filter() {
+        try {
+            filter(new Filter() {
+                public String describe() {
+                    return "filtered";
                 }
-            }
+
+                public boolean shouldRun(Description description) {
+                    RequireService rs = description.getAnnotation(RequireService.class);
+                    if (rs != null) {
+                        for (Class c : rs.value()) {
+                            if (!isSupported(c)) {
+                                return false;
+                            }
+                        }
+                    }
+                    UnsupportedServices us = description.getAnnotation(UnsupportedServices.class);
+                    if (us != null) {
+                        for (Class c : us.value()) {
+                            if (isSupported(c)) {
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
+        } catch (NoTestsRemainException e) {
+            e.printStackTrace();
         }
-        return classes.toArray(new Class[0]);
     }
-    */
 }

@@ -1,5 +1,8 @@
 package org.codehaus.cake.service.test.tck;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
@@ -53,6 +56,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
             throw new AssertionError("Test failed");
         }
     }
+
     /**
      * Await all loads that currently active.
      */
@@ -61,6 +65,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
             threadHelper.awaitAllIdle();
         }
     }
+
     protected void failed(Throwable cause) {
         this.failure = cause;
         if (cause instanceof Error) {
@@ -111,11 +116,48 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         conf = (T) TckUtil.newConfiguration();
         return conf;
     }
+
     public final void prestart() {
         c.hasService(Object.class);
     }
+
     protected T newConfiguration() {
         newConfigurationClean();
         return conf;
+    }
+
+    public <S> S withConf(Class<S> confType) {
+        for (Object o : conf.getConfigurations()) {
+            if (confType.isAssignableFrom(o.getClass())) {
+                return (S) o;
+            }
+        }
+        throw new IllegalArgumentException("Unknown Type " + confType);
+    }
+
+    public Class getContainerInterface() {
+        Class someImpl = c.getClass();
+        for (Class c : someImpl.getInterfaces()) {
+            if (c != Container.class && Arrays.asList(c.getInterfaces()).contains(Container.class)) {
+                return c;
+            }
+        }
+        throw new IllegalStateException("Unknown type");
+    }
+
+    public T cheatInstantiate() throws Throwable {
+        for (Constructor con : c.getClass().getConstructors()) {
+            if (con.getParameterTypes().length == 1
+                    && ContainerConfiguration.class.isAssignableFrom(con.getParameterTypes()[0])) {
+                try {
+                    return (T) con.newInstance(conf);
+                } catch (InvocationTargetException e) {
+                    throw e.getCause();
+                } catch (Exception e) {
+                    throw new Error(e);
+                }
+            }
+        }
+        throw new IllegalArgumentException("missing constructor");
     }
 }

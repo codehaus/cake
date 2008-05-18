@@ -17,7 +17,7 @@ public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
     /** The exception handler used for handling erroneous conditions in the cache. */
     private T exceptionHandler;
 
-    /** The default exception log to log to. */
+    /** The default exception logger to log to. */
     private Logger logger;
 
     /**
@@ -32,10 +32,10 @@ public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
     }
 
     /**
-     * Returns the log that is used for exception handling, or <tt>null</tt> if no such log has
+     * Returns the logger that is used for exception handling, or <tt>null</tt> if no such logger has
      * been set.
      * 
-     * @return the log that is used for exception handling, or <tt>null</tt> if no such log has
+     * @return the logger that is used for exception handling, or <tt>null</tt> if no such logger has
      *         been set
      * @see #setExceptionLogger(Logger)
      */
@@ -69,12 +69,12 @@ public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
      * {@link org.codehaus.cake.container.AbstractConfiguration#getDefaultLogger()}. If no default
      * logger has been set, output will be sent to {@link System#err}.
      * 
-     * @param log
-     *            the log to use for exception handling
+     * @param logger
+     *            the logger to use for exception handling
      * @return this configuration
      */
-    public ExceptionHandlingConfiguration<T> setExceptionLogger(Logger log) {
-        this.logger = log;
+    public ExceptionHandlingConfiguration<T> setExceptionLogger(Logger logger) {
+        this.logger = logger;
         return this;
     }
 }

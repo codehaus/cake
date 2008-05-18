@@ -31,6 +31,7 @@ public class DefaultExecutorService implements ExecutorsService, CompositeServic
             manager = new DefaultExecutorsManager();
         }
         this.manager = manager;
+        //System.out.println("init");
     }
 
     public ExecutorService getExecutorService() {
@@ -71,7 +72,8 @@ public class DefaultExecutorService implements ExecutorsService, CompositeServic
     }
 
     @Startable
-    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
+    public void register(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
+//        System.out.println("register");
         serviceRegistrant.registerService(ExecutorsService.class, this);
     }
 

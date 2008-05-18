@@ -20,7 +20,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
  */
 public interface InternalExceptionService<T> extends InternalDebugService {
 
-    void checkExceptions(boolean failIfShutdown);
+    void warning(String msg);
 
     void error(String msg);
 
@@ -30,11 +30,5 @@ public interface InternalExceptionService<T> extends InternalDebugService {
 
     void fatal(String msg, Throwable cause);
 
-    void startFailed(Object service, ContainerConfiguration<T> configuration, Throwable cause);
-
-    boolean startupFailed();
-
     void terminated();
-
-    void warning(String warning);
 }

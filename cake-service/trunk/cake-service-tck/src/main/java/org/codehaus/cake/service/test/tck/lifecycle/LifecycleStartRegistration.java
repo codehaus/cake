@@ -43,7 +43,13 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
         newContainer();
         prestart();
     }
-
+    @Test(expected = IllegalArgumentException.class)
+    public void registerSameTwice() {
+        conf.addService(new Register());
+        conf.addService(new Register());
+        newContainer();
+        prestart();
+    }
     public class Register {
         @Startable
         public void start(ServiceRegistrant registrant) {

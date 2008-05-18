@@ -12,8 +12,7 @@ import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.codehaus.cake.util.Clock;
 
-public class DefaultAttributeService<K, V> implements 
-        InternalAttributeService<K, V>, InternalCacheAttributeService {
+public class DefaultAttributeService<K, V> implements InternalAttributeService<K, V>, InternalCacheAttributeService {
     private final AttributeMap defaults;
     private final Clock clock;
 
@@ -84,7 +83,20 @@ public class DefaultAttributeService<K, V> implements
     }
 
     public void attachToPolicy(Attribute<?> attribute) {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
+    @Override
+    public void dependOnHard(Attribute<?> attribute) {
+    // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void dependOnSoft(Attribute<?> attribute) {
+    // TODO Auto-generated method stub
+
+    }
+
 }

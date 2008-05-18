@@ -11,10 +11,13 @@ import org.codehaus.cake.cache.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.cache.test.tck.service.management.AbstractManagementTest;
+import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.ops.LongOps;
+import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Before;
 import org.junit.Test;
 
+@RequireService({Manageable.class})
 public class MemoryStoreManagement extends AbstractManagementTest {
 
     static MemoryStoreConfiguration<?, ?> DEFAULT = new MemoryStoreConfiguration();

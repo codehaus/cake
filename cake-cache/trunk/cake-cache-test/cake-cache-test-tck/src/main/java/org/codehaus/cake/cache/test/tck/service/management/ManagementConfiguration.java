@@ -13,8 +13,10 @@ import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.ManagedVisitor;
+import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;
 
+@RequireService({Manageable.class})
 public class ManagementConfiguration extends AbstractCacheTCKTest {
 
     @Test
@@ -23,12 +25,13 @@ public class ManagementConfiguration extends AbstractCacheTCKTest {
         conf.setName("managementtest");
         conf.withManagement().setEnabled(true).setMBeanServer(mbs).setDomain("com.acme");
         init();
-        ObjectName on = new ObjectName("com.acme:name=managementtest,service="
-                + CacheMXBean.MANAGED_SERVICE_NAME);
+        ObjectName on = new ObjectName("com.acme:name=managementtest,service=" + CacheMXBean.MANAGED_SERVICE_NAME);
         prestart();
-        CacheMXBean mxBean = (CacheMXBean) MBeanServerInvocationHandler.newProxyInstance(mbs, on,
-                CacheMXBean.class, false);
+        CacheMXBean mxBean = (CacheMXBean) MBeanServerInvocationHandler.newProxyInstance(mbs, on, CacheMXBean.class,
+                false);
         assertEquals(0, mxBean.getSize());
+
+        MBeanServerFactory.releaseMBeanServer(mbs);
     }
 
     boolean wasCalled;
@@ -43,36 +46,36 @@ public class ManagementConfiguration extends AbstractCacheTCKTest {
             }
         });
         conf.setName("managementtest");
-        conf.withManagement().setEnabled(true).setMBeanServer(mbs).setRegistrant(
-                new ManagedVisitor() {
-                    public Object traverse(Object node) throws JMException {
-                        assertTrue(node instanceof ManagedGroup);
-                        ManagedGroup mg = (ManagedGroup) node;
-                        for (ManagedGroup m : mg.getChildren()) {
-                            if (m.getName().equals("foo1")) {
-                                assertEquals("foodesc", m.getDescription());
-                                assertEquals(1, m.getChildren().size());
-                                assertEquals("foo2", m.getChildren().iterator().next().getName());
-                                assertEquals("foodesc2", m.getChildren().iterator().next()
-                                        .getDescription());
-                                wasCalled = true;
-                            }
-                        }
-                        return Void.TYPE;
+        conf.withManagement().setEnabled(true).setMBeanServer(mbs).setRegistrant(new ManagedVisitor() {
+            public Object traverse(Object node) throws JMException {
+                assertTrue(node instanceof ManagedGroup);
+                ManagedGroup mg = (ManagedGroup) node;
+                for (ManagedGroup m : mg.getChildren()) {
+                    if (m.getName().equals("foo1")) {
+                        assertEquals("foodesc", m.getDescription());
+                        assertEquals(1, m.getChildren().size());
+                        assertEquals("foo2", m.getChildren().iterator().next().getName());
+                        assertEquals("foodesc2", m.getChildren().iterator().next().getDescription());
+                        wasCalled = true;
                     }
+                }
+                return Void.TYPE;
+            }
 
-                    public void visitManagedGroup(ManagedGroup mg) throws JMException {
-                        throw new AssertionError("Should not have been called");
-                    }
+            public void visitManagedGroup(ManagedGroup mg) throws JMException {
+                throw new AssertionError("Should not have been called");
+            }
 
-                    public void visitManagedObject(Object o) throws JMException {
-                        throw new AssertionError("Should not have been called");
-                    }
-                });
+            public void visitManagedObject(Object o) throws JMException {
+                throw new AssertionError("Should not have been called");
+            }
+        });
         init();
         prestart();
         assertTrue(wasCalled);
         assertEquals(count, mbs.getMBeanCount().intValue());// nothing registred
+        
+        MBeanServerFactory.releaseMBeanServer(mbs);
     }
 
     @Test(expected = RuntimeException.class)

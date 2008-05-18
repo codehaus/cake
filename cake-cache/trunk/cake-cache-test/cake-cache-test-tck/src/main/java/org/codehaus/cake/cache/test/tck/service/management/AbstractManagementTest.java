@@ -13,6 +13,7 @@ import org.codehaus.cake.cache.CacheMXBean;
 import org.codehaus.cake.cache.loading.CacheLoadingMXBean;
 import org.codehaus.cake.cache.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.junit.After;
 import org.junit.Before;
 
 public abstract class AbstractManagementTest extends AbstractCacheTCKTest {
@@ -33,6 +34,10 @@ public abstract class AbstractManagementTest extends AbstractCacheTCKTest {
         conf.withManagement().setEnabled(true);
         conf.withManagement().setMBeanServer(server);
         super.init();
+    }
+    @After
+    public void release() {
+        MBeanServerFactory.releaseMBeanServer(server);
     }
     public AbstractCacheTCKTest init() {
         setup();

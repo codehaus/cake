@@ -72,10 +72,15 @@ public class LifecycleManager {
                 list.add(new LifecycleObject(state, ies, o));
             }
         }
-        for (LifecycleObject lo : list) {
-            lo.startRun(allServices, composer.get(ContainerConfiguration.class), new DefaultServiceRegistrant(composer
-                    .get(DefaultServiceManager.class)));
+        DefaultServiceRegistrant dsr = new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class));
+        try {
+            for (LifecycleObject lo : list) {
+                lo.startRun(allServices, composer.get(ContainerConfiguration.class), dsr);
+            }
+        } finally {
+            dsr.finished();
         }
+        
         if (composer.hasService(DefaultManagementService.class)) {
             try {
                 composer.get(DefaultManagementService.class).register(composer, allServices);
@@ -84,12 +89,11 @@ public class LifecycleManager {
                 throw new IllegalStateException("Could not start cache", e);
             }
         }
-
         state.transitionToRunning();
         /* Started */
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = (LifecycleObject) iterator.next();
-            lo.startedRun(composer.get(Container.class));
+            lo.startedRun(composer.get(ContainerConfiguration.class),composer.get(Container.class));
             if (!lo.stopOrDisposeShouldRun()) {
                 iterator.remove();
             }

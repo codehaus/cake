@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 
-public class TckUtil {
+class TckUtil {
 
     static Class<? extends Container> containerImplementation;
     static Class<? extends ContainerConfiguration> configuration;

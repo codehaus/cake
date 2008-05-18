@@ -98,7 +98,7 @@ public class LifecycleObject {
             m.invoke(o, obs);
         } catch (RuntimeException e) {
             state.trySetStartupException(e);
-            ies.fatal("Failed To start service", e);
+            //ies.fatal("Failed To start service", e);
             throw e;
         }
     }
@@ -143,10 +143,16 @@ public class LifecycleObject {
         }
     }
 
-    public void startedRun(Container container) {
+    public void startedRun(ContainerConfiguration configuration,Container container) {
         ArrayList al = new ArrayList();
         al.add(container);
         for (Object o : container.getAllServices().values()) {
+            al.add(o);
+        }
+        
+        al.add(configuration);
+        
+        for (Object o : configuration.getConfigurations()) {
             al.add(o);
         }
         for (Method m : o.getClass().getMethods()) {
@@ -157,11 +163,16 @@ public class LifecycleObject {
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
                     state.trySetStartupException(cause);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
-                            + "]", cause);
                     if (cause instanceof Error) {
                         throw (Error) cause;
                     }
+                    if (cause instanceof RuntimeException) {
+                        throw (RuntimeException) cause;
+                    }
+                    throw new IllegalStateException("Started failed", cause);
+                    
+//                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+//                            + "]", cause);
                 } catch (IllegalAccessException e) {
                     state.trySetStartupException(e);
                     ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m

@@ -3,8 +3,11 @@
 package org.codehaus.cake.cache.test.tck.service.management;
 
 import org.codehaus.cake.cache.CacheMXBean;
+import org.codehaus.cake.management.Manageable;
+import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;
 
+@RequireService({Manageable.class})
 public class ManagementCacheMXBean extends AbstractManagementTest {
 
     CacheMXBean cache() {

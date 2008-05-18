@@ -77,13 +77,11 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return entry;
     }
 
-    
     public Iterator<CacheEntry<K, V>> iterator() {
         lazyStart();
         return memoryCache.iterator();
     }
 
-    
     public CacheEntry<K, V> peekEntry(K key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -92,7 +90,6 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return memoryCache.peek(key);
     }
 
-    
     public CacheEntry<K, V> put(K key, V value, AttributeMap attributes) {
         checkPut(key, value, attributes);
         return put(key, value, attributes, false);
@@ -105,8 +102,8 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         EntryPair<K, V> prev = memoryCache.put(key, value, attributes, OnlyIfAbsent);
         ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-        listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(),
-                (InternalCacheEntry) prev.getNew(), false);
+        listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(), (InternalCacheEntry) prev
+                .getNew(), false);
         return prev.getPrevious();
     }
 
@@ -128,14 +125,12 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         listener.afterPutAll(started, trimmed.asList(), (Map) result, false);
     }
 
-    
     public V putIfAbsent(K key, V value) {
         checkKeyValue(key, value);
         CacheEntry<K, V> prev = put(key, value, Attributes.EMPTY_ATTRIBUTE_MAP, true);
         return prev == null ? null : prev.getValue();
     }
 
-    
     public V remove(Object key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -144,13 +139,11 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return removed == null ? null : removed.getValue();
     }
 
-    
     public boolean remove(Object key, Object value) {
         checkKeyValue(key, value);
         return removeByKey(key, value) != null;
     }
 
-    
     public void removeAll(Collection<? extends K> keys) {
         if (keys == null) {
             throw new NullPointerException("collection is null");
@@ -211,8 +204,8 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         long started = listener.beforeRemove(null, value);
 
         lazyStart();
-        CacheEntry<K, V> e = memoryCache.removeAny(Predicates.mapAndEvaluate(
-                CollectionOps.MAP_ENTRY_TO_VALUE_OP, Predicates.equalsTo(value)));
+        CacheEntry<K, V> e = memoryCache.removeAny(Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP,
+                Predicates.equalsTo(value)));
 
         listener.afterRemove(started, e);
         return e != null;
@@ -233,19 +226,15 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return list.size() > 0;
     }
 
-    
     public V replace(K key, V value) {
         checkKeyValue(key, value);
-        CacheEntry<K, V> prev = replace(key, null, value, Attributes.EMPTY_ATTRIBUTE_MAP)
-                .getPrevious();
+        CacheEntry<K, V> prev = replace(key, null, value, Attributes.EMPTY_ATTRIBUTE_MAP).getPrevious();
         return prev == null ? null : prev.getValue();
     }
 
-    
     public boolean replace(K key, V oldValue, V newValue) {
         checkReplace(key, oldValue, newValue);
-        CacheEntry<K, V> newEntry = replace(key, oldValue, newValue, Attributes.EMPTY_ATTRIBUTE_MAP)
-                .getNew();
+        CacheEntry<K, V> newEntry = replace(key, oldValue, newValue, Attributes.EMPTY_ATTRIBUTE_MAP).getNew();
         return newEntry != null;
     }
 
@@ -260,7 +249,6 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return memoryCache.size();
     }
 
-    
     public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
         if (value != null) {
             long started = listener.beforePut(key, value, false);
@@ -275,23 +263,25 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return null;
     }
 
-    public static <K, V> UnsynchronizedInternalCache<K, V> create(
-            CacheConfiguration<K, V> configuration, Cache<K, V> cache) {
+    public static <K, V> UnsynchronizedInternalCache<K, V> create(CacheConfiguration<K, V> configuration,
+            Cache<K, V> cache) {
         Composer composer = newComposer(configuration);
-        
-        //Common components
+
+        // Common components
         composer.registerImplementation(DefaultExecutorService.class);
         composer.registerImplementation(UnsynchronizedRunState.class);
         if (configuration.withManagement().isEnabled()) {
-            composer.registerImplementation(DefaultManagementService.class);
+            throw new IllegalArgumentException("Cache does not support Management");
+        } else if (configuration.withExecutors().getExecutorManager() != null) {
+            throw new IllegalArgumentException("Cache does not support an ExecutorsManagers");
         }
-        
-        //Cache components
+
+        // Cache components
         composer.registerInstance(Cache.class, cache);
         composer.registerInstance(Container.class, cache);
         composer.registerImplementation(UnsynchronizedCollectionViews.class);
         composer.registerImplementation(DefaultAttributeService.class);
-        //composer.registerImplementation(MemorySparseAttributeService.class);
+        // composer.registerImplementation(MemorySparseAttributeService.class);
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(UnsynchronizedCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);

@@ -10,10 +10,10 @@ import org.codehaus.cake.internal.service.spi.GlobalServiceMutex;
 
 public abstract class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V> {
 
-    public static <K, V> SynchronizedInternalCache<K, V> create(
-            CacheConfiguration<K, V> configuration, Cache<K, V> cache) {
+    public static <K, V> SynchronizedInternalCache<K, V> create(CacheConfiguration<K, V> configuration,
+            Cache<K, V> cache) {
         Composer composer = newComposer(configuration);
-        composer.registerInstance(GlobalServiceMutex.class,GlobalServiceMutex.from(cache));
+        composer.registerInstance(GlobalServiceMutex.class, GlobalServiceMutex.from(cache));
 
         // composer.registerInternalImplementation(SynchronizedMemoryStoreService.class);
         if (configuration.withManagement().isEnabled()) {

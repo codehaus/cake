@@ -23,11 +23,11 @@ import org.codehaus.cake.service.Stoppable;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 
 /**
- * The default implementation of the {@link MapManagementService} interface. All methods exposed
- * through the DefaultManagementService interface can be invoked in a thread safe manner.
+ * The default implementation of the {@link MapManagementService} interface. All methods exposed through the
+ * DefaultManagementService interface can be invoked in a thread safe manner.
  * <p>
- * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to
- * the compatibility of this class between different releases.
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * <p>
  * This is class is thread-safe.
  * 
@@ -69,8 +69,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
             if (domain == null) {
                 domain = containerInfo.getDefaultJMXDomain();
             }
-            registrant = Managements.hierarchicalRegistrant(server, domain, "name", "service",
-                    "group");
+            registrant = Managements.hierarchicalRegistrant(server, domain, "name", "service", "group");
         }
     }
 
@@ -93,14 +92,15 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
     }
 
     @Override
-    protected void beforeMutableOperation() {
-        if (isShutdown) {
-            throw new IllegalStateException(containerType + " has been shutdown");
+    protected synchronized void beforeMutableOperation() {
+        if (registrant == null) {
+            throw new IllegalStateException("cannot invoke this method, " + containerType
+                    + " has been already been started");
         }
     }
 
     /** {@inheritDoc} */
-    public synchronized Collection<?> getChildServices() {
+    public Collection<?> getChildServices() {
         return Collections.singleton(registrant);
     }
 

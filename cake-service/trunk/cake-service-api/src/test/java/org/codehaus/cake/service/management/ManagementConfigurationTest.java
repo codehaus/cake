@@ -13,6 +13,7 @@ import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 
 import org.codehaus.cake.management.ManagedVisitor;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,6 +56,7 @@ public class ManagementConfigurationTest {
         MBeanServer s = MBeanServerFactory.createMBeanServer();
         assertEquals(m, m.setMBeanServer(s));
         assertEquals(s, m.getMBeanServer());
+        MBeanServerFactory.releaseMBeanServer(s);
     }
 
     @Test

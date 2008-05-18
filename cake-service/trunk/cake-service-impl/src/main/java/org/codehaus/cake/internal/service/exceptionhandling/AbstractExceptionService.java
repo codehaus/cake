@@ -43,15 +43,6 @@ public abstract class AbstractExceptionService<T extends Container> implements I
         return createContext(null, message, level);
     }
 
-    protected ExceptionContext<T> createContext(Throwable cause) {
-        Level level = cause instanceof Exception && !(cause instanceof RuntimeException) ? Level.Error : Level.Fatal;
-        return createContext(cause, level);
-    }
-
-    protected ExceptionContext<T> createContext(Throwable cause, Level level) {
-        return createContext(cause, cause.getMessage(), level);
-    }
-
     protected ExceptionContext<T> createContext(Throwable cause, String message, Level level) {
         return new DefaultExceptionContext(cause, message, level);
     }

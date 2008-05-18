@@ -28,6 +28,7 @@ import org.codehaus.cake.management.stubs.SingleAttribute;
 import org.codehaus.cake.management.stubs.SingleOperation;
 import org.codehaus.cake.management.stubs.VariousAttributes;
 import org.codehaus.cake.management.stubs.VariousOperations;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -165,7 +166,10 @@ public class DefaultManagedGroupTest {
         initCount = server.getMBeanCount();
         dmg = new DefaultManagedGroup("foo", "boo");
     }
-
+    @After
+    public void release() {
+        MBeanServerFactory.releaseMBeanServer(server);
+    }
     @Test
     public void singleAttribute() throws JMException {
         SingleAttribute o = new SingleAttribute();

@@ -22,6 +22,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -144,7 +145,10 @@ public class ManagementsTest {
         initCount = server.getMBeanCount();
         dmg = new DefaultManagedGroup("fooa", "booa");
     }
-
+    @After
+    public void release() {
+        MBeanServerFactory.releaseMBeanServer(server);
+    }
     @Test
     public void test() {
         Integer[] i = new Integer[] { 1, 2, 3 };

@@ -20,10 +20,20 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
 
     @Test
     public void noArg() {
+        assertFalse(c.isStarted());
+        assertFalse(c.isShutdown());
+        assertFalse(c.isTerminated());
         latch = new CountDownLatch(1);
         conf.addService(new Started1());
         newContainer();
+        assertFalse(c.isStarted());
+        assertFalse(c.isShutdown());
+        assertFalse(c.isTerminated());
         prestart();
+        assertTrue(c.isStarted());
+        assertFalse(c.isShutdown());
+        assertFalse(c.isTerminated());
+
     }
 
     @Test

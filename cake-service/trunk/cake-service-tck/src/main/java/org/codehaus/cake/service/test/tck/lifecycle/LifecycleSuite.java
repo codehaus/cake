@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { LifecycleStart.class,LifecycleStartErroneous.class, LifecycleStartRegistration.class })
-public class LifecycleSuite {
-
-}
+@Suite.SuiteClasses( { LifecycleAfterErroneous.class, LifecycleAfterStart.class, LifecycleStart.class,
+        LifecycleStartErroneous.class, LifecycleStartRegistration.class, LifecycleStatus.class })
+public class LifecycleSuite {}

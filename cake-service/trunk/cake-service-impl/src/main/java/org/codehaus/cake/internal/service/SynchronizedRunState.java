@@ -79,6 +79,7 @@ public final class SynchronizedRunState extends RunState {
 
     public boolean tryStart() {
         synchronized (mutex) {
+            checkExceptions();
             if (isStarting()) {
                 throw new IllegalStateException(
                         "Cannot invoke this method from a Startable service, should be invoked from an AfterStart method");

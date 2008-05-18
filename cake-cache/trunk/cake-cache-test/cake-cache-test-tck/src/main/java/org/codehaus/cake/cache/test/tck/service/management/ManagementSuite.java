@@ -7,6 +7,5 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { ManagementCacheMXBean.class, ManagementConfiguration.class})
-
+@Suite.SuiteClasses( { ManagementCacheMXBean.class, ManagementConfiguration.class })
 public class ManagementSuite {}
