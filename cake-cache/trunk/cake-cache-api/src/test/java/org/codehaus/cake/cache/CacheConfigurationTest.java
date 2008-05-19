@@ -56,8 +56,8 @@ public class CacheConfigurationTest {
 
     /**
      * Tests that a configuration service added through
-     * {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)} is available
-     * when calling {@link CacheConfiguration#getAllConfigurations()}.
+     * {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)} is available when calling
+     * {@link CacheConfiguration#getAllConfigurations()}.
      */
     @Test
     public void addConfiguration() {
@@ -75,9 +75,15 @@ public class CacheConfigurationTest {
         }
     }
 
+    @Test
+    public void addService() {
+     assertTrue(conf.getServices().isEmpty());
+     conf.addService(5);
+     assertTrue(conf.getServices().contains(5));
+    }
     /**
-     * Tests that {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)}
-     * throws a {@link NullPointerException} when invoked with a null argument.
+     * Tests that {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)} throws a
+     * {@link NullPointerException} when invoked with a null argument.
      */
     @Test(expected = NullPointerException.class)
     public void addConfigurationNPE() {
@@ -85,9 +91,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)}
-     * throws a {@link IllegalArgumentException} when we try to register a configuration service
-     * that is registered as default.
+     * Tests that {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)} throws a
+     * {@link IllegalArgumentException} when we try to register a configuration service that is registered as default.
      */
     @Test(expected = IllegalArgumentException.class)
     public void addConfigurationIAE() {
@@ -95,9 +100,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)}
-     * throws a {@link IllegalArgumentException} when we try to register the same configuration
-     * service twice.
+     * Tests that {@link CacheConfiguration#addConfiguration(AbstractCacheServiceConfiguration)} throws a
+     * {@link IllegalArgumentException} when we try to register the same configuration service twice.
      */
     @Test(expected = IllegalArgumentException.class)
     public void addConfigurationIAE2() {
@@ -110,8 +114,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#setClock(Clock)} throws a {@link NullPointerException}
-     * when invoked with a null argument.
+     * Tests that {@link CacheConfiguration#setClock(Clock)} throws a {@link NullPointerException} when invoked with a
+     * null argument.
      */
     @Test(expected = NullPointerException.class)
     public void clockNPE() {
@@ -119,8 +123,7 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests {@link CacheConfiguration#setCacheType(Class)} and
-     * {@link CacheConfiguration#getCacheType()}.
+     * Tests {@link CacheConfiguration#setCacheType(Class)} and {@link CacheConfiguration#getCacheType()}.
      */
     @Test
     public void cacheType() {
@@ -130,8 +133,7 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests {@link CacheConfiguration#setDefaultLogger(Logger)} and
-     * {@link CacheConfiguration#getDefaultLogger()}.
+     * Tests {@link CacheConfiguration#setDefaultLogger(Logger)} and {@link CacheConfiguration#getDefaultLogger()}.
      */
     @Test
     public void defaultLogger() {
@@ -172,10 +174,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests {@link CacheConfiguration#getProperties()},
-     * {@link CacheConfiguration#getProperty(String)},
-     * {@link CacheConfiguration#getProperty(String, Object)}and
-     * {@link CacheConfiguration#setProperty(String, Object)}.
+     * Tests {@link CacheConfiguration#getProperties()}, {@link CacheConfiguration#getProperty(String)},
+     * {@link CacheConfiguration#getProperty(String, Object)}and {@link CacheConfiguration#setProperty(String, Object)}.
      */
     @Test
     public void properties() {
@@ -194,8 +194,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#getProperty(String)} throws a
-     * {@link NullPointerException} when invoked with a null argument.
+     * Tests that {@link CacheConfiguration#getProperty(String)} throws a {@link NullPointerException} when invoked with
+     * a null argument.
      */
     @Test(expected = NullPointerException.class)
     public void propertiesGetNPE() {
@@ -203,8 +203,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#getProperty(String, Object)} throws a
-     * {@link NullPointerException} when invoked with a null argument as the name of the property.
+     * Tests that {@link CacheConfiguration#getProperty(String, Object)} throws a {@link NullPointerException} when
+     * invoked with a null argument as the name of the property.
      */
     @Test(expected = NullPointerException.class)
     public void propertiesGetNPE1() {
@@ -212,8 +212,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#setProperty(String, Object)} throws a
-     * {@link NullPointerException} when invoked with a null argument as the name of the property.
+     * Tests that {@link CacheConfiguration#setProperty(String, Object)} throws a {@link NullPointerException} when
+     * invoked with a null argument as the name of the property.
      */
     @Test(expected = NullPointerException.class)
     public void propertiesSetNPE() {
@@ -258,6 +258,12 @@ public class CacheConfigurationTest {
         assertEquals("foo", c.getName());
     }
 
+    @Test
+    public void newInstanceType() throws Exception {
+        conf.setType(DummyCache.class);
+        assertTrue(conf.newInstance() instanceof DummyCache);
+    }
+
     /**
      * Tests the {@link CacheConfiguration#create(String)} method.
      */
@@ -283,8 +289,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a
-     * {@link NullPointerException} when invoked with a null argument.
+     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a {@link NullPointerException} when invoked
+     * with a null argument.
      * 
      * @throws Exception
      *             some exception while constructing the cache
@@ -295,9 +301,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a
-     * {@link IllegalArgumentException} when invoked with a class that does not have a constructor
-     * taking a single {@link CacheConfiguration} argument.
+     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a {@link IllegalArgumentException} when
+     * invoked with a class that does not have a constructor taking a single {@link CacheConfiguration} argument.
      * 
      * @throws Exception
      *             some exception while constructing the cache
@@ -308,8 +313,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a
-     * {@link IllegalArgumentException} when invoked with an abstract class.
+     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a {@link IllegalArgumentException} when
+     * invoked with an abstract class.
      * 
      * @throws Exception
      *             some exception while constructing the cache
@@ -320,9 +325,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a
-     * {@link RuntimeException} when invoked with class that throws an RuntimeException in the
-     * constructor.
+     * Tests that {@link CacheConfiguration#newCacheInstance(Class)} throws a {@link RuntimeException} when invoked with
+     * class that throws an RuntimeException in the constructor.
      * 
      * @throws Throwable
      *             some exception while constructing the cache
@@ -337,8 +341,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newInstance(Class)} throws a {@link Error} when invoked
-     * with class that throws an Error in the constructor.
+     * Tests that {@link CacheConfiguration#newInstance(Class)} throws a {@link Error} when invoked with class that
+     * throws an Error in the constructor.
      * 
      * @throws Throwable
      *             some exception while constructing the cache
@@ -353,9 +357,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newInstance(Class)} throws a
-     * {@link IllegalArgumentException} when invoked with class that throws an {@link Exception} in
-     * the constructor.
+     * Tests that {@link CacheConfiguration#newInstance(Class)} throws a {@link IllegalArgumentException} when invoked
+     * with class that throws an {@link Exception} in the constructor.
      * 
      * @throws Throwable
      *             some exception while constructing the cache
@@ -371,9 +374,8 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * Tests that {@link CacheConfiguration#newInstance(Class)} throws a
-     * {@link IllegalArgumentException} when invoked with a class where the constructor taking a
-     * single {@link CacheConfiguration} argument is private.
+     * Tests that {@link CacheConfiguration#newInstance(Class)} throws a {@link IllegalArgumentException} when invoked
+     * with a class where the constructor taking a single {@link CacheConfiguration} argument is private.
      * 
      * @throws Throwable
      *             some exception while constructing the cache
@@ -392,8 +394,7 @@ public class CacheConfigurationTest {
      */
     @Test
     public void cacheConfiguration() {
-        ExtendConfiguration conf = new ExtendConfiguration(Arrays.asList( new SimpleService(),
-                new SimpleService2()));
+        ExtendConfiguration conf = new ExtendConfiguration(Arrays.asList(new SimpleService(), new SimpleService2()));
         assertEquals(1, getInstancesOfType(conf.getConfigurations(), SimpleService.class).size());
         assertEquals(1, getInstancesOfType(conf.getConfigurations(), SimpleService2.class).size());
         assertEquals(0, getInstancesOfType(conf.getConfigurations(), SimpleServiceAE.class).size());
@@ -418,8 +419,7 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * An extension of CacheConfiguration that exposes {@link #getConfiguration(Class)} as a public
-     * method.
+     * An extension of CacheConfiguration that exposes {@link #getConfiguration(Class)} as a public method.
      */
     public static class ExtendConfiguration<K, V> extends CacheConfiguration<K, V> {
 
@@ -461,8 +461,7 @@ public class CacheConfigurationTest {
     }
 
     /**
-     * A simple implementation of AbstractCacheServiceConfiguration that throws an exception when it
-     * is being persisted.
+     * A simple implementation of AbstractCacheServiceConfiguration that throws an exception when it is being persisted.
      */
     public static class SimpleServiceAE {
 

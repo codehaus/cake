@@ -6,10 +6,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { EntrySet.class, EntrySetAdd.class, EntrySetClear.class,
-        EntrySetContains.class, EntrySetHashCodeEquals.class, EntrySetIsEmpty.class,
-        EntrySetIterator.class, EntrySetRemove.class, EntrySetRetain.class, EntrySetSize.class,
-        EntrySetToArray.class })
+@Suite.SuiteClasses( { EntrySet.class, EntrySetAdd.class, EntrySetClear.class, EntrySetContains.class,
+        EntrySetHashCodeEquals.class, EntrySetIsEmpty.class, EntrySetIterator.class, EntrySetRemove.class,
+        EntrySetRetain.class, EntrySetSize.class, EntrySetToArray.class, EntrySetToString.class })
 public class EntrySetSuite {
 
 }

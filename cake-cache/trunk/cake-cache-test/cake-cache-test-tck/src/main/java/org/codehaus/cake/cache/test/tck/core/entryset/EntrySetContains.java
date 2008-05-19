@@ -7,6 +7,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_SET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
@@ -29,15 +30,18 @@ public class EntrySetContains extends AbstractCacheTCKTest {
         assertTrue(c.entrySet().contains(M1));
         assertFalse(c.entrySet().contains(M1_NULL));
         assertFalse(c.entrySet().contains(M6));
+        assertFalse(c.entrySet().contains(M6.getKey()));
+        assertFalse(c.entrySet().contains(M6.getValue()));
         assertFalse(c.entrySet().contains(M7));
     }
 
     @Test
     public void containsAll() {
         c = newCache(5);
-
         assertTrue(c.entrySet().containsAll(M1_TO_M5_SET));
         assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M2, M3, M4, M5,M6)));
+        assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M1.getKey())));
+        assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M1.getValue())));
     }
 
     /**

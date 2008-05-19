@@ -46,6 +46,7 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
         forceLoad(M3);
         assertVolume(13);
         forceLoadAll();
+        awaitFinishedThreads();
         assertVolume(15);
         assertGet(M1, M3, M5);
         assertVolume(15);

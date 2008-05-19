@@ -26,7 +26,8 @@ public class EntrySetHashCodeEquals extends AbstractCacheTCKTest {
 
         assertTrue(new HashSet().equals(c.entrySet()));
         assertTrue(c.entrySet().equals(new HashSet()));
-
+        assertTrue(c.entrySet().equals(c.entrySet()));
+        
         assertFalse(c.entrySet().equals(null));
         assertFalse(c.entrySet().equals(newCache(1).entrySet()));
 

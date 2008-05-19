@@ -2,10 +2,15 @@ package org.codehaus.cake.service.test.tck;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.Container.SupportedServices;
+import org.codehaus.cake.service.executor.ExecutorsService;
 
 class TckUtil {
 
@@ -26,6 +31,12 @@ class TckUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    static boolean isThreadSafe() {
+        Set<Class> supportedServices = new HashSet(Arrays.asList(containerImplementation.getAnnotation(
+                SupportedServices.class).value()));
+        return supportedServices.contains(ExecutorsService.class);
     }
 
     public static Container newContainer(ContainerConfiguration configuration) {

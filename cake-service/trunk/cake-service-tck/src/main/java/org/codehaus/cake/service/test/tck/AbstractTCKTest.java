@@ -9,6 +9,7 @@ import junit.framework.AssertionFailedError;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;
@@ -123,6 +124,10 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
 
     protected T newConfiguration() {
         newConfigurationClean();
+        if (TckUtil.isThreadSafe()) {
+            threadHelper = new ThreadServiceTestHelper();
+            withConf(ExecutorsConfiguration.class).setExecutorManager(threadHelper);
+        }
         return conf;
     }
 

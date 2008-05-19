@@ -7,8 +7,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { Values.class, ValuesAdd.class, ValuesClear.class, ValuesContains.class,
-        ValuesHashCodeEquals.class, ValuesIsEmpty.class, ValuesIterator.class, ValuesRemove.class,
-        ValuesRetain.class, ValuesSize.class, ValuesToArray.class })
+        ValuesHashCodeEquals.class, ValuesIsEmpty.class, ValuesIterator.class, ValuesRemove.class, ValuesRetain.class,
+        ValuesSize.class, ValuesToArray.class, ValuesToString.class })
 public class ValuesSuite {
 
 }

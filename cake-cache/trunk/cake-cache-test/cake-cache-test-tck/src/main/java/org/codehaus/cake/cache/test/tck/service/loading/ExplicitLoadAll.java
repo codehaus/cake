@@ -43,9 +43,11 @@ public class ExplicitLoadAll extends AbstractCacheTCKTest {
         assertLoadCount(0);
         loader.withLoader(M1).setValue("3");
         withLoading().withAll().forceLoad();
+        awaitFinishedThreads();
         assertLoadCount(2);
         assertPeek(entry(M1, "3"));
         withLoading().withAll().forceLoad();
+        awaitFinishedThreads();
         assertLoadCount(4);
     }
 

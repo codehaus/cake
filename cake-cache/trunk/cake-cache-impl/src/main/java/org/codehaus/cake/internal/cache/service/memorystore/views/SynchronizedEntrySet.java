@@ -50,7 +50,7 @@ final class SynchronizedEntrySet<K, V> extends EntrySet<K, V> {
     @Override
     public String toString() {
         synchronized (mutex) {
-            return toString();
+            return super.toString();
         }
     }
 

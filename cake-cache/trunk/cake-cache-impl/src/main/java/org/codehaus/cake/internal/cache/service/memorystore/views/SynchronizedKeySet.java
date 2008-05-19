@@ -49,7 +49,7 @@ final class SynchronizedKeySet<K,V> extends KeySet<K,V> {
     @Override
     public String toString() {
         synchronized (mutex) {
-            return toString();
+            return super.toString();
         }
     }
 }

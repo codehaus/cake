@@ -36,7 +36,7 @@ final class SynchronizedValues<K, V> extends Values<K, V> {
     @Override
     public String toString() {
         synchronized (mutex) {
-            return toString();
+            return super.toString();
         }
     }
 }

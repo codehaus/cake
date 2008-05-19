@@ -30,6 +30,7 @@ public class ValuesHashCodeEquals extends AbstractCacheTCKTest {
         assertFalse(c.values().equals(null));
         assertFalse(c.values().equals(newCache(4).values()));
         assertFalse(c.values().equals(newCache(6).values()));
+        assertTrue(c.values().equals(c.values()));
     }
 
     /**

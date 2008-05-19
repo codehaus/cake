@@ -9,7 +9,7 @@ import org.codehaus.cake.internal.util.CollectionUtils;
 
 class KeySet<K, V> extends AbstractSetView<K> {
 
-     KeySet(InternalCache<K, V> cache) {
+    KeySet(InternalCache<K, V> cache) {
         super(cache);
     }
 
@@ -34,19 +34,15 @@ class KeySet<K, V> extends AbstractSetView<K> {
     public Iterator<K> iterator() {
         final Iterator<CacheEntry<K, V>> iter = cache.iterator();
         return new Iterator<K>() {
-
-
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
-            
             public K next() {
                 CacheEntry<K, V> current = iter.next();
                 return current.getKey();
             }
 
-            
             public void remove() {
                 iter.remove();
             }

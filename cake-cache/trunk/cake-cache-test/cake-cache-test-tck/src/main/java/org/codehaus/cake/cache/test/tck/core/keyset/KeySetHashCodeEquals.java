@@ -2,6 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.core.keyset;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
@@ -9,8 +10,7 @@ import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
 /**
- * Tests non modifying actions for a caches value set
- * {@link org.codehaus.cake.cache.Cache#keySet()}
+ * Tests non modifying actions for a caches value set {@link org.codehaus.cake.cache.Cache#keySet()}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: KeySetHashCodeEquals.java 526 2007-12-27 01:32:16Z kasper $
@@ -26,10 +26,18 @@ public class KeySetHashCodeEquals extends AbstractCacheTCKTest {
         init();
         assertFalse(c.keySet().equals(null));
         assertFalse(c.keySet().equals(newCache(1).keySet()));
+
         c = newCache(5);
         assertFalse(c.keySet().equals(null));
         assertFalse(c.keySet().equals(newCache(4).keySet()));
+        
+        c = newCache(5);
         assertFalse(c.keySet().equals(newCache(6).keySet()));
+        
+        c = newCache(5);
+        assertFalse(c.keySet().equals(new HashSet<Integer>(Arrays.asList(1, 2, 3, 4, null))));
+        assertFalse(c.keySet().equals(new HashSet(Arrays.asList("1", "2", "3", "4", "5"))));
+        assertTrue(c.keySet().equals(c.keySet()));
     }
 
     /**
@@ -52,12 +60,13 @@ public class KeySetHashCodeEquals extends AbstractCacheTCKTest {
         boolean equals = c.keySet().equals(new HashSet());
         assertTrue(equals);// cache should be empty
     }
-    
-    //TODO test hashCode shutdown
-    
+
+    // TODO test hashCode shutdown
+
     @Test
     public void testHashCode() {
-    // assertEquals(c5.values().hashCode(), c5.values().hashCode());
+        c = newCache(5);
+        assertEquals(c.keySet().hashCode(), 1 + 2 + 3 + 4 + 5);
     }
 
 }

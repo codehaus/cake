@@ -88,10 +88,12 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
         loader.setAttribute(SIZE, LongOps.add(2));// size=key+2
         loader.withLoader(M1).setValue("C");
         withLoading().withKey(M1.getKey()).forceLoad();
+        awaitFinishedThreads();
         assertSize(1);
         assertVolume(3);
 
         withLoading().withKey(M2.getKey()).forceLoad();
+        awaitFinishedThreads();
         assertSize(1);// ?? replace
         assertVolume(4);
     }

@@ -16,7 +16,7 @@ import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
-import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
+import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
 import org.codehaus.cake.internal.cache.service.memorystore.views.SynchronizedCollectionViews;
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.Composer;
@@ -54,7 +54,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         composer.registerImplementation(DefaultExecutorsService.class);
         // composer.registerImplementation(MemorySparseAttributeService.class);
         if (configuration.withLoading().getLoader() != null) {
-            composer.registerImplementation(UnsynchronizedCacheLoader.class);
+            composer.registerImplementation(ThreadSafeCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);
         }
         

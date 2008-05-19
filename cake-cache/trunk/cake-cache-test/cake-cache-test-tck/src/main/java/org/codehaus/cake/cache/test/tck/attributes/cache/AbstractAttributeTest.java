@@ -43,7 +43,7 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
     @Test
     public void notAvailableLoadedUpdated() {
         loader.withLoader(M1).addAttribute(atr, atr.getDefault());
-        newConfigurationClean();
+        newConfiguration();
         conf.withLoading().setLoader(loader);
         init();
         assertGet(M1);

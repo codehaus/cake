@@ -29,9 +29,11 @@ public class LoadingManagement extends AbstractManagementTest {
         assertLoadCount(0);
         loader.withLoader(M1).setValue("3");
         mxBean().forceLoadAll();
+        awaitFinishedThreads();
         assertLoadCount(2);
         assertPeek(entry(M1, "3"));
         mxBean().forceLoadAll();
+        awaitFinishedThreads();
         assertLoadCount(4);
 
     }

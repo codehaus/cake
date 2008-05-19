@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.codehaus.cake.internal.cache.InternalCache;
 
-
 abstract class AbstractSetView<E> extends AbstractCollectionView<E> implements Set<E> {
 
     AbstractSetView(InternalCache cache) {
@@ -37,10 +36,8 @@ abstract class AbstractSetView<E> extends AbstractCollectionView<E> implements S
         Iterator<E> i = iterator();
         while (i.hasNext()) {
             E obj = i.next();
-
-            if (obj != null) {
-                h += obj.hashCode();
-            }
+            // values, keys are never null
+            h += obj.hashCode();
         }
         return h;
     }

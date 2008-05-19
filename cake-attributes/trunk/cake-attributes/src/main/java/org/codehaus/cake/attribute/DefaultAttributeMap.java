@@ -338,4 +338,8 @@ public class DefaultAttributeMap implements AttributeMap {
     public Collection<Object> values() {
         return map.values();
     }
+
+    public String toString() {
+        return map.toString();
+    }
 }
