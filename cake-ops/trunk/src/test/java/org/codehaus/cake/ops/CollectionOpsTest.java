@@ -24,6 +24,7 @@ import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -51,6 +52,17 @@ import org.junit.runner.RunWith;
 public class CollectionOpsTest {
     Mockery context = new JUnit4Mockery();
 
+    @Test
+    public void containedWithin() {
+        assertTrue(CollectionOps.containedWithin(Arrays.asList(1)).op(1));
+        assertFalse(CollectionOps.containedWithin(Arrays.asList(1)).op(-1));
+        assertNotNull(CollectionOps.containedWithin(Arrays.asList(1)).toString());
+        assertIsSerializable(CollectionOps.containedWithin(Arrays.asList(1)));
+    }
+    @Test(expected = NullPointerException.class)
+    public void containedWithin_NPE() {
+        CollectionOps.containedWithin(null);
+    }
     @Test
     public void addToCollection() {
         final Collection col = context.mock(Collection.class);

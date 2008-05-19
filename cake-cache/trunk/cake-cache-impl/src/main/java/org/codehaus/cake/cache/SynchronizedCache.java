@@ -49,7 +49,7 @@ import org.codehaus.cake.service.executor.ExecutorsService;
 @Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
         ExecutorsService.class, Manageable.class })
 public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<K, V> {
-    private SynchronizedInternalCache<K, V> cache;
+    private final SynchronizedInternalCache<K, V> cache;
 
     /**
      * Creates a new UnsynchronizedCache with a default configuration.
@@ -95,10 +95,6 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
         return cache.entrySet();
     }
 
-    /** {@inheritDoc} */
-    public boolean equals(Object obj) {
-        return cache.equals(obj);
-    }
 
     /** {@inheritDoc} */
     public V get(Object key) {
@@ -128,11 +124,6 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType) {
         return cache.getService(serviceType);
-    }
-
-    /** {@inheritDoc} */
-    public int hashCode() {
-        return cache.hashCode();
     }
 
     /** {@inheritDoc} */

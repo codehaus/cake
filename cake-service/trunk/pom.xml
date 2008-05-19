@@ -34,7 +34,6 @@
         <module>cake-service-api</module>
         <module>cake-service-impl</module>
         <module>cake-service-tck</module>
-        <module>cake-service-teststubs</module>
       </modules>
     </profile>
     <profile>

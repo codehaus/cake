@@ -6,7 +6,7 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.util.ArrayUtils;
 
-//TODO shouldn't implement Comparator, much better just to add a method
+//TODO shouldn't implement Comparator, much better just to add a method that should be overriden
 public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V> implements
         Comparator<CacheEntry<K, V>> {
 

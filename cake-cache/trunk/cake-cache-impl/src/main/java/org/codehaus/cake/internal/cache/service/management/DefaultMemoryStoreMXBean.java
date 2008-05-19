@@ -21,9 +21,9 @@ public final class DefaultMemoryStoreMXBean implements MemoryStoreMXBean {
      *            the service to wrap.
      */
     public DefaultMemoryStoreMXBean(MemoryStoreService<?, ?> service) {
-        if (service == null) {
-            throw new NullPointerException("service is null");
-        }
+//        if (service == null) {
+//            throw new NullPointerException("service is null");
+//        }
         this.service = service;
     }
 

@@ -19,9 +19,9 @@ public final class DefaultCacheMXBean implements CacheMXBean {
      *            the cache to wrap
      */
     public DefaultCacheMXBean(Cache<?, ?> cache) {
-        if (cache == null) {
-            throw new NullPointerException("cache is null");
-        }
+//        if (cache == null) {
+//            throw new NullPointerException("cache is null");
+//        }
         this.cache = cache;
     }
 
@@ -41,11 +41,5 @@ public final class DefaultCacheMXBean implements CacheMXBean {
     @ManagedAttribute(description = "The number of elements contained in the cache")
     public int getSize() {
         return cache.size();
-    }
-
-    /** {@inheritDoc} */
-    @ManagedAttribute(description = "The total size of all elements contained in the cache")
-    public long getVolume() {
-        return cache.size(); // todo fix volume();
     }
 }

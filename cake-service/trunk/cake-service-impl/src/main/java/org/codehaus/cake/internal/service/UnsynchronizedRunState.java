@@ -73,4 +73,8 @@ public class UnsynchronizedRunState extends RunState {
     protected int get() {
         return state;
     }
+    
+    public Throwable getStartupException() {
+        return startupException;
+    }
 }

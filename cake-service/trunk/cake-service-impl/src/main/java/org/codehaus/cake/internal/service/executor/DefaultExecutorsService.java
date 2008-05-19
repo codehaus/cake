@@ -3,6 +3,7 @@ package org.codehaus.cake.internal.service.executor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
@@ -16,7 +17,7 @@ import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
-public class DefaultExecutorService implements ExecutorsService, CompositeService {
+public class DefaultExecutorsService implements ExecutorsService, CompositeService {
     private final ExecutorsManager manager;
 
     // cache loader executor
@@ -25,13 +26,12 @@ public class DefaultExecutorService implements ExecutorsService, CompositeServic
     // call getExecutorService(Cache c)
     // call getExecutorService(DEFAULT)
 
-    public DefaultExecutorService(ExecutorsConfiguration conf) {
+    public DefaultExecutorsService(ExecutorsConfiguration conf) {
         ExecutorsManager manager = conf.getExecutorManager();
         if (manager == null) {
             manager = new DefaultExecutorsManager();
         }
         this.manager = manager;
-        //System.out.println("init");
     }
 
     public ExecutorService getExecutorService() {
@@ -73,7 +73,6 @@ public class DefaultExecutorService implements ExecutorsService, CompositeServic
 
     @Startable
     public void register(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
-//        System.out.println("register");
         serviceRegistrant.registerService(ExecutorsService.class, this);
     }
 

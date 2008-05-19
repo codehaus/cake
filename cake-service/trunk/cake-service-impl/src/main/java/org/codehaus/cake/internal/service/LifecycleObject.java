@@ -1,6 +1,7 @@
 package org.codehaus.cake.internal.service;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class LifecycleObject {
             m.invoke(o, obs);
         } catch (RuntimeException e) {
             state.trySetStartupException(e);
-            //ies.fatal("Failed To start service", e);
+            // ies.fatal("Failed To start service", e);
             throw e;
         }
     }
@@ -114,6 +115,9 @@ public class LifecycleObject {
             boolean isInternal = m.getAnnotation(UseInternals.class) != null;
             Annotation a = m.getAnnotation(Startable.class);
             if (a != null) {
+                if (ies.isDebugEnabled()) {
+                    ies.debug("@Startable -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
+                }
                 try {
                     if (isInternal) {
                         matchAndInvoke(m, all, true);
@@ -138,26 +142,35 @@ public class LifecycleObject {
                     // ies.error("@AfterStart for service failed [service=" + o + ", type=" + o.getClass() + ", method="
                     // + m
                     // + "]", e);
+                } finally {
+                    Throwable cause = state.getStartupException();
+                    if (cause != null) {
+//                        ies.error("@Startable -> " + m.getDeclaringClass().getName() + "." + m.getName() + "() FAILED",
+//                                cause);
+                    }
                 }
             }
         }
     }
 
-    public void startedRun(ContainerConfiguration configuration,Container container) {
+    public void startedRun(ContainerConfiguration configuration, Container container) {
         ArrayList al = new ArrayList();
         al.add(container);
         for (Object o : container.getAllServices().values()) {
             al.add(o);
         }
-        
+
         al.add(configuration);
-        
+
         for (Object o : configuration.getConfigurations()) {
             al.add(o);
         }
         for (Method m : o.getClass().getMethods()) {
             Annotation a = m.getAnnotation(AfterStart.class);
             if (a != null) {
+                if (ies.isDebugEnabled()) {
+                    ies.debug("@AfterStart -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
+                }
                 try {
                     matchAndInvoke(m, al, false);
                 } catch (InvocationTargetException e) {
@@ -170,9 +183,9 @@ public class LifecycleObject {
                         throw (RuntimeException) cause;
                     }
                     throw new IllegalStateException("Started failed", cause);
-                    
-//                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
-//                            + "]", cause);
+
+                    // ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                    // + "]", cause);
                 } catch (IllegalAccessException e) {
                     state.trySetStartupException(e);
                     ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m

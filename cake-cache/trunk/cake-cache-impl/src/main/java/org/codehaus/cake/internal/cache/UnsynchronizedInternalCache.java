@@ -21,7 +21,7 @@ import org.codehaus.cake.internal.cache.service.memorystore.views.Unsynchronized
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
-import org.codehaus.cake.internal.service.executor.DefaultExecutorService;
+import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.CollectionOps;
@@ -268,7 +268,6 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         Composer composer = newComposer(configuration);
 
         // Common components
-        composer.registerImplementation(DefaultExecutorService.class);
         composer.registerImplementation(UnsynchronizedRunState.class);
         if (configuration.withManagement().isEnabled()) {
             throw new IllegalArgumentException("Cache does not support Management");

@@ -14,7 +14,7 @@ import org.codehaus.cake.service.Stoppable;
 import org.codehaus.cake.service.executor.ExecutorsManager;
 
 /**
- * This class is reponsible for creating instances of {@link ExecutorService}, {@link ScheduledExecutorService} and
+ * This class is responsible for creating instances of {@link ExecutorService}, {@link ScheduledExecutorService} and
  * {@link ForkJoinExecutor}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
@@ -22,18 +22,20 @@ import org.codehaus.cake.service.executor.ExecutorsManager;
  */
 public class DefaultExecutorsManager extends ExecutorsManager {
 
-    /** Default scheduled executor service. */
-    private volatile ScheduledExecutorService defaultScheduledExecutorService;
     /** Default executor service. */
     private volatile ExecutorService defaultExecutorService;
-
     /** Default fork join executor. */
     private volatile ForkJoinPool defaultForkJoinExecutor;
-
+    /** Default scheduled executor service. */
+    private volatile ScheduledExecutorService defaultScheduledExecutorService;
+    /** Whether or not this service has been shutdown. */
+    private boolean isShutdown;
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
-    private boolean isShutdown;
 
+    /**
+     * Check that this service hasn't been shutdown. Only called when guarded by poolLock.
+     */
     private void checkState() {
         if (isShutdown) {
             throw new IllegalStateException("This service has been shutdown");
@@ -47,21 +49,7 @@ public class DefaultExecutorsManager extends ExecutorsManager {
                 checkState();
                 s = defaultExecutorService;
                 if (s == null) {
-                    s = Executors.newCachedThreadPool();
-                }
-            }
-        }
-        return s;
-    }
-
-    ScheduledExecutorService defaultScheduledExecutorService() {
-        ScheduledExecutorService s = defaultScheduledExecutorService;
-        if (s == null) {
-            synchronized (poolLock) {
-                checkState();
-                s = defaultScheduledExecutorService;
-                if (s == null) {
-                    s = Executors.newSingleThreadScheduledExecutor();
+                    defaultExecutorService = s = Executors.newCachedThreadPool();
                 }
             }
         }
@@ -85,52 +73,20 @@ public class DefaultExecutorsManager extends ExecutorsManager {
         return p;
     }
 
-    @Stoppable
-    public void shutdown() throws InterruptedException {
-        synchronized (poolLock) {
-            isShutdown = true;
-            if (defaultExecutorService != null) {
-                defaultExecutorService.shutdown();
-            }
-            if (defaultScheduledExecutorService != null) {
-                defaultScheduledExecutorService.shutdown();
-            }
-            if (defaultForkJoinExecutor != null) {
-                defaultForkJoinExecutor.shutdown();
-            }
-
-            if (defaultExecutorService != null) {
-                defaultExecutorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            }
-            if (defaultScheduledExecutorService != null) {
-                defaultScheduledExecutorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            }
-            if (defaultForkJoinExecutor != null) {
-                defaultForkJoinExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+    ScheduledExecutorService defaultScheduledExecutorService() {
+        ScheduledExecutorService s = defaultScheduledExecutorService;
+        if (s == null) {
+            synchronized (poolLock) {
+                checkState();
+                s = defaultScheduledExecutorService;
+                if (s == null) {
+                    defaultScheduledExecutorService = s = Executors.newSingleThreadScheduledExecutor();
+                    return s;
+                }
             }
         }
+        return s;
     }
-
-    public void shutdownNow() {
-        synchronized (poolLock) {
-            isShutdown = true;
-            if (defaultExecutorService != null) {
-                defaultExecutorService.shutdownNow();
-            }
-            if (defaultScheduledExecutorService != null) {
-                defaultScheduledExecutorService.shutdownNow();
-            }
-            if (defaultForkJoinExecutor != null) {
-                defaultForkJoinExecutor.shutdownNow();
-            }
-        }
-    }
-
-    // cache loader executor
-    // call getExecutorService(CacheLoader cl)
-    // call getExecutorService(CacheLoaderService)
-    // call getExecutorService(Cache c)
-    // call getExecutorService(DEFAULT)
 
     /**
      * Returns a {@link ExecutorService} that can be used to asynchronously execute tasks for the specified service.
@@ -172,27 +128,69 @@ public class DefaultExecutorsManager extends ExecutorsManager {
         return defaultScheduledExecutorService();
     }
 
-//    public static DefaultExecutorsManager from(ScheduledExecutorService ses) {
-//        DefaultExecutorsManager em = new DefaultExecutorsManager();
-//        synchronized (em.poolLock) {
-//            em.defaultScheduledExecutorService = ses;
-//        }
-//        return em;
-//    }
-//
-//    public static DefaultExecutorsManager from(ExecutorService es) {
-//        DefaultExecutorsManager em = new DefaultExecutorsManager();
-//        synchronized (em.poolLock) {
-//            em.defaultExecutorService = es;
-//        }
-//        return em;
-//    }
-//
-//    public static DefaultExecutorsManager from(ForkJoinPool e) {
-//        DefaultExecutorsManager em = new DefaultExecutorsManager();
-//        synchronized (em.poolLock) {
-//            em.defaultForkJoinExecutor = e;
-//        }
-//        return em;
-//    }
+    @Stoppable
+    public void shutdown() throws InterruptedException {
+        synchronized (poolLock) {
+            isShutdown = true;
+            if (defaultExecutorService != null) {
+                defaultExecutorService.shutdown();
+            }
+            if (defaultScheduledExecutorService != null) {
+                defaultScheduledExecutorService.shutdown();
+            }
+            if (defaultForkJoinExecutor != null) {
+                defaultForkJoinExecutor.shutdown();
+            }
+
+            if (defaultExecutorService != null) {
+                defaultExecutorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            }
+            if (defaultScheduledExecutorService != null) {
+                defaultScheduledExecutorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            }
+            if (defaultForkJoinExecutor != null) {
+                defaultForkJoinExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            }
+        }
+    }
+
+    //
+    // public void shutdownNow() {
+    // synchronized (poolLock) {
+    // isShutdown = true;
+    // if (defaultExecutorService != null) {
+    // defaultExecutorService.shutdownNow();
+    // }
+    // if (defaultScheduledExecutorService != null) {
+    // defaultScheduledExecutorService.shutdownNow();
+    // }
+    // if (defaultForkJoinExecutor != null) {
+    // defaultForkJoinExecutor.shutdownNow();
+    // }
+    // }
+    // }
+
+    // public static DefaultExecutorsManager from(ScheduledExecutorService ses) {
+    // DefaultExecutorsManager em = new DefaultExecutorsManager();
+    // synchronized (em.poolLock) {
+    // em.defaultScheduledExecutorService = ses;
+    // }
+    // return em;
+    // }
+    //
+    // public static DefaultExecutorsManager from(ExecutorService es) {
+    // DefaultExecutorsManager em = new DefaultExecutorsManager();
+    // synchronized (em.poolLock) {
+    // em.defaultExecutorService = es;
+    // }
+    // return em;
+    // }
+    //
+    // public static DefaultExecutorsManager from(ForkJoinPool e) {
+    // DefaultExecutorsManager em = new DefaultExecutorsManager();
+    // synchronized (em.poolLock) {
+    // em.defaultForkJoinExecutor = e;
+    // }
+    // return em;
+    // }
 }

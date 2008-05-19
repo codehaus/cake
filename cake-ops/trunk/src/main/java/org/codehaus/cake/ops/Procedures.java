@@ -51,8 +51,9 @@ public final class Procedures {
     public final static Procedure SYS_OUT_PRINTLN_PROCEDURE = new SystemOutPrintlnProcedure();
 
     /** Cannot instantiate. */
+    // /CLOVER:OFF
     private Procedures() {}
-
+    // /CLOVER:ON
     /**
      * Returns a Procedure that does nothing.
      * 
@@ -63,11 +64,11 @@ public final class Procedures {
     public static <T> Procedure<T> ignore() {
         return IGNORE_PROCEDURE;
     }
-
-    public static <F, T> Procedure<F> mapAndApply(final Op<F, T> mapper,
-            Procedure<? super T> procedure) {
-        return new MapAndApplyPredicate<F, T>(mapper, procedure);
-    }
+//
+//    public static <F, T> Procedure<F> mapAndApply(final Op<F, T> mapper,
+//            Procedure<? super T> procedure) {
+//        return new MapAndApplyPredicate<F, T>(mapper, procedure);
+//    }
 
     /**
      * Returns a Procedure that calls {@link PrintStream#print(boolean)} on {@link System#out}.
@@ -91,92 +92,61 @@ public final class Procedures {
         return SYS_OUT_PRINTLN_PROCEDURE;
     }
 
-    /**
-     * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.
-     */
-    static final class CollectionAdd<E> implements Procedure<E>, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -7596093393453935419L;
-
-        /** The collection we are wrapping. */
-        private final Collection<? super E> collection;
-
-        /**
-         * Creates a new CollectionAdd.
-         * 
-         * @param collection
-         *            the Collection to wrap
-         * @throws NullPointerException
-         *             if the specified collection is <code>null</code>
-         */
-        public CollectionAdd(Collection<? super E> collection) {
-            if (collection == null) {
-                throw new NullPointerException("collection is null");
-            }
-            this.collection = collection;
-        }
-
-        /** {@inheritDoc} */
-        public void op(E element) {
-            collection.add(element); // ignore return value
-        }
-    }
-
-    /**
-     * A Predicate that first applies the specified mapper to the argument before evaluating the
-     * specified predicate.
-     */
-    final static class MapAndApplyPredicate<F, T> implements Procedure<F>, Serializable {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -6292758840373110577L;
-
-        /** The mapper used to map the element. */
-        private final Op<F, T> mapper;
-
-        /** The procedure to to apply the mapped value on. */
-        private final Procedure<? super T> procedure;
-
-        /**
-         * Creates a new MapAndEvaluatePredicate.
-         * 
-         * @param mapper
-         *            the mapper used to first map the argument
-         * @param procedure
-         *            the predicate used to evaluate the mapped argument
-         */
-        public MapAndApplyPredicate(Op<F, T> mapper, Procedure<? super T> procedure) {
-            if (mapper == null) {
-                throw new NullPointerException("mapper is null");
-            } else if (procedure == null) {
-                throw new NullPointerException("procedure is null");
-            }
-            this.procedure = procedure;
-            this.mapper = mapper;
-        }
-
-        /**
-         * Returns the mapper that will map the object before applying the predicate on it.
-         * 
-         * @return the mapper that will map the object before applying the predicate on it
-         */
-        public Op<F, T> getMapper() {
-            return mapper;
-        }
-
-        /**
-         * Returns the Procedure we are testing against.
-         * 
-         * @return the Procedure we are testing against.
-         */
-        public Procedure<? super T> getProcedure() {
-            return procedure;
-        }
-
-        public void op(F element) {
-            procedure.op(mapper.op(element));
-        }
-    }
+//    /**
+//     * A Predicate that first applies the specified mapper to the argument before evaluating the
+//     * specified predicate.
+//     */
+//    final static class MapAndApplyPredicate<F, T> implements Procedure<F>, Serializable {
+//
+//        /** serialVersionUID. */
+//        private static final long serialVersionUID = -6292758840373110577L;
+//
+//        /** The mapper used to map the element. */
+//        private final Op<F, T> mapper;
+//
+//        /** The procedure to to apply the mapped value on. */
+//        private final Procedure<? super T> procedure;
+//
+//        /**
+//         * Creates a new MapAndEvaluatePredicate.
+//         * 
+//         * @param mapper
+//         *            the mapper used to first map the argument
+//         * @param procedure
+//         *            the predicate used to evaluate the mapped argument
+//         */
+//        public MapAndApplyPredicate(Op<F, T> mapper, Procedure<? super T> procedure) {
+//            if (mapper == null) {
+//                throw new NullPointerException("mapper is null");
+//            } else if (procedure == null) {
+//                throw new NullPointerException("procedure is null");
+//            }
+//            this.procedure = procedure;
+//            this.mapper = mapper;
+//        }
+//
+//        /**
+//         * Returns the mapper that will map the object before applying the predicate on it.
+//         * 
+//         * @return the mapper that will map the object before applying the predicate on it
+//         */
+//        public Op<F, T> getMapper() {
+//            return mapper;
+//        }
+//
+//        /**
+//         * Returns the Procedure we are testing against.
+//         * 
+//         * @return the Procedure we are testing against.
+//         */
+//        public Procedure<? super T> getProcedure() {
+//            return procedure;
+//        }
+//
+//        public void op(F element) {
+//            procedure.op(mapper.op(element));
+//        }
+//    }
 
     /**
      * A Procedure that does nothing.
@@ -195,37 +165,6 @@ public final class Procedures {
         /** @return Preserves singleton property */
         private Object readResolve() {
             return IGNORE_PROCEDURE;
-        }
-    }
-
-    /**
-     * Wraps the {@link Queue#offer(Object)} method in an {@link Procedure}.
-     */
-    static final class QueueOffer<E> implements Procedure<E>, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 2614647542607064042L;
-
-        /** The queue we are wrapping. */
-        private final Queue<? super E> queue;
-
-        /**
-         * Creates a new QueueOffer.
-         * 
-         * @param queue
-         *            the Queue to wrap
-         * @throws NullPointerException
-         *             if the specified queue is <code>null</code>
-         */
-        public QueueOffer(final Queue<? super E> queue) {
-            if (queue == null) {
-                throw new NullPointerException("queue is null");
-            }
-            this.queue = queue;
-        }
-
-        /** {@inheritDoc} */
-        public void op(E element) {
-            queue.offer(element); // ignore return value
         }
     }
 

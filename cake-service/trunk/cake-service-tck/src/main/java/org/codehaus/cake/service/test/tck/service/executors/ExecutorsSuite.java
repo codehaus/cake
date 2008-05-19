@@ -11,6 +11,6 @@ import org.junit.runners.Suite;
  * @version $Id: StatisticsSuite.java 466 2007-11-16 14:08:17Z kasper $
  */
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { WorkerExecutorService.class, WorkerScheduling.class, WorkerService.class,
-        WorkerServiceShutdown.class })
+@Suite.SuiteClasses( { ExecutorsForkJoin.class, ExecutorsExecutor.class, ExecutorsNoSupport.class,
+        ExecutorsScheduling.class, ExecutorsScheduling.class, ExecutorsServiceMain.class, WorkerServiceShutdown.class })
 public class ExecutorsSuite {}

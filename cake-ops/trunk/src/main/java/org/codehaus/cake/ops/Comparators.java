@@ -56,16 +56,18 @@ public final class Comparators {
     public static final Comparator NULL_LEAST_ORDER = new NullLeastOrderPredicate();
 
     /** Cannot instantiate. */
+    // /CLOVER:OFF
     private Comparators() {}
-
-    public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper) {
-        throw new UnsupportedOperationException();
-    }
-
-    public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper,
-            LongComparator comparator) {
-        throw new UnsupportedOperationException();
-    }
+    // /CLOVER:ON
+    
+//    public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper) {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper,
+//            LongComparator comparator) {
+//        throw new UnsupportedOperationException();
+//    }
 
     public static <T, U extends Comparable<? super U>> Comparator<T> mappedComparator(
             Op<? super T, U> mapper) {

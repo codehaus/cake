@@ -102,6 +102,7 @@ public abstract class RunState {
 
     public abstract void shutdown(boolean shutdownNow);
 
+    public abstract Throwable getStartupException();
     public abstract void trySetStartupException(Throwable cause);
 
     public abstract boolean tryStart();

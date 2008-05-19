@@ -5,6 +5,15 @@ import static org.codehaus.cake.cache.CacheEntry.HITS;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.AbstractHeapReplacementPolicy;
 
+/**
+ * 
+ * However, the LFU policy has a number of drawbacks: it requires logarithmic implementation complexity in cache size,
+ * pays little attention to recent history, and does not adapt well to changing access patterns since it accumulates
+ * stale pages with high frequency counts that may no longer be useful.
+ * 
+ * @param <K>
+ * @param <V>
+ */
 public class LFUReplacementPolicy<K, V> extends AbstractHeapReplacementPolicy<K, V> {
     /** A unique policy name. */
     public static final String NAME = "LFU";

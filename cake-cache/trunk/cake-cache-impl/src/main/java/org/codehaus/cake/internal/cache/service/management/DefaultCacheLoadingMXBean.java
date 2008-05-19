@@ -19,9 +19,9 @@ public final class DefaultCacheLoadingMXBean implements CacheLoadingMXBean {
      *            the CacheLoadingService to wrap
      */
     public DefaultCacheLoadingMXBean(CacheLoadingService<?, ?> service) {
-        if (service == null) {
-            throw new NullPointerException("service is null");
-        }
+//        if (service == null) {
+//            throw new NullPointerException("service is null");
+//        }
         this.service=service;
     }
 

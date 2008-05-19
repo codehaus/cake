@@ -66,7 +66,7 @@ public class AtrStubs {
     public final static ShortAttribute S_MIN_VALUE = new ShortAttribute("S_MIN_VALUE",
             Short.MIN_VALUE) {};
 
-    static WithAttributes withAtr(final AttributeMap map) {
+    public static WithAttributes withAtr(final AttributeMap map) {
         return new WithAttributes() {
             public AttributeMap getAttributes() {
                 return map;

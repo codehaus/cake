@@ -674,7 +674,29 @@ public class PredicatesTest {
         p.toString(); // check no exception
         assertIsSerializable(p);
     }
+    /**
+     * Tests {@link Predicates#equalsTo(Object)}.
+     */
+    @Test
+    public void notIsEquals() {
+        assertFalse(Predicates.notEqualsTo("1").op("1"));
+        assertFalse(Predicates.notEqualsTo(new HashMap()).op(new HashMap()));
+        assertTrue(Predicates.notEqualsTo("1").op("2"));
+        assertTrue(Predicates.notEqualsTo("1").op(null));
 
+        Predicate p = Predicates.notEqualsTo("1");
+        p.toString(); // check no exception
+        assertIsSerializable(p);
+    }
+    
+    /**
+     * Tests that {@link Predicates#notEqualsTo(Object)} throws a {@link NullPointerException} when
+     * invoked with a <code>null</code> element.
+     */
+    @Test(expected = NullPointerException.class)
+    public void notIsEqualsNPE() {
+        Predicates.notEqualsTo(null);
+    }
     /**
      * Tests that {@link Predicates#equalsTo(Object)} throws a {@link NullPointerException} when
      * invoked with a <code>null</code> element.

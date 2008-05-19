@@ -321,8 +321,10 @@ import java.util.Comparator;
  * This class is normally best used via <tt>import static</tt>.
  */
 public final class Ops {
+    // /CLOVER:OFF
     private Ops() {} // disable construction
-
+    // /CLOVER:ON
+    
     // Thanks to David Biesack for the above html table
     // You want to read/edit this with a wide editor panel
 

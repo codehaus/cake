@@ -10,6 +10,8 @@ import org.codehaus.cake.service.Container.SupportedServices;
 import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.service.test.tck.core.CoreSuite;
 import org.codehaus.cake.service.test.tck.lifecycle.LifecycleSuite;
+import org.codehaus.cake.service.test.tck.service.executors.ExecutorsSuite;
+import org.codehaus.cake.service.test.tck.service.management.ManagementSuite;
 import org.junit.internal.runners.CompositeRunner;
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
@@ -61,7 +63,7 @@ public abstract class TckRunner extends CompositeRunner {
             e.printStackTrace();
             throw new Error(e);
         }
-        filter();
+   //     filter();
         super.sort(new Sorter(new Comparator<Description>() {
             public int compare(Description o1, Description o2) {
                 return o1.getDisplayName().compareTo(o2.getDisplayName());
@@ -91,6 +93,8 @@ public abstract class TckRunner extends CompositeRunner {
                     }
                     UnsupportedServices us = description.getAnnotation(UnsupportedServices.class);
                     if (us != null) {
+                        System.out.println(description);
+                        System.out.println(description.getAnnotations());
                         for (Class c : us.value()) {
                             if (isSupported(c)) {
                                 return false;
@@ -112,7 +116,7 @@ public abstract class TckRunner extends CompositeRunner {
     protected void initialize() throws Exception {
         add(new ServiceSuite(LifecycleSuite.class));
         add(new ServiceSuite(CoreSuite.class));
-        // add(new JUnit4ClassRunner(LifecycleSuite.class));
-        // add(new JUnit4ClassRunner(WorkerService.class));
+        add(new ServiceSuite(ExecutorsSuite.class));
+        add(new ServiceSuite(ManagementSuite.class));
     }
 }

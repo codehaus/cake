@@ -30,11 +30,13 @@ import org.codehaus.cake.ops.Ops.Predicate;
 public final class StringOps {
 
     /** Cannot instantiate. */
+    // /CLOVER:OFF
     private StringOps() {}
 
+    // /CLOVER:ON
     /**
-     * Creates a Predicate that will accept any String that contains the specified CharSequence. The
-     * returned predicate is serializable.
+     * Creates a Predicate that will accept any String that contains the specified CharSequence. The returned predicate
+     * is serializable.
      * 
      * @param contains
      *            the CharSequence the predicate will check for
@@ -48,8 +50,8 @@ public final class StringOps {
     }
 
     /**
-     * Creates a Predicate that will accept any String that ends with the specified String. The
-     * returned predicate is serializable.
+     * Creates a Predicate that will accept any String that ends with the specified String. The returned predicate is
+     * serializable.
      * 
      * @param endsWith
      *            the String the predicate will check against
@@ -63,8 +65,8 @@ public final class StringOps {
     }
 
     /**
-     * Creates a Predicate that will accept any String that is equal to the specified String
-     * ignoring case considerations. The returned predicate is serializable.
+     * Creates a Predicate that will accept any String that is equal to the specified String ignoring case
+     * considerations. The returned predicate is serializable.
      * 
      * @param equalsToIgnoreCase
      *            the String the predicate will check against
@@ -78,8 +80,8 @@ public final class StringOps {
     }
 
     /**
-     * Creates a Predicate that will accept any String that starts with the specified String. The
-     * returned predicate is serializable.
+     * Creates a Predicate that will accept any String that starts with the specified String. The returned predicate is
+     * serializable.
      * 
      * @param startsWith
      *            the String the predicate will check against
@@ -122,8 +124,7 @@ public final class StringOps {
         /** {@inheritDoc} */
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof ContainsPredicate
-                    && ((ContainsPredicate) obj).contains.equals(contains);
+            return obj instanceof ContainsPredicate && ((ContainsPredicate) obj).contains.equals(contains);
         }
 
         /** {@inheritDoc} */
@@ -173,8 +174,7 @@ public final class StringOps {
         /** {@inheritDoc} */
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof EndsWithPredicate
-                    && ((EndsWithPredicate) obj).endsWith.equals(endsWith);
+            return obj instanceof EndsWithPredicate && ((EndsWithPredicate) obj).endsWith.equals(endsWith);
         }
 
         /** {@inheritDoc} */
@@ -196,8 +196,7 @@ public final class StringOps {
     }
 
     /**
-     * A Predicate that will accept any String that is equal to the specified String ignoring case
-     * considerations.
+     * A Predicate that will accept any String that is equal to the specified String ignoring case considerations.
      * 
      * @see String#equalsIgnoreCase(String)
      */
@@ -278,8 +277,7 @@ public final class StringOps {
         /** {@inheritDoc} */
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof StartsWithPredicate
-                    && ((StartsWithPredicate) obj).startsWith.equals(startsWith);
+            return obj instanceof StartsWithPredicate && ((StartsWithPredicate) obj).startsWith.equals(startsWith);
         }
 
         /** {@inheritDoc} */

@@ -52,8 +52,9 @@ public final class CollectionOps {
     public static final Op MAP_GET_OP = new ValueFromMapEntry();
 
     /** Cannot instantiate. */
+    // /CLOVER:OFF
     private CollectionOps() {}
-
+    // /CLOVER:ON
     /**
      * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.
      * <p>

@@ -26,7 +26,9 @@ public abstract class ExecutorsManager {
      *            a map of attributes that is passed to the concrete implementation of the executor manager
      * @return a ExecutorService that can be used to asynchronously execute tasks for the specified service
      */
-    public abstract ExecutorService getExecutorService(Object service, AttributeMap attributes);
+    public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Returns a {@link ForkJoinExecutor} that can be used to asynchronously execute tasks for the specified service.
@@ -37,7 +39,9 @@ public abstract class ExecutorsManager {
      *            a map of attributes that is passed to the concrete implementation of the executor manager
      * @return a ForkJoinExecutor that can be used to asynchronously execute tasks for the specified service
      */
-    public abstract ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes);
+    public ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Returns a {@link ScheduledExecutorService} that can be used to asynchronously schedule tasks for the specified
@@ -49,6 +53,8 @@ public abstract class ExecutorsManager {
      *            a map of attributes that is passed to the concrete implementation of the executor manager
      * @return a ScheduledExecutorService that can be used to asynchronously schedule tasks for the specified service
      */
-    public abstract ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes);
+    public ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes) {
+        throw new UnsupportedOperationException();
+    }
 
 }

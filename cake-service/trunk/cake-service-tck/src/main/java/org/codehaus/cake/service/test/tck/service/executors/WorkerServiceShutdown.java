@@ -13,7 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @RequireService( { ExecutorsService.class })
-public class WorkerServiceShutdown extends AbstractWorkerTckTest {
+public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
 
     @Ignore @Test
     public void tt() throws Exception {

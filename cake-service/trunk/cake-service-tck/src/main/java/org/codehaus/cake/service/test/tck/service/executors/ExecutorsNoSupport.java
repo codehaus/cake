@@ -20,7 +20,7 @@ import org.junit.Test;
 public class ExecutorsNoSupport extends AbstractTCKTest<Container, ContainerConfiguration> {
     @Test(expected = IllegalArgumentException.class)
     public void noExecutorsSupport() throws Throwable {
-        ExecutorsManager em = new ExecutorsManager() {
+        withConf(ExecutorsConfiguration.class).setExecutorManager(new ExecutorsManager() {
             public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
                 return null;
             }
@@ -32,8 +32,7 @@ public class ExecutorsNoSupport extends AbstractTCKTest<Container, ContainerConf
             public ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes) {
                 return null;
             }
-        };
-        withConf(ExecutorsConfiguration.class).setExecutorManager(em);
+        });
         cheatInstantiate();
     }
 }

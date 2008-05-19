@@ -46,8 +46,9 @@ public final class ObjectOps {
     public static final Reducer MIN_REDUCER = new NaturalMinReducer();
 
     /** Cannot instantiate. */
+    // /CLOVER:OFF
     private ObjectOps() {}
-
+    // /CLOVER:ON
     /**
      * Creates a composite mapper that applies a second mapper to the results of applying the first
      * one.

@@ -9,7 +9,6 @@ import org.codehaus.cake.cache.test.tck.service.management.ManagementSuite;
 import org.codehaus.cake.cache.test.tck.service.memorystore.SuiteMemoryStore;
 import org.codehaus.cake.service.test.tck.ServiceSuite;
 import org.codehaus.cake.service.test.tck.TckRunner;
-import org.codehaus.cake.service.test.tck.service.executors.ExecutorsSuite;
 import org.junit.internal.runners.InitializationError;
 
 public class CacheTckRunner extends TckRunner {
@@ -23,12 +22,10 @@ public class CacheTckRunner extends TckRunner {
 
         add(new ServiceSuite(AttributeSuite.class));
 
+        add(new ServiceSuite(ManagementSuite.class));
         add(new ServiceSuite(CoreSuite.class));
         add(new ServiceSuite(LifecycleSuite.class));
         // services
-        
-        add(new ServiceSuite(ExecutorsSuite.class));
-        add(new ServiceSuite(ManagementSuite.class));
         add(new ServiceSuite(SuiteMemoryStore.class));
         add(new ServiceSuite(LoadingSuite.class));
     }

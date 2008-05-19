@@ -87,4 +87,8 @@ public final class SynchronizedRunState extends RunState {
             return transitionToStarting();
         }
     }
+
+    public Throwable getStartupException() {
+        return startupException.get();
+    }
 }

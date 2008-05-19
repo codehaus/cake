@@ -5,5 +5,5 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { Name.class })
+@Suite.SuiteClasses( { DebugTrace.class, Name.class, Services.class })
 public class CoreSuite {}

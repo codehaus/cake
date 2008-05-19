@@ -31,17 +31,20 @@ public class LifecycleManager {
     public void start(RunState state) {
         long startTime = System.nanoTime();
         if (ies.isDebugEnabled()) {
-            ies.debug("Starting " + info.getContainerTypeName() + " [name = " + info.getContainerName() + "]");
+            ies.debug("Starting " + info.getContainerTypeName() + " [name=" + info.getContainerName() + ", type="
+                    + composer.get(Container.class).getClass().getSimpleName() + "]");
             if (ies.isTraceEnabled()) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("  ------------" + info.getContainerTypeName() + " was started by this call--------------\n");
                 StackTraceElement[] trace = Thread.currentThread().getStackTrace();
                 ArrayUtils.reverse(trace);
                 int length = trace.length;
-                for (int i = Math.max(0, trace.length - 10); i < length; i++) {
+                int start = Math.max(0, trace.length - 12);
+                for (int i = 0; i < length - 1 - start; i++) {
                     sb.append("    ");
-                    sb.append(trace[i]);
-                    if (i < length) {
+                    sb.append("                         ".substring(0, i));
+                    sb.append(trace[start + i]);
+                    if (start + i < length) {
                         sb.append("\n");
                     }
                 }
@@ -80,7 +83,7 @@ public class LifecycleManager {
         } finally {
             dsr.finished();
         }
-        
+
         if (composer.hasService(DefaultManagementService.class)) {
             try {
                 composer.get(DefaultManagementService.class).register(composer, allServices);
@@ -93,7 +96,7 @@ public class LifecycleManager {
         /* Started */
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = (LifecycleObject) iterator.next();
-            lo.startedRun(composer.get(ContainerConfiguration.class),composer.get(Container.class));
+            lo.startedRun(composer.get(ContainerConfiguration.class), composer.get(Container.class));
             if (!lo.stopOrDisposeShouldRun()) {
                 iterator.remove();
             }
