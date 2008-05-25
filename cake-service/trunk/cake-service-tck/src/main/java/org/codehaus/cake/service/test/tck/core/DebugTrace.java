@@ -44,6 +44,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
         conf.addService(new TestIt(null, null, null, null));
         newContainer();
         prestart();
+        shutdownAndAwaitTermination();
     }
 
     @Test(expected = RuntimeException1.class)
@@ -52,6 +53,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
         conf.addService(new TestIt(RuntimeException1.INSTANCE, null, null, null));
         newContainer();
         prestart();
+        shutdownAndAwaitTermination();    
     }
 
     @Test(expected = Error1.class)
@@ -60,6 +62,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
         conf.addService(new TestIt(null, Error1.INSTANCE, null, null));
         newContainer();
         prestart();
+        shutdownAndAwaitTermination();
     }
 
     @Test
@@ -68,6 +71,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
         conf.addService(new TestIt(null, null, null, null));
         newContainer();
         prestart();
+        shutdownAndAwaitTermination();
     }
 
     public static class TestIt {

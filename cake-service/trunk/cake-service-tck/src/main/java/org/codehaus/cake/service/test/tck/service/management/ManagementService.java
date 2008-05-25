@@ -76,8 +76,6 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
         assertEquals(105, mxBean.getFoo());
         mxBean.setFoo(300);
         assertEquals(300, mxBean.getFoo());
-
-        MBeanServerFactory.releaseMBeanServer(mbs);
     }
 
     @Test

@@ -32,8 +32,7 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
     }
 
     public V loadFailed(Throwable cause, K key, AttributeMap map) {
-        fatal("", cause);
-        // TODO Auto-generated method stub
+        error("Loading of Value failed [key = " + key + "]", cause);
         return null;
     }
 

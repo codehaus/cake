@@ -1,15 +1,16 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
-import org.codehaus.cake.internal.service.DefaultServiceManager;
-import org.codehaus.cake.internal.service.DefaultServiceRegistrant;
-import org.codehaus.cake.internal.service.LifecycleManager;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.ContainerConfiguration;
@@ -36,10 +37,8 @@ public class Composer {
         container.registerComponentInstance(this);
         container.registerComponentInstance(new ContainerInfo(clazz, configuration));
         container.registerComponentImplementation(LifecycleManager.class);
-        container
-                .registerComponentImplementation(ServiceManager.class, DefaultServiceManager.class);
-        container.registerComponentImplementation(ServiceRegistrant.class,
-                DefaultServiceRegistrant.class);
+        container.registerComponentImplementation(ServiceManager.class, DefaultServiceManager.class);
+        container.registerComponentImplementation(ServiceRegistrant.class, DefaultServiceRegistrant.class);
     }
 
     public void registerImplementation(Class<?> clazz) {
@@ -78,11 +77,13 @@ public class Composer {
     public Object getFromKeyIfAvailable(Object key) {
         return container.getComponentInstance(key);
     }
-    public List<?> prepareStart() {
+
+    public Set<?> prepareStart() {
         return prepareStart(get(ContainerConfiguration.class));
     }
-    public List<?> prepareStart(ContainerConfiguration conf) {
-        List result = new LinkedList(container.getComponentInstances());
+
+    public Set<?> prepareStart(ContainerConfiguration conf) {
+        Set result = new LinkedHashSet(container.getComponentInstances());
         for (Object object : new ArrayList(result)) {
             if (object instanceof CompositeService) {
                 for (Object oo : ((CompositeService) object).getChildServices()) {

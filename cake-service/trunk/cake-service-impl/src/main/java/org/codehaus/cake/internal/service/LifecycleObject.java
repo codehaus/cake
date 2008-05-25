@@ -1,11 +1,10 @@
 package org.codehaus.cake.internal.service;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
@@ -104,7 +103,7 @@ public class LifecycleObject {
         }
     }
 
-    public void startRun(List all, ContainerConfiguration configuration, ServiceRegistrant registrant) {
+    public void startRun(Set all, ContainerConfiguration configuration, ServiceRegistrant registrant) {
         ArrayList al = new ArrayList();
         al.add(configuration);
         al.add(registrant);

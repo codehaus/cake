@@ -2,16 +2,11 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache;
 
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheServices;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.SynchronizedInternalCache;
@@ -48,7 +43,7 @@ import org.codehaus.cake.service.executor.ExecutorsService;
  */
 @Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
         ExecutorsService.class, Manageable.class })
-public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<K, V> {
+public class SynchronizedCache<K, V> implements Cache<K, V> {
     private final SynchronizedInternalCache<K, V> cache;
 
     /**
@@ -67,7 +62,7 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
      *             if the specified configuration is <code>null</code>
      */
     public SynchronizedCache(CacheConfiguration<K, V> conf) {
-        this.cache = SynchronizedInternalCache.create(conf, this);
+        this.cache = new SynchronizedInternalCache<K, V>(conf, this);
     }
 
     /** {@inheritDoc} */
@@ -94,7 +89,6 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
     public Set<Entry<K, V>> entrySet() {
         return cache.entrySet();
     }
-
 
     /** {@inheritDoc} */
     public V get(Object key) {
@@ -229,7 +223,7 @@ public class SynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<
     /** {@inheritDoc} */
     @Override
     public synchronized String toString() {
-        return super.toString();
+        return cache.toString();
     }
 
     /** {@inheritDoc} */

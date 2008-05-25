@@ -3,6 +3,7 @@ package org.codehaus.cake.internal.service;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.management.JMException;
 
@@ -69,7 +70,7 @@ public class LifecycleManager {
     }
 
     private void doStart(RunState state) {
-        List allServices = composer.prepareStart();
+        Set allServices = composer.prepareStart();
         for (Object o : allServices) {
             if (o != null) {
                 list.add(new LifecycleObject(state, ies, o));

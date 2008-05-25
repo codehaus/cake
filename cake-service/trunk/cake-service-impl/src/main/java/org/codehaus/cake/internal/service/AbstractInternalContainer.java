@@ -16,10 +16,12 @@ public abstract class AbstractInternalContainer implements Container {
     private final ServiceManager sm;
 
     public AbstractInternalContainer(Composer composer) {
+        ContainerInfo info = composer.get(ContainerInfo.class);
         if (!composer.hasService(Container.class)) {
             composer.registerInstance(Container.class, this);
+            composer.registerInstance(info.getContainerType(), this);
         }
-        name = composer.get(ContainerInfo.class).getContainerName();
+        name = info.getContainerName();
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
     }

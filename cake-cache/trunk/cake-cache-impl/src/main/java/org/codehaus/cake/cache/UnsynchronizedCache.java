@@ -2,16 +2,11 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache;
 
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheServices;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.UnsynchronizedInternalCache;
@@ -21,10 +16,10 @@ import org.codehaus.cake.service.ServiceManager;
 /**
  * An <tt>unsynchronized</tt> {@link Cache} implementation.
  * <p>
- * If multiple threads access this cache concurrently, and at least one of the threads modifies the
- * cache structurally, it <i>must</i> be synchronized externally. (A structural modification is any
- * operation that adds, deletes or changes one or more mappings.) This is typically accomplished by
- * synchronizing on some object that naturally encapsulates the cache.
+ * If multiple threads access this cache concurrently, and at least one of the threads modifies the cache structurally,
+ * it <i>must</i> be synchronized externally. (A structural modification is any operation that adds, deletes or changes
+ * one or more mappings.) This is typically accomplished by synchronizing on some object that naturally encapsulates the
+ * cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: UnsynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
@@ -33,9 +28,8 @@ import org.codehaus.cake.service.ServiceManager;
  * @param <V>
  *            the type of mapped values
  */
-@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class,
-        ServiceManager.class })
-public class UnsynchronizedCache<K, V> extends AbstractMap<K, V> implements Cache<K, V> {
+@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class })
+public class UnsynchronizedCache<K, V> implements Cache<K, V> {
     private final UnsynchronizedInternalCache<K, V> cache;
 
     /** Creates a new UnsynchronizedCache with a default configuration. */
@@ -44,7 +38,8 @@ public class UnsynchronizedCache<K, V> extends AbstractMap<K, V> implements Cach
     }
 
     /**
-     * Creates a new UnsynchronizedCache from the specified configuration.
+     * Creates a new UnsynchronizedCache from the specified configuration. The behavior of this constructor is undefined
+     * if the specified configuration is modified while the construction is in progress.
      * 
      * @param conf
      *            the configuration to create the cache from
@@ -52,7 +47,7 @@ public class UnsynchronizedCache<K, V> extends AbstractMap<K, V> implements Cach
      *             if the specified configuration is <code>null</code>
      */
     public UnsynchronizedCache(CacheConfiguration<K, V> conf) {
-        this.cache = UnsynchronizedInternalCache.create(conf, this);
+        this.cache = new UnsynchronizedInternalCache<K, V>(conf, this);
     }
 
     /** {@inheritDoc} */
@@ -213,7 +208,7 @@ public class UnsynchronizedCache<K, V> extends AbstractMap<K, V> implements Cach
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return super.toString();
+        return cache.toString();
     }
 
     /** {@inheritDoc} */

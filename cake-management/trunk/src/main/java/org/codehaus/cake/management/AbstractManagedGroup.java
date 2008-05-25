@@ -57,7 +57,6 @@ public abstract class AbstractManagedGroup implements ManagedGroup {
         }
         this.name = name;
         this.description = description;
-
         if (parent == null) {
             mainLock = new ReentrantLock();
         } else {

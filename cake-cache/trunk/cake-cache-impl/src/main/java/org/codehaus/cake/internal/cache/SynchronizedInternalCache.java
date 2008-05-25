@@ -12,6 +12,8 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
@@ -23,52 +25,42 @@ import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
 import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
-import org.codehaus.cake.internal.service.spi.GlobalServiceMutex;
 import org.codehaus.cake.internal.util.CollectionUtils;
+import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.ops.CollectionOps;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ServiceManager;
+import org.codehaus.cake.service.executor.ExecutorsService;
 
+@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
+    ExecutorsService.class, Manageable.class })
 public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V> {
 
     InternalCacheLoader<K, V> loader;
 
-    public static <K, V> SynchronizedInternalCache<K, V> create(CacheConfiguration<K, V> configuration,
-            Cache<K, V> cache) {
-        Composer composer = newComposer(configuration);
-        composer.registerInstance(GlobalServiceMutex.class, GlobalServiceMutex.from(cache));
-
-        // composer.registerInternalImplementation(SynchronizedMemoryStoreService.class);
-
-        // Common components
-        composer.registerImplementation(UnsynchronizedRunState.class);
-        if (configuration.withManagement().isEnabled()) {
-            composer.registerImplementation(DefaultManagementService.class);
-        }
-        
-        // Cache components
-        composer.registerInstance(Cache.class, cache);
-        composer.registerInstance(Container.class, cache);
-        composer.registerImplementation(SynchronizedCollectionViews.class);
-        composer.registerImplementation(DefaultAttributeService.class);
-        composer.registerImplementation(DefaultExecutorsService.class);
-        // composer.registerImplementation(MemorySparseAttributeService.class);
-        if (configuration.withLoading().getLoader() != null) {
-            composer.registerImplementation(ThreadSafeCacheLoader.class);
-            composer.registerImplementation(DefaultCacheLoadingService.class);
-        }
-        
-        return new SynchronizedInternalCache<K, V>(composer);
-    }
-
     private final Object mutex;
 
-    SynchronizedInternalCache(Composer composer) {
-        super(composer);
-        this.mutex = composer.get(GlobalServiceMutex.class).getMutex();
-        loader = composer.getIfAvailable(InternalCacheLoader.class);
+    /**
+     * Creates a new UnsynchronizedInternalCache with default configuration.
+     */
+    public SynchronizedInternalCache() {
+        this(CacheConfiguration.<K, V> newConfiguration());
     }
 
+    public SynchronizedInternalCache(CacheConfiguration<K, V> configuration) {
+        this(createComposer(configuration), null);
+    }
+
+    public SynchronizedInternalCache(CacheConfiguration<K, V> configuration, Cache<K, V> wrapper) {
+        this(createComposer(configuration, wrapper), wrapper);
+    }
+
+    private SynchronizedInternalCache(Composer composer, Object mutex) {
+        super(composer);
+        this.mutex = mutex == null ? this : mutex;
+        loader = composer.getIfAvailable(InternalCacheLoader.class);
+    }
 
     public void clear() {
         lazyStart();
@@ -294,5 +286,37 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
             return prev.getNew();
         }
         return null;
+    }
+
+    public static Composer createComposer(CacheConfiguration<?, ?> configuration) {
+        Composer composer = newComposer(configuration);
+        // composer.registerImplementation(GlobalServiceMutex.class);
+
+        // composer.registerInternalImplementation(SynchronizedMemoryStoreService.class);
+
+        // Common components
+        composer.registerImplementation(UnsynchronizedRunState.class);
+        if (configuration.withManagement().isEnabled()) {
+            composer.registerImplementation(DefaultManagementService.class);
+        }
+
+        // Cache components
+        composer.registerImplementation(SynchronizedCollectionViews.class);
+        composer.registerImplementation(DefaultAttributeService.class);
+        composer.registerImplementation(DefaultExecutorsService.class);
+        // composer.registerImplementation(MemorySparseAttributeService.class);
+        if (configuration.withLoading().getLoader() != null) {
+            composer.registerImplementation(ThreadSafeCacheLoader.class);
+            composer.registerImplementation(DefaultCacheLoadingService.class);
+        }
+
+        return composer;
+    }
+
+    private static Composer createComposer(CacheConfiguration<?, ?> configuration, Cache<?, ?> cache) {
+        Composer composer = createComposer(configuration);
+        composer.registerInstance(Cache.class, cache);
+        composer.registerInstance(Container.class, cache);
+        return composer;
     }
 }

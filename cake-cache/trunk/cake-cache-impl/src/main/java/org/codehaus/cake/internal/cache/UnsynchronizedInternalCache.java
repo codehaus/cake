@@ -12,6 +12,8 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
@@ -21,18 +23,33 @@ import org.codehaus.cake.internal.cache.service.memorystore.views.Unsynchronized
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
-import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
-import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.CollectionOps;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ServiceManager;
 
+@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class })
 public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V> {
 
     InternalCacheLoader<K, V> loader;
 
-    UnsynchronizedInternalCache(Composer composer) {
+    /**
+     * Creates a new UnsynchronizedInternalCache with default configuration.
+     */
+    public UnsynchronizedInternalCache() {
+        this(CacheConfiguration.<K, V> newConfiguration());
+    }
+
+    public UnsynchronizedInternalCache(CacheConfiguration<K, V> configuration) {
+        this(createComposer(configuration));
+    }
+
+    public UnsynchronizedInternalCache(CacheConfiguration<K, V> configuration, Cache<K, V> wrapper) {
+        this(createComposer(configuration, wrapper));
+    }
+
+    private UnsynchronizedInternalCache(Composer composer) {
         super(composer);
         loader = composer.getIfAvailable(InternalCacheLoader.class);
     }
@@ -263,8 +280,14 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return null;
     }
 
-    public static <K, V> UnsynchronizedInternalCache<K, V> create(CacheConfiguration<K, V> configuration,
-            Cache<K, V> cache) {
+    private static Composer createComposer(CacheConfiguration<?, ?> configuration, Cache<?, ?> cache) {
+        Composer composer = createComposer(configuration);
+        composer.registerInstance(Cache.class, cache);
+        composer.registerInstance(Container.class, cache);
+        return composer;
+    }
+
+    private static Composer createComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = newComposer(configuration);
 
         // Common components
@@ -276,8 +299,6 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         }
 
         // Cache components
-        composer.registerInstance(Cache.class, cache);
-        composer.registerInstance(Container.class, cache);
         composer.registerImplementation(UnsynchronizedCollectionViews.class);
         composer.registerImplementation(DefaultAttributeService.class);
         // composer.registerImplementation(MemorySparseAttributeService.class);
@@ -285,7 +306,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
             composer.registerImplementation(UnsynchronizedCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);
         }
-
-        return new UnsynchronizedInternalCache<K, V>(composer);
+        return composer;
     }
+
 }

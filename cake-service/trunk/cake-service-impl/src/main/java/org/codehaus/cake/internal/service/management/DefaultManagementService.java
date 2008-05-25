@@ -5,7 +5,7 @@ package org.codehaus.cake.internal.service.management;
 import java.lang.management.ManagementFactory;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import javax.management.JMException;
 import javax.management.MBeanServer;
@@ -73,7 +73,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
         }
     }
 
-    public void register(Composer composer, List objects) throws JMException {
+    public void register(Composer composer, Set objects) throws JMException {
         debugService.debug("  Manageable.manage()");
         ManagedGroup group = Managements.delegatedManagedGroup(this);
         for (Object o : objects) {
@@ -114,10 +114,10 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
             isShutdown = true;
         }
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return "Management Service";
-    }
+//
+//    /** {@inheritDoc} */
+//    @Override
+//    public String toString() {
+//        return "Management Service";
+//    }
 }

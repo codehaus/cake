@@ -3,6 +3,9 @@ package org.codehaus.cake.service.test.tck;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
@@ -142,13 +145,26 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
 
     public Class getContainerInterface() {
         Class someImpl = c.getClass();
-        for (Class c : someImpl.getInterfaces()) {
-            if (c != Container.class && Arrays.asList(c.getInterfaces()).contains(Container.class)) {
-                return c;
+        while (someImpl != null) {
+            for (Class c : allInterfaces(someImpl)) {
+                if (c != Container.class && Arrays.asList(c.getInterfaces()).contains(Container.class)) {
+                    return c;
+                }
             }
+            someImpl = someImpl.getSuperclass();
         }
         throw new IllegalStateException("Unknown type");
     }
+
+    Set<Class> allInterfaces(Class c) {
+        Set s = new HashSet();
+        for (Class cl : c.getInterfaces()) {
+            s.add(cl);
+            s.addAll(allInterfaces(cl));
+        }
+        return s;
+    }
+
 
     public T cheatInstantiate() throws Throwable {
         for (Constructor con : c.getClass().getConstructors()) {

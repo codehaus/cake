@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
  * @version $Id: LoadingSuite.java 522 2007-12-24 11:24:35Z kasper $
  */
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { ExplicitLoadAll.class, ExplicitLoadKey.class, ExplicitLoadKeys.class,
-        ExplicitNeedsReload.class, ImplicitLoading.class, LoadingLifecycle.class,
-        LoadingManagement.class, LoadingNPE.class, LoadingService.class })
+@Suite.SuiteClasses( { ExplicitLoadAll.class, ExplicitLoadKey.class, ExplicitLoadKeys.class, ExplicitNeedsReload.class,
+        ImplicitLoading.class, LoadingErroneous.class, LoadingLifecycle.class, LoadingManagement.class,
+        LoadingNPE.class, LoadingService.class })
 public class LoadingSuite {}

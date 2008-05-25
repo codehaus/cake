@@ -100,6 +100,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         exceptionHandler = new TestExceptionHandler<Integer, String>();
         loader.add(M1, M2, M3, M4, M5);
         conf.withLoading().setLoader(loader);
+        conf.withExceptionHandling().setExceptionHandler(exceptionHandler);
         return conf;
     }
 
