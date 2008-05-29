@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.management.ServiceNotFoundException;
+
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
@@ -18,10 +20,12 @@ import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 
-public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, V>, Manageable, CompositeService {
+public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService>, Manageable,
+        CompositeService {
 
     private Cache<K, V> cache;
 
@@ -29,6 +33,9 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
     private Predicate<? super CacheEntry<K, V>> needsReloadFilter;
 
     private Collection<Object> childServices = new ArrayList<Object>();
+
+    private CacheLoadingService<K, V> service = new NoForceLoading();
+    private CacheLoadingService<K, V> serviceForced = new ForcedLoading();
 
     public DefaultCacheLoadingService(Cache<K, V> cache, CacheLoadingConfiguration<K, V> loadingConf,
             InternalCacheLoader<K, V> loader) {
@@ -39,7 +46,7 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
         childServices.add(needsReloadFilter);
     }
 
-    Map<? extends K, AttributeMap> filterNeedsReload(Map<? extends K, AttributeMap> map) {
+    Map<? extends K, ? extends AttributeMap> filterNeedsReload(Map<? extends K, ? extends AttributeMap> map) {
         for (Iterator<? extends K> iterator = map.keySet().iterator(); iterator.hasNext();) {
             K key = iterator.next();
             if (!needsReload(key)) {
@@ -52,7 +59,7 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
     /** {@inheritDoc} */
     public void manage(ManagedGroup parent) {
         ManagedGroup g = parent.addChild("Loading", "Cache Loading attributes and operations");
-        g.add(new DefaultCacheLoadingMXBean(this));
+        g.add(new DefaultCacheLoadingMXBean(service, serviceForced));
     }
 
     boolean needsReload(K key) {
@@ -62,82 +69,87 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
 
     @Startable
     public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
-        serviceRegistrant.registerService(CacheLoadingService.class, LoadingUtils.wrapService(this));
-    }
-
-    public WithLoad<V> withAll() {
-        return withAll(Attributes.EMPTY_ATTRIBUTE_MAP);
-    }
-
-    public WithLoad<V> withAll(final AttributeMap attributes) {
-        if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        return withKeys(cache.keySet(), attributes);
-    }
-
-    public WithLoad<V> withKey(final K key) {
-        return withKey(key, Attributes.EMPTY_ATTRIBUTE_MAP);
-    }
-
-    public WithLoad<V> withKey(final K key, final AttributeMap attributes) {
-        if (key == null) {
-            throw new NullPointerException("key is null");
-        } else if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        return new WithLoad<V>() {
-            public void forceLoad() {
-                if (!cache.isShutdown()) {
-                    loader.loadAsync(key, attributes);
-                }
-            }
-
-            public void load() {
-                if (needsReload(key)) {
-                    forceLoad();
-                }
-            }
-        };
-    }
-
-    public WithLoad<V> withKeys(Iterable<? extends K> keys) {
-        return withKeys(keys, Attributes.EMPTY_ATTRIBUTE_MAP);
-    }
-
-    public WithLoad<V> withKeys(Iterable<? extends K> keys, AttributeMap attributes) {
-        if (keys == null) {
-            throw new NullPointerException("keys is null");
-        } else if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
-        for (K key : keys) {
-            if (key == null) {
-                throw new NullPointerException("Collection contains a null key");
-            }
-            map.put(key, attributes);
-        }
-        return withKeys(map);
-    }
-
-    private WithLoad<V> withKeys(final Map<? extends K, AttributeMap> mapAndAttributes) {
-        return new WithLoad<V>() {
-            public void forceLoad() {
-                if (!cache.isShutdown()) {
-                    loader.loadAsync(mapAndAttributes);
-                }
-            }
-
-            public void load() {
-                if (!cache.isShutdown()) {
-                    loader.loadAsync(filterNeedsReload(mapAndAttributes));
-                }
-            }
-        };
+        // serviceRegistrant.registerService(CacheLoadingService.class, LoadingUtils.wrapService(this));
+        serviceRegistrant.registerFactory(CacheLoadingService.class, this);
     }
 
     public Collection<?> getChildServices() {
         return childServices;
     }
+
+    public Class<CacheLoadingService> getType() {
+        return CacheLoadingService.class;
+    }
+
+    public CacheLoadingService lookup() {
+        return lookup(Attributes.EMPTY_ATTRIBUTE_MAP);
+    }
+
+    public CacheLoadingService lookup(AttributeMap attributes) {
+        if (attributes.get(CacheLoadingService.IS_FORCED)) {
+            return serviceForced;
+        }
+        return service;
+    }
+
+    class NoForceLoading extends AbstractCacheLoadingService<K, V> {
+        void doLoad(K key, AttributeMap attributes) {
+            if (needsReload(key)) {
+                if (!cache.isShutdown()) {
+                    loader.loadAsync(key, attributes);
+                }
+            }
+        }
+
+        void doLoadAll(AttributeMap attributes) {
+            loadAll(cache.keySet(), attributes);
+        }
+
+        void doLoadAll(Iterable<? extends K> keys, AttributeMap attributes) {
+            HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
+            for (K key : keys) {
+                if (key == null) {
+                    throw new NullPointerException("Collection contains a null key");
+                }
+                map.put(key, attributes);
+            }
+            doLoadAll(map);
+        }
+
+        void doLoadAll(Map<? extends K, ? extends AttributeMap> mapWithAttributes) {
+            if (!cache.isShutdown()) {
+                loader.loadAsync((Map) filterNeedsReload(mapWithAttributes));
+            }
+        }
+    }
+
+    class ForcedLoading extends AbstractCacheLoadingService<K, V> {
+        void doLoad(K key, AttributeMap attributes) {
+            if (!cache.isShutdown()) {
+                loader.loadAsync(key, attributes);
+            }
+        }
+
+        void doLoadAll(AttributeMap attributes) {
+            loadAll(cache.keySet(), attributes);
+        }
+
+        void doLoadAll(Iterable<? extends K> keys, AttributeMap attributes) {
+            HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
+            for (K key : keys) {
+                if (key == null) {
+                    throw new NullPointerException("Collection contains a null key");
+                }
+                map.put(key, attributes);
+            }
+            doLoadAll(map);
+        }
+
+        void doLoadAll(Map<? extends K, ? extends AttributeMap> mapWithAttributes) {
+            if (!cache.isShutdown()) {
+                loader.loadAsync((Map) mapWithAttributes);
+            }
+        }
+    }
+
 }

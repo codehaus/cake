@@ -43,19 +43,19 @@ public class ExplicitNeedsReload extends AbstractCacheTCKTest {
         load(entry(M1, null));
         load(entry(M3, null));
         assertLoads(3);
-        withLoading().withAll().load();
+        withLoading().loadAll();
         assertLoads(3);
         
         predicate.result = true;
-        withLoading().withAll().load();
+        withLoading().loadAll();
         awaitFinishedThreads();
         assertLoads(5);
-        withLoading().withAll().load();
+        withLoading().loadAll();
         awaitFinishedThreads();
         assertLoads(7);
         
         predicate.result = false;
-        withLoading().withAll().load();
+        withLoading().loadAll();
         awaitFinishedThreads();
         assertLoads(7);
     }

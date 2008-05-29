@@ -1,13 +1,17 @@
 package org.codehaus.cake.cache;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
 /**
- * A utility class to get hold of different cache services in an easy and typesafe manner. For
- * example, the following will return the {@link MemoryStoreService} for a given cache.
+ * A utility class to get hold of different cache services in an easy and typesafe manner. For example, the following
+ * will return the {@link MemoryStoreService} for a given cache.
  * 
  * <pre>
  * Cache&lt;Integer, String&gt; cache = somecache;
@@ -48,6 +52,12 @@ public class CacheServices<K, V> {
         return getService(CacheLoadingService.class);
     }
 
+    private static final AttributeMap FORCE_LOAD = CacheLoadingService.IS_FORCED.singleton(true);
+
+    public CacheLoadingService<K, V> loadingForced() {
+        return getService(CacheLoadingService.class, FORCE_LOAD);
+    }
+
     /**
      * Returns the worker service.
      * 
@@ -57,6 +67,14 @@ public class CacheServices<K, V> {
      */
     public ExecutorsService executors() {
         return getService(ExecutorsService.class);
+    }
+
+    public ExecutorService executorService() {
+        return executors().getExecutorService();
+    }
+
+    public ScheduledExecutorService scheduledExecutorService() {
+        return executors().getScheduledExecutorService();
     }
 
     /**
@@ -75,8 +93,7 @@ public class CacheServices<K, V> {
     }
 
     /**
-     * This method can be called by subclasses to retrieve services from the cache that this object
-     * is wrapping.
+     * This method can be called by subclasses to retrieve services from the cache that this object is wrapping.
      * 
      * @param <T>
      *            the type of service
@@ -88,5 +105,22 @@ public class CacheServices<K, V> {
      */
     protected <T> T getService(Class<T> serviceType) {
         return serviceManager.getService(serviceType);
+    }
+
+    /**
+     * This method can be called by subclasses to retrieve services from the cache that this object is wrapping.
+     * 
+     * @param <T>
+     *            the type of service
+     * @param serviceType
+     *            the type of services
+     * @param a
+     *            map of attributes
+     * @return an instance of the specified type with the specified attributes
+     * @throws UnsupportedOperationException
+     *             if no service of the specified type and attributes is available
+     */
+    protected <T> T getService(Class<T> serviceType, AttributeMap attributes) {
+        return serviceManager.getService(serviceType, attributes);
     }
 }

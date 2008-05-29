@@ -1,5 +1,6 @@
 package org.codehaus.cake.internal.cache.service.management;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingMXBean;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.management.annotation.ManagedOperation;
@@ -10,7 +11,9 @@ import org.codehaus.cake.management.annotation.ManagedOperation;
 public final class DefaultCacheLoadingMXBean implements CacheLoadingMXBean {
 
     /** The CacheLoadingService that is wrapped. */
-    private final CacheLoadingService<?, ?> service;
+    private final CacheLoadingService<?, ?> forced;
+
+    private final CacheLoadingService<?, ?> noForce;
 
     /**
      * Creates a new DelegatedCacheLoadingMXBean.
@@ -18,22 +21,25 @@ public final class DefaultCacheLoadingMXBean implements CacheLoadingMXBean {
      * @param service
      *            the CacheLoadingService to wrap
      */
-    public DefaultCacheLoadingMXBean(CacheLoadingService<?, ?> service) {
-        if (service == null) {
+    public DefaultCacheLoadingMXBean(CacheLoadingService<?, ?> noForce, CacheLoadingService<?, ?> forced) {
+        if (forced == null) {
             throw new NullPointerException("service is null");
+        } else if (noForce == null) {
+            throw new NullPointerException("noForce is null");
         }
-        this.service=service;
+        this.forced = forced;
+        this.noForce = noForce;
     }
 
     /** {@inheritDoc} */
     @ManagedOperation(description = "reload all mappings")
     public void forceLoadAll() {
-        service.withAll().forceLoad();
+        forced.loadAll();
     }
 
     /** {@inheritDoc} */
     @ManagedOperation(description = "Attempts to reload all entries that are either expired or which needs refreshing")
     public void loadAll() {
-        service.withAll().load();
+        noForce.loadAll();
     }
 }

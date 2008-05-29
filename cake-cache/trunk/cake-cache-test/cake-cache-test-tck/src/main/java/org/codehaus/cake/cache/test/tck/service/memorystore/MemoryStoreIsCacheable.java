@@ -46,11 +46,11 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
     public void load() {
         conf.withMemoryStore().setIsCacheableFilter(ic);
         init();
-        withLoading().withKey(M1.getKey()).load();
-        withLoading().withKey(M2.getKey()).forceLoad();
-        withLoading().withKey(M3.getKey()).load();
-        withLoading().withKey(M4.getKey()).forceLoad();
-        withLoading().withKey(M5.getKey()).load();
+        withLoading().load(M1.getKey());
+        withLoadingForced().load(M2.getKey());
+        withLoading().load(M3.getKey());
+        withLoadingForced().load(M4.getKey());
+        withLoading().load(M5.getKey());
         awaitFinishedThreads();
         assertSize(2);
         assertEquals(5, loader.totalLoads());
@@ -60,7 +60,7 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
     public void loadAll() {
         conf.withMemoryStore().setIsCacheableFilter(ic);
         init();
-        withLoading().withKeys(Arrays.asList(1, 2, 3, 4, 5)).load();
+        withLoading().loadAll(Arrays.asList(1, 2, 3, 4, 5));
         awaitFinishedThreads();
         assertSize(2);
         assertEquals(5, loader.totalLoads());
@@ -87,12 +87,12 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
 
         loader.setAttribute(SIZE, LongOps.add(2));// size=key+2
         loader.withLoader(M1).setValue("C");
-        withLoading().withKey(M1.getKey()).forceLoad();
+        withLoadingForced().load(M1.getKey());
         awaitFinishedThreads();
         assertSize(1);
         assertVolume(3);
 
-        withLoading().withKey(M2.getKey()).forceLoad();
+        withLoadingForced().load(M2.getKey());
         awaitFinishedThreads();
         assertSize(1);// ?? replace
         assertVolume(4);

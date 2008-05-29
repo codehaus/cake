@@ -2,6 +2,8 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.internal.cache.service.loading;
 
+import java.util.Map;
+
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 
@@ -61,28 +63,33 @@ public final class LoadingUtils {
             this.delegate = service;
         }
 
-        public WithLoad<V> withAll() {
-            return delegate.withAll();
+        public void load(K key, AttributeMap attributes) {
+            delegate.load(key, attributes);
         }
 
-        public WithLoad<V> withAll(AttributeMap attributes) {
-            return delegate.withAll(attributes);
+        public void load(K key) {
+            delegate.load(key);
         }
 
-        public WithLoad<V> withKey(K key, AttributeMap attributes) {
-            return delegate.withKey(key, attributes);
+        public void loadAll() {
+            delegate.loadAll();
         }
 
-        public WithLoad<V> withKey(K key) {
-            return delegate.withKey(key);
+        public void loadAll(AttributeMap attributes) {
+            delegate.loadAll(attributes);
         }
 
-        public WithLoad<V> withKeys(Iterable<? extends K> keys, AttributeMap attributes) {
-            return delegate.withKeys(keys, attributes);
+        public void loadAll(Iterable<? extends K> keys, AttributeMap attributes) {
+            delegate.loadAll(keys, attributes);
         }
 
-        public WithLoad<V> withKeys(Iterable<? extends K> keys) {
-            return delegate.withKeys(keys);
+        public void loadAll(Iterable<? extends K> keys) {
+            delegate.loadAll(keys);
         }
+
+        public void loadAll(Map<? extends K, ? extends AttributeMap> mapsWithAttributes) {
+            delegate.loadAll(mapsWithAttributes);
+        }
+
     }
 }

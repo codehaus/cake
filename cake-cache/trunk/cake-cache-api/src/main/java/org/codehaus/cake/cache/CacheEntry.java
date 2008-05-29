@@ -61,7 +61,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public static final DoubleAttribute COST = new Caches.CostAttribute();
+    DoubleAttribute COST = new Caches.CostAttribute();
 
     /**
      * Currently not in use.
@@ -153,8 +153,10 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * 
      * <p/> The following list describes how this attribute is obtained.
      * <ul>
-     * <li> If the entry is being loaded and the <tt>VERSION</tt> attribute has been set the cache will use this value.</li>
-     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry + 1 will be used. </li>
+     * <li> If the entry is being loaded and the <tt>VERSION</tt> attribute has been set the cache will use this
+     * value.</li>
+     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry + 1 will be used.
+     * </li>
      * <li> Else the version is initialized to 1</li>
      * </ul>
      * <p>

@@ -4,9 +4,11 @@ package org.codehaus.cake.cache;
 
 import static org.codehaus.cake.cache.CacheEntry.COST;
 import static org.codehaus.cake.cache.CacheEntry.HITS;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 import static org.codehaus.cake.cache.CacheEntry.TIME_ACCESSED;
-import static org.codehaus.cake.cache.CacheEntry.*;
+import static org.codehaus.cake.cache.CacheEntry.TIME_CREATED;
 import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
+import static org.codehaus.cake.cache.CacheEntry.VERSION;
 import static org.codehaus.cake.cache.Caches.emptyCache;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
@@ -26,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
-import org.codehaus.cake.service.executor.ExecutorsService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.test.util.TestUtil;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -153,8 +155,8 @@ public class CachesTest {
 
     @Test
     public void emptyCacheServices() {
-        assertEquals(0, emptyCache().getAllServices().size());
-        assertFalse(emptyCache().hasService(ExecutorsService.class));
+        assertEquals(0, emptyCache().serviceKeySet().size());
+        assertFalse(emptyCache().hasService(CacheLoadingService.class));
     }
 
     @Test(expected = NullPointerException.class)
@@ -164,7 +166,7 @@ public class CachesTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void emptyCacheServicesIAE() {
-        emptyCache().getService(ExecutorsService.class);
+        emptyCache().getService(CacheLoadingService.class);
     }
 
     @Test(expected = UnsupportedOperationException.class)

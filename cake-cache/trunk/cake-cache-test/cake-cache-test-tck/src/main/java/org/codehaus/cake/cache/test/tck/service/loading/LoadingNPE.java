@@ -7,41 +7,41 @@ import org.junit.Test;
 public class LoadingNPE extends AbstractCacheTCKTest {
     @Test(expected = NullPointerException.class)
     public void withKeyNPE() {
-        withLoading().withKey(null);
+        withLoading().load(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeyNPE1() {
-        withLoading().withKey(null, asDummy(AttributeMap.class));
+        withLoading().load(null, asDummy(AttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeyNPE2() {
-        withLoading().withKey(1, null);
+        withLoading().load(1, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE1() {
-        withLoading().withKeys((Iterable) null);
+        withLoading().loadAll((Iterable) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE2() {
-        withLoading().withKeys(asList(1, null, 3));
+        withLoading().loadAll(asList(1, null, 3));
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE3() {
-        withLoading().withKeys((Iterable) null, asDummy(AttributeMap.class));
+        withLoading().loadAll((Iterable) null, asDummy(AttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE4() {
-        withLoading().withKeys(asList(1, null, 3), asDummy(AttributeMap.class));
+        withLoading().loadAll(asList(1, null, 3), asDummy(AttributeMap.class));
     }
     @Test(expected = NullPointerException.class)
     public void withKeysNPE5() {
-        withLoading().withKeys(asList(1,  3), null);
+        withLoading().loadAll(asList(1,  3), null);
     }
     //
     // @Test(expected = NullPointerException.class)

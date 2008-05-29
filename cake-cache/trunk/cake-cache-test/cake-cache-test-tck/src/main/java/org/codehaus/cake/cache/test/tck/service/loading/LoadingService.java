@@ -2,6 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
@@ -56,8 +57,8 @@ public class LoadingService extends AbstractCacheTCKTest {
         assertTrue(c.hasService(CacheLoadingService.class));
         // check that it doesn't fail with a classcast exception
         assertNotNull(c.getService(CacheLoadingService.class));
-        assertTrue(c.getAllServices().containsKey(CacheLoadingService.class));
-        assertTrue(c.getAllServices().get(CacheLoadingService.class) instanceof CacheLoadingService);
+        assertTrue(c.serviceKeySet().contains(CacheLoadingService.class));
+        assertTrue(c.getService(CacheLoadingService.class,Attributes.EMPTY_ATTRIBUTE_MAP) instanceof CacheLoadingService);
     }
     
     /**
@@ -71,7 +72,7 @@ public class LoadingService extends AbstractCacheTCKTest {
         assertTrue(c.hasService(CacheLoadingService.class));
         // check that it doesn't fail with a classcast exception
         assertNotNull(c.getService(CacheLoadingService.class));
-        assertTrue(c.getAllServices().containsKey(CacheLoadingService.class));
-        assertTrue(c.getAllServices().get(CacheLoadingService.class) instanceof CacheLoadingService);
+        assertTrue(c.serviceKeySet().contains(CacheLoadingService.class));
+        assertTrue(c.getService(CacheLoadingService.class,Attributes.EMPTY_ATTRIBUTE_MAP) instanceof CacheLoadingService);
     }
 }

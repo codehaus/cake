@@ -3,6 +3,9 @@
 package org.codehaus.cake.service;
 
 import java.util.Map;
+import java.util.Set;
+
+import org.codehaus.cake.attribute.AttributeMap;
 
 /**
  * 
@@ -18,25 +21,22 @@ public interface ServiceManager {
      * 
      * @param serviceType
      *            the type of service
-     * @return true if this service manager contains a service of the specified type, otherwise
-     *         false
+     * @return true if this service manager contains a service of the specified type, otherwise false
      * @throws NullPointerException
      *             if the specified service type is null
      * 
-     * @see ServiceManager#getAllServices()
+     * @see ServiceManager#serviceKeySet()
      */
     boolean hasService(Class<?> serviceType);
 
-    /**
-     * Returns all registered services.
-     * 
-     * @return a map of all registered services
-     */
-    Map<Class<?>, Object> getAllServices();
+    //boolean hasService(Class<?> serviceType, AttributeMap attributes);
 
+    Set<Class<?>> serviceKeySet();
+    
+    //Map<Class<?>, ServiceFactory<?>> getAll();
     /**
-     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if
-     * no such service exists.
+     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if no such service
+     * exists.
      * 
      * @param <T>
      *            the type of service to retrieve
@@ -49,4 +49,6 @@ public interface ServiceManager {
      *             if the specified service type is null
      */
     <T> T getService(Class<T> serviceType);
+
+    <T> T getService(Class<T> serviceType, AttributeMap attributes);
 }

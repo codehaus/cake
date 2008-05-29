@@ -31,7 +31,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(cause, t.getCause());
@@ -52,7 +52,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(cause, t.getCause());
@@ -72,7 +72,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(RuntimeException1.INSTANCE, t.getCause());
@@ -93,7 +93,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(cause, t.getCause());
@@ -113,7 +113,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(Exception1.INSTANCE, t.getCause());
@@ -133,7 +133,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(Error1.INSTANCE, t.getCause());
@@ -153,7 +153,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
         // check that we throw the same exception again when invoking method
         try {
-            c.getAllServices();
+            c.serviceKeySet();
             fail("should fail");
         } catch (IllegalStateException t) {
             assertSame(Throwable1.INSTANCE, t.getCause());

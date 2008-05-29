@@ -33,7 +33,7 @@ public class MemoryStoreCachingDisabled extends AbstractCacheTCKTest {
         assertSize(2);
         withMemoryStore().setDisabled(true);
         assertTrue(withMemoryStore().isDisabled());
-        assertSize(2);//don't remove existing items
+        assertSize(2);// don't remove existing items
         put(entry(M1, "C"));
         assertGet(M1);
         assertSize(2);
@@ -52,7 +52,7 @@ public class MemoryStoreCachingDisabled extends AbstractCacheTCKTest {
         assertSize(0);
         assertGetAll(entry(M2, null), entry(M3, null), entry(M4, null));
         assertSize(0);
-        //assertEquals(M1.getValue(), getEntry(M1).getValue());??
+        // assertEquals(M1.getValue(), getEntry(M1).getValue());??
         assertSize(0);
         assertEquals(6, loader.totalLoads());
     }
@@ -76,16 +76,16 @@ public class MemoryStoreCachingDisabled extends AbstractCacheTCKTest {
 
     @Test
     public void loadDisable() {
-        withLoading().withKey(1).load();
+        withLoading().load(1);
         awaitFinishedThreads();
         assertSize(1);
-        withLoading().withKey(2).forceLoad();
+        withLoadingForced().load(2);
         awaitFinishedThreads();
         assertSize(2);
         withMemoryStore().setDisabled(true);
         assertTrue(withMemoryStore().isDisabled());
-        withLoading().withKeys(Arrays.asList(1, 2, 3, 4)).load();
-        withLoading().withKeys(Arrays.asList(1, 2, 3, 4)).forceLoad();
+        withLoading().loadAll(Arrays.asList(1, 2, 3, 4));
+        withLoadingForced().loadAll(Arrays.asList(1, 2, 3, 4));
         awaitFinishedThreads();
         assertSize(2);
     }
@@ -94,13 +94,13 @@ public class MemoryStoreCachingDisabled extends AbstractCacheTCKTest {
     public void load() {
         conf.withMemoryStore().setDisabled(true);
         init();
-        withLoading().withKey(1).load();
+        withLoading().load(1);
         awaitFinishedThreads();
         assertSize(0);
-        withLoading().withKey(2).forceLoad();
+        withLoadingForced().load(2);
         awaitFinishedThreads();
         assertSize(0);
-        withLoading().withKeys(Arrays.asList(3, 4)).load();
+        withLoading().loadAll(Arrays.asList(3, 4));
         awaitFinishedThreads();
         assertSize(0);
     }

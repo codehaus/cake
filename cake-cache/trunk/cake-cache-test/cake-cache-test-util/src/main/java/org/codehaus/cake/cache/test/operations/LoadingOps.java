@@ -18,7 +18,7 @@ public final class LoadingOps {
 
         /** {@inheritDoc} */
         public void run() {
-            loadingService.withKey(keyGenerator.op()).load();
+            cache.with().loading().load(keyGenerator.op());
         }
     }
 
@@ -30,7 +30,7 @@ public final class LoadingOps {
         public final static String NAME = PREFIX + "forceLoad";
         /** {@inheritDoc} */
         public void run() {
-            loadingService.withKey(keyGenerator.op()).load();
+            cache.with().loadingForced().load(keyGenerator.op());
         }
     }
 }

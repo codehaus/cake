@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.UnsynchronizedInternalCache;
@@ -83,11 +84,6 @@ public class UnsynchronizedCache<K, V> implements Cache<K, V> {
     /** {@inheritDoc} */
     public Map<K, V> getAll(Collection<? extends K> keys) {
         return cache.getAll(keys);
-    }
-
-    /** {@inheritDoc} */
-    public Map<Class<?>, Object> getAllServices() {
-        return cache.getAllServices();
     }
 
     /** {@inheritDoc} */
@@ -219,5 +215,14 @@ public class UnsynchronizedCache<K, V> implements Cache<K, V> {
     /** {@inheritDoc} */
     public CacheServices<K, V> with() {
         return cache.with();
+    }
+
+    /** {@inheritDoc} */
+    public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
+        return cache.getService(serviceType, attributes);
+    }
+    
+    public Set<Class<?>> serviceKeySet() {
+        return cache.serviceKeySet();
     }
 }

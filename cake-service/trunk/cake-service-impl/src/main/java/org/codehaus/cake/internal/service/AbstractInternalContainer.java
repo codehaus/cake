@@ -1,8 +1,10 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
@@ -30,12 +32,6 @@ public abstract class AbstractInternalContainer implements Container {
         return runState.awaitTermination(timeout, unit);
     }
 
-    /** {@inheritDoc} */
-    public Map<Class<?>, Object> getAllServices() {
-        lazyStart();
-        return sm.getAllServices();
-    }
-
     public String getName() {
         return name;
     }
@@ -44,6 +40,12 @@ public abstract class AbstractInternalContainer implements Container {
     public final <T> T getService(Class<T> serviceType) {
         lazyStart();
         return sm.getService(serviceType);
+    }
+
+    /** {@inheritDoc} */
+    public final <T> T getService(Class<T> serviceType, AttributeMap attributes) {
+        lazyStart();
+        return sm.getService(serviceType, attributes);
     }
 
     /** {@inheritDoc} */
@@ -78,5 +80,10 @@ public abstract class AbstractInternalContainer implements Container {
 
     public void shutdownNow() {
         runState.shutdown(true);
+    }
+
+    public Set<Class<?>> serviceKeySet() {
+           lazyStart();
+        return sm.serviceKeySet();
     }
 }

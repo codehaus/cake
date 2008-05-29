@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
@@ -152,7 +155,9 @@ public final class Caches {
         public Map<Class<?>, Object> getAllServices() {
             return Collections.emptyMap();
         }
-
+        public Set<Class<?>> serviceKeySet() {
+            return Collections.EMPTY_SET;
+        }
         /** {@inheritDoc} */
         public CacheEntry<K, V> getEntry(K key) {
             return null;
@@ -165,15 +170,22 @@ public final class Caches {
 
         /** {@inheritDoc} */
         public <T> T getService(Class<T> serviceType) {
+            return getService(serviceType, Attributes.EMPTY_ATTRIBUTE_MAP);
+        }
+
+        /** {@inheritDoc} */
+        public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
             if (serviceType == null) {
                 throw new NullPointerException("serviceType is null");
+            } else if (attributes == null) {
+                throw new NullPointerException("attributes is null");
             }
             throw new UnsupportedOperationException("Unknown service " + serviceType);
         }
 
         /** {@inheritDoc} */
         public boolean hasService(Class<?> serviceType) {
-            return getAllServices().containsKey(serviceType);
+            return false;
         }
 
         /** {@inheritDoc} */

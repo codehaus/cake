@@ -2,6 +2,10 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.service.loading;
 
+import java.util.Collection;
+
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
@@ -90,5 +94,25 @@ public class CacheLoadingConfiguration<K, V> {
     public CacheLoadingConfiguration<K, V> setNeedsReloadFilter(Predicate<? super CacheEntry<K, V>> selector) {
         needsReloadSelector = selector;
         return this;
+    }
+    
+    /**
+     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped value must be of a
+     * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
+     */
+    static final class IsLoadingForcedAttribute extends BooleanAttribute {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -2353351535602223603L;
+
+        /** Creates a new SizeAttribute. */
+        IsLoadingForcedAttribute() {
+            super("LoadingForced");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheLoadingService.IS_FORCED;
+        }
     }
 }

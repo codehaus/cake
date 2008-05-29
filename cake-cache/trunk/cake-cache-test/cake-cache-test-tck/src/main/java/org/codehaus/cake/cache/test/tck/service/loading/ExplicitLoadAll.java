@@ -23,13 +23,13 @@ public class ExplicitLoadAll extends AbstractCacheTCKTest {
 
     @Test
     public void withLoadAll() {
-        withLoading().withAll().load();
+        withLoading().loadAll();
         assertSize(0);
-        withLoading().withAll().forceLoad();
+        withLoadingForced().loadAll();
         assertSize(0);
-        withLoading().withAll(new DefaultAttributeMap()).load();
+        withLoading().loadAll(new DefaultAttributeMap());
         assertSize(0);
-        withLoading().withAll(new DefaultAttributeMap()).forceLoad();
+        withLoadingForced().loadAll(new DefaultAttributeMap());
         assertSize(0);
         assertLoadCount(0);
     }
@@ -38,15 +38,15 @@ public class ExplicitLoadAll extends AbstractCacheTCKTest {
     public void withLoadForce() {
         put(M1);
         put(M2);
-        withLoading().withAll().load();
-        withLoading().withAll(new DefaultAttributeMap()).load();
+        withLoading().loadAll();
+        withLoading().loadAll(new DefaultAttributeMap());
         assertLoadCount(0);
         loader.withLoader(M1).setValue("3");
-        withLoading().withAll().forceLoad();
+        withLoadingForced().loadAll();
         awaitFinishedThreads();
         assertLoadCount(2);
         assertPeek(entry(M1, "3"));
-        withLoading().withAll().forceLoad();
+        withLoadingForced().loadAll();
         awaitFinishedThreads();
         assertLoadCount(4);
     }

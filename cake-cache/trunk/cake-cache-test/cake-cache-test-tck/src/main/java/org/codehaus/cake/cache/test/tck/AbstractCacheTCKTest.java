@@ -53,6 +53,10 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         return c.getService(CacheLoadingService.class);
     }
 
+    protected final CacheLoadingService<Integer, String> withLoadingForced() {
+        return c.getService(CacheLoadingService.class, CacheLoadingService.IS_FORCED.singleton(true));
+    }
+
     protected final MemoryStoreService<Integer, String> withMemoryStore() {
         return c.getService(MemoryStoreService.class);
     }
@@ -376,7 +380,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     }
 
     protected void forceLoadAll() {
-        withLoading().withAll().forceLoad();
+        withLoadingForced().loadAll();
     }
 
     protected void forceLoad(Map.Entry<Integer, String> entry) {
@@ -424,15 +428,15 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         long pre = loader.totalLoads();
         if (map == null) {
             if (force) {
-                withLoading().withKeys(keys.keySet()).forceLoad();
+                withLoadingForced().loadAll(keys.keySet());
             } else {
-                withLoading().withKeys(keys.keySet()).load();
+                withLoading().loadAll(keys.keySet());
             }
         } else {
             if (force) {
-                withLoading().withKeys(keys.keySet(), map).forceLoad();
+                withLoadingForced().loadAll(keys.keySet(), map);
             } else {
-                withLoading().withKeys(keys.keySet(), map).load();
+                withLoading().loadAll(keys.keySet(), map);
             }
         }
         awaitFinishedThreads();
@@ -451,15 +455,15 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         String prevValue = c.peek(entry.getKey());
         if (map == null) {
             if (force) {
-                withLoading().withKey(entry.getKey()).forceLoad();
+                withLoadingForced().load(entry.getKey());
             } else {
-                withLoading().withKey(entry.getKey()).load();
+                withLoading().load(entry.getKey());
             }
         } else {
             if (force) {
-                withLoading().withKey(entry.getKey(), map).forceLoad();
+                withLoadingForced().load(entry.getKey(), map);
             } else {
-                withLoading().withKey(entry.getKey(), map).load();
+                withLoading().load(entry.getKey(), map);
             }
         }
         awaitFinishedThreads();

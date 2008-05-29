@@ -12,7 +12,7 @@ public class LoadingErroneous extends AbstractCacheTCKTest {
     @Test
     public void loadFailed() {
         loader.withLoader(M1).setCause(RuntimeException1.INSTANCE);
-        withLoading().withKey(1).load();
+        withLoading().load(1);
         awaitFinishedThreads();
         assertSize(0);
         exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Error);
@@ -21,7 +21,7 @@ public class LoadingErroneous extends AbstractCacheTCKTest {
     @Test
     public void loadAllFailed() {
         loader.withLoader(M2).setCause(RuntimeException1.INSTANCE);
-        withLoading().withKeys(Arrays.asList(1, 2, 3)).load();
+        withLoading().loadAll(Arrays.asList(1, 2, 3));
         awaitFinishedThreads();
         assertSize(2);
         assertTrue(c.containsKey(1) && c.containsKey(3));

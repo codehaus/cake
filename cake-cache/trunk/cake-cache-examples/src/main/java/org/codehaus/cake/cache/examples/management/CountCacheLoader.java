@@ -43,7 +43,7 @@ public class CountCacheLoader implements SimpleCacheLoader<String, String>, Mana
 
         // load one value each second for 10 minutes
         for (int i = 0; i < 600; i++) {
-            cache.with().loading().withKey("count" + i).load();
+            cache.with().loading().load("count" + i);
             Thread.sleep(1000);
         }
     }

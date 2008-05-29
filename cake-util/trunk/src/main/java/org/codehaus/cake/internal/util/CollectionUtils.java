@@ -30,7 +30,7 @@ public final class CollectionUtils {
      * @throws NullPointerException
      *             if the specified collection contains a null
      */
-    public static void checkCollectionForNulls(Collection<?> col) {
+    public static void checkCollectionForNulls(Iterable<?> col) {
         for (Object entry : col) {
             if (entry == null) {
                 throw new NullPointerException("collection contains a null entry");

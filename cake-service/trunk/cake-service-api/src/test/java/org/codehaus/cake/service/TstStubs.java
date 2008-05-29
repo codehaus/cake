@@ -2,16 +2,16 @@ package org.codehaus.cake.service;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 
 public class TstStubs {
-    public interface Stubber<T> extends Container {
-
-    }
+    public interface Stubber<T> extends Container {}
 
     public static class StubberConfiguration extends ContainerConfiguration<Stubber> {
         public StubberConfiguration() {
@@ -32,6 +32,7 @@ public class TstStubs {
             this.conf = conf;
         }
     }
+
     /**
      * A Cache that is abstract.
      */
@@ -43,8 +44,7 @@ public class TstStubs {
          * @param configuration
          *            the cache configuration
          */
-        public CannotInstantiateAbstractStubber(StubberConfiguration configuration) {
-        }
+        public CannotInstantiateAbstractStubber(StubberConfiguration configuration) {}
     }
 
     /**
@@ -108,8 +108,7 @@ public class TstStubs {
          * @param configuration
          *            the Stubber configuration
          */
-        private PrivateConstructorStubber(StubberConfiguration configuration) {
-        }
+        private PrivateConstructorStubber(StubberConfiguration configuration) {}
     }
 
     public static class AbstractStubber implements Container, Stubber<Integer> {
@@ -148,6 +147,14 @@ public class TstStubs {
 
         public boolean hasService(Class<?> serviceType) {
             return false;
+        }
+
+        public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
+            return null;
+        }
+
+        public Set<Class<?>> serviceKeySet() {
+            return null;
         }
     }
 }

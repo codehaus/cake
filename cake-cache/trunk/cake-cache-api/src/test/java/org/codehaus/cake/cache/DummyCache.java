@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.AttributeMap;
+
 /**
  * A dummy implementation of a {@link Cache}.
  * 
@@ -102,6 +104,10 @@ public class DummyCache<K, V> implements Cache<K, V> {
 
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType) {
+        return (T) services.get(serviceType);
+    }
+    /** {@inheritDoc} */
+    public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
         return (T) services.get(serviceType);
     }
 
@@ -298,5 +304,9 @@ public class DummyCache<K, V> implements Cache<K, V> {
 
     public boolean hasService(Class<?> serviceType) {
         return false;
+    }
+
+    public Set<Class<?>> serviceKeySet() {
+        return Collections.emptySet();
     }
 }

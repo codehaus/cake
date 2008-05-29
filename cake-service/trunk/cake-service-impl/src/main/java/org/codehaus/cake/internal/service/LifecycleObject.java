@@ -144,8 +144,9 @@ public class LifecycleObject {
                 } finally {
                     Throwable cause = state.getStartupException();
                     if (cause != null) {
-//                        ies.error("@Startable -> " + m.getDeclaringClass().getName() + "." + m.getName() + "() FAILED",
-//                                cause);
+                        // ies.error("@Startable -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()
+                        // FAILED",
+                        // cause);
                     }
                 }
             }
@@ -155,8 +156,11 @@ public class LifecycleObject {
     public void startedRun(ContainerConfiguration configuration, Container container) {
         ArrayList al = new ArrayList();
         al.add(container);
-        for (Object o : container.getAllServices().values()) {
-            al.add(o);
+        for (Class key : container.serviceKeySet()) {
+            try {
+                Object o=container.getService(key);
+                al.add(o);
+            } catch (UnsupportedOperationException ok) {}
         }
 
         al.add(configuration);
