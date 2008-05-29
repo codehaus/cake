@@ -2,11 +2,11 @@ package org.codehaus.cake.cache;
 
 import java.lang.management.ManagementFactory;
 
-import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandlingConfiguration;
-import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
-import org.codehaus.cake.cache.store.CacheStoreConfiguration;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingConfiguration;
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
+import org.codehaus.cake.cache.service.store.CacheStoreConfiguration;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;

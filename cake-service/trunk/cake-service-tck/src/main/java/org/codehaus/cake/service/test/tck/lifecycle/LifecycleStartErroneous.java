@@ -160,50 +160,50 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
         }
     }
 
-    public class StartRuntimeException {
+    public static class StartRuntimeException {
         @Startable
         public void start(ContainerConfiguration conf) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
-    public class StartException {
+    public static class StartException {
         @Startable
         public void start(ContainerConfiguration conf) throws Exception {
             throw Exception1.INSTANCE;
         }
     }
 
-    public class StartError {
+    public static class StartError {
         @Startable
         public void start(ContainerConfiguration conf) {
             throw Error1.INSTANCE;
         }
     }
 
-    public class StartContainer {
+    public static class StartContainer {
         @Startable
         public void start(Container conf) {}
     }
 
-    public class StartThrowable {
+    public static class StartThrowable {
         @Startable
         public void start(ContainerConfiguration conf) throws Throwable {
             throw Throwable1.INSTANCE;
         }
     }
 
-    public class StartObject {
+    public static class StartObject {
         @Startable
         public void start(Object object) {}
     }
 
-    public class StartUnknown {
+    public static class StartUnknown {
         @Startable
         public void start(Integer unknown) {}
     }
 
-    public class StartPackageProtected {
+    public static class StartPackageProtected {
         @Startable
         void start(Integer unknown) {}
     }

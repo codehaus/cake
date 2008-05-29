@@ -11,6 +11,13 @@
   <name>Cake Service API</name>
   <dependencies>
     <dependency>
+      <groupId>org.codehaus.cake.test</groupId>
+      <artifactId>cake-test-util</artifactId>
+      <version>0.1-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.codehaus.cake.forkjoin</groupId>
       <artifactId>cake-forkjoin-collections</artifactId>
       <version>0.1-SNAPSHOT</version>

@@ -17,5 +17,13 @@ public interface InternalCache<K, V> extends Cache<K, V>, Iterable<CacheEntry<K,
 
     boolean removeEntries(Collection<?> entries);
 
+    /**
+     * Called by a cache loader whenever a value has been loaded.
+     * 
+     * @param key
+     * @param value
+     * @param map
+     * @return
+     */
     CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map);
 }

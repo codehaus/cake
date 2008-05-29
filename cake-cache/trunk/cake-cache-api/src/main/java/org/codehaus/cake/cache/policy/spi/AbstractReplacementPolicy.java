@@ -87,8 +87,16 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
                 for (Attribute a : attributes) {
                     service.attachToPolicy(a);
                 }
+                for (Attribute a : softDependencies) {
+                    service.dependOnSoft(a);
+                }
+                for (Attribute a : hardDependencies) {
+                    service.dependOnHard(a);
+                }
             } finally {
                 attributes = null;
+                softDependencies = null;
+                hardDependencies = null;
             }
         }
     }

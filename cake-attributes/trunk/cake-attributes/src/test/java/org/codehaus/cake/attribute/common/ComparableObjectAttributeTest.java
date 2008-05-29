@@ -59,7 +59,6 @@ public class ComparableObjectAttributeTest extends AtrStubs {
         assertEquals(55, coa.getDefaultValue());
         AttributeMap am1 = Attributes.singleton(coa, 1);
         AttributeMap am1_ = Attributes.singleton(coa, 1);
-        AttributeMap am2 = Attributes.singleton(coa, 2);
 
         assertEquals(0, coa.compare(withAtr(Attributes.EMPTY_ATTRIBUTE_MAP), withAtr(Attributes.EMPTY_ATTRIBUTE_MAP)));
         assertEquals(0, coa.compare(withAtr(am1), withAtr(am1_)));

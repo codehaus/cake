@@ -12,13 +12,14 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
 import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
+import org.codehaus.cake.internal.cache.service.memorystore.SynchronizedHashMapMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.SynchronizedCollectionViews;
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.Composer;
@@ -34,7 +35,7 @@ import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
 @Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
-    ExecutorsService.class, Manageable.class })
+        ExecutorsService.class, Manageable.class })
 public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V> {
 
     InternalCacheLoader<K, V> loader;
@@ -64,19 +65,24 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
 
     public void clear() {
         lazyStart();
-        long started = listener.beforeCacheClear();
-        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeAll();
+        synchronized (mutex) {
+            long started = listener.beforeCacheClear();
+            ParallelArray<CacheEntry<K, V>> list = memoryCache.removeAll();
 
-        listener.afterCacheClear(started, list.asList());
+            listener.afterCacheClear(started, list.asList());
+        }
     }
 
     public boolean containsValue(Object value) {
         if (value == null) {
             throw new NullPointerException("value is null");
         }
-        for (CacheEntry<K, V> entry : this) {
-            if (entry.getValue().equals(value)) {
-                return true;
+        lazyStart();
+        synchronized (mutex) {
+            for (CacheEntry<K, V> entry : memoryCache) {
+                if (entry.getValue().equals(value)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -94,8 +100,11 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         if (key == null) {
             throw new NullPointerException("key is null");
         }
-        lazyStartFailIfShutdown();
-        CacheEntry<K, V> entry = memoryCache.get(key);
+        CacheEntry<K, V> entry = null;
+        synchronized (mutex) {
+            lazyStartFailIfShutdown();
+            entry = memoryCache.get(key);
+        }
         if (entry == null && loader != null) {
             entry = loader.load(key, Attributes.EMPTY_ATTRIBUTE_MAP);
         }
@@ -112,7 +121,9 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
             throw new NullPointerException("key is null");
         }
         lazyStart();
-        return memoryCache.peek(key);
+        synchronized (mutex) {
+            return memoryCache.peek(key);
+        }
     }
 
     public CacheEntry<K, V> put(K key, V value, AttributeMap attributes) {
@@ -121,6 +132,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     }
 
     private CacheEntry<K, V> put(K key, V value, AttributeMap attributes, boolean OnlyIfAbsent) {
+        // TODO sync
         lazyStartFailIfShutdown();
         long started = listener.beforePut(key, value, false);
 
@@ -133,6 +145,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     }
 
     public void putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data) {
+        // TODO sync
         long started = listener.beforePutAll(null, null, false);
 
         lazyStartFailIfShutdown();
@@ -160,7 +173,10 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         if (key == null) {
             throw new NullPointerException("key is null");
         }
-        CacheEntry<K, V> removed = removeByKey(key, null);
+        CacheEntry<K, V> removed = null;
+        synchronized (mutex) {
+            removed = removeByKey(key, null);
+        }
         return removed == null ? null : removed.getValue();
     }
 
@@ -174,6 +190,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
             throw new NullPointerException("collection is null");
         }
         CollectionUtils.checkCollectionForNulls(keys);
+        // TODO sync
         long started = listener.beforeRemoveAll((Collection) keys);
 
         lazyStart();
@@ -187,7 +204,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     /** {@inheritDoc} */
     private CacheEntry<K, V> removeByKey(Object key, Object value) {
         long started = listener.beforeRemove(key, value);
-
+        // TODO sync
         lazyStart();
         CacheEntry<K, V> e = memoryCache.remove(key, value);
 
@@ -199,6 +216,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         if (entries == null) {
             throw new NullPointerException("collection is null");
         }
+        // TODO sync
         CollectionUtils.checkCollectionForNulls(entries);
         long started = listener.beforeRemoveAll((Collection) entries);
 
@@ -214,6 +232,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         if (keys == null) {
             throw new NullPointerException("collection is null");
         }
+        // TODO sync
         CollectionUtils.checkCollectionForNulls(keys);
         long started = listener.beforeRemoveAll((Collection) keys);
 
@@ -227,7 +246,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
 
     public boolean removeValue(Object value) {
         long started = listener.beforeRemove(null, value);
-
+        // TODO sync
         lazyStart();
         CacheEntry<K, V> e = memoryCache.removeAny(Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP,
                 Predicates.equalsTo(value)));
@@ -240,6 +259,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         if (values == null) {
             throw new NullPointerException("collection is null");
         }
+        // TODO sync
         CollectionUtils.checkCollectionForNulls(values);
         long started = listener.beforeRemoveAll((Collection) values);
 
@@ -264,17 +284,22 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     }
 
     private EntryPair<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
-        lazyStartFailIfShutdown();
-        EntryPair pair = memoryCache.replace(key, oldValue, newValue, attributes);
-        return pair;
+        synchronized (mutex) {
+            lazyStartFailIfShutdown();
+            EntryPair pair = memoryCache.replace(key, oldValue, newValue, attributes);
+            return pair;
+        }
     }
 
     public int size() {
         lazyStart();
-        return memoryCache.size();
+        synchronized (mutex) {
+            return memoryCache.getSize();
+        }
     }
 
     public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
+        // TODO sync
         if (value != null) {
             long started = listener.beforePut(key, value, false);
 
@@ -288,11 +313,9 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         return null;
     }
 
-    public static Composer createComposer(CacheConfiguration<?, ?> configuration) {
+    private static Composer createComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = newComposer(configuration);
-        // composer.registerImplementation(GlobalServiceMutex.class);
-
-        // composer.registerInternalImplementation(SynchronizedMemoryStoreService.class);
+        composer.registerImplementation(SynchronizedHashMapMemoryStore.class);
 
         // Common components
         composer.registerImplementation(UnsynchronizedRunState.class);

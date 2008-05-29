@@ -19,9 +19,9 @@ public final class DefaultCacheMXBean implements CacheMXBean {
      *            the cache to wrap
      */
     public DefaultCacheMXBean(Cache<?, ?> cache) {
-//        if (cache == null) {
-//            throw new NullPointerException("cache is null");
-//        }
+        if (cache == null) {
+            throw new NullPointerException("cache is null");
+        }
         this.cache = cache;
     }
 

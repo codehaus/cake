@@ -10,7 +10,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.cache.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 import org.codehaus.cake.ops.Ops.LongOp;
 import org.codehaus.cake.ops.Ops.Op;
 

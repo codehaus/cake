@@ -1,5 +1,7 @@
 package org.codehaus.cake.cache.policy.spi;
 
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
+
 import java.util.Comparator;
 
 import org.codehaus.cake.attribute.IntAttribute;
@@ -113,6 +115,8 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         return newEntry;
     }
 
+    protected abstract int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2);
+
     /**
      * Inserts item x at position k, maintaining heap invariant by promoting x up the tree until it is greater than or
      * equal to its parent, or is the root.
@@ -142,9 +146,11 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
     protected void siftDown(CacheEntry<K, V> x) {
         siftDown(indexOf(x), x);
     }
+
     protected void siftUp(CacheEntry<K, V> x) {
         siftUp(indexOf(x), x);
     }
+
     /**
      * Inserts item x at position k, maintaining heap invariant by demoting x down the tree repeatedly until it is less
      * than or equal to its children or is a leaf.
@@ -189,5 +195,9 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         if (newCapacity < minCapacity)
             newCapacity = minCapacity;
         queue = ArrayUtils.copyOf(queue, newCapacity);
+    }
+
+    public final int compare(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
+        return compareEntry(o1, o2);
     }
 }

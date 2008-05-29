@@ -8,8 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.service.ServiceManager;
-
 /**
  * in addition providing .
  * lifecycle, register service, 
@@ -103,7 +101,7 @@ public interface Container extends ServiceManager {
     @Target( { ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)
     /* @Documented */
-    public static @interface SupportedServices {
+    @interface SupportedServices {
         /**
          * Returns the type of services the container implementation supports.
          */

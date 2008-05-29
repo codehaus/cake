@@ -11,6 +11,9 @@ import org.codehaus.cake.internal.util.LogHelper.AbstractLogger;
 /**
  * Returns the exception logger configured for this cache. Or initializes the default logger if no logger has been
  * defined and the default logger has not already been initialized
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: CollectionUtils.java 546 2008-01-07 20:47:32Z kasper $
  */
 public class LazyLogger extends AbstractLogger {
 
@@ -82,7 +85,7 @@ public class LazyLogger extends AbstractLogger {
 
         private String lastCaller;
 
-        public LazyLogRecord(java.util.logging.Level level, String msg, String lastCaller) {
+        LazyLogRecord(java.util.logging.Level level, String msg, String lastCaller) {
             super(level, msg);
             this.lastCaller = lastCaller;
         }
@@ -105,7 +108,7 @@ public class LazyLogger extends AbstractLogger {
         private void inferCaller() {
             needToInferCaller = false;
             // Get the stack trace.
-            StackTraceElement stack[] = (new Throwable()).getStackTrace();
+            StackTraceElement[] stack = (new Throwable()).getStackTrace();
             // First, search back to a method in the Logger class.
             int ix = 0;
             while (ix < stack.length) {

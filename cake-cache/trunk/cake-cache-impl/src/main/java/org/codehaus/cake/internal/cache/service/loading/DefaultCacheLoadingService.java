@@ -10,8 +10,8 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.internal.cache.service.management.DefaultCacheLoadingMXBean;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.management.Manageable;
@@ -21,23 +21,22 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 
-public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, V>,
-         Manageable, CompositeService {
+public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, V>, Manageable, CompositeService {
 
     private Cache<K, V> cache;
 
     private InternalCacheLoader<K, V> loader;
-    private Predicate<CacheEntry<K, V>> needsReloadFilter;
+    private Predicate<? super CacheEntry<K, V>> needsReloadFilter;
 
-    private Collection col = new ArrayList();
+    private Collection<Object> childServices = new ArrayList<Object>();
 
-    public DefaultCacheLoadingService(Cache<K, V> cache,
-            CacheLoadingConfiguration<K, V> loadingConf, InternalCacheLoader<K, V> loader) {
+    public DefaultCacheLoadingService(Cache<K, V> cache, CacheLoadingConfiguration<K, V> loadingConf,
+            InternalCacheLoader<K, V> loader) {
         this.cache = cache;
         this.loader = loader;
         this.needsReloadFilter = loadingConf.getNeedsReloadFilter();
-        col.add(loadingConf.getLoader());
-        col.add(needsReloadFilter);
+        childServices.add(loadingConf.getLoader());
+        childServices.add(needsReloadFilter);
     }
 
     Map<? extends K, AttributeMap> filterNeedsReload(Map<? extends K, AttributeMap> map) {
@@ -62,10 +61,8 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
     }
 
     @Startable
-    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant)
-            throws Exception {
-        serviceRegistrant
-                .registerService(CacheLoadingService.class, LoadingUtils.wrapService(this));
+    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
+        serviceRegistrant.registerService(CacheLoadingService.class, LoadingUtils.wrapService(this));
     }
 
     public WithLoad<V> withAll() {
@@ -104,11 +101,9 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
         };
     }
 
- 
     public WithLoad<V> withKeys(Iterable<? extends K> keys) {
         return withKeys(keys, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
-
 
     public WithLoad<V> withKeys(Iterable<? extends K> keys, AttributeMap attributes) {
         if (keys == null) {
@@ -142,8 +137,7 @@ public class DefaultCacheLoadingService<K, V> implements CacheLoadingService<K, 
         };
     }
 
-
     public Collection<?> getChildServices() {
-        return col;
+        return childServices;
     }
 }

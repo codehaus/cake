@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 import org.codehaus.cake.test.util.TestUtil;
 
 /**

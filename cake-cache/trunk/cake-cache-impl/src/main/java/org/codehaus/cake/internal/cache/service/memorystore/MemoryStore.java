@@ -9,10 +9,18 @@ import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.ops.Ops.Predicate;
 
-public interface MemoryStore<K, V> extends  Iterable<CacheEntry<K, V>> {
+public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
+    /**
+     * This method should be called while holding a lock.
+     * 
+     * @param key
+     * @return
+     */
     CacheEntry<K, V> get(Object key);
+
     CacheEntry<K, V> peek(Object key);
+
     CacheEntry<K, V> remove(Object key, Object value);
 
     ParallelArray<CacheEntry<K, V>> removeAll(Collection entries);
@@ -23,16 +31,15 @@ public interface MemoryStore<K, V> extends  Iterable<CacheEntry<K, V>> {
 
     ParallelArray<CacheEntry<K, V>> removeEntries(Collection entries);
 
-    EntryPair put(K key, V value, AttributeMap attributes,
-            boolean OnlyIfAbsent);
+    EntryPair put(K key, V value, AttributeMap attributes, boolean OnlyIfAbsent);
 
-    EntryPair replace(K key, V oldValue, V newValue,
-            AttributeMap attributes);
+    EntryPair replace(K key, V oldValue, V newValue, AttributeMap attributes);
 
-    Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(
-            Map<K, Map.Entry<V, AttributeMap>> data);
+    Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data);
 
     ParallelArray<CacheEntry<K, V>> removeValues(Collection entries);
+
     ParallelArray<CacheEntry<K, V>> removeAll();
-    int size();
+
+    int getSize();
 }

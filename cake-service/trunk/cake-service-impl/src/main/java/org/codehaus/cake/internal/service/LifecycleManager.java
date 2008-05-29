@@ -96,7 +96,7 @@ public class LifecycleManager {
         state.transitionToRunning();
         /* Started */
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
-            LifecycleObject lo = (LifecycleObject) iterator.next();
+            LifecycleObject lo = iterator.next();
             lo.startedRun(composer.get(ContainerConfiguration.class), composer.get(Container.class));
             if (!lo.stopOrDisposeShouldRun()) {
                 iterator.remove();
@@ -106,7 +106,7 @@ public class LifecycleManager {
 
     public void runShutdown(RunState state) {
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
-            LifecycleObject lo = (LifecycleObject) iterator.next();
+            LifecycleObject lo = iterator.next();
             lo.stopRun();
         }
     }

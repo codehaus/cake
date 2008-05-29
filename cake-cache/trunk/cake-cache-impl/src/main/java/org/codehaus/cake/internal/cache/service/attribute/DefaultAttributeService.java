@@ -8,7 +8,7 @@ import java.util.Map;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.codehaus.cake.util.Clock;
 

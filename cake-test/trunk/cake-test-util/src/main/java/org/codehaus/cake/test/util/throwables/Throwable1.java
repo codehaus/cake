@@ -3,5 +3,5 @@
 package org.codehaus.cake.test.util.throwables;
 
 public class Throwable1 extends Throwable {
-    public static Throwable1 INSTANCE = new Throwable1();
+    public static final Throwable1 INSTANCE = new Throwable1();
 }

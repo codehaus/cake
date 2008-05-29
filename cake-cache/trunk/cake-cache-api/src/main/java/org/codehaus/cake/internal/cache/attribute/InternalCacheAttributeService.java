@@ -2,9 +2,9 @@ package org.codehaus.cake.internal.cache.attribute;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.cache.policy.spi.AbstractReplacementPolicy;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 
 /**
  * These are various internal methods used by {@link AbstractReplacementPolicy}.

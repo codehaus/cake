@@ -460,7 +460,7 @@ public class Checker {
             }
             Class<?> type = i.getKey().getAttribute().getType();
             if (type == null) {
-                System.out.println("type is null " + type);
+                System.out.println("type is null ");
             }
             if (type.equals(HashMap.class)) {
                 types[count++] = Map.class;

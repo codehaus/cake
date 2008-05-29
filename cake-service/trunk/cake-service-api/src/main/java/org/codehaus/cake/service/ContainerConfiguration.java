@@ -249,11 +249,11 @@ public abstract class ContainerConfiguration<T> {
      *             {@link #setContainerType(Class)}
      */
     public T newInstance() {
-        Class<? extends T> type = getType();
-        if (type == null) {
+        Class<? extends T> typeToInstantiate = getType();
+        if (typeToInstantiate == null) {
             throw new IllegalStateException("no type has been set, using #setType");
         }
-        return newInstance(type);
+        return newInstance(typeToInstantiate);
     }
 
     /**

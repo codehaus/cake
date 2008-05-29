@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
-import org.codehaus.cake.cache.loading.CacheLoadingMXBean;
+import org.codehaus.cake.cache.service.loading.CacheLoadingMXBean;
 import org.codehaus.cake.cache.test.tck.service.management.AbstractManagementTest;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.test.tck.RequireService;

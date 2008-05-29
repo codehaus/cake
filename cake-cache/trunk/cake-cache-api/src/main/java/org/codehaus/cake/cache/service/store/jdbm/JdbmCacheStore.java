@@ -1,4 +1,4 @@
-package org.codehaus.cake.cache.store.jdbm;
+package org.codehaus.cake.cache.service.store.jdbm;
 
 
 public class JdbmCacheStore {

@@ -1,6 +1,6 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.cache.memorystore;
+package org.codehaus.cake.cache.service.memorystore;
 
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.CacheEntry;
@@ -21,8 +21,10 @@ import org.codehaus.cake.ops.Ops.Predicate;
 public class MemoryStoreConfiguration<K, V> {
 
     public static final IntAttribute MAXIMUM_SIZE = new IntAttribute("Maximum Size"){};
+    private Ops.Procedure<MemoryStoreService<K, V>> evictor;
+
     /** A filter used for filtering what items should be cached. */
-    private Predicate<CacheEntry<K, V>> isCacheableFilter;
+    private Predicate<? super CacheEntry<K, V>> isCacheableFilter;
 
     /** Whether or not caching is disabled. */
     private boolean isDisabled;
@@ -35,13 +37,8 @@ public class MemoryStoreConfiguration<K, V> {
 
     private ReplacementPolicy<K, V> replacementPolicy;
 
-    public ReplacementPolicy<K, V> getPolicy() {
-        return replacementPolicy;
-    }
-
-    public MemoryStoreConfiguration<K, V> setPolicy(ReplacementPolicy replacementPolicy) {
-        this.replacementPolicy = replacementPolicy;
-        return this;
+    public Ops.Procedure<MemoryStoreService<K, V>> getEvictor() {
+        return evictor;
     }
 
     /**
@@ -50,7 +47,7 @@ public class MemoryStoreConfiguration<K, V> {
      * @return the IsCacheable predicate configured or <code>null</code> if no predicate has been set
      * @see #setIsCacheableFilter(Predicate)
      */
-    public Predicate<CacheEntry<K, V>> getIsCacheableFilter() {
+    public Predicate<? super CacheEntry<K, V>> getIsCacheableFilter() {
         return isCacheableFilter;
     }
 
@@ -72,6 +69,10 @@ public class MemoryStoreConfiguration<K, V> {
      */
     public long getMaximumVolume() {
         return maximumVolume;
+    }
+
+    public ReplacementPolicy<K, V> getPolicy() {
+        return replacementPolicy;
     }
 
     /**
@@ -122,12 +123,6 @@ public class MemoryStoreConfiguration<K, V> {
         return this;
     }
 
-    private Ops.Procedure<MemoryStoreService<K, V>> evictor;
-
-    public Ops.Procedure<MemoryStoreService<K, V>> getEvictor() {
-        return evictor;
-    }
-
     /**
      * Sets a Predicate that the cache will use to determind if a cache entry can be cached. For example,
      * 
@@ -135,7 +130,7 @@ public class MemoryStoreConfiguration<K, V> {
      *            the predicate that decides if a given key, value combination can be added to the cache
      * @return this configration
      */
-    public MemoryStoreConfiguration<K, V> setIsCacheableFilter(Predicate<CacheEntry<K, V>> predicate) {
+    public MemoryStoreConfiguration<K, V> setIsCacheableFilter(Predicate<? super CacheEntry<K, V>> predicate) {
         this.isCacheableFilter = predicate;
         return this;
     }
@@ -183,6 +178,11 @@ public class MemoryStoreConfiguration<K, V> {
             throw new IllegalArgumentException("maximumVolume must be a non-negative number, was " + maximumVolume);
         }
         this.maximumVolume = maximumVolume;
+        return this;
+    }
+
+    public MemoryStoreConfiguration<K, V> setPolicy(ReplacementPolicy replacementPolicy) {
+        this.replacementPolicy = replacementPolicy;
         return this;
     }
 }

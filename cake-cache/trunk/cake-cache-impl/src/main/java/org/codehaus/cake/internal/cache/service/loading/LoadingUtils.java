@@ -3,7 +3,7 @@
 package org.codehaus.cake.internal.cache.service.loading;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 
 /**
  * Various utilities used for the loading service.

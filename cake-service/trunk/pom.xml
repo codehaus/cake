@@ -12,13 +12,6 @@
   <version>0.1-SNAPSHOT</version>
   <name>Cake Service Parent</name>
   <packaging>pom</packaging>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.cake.test</groupId>
-      <artifactId>cake-test-util</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/cake-service/trunk</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-service/trunk</developerConnection>

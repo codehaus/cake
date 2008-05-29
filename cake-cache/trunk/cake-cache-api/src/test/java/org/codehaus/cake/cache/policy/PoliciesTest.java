@@ -4,6 +4,8 @@ package org.codehaus.cake.cache.policy;
 
 import static org.junit.Assert.assertTrue;
 
+import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
+import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.cache.policy.paging.FIFOReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.LIFOReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
@@ -24,5 +26,7 @@ public class PoliciesTest {
         assertTrue(Policies.newLRU() instanceof LRUReplacementPolicy);
         assertTrue(Policies.newMRU() instanceof MRUReplacementPolicy);
         assertTrue(Policies.newRandom() instanceof RandomReplacementPolicy);
+        assertTrue(Policies.newReplaceBiggest() instanceof ReplaceBiggestPolicy);
+        assertTrue(Policies.newReplaceCostliest() instanceof ReplaceCostliestPolicy);
     }
 }

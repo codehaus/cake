@@ -50,28 +50,28 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
         newContainer();
         prestart();
     }
-    public class Register {
+    public static class Register {
         @Startable
         public void start(ServiceRegistrant registrant) {
             registrant.registerService(Integer.class, 1000);
         }
     }
 
-    public class RegisterNullKey {
+    public static class RegisterNullKey {
         @Startable
         public void start(ServiceRegistrant registrant) {
             registrant.registerService(null, 1000);
         }
     }
 
-    public class RegisterNullService {
+    public static class RegisterNullService {
         @Startable
         public void start(ServiceRegistrant registrant) {
             registrant.registerService(Integer.class, null);
         }
     }
 
-    public class RegisterSame {
+    public static class RegisterSame {
         @Startable
         public void start1(ServiceRegistrant registrant) {
             registrant.registerService(Integer.class, 1000);

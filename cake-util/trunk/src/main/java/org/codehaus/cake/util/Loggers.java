@@ -10,10 +10,10 @@ import org.codehaus.cake.internal.util.LogHelper;
 import org.codehaus.cake.internal.util.LogHelper.AbstractLogger;
 
 /**
- * This class is used for creating {@link Logger} wrappers from popular logging frameworks such as
- * <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html">
- * Standard JDK logging </a>, <a href="http://logging.apache.org/log4j/"> Log4j </a> or <a
- * href="http://commons.apache.org/logging/"> commons logging </a>.
+ * This class is used for creating {@link Logger} wrappers from popular logging frameworks such as <a
+ * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Standard JDK logging </a>, <a
+ * href="http://logging.apache.org/log4j/"> Log4j </a> or <a href="http://commons.apache.org/logging/"> commons logging
+ * </a>.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id: Loggers.java 542 2008-01-02 21:50:05Z kasper $
@@ -30,21 +30,19 @@ public final class Loggers {
     // /CLOVER:ON
 
     /**
-     * Returns the name of the specified logger or <code>null</code> if the name could not be
-     * determinded.
+     * Returns the name of the specified logger or <code>null</code> if the name could not be determinded.
      * 
      * @param logger
      *            the logger for which the name should be returned
-     * @return the name of the specified logger or <code>null</code> if the name could not be
-     *         determinded
+     * @return the name of the specified logger or <code>null</code> if the name could not be determinded
      */
     public static String getName(Logger logger) {
         return logger instanceof AbstractLogger ? ((AbstractLogger) logger).getName() : null;
     }
 
     /**
-     * Creates a new Logger that ignores any input below the specified level. Any logging messages
-     * on this level or above it, will be logged to the specified printstream.
+     * Creates a new Logger that ignores any input below the specified level. Any logging messages on this level or
+     * above it, will be logged to the specified printstream.
      * 
      * @param level
      *            the maximum log level to log
@@ -59,8 +57,8 @@ public final class Loggers {
     }
 
     /**
-     * Creates a new Logger that ignores any input below the specified level. Any logging messages
-     * on this level or above it, will be logged to {@link System#err}.
+     * Creates a new Logger that ignores any input below the specified level. Any logging messages on this level or
+     * above it, will be logged to {@link System#err}.
      * 
      * @param level
      *            the maximum log level to log
@@ -71,8 +69,8 @@ public final class Loggers {
     }
 
     /**
-     * Creates a new Logger that ignores any input below the specified level. Any logging messages
-     * on this level or above it, will be logged to {@link System#out}.
+     * Creates a new Logger that ignores any input below the specified level. Any logging messages on this level or
+     * above it, will be logged to {@link System#out}.
      * 
      * @param level
      *            the maximum log level to log
@@ -85,7 +83,7 @@ public final class Loggers {
     /**
      * Used for Commons Logging conversion.
      */
-    public final static class Commons {
+    public static final class Commons {
 
         // /CLOVER:OFF
         /** Cannot instantiate. */
@@ -96,8 +94,8 @@ public final class Loggers {
          * Shorthand for {@link #from(String)}.
          * 
          * @param clazz
-         *            name of clazz will be used as the name of the logger to retrieve. See
-         *            getLogger(String) for more detailed information.
+         *            name of clazz will be used as the name of the logger to retrieve. See getLogger(String) for more
+         *            detailed information.
          * @return returns the logger for the specified class
          */
         public static Logger from(Class<?> clazz) {
@@ -116,8 +114,7 @@ public final class Loggers {
         }
 
         /**
-         * Creates a decorated commons logger from the specified name. The commons log is created by
-         * calling:
+         * Creates a decorated commons logger from the specified name. The commons log is created by calling:
          * 
          * <pre>
          * org.apache.commons.logging.LogFactory.getLog(name)
@@ -162,7 +159,7 @@ public final class Loggers {
     /**
      * The wrapper class commons logging.
      */
-    final static class CommonsLogger extends AbstractLogger {
+    static final class CommonsLogger extends AbstractLogger {
         /** The commons Log class we are wrapping. */
         private final org.apache.commons.logging.Log log;
 
@@ -172,7 +169,7 @@ public final class Loggers {
          * @param log
          *            the log to wrap
          */
-        private CommonsLogger(org.apache.commons.logging.Log log) {
+        CommonsLogger(org.apache.commons.logging.Log log) {
             this.log = log;
         }
 
@@ -257,7 +254,7 @@ public final class Loggers {
     /**
      * Used for java.util.logger conversion.
      */
-    public final static class JDK {
+    public static final class JDK {
         // /CLOVER:OFF
         /** Cannot instantiate. */
         private JDK() {}
@@ -267,8 +264,8 @@ public final class Loggers {
          * Shorthand for {@link #from(String)}.
          * 
          * @param clazz
-         *            name of clazz will be used as the name of the logger to retrieve. See
-         *            getLogger(String) for more detailed information.
+         *            name of clazz will be used as the name of the logger to retrieve. See getLogger(String) for more
+         *            detailed information.
          * @return returns the logger for the specified class
          */
         public static Logger from(Class<?> clazz) {
@@ -287,8 +284,7 @@ public final class Loggers {
         }
 
         /**
-         * Creates a decorated Jdk logger from the specified name. The Jdk logger is created by
-         * calling:
+         * Creates a decorated Jdk logger from the specified name. The Jdk logger is created by calling:
          * 
          * <pre>
          * java.util.logging.Logger.getLogger(name)
@@ -303,8 +299,7 @@ public final class Loggers {
         }
 
         /**
-         * Unwraps a wrapped JDK {@link java.util.logging.Logger} that is wrapped in a
-         * {@link Logger}.
+         * Unwraps a wrapped JDK {@link java.util.logging.Logger} that is wrapped in a {@link Logger}.
          * 
          * @param logger
          *            the logger to unwrap
@@ -334,7 +329,7 @@ public final class Loggers {
     /**
      * The wrapper class for a JDK logger.
      */
-    final static class JDKLogger extends AbstractLogger {
+    static final class JDKLogger extends AbstractLogger {
 
         /** The logger we are wrapping. */
         private final java.util.logging.Logger logger;
@@ -375,7 +370,7 @@ public final class Loggers {
     /**
      * Used for Log4J logging conversion.
      */
-    public final static class Log4j {
+    public static final class Log4j {
         // /CLOVER:OFF
         /** Cannot instantiate. */
         private Log4j() {}
@@ -385,8 +380,8 @@ public final class Loggers {
          * Shorthand for {@link #from(String)}.
          * 
          * @param clazz
-         *            name of clazz will be used as the name of the logger to retrieve. See
-         *            getLogger(String) for more detailed information.
+         *            name of clazz will be used as the name of the logger to retrieve. See getLogger(String) for more
+         *            detailed information.
          * @return returns the logger for the specified class
          */
         public static Logger from(Class<?> clazz) {
@@ -405,8 +400,7 @@ public final class Loggers {
         }
 
         /**
-         * Creates a decorated Log4J logger from the specified name. The Log4J logger is created by
-         * calling:
+         * Creates a decorated Log4J logger from the specified name. The Log4J logger is created by calling:
          * 
          * <pre>
          * org.apache.log4j.Logger.getLogger(name)
@@ -421,8 +415,7 @@ public final class Loggers {
         }
 
         /**
-         * Unwraps a wrapped Log4J {@link org.apache.log4j.Logger} that is wrapped in a
-         * {@link Logger}.
+         * Unwraps a wrapped Log4J {@link org.apache.log4j.Logger} that is wrapped in a {@link Logger}.
          * 
          * @param logger
          *            the logger to unwrap
@@ -452,7 +445,7 @@ public final class Loggers {
     /**
      * The wrapper class for a Log4j logger.
      */
-    final static class Log4JLogger extends AbstractLogger {
+    static final class Log4JLogger extends AbstractLogger {
 
         /** The logger we are wrapping. */
         private final org.apache.log4j.Logger logger;
@@ -515,7 +508,7 @@ public final class Loggers {
     /**
      * A Logger that ignores all input.
      */
-    final static class NullLogger extends AbstractLogger implements Serializable {
+    static final class NullLogger extends AbstractLogger implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -4263585629494169814L;
 
@@ -547,7 +540,7 @@ public final class Loggers {
     /**
      * A simple logger that prints logging information to a PrintStream.
      */
-    final static class PrintStreamLogger extends AbstractLogger {
+    static final class PrintStreamLogger extends AbstractLogger {
         /** The level to log at. */
         private final int level;
 
@@ -555,8 +548,7 @@ public final class Loggers {
         private final PrintStream stream;
 
         /**
-         * Creates a new SimpleLogger that logs to the specified print stream at the specified
-         * level.
+         * Creates a new SimpleLogger that logs to the specified print stream at the specified level.
          * 
          * @param level
          *            the level to log at
@@ -596,7 +588,7 @@ public final class Loggers {
     /**
      * A simple logger that prints logging information to {@link System#err}.
      */
-    final static class SystemErrLogger extends AbstractLogger implements Serializable {
+    static final class SystemErrLogger extends AbstractLogger implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 3128919839751961759L;
 
@@ -638,7 +630,7 @@ public final class Loggers {
     /**
      * A simple logger that prints logging information to {@link System#out}.
      */
-    final static class SystemOutLogger extends AbstractLogger implements Serializable {
+    static final class SystemOutLogger extends AbstractLogger implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -4803581500251076928L;
 

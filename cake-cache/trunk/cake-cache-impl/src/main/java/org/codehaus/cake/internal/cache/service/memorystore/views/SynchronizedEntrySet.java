@@ -54,4 +54,16 @@ final class SynchronizedEntrySet<K, V> extends EntrySet<K, V> {
         }
     }
 
+    public boolean removeAll(Collection<?> c) {
+        synchronized (mutex) {
+            return super.removeAll(c);
+        }
+    }
+
+    public boolean retainAll(Collection<?> c) {
+        synchronized (mutex) {
+            return super.retainAll(c);
+        }
+    }
+
 }

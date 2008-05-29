@@ -11,24 +11,24 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class TimeFormatter {
 
-    public static TimeFormatter DEFAULT = new DefaultFormatter();
+    public static final TimeFormatter DEFAULT = new DefaultFormatter();
 
-    private final static String[] NAME = new String[] { "nanosecond", "microsecond", "millisecond",
-            "second", "minute", "hour", "day" };
+    private static final String[] NAME = new String[] { "nanosecond", "microsecond", "millisecond", "second", "minute",
+            "hour", "day" };
 
-    private final static String[] NAMES = new String[] { "nanoseconds", "microseconds",
-            "milliseconds", "seconds", "minutes", "hours", "days" };
+    private static final String[] NAMES = new String[] { "nanoseconds", "microseconds", "milliseconds", "seconds",
+            "minutes", "hours", "days" };
 
-    private final static DecimalFormat NN = new DecimalFormat("00");
+    private static final DecimalFormat NN = new DecimalFormat("00");
 
-    private final static String[] SI_NAMES = new String[] { "ns", "�s", "ms", "s", "min", "h", "d" };
+    private static final String[] SI_NAMES = new String[] { "ns", "�s", "ms", "s", "min", "h", "d" };
 
     /**
      * A <tt>TimeFormatter</tt> that will format time the same was as the unix 'uptime' command.
      */
-    public static TimeFormatter UPTIME = new UptimeFormatter();
+    public static final TimeFormatter UPTIME = new UptimeFormatter();
 
-    private final static DecimalFormat Z = new DecimalFormat("##0.000");
+    private static final DecimalFormat Z = new DecimalFormat("##0.000");
 
     /**
      * Formats the specified time parameters.
@@ -61,8 +61,7 @@ public abstract class TimeFormatter {
         return doFormat(0, hours, minutes, seconds, millies, micros, nano);
     }
 
-    protected String doFormat(int days, int hours, int minutes, int seconds, int millies,
-            int micros, int nano) {
+    protected String doFormat(int days, int hours, int minutes, int seconds, int millies, int micros, int nano) {
         throw new IllegalArgumentException("Cannot format the specified time");
     }
 
@@ -145,10 +144,9 @@ public abstract class TimeFormatter {
 
     static class UptimeFormatter extends TimeFormatter {
         @Override
-        protected String doFormat(int days, int hours, int minutes, int seconds, int millies,
-                int micros, int nano) {
-            return days + " day(s), " + NN.format(hours) + ":" + NN.format(minutes) + ":"
-                    + NN.format(seconds) + " hours";
+        protected String doFormat(int days, int hours, int minutes, int seconds, int millies, int micros, int nano) {
+            return days + " day(s), " + NN.format(hours) + ":" + NN.format(minutes) + ":" + NN.format(seconds)
+                    + " hours";
         }
     }
 }

@@ -12,13 +12,14 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
 import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
+import org.codehaus.cake.internal.cache.service.memorystore.HashMapMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViews;
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.Composer;
@@ -263,7 +264,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
 
     public int size() {
         lazyStart();
-        return memoryCache.size();
+        return memoryCache.getSize();
     }
 
     public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
@@ -301,6 +302,8 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         // Cache components
         composer.registerImplementation(UnsynchronizedCollectionViews.class);
         composer.registerImplementation(DefaultAttributeService.class);
+        composer.registerImplementation(HashMapMemoryStore.class);
+
         // composer.registerImplementation(MemorySparseAttributeService.class);
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(UnsynchronizedCacheLoader.class);

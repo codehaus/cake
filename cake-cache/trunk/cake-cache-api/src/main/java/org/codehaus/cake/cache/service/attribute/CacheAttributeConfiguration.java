@@ -1,10 +1,9 @@
-package org.codehaus.cake.cache.attribute;
+package org.codehaus.cake.cache.service.attribute;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.cache.CacheEntry;
 
 public class CacheAttributeConfiguration {
 
@@ -25,10 +24,5 @@ public class CacheAttributeConfiguration {
             attributes.add(aa);
         }
         return this;
-    }
-
-    public static void main(String[] args) {
-        CacheEntry ce = null;
-        CacheEntry.COST.get(ce);
     }
 }

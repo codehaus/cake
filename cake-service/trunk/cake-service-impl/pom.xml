@@ -19,6 +19,7 @@
       <groupId>${pom.groupId}</groupId>
       <artifactId>cake-service-tck</artifactId>
       <version>${pom.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.internal</groupId>

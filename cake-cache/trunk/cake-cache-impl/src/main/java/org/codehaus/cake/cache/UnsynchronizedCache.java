@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.UnsynchronizedInternalCache;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;

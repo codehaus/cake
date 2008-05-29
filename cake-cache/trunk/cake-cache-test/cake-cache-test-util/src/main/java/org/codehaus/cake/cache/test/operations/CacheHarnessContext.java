@@ -3,7 +3,7 @@
 package org.codehaus.cake.cache.test.operations;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.test.util.LoopHelpers;
 
 public class CacheHarnessContext<K, V> {

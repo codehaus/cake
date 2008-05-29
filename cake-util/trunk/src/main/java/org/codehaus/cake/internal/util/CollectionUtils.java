@@ -64,6 +64,10 @@ public final class CollectionUtils {
         return o1 == null ? o2 == null : o1.equals(o2);
     }
 
+    /**
+     * SDSD
+     * @param <E> bla
+     */
     public static class ImmutableCollection<E> implements Collection<E>, Serializable {
 
         /** serialVersionUID. */
@@ -270,8 +274,7 @@ public final class CollectionUtils {
         }
     }
 
-    public static class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E>,
-            Serializable {
+    public static class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E> {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -7936489435110973730L;

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.codehaus.cake.internal.cache.InternalCache;
 
-final class SynchronizedKeySet<K,V> extends KeySet<K,V> {
+final class SynchronizedKeySet<K, V> extends KeySet<K, V> {
     private final Object mutex;
 
     SynchronizedKeySet(Object mutex, InternalCache<K, V> cache) {
@@ -43,6 +43,18 @@ final class SynchronizedKeySet<K,V> extends KeySet<K,V> {
     public <T> T[] toArray(T[] a) {
         synchronized (mutex) {
             return super.toArray(a);
+        }
+    }
+
+    public boolean removeAll(Collection<?> c) {
+        synchronized (mutex) {
+            return super.removeAll(c);
+        }
+    }
+
+    public boolean retainAll(Collection<?> c) {
+        synchronized (mutex) {
+            return super.retainAll(c);
         }
     }
 

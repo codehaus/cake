@@ -3,11 +3,11 @@ package org.codehaus.cake.cache.test.tck.lifecycle;
 import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandlingConfiguration;
-import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
-import org.codehaus.cake.cache.store.CacheStoreConfiguration;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingConfiguration;
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
+import org.codehaus.cake.cache.service.store.CacheStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;

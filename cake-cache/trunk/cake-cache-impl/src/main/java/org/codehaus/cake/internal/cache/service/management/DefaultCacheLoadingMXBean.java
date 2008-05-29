@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache.service.management;
 
-import org.codehaus.cake.cache.loading.CacheLoadingMXBean;
-import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.loading.CacheLoadingMXBean;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**
@@ -19,9 +19,9 @@ public final class DefaultCacheLoadingMXBean implements CacheLoadingMXBean {
      *            the CacheLoadingService to wrap
      */
     public DefaultCacheLoadingMXBean(CacheLoadingService<?, ?> service) {
-//        if (service == null) {
-//            throw new NullPointerException("service is null");
-//        }
+        if (service == null) {
+            throw new NullPointerException("service is null");
+        }
         this.service=service;
     }
 

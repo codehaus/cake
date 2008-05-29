@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 
 public class CountdownLatchLoader implements SimpleCacheLoader<Integer, String> {
 

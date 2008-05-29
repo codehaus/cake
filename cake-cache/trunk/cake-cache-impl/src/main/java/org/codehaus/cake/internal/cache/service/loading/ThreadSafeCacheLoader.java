@@ -7,16 +7,16 @@ import java.util.concurrent.Future;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.service.Disposable;
 import org.codehaus.cake.service.Stoppable;
 import org.codehaus.cake.service.executor.ExecutorsService;
 
-public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V>  {
+public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
     private final InternalCache<K, V> cache;
 

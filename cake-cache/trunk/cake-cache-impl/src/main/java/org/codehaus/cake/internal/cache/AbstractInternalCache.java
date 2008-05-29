@@ -162,7 +162,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         Composer composer = new Composer(Cache.class, configuration);
         composer.registerInstance(configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);
-        composer.registerImplementation(HashMapMemoryStore.class);
         composer.registerImplementation(DefaultCacheListener.class);
         return composer;
     }

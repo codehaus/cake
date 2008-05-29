@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.cache.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.internal.attribute.generator.DefaultAttributeConfiguration;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator;
 import org.codehaus.cake.internal.cache.service.attribute.factories.AbstractAttributeFactory;
@@ -25,7 +25,7 @@ import org.codehaus.cake.internal.cache.service.attribute.factories.SizeAttribut
 import org.codehaus.cake.internal.service.Composer;
 
 public class MemorySparseAttributeService<K, V> implements InternalAttributeService<K, V> {
-    private final static AtomicLong al = new AtomicLong();
+    private static final AtomicLong al = new AtomicLong();
     private Composer composer;
     private Constructor<AttributeMap> constructor;
 

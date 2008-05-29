@@ -1,6 +1,6 @@
 /* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
  * Licensed under the Apache 2.0 License. */
-package org.codehaus.cake.cache.memorystore;
+package org.codehaus.cake.cache.service.memorystore;
 
 import java.util.Comparator;
 
@@ -210,12 +210,12 @@ public interface MemoryStoreService<K, V> /* extends Map<K,V> */{
      * The example assumes that the cache is configured to use the
      * {@link CacheEntry#COST} attribute.
      * 
-     * @param size
+     * @param volume
      *            if positive of 0, the size to the trim the cache down to, otherwise the number of
      *            elements to remove
      * 
      * @param comparator
-     *            used to determind order among entries
+     *            used to determine order among entries
      */
     void trimToVolume(long volume, Comparator<? extends CacheEntry<K, V>> comparator);
 }

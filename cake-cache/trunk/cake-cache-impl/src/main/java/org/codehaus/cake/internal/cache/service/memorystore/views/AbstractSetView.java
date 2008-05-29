@@ -1,5 +1,6 @@
 package org.codehaus.cake.internal.cache.service.memorystore.views;
 
+import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -23,9 +24,9 @@ abstract class AbstractSetView<E> extends AbstractCollectionView<E> implements S
             return false;
         try {
             return containsAll(c);
-        } catch (ClassCastException unused) {
-            return false;
-        } catch (NullPointerException unused) {
+        }/* catch (ClassCastException unused) {
+            return false; //not currently used
+        }*/ catch (NullPointerException unused) {
             return false;
         }
     }

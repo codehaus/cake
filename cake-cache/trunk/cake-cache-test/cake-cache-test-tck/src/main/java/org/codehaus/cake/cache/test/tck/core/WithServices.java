@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.core;
 
-import org.codehaus.cake.cache.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

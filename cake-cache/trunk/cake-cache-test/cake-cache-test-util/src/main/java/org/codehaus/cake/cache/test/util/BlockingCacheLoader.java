@@ -3,7 +3,7 @@
 package org.codehaus.cake.cache.test.util;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 
 public class BlockingCacheLoader<K, V> implements SimpleCacheLoader<K, V> {
 

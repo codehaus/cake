@@ -29,7 +29,7 @@ class OperationKey {
      * @param signature
      *            the signature of the method
      */
-    public OperationKey(String methodName, String... signature) {
+    OperationKey(String methodName, String... signature) {
         this.methodName = methodName;
         if (signature == null) {
             signature = new String[0];

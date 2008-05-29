@@ -3,5 +3,5 @@
 package org.codehaus.cake.test.util.throwables;
 
 public class Error1 extends Error{
-    public static Error1 INSTANCE = new Error1();
+    public static final Error1 INSTANCE = new Error1();
 }

@@ -3,5 +3,5 @@
 package org.codehaus.cake.test.util.throwables;
 
 public class RuntimeException1 extends RuntimeException {
-    public static RuntimeException1 INSTANCE = new RuntimeException1();
+    public static final RuntimeException1 INSTANCE = new RuntimeException1();
 }

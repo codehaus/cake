@@ -21,7 +21,7 @@ import javax.management.ObjectName;
  */
 public abstract class AbstractManagedGroup implements ManagedGroup {
     /** The allowed naming pattern of a group. */
-    public final static Pattern GROUP_NAMING_PATTERN = Pattern
+    public static final Pattern GROUP_NAMING_PATTERN = Pattern
             .compile("[\\da-zA-Z\\x5F\\x2D]*(\\x2E([\\da-z\\x5F\\x2D])+)*");
 
     /** The child groups for this group. */
@@ -61,8 +61,8 @@ public abstract class AbstractManagedGroup implements ManagedGroup {
             mainLock = new ReentrantLock();
         } else {
             if (parent.childGroups.putIfAbsent(name, this) != null) {
-                throw new IllegalArgumentException(
-                        "Could not add group, group with same name has already been added " + name);
+                throw new IllegalArgumentException("Could not add group, group with same name has already been added "
+                        + name);
             }
             this.parent = parent;
             mainLock = parent.mainLock;
@@ -149,9 +149,8 @@ public abstract class AbstractManagedGroup implements ManagedGroup {
         try {
             beforeMutableOperationInner();
             if (this.objectName != null) {
-                throw new IllegalStateException(
-                        "This group has already been registered [MBeanServer = " + this.server
-                                + ", ObjectName= " + this.objectName + "]");
+                throw new IllegalStateException("This group has already been registered [MBeanServer = " + this.server
+                        + ", ObjectName= " + this.objectName + "]");
             }
             server.registerMBean(getRegistrant(), objectName); // might fail
             this.server = server;

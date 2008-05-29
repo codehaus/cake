@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache.service.management;
 
-import org.codehaus.cake.cache.memorystore.MemoryStoreMXBean;
-import org.codehaus.cake.cache.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreMXBean;
+import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 
@@ -21,9 +21,9 @@ public final class DefaultMemoryStoreMXBean implements MemoryStoreMXBean {
      *            the service to wrap.
      */
     public DefaultMemoryStoreMXBean(MemoryStoreService<?, ?> service) {
-//        if (service == null) {
-//            throw new NullPointerException("service is null");
-//        }
+        if (service == null) {
+            throw new NullPointerException("service is null");
+        }
         this.service = service;
     }
 

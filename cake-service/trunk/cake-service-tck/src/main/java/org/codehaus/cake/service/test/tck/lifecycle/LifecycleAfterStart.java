@@ -47,7 +47,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     public void register() {
         latch = new CountDownLatch(2);
         conf.addService(new Register());
-        conf.addService(new checkRegister());
+        conf.addService(new CheckRegister());
         newContainer();
         prestart();
     }
@@ -102,7 +102,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
         }
     }
 
-    public class checkRegister {
+    public class CheckRegister {
 
         @AfterStart
         public void start(Integer i) {

@@ -39,4 +39,22 @@ final class SynchronizedValues<K, V> extends Values<K, V> {
             return super.toString();
         }
     }
+
+    public boolean remove(Object o) {
+        synchronized (mutex) {
+            return super.remove(o);
+        }
+    }
+
+    public boolean removeAll(Collection<?> c) {
+        synchronized (mutex) {
+            return super.removeAll(c);
+        }
+    }
+
+    public boolean retainAll(Collection<?> c) {
+        synchronized (mutex) {
+            return super.retainAll(c);
+        }
+    }
 }

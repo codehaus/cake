@@ -8,8 +8,10 @@ import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: FIFOPolicy.java 536 2007-12-30 00:14:25Z kasper $
- * @param <T>
- *            the type of data maintained by this policy
+ * @param <K>
+ *            the type of keys maintained by the cache
+ * @param <V>
+ *            the type of values maintained by the cache
  */
 public class FIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementPolicy<K, V> {
     

@@ -3,8 +3,8 @@ package org.codehaus.cake.internal.cache.service.loading;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 

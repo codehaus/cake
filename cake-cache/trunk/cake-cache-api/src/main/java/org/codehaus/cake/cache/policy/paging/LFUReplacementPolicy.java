@@ -25,7 +25,7 @@ public class LFUReplacementPolicy<K, V> extends AbstractHeapReplacementPolicy<K,
     }
 
     @Override
-    public int compare(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
+    protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
         return -HITS.compare(o1, o2);
     }
 
