@@ -24,6 +24,8 @@ import org.codehaus.cake.service.executor.ExecutorsService;
  */
 public class CacheServices<K, V> {
 
+    private static final AttributeMap FORCE_LOAD = CacheLoadingService.IS_FORCED.singleton(true);
+
     /** The service manager to extract cache services from. */
     private final ServiceManager serviceManager;
 
@@ -38,27 +40,6 @@ public class CacheServices<K, V> {
     }
 
     /**
-     * Returns the cache loading service.
-     * 
-     * @return the cache loading service for the cache
-     * @throws UnsupportedOperationException
-     *             if no cache loading service is available
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of mapped values
-     */
-    public CacheLoadingService<K, V> loading() {
-        return getService(CacheLoadingService.class);
-    }
-
-    private static final AttributeMap FORCE_LOAD = CacheLoadingService.IS_FORCED.singleton(true);
-
-    public CacheLoadingService<K, V> loadingForced() {
-        return getService(CacheLoadingService.class, FORCE_LOAD);
-    }
-
-    /**
      * Returns the worker service.
      * 
      * @return the worker service for the cache
@@ -68,29 +49,10 @@ public class CacheServices<K, V> {
     public ExecutorsService executors() {
         return getService(ExecutorsService.class);
     }
-
-    public ExecutorService executorService() {
-        return executors().getExecutorService();
-    }
-
-    public ScheduledExecutorService scheduledExecutorService() {
-        return executors().getScheduledExecutorService();
-    }
-
-    /**
-     * Returns the memory store service.
-     * 
-     * @return the memory store service for the cache
-     * @throws UnsupportedOperationException
-     *             if no memory store service is available
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of mapped values
-     */
-    public MemoryStoreService<K, V> memoryStore() {
-        return getService(MemoryStoreService.class);
-    }
+//
+//    public ExecutorService executorService() {
+//        return executors().getExecutorService();
+//    }
 
     /**
      * This method can be called by subclasses to retrieve services from the cache that this object is wrapping.
@@ -123,4 +85,42 @@ public class CacheServices<K, V> {
     protected <T> T getService(Class<T> serviceType, AttributeMap attributes) {
         return serviceManager.getService(serviceType, attributes);
     }
+
+    /**
+     * Returns the cache loading service.
+     * 
+     * @return the cache loading service for the cache
+     * @throws UnsupportedOperationException
+     *             if no cache loading service is available
+     * @param <K>
+     *            the type of keys maintained by the cache
+     * @param <V>
+     *            the type of mapped values
+     */
+    public CacheLoadingService<K, V> loading() {
+        return getService(CacheLoadingService.class);
+    }
+
+    public CacheLoadingService<K, V> loadingForced() {
+        return getService(CacheLoadingService.class, FORCE_LOAD);
+    }
+
+    /**
+     * Returns the memory store service.
+     * 
+     * @return the memory store service for the cache
+     * @throws UnsupportedOperationException
+     *             if no memory store service is available
+     * @param <K>
+     *            the type of keys maintained by the cache
+     * @param <V>
+     *            the type of mapped values
+     */
+    public MemoryStoreService<K, V> memoryStore() {
+        return getService(MemoryStoreService.class);
+    }
+
+//    public ScheduledExecutorService scheduledExecutorService() {
+//        return executors().getScheduledExecutorService();
+//    }
 }

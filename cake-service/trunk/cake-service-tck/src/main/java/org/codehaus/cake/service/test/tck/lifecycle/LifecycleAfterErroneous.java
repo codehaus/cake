@@ -1,10 +1,13 @@
 package org.codehaus.cake.service.test.tck.lifecycle;
 
+import static org.codehaus.cake.test.util.TestUtil.dummy;
+
 import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
@@ -13,7 +16,6 @@ import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.test.util.throwables.Throwable1;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LifecycleAfterErroneous extends AbstractTCKTest<Container, ContainerConfiguration> {
@@ -21,13 +23,20 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
 
     @After
     public void after() {
-    // assertEquals(0, latch.getCount());
+        assertEquals(0, latch.getCount());
     }
 
     @Test(expected = IllegalStateException.class)
     public void serviceRegistrantAfterStart() {
         // latch = new CountDownLatch(1);
         conf.addService(new ServiceRegistrantAfterStart());
+        newContainer();
+        prestart();
+    }
+    @Test(expected = IllegalStateException.class)
+    public void serviceRegistrantFactoryAfterStart() {
+        // latch = new CountDownLatch(1);
+        conf.addService(new ServiceRegistrantFactoryAfterStart());
         newContainer();
         prestart();
     }
@@ -48,14 +57,14 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
             cause = ok;
         }
 
-        //TODO fix
-//        // check that we throw the same exception again when invoking method
-//        try {
-//            c.getAllServices();
-//            fail("should fail");
-//        } catch (IllegalStateException t) {
-//            assertSame(cause, t.getCause());
-//        }
+        // TODO fix
+        // // check that we throw the same exception again when invoking method
+        // try {
+        // c.getAllServices();
+        // fail("should fail");
+        // } catch (IllegalStateException t) {
+        // assertSame(cause, t.getCause());
+        // }
     }
 
     @Test
@@ -70,15 +79,16 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
             cause = ok;
         }
 
-        //TODO fix
+        // TODO fix
         // check that we throw the same exception again when invoking method
-//        try {
-//            c.getAllServices();
-//            fail("should fail");
-//        } catch (IllegalStateException t) {
-//            assertSame(cause, t.getCause());
-//        }
+        // try {
+        // c.getAllServices();
+        // fail("should fail");
+        // } catch (IllegalStateException t) {
+        // assertSame(cause, t.getCause());
+        // }
     }
+
     public class ServiceRegistrantAfterStart {
         ServiceRegistrant s;
 
@@ -92,8 +102,19 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
             s.registerService(Integer.class, 1);
         }
     }
+    public class ServiceRegistrantFactoryAfterStart {
+        ServiceRegistrant s;
 
-    
+        @Startable
+        public void start1(ServiceRegistrant s) {
+            this.s = s;
+        }
+
+        @AfterStart
+        public void start2() {
+            s.registerFactory(Integer.class, dummy(ServiceFactory.class));
+        }
+    }
     public class StartRuntimeException {
         @AfterStart
         public void start(ContainerConfiguration conf) {

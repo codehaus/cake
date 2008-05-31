@@ -23,14 +23,31 @@ public class LazyLogger extends AbstractLogger {
 
     private final String msg;
     private final String lastCaller;
+   // private final LazyGenerator<Logger> lazyLoggerGenerator;
 
     public LazyLogger(String jdkLoggerName, String msg, String lastCaller) {
         this.msg = msg;
         this.jdkLoggerName = jdkLoggerName;
         this.lastCaller = lastCaller;
+//        lazyLoggerGenerator = new LazyGenerator<Logger>(new Generator<Logger>() {
+//            public Logger op() {
+//                Logger logger = LogManager.getLogManager().getLogger(LazyLogger.this.jdkLoggerName);
+//                if (logger == null) {
+//                    logger = java.util.logging.Logger.getLogger(LazyLogger.this.jdkLoggerName);
+//                    logger.setLevel(java.util.logging.Level.ALL);
+//                    logger.log(new LazyLogRecord(java.util.logging.Level.INFO, LazyLogger.this.msg,
+//                            LazyLogger.this.lastCaller));
+//                    logger.setLevel(java.util.logging.Level.WARNING);
+//                }
+//                return logger;
+//            }
+//
+//        });
     }
 
     private Logger getLogger() {
+//        if (false)
+//        return lazyLoggerGenerator.op();
         Logger logger = this.logger;
         if (logger != null) {
             return logger;

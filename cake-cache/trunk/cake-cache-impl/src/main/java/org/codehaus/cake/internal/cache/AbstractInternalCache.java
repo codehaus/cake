@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
@@ -19,7 +18,6 @@ import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheEx
 import org.codehaus.cake.internal.cache.service.listener.DefaultCacheListener;
 import org.codehaus.cake.internal.cache.service.listener.InternalCacheListener;
 import org.codehaus.cake.internal.cache.service.management.DefaultCacheMXBean;
-import org.codehaus.cake.internal.cache.service.memorystore.HashMapMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViews;
 import org.codehaus.cake.internal.service.AbstractInternalContainer;
@@ -29,8 +27,8 @@ import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.service.Stoppable;
 
-public abstract class AbstractInternalCache<K, V> extends AbstractInternalContainer implements
-        InternalCache<K, V>, Manageable {
+public abstract class AbstractInternalCache<K, V> extends AbstractInternalContainer implements InternalCache<K, V>,
+        Manageable {
 
     final InternalCacheListener<K, V> listener;
 
@@ -39,15 +37,16 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
     private CacheServices<K, V> services;
 
     private final CollectionViews<K, V> views;
-    
+
     private final Cache realCache;
+
     AbstractInternalCache(Composer composer) {
         super(composer);
         composer.registerInstance(InternalCache.class, this);
         memoryCache = composer.get(MemoryStore.class);
         listener = composer.get(InternalCacheListener.class);
         views = composer.get(CollectionViews.class);
-        realCache=composer.get(Cache.class);
+        realCache = composer.get(Cache.class);
     }
 
     /** {@inheritDoc} */
@@ -94,22 +93,22 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
     }
 
     private boolean hasRun;
+
     /** {@inheritDoc} */
     public void manage(ManagedGroup parent) {
         if (hasRun) {
             new Exception().printStackTrace();
         }
-        ManagedGroup g = parent.addChild(CacheMXBean.MANAGED_SERVICE_NAME,
-                "General Cache attributes and operations");
+        ManagedGroup g = parent.addChild(CacheMXBean.MANAGED_SERVICE_NAME, "General Cache attributes and operations");
         g.add(new DefaultCacheMXBean(this));
-        hasRun=true;
+        hasRun = true;
     }
 
     public final void putAll(Map<? extends K, ? extends V> t) {
         HashMap map = new HashMap();
         for (Map.Entry me : t.entrySet()) {
-            map.put(me.getKey(), new CollectionUtils.SimpleImmutableEntry(me.getValue(),
-                    Attributes.EMPTY_ATTRIBUTE_MAP));
+            map.put(me.getKey(),
+                    new CollectionUtils.SimpleImmutableEntry(me.getValue(), Attributes.EMPTY_ATTRIBUTE_MAP));
         }
         putAllWithAttributes(map);
     }
@@ -160,32 +159,32 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
 
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = new Composer(Cache.class, configuration);
-        composer.registerInstance(configuration);
+        composer.registerInstance(CacheConfiguration.class, configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);
         composer.registerImplementation(DefaultCacheListener.class);
         return composer;
     }
-    
+
     public String toString() {
         if (!isStarted()) {
             return "{}";
         }
-        Iterator<Entry<K,V>> i = entrySet().iterator();
-        if (! i.hasNext())
+        Iterator<Entry<K, V>> i = entrySet().iterator();
+        if (!i.hasNext())
             return "{}";
 
         StringBuilder sb = new StringBuilder();
         sb.append('{');
         for (;;) {
-            Entry<K,V> e = i.next();
+            Entry<K, V> e = i.next();
             K key = e.getKey();
             V value = e.getValue();
-            sb.append(key   == realCache ? "(this Cache)" : key);
+            sb.append(key == realCache ? "(this Cache)" : key);
             sb.append('=');
             sb.append(value == realCache ? "(this Cache)" : value);
-            if (! i.hasNext())
-            return sb.append('}').toString();
+            if (!i.hasNext())
+                return sb.append('}').toString();
             sb.append(", ");
         }
-        }
+    }
 }

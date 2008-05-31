@@ -1,6 +1,8 @@
 package org.codehaus.cake.cache.service.attribute;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.LongAttribute;

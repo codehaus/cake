@@ -5,7 +5,6 @@ import java.util.Map;
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
-import org.codehaus.cake.attribute.common.DurationAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 
 /**

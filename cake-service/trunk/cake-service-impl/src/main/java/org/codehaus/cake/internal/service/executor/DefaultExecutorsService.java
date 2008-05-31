@@ -3,7 +3,6 @@ package org.codehaus.cake.internal.service.executor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

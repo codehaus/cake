@@ -9,6 +9,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.asMap;
 
 import java.util.Map;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

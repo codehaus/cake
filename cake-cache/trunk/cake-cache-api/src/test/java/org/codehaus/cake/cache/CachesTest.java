@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
@@ -164,6 +165,16 @@ public class CachesTest {
         emptyCache().getService(null);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void emptyCacheServicesNPE1() {
+        emptyCache().getService(null, Attributes.EMPTY_ATTRIBUTE_MAP);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void emptyCacheServicesNPE2() {
+        emptyCache().getService(Integer.class, null);
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void emptyCacheServicesIAE() {
         emptyCache().getService(CacheLoadingService.class);
@@ -174,86 +185,4 @@ public class CachesTest {
         emptyCache().with().memoryStore();
     }
 
-    /**
-     * Tests {@link CacheEntry#TIME_CREATED}.
-     */
-    @Test
-    public void attributeCreationTime() {
-        assertTrue(TIME_CREATED instanceof TimeInstanceAttribute);
-        TIME_CREATED.checkValid(0);
-        TestUtil.assertSingletonSerializable(TIME_CREATED);
-    }
-
-    /**
-     * Tests {@link CacheEntry#TIME_MODIFIED}.
-     */
-    @Test
-    public void attributeModificationTime() {
-        assertTrue(TIME_MODIFIED instanceof TimeInstanceAttribute);
-        TIME_MODIFIED.checkValid(0);
-        TestUtil.assertSingletonSerializable(TIME_MODIFIED);
-    }
-
-    /**
-     * Tests {@link CacheEntry#TIME_ACCESSED}.
-     */
-    @Test
-    public void attributeAccessTime() {
-        assertTrue(TIME_ACCESSED instanceof TimeInstanceAttribute);
-        TIME_ACCESSED.checkValid(0);
-        TestUtil.assertSingletonSerializable(TIME_ACCESSED);
-    }
-
-    /**
-     * Tests {@link CacheEntry#COST}.
-     */
-    @Test
-    public void attributeCost() {
-        assertTrue(COST instanceof DoubleAttribute);
-        assertEquals(1, COST.getDefaultValue(), 0);
-        COST.checkValid(-1000);
-        TestUtil.assertSingletonSerializable(COST);
-    }
-
-    /**
-     * Tests {@link CacheEntry#HITS}.
-     */
-    @Test
-    public void attributeHits() {
-        assertTrue(HITS instanceof LongAttribute);
-        HITS.checkValid(0);
-        assertFalse(HITS.isValid(-1));
-        TestUtil.assertSingletonSerializable(HITS);
-    }
-
-    /**
-     * Tests {@link CacheEntry#SIZE}.
-     */
-    @Test
-    public void attributeSize() {
-        assertTrue(SIZE instanceof LongAttribute);
-        SIZE.checkValid(0);
-        assertTrue(SIZE.isValid(0));
-        assertTrue(SIZE.isValid(1));
-        TestUtil.assertSingletonSerializable(SIZE);
-    }
-
-    /**
-     * Tests {@link CacheEntry#SIZE}.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void attributeSizeIAE() {
-        SIZE.checkValid(-1);
-    }
-
-    /**
-     * Tests {@link CacheEntry#VERSION}.
-     */
-    @Test
-    public void attributeVersion() {
-        assertTrue(VERSION instanceof LongAttribute);
-        VERSION.checkValid(1);
-        assertFalse(VERSION.isValid(0));
-        TestUtil.assertSingletonSerializable(VERSION);
-    }
 }

@@ -18,6 +18,7 @@ import org.codehaus.cake.util.TimeFormatter;
 public class LifecycleManager {
     private final List<LifecycleObject> list = new LinkedList<LifecycleObject>();
     private final InternalExceptionService ies;
+    RunState state;
     Composer composer;
     DefaultServiceManager dsm;
     ContainerInfo info;
@@ -29,8 +30,10 @@ public class LifecycleManager {
         info = composer.get(ContainerInfo.class);
     }
 
-    public void start(RunState state) {
+    void start() {
         long startTime = System.nanoTime();
+
+        // debugging information
         if (ies.isDebugEnabled()) {
             ies.debug("Starting " + info.getContainerTypeName() + " [name=" + info.getContainerName() + ", type="
                     + composer.get(Container.class).getClass().getSimpleName() + "]");
@@ -53,11 +56,13 @@ public class LifecycleManager {
                 ies.trace(sb.toString());
             }
         }
+
+        // Run start
         try {
-            doStart(state);
+            doStart();
         } catch (RuntimeException e) {
             state.trySetStartupException(e);
-            runShutdown(state);
+            runShutdown(); // should we run shutdown;??
             throw e;
         } catch (Error e) {
             state.trySetStartupException(e);
@@ -69,7 +74,7 @@ public class LifecycleManager {
                 + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime) + "]");
     }
 
-    private void doStart(RunState state) {
+    private void doStart() {
         Set allServices = composer.prepareStart();
         for (Object o : allServices) {
             if (o != null) {
@@ -79,7 +84,7 @@ public class LifecycleManager {
         DefaultServiceRegistrant dsr = new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class));
         try {
             for (LifecycleObject lo : list) {
-                lo.startRun(allServices, composer.get(ContainerConfiguration.class), dsr);
+                lo.runStartable(allServices, composer.get(ContainerConfiguration.class), dsr);
             }
         } finally {
             dsr.finished();
@@ -94,20 +99,25 @@ public class LifecycleManager {
             }
         }
         state.transitionToRunning();
-        /* Started */
+        /* AfterStart */
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.startedRun(composer.get(ContainerConfiguration.class), composer.get(Container.class));
-            if (!lo.stopOrDisposeShouldRun()) {
+            lo.runAfterStart(composer.get(ContainerConfiguration.class), composer.get(Container.class));
+            if (!lo.isStoppableOrDisposable()) {
                 iterator.remove();
             }
         }
     }
 
-    public void runShutdown(RunState state) {
+    void runShutdown() {
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.stopRun();
+            lo.runStoppable();
         }
+        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
+            LifecycleObject lo = iterator.next();
+            lo.runDisposable();
+        }
+        ies.terminated();
     }
 }

@@ -33,7 +33,6 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
         assertTrue(c.isStarted());
         assertFalse(c.isShutdown());
         assertFalse(c.isTerminated());
-
     }
 
     @Test

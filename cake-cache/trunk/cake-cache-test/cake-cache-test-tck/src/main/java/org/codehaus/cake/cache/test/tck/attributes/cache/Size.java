@@ -7,6 +7,7 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 import java.util.Iterator;
 
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.ops.LongOps;
 import org.junit.Test;
 

@@ -1,5 +1,7 @@
 package org.codehaus.cake.cache.policy.costsize;
 
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.attribute.Attribute;
@@ -13,7 +15,6 @@ import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static junit.framework.Assert.*;
 
 @SuppressWarnings("unchecked")
 @RunWith(JMock.class)

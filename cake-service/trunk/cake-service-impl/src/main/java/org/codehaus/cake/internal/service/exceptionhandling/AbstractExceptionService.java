@@ -13,14 +13,15 @@ import org.codehaus.cake.util.Logger.Level;
 public abstract class AbstractExceptionService<T extends Container> implements InternalDebugService,
         InternalExceptionService<T> {
     /** The cache for which exceptions should be handled. */
-    private volatile T container;
+    private final T container;
 
     private Logger exceptionLogger;// never null
 
     private final Logger infoLogger;// might be null
 
-    public AbstractExceptionService(ContainerInfo info, ContainerConfiguration<?> containerConfiguration,
-            Logger exceptionLogger) {
+    public AbstractExceptionService(Container container, ContainerInfo info,
+            ContainerConfiguration<?> containerConfiguration, Logger exceptionLogger) {
+        this.container = (T) container;
         Logger infoLogger = containerConfiguration.getDefaultLogger();
         this.infoLogger = infoLogger == null ? Loggers.NULL_LOGGER : infoLogger;
 
@@ -75,10 +76,6 @@ public abstract class AbstractExceptionService<T extends Container> implements I
 
     public void info(String str) {
         infoLogger.info(str);
-    }
-
-    public void initialize(T container) {
-        this.container = container;
     }
 
     /** {@inheritDoc} */
@@ -138,4 +135,6 @@ public abstract class AbstractExceptionService<T extends Container> implements I
             return message;
         }
     }
+
+    public void terminated() {}
 }

@@ -17,10 +17,7 @@ package org.codehaus.cake.ops;
 
 import java.io.PrintStream;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Queue;
 
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Procedure;
 
 /**

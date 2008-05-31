@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.cache.service.memorystore.views;
 
-import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;

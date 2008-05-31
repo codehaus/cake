@@ -9,7 +9,6 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.ops.Ops;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
@@ -24,6 +23,12 @@ public class CacheMemoryStoreConfigurationTest {
         assertSame(c, c.setMaximumVolume(1));
         assertEquals(1, c.getMaximumVolume());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void maximumVolumeIAE() {
+        new MemoryStoreConfiguration<Integer, String>().setMaximumVolume(-1);
+    }
+
     @Test
     public void maximumSize() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
@@ -31,19 +36,25 @@ public class CacheMemoryStoreConfigurationTest {
         assertSame(c, c.setMaximumSize(1));
         assertEquals(1, c.getMaximumSize());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void maximumSizeIAE() {
+        new MemoryStoreConfiguration<Integer, String>().setMaximumSize(-1);
+    }
+
     @Test
     public void isDisabled() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertFalse(c.isDisabled());
-        assertSame(c,c.setDisabled(true));
+        assertSame(c, c.setDisabled(true));
         assertTrue(c.isDisabled());
     }
-    
+
     @Test
     public void evictor() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertNull(c.getEvictor());
-        
+
         Ops.Procedure<MemoryStoreService<Integer, String>> p = dummy(Procedure.class);
 
         assertSame(c, c.setEvictor(p));
@@ -54,13 +65,13 @@ public class CacheMemoryStoreConfigurationTest {
     public void policy() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertNull(c.getPolicy());
-        
+
         ReplacementPolicy<Integer, String> p = dummy(ReplacementPolicy.class);
 
         assertSame(c, c.setPolicy(p));
         assertSame(p, c.getPolicy());
     }
-    
+
     @Test
     public void filter() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();

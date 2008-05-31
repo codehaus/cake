@@ -7,9 +7,9 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_SET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

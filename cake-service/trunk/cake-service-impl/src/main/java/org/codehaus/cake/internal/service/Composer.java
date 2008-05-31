@@ -16,12 +16,10 @@ import org.codehaus.cake.service.ServiceRegistrant;
 @UseInternals
 public class Composer {
 
-    /** The picocontainer used to wire servicers. */
     private final MutablePicoContainer baseContainer;
 
     private final MutablePicoContainer container;
 
-    // private List ex
     public Composer(Class clazz, ContainerConfiguration configuration) {
         baseContainer = new DefaultPicoContainer();
         baseContainer.registerComponentInstance(configuration);
@@ -45,15 +43,11 @@ public class Composer {
         container.registerComponentImplementation(key, clazz);
     }
 
-    public void registerInstance(Object value) {
-        container.registerComponentInstance(value, value);
-    }
-
     public void registerInstance(Object key, Object value) {
         container.registerComponentInstance(key, value);
     }
 
-    public <T> boolean hasService(Class<T> serviceType) {
+    <T> boolean hasService(Class<T> serviceType) {
         return container.getComponentAdapterOfType(serviceType) != null;
     }
 
@@ -74,11 +68,8 @@ public class Composer {
         return container.getComponentInstance(key);
     }
 
-    public Set<?> prepareStart() {
-        return prepareStart(get(ContainerConfiguration.class));
-    }
-
-    public Set<?> prepareStart(ContainerConfiguration conf) {
+    Set<?> prepareStart() {
+        ContainerConfiguration conf = get(ContainerConfiguration.class);
         Set result = new LinkedHashSet(container.getComponentInstances());
         for (Object object : new ArrayList(result)) {
             if (object instanceof CompositeService) {

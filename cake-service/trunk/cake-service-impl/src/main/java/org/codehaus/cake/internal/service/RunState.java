@@ -13,75 +13,59 @@ public abstract class RunState {
     protected static final int TERMINATED = 16;
     final String containerType;
     private final String containerName;
+    final LifecycleManager lifecycleManager;
 
-    public RunState(ContainerInfo info) {
+    public RunState(ContainerInfo info, LifecycleManager lifecycleManager) {
         this.containerType = info.getContainerTypeName();
         this.containerName = info.getContainerName();
+        this.lifecycleManager = lifecycleManager;
+        lifecycleManager.state = this;
     }
 
-    public final boolean isReady() {
-        return get() == READY;
-    }
-
-    public final boolean isRunning() {
+    final boolean isRunning() {
         return get() == RUNNING;
     }
 
-    public final boolean isStarting() {
+    final boolean isStarting() {
         return get() == STARTING;
     }
 
-    public final boolean isShutdown() {
+    final boolean isShutdown() {
         return get() == SHUTDOWN;
     }
 
-    public final boolean isStopping() {
+    final boolean isStopping() {
         return get() == STOPPING;
     }
 
-    public final boolean isTerminated() {
+    final boolean isTerminated() {
         return get() == TERMINATED;
     }
 
-    public final boolean isAtLeastRunning() {
+    final boolean isAtLeastRunning() {
         return get() >= RUNNING;
     }
 
-    public final boolean isAtLeastShutdown() {
+    final boolean isAtLeastShutdown() {
         return get() >= SHUTDOWN;
     }
 
-    public final boolean isAtLeastStopping() {
+    final boolean isAtLeastStopping() {
         return get() >= STOPPING;
     }
 
-    public final boolean transitionToStarting() {
-        return transitionTo(STARTING);
-    }
-
-    public final boolean transitionToRunning() {
+    final boolean transitionToRunning() {
         return transitionTo(RUNNING);
     }
 
-    public final boolean transitionToShutdown() {
-        return transitionTo(SHUTDOWN);
-    }
-
-    public final boolean transitionToStopping() {
-        return transitionTo(STOPPING);
-    }
-
-    public final boolean transitionToTerminated() {
-        return transitionTo(TERMINATED);
-    }
-
     /** {@inheritDoc} */
-    public boolean isRunningLazyStart(boolean failIfShutdown) {
+    boolean isRunningLazyStart(boolean failIfShutdown) {
         while (!isRunning()) {
             if (isAtLeastShutdown()) {
                 checkExceptions();
                 if (failIfShutdown) {
-                    throw new IllegalStateException(containerType + " [name=" + containerName + "] has been shutdown, cannot invoke method");
+                    throw new IllegalStateException(containerType + " [name=" + containerName
+                            + "] has been shutdown, cannot invoke method");
                 } else {
                     return false;
                 }
@@ -91,19 +75,19 @@ public abstract class RunState {
         return true;
     }
 
-    protected abstract int get();
+    abstract int get();
 
-    protected abstract boolean transitionTo(int state);
+    abstract boolean transitionTo(int state);
 
-    public abstract boolean awaitTermination(long timeout, TimeUnit unit)
-            throws InterruptedException;
+    abstract boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
 
-    public abstract void checkExceptions();
+    abstract void checkExceptions();
 
-    public abstract void shutdown(boolean shutdownNow);
+    abstract void shutdown(boolean shutdownNow);
 
-    public abstract Throwable getStartupException();
-    public abstract void trySetStartupException(Throwable cause);
+    abstract Throwable getStartupException();
 
-    public abstract boolean tryStart();
+    abstract void trySetStartupException(Throwable cause);
+
+    abstract void tryStart();
 }

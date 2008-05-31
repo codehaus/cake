@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.service;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -19,11 +18,12 @@ public abstract class AbstractInternalContainer implements Container {
 
     public AbstractInternalContainer(Composer composer) {
         ContainerInfo info = composer.get(ContainerInfo.class);
+        name = info.getContainerName();
         if (!composer.hasService(Container.class)) {
+            // This is an internal container,add self to composer
             composer.registerInstance(Container.class, this);
             composer.registerInstance(info.getContainerType(), this);
         }
-        name = info.getContainerName();
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
     }
@@ -74,16 +74,16 @@ public abstract class AbstractInternalContainer implements Container {
         runState.isRunningLazyStart(true);
     }
 
+    public Set<Class<?>> serviceKeySet() {
+        lazyStart();
+        return sm.serviceKeySet();
+    }
+
     public void shutdown() {
         runState.shutdown(false);
     }
 
     public void shutdownNow() {
         runState.shutdown(true);
-    }
-
-    public Set<Class<?>> serviceKeySet() {
-           lazyStart();
-        return sm.serviceKeySet();
     }
 }

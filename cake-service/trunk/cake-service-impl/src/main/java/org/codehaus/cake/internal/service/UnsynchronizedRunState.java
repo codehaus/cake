@@ -5,64 +5,61 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 
 public class UnsynchronizedRunState extends RunState {
-    // private final SynchronizedRunState runState;
-
-    private final LifecycleManager lifecycleManager;
 
     private int state;
 
     private Throwable startupException;
 
     public UnsynchronizedRunState(ContainerInfo info, LifecycleManager lifecycleManager) {
-        super(info);
-        this.lifecycleManager = lifecycleManager;
+        super(info, lifecycleManager);
     }
 
-    public boolean tryStart() {
+    void tryStart() {
         checkExceptions();
         if (isStarting()) {
             throw new IllegalStateException(
-                    "Cannot invoke this method from CacheLifecycle.start(Map services), should be invoked from CacheLifecycle.started(Cache c)");
+                    "Cannot invoke this method from a @Startable method, should be invoked from an @AfterStart method");
         }
-        return transitionToStarting();
+        if (state < STARTING) {
+            state = STARTING;
+            lifecycleManager.start();
+        }
     }
 
-    public boolean transitionTo(int state) {
+    boolean transitionTo(int state) {
         int s = get();
         if (s >= state)
             return false;
         this.state = state;
-        if (state == STARTING) {
-            lifecycleManager.start(this);
-        } else if (state == RUNNING) {
+        if (state == RUNNING) {
             // startedPhase.run(this);
         } else if (state == TERMINATED) {
-
+            
         }
         return true;
     }
 
-    public void shutdown(boolean shutdownNow) {
+    void shutdown(boolean shutdownNow) {
         if (!isAtLeastShutdown()) {
-            lifecycleManager.runShutdown(this);
-            transitionToShutdown();
-            transitionToTerminated();
+            lifecycleManager.runShutdown();
+            transitionTo(SHUTDOWN);
+            transitionTo(TERMINATED);
         }
     }
 
     @Override
-    public void trySetStartupException(Throwable cause) {
+    void trySetStartupException(Throwable cause) {
         if (startupException == null) {
             startupException = cause;
         }
     }
 
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return isTerminated();
     }
 
     @Override
-    public void checkExceptions() {
+    void checkExceptions() {
         Throwable re = startupException;
         if (re != null) {
             throw new IllegalStateException(containerType + " failed while starting previously", re);
@@ -73,8 +70,8 @@ public class UnsynchronizedRunState extends RunState {
     protected int get() {
         return state;
     }
-    
-    public Throwable getStartupException() {
+
+    Throwable getStartupException() {
         return startupException;
     }
 }

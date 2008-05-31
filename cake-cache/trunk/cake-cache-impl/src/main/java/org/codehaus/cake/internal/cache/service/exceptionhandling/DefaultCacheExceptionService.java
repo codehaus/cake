@@ -2,22 +2,24 @@ package org.codehaus.cake.internal.cache.service.exceptionhandling;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
-import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingConfiguration;
 import org.codehaus.cake.internal.service.exceptionhandling.AbstractExceptionService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
+import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
+import org.codehaus.cake.util.Logger;
 
 public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService<Cache<K, V>> implements
         InternalCacheExceptionService<K, V> {
     /** The CacheExceptionHandler configured for this cache. */
     private CacheExceptionHandler<K, V> exceptionHandler;
 
-    public DefaultCacheExceptionService(ContainerInfo info, ContainerConfiguration<Cache<K, V>> containerConfiguration,
-            CacheExceptionHandlingConfiguration<K, V> configuration) {
-        super(info, containerConfiguration, configuration.getExceptionLogger());
+    public DefaultCacheExceptionService(Container container, ContainerInfo info,
+            ContainerConfiguration<Cache<K, V>> containerConfiguration,
+            ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>> configuration) {
+        super(container, info, containerConfiguration, configuration.getExceptionLogger());
         CacheExceptionHandler<K, V> exceptionHandler = configuration.getExceptionHandler();
         this.exceptionHandler = exceptionHandler == null ? new CacheExceptionHandler<K, V>() : exceptionHandler;
     }
@@ -27,23 +29,8 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
         exceptionHandler.handle(context);
     }
 
-    public void initialize(Cache<K, V> cache, CacheConfiguration<K, V> conf) {
-    // TODO Auto-generated method stub
-    }
-
     public V loadFailed(Throwable cause, K key, AttributeMap map) {
-        error("Loading of Value failed [key = " + key + "]", cause);
-        return null;
+        String message = "Loading of Value failed [key = " + key + "]";
+        return exceptionHandler.loadingOfValueFailed(createContext(cause, message, Logger.Level.Error), key, map);
     }
-
-    public void serviceManagerShutdownFailed(Throwable cause, Object lifecycle) {
-        fatal("", cause);
-
-    }
-
-    public void startFailed(CacheConfiguration<K, V> configuration, Object service, Throwable cause) {
-        fatal("", cause);
-    }
-
-    public void terminated() {}
 }

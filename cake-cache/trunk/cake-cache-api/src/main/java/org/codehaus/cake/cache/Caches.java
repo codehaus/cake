@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DoubleAttribute;
@@ -38,6 +37,7 @@ public final class Caches {
     /** Cannot instantiate. */
     private Caches() {}
 
+    // /CLOVER:ON
     /**
      * Returns a Runnable that when executed will call the clear method on the specified cache.
      * <p>
@@ -152,12 +152,10 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public Map<Class<?>, Object> getAllServices() {
-            return Collections.emptyMap();
-        }
         public Set<Class<?>> serviceKeySet() {
             return Collections.EMPTY_SET;
         }
+
         /** {@inheritDoc} */
         public CacheEntry<K, V> getEntry(K key) {
             return null;

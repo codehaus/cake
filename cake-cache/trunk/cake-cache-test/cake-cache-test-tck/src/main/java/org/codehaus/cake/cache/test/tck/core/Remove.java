@@ -5,6 +5,7 @@ package org.codehaus.cake.cache.test.tck.core;
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN1;
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN2;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

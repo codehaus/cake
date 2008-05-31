@@ -22,7 +22,6 @@ import java.util.Comparator;
 import org.codehaus.cake.ops.Ops.DoubleComparator;
 import org.codehaus.cake.ops.Ops.IntComparator;
 import org.codehaus.cake.ops.Ops.LongComparator;
-import org.codehaus.cake.ops.Ops.ObjectToLong;
 import org.codehaus.cake.ops.Ops.Op;
 
 /**

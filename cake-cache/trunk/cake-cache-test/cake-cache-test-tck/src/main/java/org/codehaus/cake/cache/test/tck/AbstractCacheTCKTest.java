@@ -16,7 +16,7 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.cache.test.service.exceptionhandling.TestExceptionHandler;
+import org.codehaus.cake.cache.test.service.exceptionhandling.CacheTestExceptionHandler;
 import org.codehaus.cake.cache.test.service.loading.TestLoader;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
@@ -40,9 +40,9 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     public static final Map.Entry<Integer, String> M8 = CollectionTestUtil.M8;
     public static final Map.Entry<Integer, String> M9 = CollectionTestUtil.M9;
     protected TestLoader loader;
-    protected TestExceptionHandler<Integer, String> exceptionHandler;
+    protected CacheTestExceptionHandler<Integer, String> exceptionHandler;
 
-    @After
+  //  @After
     public void noExceptions() {
         if (exceptionHandler != null) {
             exceptionHandler.assertCleared();
@@ -101,7 +101,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     protected CacheConfiguration<Integer, String> newConfiguration() {
         super.newConfiguration();
         loader = new TestLoader();
-        exceptionHandler = new TestExceptionHandler<Integer, String>();
+        exceptionHandler = new CacheTestExceptionHandler<Integer, String>();
         loader.add(M1, M2, M3, M4, M5);
         conf.withLoading().setLoader(loader);
         conf.withExceptionHandling().setExceptionHandler(exceptionHandler);

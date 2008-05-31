@@ -10,31 +10,17 @@ import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 
 public class DefaultServiceRegistrant implements ServiceRegistrant {
-    private DefaultServiceManager manager;
     private final Object lock = new Object();
+    private DefaultServiceManager manager;
 
     public DefaultServiceRegistrant(DefaultServiceManager manager) {
         this.manager = manager;
     }
 
-    public <T> ServiceRegistrant registerService(Class<T> key, T service) {
+    void finished() {
         synchronized (lock) {
-            if (key == null) {
-                throw new NullPointerException("key is null");
-            } else if (service == null) {
-                throw new NullPointerException("service is null");
-            }
-            if (manager == null) {
-                throw new IllegalStateException("Services must be registered with methods using @"
-                        + Startable.class.getSimpleName());
-            }
-            if (manager.services.containsKey(key)) {
-                throw new IllegalArgumentException(
-                        "A service with the specified key has already been registered [key= " + key + "]");
-            }
-            manager.services.put(key, new SingleServiceFactory(key, service));
+            manager = null;
         }
-        return this;
     }
 
     public <T> ServiceRegistrant registerFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
@@ -57,35 +43,48 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
         return this;
     }
 
-    void finished() {
+    public <T> ServiceRegistrant registerService(Class<T> key, T service) {
         synchronized (lock) {
-            manager = null;
+            if (key == null) {
+                throw new NullPointerException("key is null");
+            } else if (service == null) {
+                throw new NullPointerException("service is null");
+            }
+            if (manager == null) {
+                throw new IllegalStateException("Services must be registered with methods using @"
+                        + Startable.class.getSimpleName());
+            }
+            if (manager.services.containsKey(key)) {
+                throw new IllegalArgumentException(
+                        "A service with the specified key has already been registered [key= " + key + "]");
+            }
+            manager.services.put(key, new SingleServiceFactory(key, service));
         }
+        return this;
     }
 
+    /**
+     * A {@link ServiceFactory} that returns the same service for any attributes.
+     */
     static class SingleServiceFactory<T> implements ServiceFactory<T>, CompositeService {
         private final Class<T> clazz;
         private final T service;
 
-        public Class<T> getType() {
-            return clazz;
-        }
-
-        public T lookup() {
-            return service;
-        }
-
-        public T lookup(AttributeMap attributes) {
-            return service;// TODO warn if attributes non empty??? I think so
+        SingleServiceFactory(Class<T> clazz, T service) {
+            this.clazz = clazz;
+            this.service = service;
         }
 
         public Collection<?> getChildServices() {
             return Arrays.asList(service);
         }
 
-        public SingleServiceFactory(Class<T> clazz, T service) {
-            this.clazz = clazz;
-            this.service = service;
+        public Class<T> getType() {
+            return clazz;
+        }
+
+        public T lookup(AttributeMap attributes) {
+            return service;// TODO warn if attributes non empty??? I think so
         }
 
     }

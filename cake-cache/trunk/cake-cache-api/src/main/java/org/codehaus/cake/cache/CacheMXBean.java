@@ -2,15 +2,19 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache;
 
+import javax.management.MBeanServer;
+
+import org.codehaus.cake.service.management.ManagementConfiguration;
+
 
 /**
  * The management interface for a {@link Cache}. Some cache implementations might define
  * additional methods in addition to those defined in this interface. However, all
  * implementations, supporting JMX, must as a minimum support this interface.
  * <p>
- * If no domain is specified using {@link ManagementServiceRegistrant#setDomain(String)} and
+ * If no domain is specified using {@link ManagementConfiguration#setDomain(String)} and
  * no {@link MBeanServer} is specified using
- * {@link ManagementServiceRegistrant#setMBeanServer(MBeanServer)}. This MXBean will be
+ * {@link ManagementConfiguration#setMBeanServer(MBeanServer)}. This MXBean will be
  * registered under <code>org.codehaus.cake.cache:name=$CACHE_NAME$,service=General</code>
  * where <code>$CACHE_NAME$</code> is replaced by the {@link Cache#getName() name} of
  * the cache.

@@ -1,29 +1,27 @@
 package org.codehaus.cake.cache;
 
-import java.lang.management.ManagementFactory;
-
 import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingConfiguration;
+import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.store.CacheStoreConfiguration;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 
 /**
- * This class is the primary class used for representing the configuration of a {@link Cache}. All
- * general-purpose <tt>Cache</tt> implementation classes should have a constructor with a single
- * argument taking a CacheConfiguration.
+ * This class is the primary class used for representing the configuration of a {@link Cache}. All general-purpose
+ * <tt>Cache</tt> implementation classes should have a constructor with a single argument taking a CacheConfiguration.
  * <p>
- * <b>Usage Examples.</b> The following creates a new cache with the name <I>MyCache</I>. The
- * cache can hold a maximum of 1000 elements and uses a least-recently-used policy to determine
- * which elements to evict when the specified maximum size has been reached. Finally, the cache and
- * all of its services are registered as a mbean with the
- * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform
- * <tt>MBeanServer</tt>} using the name of the cache.
+ * <b>Usage Examples.</b> The following creates a new cache with the name <I>MyCache</I>. The cache can hold a maximum
+ * of 1000 elements and uses a least-recently-used policy to determine which elements to evict when the specified
+ * maximum size has been reached. Finally, the cache and all of its services are registered as a mbean with the
+ * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform <tt>MBeanServer</tt>} using the
+ * name of the cache.
+ * 
  * <pre>
  * CacheConfiguration&lt;String, Integer&gt; cc = CacheConfiguration.newConfiguration(&quot;MyCache&quot;);
  * cc.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(1000);
@@ -41,7 +39,7 @@ import org.codehaus.cake.util.Logger;
 public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     public CacheConfiguration() {
-        addConfiguration(new CacheExceptionHandlingConfiguration());
+        addConfiguration(new ExceptionHandlingConfiguration());
         addConfiguration(new CacheAttributeConfiguration());
         addConfiguration(new CacheLoadingConfiguration());
         addConfiguration(new ManagementConfiguration());
@@ -95,13 +93,12 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
      * 
      * @return a ManagementConfiguration
      */
-    public CacheExceptionHandlingConfiguration<K, V> withExceptionHandling() {
-        return getConfigurationOfType(CacheExceptionHandlingConfiguration.class);
+    public ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>> withExceptionHandling() {
+        return getConfigurationOfType(ExceptionHandlingConfiguration.class);
     }
 
     /**
-     * Returns a configuration object that can be used to control how tasks are executed within a
-     * cache.
+     * Returns a configuration object that can be used to control how tasks are executed within a cache.
      * 
      * @return a ExecutorManagerBuilder
      */
@@ -148,13 +145,12 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         return new CacheConfiguration<K, V>();
     }
 
-    public Cache<K,V> newInstance() {
+    public Cache<K, V> newInstance() {
         return super.newInstance();
     }
 
     /**
-     * Creates a new CacheConfiguration with default settings and the specified name as the name of
-     * the cache .
+     * Creates a new CacheConfiguration with default settings and the specified name as the name of the cache .
      * 
      * @param name
      *            the name of the cache

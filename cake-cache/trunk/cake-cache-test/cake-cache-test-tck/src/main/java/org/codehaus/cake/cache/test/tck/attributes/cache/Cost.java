@@ -5,6 +5,7 @@ package org.codehaus.cake.cache.test.tck.attributes.cache;
 import static org.codehaus.cake.cache.CacheEntry.COST;
 
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.cache.CacheEntry;
 import org.junit.Test;
 
 /**

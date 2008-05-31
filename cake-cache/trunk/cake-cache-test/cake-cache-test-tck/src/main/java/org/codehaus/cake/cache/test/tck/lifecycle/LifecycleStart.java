@@ -4,12 +4,12 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
-import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandlingConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.store.CacheStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 import org.junit.After;
@@ -49,7 +49,7 @@ public class LifecycleStart extends AbstractCacheTCKTest {
 
     public class AllConfigurations {
         @Startable
-        public void start(CacheConfiguration configuration, CacheExceptionHandlingConfiguration a1,
+        public void start(CacheConfiguration configuration, ExceptionHandlingConfiguration a1,
                 CacheAttributeConfiguration a2, CacheLoadingConfiguration a3, ManagementConfiguration a4,
                 MemoryStoreConfiguration a5, ExecutorsConfiguration a6, CacheStoreConfiguration a7) {
             latch.countDown();

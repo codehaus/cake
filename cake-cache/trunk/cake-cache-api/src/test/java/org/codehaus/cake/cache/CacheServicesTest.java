@@ -2,6 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache;
 
+import static org.codehaus.cake.test.util.TestUtil.dummy;
 import static org.junit.Assert.assertSame;
 
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
@@ -18,7 +19,7 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests the {@link CacheServicesOld} class.
- *
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheServicesTest.java 560 2008-01-09 16:58:56Z kasper $
  */
@@ -57,6 +58,7 @@ public class CacheServicesTest {
         MemoryStoreService<Integer, String> ces = cache.with().memoryStore();
         assertSame(service, ces);
     }
+
     /**
      * Tests {@link CacheServices#executors()}.
      */
@@ -74,6 +76,7 @@ public class CacheServicesTest {
         ExecutorsService ces = cache.with().executors();
         assertSame(service, ces);
     }
+
     /**
      * Tests {@link CacheServices#loading()}.
      */
@@ -89,6 +92,24 @@ public class CacheServicesTest {
             }
         });
         CacheLoadingService<Integer, String> ces = cache.with().loading();
+        assertSame(service, ces);
+    }
+
+    /**
+     * Tests {@link CacheServices#loading()}.
+     */
+    @Test
+    public void loadingServiceForced() {
+        final CacheLoadingService service = dummy(CacheLoadingService.class);
+        context.checking(new Expectations() {
+            {
+                one(cache).with();
+                will(returnValue(new CacheServices(cache)));
+                one(cache).getService(CacheLoadingService.class, CacheLoadingService.IS_FORCED.singleton(true));
+                will(returnValue(service));
+            }
+        });
+        CacheLoadingService<Integer, String> ces = cache.with().loadingForced();
         assertSame(service, ces);
     }
 }

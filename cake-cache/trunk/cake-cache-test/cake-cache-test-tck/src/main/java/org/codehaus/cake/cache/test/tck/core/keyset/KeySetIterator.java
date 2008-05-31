@@ -6,6 +6,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_KEY_SET;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;

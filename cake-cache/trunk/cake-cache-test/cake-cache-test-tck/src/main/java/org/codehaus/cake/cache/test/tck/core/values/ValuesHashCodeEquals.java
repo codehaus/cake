@@ -5,6 +5,7 @@ package org.codehaus.cake.cache.test.tck.core.values;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

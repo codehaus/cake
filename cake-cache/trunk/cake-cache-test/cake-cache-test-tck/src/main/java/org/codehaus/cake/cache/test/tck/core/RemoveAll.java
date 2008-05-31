@@ -2,6 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.core;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.junit.Test;

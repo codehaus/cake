@@ -6,10 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.management.ServiceNotFoundException;
-
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
@@ -79,10 +76,6 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
 
     public Class<CacheLoadingService> getType() {
         return CacheLoadingService.class;
-    }
-
-    public CacheLoadingService lookup() {
-        return lookup(Attributes.EMPTY_ATTRIBUTE_MAP);
     }
 
     public CacheLoadingService lookup(AttributeMap attributes) {

@@ -11,7 +11,14 @@ public interface CacheLoadingService<K, V> {
      * A quick way to get a Forced instance is: Cache<?,?> someCache; someCache.with().withLoadingForced().load(5);
      */
     BooleanAttribute IS_FORCED = new CacheLoadingConfiguration.IsLoadingForcedAttribute();
+    //Additional attributes
+    //Priority?? ->should probably be implemented at the cache loader level
+    //Logger 
+    //Await load done, come up with use cases
+    //Runnable callback? come up with use cases
 
+    
+    
     /**
      * If a mapping for the specified key is not already in the cache. This method will attempt to load the value for
      * the specified key from the configured cache loader.
@@ -104,26 +111,4 @@ public interface CacheLoadingService<K, V> {
      */
     void loadAll(Map<? extends K, ? extends AttributeMap> mapsWithAttributes);
 
-    //priority
-    //await load done
-    //Runnable callback?
-    /*
-    WithLoad<V> withKey(K key);
-
-    WithLoad<V> withKey(K key, AttributeMap attributes);
-
-    WithLoad<V> withKeys(Iterable<? extends K> keys);
-
-    WithLoad<V> withKeys(Iterable<? extends K> keys, AttributeMap attributes);
-
-    WithLoad<V> withAll();
-
-    WithLoad<V> withAll(AttributeMap attributes);
-
-    interface WithLoad<V> {
-        void forceLoad();
-
-        void load();
-    }
-    */
 }

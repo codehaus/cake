@@ -19,18 +19,15 @@ import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.Stoppable;
 
-public class LifecycleObject {
+class LifecycleObject {
 
-    private final Object o;
     private final InternalExceptionService ies;
+    private final Object o;
     private final RunState state;
 
-    LifecycleObject(RunState state, InternalExceptionService ies, Object o) {
-        if (o == null) {
-            throw new NullPointerException("o is null");
-        }
+    LifecycleObject(RunState state, InternalExceptionService ies, Object service) {
         this.ies = ies;
-        this.o = o;
+        this.o = service;
         this.state = state;
     }
 
@@ -42,10 +39,6 @@ public class LifecycleObject {
             }
         }
         return false;
-    }
-
-    public boolean stopOrDisposeShouldRun() {
-        return hasAnnotation(Stoppable.class) || hasAnnotation(Disposable.class);
     }
 
     private void matchAndInvoke(Method m, Iterable parameters, boolean start) throws IllegalArgumentException,
@@ -94,16 +87,80 @@ public class LifecycleObject {
             }
             obs[i] = oo;
         }
-        try {
-            m.invoke(o, obs);
-        } catch (RuntimeException e) {
-            state.trySetStartupException(e);
-            // ies.fatal("Failed To start service", e);
-            throw e;
+        m.invoke(o, obs);
+    }
+
+    void runAfterStart(ContainerConfiguration configuration, Container container) {
+        ArrayList al = new ArrayList();
+        al.add(container);
+
+        // lets dump this
+        for (Class key : container.serviceKeySet()) {
+            try {
+                Object o = container.getService(key);
+                al.add(o);
+            } catch (UnsupportedOperationException ok) {}
+        }
+
+        al.add(configuration);
+
+        for (Object o : configuration.getConfigurations()) {
+            al.add(o);
+        }
+        for (Method m : o.getClass().getMethods()) {
+            Annotation a = m.getAnnotation(AfterStart.class);
+            if (a != null) {
+                if (ies.isDebugEnabled()) {
+                    ies.debug("@AfterStart -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
+                }
+                try {
+                    matchAndInvoke(m, al, false);
+                } catch (InvocationTargetException e) {
+                    Throwable cause = e.getCause();
+                    state.trySetStartupException(cause);
+                    if (cause instanceof Error) {
+                        throw (Error) cause;
+                    }
+                    if (cause instanceof RuntimeException) {
+                        throw (RuntimeException) cause;
+                    }
+                    throw new IllegalStateException("Started failed", cause);
+
+                    // ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                    // + "]", cause);
+                } catch (IllegalAccessException e) {
+                    state.trySetStartupException(e);
+                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                            + "]", e.getCause());
+                }
+            }
         }
     }
 
-    public void startRun(Set all, ContainerConfiguration configuration, ServiceRegistrant registrant) {
+    void runDisposable() {
+        for (Method m : o.getClass().getMethods()) {
+            Annotation a = m.getAnnotation(Disposable.class);
+            if (a != null) {
+                if (m.getParameterTypes().length > 0) {
+                    ies.error("@" + Disposable.class.getSimpleName()
+                            + " annotation does not accept arguments, method will not be run [method=" + m + "]");
+                } else {
+                    try {
+                        m.invoke(o);
+                    } catch (InvocationTargetException e) {
+                        Throwable cause = e.getCause();
+                        // ies.error will rethrow errors
+                        ies.error("Disposal of service failed [method=" + m + "]", cause);
+                    } catch (IllegalAccessException e) {
+                        // Should never happen because we only iterating on public methods
+                        ies.error("Disposal of service failed [method=" + m + "]", e.getCause());
+                    }
+                }
+            }
+        }
+    }
+
+    void runStartable(Set all, ContainerConfiguration configuration, ServiceRegistrant registrant) {
         ArrayList al = new ArrayList();
         al.add(configuration);
         al.add(registrant);
@@ -153,102 +210,30 @@ public class LifecycleObject {
         }
     }
 
-    public void startedRun(ContainerConfiguration configuration, Container container) {
-        ArrayList al = new ArrayList();
-        al.add(container);
-        for (Class key : container.serviceKeySet()) {
-            try {
-                Object o=container.getService(key);
-                al.add(o);
-            } catch (UnsupportedOperationException ok) {}
-        }
-
-        al.add(configuration);
-
-        for (Object o : configuration.getConfigurations()) {
-            al.add(o);
-        }
-        for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(AfterStart.class);
-            if (a != null) {
-                if (ies.isDebugEnabled()) {
-                    ies.debug("@AfterStart -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
-                }
-                try {
-                    matchAndInvoke(m, al, false);
-                } catch (InvocationTargetException e) {
-                    Throwable cause = e.getCause();
-                    state.trySetStartupException(cause);
-                    if (cause instanceof Error) {
-                        throw (Error) cause;
-                    }
-                    if (cause instanceof RuntimeException) {
-                        throw (RuntimeException) cause;
-                    }
-                    throw new IllegalStateException("Started failed", cause);
-
-                    // ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
-                    // + "]", cause);
-                } catch (IllegalAccessException e) {
-                    state.trySetStartupException(e);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
-                            + "]", e.getCause());
-                }
-            }
-        }
-    }
-
-    public void stopRun() {
+    void runStoppable() {
         for (Method m : o.getClass().getMethods()) {
             Annotation a = m.getAnnotation(Stoppable.class);
             if (a != null) {
                 if (m.getParameterTypes().length > 0) {
-                    ies.error(Stoppable.class
-                            + " annotation does not accept arguments, method will not be run [service=" + o + ", type="
-                            + o.getClass() + ", method=" + m + "]");
+                    ies.error("@" + Stoppable.class.getSimpleName()
+                            + " annotation does not accept arguments, method will not be run [method=" + m + "]");
                 } else {
                     try {
                         m.invoke(o);
                     } catch (InvocationTargetException e) {
                         Throwable cause = e.getCause();
-                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
-                                + m + "]", cause);
-                        if (cause instanceof Error) {
-                            throw (Error) cause;
-                        }
+                        // ies.error will rethrow errors
+                        ies.error("Shutdown of service failed [method=" + m + "]", cause);
                     } catch (IllegalAccessException e) {
-                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
-                                + m + "]", e.getCause());
+                        // Should never happen because we only iterating on public methods
+                        ies.error("Shutdown of service failed [method=" + m + "]", e.getCause());
                     }
                 }
             }
         }
     }
 
-    public void disposeRun() {
-        for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(Disposable.class);
-            if (a != null) {
-                if (m.getParameterTypes().length > 0) {
-                    ies.error(Disposable.class
-                            + " annotation does not accept arguments, method will not be run [service=" + o + ", type="
-                            + o.getClass() + ", method=" + m + "]");
-                } else {
-                    try {
-                        m.invoke(o);
-                    } catch (InvocationTargetException e) {
-                        Throwable cause = e.getCause();
-                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
-                                + m + "]", cause);
-                        if (cause instanceof Error) {
-                            throw (Error) cause;
-                        }
-                    } catch (IllegalAccessException e) {
-                        ies.error("Disposal of service failed [service=" + o + ", type=" + o.getClass() + ", method="
-                                + m + "]", e.getCause());
-                    }
-                }
-            }
-        }
+    boolean isStoppableOrDisposable() {
+        return hasAnnotation(Stoppable.class) || hasAnnotation(Disposable.class);
     }
 }

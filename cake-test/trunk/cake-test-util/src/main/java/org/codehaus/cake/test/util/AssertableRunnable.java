@@ -1,10 +1,10 @@
 package org.codehaus.cake.test.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class AssertableRunnable implements Runnable {
     private final CountDownLatch cdl;

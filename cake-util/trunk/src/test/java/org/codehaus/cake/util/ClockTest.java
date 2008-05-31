@@ -6,8 +6,6 @@ import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.concurrent.TimeUnit;
-
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.junit.Test;
 

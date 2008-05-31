@@ -14,7 +14,6 @@ import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.util.Logger.Level;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LazyLoggerTest {
@@ -26,7 +25,7 @@ public class LazyLoggerTest {
     public void after() {
         if (str != null) {
             try {
-                // System.out.println(str.toString());
+              //  System.out.println(str.toString());
                 assertTrue(str.toString().contains("getLogger"));
                 assertTrue(str.toString().contains(LazyLogger.class.getName()));
             } finally {

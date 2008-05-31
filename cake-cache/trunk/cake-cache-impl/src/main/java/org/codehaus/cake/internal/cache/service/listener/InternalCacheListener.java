@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.InternalCacheEntry;
 import org.codehaus.cake.internal.service.listener.InternalContainerListener;

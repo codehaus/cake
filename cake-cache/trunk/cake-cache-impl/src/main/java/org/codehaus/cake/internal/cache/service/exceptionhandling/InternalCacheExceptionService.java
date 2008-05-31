@@ -25,12 +25,14 @@ import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionSer
 public interface InternalCacheExceptionService<K, V> extends
 		InternalExceptionService<Cache<K, V>> {
 
-	void initialize(Cache<K, V> cache, CacheConfiguration<K, V> conf);
-
 	V loadFailed(Throwable cause, K key, AttributeMap map);
 
-	void serviceManagerShutdownFailed(Throwable cause, Object lifecycle);
 
-	void startFailed(CacheConfiguration<K, V> configuration, Object service,
-			Throwable cause);
+//  void initialize(Cache<K, V> cache, CacheConfiguration<K, V> conf);
+
+	//
+//	void serviceManagerShutdownFailed(Throwable cause, Object lifecycle);
+//
+//	void startFailed(CacheConfiguration<K, V> configuration, Object service,
+//			Throwable cause);
 }

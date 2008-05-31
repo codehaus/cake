@@ -7,6 +7,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN2;
 
 import java.util.Arrays;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.junit.Test;

@@ -1,18 +1,31 @@
 package org.codehaus.cake.service.test.tck.lifecycle;
 
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.Test;
 
-public class LifecycleStartRegistration extends AbstractTCKTest<Container, ContainerConfiguration> {
+public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container, ContainerConfiguration> {
+
+    static final IntAttribute I = new IntAttribute() {};
 
     @Test(expected = UnsupportedOperationException.class)
     public void registerNone() {
         newContainer();
-        c.getService(Integer.class).intValue();
+        c.getService(Integer.class, Attributes.EMPTY_ATTRIBUTE_MAP).intValue();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void registerUnknown() {
+        conf.addService(new Register());
+        newContainer();
+        c.getService(Integer.class, I.singleton(-1)).intValue();
     }
 
     @Test
@@ -20,7 +33,7 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
         conf.addService(new Register());
         newContainer();
         prestart();
-        assertEquals(1000, c.getService(Integer.class).intValue());
+        assertEquals(100, c.getService(Integer.class, I.singleton(100)).intValue());
     }
 
     @Test(expected = NullPointerException.class)
@@ -45,6 +58,13 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void registerSameOdd() {
+        conf.addService(new RegisterSameOdd());
+        newContainer();
+        prestart();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void registerSameTwice() {
         conf.addService(new Register());
         conf.addService(new Register());
@@ -55,33 +75,57 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
     public static class Register {
         @Startable
         public void start(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, 1000);
+            registrant.registerFactory(Integer.class, new ServiceFactoryStub());
         }
     }
 
     public static class RegisterNullKey {
         @Startable
         public void start(ServiceRegistrant registrant) {
-            registrant.registerService(null, 1000);
+            registrant.registerFactory(null, new ServiceFactoryStub());
         }
     }
 
     public static class RegisterNullService {
         @Startable
         public void start(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, null);
+            registrant.registerFactory(Integer.class, null);
         }
     }
 
     public static class RegisterSame {
         @Startable
         public void start1(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, 1000);
+            registrant.registerFactory(Integer.class, new ServiceFactoryStub());
         }
 
         @Startable
         public void start2(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, 1000);
+            registrant.registerFactory(Integer.class, new ServiceFactoryStub());
+        }
+    }
+
+    public static class RegisterSameOdd {
+        @Startable
+        public void start1(ServiceRegistrant registrant) {
+            registrant.registerService(Integer.class, 4);
+        }
+
+        @Startable
+        public void start2(ServiceRegistrant registrant) {
+            registrant.registerFactory(Integer.class, new ServiceFactoryStub());
+        }
+    }
+
+    static class ServiceFactoryStub implements ServiceFactory<Integer> {
+
+        public Class<Integer> getType() {
+            return Integer.class;
+        }
+
+        public Integer lookup(AttributeMap attributes) {
+            int val = attributes.get(I);
+            return val >= 0 ? val : null;
         }
     }
 }

@@ -3,7 +3,6 @@
 package org.codehaus.cake.internal.service.exceptionhandling;
 
 import org.codehaus.cake.internal.service.debug.InternalDebugService;
-import org.codehaus.cake.service.ContainerConfiguration;
 
 /**
  * An exception service available as an internal service at runtime.

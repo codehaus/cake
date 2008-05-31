@@ -5,6 +5,7 @@ package org.codehaus.cake.cache.test.tck.core;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

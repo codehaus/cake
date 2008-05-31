@@ -13,7 +13,7 @@ import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.util.Logger.Level;
 
-public class TestExceptionHandler<K, V> extends CacheExceptionHandler<K, V> {
+public class CacheTestExceptionHandler<K, V> extends CacheExceptionHandler<K, V> {
     private final Queue<ExceptionContext<Cache<K, V>>> q = new ConcurrentLinkedQueue<ExceptionContext<Cache<K, V>>>();
 
     @Override

@@ -5,7 +5,6 @@ package org.codehaus.cake.service.test.tck.service.executors;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.attribute.AttributeMap;

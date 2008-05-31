@@ -12,10 +12,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.codehaus.cake.management.Manageable;
+import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
+import org.codehaus.cake.util.Loggers.Commons;
+import org.codehaus.cake.util.Loggers.JDK;
+import org.codehaus.cake.util.Loggers.Log4j;
 
 /**
  * This class is the primary class used for representing the configuration of a

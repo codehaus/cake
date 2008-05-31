@@ -1,7 +1,5 @@
 package org.codehaus.cake.cache.policy.spi;
 
-import static org.codehaus.cake.cache.CacheEntry.SIZE;
-
 import java.util.Comparator;
 
 import org.codehaus.cake.attribute.IntAttribute;

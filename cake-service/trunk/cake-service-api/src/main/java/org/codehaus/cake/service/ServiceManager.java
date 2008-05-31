@@ -2,7 +2,6 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.service;
 
-import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.AttributeMap;

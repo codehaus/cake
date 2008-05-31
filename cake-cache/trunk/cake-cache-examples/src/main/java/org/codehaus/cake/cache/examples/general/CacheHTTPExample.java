@@ -18,20 +18,7 @@ import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
  * @version $Id: CacheHTTPExample.java 479 2007-11-27 13:40:08Z kasper $
  */
 public class CacheHTTPExample {
-    public static class UrlLoader implements SimpleCacheLoader<String, String> {
-        public String load(String key, AttributeMap ignore) throws Exception {
-            URL url = new URL(key);
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuilder sb = new StringBuilder();
-            int str;
-            while ((str = in.read()) != -1) {
-                sb.append((char) str);
-            }
-            in.close();
-            return sb.toString();
-        }
-    }
-
+    
     public static void main(String[] args) {
         CacheConfiguration<String, String> cc = CacheConfiguration.newConfiguration();
         cc.withLoading().setLoader(new UrlLoader());
@@ -45,6 +32,20 @@ public class CacheHTTPExample {
         c.get("http://www.google.com");
         System.out.println(prefix + " Time to read www.google.com: "
                 + ((System.nanoTime() - start) / 1000000.0) + " ms");
+    }
+
+    public static class UrlLoader implements SimpleCacheLoader<String, String> {
+        public String load(String key, AttributeMap ignore) throws Exception {
+            URL url = new URL(key);
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+            StringBuilder sb = new StringBuilder();
+            int str;
+            while ((str = in.read()) != -1) {
+                sb.append((char) str);
+            }
+            in.close();
+            return sb.toString();
+        }
     }
 
 }

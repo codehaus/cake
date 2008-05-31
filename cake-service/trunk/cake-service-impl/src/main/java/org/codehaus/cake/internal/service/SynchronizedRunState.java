@@ -9,11 +9,8 @@ import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
 
 public final class SynchronizedRunState extends RunState {
-    private final LifecycleManager lifecycleManager;
-    
     private final Object mutex;
 
-    // Order among values matters
     private final AtomicReference<Throwable> startupException = new AtomicReference<Throwable>();
 
     private final AtomicInteger state = new AtomicInteger();
@@ -22,16 +19,15 @@ public final class SynchronizedRunState extends RunState {
     private final CountDownLatch terminationLatch = new CountDownLatch(1);
 
     public SynchronizedRunState(Container container, ContainerInfo info, LifecycleManager lifecycleManager) {
-        super(info);
-        this.lifecycleManager = lifecycleManager;
+        super(info, lifecycleManager);
         mutex = container;
     }
 
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+     boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return terminationLatch.await(timeout, unit);
     }
 
-    public void checkExceptions() {
+     void checkExceptions() {
         Throwable re = startupException.get();
         if (re != null) {
             throw new IllegalStateException("Cache failed to start previously", re);
@@ -43,25 +39,25 @@ public final class SynchronizedRunState extends RunState {
         return state.get();
     }
 
-    public void shutdown(boolean shutdownNow) {
+     void shutdown(boolean shutdownNow) {
         synchronized (mutex) {
             if (!isAtLeastShutdown()) {
-                transitionToShutdown();
+                transitionTo(SHUTDOWN);
             }
         }
     }
 
-    public boolean transitionTo(int state) {
+     boolean transitionTo(int state) {
         for (;;) {
             int s = get();
             if (s >= state)
                 return false;
             if (this.state.compareAndSet(s, state)) {
                 if (state == STARTING) {
-                    lifecycleManager.start(this);
+                    lifecycleManager.start();
                 }
                 if (state == SHUTDOWN) {
-                    lifecycleManager.runShutdown(this);
+                    lifecycleManager.runShutdown();
                     this.state.set(TERMINATED);
                     state = TERMINATED;
                 }
@@ -73,22 +69,22 @@ public final class SynchronizedRunState extends RunState {
         }
     }
 
-    public void trySetStartupException(Throwable cause) {
+     void trySetStartupException(Throwable cause) {
         startupException.compareAndSet(null, cause);
     }
 
-    public boolean tryStart() {
+     void tryStart() {
         synchronized (mutex) {
             checkExceptions();
             if (isStarting()) {
                 throw new IllegalStateException(
-                        "Cannot invoke this method from a Startable service, should be invoked from an AfterStart method");
+                        "Cannot invoke this method from a @Startable method, should be invoked from an @AfterStart method");
             }
-            return transitionToStarting();
+            transitionTo(STARTING);
         }
     }
 
-    public Throwable getStartupException() {
+     Throwable getStartupException() {
         return startupException.get();
     }
 }

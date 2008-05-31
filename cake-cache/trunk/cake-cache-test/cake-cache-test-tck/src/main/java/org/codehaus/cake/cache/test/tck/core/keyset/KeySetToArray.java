@@ -7,6 +7,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_KEY_SET;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
