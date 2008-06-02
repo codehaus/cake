@@ -20,12 +20,12 @@ public class FIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
     
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
-        addHead(entry);
+        addFirst(entry);
         return true;
     }
 
     /** {@inheritDoc} */
     public CacheEntry<K, V> evictNext() {
-        return removeHead();
+        return removeFirst();
     }
 }

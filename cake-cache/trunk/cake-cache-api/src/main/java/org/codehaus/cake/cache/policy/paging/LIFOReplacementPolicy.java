@@ -17,12 +17,12 @@ public class LIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacement
 
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
-        addTail(entry);
+        addLast(entry);
         return true;
     }
 
     /** {@inheritDoc} */
     public CacheEntry<K, V> evictNext() {
-        return removeHead();
+        return removeFirst();
     }
 }

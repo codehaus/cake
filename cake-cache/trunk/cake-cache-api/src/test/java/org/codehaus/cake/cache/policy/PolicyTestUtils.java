@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
@@ -31,6 +32,12 @@ public final class PolicyTestUtils {
 
     public static CacheEntry<Integer, String> val(int key) {
         return VALUES[key];
+    }
+
+    public static <T> CacheEntry<Integer, String> create(int key, Attribute<T> a, T value) {
+        CacheEntry<Integer, String> ce = new DummyEntry(key, "" + key);
+        ce.getAttributes().put(a, value);
+        return ce;
     }
 
     public static void add(ReplacementPolicy<Integer, String> policy, int key) {

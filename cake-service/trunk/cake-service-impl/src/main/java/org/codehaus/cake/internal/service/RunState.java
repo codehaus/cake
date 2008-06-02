@@ -29,14 +29,14 @@ public abstract class RunState {
     final boolean isStarting() {
         return get() == STARTING;
     }
-
-    final boolean isShutdown() {
-        return get() == SHUTDOWN;
-    }
-
-    final boolean isStopping() {
-        return get() == STOPPING;
-    }
+//
+//    final boolean isShutdown() {
+//        return get() == SHUTDOWN;
+//    }
+//
+//    final boolean isStopping() {
+//        return get() == STOPPING;
+//    }
 
     final boolean isTerminated() {
         return get() == TERMINATED;
@@ -50,9 +50,9 @@ public abstract class RunState {
         return get() >= SHUTDOWN;
     }
 
-    final boolean isAtLeastStopping() {
-        return get() >= STOPPING;
-    }
+//    final boolean isAtLeastStopping() {
+//        return get() >= STOPPING;
+//    }
 
     final boolean transitionToRunning() {
         return transitionTo(RUNNING);

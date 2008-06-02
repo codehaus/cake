@@ -16,7 +16,7 @@ import org.codehaus.cake.cache.CacheEntry;
  */
 public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V> {
     private final IntAttribute index = new IntAttribute("index", 0) {};
-    private ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
+    private final ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
 
     public AbstractArrayReplacementPolicy() {
         attachToEntry(index);
@@ -69,11 +69,11 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
     }
 
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        replaceIt(previous, newEntry);
+        replace0(previous, newEntry);
         return newEntry;
     }
 
-    protected void replaceIt(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
+    protected void replace0(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         int i = index.get(previous);
         index.set(newEntry, i);
         list.set(i, newEntry);

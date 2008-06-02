@@ -89,8 +89,8 @@ public class LIFOReplacementPolicyTest {
         addToPolicy(policy, 0, 9);
         assertSame(val(123), policy.replace(val(4), val(123)));
         Integer[] i = evict(policy, 10);
-        assertEquals(123, i[9].intValue());
+        assertEquals(9, i[9].intValue());
         assertEquals(3, i[3].intValue());
-        assertEquals(5, i[4].intValue());
+        assertEquals(123, i[4].intValue());
     }
 }

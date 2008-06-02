@@ -15,7 +15,7 @@ public interface InternalCache<K, V> extends Cache<K, V>, Iterable<CacheEntry<K,
 
     void putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data);
 
-    boolean removeEntries(Collection<?> entries);
+    //boolean removeEntries(Collection<?> entries);
 
     /**
      * Called by a cache loader whenever a value has been loaded.

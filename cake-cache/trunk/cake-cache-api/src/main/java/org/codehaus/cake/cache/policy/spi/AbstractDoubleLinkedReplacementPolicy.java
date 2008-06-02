@@ -17,13 +17,13 @@ import org.codehaus.cake.cache.CacheEntry;
  *            the type of mapped values
  */
 public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V> {
-    private CacheEntry<K, V> head;
+    private CacheEntry<K, V> first;
 
     private final ObjectAttribute<CacheEntry> nextPointer = new ObjectAttribute<CacheEntry>("next", CacheEntry.class) {};
 
     private final ObjectAttribute<CacheEntry> prevPointer = new ObjectAttribute<CacheEntry>("prev", CacheEntry.class) {};
 
-    private CacheEntry<K, V> tail;
+    private CacheEntry<K, V> last;
 
     public AbstractDoubleLinkedReplacementPolicy() {
         attachToEntry(prevPointer);
@@ -36,14 +36,14 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to add to the front of the list
      */
-    protected final void addHead(CacheEntry<K, V> entry) {
-        if (tail == null) {
-            tail = entry;
+    protected final void addFirst(CacheEntry<K, V> entry) {
+        if (last == null) {
+            last = entry;
         } else {
-            setPrev(head, entry);
-            setNext(entry, head);
+            setPrev(first, entry);
+            setNext(entry, first);
         }
-        head = entry;
+        first = entry;
     }
 
     /**
@@ -52,34 +52,35 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to add to the end of the list
      */
-    protected final void addTail(CacheEntry<K, V> entry) {
-        if (head == null) {
-            head = entry;
+    protected final void addLast(CacheEntry<K, V> entry) {
+        if (first == null) {
+            first = entry;
         } else {
-            setNext(tail, entry);
-            setPrev(entry, tail);
+            setNext(last, entry);
+            setPrev(entry, last);
         }
-        tail = entry;
+        last = entry;
     }
 
     /**
      * Clears the linked list.
      */
     public void clear() {
-        head = null;
-        tail = null;
+        first = null;
+        last = null;
     }
 
     /**
      * @return the head of the list.
      */
-    protected final CacheEntry<K, V> getHead() {
-        return head;
+    protected final CacheEntry<K, V> getFirst() {
+        return first;
     }
 
-    private String getKey(CacheEntry<K, V> entry) {
-        return entry == null ? null : entry.getKey() + "";
-    }
+    //
+    // private String getKey(CacheEntry<K, V> entry) {
+    // return entry == null ? null : entry.getKey() + "";
+    // }
 
     protected final CacheEntry<K, V> getNext(CacheEntry<K, V> entry) {
         return nextPointer.get(entry);
@@ -92,8 +93,8 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
     /**
      * @return the tail of the list.
      */
-    protected final CacheEntry<K, V> getTail() {
-        return tail;
+    protected final CacheEntry<K, V> getLast() {
+        return last;
     }
 
     /**
@@ -102,22 +103,22 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to move to the head of the list
      */
-    protected final void moveToHead(CacheEntry<K, V> entry) {
+    protected final void moveFirst(CacheEntry<K, V> entry) {
         CacheEntry<K, V> prev = getPrevious(entry);
         CacheEntry<K, V> next = getNext(entry);
         if (prev != null) {// check if already first
             if (next == null) {
-                tail = prev;
+                last = prev;
             } else {
                 setPrev(next, prev);
             }
 
             setPrev(entry, null);// help gc
-            setNext(entry, head);
-            setPrev(head, entry);
+            setNext(entry, first);
+            setPrev(first, entry);
             setNext(prev, next);
         }
-        head = entry;
+        first = entry;
     }
 
     /**
@@ -126,50 +127,41 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to move to the tail of the list
      */
-    protected final void moveToTail(CacheEntry<K, V> t) {
+    protected final void moveLast(CacheEntry<K, V> t) {
         CacheEntry<K, V> prev = getPrevious(t);
         CacheEntry<K, V> next = getNext(t);
 
         if (next != null) {// check if already last
             if (prev == null) {
-                head = next;
+                first = next;
             } else {
                 setNext(prev, next);
             }
             setNext(t, null);// help gc
-            setPrev(t, tail);
+            setPrev(t, last);
             setPrev(next, prev);
-            setNext(tail, t);
+            setNext(last, t);
         }
-        tail = t;
+        last = t;
     }
 
-    /**
-     * Used for debugging.
-     */
-    public void print() {
-        CacheEntry<K, V> e = head;
-        int count = 0;
-        System.out.println("first: " + getKey(head));
-        while (e != null) {
-            System.out.println(count++ + " " + getKey(prevPointer.get(e)) + "<-" + getKey(e) + "<-"
-                    + getKey(nextPointer.get(e)));
-            e = nextPointer.get(e);
-        }
-        System.out.println("last: " + getKey(tail));
-        System.out.println("-------------------");
+    // /**
+    // * Used for debugging.
+    // */
+    // public void print() {
+    // CacheEntry<K, V> e = first;
+    // int count = 0;
+    // System.out.println("first: " + getKey(first));
+    // while (e != null) {
+    // System.out.println(count++ + " " + getKey(prevPointer.get(e)) + "<-" + getKey(e) + "<-"
+    // + getKey(nextPointer.get(e)));
+    // e = nextPointer.get(e);
+    // }
+    // System.out.println("last: " + getKey(last));
+    // System.out.println("-------------------");
+    //
+    // }
 
-    }
-
-    protected void realReplace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        CacheEntry<K, V> prev = getPrevious(previous);
-        CacheEntry<K, V> next = getNext(previous);
-        setPrev(newEntry, prev);
-        setNext(newEntry, next);
-        setPrev(previous, null);
-        setNext(previous, null);
-        // TODO update head or tail????
-    }
 
     /**
      * Removes the specified entry from the linked list.
@@ -178,12 +170,12 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
         CacheEntry<K, V> prev = getPrevious(t);
         CacheEntry<K, V> next = getNext(t);
         if (prev == null) {
-            head = next;
+            first = next;
         } else {
             setNext(prev, next);
         }
         if (next == null) {
-            tail = prev;
+            last = prev;
         } else {
             setPrev(next, prev);
         }
@@ -194,10 +186,10 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * 
      * @return the head of the linked list or <code>null</code> if the list is empty
      */
-    protected final CacheEntry<K, V> removeHead() {
-        CacheEntry<K, V> entry = head;
-        if (head != null) {
-            remove(head);
+    protected final CacheEntry<K, V> removeFirst() {
+        CacheEntry<K, V> entry = first;
+        if (first != null) {
+            remove(first);
         }
         return entry;
     }
@@ -207,12 +199,30 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * 
      * @return the tail of the linked list or <code>null</code> if the list is empty
      */
-    protected final CacheEntry<K, V> removeTail() {
-        CacheEntry<K, V> entry = tail;
-        if (tail != null) {
-            remove(tail);
+    protected final CacheEntry<K, V> removeLast() {
+        CacheEntry<K, V> entry = last;
+        if (last != null) {
+            remove(last);
         }
         return entry;
+    }
+
+    protected void replace0(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
+        CacheEntry<K, V> prev = getPrevious(previous);
+        CacheEntry<K, V> next = getNext(previous);
+        setPrev(newEntry, prev);
+        setNext(newEntry, next);
+
+        if (prev == null) {
+            first = newEntry;
+        } else {
+            setNext(prev, newEntry);
+        }
+        if (next == null) {
+            last = newEntry;
+        } else {
+            setPrev(next, newEntry);
+        }
     }
 
     /**
@@ -220,8 +230,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * Finally, the specified newEntry is returned.
      */
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        remove(previous);
-        add(newEntry);
+        replace0(previous, newEntry);
         return newEntry;
     }
 

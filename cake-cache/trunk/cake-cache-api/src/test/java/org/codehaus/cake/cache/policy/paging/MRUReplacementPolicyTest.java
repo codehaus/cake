@@ -90,8 +90,8 @@ public class MRUReplacementPolicyTest {
         addToPolicy(policy, 0, 9);
         assertSame(val(123), policy.replace(val(4), val(123)));
         Integer[] i = evict(policy, 10);
-        assertEquals(123, i[0].intValue());
-        assertEquals(5, i[5].intValue());
+        assertEquals(9, i[0].intValue());
+        assertEquals(123, i[5].intValue());
         assertEquals(3, i[6].intValue());
     }
 }

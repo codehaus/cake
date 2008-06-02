@@ -23,7 +23,7 @@ public class MFUReplacementPolicy<K, V> extends AbstractHeapReplacementPolicy<K,
 
     @Override
     protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
-        return HITS.compare(o1, o2);
+        return -HITS.compare(o1, o2);
     }
 
     @Override

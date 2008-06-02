@@ -18,18 +18,18 @@ public class MRUReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementP
     
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
-        addHead(entry);
+        addFirst(entry);
         return true;
     }
 
     /** {@inheritDoc} */
     @Override
     public void touch(CacheEntry<K, V> entry) {
-        moveToHead(entry);
+        moveFirst(entry);
     }
 
     /** {@inheritDoc} */
     public CacheEntry<K, V> evictNext() {
-        return removeHead();
+        return removeFirst();
     }
 }

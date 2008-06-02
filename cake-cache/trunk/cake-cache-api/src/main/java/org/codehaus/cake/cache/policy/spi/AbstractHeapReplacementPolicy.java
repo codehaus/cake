@@ -57,6 +57,12 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         size = 0;
     }
 
+    protected CacheEntry<K, V> peek() {
+        if (size == 0)
+            return null;
+        return (CacheEntry<K, V>) queue[0];
+    }
+
     public CacheEntry<K, V> evictNext() {
         if (size == 0)
             return null;
@@ -107,7 +113,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
         queue[index] = newEntry;
         if (i > 0) {
             siftUp(index, newEntry);
-        } else if (0 < i) {
+        } else if (i < 0) {
             siftDown(index, newEntry);
         }
         return newEntry;
@@ -164,10 +170,12 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
             int child = (k << 1) + 1;
             CacheEntry<K, V> c = queue[child];
             int right = child + 1;
-            if (right < size && comparator.compare((CacheEntry<K, V>) c, (CacheEntry<K, V>) queue[right]) > 0)
+            if (right < size && comparator.compare((CacheEntry<K, V>) c, (CacheEntry<K, V>) queue[right]) > 0) {
                 c = queue[child = right];
-            if (comparator.compare(x, (CacheEntry<K, V>) c) <= 0)
+            }
+            if (comparator.compare(x, (CacheEntry<K, V>) c) <= 0) {
                 break;
+            }
             queue[k] = c;
             setIndexOf(c, k);
             k = child;

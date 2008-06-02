@@ -11,7 +11,7 @@ public final class SizeAttributeFactory<K, V> extends AbstractAttributeFactory<K
     }
 
     @Override
-    public Object op(K key, V value, AttributeMap user, AttributeMap existing) {
+    public Object getValue(K key, V value, AttributeMap user, AttributeMap existing) {
         long userSize = user.get(SIZE);
         final long size;
         if (userSize > 0) {

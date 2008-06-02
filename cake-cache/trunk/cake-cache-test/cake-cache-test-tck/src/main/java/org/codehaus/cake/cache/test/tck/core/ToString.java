@@ -14,9 +14,17 @@ public class ToString extends AbstractCacheTCKTest {
     @Test
     public void toStringEmpty() {
         init();
-        c.toString();
+        assertEquals("{}", c.toString());
     }
-
+    /**
+     * Just test that the toString() method works on an empty started cache.
+     */
+    @Test
+    public void toStringStartedEmpty() {
+        init();
+        size();//lazy start
+        assertEquals("{}", c.toString());
+    }
     /**
      * Just test that the toString() method works.
      */
@@ -36,8 +44,8 @@ public class ToString extends AbstractCacheTCKTest {
     }
 
     /**
-     * Just test that the toString() does recursively call {@link Cache#toString()} if the
-     * cache is put into itself as a value or a key.
+     * Just test that the toString() does recursively call {@link Cache#toString()} if the cache is put into itself as a
+     * value or a key.
      */
     @Test
     public void toStringCacheInCache() {

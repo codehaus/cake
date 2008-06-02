@@ -96,9 +96,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
 
     /** {@inheritDoc} */
     public void manage(ManagedGroup parent) {
-        if (hasRun) {
-            new Exception().printStackTrace();
-        }
         ManagedGroup g = parent.addChild(CacheMXBean.MANAGED_SERVICE_NAME, "General Cache attributes and operations");
         g.add(new DefaultCacheMXBean(this));
         hasRun = true;

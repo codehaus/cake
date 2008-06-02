@@ -74,13 +74,13 @@ class LifecycleObject {
                         e = new IllegalStateException("An instance of " + type.getSimpleName()
                                 + " is not available while running methods annotated with @"
                                 + Startable.class.getSimpleName() + ". The @" + AfterStart.class.getSimpleName()
-                                + " annotation can be used instead if a " + type.getSimpleName() + " is needed.");
+                                + " annotation can be used instead if a " + type.getSimpleName() + " is needed." + " [method = " + m + "]");
                     } else {
                         e = new IllegalStateException("An object of type " + type.getName()
-                                + " is not available for methods with @" + Startable.class.getSimpleName());
+                                + " is not available for methods with @" + Startable.class.getSimpleName() + " [method = " + m + "]");
                     }
                 } else {
-                    e = new IllegalStateException("No service registered for type " + type.getName());
+                    e = new IllegalStateException("No service registered for type " + type.getName() + " [method = " + m + "]");
                 }
                 state.trySetStartupException(e);
                 throw e;
@@ -130,7 +130,7 @@ class LifecycleObject {
                     // + "]", cause);
                 } catch (IllegalAccessException e) {
                     state.trySetStartupException(e);
-                    ies.error("Started of service failed [service=" + o + ", type=" + o.getClass() + ", method=" + m
+                    ies.error("Started of service failed [method=" + m
                             + "]", e.getCause());
                 }
             }

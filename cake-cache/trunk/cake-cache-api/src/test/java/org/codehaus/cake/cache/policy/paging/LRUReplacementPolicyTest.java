@@ -98,7 +98,7 @@ public class LRUReplacementPolicyTest {
         assertSame(val(123), policy.replace(val(4), val(123)));
         Integer[] i = evict(policy, 9);
         assertEquals(3, i[3].intValue());
-        assertEquals(5, i[4].intValue());
-        assertEquals(123, policy.evictNext().getKey().intValue());
+        assertEquals(123, i[4].intValue());
+        assertEquals(9, policy.evictNext().getKey().intValue());
     }
 }

@@ -188,61 +188,61 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return e;
     }
 
-    public boolean removeEntries(Collection<?> entries) {
-        if (entries == null) {
-            throw new NullPointerException("collection is null");
-        }
-        CollectionUtils.checkCollectionForNulls(entries);
-        long started = listener.beforeRemoveAll((Collection) entries);
-
-        lazyStart();
-        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeEntries(entries);
-
-        listener.afterRemoveAll(started, (Collection) entries, list.asList());
-
-        return list.size() > 0;
-    }
-
-    public boolean removeKeys(Collection<?> keys) {
-        if (keys == null) {
-            throw new NullPointerException("collection is null");
-        }
-        CollectionUtils.checkCollectionForNulls(keys);
-        long started = listener.beforeRemoveAll((Collection) keys);
-
-        lazyStart();
-        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeAll(keys);
-
-        listener.afterRemoveAll(started, (Collection) keys, list.asList());
-
-        return list.size() > 0;
-    }
-
-    public boolean removeValue(Object value) {
-        long started = listener.beforeRemove(null, value);
-
-        lazyStart();
-        CacheEntry<K, V> e = memoryCache.removeAny(Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP,
-                Predicates.equalsTo(value)));
-
-        listener.afterRemove(started, e);
-        return e != null;
-    }
-
-    public boolean removeValues(Collection<?> values) {
-        if (values == null) {
-            throw new NullPointerException("collection is null");
-        }
-        CollectionUtils.checkCollectionForNulls(values);
-        long started = listener.beforeRemoveAll((Collection) values);
-
-        lazyStart();
-        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeValues(values);
-
-        listener.afterRemoveAll(started, (Collection) values, list.asList());
-
-        return list.size() > 0;
-    }
+//    public boolean removeEntries(Collection<?> entries) {
+//        if (entries == null) {
+//            throw new NullPointerException("collection is null");
+//        }
+//        CollectionUtils.checkCollectionForNulls(entries);
+//        long started = listener.beforeRemoveAll((Collection) entries);
+//
+//        lazyStart();
+//        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeEntries(entries);
+//
+//        listener.afterRemoveAll(started, (Collection) entries, list.asList());
+//
+//        return list.size() > 0;
+//    }
+//
+//    public boolean removeKeys(Collection<?> keys) {
+//        if (keys == null) {
+//            throw new NullPointerException("collection is null");
+//        }
+//        CollectionUtils.checkCollectionForNulls(keys);
+//        long started = listener.beforeRemoveAll((Collection) keys);
+//
+//        lazyStart();
+//        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeAll(keys);
+//
+//        listener.afterRemoveAll(started, (Collection) keys, list.asList());
+//
+//        return list.size() > 0;
+//    }
+//
+//    public boolean removeValue(Object value) {
+//        long started = listener.beforeRemove(null, value);
+//
+//        lazyStart();
+//        CacheEntry<K, V> e = memoryCache.removeAny(Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP,
+//                Predicates.equalsTo(value)));
+//
+//        listener.afterRemove(started, e);
+//        return e != null;
+//    }
+//
+//    public boolean removeValues(Collection<?> values) {
+//        if (values == null) {
+//            throw new NullPointerException("collection is null");
+//        }
+//        CollectionUtils.checkCollectionForNulls(values);
+//        long started = listener.beforeRemoveAll((Collection) values);
+//
+//        lazyStart();
+//        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeValues(values);
+//
+//        listener.afterRemoveAll(started, (Collection) values, list.asList());
+//
+//        return list.size() > 0;
+//    }
 
     public V replace(K key, V value) {
         checkKeyValue(key, value);
@@ -301,10 +301,12 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
 
         // Cache components
         composer.registerImplementation(UnsynchronizedCollectionViews.class);
-        composer.registerImplementation(DefaultAttributeService.class);
         composer.registerImplementation(HashMapMemoryStore.class);
 
+        composer.registerImplementation(DefaultAttributeService.class);
         // composer.registerImplementation(MemorySparseAttributeService.class);
+
+        
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(UnsynchronizedCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);

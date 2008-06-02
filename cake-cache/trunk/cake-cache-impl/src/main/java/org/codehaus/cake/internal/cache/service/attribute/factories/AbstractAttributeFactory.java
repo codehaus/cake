@@ -17,7 +17,7 @@ public abstract class AbstractAttributeFactory<K, V> {
         return att;
     }
 
-    public abstract Object op(K key, V value, AttributeMap user, AttributeMap existing);
+    public abstract Object getValue(K key, V value, AttributeMap user, AttributeMap existing);
 
     protected void illegalAttribute(K key, Object illegalValue, Object resortedTo) {
         ies.warning("ILD " + key);

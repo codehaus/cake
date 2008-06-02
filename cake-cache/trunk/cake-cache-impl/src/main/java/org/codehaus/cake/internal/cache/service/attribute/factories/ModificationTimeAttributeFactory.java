@@ -18,7 +18,7 @@ public final class ModificationTimeAttributeFactory<K, V> extends AbstractAttrib
     }
 
     @Override
-    public Object op(K key, V value, AttributeMap user, AttributeMap existing) {
+    public Object getValue(K key, V value, AttributeMap user, AttributeMap existing) {
         long modificationTime = user.get(TIME_MODIFIED);
         final long time;
         if (modificationTime > 0) {

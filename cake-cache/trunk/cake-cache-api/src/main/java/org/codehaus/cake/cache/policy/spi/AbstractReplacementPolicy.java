@@ -12,27 +12,31 @@ import org.codehaus.cake.service.Startable;
 
 public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPolicy<K, V> {
 
-    /**
-     * Default implementation just selects the new entry.
-     */
-    @Override
-    public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        return newEntry;
-    }
-
     /** The attributes that have been registered. */
     private Set<Attribute<?>> attributes = new HashSet<Attribute<?>>();
 
-    private Set<Attribute<?>> softDependencies = new HashSet<Attribute<?>>();
-
     private Set<Attribute<?>> hardDependencies = new HashSet<Attribute<?>>();
+
     /** Lock object. */
     private final Object lock = new Object();
 
+    private Set<Attribute<?>> softDependencies = new HashSet<Attribute<?>>();
+    
     /**
-     * The default implementation of touch does nothing.
+     * This method can be used to attach special attributes to each cache entry. registered should only be read inside
+     * methods provided by abstract...
+     * 
+     * @param attribute
      */
-    public void touch(CacheEntry<K, V> entry) {}
+    protected final void attachToEntry(Attribute<?> attribute) {
+        synchronized (lock) {
+            if (attributes.contains(attribute) || softDependencies.contains(attribute)
+                    || hardDependencies.contains(attribute)) {
+                throw new IllegalArgumentException("attribute has already been attached");
+            }
+            attributes.add(attribute);
+        }
+    }
 
     protected final void dependHard(Attribute<?> attribute) {
         synchronized (lock) {
@@ -51,22 +55,6 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
                 throw new IllegalArgumentException("attribute has already been attached");
             }
             softDependencies.add(attribute);
-        }
-    }
-
-    /**
-     * This method can be used to attach special attributes to each cache entry. registered should only be read inside
-     * methods provided by abstract...
-     * 
-     * @param attribute
-     */
-    protected final void attachToEntry(Attribute<?> attribute) {
-        synchronized (lock) {
-            if (attributes.contains(attribute) || softDependencies.contains(attribute)
-                    || hardDependencies.contains(attribute)) {
-                throw new IllegalArgumentException("attribute has already been attached");
-            }
-            attributes.add(attribute);
         }
     }
 
@@ -100,4 +88,17 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
             }
         }
     }
+
+    /**
+     * Default implementation just selects the new entry.
+     */
+    @Override
+    public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
+        return newEntry;
+    }
+
+    /**
+     * The default implementation of touch does nothing.
+     */
+    public void touch(CacheEntry<K, V> entry) {}
 }

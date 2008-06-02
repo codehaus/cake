@@ -11,7 +11,7 @@ public final class CostAttributeFactory<K, V> extends AbstractAttributeFactory<K
     }
 
     @Override
-    public Object op(K key, V value, AttributeMap user, AttributeMap existing) {
+    public Object getValue(K key, V value, AttributeMap user, AttributeMap existing) {
         double userCost = user.get(COST);
         final double cost;
         if (userCost > 0) {

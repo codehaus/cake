@@ -18,7 +18,7 @@ public final class CreationTimeAttributeFactory<K, V> extends AbstractAttributeF
     }
 
     @Override
-    public Object op(K key, V value, AttributeMap user, AttributeMap existing) {
+    public Object getValue(K key, V value, AttributeMap user, AttributeMap existing) {
         long creationTime = user.get(TIME_CREATED);
         final long time;
         if (creationTime > 0) {

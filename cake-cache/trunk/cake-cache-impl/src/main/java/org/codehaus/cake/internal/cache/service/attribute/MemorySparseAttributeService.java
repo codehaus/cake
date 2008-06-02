@@ -75,7 +75,7 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     public AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
         Object[] objects = new Object[factories.length];
         for (int i = 0; i < factories.length; i++) {
-            objects[i] = factories[i].op(key, value, params, previous);
+            objects[i] = factories[i].getValue(key, value, params, previous);
         }
         try {
             return constructor.newInstance(objects);
@@ -105,14 +105,14 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         try {
             Class factory = DefaultMapGenerator.generate("CacheEntry" + al.getAndIncrement(),
                     new ArrayList(map.values()));
-            System.out.println(System.nanoTime() - start);
+         //   System.out.println(System.nanoTime() - start);
             start = System.nanoTime();
             constructor = (Constructor) factory.getConstructors()[0];
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        System.out.println(System.nanoTime() - start);
-        System.out.println("----");
+       // System.out.println(System.nanoTime() - start);
+//        System.out.println("----");
     }
 
     static class Info extends DefaultAttributeConfiguration {
@@ -123,5 +123,20 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         }
 
         Object defaultValue;
+    }
+
+    public void attachToPolicy(Attribute<?> attribute) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void dependOnHard(Attribute<?> attribute) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void dependOnSoft(Attribute<?> attribute) {
+        // TODO Auto-generated method stub
+        
     }
 }
