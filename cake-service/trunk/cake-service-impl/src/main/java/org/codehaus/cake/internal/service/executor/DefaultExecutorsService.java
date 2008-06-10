@@ -75,7 +75,6 @@ public class DefaultExecutorsService implements ExecutorsService, CompositeServi
         serviceRegistrant.registerService(ExecutorsService.class, this);
     }
 
-    @Override
     public Collection<?> getChildServices() {
         return Arrays.asList(manager);
     }

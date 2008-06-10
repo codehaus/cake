@@ -87,13 +87,11 @@ public class DefaultAttributeService<K, V> implements InternalAttributeService<K
 
     }
 
-    @Override
     public void dependOnHard(Attribute<?> attribute) {
     // TODO Auto-generated method stub
 
     }
 
-    @Override
     public void dependOnSoft(Attribute<?> attribute) {
     // TODO Auto-generated method stub
 

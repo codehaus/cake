@@ -92,7 +92,6 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
     /**
      * Default implementation just selects the new entry.
      */
-    @Override
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         return newEntry;
     }
