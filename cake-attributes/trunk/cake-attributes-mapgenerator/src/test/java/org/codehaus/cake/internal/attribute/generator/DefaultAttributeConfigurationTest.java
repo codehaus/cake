@@ -27,8 +27,8 @@ public class DefaultAttributeConfigurationTest {
         DefaultAttributeConfiguration dac = new DefaultAttributeConfiguration(I_1, true, false);
         DefaultAttributeConfiguration dac2 = new DefaultAttributeConfiguration(dac);
         assertSame(dac.getAttribute(), dac2.getAttribute());
-        assertEquals(dac.isHidden(), dac2.isHidden());
-        assertEquals(dac.isMutable(), dac2.isMutable());
+        assertEquals(dac.allowGet(), dac2.allowGet());
+        assertEquals(dac.allowPut(), dac2.allowPut());
     }
 
     @Test

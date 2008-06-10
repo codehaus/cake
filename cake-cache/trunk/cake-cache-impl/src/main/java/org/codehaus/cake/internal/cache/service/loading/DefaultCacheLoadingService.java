@@ -87,8 +87,8 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
 
     class NoForceLoading extends AbstractCacheLoadingService<K, V> {
         void doLoad(K key, AttributeMap attributes) {
-            if (needsReload(key)) {
-                if (!cache.isShutdown()) {
+            if (!cache.isShutdown()) {
+                if (needsReload(key)) {
                     loader.loadAsync(key, attributes);
                 }
             }

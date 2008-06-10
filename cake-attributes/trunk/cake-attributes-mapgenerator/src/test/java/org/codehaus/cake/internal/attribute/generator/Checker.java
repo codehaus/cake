@@ -36,7 +36,7 @@ public class Checker {
         this.map = map;
         visible = new HashMap<DefaultAttributeConfiguration, Object>();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : m.entrySet()) {
-            if (!i.getKey().isHidden()) {
+            if (!i.getKey().allowGet()) {
                 visible.put(i.getKey(), i.getValue());
                 visibleAttributes.add(i.getKey().getAttribute());
             }
@@ -65,7 +65,7 @@ public class Checker {
         assertEquals((byte) 44, map.get(new ByteAttribute("ff", (byte) 44) {}));
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, (byte) 111));
             assertEquals((byte) 111, map.get(la));
             assertEquals((byte) 111, map.get(la, (byte) 34));
@@ -95,7 +95,7 @@ public class Checker {
         assertEquals((char) 44, map.get(new CharAttribute("ff", (char) 44) {}));
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, (char) 111));
             assertEquals((char) 111, map.get(la));
             assertEquals((char) 111, map.get(la, (char) 34));
@@ -125,7 +125,7 @@ public class Checker {
         assertEquals(44d, map.get(new DoubleAttribute("ff", 44) {}), 0);
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, 242374634), 0);
             assertEquals(242374634d, map.get(la), 0);
             assertEquals(242374634d, map.get(la, 234), 0);
@@ -154,7 +154,7 @@ public class Checker {
         assertEquals(44f, map.get(new FloatAttribute("ff", 44) {}), 0);
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, 242374634), 0);
             assertEquals(242374634f, map.get(la), 0);
             assertEquals(242374634f, map.get(la, 234), 0);
@@ -183,7 +183,7 @@ public class Checker {
         assertEquals(44, map.get(new IntAttribute("ff", 44) {}));
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, 242374634));
             assertEquals(242374634, map.get(la));
             assertEquals(242374634, map.get(la, 234));
@@ -212,7 +212,7 @@ public class Checker {
         assertEquals(44L, map.get(new LongAttribute("ff", 44) {}));
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, 242374634));
             assertEquals(242374634L, map.get(la));
             assertEquals(242374634L, map.get(la, 234));
@@ -235,8 +235,8 @@ public class Checker {
     void check(DefaultAttributeConfiguration i, Object value) {
         // System.out.println(map);
         Attribute a = i.getAttribute();
-        assertEquals(!i.isHidden(), map.contains(a));
-        assertEquals(!i.isHidden(), map.attributeSet().contains(a));
+        assertEquals(!i.allowGet(), map.contains(a));
+        assertEquals(!i.allowGet(), map.attributeSet().contains(a));
 
         if (a instanceof BooleanAttribute) {
             check(i, (BooleanAttribute) a, ((Boolean) value).booleanValue());
@@ -289,7 +289,7 @@ public class Checker {
         } else {
             throw new AssertionError(la.getType().toString());
         }
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, o1));
             assertEquals(o1, map.get(la));
             assertEquals(o1, map.get(la, l));
@@ -320,7 +320,7 @@ public class Checker {
         assertEquals((short) 44, map.get(new ShortAttribute("ff", (short) 44) {}));
 
         // put
-        if (i.isMutable()) {
+        if (i.allowPut()) {
             assertEquals(l, map.put(la, (short) 111));
             assertEquals((short) 111, map.get(la));
             assertEquals((short) 111, map.get(la, (short) 34));
@@ -383,7 +383,7 @@ public class Checker {
         Map<Attribute, Object> hashCode = new HashMap<Attribute, Object>();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : params.entrySet()) {
             check(i.getKey(), i.getValue());
-            if (!i.getKey().isHidden()) {
+            if (!i.getKey().allowGet()) {
                 hashCode.put(i.getKey().getAttribute(), i.getValue());
             }
         }

@@ -5,29 +5,36 @@ import org.codehaus.cake.attribute.Attribute;
 public class DefaultAttributeConfiguration implements AttributeConfiguration {
     private final Attribute a;
 
-    private final boolean isHidden;
-
-    private final boolean isMutable;
+    private boolean allowGet;
+    private boolean allowPut;
+    private boolean isPrivate;
+    private boolean isFinal;
 
     public DefaultAttributeConfiguration(Attribute a, boolean isMutable, boolean isHidden) {
+        this(a, !isHidden, !isHidden, !isMutable, true);
+    }
+
+    public DefaultAttributeConfiguration(Attribute a, boolean allowGet, boolean allowPut, boolean isFinal,
+            boolean isPrivate) {
         if (a == null) {
             throw new NullPointerException("a is null");
         }
         this.a = a;
-        this.isMutable = isMutable;
-        this.isHidden = isHidden;
+        this.allowGet = allowGet;
+        this.allowPut = allowPut;
+        this.isFinal = isFinal;
+        this.isPrivate = isPrivate;
     }
 
     public DefaultAttributeConfiguration(DefaultAttributeConfiguration other) {
-        this.a = other.a;
-        this.isHidden = other.isHidden;
-        this.isMutable = other.isMutable;
+        this(other.a, other.allowGet, other.allowPut, other.isFinal, other.isPrivate);
     }
 
     @Override
     public boolean equals(Object obj) {
         DefaultAttributeConfiguration c = (DefaultAttributeConfiguration) obj;
-        return c.a == a && c.isHidden == isHidden && c.isMutable == isMutable;
+        return c.a == a && c.allowGet == allowGet && c.allowPut == allowPut && c.isFinal == isFinal
+                && c.isPrivate == isPrivate;
     }
 
     public Attribute getAttribute() {
@@ -39,15 +46,24 @@ public class DefaultAttributeConfiguration implements AttributeConfiguration {
         return a.hashCode();
     }
 
-    public boolean isHidden() {
-        return isHidden;
-    }
-
-    public boolean isMutable() {
-        return isMutable;
+    public boolean allowGet() {
+        return allowGet;
     }
 
     public String toString() {
-        return a + ", isMut=" + isMutable + ", isHid=" + isHidden;
+        return a + ", allowGet=" + allowGet + ", allowPut=" + allowPut + ", isPrivate=" + isPrivate + ", isFinal="
+                + isFinal;
+    }
+
+    public boolean allowPut() {
+        return allowPut;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public boolean isFinal() {
+        return !isFinal;
     }
 }

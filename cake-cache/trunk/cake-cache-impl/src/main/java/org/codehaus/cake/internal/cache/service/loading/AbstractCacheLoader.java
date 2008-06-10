@@ -51,18 +51,6 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K
         }
     }
 
-    static class OpsToSimpleLoader<K, V> implements SimpleCacheLoader<K, V> {
-        private final BinaryOp<K, AttributeMap, V> op;
-
-        public OpsToSimpleLoader(BinaryOp<K, AttributeMap, V> op) {
-            this.op = op;
-        }
-
-        public V load(K key, AttributeMap attributes) throws Exception {
-            return op.op(key, attributes);
-        }
-    }
-
     public void loadAsync(Map<? extends K, AttributeMap> map) {
         for (Map.Entry<? extends K, AttributeMap> e : map.entrySet()) {
             loadAsync(e.getKey(), e.getValue());

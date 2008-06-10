@@ -46,31 +46,28 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         return update(key, value, params, null);
     }
 
-    public AttributeMap getAttributes() {
-        AttributeMap am = new DefaultAttributeMap();
-        for (Info i : map.values()) {
-            am.put(i.getAttribute(), i.defaultValue);
-        }
-        return am;
-    }
-
-    public <T> T getDefaultValue(Attribute<T> attribute) {
-        Info i = map.get(attribute);
-        return i == null ? attribute.getDefault() : (T) i.defaultValue;
-    }
-
-    public <T> void add(Attribute<T> attribute) {
-        map.put(attribute, new Info(attribute, true, true, attribute.getDefault()));
-        updateAttributes();
-    }
+    //
+    // public AttributeMap getAttributes() {
+    // AttributeMap am = new DefaultAttributeMap();
+    // for (Info i : map.values()) {
+    // am.put(i.getAttribute(), i.defaultValue);
+    // }
+    // return am;
+    // }
+    //
+    // public <T> T getDefaultValue(Attribute<T> attribute) {
+    // Info i = map.get(attribute);
+    // return i == null ? attribute.getDefault() : (T) i.defaultValue;
+    // }
 
     public AttributeMap remove(AttributeMap params) {
         throw new UnsupportedOperationException();
     }
 
-    public <T> void setDefaultValue(Attribute<T> attribute, T defaultValue) {
-        map.put(attribute, new Info(attribute, true, true, defaultValue));
-    }
+    //
+    // public <T> void setDefaultValue(Attribute<T> attribute, T defaultValue) {
+    // map.put(attribute, new Info(attribute, true, true, defaultValue));
+    // }
 
     public AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
         Object[] objects = new Object[factories.length];
@@ -97,27 +94,30 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         composer.registerImplementation(SIZE, SizeAttributeFactory.class);
         composer.registerImplementation(COST, CostAttributeFactory.class);
         for (Info i : map.values()) {
-            AbstractAttributeFactory f = (AbstractAttributeFactory) composer
-                    .getFromKeyIfAvailable(i.getAttribute());
+            AbstractAttributeFactory f = (AbstractAttributeFactory) composer.getFromKeyIfAvailable(i.getAttribute());
             factories[count++] = f;
         }
         long start = System.nanoTime();
         try {
-            Class factory = DefaultMapGenerator.generate("CacheEntry" + al.getAndIncrement(),
-                    new ArrayList(map.values()));
-         //   System.out.println(System.nanoTime() - start);
+            Class factory = DefaultMapGenerator.generate("CacheEntry" + al.getAndIncrement(), new ArrayList(map
+                    .values()));
+            // System.out.println(System.nanoTime() - start);
             start = System.nanoTime();
             constructor = (Constructor) factory.getConstructors()[0];
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-       // System.out.println(System.nanoTime() - start);
-//        System.out.println("----");
+        // System.out.println(System.nanoTime() - start);
+        // System.out.println("----");
     }
 
     static class Info extends DefaultAttributeConfiguration {
+        Info(Attribute a, boolean allowGet, boolean allowPut, boolean isFinal, boolean isPrivate, Object defaultValue) {
+            super(a, allowGet, allowPut, isFinal, isPrivate);
+            this.defaultValue = defaultValue;
+        }
 
-        public Info(Attribute a, boolean isMutable, boolean isHidden, Object defaultValue) {
+        Info(Attribute a, boolean isMutable, boolean isHidden, Object defaultValue) {
             super(a, isMutable, isHidden);
             this.defaultValue = defaultValue;
         }
@@ -126,17 +126,21 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     }
 
     public void attachToPolicy(Attribute<?> attribute) {
-        // TODO Auto-generated method stub
-        
+        map.put(attribute, new Info(attribute, false, true, false, true, attribute.getDefault()));
+        updateAttributes();
     }
 
     public void dependOnHard(Attribute<?> attribute) {
-        // TODO Auto-generated method stub
-        
+        if (!map.containsKey(attribute)) {
+            throw new IllegalStateException("Attribute " + attribute.getName()
+                    + " must be registered to use the specified replacement policy" + "[type=" + attribute.getClass());
+        }
     }
 
     public void dependOnSoft(Attribute<?> attribute) {
-        // TODO Auto-generated method stub
-        
+        if (!map.containsKey(attribute)) {
+            map.put(attribute, new Info(attribute, false, true, false, true, attribute.getDefault()));
+        }
+        updateAttributes();
     }
 }

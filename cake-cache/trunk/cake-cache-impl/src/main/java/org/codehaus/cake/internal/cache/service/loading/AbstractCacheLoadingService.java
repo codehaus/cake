@@ -49,7 +49,7 @@ abstract class AbstractCacheLoadingService<K, V> implements CacheLoadingService<
         } else if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
-        CollectionUtils.checkCollectionForNulls(keys);
+        //CollectionUtils.checkCollectionForNulls(keys);
         doLoadAll(keys, attributes);
     }
 
@@ -58,5 +58,6 @@ abstract class AbstractCacheLoadingService<K, V> implements CacheLoadingService<
             throw new NullPointerException("mapsWithAttributes is null");
         }
         CollectionUtils.checkMapForNulls(mapsWithAttributes);
+        doLoadAll(mapsWithAttributes);
     }
 }

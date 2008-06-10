@@ -4,8 +4,8 @@ import org.codehaus.cake.attribute.Attribute;
 
 public interface AttributeConfiguration {
     Attribute getAttribute();
-
-    boolean isHidden();
-
-    boolean isMutable();
+    boolean isPrivate();
+    boolean isFinal();
+    boolean allowGet();
+    boolean allowPut();
 }
