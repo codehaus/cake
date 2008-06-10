@@ -73,7 +73,6 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements 
         comparator = null;
     }
 
-    @Override
     public int compare(WithAttributes o1, WithAttributes o2) {
         if (comparator == null) {
             Comparable<? super T> thisVal = (Comparable<? super T>) get(o1);
