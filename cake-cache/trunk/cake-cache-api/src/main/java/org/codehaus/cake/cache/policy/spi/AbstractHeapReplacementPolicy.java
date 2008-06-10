@@ -15,7 +15,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
      * queue[2*(n+1)]. The priority queue is ordered by comparator For each node n in the heap and each descendant d of
      * n, n <= d. The element with the lowest value is in queue[0], assuming the queue is nonempty.
      */
-    private CacheEntry[] queue = new CacheEntry[0];
+    CacheEntry[] queue = new CacheEntry[0];
     private final Comparator<? super CacheEntry<K, V>> comparator = this;
     /**
      * The number of elements in the priority queue.
@@ -89,7 +89,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
      * traversing elements.
      */
     private CacheEntry<K, V> removeAt(int i) {
-        assert i >= 0 && i < size;
+        // assert i >= 0 && i < size;
         int s = --size;
         if (s == i) // removed last element
             queue[i] = null;
@@ -191,15 +191,19 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractReplac
      *            the desired minimum capacity
      */
     private void grow(int minCapacity) {
+        // / CLOVER:OFF
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError();
+        // / CLOVER:ON
         int oldCapacity = queue.length;
         // Double size if small; else grow by 50%
         int newCapacity = ((oldCapacity < 64) ? ((oldCapacity + 1) * 2) : ((oldCapacity / 2) * 3));
+        // / CLOVER:OFF
         if (newCapacity < 0) // overflow
             newCapacity = Integer.MAX_VALUE;
         if (newCapacity < minCapacity)
             newCapacity = minCapacity;
+        // / CLOVER:ON
         queue = ArrayUtils.copyOf(queue, newCapacity);
     }
 
