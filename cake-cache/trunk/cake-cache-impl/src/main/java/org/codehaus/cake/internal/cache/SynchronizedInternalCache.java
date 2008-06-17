@@ -15,7 +15,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
-import org.codehaus.cake.internal.cache.service.attribute.DefaultAttributeService;
+import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
 import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
@@ -28,8 +28,6 @@ import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.ops.CollectionOps;
-import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.executor.ExecutorsService;
@@ -325,9 +323,9 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
 
         // Cache components
         composer.registerImplementation(SynchronizedCollectionViews.class);
-        composer.registerImplementation(DefaultAttributeService.class);
+        //composer.registerImplementation(DefaultAttributeService.class);
         composer.registerImplementation(DefaultExecutorsService.class);
-        // composer.registerImplementation(MemorySparseAttributeService.class);
+        composer.registerImplementation(MemorySparseAttributeService.class);
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(ThreadSafeCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);

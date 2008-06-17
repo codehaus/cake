@@ -5,6 +5,6 @@ package org.codehaus.cake.internal.cache;
 import org.codehaus.cake.cache.CacheEntry;
 
 public interface InternalCacheEntry<K, V> extends CacheEntry<K, V> {
-    CacheEntry<K, V> safe();
-    boolean isDead();
+    //CacheEntry<K, V> safe();
+    //boolean isDead();
 }

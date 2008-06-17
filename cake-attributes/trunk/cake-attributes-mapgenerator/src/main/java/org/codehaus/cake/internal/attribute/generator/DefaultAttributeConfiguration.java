@@ -10,9 +10,9 @@ public class DefaultAttributeConfiguration implements AttributeConfiguration {
     private boolean isPrivate;
     private boolean isFinal;
 
-    public DefaultAttributeConfiguration(Attribute a, boolean isMutable, boolean isHidden) {
-        this(a, !isHidden, !isHidden, !isMutable, true);
-    }
+//    public DefaultAttributeConfiguration(Attribute a, boolean isMutable, boolean isHidden) {
+//        this(a, !isHidden, !isHidden, !isMutable, true);
+//    }
 
     public DefaultAttributeConfiguration(Attribute a, boolean allowGet, boolean allowPut, boolean isFinal,
             boolean isPrivate) {
@@ -64,6 +64,6 @@ public class DefaultAttributeConfiguration implements AttributeConfiguration {
     }
 
     public boolean isFinal() {
-        return !isFinal;
+        return isFinal;
     }
 }

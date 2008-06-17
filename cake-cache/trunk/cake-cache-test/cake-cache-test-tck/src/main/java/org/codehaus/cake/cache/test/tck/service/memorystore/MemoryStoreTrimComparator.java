@@ -22,7 +22,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         put(10);
         assertSize(10);
         withMemoryStore().trimToSize(5, new Comparator<CacheEntry<Integer, String>>() {
-            
+
             public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
                 return o2.getKey() - o1.getKey();
             }
@@ -31,7 +31,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         assertSize(10);
         Set<Integer> s = new HashSet(c.keySet());
         withMemoryStore().trimToSize(-5, new Comparator<CacheEntry<Integer, String>>() {
-            
+
             public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
                 return o1.getKey() - o2.getKey();
             }
@@ -39,6 +39,13 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         s.addAll(c.keySet());
         assertEquals(10, s.size());
         assertSize(5);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void trimToSizeComparatorNPE() {
+        put(10);
+        assertSize(10);
+        withMemoryStore().trimToSize(5, null);
     }
 
     /**
@@ -55,7 +62,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         assertSize(9);
         assertGet(M2, M4, M6, M8);
         withMemoryStore().trimToVolume(19, new Comparator<CacheEntry<Integer, String>>() {
-            
+
             public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
                 return o2.getKey() - o1.getKey();
             }
@@ -65,7 +72,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         assertGet(M1, M2, M3, M4, M5, M6, M7, M8, M9);
         assertSize(9);
         withMemoryStore().trimToVolume(30, new Comparator<CacheEntry<Integer, String>>() {
-            
+
             public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
                 return o1.getKey() - o2.getKey();
             }
@@ -73,4 +80,12 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         assertSize(3);
         assertVolume(27);
     }
+    
+    @Test(expected = NullPointerException.class)
+    public void trimToVolumeComparatorNPE() {
+        put(10);
+        assertSize(10);
+        withMemoryStore().trimToVolume(5, null);
+    }
+
 }

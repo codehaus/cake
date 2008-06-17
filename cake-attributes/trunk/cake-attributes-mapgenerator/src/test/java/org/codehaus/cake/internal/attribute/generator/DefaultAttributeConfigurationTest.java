@@ -14,7 +14,7 @@ public class DefaultAttributeConfigurationTest {
 
     @Test(expected = NullPointerException.class)
     public void constructorNPE() {
-        new DefaultAttributeConfiguration(null, false, false);
+        new DefaultAttributeConfiguration(null, false, false, false, false);
     }
 
     @Test(expected = NullPointerException.class)
@@ -24,7 +24,7 @@ public class DefaultAttributeConfigurationTest {
 
     @Test
     public void constructor1() {
-        DefaultAttributeConfiguration dac = new DefaultAttributeConfiguration(I_1, true, false);
+        DefaultAttributeConfiguration dac = new DefaultAttributeConfiguration(I_1, true, false, false, false);
         DefaultAttributeConfiguration dac2 = new DefaultAttributeConfiguration(dac);
         assertSame(dac.getAttribute(), dac2.getAttribute());
         assertEquals(dac.allowGet(), dac2.allowGet());
@@ -33,17 +33,18 @@ public class DefaultAttributeConfigurationTest {
 
     @Test
     public void testToString() {
-        new DefaultAttributeConfiguration(I_1, false, false).toString();
+        new DefaultAttributeConfiguration(I_1, false, false, false, false).toString();
     }
 
     @Test
     public void hashCodeEquals() {
-        DefaultAttributeConfiguration dac = new DefaultAttributeConfiguration(I_1, true, false);
+        DefaultAttributeConfiguration dac = new DefaultAttributeConfiguration(I_1, true, false, false, false);
         DefaultAttributeConfiguration dac2 = new DefaultAttributeConfiguration(dac);
         assertEquals(dac, dac2);
         assertEquals(dac.hashCode(), dac2.hashCode());
-        assertFalse(dac.equals(new DefaultAttributeConfiguration(new BooleanAttribute("ff", false) {}, true, false)));
-        assertFalse(dac.equals(new DefaultAttributeConfiguration(I_1, false, false)));
-        assertFalse(dac.equals(new DefaultAttributeConfiguration(I_1, true, true)));
+        assertFalse(dac.equals(new DefaultAttributeConfiguration(new BooleanAttribute("ff", false) {}, true, false,
+                false, false)));
+        assertFalse(dac.equals(new DefaultAttributeConfiguration(I_1, false, false, false, false)));
+        assertFalse(dac.equals(new DefaultAttributeConfiguration(I_1, true, true, false, false)));
     }
 }

@@ -56,14 +56,17 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         evictor = storeConfiguration.getEvictor();
     }
 
-    public CacheEntry<K, V> any() {
-        return map.size() == 0 ? null : map.values().iterator().next();
-    }
+//    public CacheEntry<K, V> any() {
+//        return map.size() == 0 ? null : map.values().iterator().next();
+//    }
 
     public CacheEntry<K, V> get(Object key) {
         CacheEntry<K, V> entry = map.get(key);
-        if (entry != null && policy != null) {
-            policy.touch(entry);
+        if (entry != null) {
+            attributeService.access(entry.getAttributes());
+            if (policy != null) {
+                policy.touch(entry);
+            }
         }
         return entry;
     }
@@ -177,18 +180,6 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                 policy.remove(entry);
             }
         }
-    }
-
-    public CacheEntry<K, V> removeAny(Predicate<? super CacheEntry<K, V>> selector) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ParallelArray<CacheEntry<K, V>> removeEntries(Collection entries) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ParallelArray<CacheEntry<K, V>> removeValues(Collection entries) {
-        throw new UnsupportedOperationException();
     }
 
     public ParallelArray<CacheEntry<K, V>> trim() {
@@ -330,7 +321,8 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         /** {@inheritDoc} */
 
         public int hashCode() {
-            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
+            return (key.hashCode()) ^ value.hashCode();
+            //return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
 
         /** {@inheritDoc} */
@@ -342,16 +334,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             return attributes;
         }
 
-        public boolean isDead() {
-            return false;
-        }
-
-        public CacheEntry<K, V> safe() {
-            return this;
-        }
-
         /** {@inheritDoc} */
-
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(key);
@@ -373,10 +356,6 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                 sb.append(", ");
             }
         }
-    }
-
-    public int size() {
-        return map.size();
     }
 
     public Iterator<CacheEntry<K, V>> iterator() {

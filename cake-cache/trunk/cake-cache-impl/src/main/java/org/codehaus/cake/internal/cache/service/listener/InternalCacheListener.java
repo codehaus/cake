@@ -30,41 +30,36 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
      * @param previousVolume
      *            the previous volume of the cache
      */
-    void afterCacheClear(long timestamp, Collection<? extends CacheEntry<K, V>> entries
-            );
+    void afterCacheClear(long timestamp, Collection<? extends CacheEntry<K, V>> entries);
 
-    void afterCachePurge(long start, Collection<? extends CacheEntry<K, V>> purgedEntries,
-            int previousSize, int newSize );
+   // void afterCachePurge(long start, Collection<? extends CacheEntry<K, V>> purgedEntries, int previousSize, int newSize);
 
-    void afterGetAll(long started, Object[] keys, CacheEntry<K, V>[] entries, boolean[] isHit,
-            boolean[] isExpired, Map<K, V> loadedEntries);
+//    void afterGetAll(long started, Object[] keys, CacheEntry<K, V>[] entries, boolean[] isHit, boolean[] isExpired,
+//            Map<K, V> loadedEntries);
 
-    void afterHit(long started, K key, CacheEntry<K, V> entry);
+   // void afterHit(long started, K key, CacheEntry<K, V> entry);
 
-    void afterMiss(long started, K key, CacheEntry<K, V> previousEntry, CacheEntry<K, V> newEntry,
-            boolean isExpired);
+//    void afterMiss(long started, K key, CacheEntry<K, V> previousEntry, CacheEntry<K, V> newEntry, boolean isExpired);
 
-    void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
-            InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry);
+//    void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
+//            InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry);
 
     void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
             InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry, boolean fromLoader);
 
     void afterPutAll(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
-            Map<InternalCacheEntry<K, V>, InternalCacheEntry<K, V>> newPrevEntries,
-            boolean fromLoader);
+            Map<InternalCacheEntry<K, V>, InternalCacheEntry<K, V>> newPrevEntries, boolean fromLoader);
 
     void afterRemove(long started, CacheEntry<K, V> entry);
 
-    void afterRemoveAll(long start, Collection<? extends K> keys,
-            Collection<CacheEntry<K, V>> removed);
+    void afterRemoveAll(long start, Collection<? extends K> keys, Collection<CacheEntry<K, V>> removed);
 
-    void afterContainerStart();
+ //   void afterContainerStart();
 
-    void afterContainerStop();
+ //   void afterContainerStop();
 
-    void afterTrimCache(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
-            int previousSize, int newSize);
+//    void afterTrimCache(long started, Collection<? extends CacheEntry<K, V>> evictedEntries, int previousSize,
+//            int newSize);
 
     /**
      * Called before the cache was cleared.
@@ -75,25 +70,24 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
      */
     long beforeCacheClear();
 
-    long beforeCachePurge();
+   // long beforeCachePurge();
 
-    long beforeGet(K key);
+  //  long beforeGet(K key);
 
-    long beforeGetAll(Collection<? extends K> keys);
+ //   long beforeGetAll(Collection<? extends K> keys);
 
-    long beforePut(K key, V value, boolean fromLoader);
+   long beforePut(K key, V value, boolean fromLoader);
 
-    long beforePutAll(Map<? extends K, ? extends V> map, Map<? extends K, AttributeMap> attributes,
-            boolean fromLoader);
+    long beforePutAll(Map<? extends K, ? extends V> map, Map<? extends K, AttributeMap> attributes, boolean fromLoader);
 
     long beforeRemove(Object key, Object value);
 
     long beforeRemoveAll(Collection<? extends K> keys);
 
-    long beforeReplace(K key, V value);
+//    long beforeReplace(K key, V value);
 
-    long beforeTrim(int newSize);
+ //   long beforeTrim(int newSize);
 
-    void dexpired(long started, CacheEntry<K, V> entry);
+//    void dexpired(long started, CacheEntry<K, V> entry);
 
 }

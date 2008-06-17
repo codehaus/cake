@@ -105,6 +105,8 @@ public final class BooleanAttributeTest extends AtrStubs {
         assertFalse(ATR1.get(withAtr(am), false));
         assertFalse(ATR1.get(withAtr(am1), true));
         assertTrue(ATR1.get(withAtr(am2), true));
+        assertTrue(ATR1.isTrue(am2));
+        assertFalse(ATR1.isFalse(am2));
     }
 
     @Test
@@ -149,4 +151,6 @@ public final class BooleanAttributeTest extends AtrStubs {
     public void toSingletonIAE() {
         NON_NEGATIVE.singleton(false);
     }
+    
+    
 }

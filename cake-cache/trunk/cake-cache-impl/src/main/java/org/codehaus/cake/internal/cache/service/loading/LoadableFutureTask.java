@@ -79,13 +79,13 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
          */
         LoadValueCallable(ThreadSafeCacheLoader<K, V> loadingService, K key,
                 AttributeMap attributes) {
-            if (loadingService == null) {
-                throw new NullPointerException("loadingService is null");
-            } else if (key == null) {
-                throw new NullPointerException("key is null");
-            } else if (attributes == null) {
-                throw new NullPointerException("attributes is null");
-            }
+//            if (loadingService == null) {
+//                throw new NullPointerException("loadingService is null");
+//            } else if (key == null) {
+//                throw new NullPointerException("key is null");
+//            } else if (attributes == null) {
+//                throw new NullPointerException("attributes is null");
+//            }
             this.key = key;
             this.loadingService = loadingService;
             this.attributes = attributes;
@@ -96,22 +96,22 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
             return loadingService.loadFromFuture(key, attributes);
         }
 
-        /**
-         * Returns the key whose corresponding value should be loaded.
-         *
-         * @return the key whose corresponding value should be loaded
-         */
-        public K getKey() {
-            return key;
-        }
-
-        /**
-         * Returns the attribute map that should be passed to the cache loader.
-         *
-         * @return the attribute map that should be passed to the cache loader
-         */
-        public AttributeMap getAttributes() {
-            return attributes;
-        }
+//        /**
+//         * Returns the key whose corresponding value should be loaded.
+//         *
+//         * @return the key whose corresponding value should be loaded
+//         */
+//        public K getKey() {
+//            return key;
+//        }
+//
+//        /**
+//         * Returns the attribute map that should be passed to the cache loader.
+//         *
+//         * @return the attribute map that should be passed to the cache loader
+//         */
+//        public AttributeMap getAttributes() {
+//            return attributes;
+//        }
     }
 }

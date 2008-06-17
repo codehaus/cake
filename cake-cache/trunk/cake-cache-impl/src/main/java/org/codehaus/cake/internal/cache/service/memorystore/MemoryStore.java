@@ -7,7 +7,6 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.util.EntryPair;
-import org.codehaus.cake.ops.Ops.Predicate;
 
 public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
@@ -27,9 +26,9 @@ public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
     ParallelArray<CacheEntry<K, V>> trim();
 
-    CacheEntry<K, V> removeAny(Predicate<? super CacheEntry<K, V>> selector);
+    //CacheEntry<K, V> removeAny(Predicate<? super CacheEntry<K, V>> selector);
 
-    ParallelArray<CacheEntry<K, V>> removeEntries(Collection entries);
+    //ParallelArray<CacheEntry<K, V>> removeEntries(Collection entries);
 
     EntryPair put(K key, V value, AttributeMap attributes, boolean OnlyIfAbsent);
 
@@ -37,7 +36,7 @@ public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
     Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data);
 
-    ParallelArray<CacheEntry<K, V>> removeValues(Collection entries);
+    //ParallelArray<CacheEntry<K, V>> removeValues(Collection entries);
 
     ParallelArray<CacheEntry<K, V>> removeAll();
 

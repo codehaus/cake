@@ -14,39 +14,7 @@ import org.codehaus.cake.internal.asm.Opcodes;
 import org.codehaus.cake.internal.asm.Type;
 
 public enum PrimType {
-    BOOLEAN(Boolean.class, BooleanAttribute.class, Type.BOOLEAN_TYPE, Opcodes.ILOAD,
-            Opcodes.ISTORE, Opcodes.IRETURN),
-
-    BYTE(Byte.class, ByteAttribute.class, Type.BYTE_TYPE, Opcodes.ILOAD, Opcodes.ISTORE,
-            Opcodes.IRETURN),
-
-    CHAR(Character.class, CharAttribute.class, Type.CHAR_TYPE, Opcodes.ILOAD, Opcodes.ISTORE,
-            Opcodes.IRETURN),
-
-    DOUBLE(Double.class, DoubleAttribute.class, Type.DOUBLE_TYPE, Opcodes.DLOAD, Opcodes.DSTORE,
-            Opcodes.DRETURN) {
-        public int indexInc() {
-            return 2;
-        }
-    },
-    FLOAT(Float.class, FloatAttribute.class, Type.FLOAT_TYPE, Opcodes.FLOAD, Opcodes.FSTORE,
-            Opcodes.FRETURN),
-
-    INT(Integer.class, IntAttribute.class, Type.INT_TYPE, Opcodes.ILOAD, Opcodes.ISTORE,
-            Opcodes.IRETURN),
-
-    LONG(Long.class, LongAttribute.class, Type.LONG_TYPE, Opcodes.LLOAD, Opcodes.LSTORE,
-            Opcodes.LRETURN) {
-        public int indexInc() {
-            return 2;
-        }
-    },
-
-    OBJECT(Object.class, ObjectAttribute.class, Type.getType(Object.class), Opcodes.ALOAD,
-            Opcodes.ASTORE, Opcodes.ARETURN),
-
-    SHORT(Short.class, ShortAttribute.class, Type.SHORT_TYPE, Opcodes.ILOAD, Opcodes.ISTORE,
-            Opcodes.IRETURN);
+    BOOLEAN(0), BYTE(1), CHAR(2), DOUBLE(3), FLOAT(4), INT(5), LONG(6), OBJECT(7), SHORT(8);
 
     private final int loadCode;
     private final Type object;// java.lang.Integer
@@ -55,14 +23,13 @@ public enum PrimType {
     private final int storeCode;
     private final Type type;
 
-    private PrimType(Class object, Class<? extends Attribute> c, Type primType, int loadCode,
-            int storeCode, int returnCode) {
-        type = Type.getType(c);
-        this.object = Type.getType(object);
-        this.primType = primType;
-        this.returncode = returnCode;
-        this.loadCode = loadCode;
-        this.storeCode = storeCode;
+    private PrimType(int index) {
+        type = Type.getType(Info.CLASSES_ATT[index]);
+        this.object = Type.getType(Info.CLASSES[index]);
+        this.primType = Info.TYPES[index];
+        this.returncode = Info.RETURN_OPCODES[index];
+        this.loadCode = Info.LOAD_OPCODES[index];
+        this.storeCode = Info.STORE_OPCODES[index];
 
     }
 
@@ -88,7 +55,7 @@ public enum PrimType {
     }
 
     public int indexInc() {
-        return 1;
+        return this == LONG || this == DOUBLE ? 2 : 1;
     }
 
     public int loadCode() {
@@ -124,5 +91,22 @@ public enum PrimType {
             // if (a instanceof ObjectAttribute) {
             return OBJECT;
         }
+    }
+    
+
+    static class Info {
+        final static Class[] CLASSES = new Class[] { Boolean.class, Byte.class, Character.class, Double.class,
+                Float.class, Integer.class, Long.class, Object.class, Short.class };
+        final static Class[] CLASSES_ATT = new Class[] { BooleanAttribute.class, ByteAttribute.class,
+                CharAttribute.class, DoubleAttribute.class, FloatAttribute.class, IntAttribute.class,
+                LongAttribute.class, ObjectAttribute.class, ShortAttribute.class };
+        final static Type[] TYPES = new Type[] { Type.BOOLEAN_TYPE, Type.BYTE_TYPE, Type.CHAR_TYPE, Type.DOUBLE_TYPE,
+                Type.FLOAT_TYPE, Type.INT_TYPE, Type.LONG_TYPE, Type.getType(Object.class), Type.SHORT_TYPE };
+        final static int[] LOAD_OPCODES = new int[] { Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.DLOAD,
+                Opcodes.FLOAD, Opcodes.ILOAD, Opcodes.LLOAD, Opcodes.ALOAD, Opcodes.ILOAD };
+        final static int[] STORE_OPCODES = new int[] { Opcodes.ISTORE, Opcodes.ISTORE, Opcodes.ISTORE, Opcodes.DSTORE,
+                Opcodes.FSTORE, Opcodes.ISTORE, Opcodes.LSTORE, Opcodes.ASTORE, Opcodes.ISTORE };
+        final static int[] RETURN_OPCODES = new int[] { Opcodes.IRETURN, Opcodes.IRETURN, Opcodes.IRETURN,
+                Opcodes.DRETURN, Opcodes.FRETURN, Opcodes.IRETURN, Opcodes.LRETURN, Opcodes.ARETURN, Opcodes.IRETURN };
     }
 }

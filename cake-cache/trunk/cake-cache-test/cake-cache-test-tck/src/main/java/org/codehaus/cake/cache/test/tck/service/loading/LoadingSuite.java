@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
 @RunWith(ServiceSuite.class)
 @Suite.SuiteClasses( { ExplicitNeedsReload.class, ImplicitLoading.class, Load.class, LoadAll.class,
         LoadAllIterable.class, LoadAllIterableForced.class, LoadAllMap.class, LoadForced.class, LoadingErroneous.class,
-        LoadingLifecycle.class, LoadingManagement.class, LoadingNPE.class, LoadingService.class })
+        LoadingLifecycle.class, LoadingManagement.class, LoadingNPE.class, LoadingService.class, LoadSimpleOp.class })
 public class LoadingSuite {
 
     static class VolatilePredicate implements Predicate<CacheEntry<Integer, String>> {

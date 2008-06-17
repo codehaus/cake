@@ -10,4 +10,5 @@ public interface InternalAttributeService<K, V> extends InternalCacheAttributeSe
     AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous);
 
     AttributeMap remove(AttributeMap params);
+    void access(AttributeMap map);
 }

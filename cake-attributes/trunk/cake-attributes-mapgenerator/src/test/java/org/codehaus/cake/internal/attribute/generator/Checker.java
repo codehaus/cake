@@ -25,6 +25,7 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
+import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator.MyLoader;
 
 public class Checker {
     private AttributeMap map;
@@ -36,7 +37,7 @@ public class Checker {
         this.map = map;
         visible = new HashMap<DefaultAttributeConfiguration, Object>();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : m.entrySet()) {
-            if (!i.getKey().allowGet()) {
+            if (i.getKey().allowGet()) {
                 visible.put(i.getKey(), i.getValue());
                 visibleAttributes.add(i.getKey().getAttribute());
             }
@@ -235,8 +236,8 @@ public class Checker {
     void check(DefaultAttributeConfiguration i, Object value) {
         // System.out.println(map);
         Attribute a = i.getAttribute();
-        assertEquals(!i.allowGet(), map.contains(a));
-        assertEquals(!i.allowGet(), map.attributeSet().contains(a));
+        assertEquals(i.allowGet(), map.contains(a));
+        assertEquals(i.allowGet(), map.attributeSet().contains(a));
 
         if (a instanceof BooleanAttribute) {
             check(i, (BooleanAttribute) a, ((Boolean) value).booleanValue());
@@ -350,7 +351,7 @@ public class Checker {
             list.add(i.getKey());
         }
         try {
-            Class<AttributeMap> c = DefaultMapGenerator.generate(className, list);
+            Class<AttributeMap> c = DefaultMapGenerator.generate(new MyLoader(), className, list);
             map = newInstance(params, c, false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -383,7 +384,7 @@ public class Checker {
         Map<Attribute, Object> hashCode = new HashMap<Attribute, Object>();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : params.entrySet()) {
             check(i.getKey(), i.getValue());
-            if (!i.getKey().allowGet()) {
+            if (i.getKey().allowGet()) {
                 hashCode.put(i.getKey().getAttribute(), i.getValue());
             }
         }
@@ -539,7 +540,7 @@ public class Checker {
         }
         AttributeMap map = null;
         try {
-            Class<AttributeMap> c = DefaultMapGenerator.generate("foo" + System.nanoTime(), list);
+            Class<AttributeMap> c = DefaultMapGenerator.generate(new MyLoader(), "foo" + System.nanoTime(), list);
             map = newInstance(m, c, false);
         } catch (Exception e) {
             e.printStackTrace();

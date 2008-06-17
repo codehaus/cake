@@ -166,5 +166,4 @@ public class TimeModified extends AbstractAttributeTest {
         assertGet(M5);
         assertAttribute(M5, 10l);//default
     }
-
 }

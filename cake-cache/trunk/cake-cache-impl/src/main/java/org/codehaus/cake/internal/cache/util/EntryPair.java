@@ -12,7 +12,7 @@ import org.codehaus.cake.cache.CacheEntry;
  * @version $Id$
  */
 public final class EntryPair<K, V> {
-    private static final EntryPair NULLPAIR = new EntryPair(null, null);
+    //private static final EntryPair NULLPAIR = new EntryPair(null, null);
     /** The first instance. */
     private final CacheEntry<K, V> instance1;
 
@@ -32,9 +32,9 @@ public final class EntryPair<K, V> {
         this.instance2 = item2;
     }
 
-    public static <K, V> EntryPair<K, V> nullPair() {
-        return NULLPAIR;
-    }
+//    public static <K, V> EntryPair<K, V> nullPair() {
+//        return NULLPAIR;
+//    }
 
     /**
      * Returns the first item in the Pair.

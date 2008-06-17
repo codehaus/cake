@@ -2,7 +2,7 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
-import static org.codehaus.cake.cache.CacheEntry.SIZE;
+import static org.codehaus.cake.cache.CacheEntry.VERSION;
 
 import java.util.Iterator;
 
@@ -17,46 +17,20 @@ import org.junit.Test;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Size.java 555 2008-01-09 04:52:48Z kasper $
  */
-public class Size extends AbstractAttributeTest {
-    public Size() {
-        super(SIZE);
+public class Version extends AbstractAttributeTest {
+    public Version() {
+        super(VERSION);
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void iterator() {
-        loader.setAttribute(SIZE, LongOps.add(5));// size=key+1
+        loader.setAttribute(VERSION, LongOps.add(5));// size=key+1
         init();
         assertGet(M1);
         Iterator iter = c.values().iterator();
         iter.next();
         iter.remove();
-        assertVolume(0);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void volume() {
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
-        init();
-        assertGet(M1);
-        assertVolume(2);
-        assertGet(M3);
-        assertVolume(6);
-        remove(M1);
-        assertVolume(4);
-        assertGet(M5);
-        assertVolume(10);
-        assertSize(2);// element size unaffected
-        c.clear();
-        assertVolume(0);
-
-        init();
-        put(M1);
-        assertVolume(1);
-        putAll(M1, M2);
-        assertVolume(2);
-        c.clear();
         assertVolume(0);
     }
 
@@ -101,7 +75,7 @@ public class Size extends AbstractAttributeTest {
     }
 
     /**
-     * Tests default size of 1.
+     * Tests version increment.
      */
     @SuppressWarnings("unchecked")
     @Test
@@ -109,12 +83,12 @@ public class Size extends AbstractAttributeTest {
         put(M1);
         assertAttribute(M1);
         putAll(M1, M2);
-        assertAttribute(M1);
+        assertAttribute(M1, 2L);
         assertAttribute(M2);
     }
 
     /**
-     * Tests that put overrides the cost of an existing item.
+     * Tests that put increments the version of an item loaded with a specific version.
      */
     @Test
     public void putOverride() {
@@ -122,6 +96,6 @@ public class Size extends AbstractAttributeTest {
         assertGet(M1);
         assertAttribute(M1, 4l);
         put(M1);
-        assertAttribute(M1);
+        assertAttribute(M1, 5L);
     }
 }

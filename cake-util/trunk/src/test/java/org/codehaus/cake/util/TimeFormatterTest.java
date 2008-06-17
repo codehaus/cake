@@ -58,15 +58,17 @@ public class TimeFormatterTest {
 
     }
 
+    public static void main(String[] args) {}
+
     @Test
     public void shortFormat() {
         TimeFormatter tf = TimeFormatter.DEFAULT;
-        assertTrue(tf.formatNanos(1000L).equals("0,001 ms")
-                || tf.formatNanos(1000L).equals("0.001 ms"));
-        assertTrue(tf.formatNanos(12321033L).equals("12,321 ms")
-                || tf.formatNanos(12321033L).equals("12.321 ms"));
-        assertTrue(tf.formatNanos(12321033000L).equals("12,321 s")
-                || tf.formatNanos(12321033000L).equals("12.321 s"));
+        assertEquals("104 ns", tf.formatNanos(104L));
+
+        // nevermind the codepage, test both . and ,
+        assertTrue(tf.formatNanos(1004L).equals("1,004 \u00b5s") || tf.formatNanos(1004L).equals("1.004 \u00b5s"));
+        assertTrue(tf.formatNanos(12321033L).equals("12,321 ms") || tf.formatNanos(12321033L).equals("12.321 ms"));
+        assertTrue(tf.formatNanos(12321033000L).equals("12,321 s") || tf.formatNanos(12321033000L).equals("12.321 s"));
 
     }
 
@@ -82,8 +84,7 @@ public class TimeFormatterTest {
 
     static class TestHelper extends TimeFormatter {
         @Override
-        protected String doFormat(int days, int hours, int minutes, int seconds, int millies,
-                int micros, int nano) {
+        protected String doFormat(int days, int hours, int minutes, int seconds, int millies, int micros, int nano) {
             return "" + days + hours + minutes + seconds + millies + micros + nano;
         }
 

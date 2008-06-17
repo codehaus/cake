@@ -79,9 +79,6 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
             return Arrays.asList(service);
         }
 
-        public Class<T> getType() {
-            return clazz;
-        }
 
         public T lookup(AttributeMap attributes) {
             return service;// TODO warn if attributes non empty??? I think so

@@ -37,7 +37,7 @@ public class DefaultMapGenerator implements Opcodes {
         }
         int count = 0;
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 count++;
             }
         }
@@ -106,8 +106,8 @@ public class DefaultMapGenerator implements Opcodes {
         mv.visitTypeInsn(ANEWARRAY, T_ATTRIBUTE.getInternalName());
         int count = 0;
         for (Info i : info) {
-            if (!i.allowGet) {
-                //add key to keyset
+            if (i.allowGe) {
+                // add key to keyset
                 mv.visitInsn(DUP);
                 mv.visitIntInsn(BIPUSH, count++);
                 i.visitStaticGet(mv);
@@ -146,7 +146,7 @@ public class DefaultMapGenerator implements Opcodes {
         mv.visitCode();
         Label l = new Label();
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 mv.visitVarInsn(ALOAD, 1);
                 i.visitStaticGet(mv);
                 mv.visitJumpInsn(IF_ACMPEQ, l);
@@ -172,7 +172,7 @@ public class DefaultMapGenerator implements Opcodes {
         mv.visitVarInsn(ASTORE, 1);
 
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 mv.visitVarInsn(ALOAD, 1);
                 mv.visitTypeInsn(NEW, "org/codehaus/cake/internal/attribute/AttributeHelper$SimpleImmutableEntry");
                 mv.visitInsn(DUP);
@@ -260,7 +260,7 @@ public class DefaultMapGenerator implements Opcodes {
         mv.visitTypeInsn(CHECKCAST, classDescriptor);
         mv.visitVarInsn(ASTORE, 2);
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 mv.visitVarInsn(ALOAD, 0);
                 i.visitGet(mv);
                 mv.visitVarInsn(ALOAD, 2);
@@ -294,7 +294,7 @@ public class DefaultMapGenerator implements Opcodes {
         l = new Label();
         // check for v0 == m.get(A2) && (v0 != A2.getDefaultValue() || m.isSet(A2))
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 mv.visitVarInsn(ALOAD, 0);
                 i.visitGet(mv);
                 mv.visitVarInsn(ALOAD, 2);
@@ -470,7 +470,7 @@ public class DefaultMapGenerator implements Opcodes {
         mv.visitVarInsn(ISTORE, 1);
 
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 if (i.vType == PrimType.DOUBLE) {
                     mv.visitVarInsn(ALOAD, 0);
                     i.visitGet(mv);
@@ -730,7 +730,7 @@ public class DefaultMapGenerator implements Opcodes {
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(C)Ljava/lang/StringBuilder;");
             boolean isFirst = true;
             for (Info i : info) {
-                if (!i.allowGet) {
+                if (i.allowGe) {
                     mv.visitInsn(POP);
                     mv.visitVarInsn(ALOAD, 1);
                     if (isFirst) {
@@ -770,7 +770,7 @@ public class DefaultMapGenerator implements Opcodes {
         mv.visitTypeInsn(ANEWARRAY, "java/lang/Object");
         int count = 0;
         for (Info i : info) {
-            if (!i.allowGet) {
+            if (i.allowGe) {
                 mv.visitInsn(DUP);
                 mv.visitIntInsn(BIPUSH, count++);
                 mv.visitVarInsn(ALOAD, 0);
@@ -827,7 +827,7 @@ public class DefaultMapGenerator implements Opcodes {
         cw.visitEnd();
     }
 
-    public static Class<AttributeMap> generate(String className, List<? extends AttributeConfiguration> infos)
+    public static Class<AttributeMap> generate(MyLoader loader, String className, List<? extends AttributeConfiguration> infos)
             throws Exception {
         String descriptor = className.replace('.', '/');
 
@@ -835,8 +835,7 @@ public class DefaultMapGenerator implements Opcodes {
         // g.cw = new ASMifierClassVisitor(new PrintWriter(System.out));
 
         g.createClass();
-        MyLoader ml = new MyLoader();
-        Class c = ml.defineClass(className, ((ClassWriter) g.cw).toByteArray());
+        Class c = loader.defineClass(className, ((ClassWriter) g.cw).toByteArray());
         Attribute[] attributes = new Attribute[g.info.length];
         for (int i = 0; i < attributes.length; i++) {
             attributes[i] = g.info[i].attribute;
@@ -878,12 +877,11 @@ public class DefaultMapGenerator implements Opcodes {
         final String attributeDescriptor;
         final String descriptor;
         private final int index;
-        
+
         final boolean isFinal;
         final boolean isPrivate;
         final boolean allowPut;
-        final boolean allowGet;
-
+        final boolean allowGe;
 
         final Type type;
 
@@ -891,12 +889,12 @@ public class DefaultMapGenerator implements Opcodes {
 
         Info(int index, AttributeConfiguration info) {
             this.index = index;
-            
-            allowGet = info.allowGet();
+
+            allowGe = info.allowGet();
             allowPut = info.allowPut();
             isPrivate = info.isPrivate();
             isFinal = info.isFinal();
-            
+
             attribute = info.getAttribute();
             type = Type.getType(attribute.getType());
             descriptor = type.getDescriptor();
@@ -932,7 +930,7 @@ public class DefaultMapGenerator implements Opcodes {
         }
     }
 
-    static class MyLoader extends ClassLoader {
+    public static class MyLoader extends ClassLoader {
         public Class defineClass(String name, byte[] b) {
             return defineClass(name, b, 0, b.length);
         }

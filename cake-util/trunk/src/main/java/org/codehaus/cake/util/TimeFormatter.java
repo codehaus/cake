@@ -21,7 +21,7 @@ public abstract class TimeFormatter {
 
     private static final DecimalFormat NN = new DecimalFormat("00");
 
-    private static final String[] SI_NAMES = new String[] { "ns", "�s", "ms", "s", "min", "h", "d" };
+    private static final String[] SI_NAMES = new String[] { "ns", "\u00b5s", "ms", "s", "min", "h", "d" };
 
     /**
      * A <tt>TimeFormatter</tt> that will format time the same was as the unix 'uptime' command.
@@ -132,8 +132,18 @@ public abstract class TimeFormatter {
     static class DefaultFormatter extends UptimeFormatter {
 
         @Override
+        protected String doFormat(int nano) {
+            return nano + " " + SI_NAMES[0];
+        }
+
+        @Override
+        protected String doFormat(int micros, int nano) {
+            return Z.format((micros * 1000 + nano) / 1000.0) + " " + SI_NAMES[1];
+        }
+
+        @Override
         protected String doFormat(int millies, int micros, int nano) {
-            return Z.format((millies * 1000 + micros) / 1000.0) + " ms";
+            return Z.format((millies * 1000 + micros) / 1000.0) + " " + SI_NAMES[2];
         }
 
         @Override

@@ -3,6 +3,7 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
@@ -18,7 +19,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     @Test
     public void evictorSize() {
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            
+
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(10, a.getMaximumSize());
                 assertEquals(Long.MAX_VALUE, a.getMaximumVolume());
@@ -38,7 +39,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
 
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            
+
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(Integer.MAX_VALUE, a.getMaximumSize());
                 assertEquals(4, a.getSize());
@@ -61,7 +62,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     @Test
     public void evictorSizeNegTrim() {
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            
+
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(5, a.getMaximumSize());
                 assertEquals(6, a.getSize());
@@ -96,7 +97,6 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     public void evictorVolumeAndSize() {
         conf.withAttributes().add(SIZE);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
-            
             public void op(MemoryStoreService<Integer, String> a) {
                 a.trimToSize(-5);
                 a.trimToVolume(-50);
@@ -121,4 +121,39 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         }
         assertValidSizeAndVolume();
     }
+
+    @Test
+    public void evictorNoSupportedOperations() {
+        final AtomicBoolean hasRun = new AtomicBoolean();
+
+        conf.withAttributes().add(SIZE);
+        conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
+            public void op(MemoryStoreService<Integer, String> a) {
+                try {
+                    a.setDisabled(true);
+                    throw new AssertionError();
+                } catch (UnsupportedOperationException ok) {}
+                try {
+                    a.setMaximumSize(1);
+                    throw new AssertionError();
+                } catch (UnsupportedOperationException ok) {}
+                try {
+                    a.setMaximumVolume(4);
+                    throw new AssertionError();
+                } catch (UnsupportedOperationException ok) {}
+                a.trimToSize(-1);
+                hasRun.set(true);
+            }
+        });
+        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setMaximumSize(2);
+        init();
+        withLoadingForced().load(M1.getKey());
+        withLoadingForced().load(M2.getKey());
+        withLoadingForced().load(M3.getKey());
+        awaitFinishedThreads();
+        assertSize(2);
+        assertTrue(hasRun.get());
+    }
+
 }

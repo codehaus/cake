@@ -22,48 +22,48 @@ public class DefaultMapGeneratorTest {
 
     private final static ByteAttribute B_4 = new ByteAttribute("B_4", (byte) 1) {};
     private final static DefaultAttributeConfiguration BI4 = new DefaultAttributeConfiguration(B_4,
-            true, false);
+            true, false,false,false);
     private final static DoubleAttribute D_1 = new DoubleAttribute("D_1", 1.5) {};
     private final static DefaultAttributeConfiguration DI1 = new DefaultAttributeConfiguration(D_1,
-            false, false);
+            false, false,false,false);
     private final static FloatAttribute F_1 = new FloatAttribute("F_1", 1.5f) {};
     private final static DefaultAttributeConfiguration FI1 = new DefaultAttributeConfiguration(F_1,
-            false, false);
+            false, false,false,false);
     private final static IntAttribute I_1 = new IntAttribute("L_1", 1) {};
     private final static IntAttribute I_5 = new IntAttribute("L_5", 2) {};
     private final static DefaultAttributeConfiguration II1 = new DefaultAttributeConfiguration(I_1,
-            false, false);
+            false, false,false,false);
     private final static DefaultAttributeConfiguration II5 = new DefaultAttributeConfiguration(I_5,
-            true, true);
+            true, true,false,false);
     private final static LongAttribute L_1 = new LongAttribute("L_1", 1) {};
     private final static LongAttribute L_2 = new LongAttribute("L_2", 2) {};
     private final static LongAttribute L_3 = new LongAttribute("L_3", 3) {};
     private final static LongAttribute L_4 = new LongAttribute("L_4", 1) {};
     private final static LongAttribute L_5 = new LongAttribute("L_5", 2) {};
     private final static DefaultAttributeConfiguration LI1 = new DefaultAttributeConfiguration(L_1,
-            false, false);
+            false, false,false,false);
     private final static DefaultAttributeConfiguration LI2 = new DefaultAttributeConfiguration(L_2,
-            false, false);
+            false, false,false,false);
     private final static DefaultAttributeConfiguration LI3 = new DefaultAttributeConfiguration(L_3,
-            false, true);
+            false, true,false,false);
     private final static DefaultAttributeConfiguration LI4 = new DefaultAttributeConfiguration(L_4,
-            true, false);
+            true, false,false,false);
     private final static DefaultAttributeConfiguration LI5 = new DefaultAttributeConfiguration(L_5,
-            true, true);
+            true, true,false,false);
     private final static ObjectAttribute<String> O_1 = new ObjectAttribute<String>("O_1",
             String.class, "1.5f") {};
     private final static ObjectAttribute<Map> O_2 = new ObjectAttribute<Map>("O_1", Map.class,
             new HashMap()) {};
     private final static DefaultAttributeConfiguration OI1 = new DefaultAttributeConfiguration(O_1,
-            false, false);
+            true, false,false,false);
     private final static DefaultAttributeConfiguration OI4 = new DefaultAttributeConfiguration(O_1,
-            true, false);
+            true, false,false,false);
     private final static DefaultAttributeConfiguration OI5 = new DefaultAttributeConfiguration(O_1,
-            false, true);
+            false, true,false,false);
     private final static Random r = new Random(3);
     private final static ShortAttribute S_4 = new ShortAttribute("S_4", (short) 1) {};
     private final static DefaultAttributeConfiguration SI4 = new DefaultAttributeConfiguration(S_4,
-            true, false);
+            true, false,false,false);
 
     public void addBoolean(Map<DefaultAttributeConfiguration, Object> map) {
         map.put(newInfo(new BooleanAttribute(r.nextBoolean()) {}), r.nextBoolean());
@@ -184,13 +184,13 @@ public class DefaultMapGeneratorTest {
         Checker.run(OI1, "ddf");
         Checker.run(OI4, "ddf");
         Checker.run(OI5, "ddf");
-        Checker.run(new DefaultAttributeConfiguration(O_2, false, false), new HashMap());
-        Checker.run(new DefaultAttributeConfiguration(O_2, false, true), new HashMap());
-        Checker.run(new DefaultAttributeConfiguration(O_2, true, false), new HashMap());
+        Checker.run(new DefaultAttributeConfiguration(O_2, false, false,false,false), new HashMap());
+        Checker.run(new DefaultAttributeConfiguration(O_2, false, true,false,false), new HashMap());
+        Checker.run(new DefaultAttributeConfiguration(O_2, true, false,false,false), new HashMap());
     }
 
     DefaultAttributeConfiguration newInfo(Attribute<?> a) {
-        return new DefaultAttributeConfiguration(a, r.nextBoolean(), r.nextBoolean());
+        return new DefaultAttributeConfiguration(a, r.nextBoolean(), r.nextBoolean(),false,false);
     }
 
     void run(int count) {

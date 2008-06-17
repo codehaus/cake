@@ -74,10 +74,6 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
         return childServices;
     }
 
-    public Class<CacheLoadingService> getType() {
-        return CacheLoadingService.class;
-    }
-
     public CacheLoadingService lookup(AttributeMap attributes) {
         if (attributes.get(CacheLoadingService.IS_FORCED)) {
             return serviceForced;

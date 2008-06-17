@@ -119,10 +119,6 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     static class ServiceFactoryStub implements ServiceFactory<Integer> {
 
-        public Class<Integer> getType() {
-            return Integer.class;
-        }
-
         public Integer lookup(AttributeMap attributes) {
             int val = attributes.get(I);
             return val >= 0 ? val : null;
