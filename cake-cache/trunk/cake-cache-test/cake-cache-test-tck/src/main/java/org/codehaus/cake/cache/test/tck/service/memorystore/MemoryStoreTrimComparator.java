@@ -2,6 +2,7 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,11 +23,12 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         put(10);
         assertSize(10);
         withMemoryStore().trimToSize(5, new Comparator<CacheEntry<Integer, String>>() {
-
             public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
                 return o2.getKey() - o1.getKey();
             }
         });
+        assertSize(5);
+        assertEquals(c.keySet(), new HashSet(Arrays.asList(1, 2, 3, 4, 5)));
         put(10);
         assertSize(10);
         Set<Integer> s = new HashSet(c.keySet());
@@ -80,7 +82,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         assertSize(3);
         assertVolume(27);
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void trimToVolumeComparatorNPE() {
         put(10);

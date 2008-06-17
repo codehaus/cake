@@ -2,9 +2,14 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
@@ -34,6 +39,46 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     }
 
     @Test
+    public void evictorSizeComparator() {
+        conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
+            public void op(MemoryStoreService<Integer, String> a) {
+                assertEquals(10, a.getMaximumSize());
+                assertEquals(Long.MAX_VALUE, a.getMaximumVolume());
+                assertEquals(11, a.getSize());
+                a.trimToSize(5, new Comparator<CacheEntry<Integer, String>>() {
+                    public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
+                        return o2.getKey() - o1.getKey();
+                    }
+                });
+            }
+        });
+        conf.withMemoryStore().setMaximumSize(10);
+        init();
+        put(11);
+        assertSize(5);
+        assertEquals(c.keySet(), new HashSet(Arrays.asList(1, 2, 3, 4, 5)));
+
+        newConfiguration();
+        conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
+            public void op(MemoryStoreService<Integer, String> a) {
+                assertEquals(10, a.getMaximumSize());
+                assertEquals(Long.MAX_VALUE, a.getMaximumVolume());
+                assertEquals(11, a.getSize());
+                a.trimToSize(-5, new Comparator<CacheEntry<Integer, String>>() {
+                    public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
+                        return o1.getKey() - o2.getKey();
+                    }
+                });
+            }
+        });
+        conf.withMemoryStore().setMaximumSize(10);
+        init();
+        put(11);
+        assertSize(6);
+        assertEquals(c.keySet(), new HashSet(Arrays.asList(6, 7, 8, 9, 10, 11)));
+    }
+
+    @Test
     public void evictorVolume() {
         conf.withAttributes().add(SIZE);
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
@@ -57,6 +102,56 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         assertSize(2);
         assertContainsKey(M3);
         assertContainsKey(M4);
+    }
+
+    @Test
+    public void disabled() {
+        final AtomicBoolean ab = new AtomicBoolean();
+        conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
+            public void op(MemoryStoreService<Integer, String> a) {
+                if (!ab.get()) {
+                    assertFalse(a.isDisabled());
+                    ab.set(true);
+                } else {
+                    assertTrue(a.isDisabled());
+                }
+                a.trimToSize(1);
+            }
+        });
+        conf.withMemoryStore().setMaximumSize(1);
+        init();
+        put(2);
+        withMemoryStore().setDisabled(true);
+        put(2);
+    }
+
+    @Test
+    public void evictorVolumeComparator() {
+        loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
+        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        conf.withAttributes().add(SIZE);
+        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
+            public void op(MemoryStoreService<Integer, String> a) {
+                assertEquals(Integer.MAX_VALUE, a.getMaximumSize());
+                assertEquals(9, a.getSize());
+                assertEquals(54, a.getVolume());
+                a.trimToVolume(19, new Comparator<CacheEntry<Integer, String>>() {
+
+                    public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
+                        return o2.getKey() - o1.getKey();
+                    }
+                });
+            }
+        });
+        conf.withMemoryStore().setMaximumVolume(53);
+        init();
+        assertGet(M1, M2, M3, M4, M5, M6, M7, M8);
+        assertSize(8);
+        assertGet(M9);
+        assertSize(4);
+        assertVolume(14);
+        assertEquals(c.keySet(), new HashSet(Arrays.asList(1, 2, 3, 4)));
     }
 
     @Test

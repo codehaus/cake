@@ -56,9 +56,9 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         evictor = storeConfiguration.getEvictor();
     }
 
-//    public CacheEntry<K, V> any() {
-//        return map.size() == 0 ? null : map.values().iterator().next();
-//    }
+    // public CacheEntry<K, V> any() {
+    // return map.size() == 0 ? null : map.values().iterator().next();
+    // }
 
     public CacheEntry<K, V> get(Object key) {
         CacheEntry<K, V> entry = map.get(key);
@@ -191,10 +191,10 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                 Trim t = new Trim();
                 evictor.op(t);
                 if (t.volume != null) {
-                    trimToVolume(pa, t.volume);
+                    trimToVolume(pa, t.volume, t.comparator);
                 }
                 if (t.size != null) {
-                    trimToSize(pa, t.size);
+                    trimToSize(pa, t.size, t.comparator);
                 }
                 if (pa.size() == 0) {
                     ies.warning("Custom Evictor failed to reduce the size of the cache, manually removing 1 element");
@@ -322,7 +322,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
 
         public int hashCode() {
             return (key.hashCode()) ^ value.hashCode();
-            //return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
+            // return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
 
         /** {@inheritDoc} */
@@ -432,20 +432,12 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
 
     public void trimToSize(int size) {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
-        trimToSize(pa, size);
-    }
-
-    public void trimToSize(ParallelArray<CacheEntry<K, V>> pa, int size) {
-        trimToSize(pa, size, null);
+        trimToSize(pa, size,null);
     }
 
     public void trimToVolume(long volume) {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
-        trimToVolume(pa, volume);
-    }
-
-    private void trimToVolume(ParallelArray<CacheEntry<K, V>> pa, long volume) {
-        trimToVolume(pa, volume, null);
+        trimToVolume(pa, volume,null);
     }
 
     public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
