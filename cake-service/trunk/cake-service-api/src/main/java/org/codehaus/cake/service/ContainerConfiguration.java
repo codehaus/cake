@@ -269,7 +269,7 @@ public abstract class ContainerConfiguration<T> {
      * The behavior of this operation is undefined if this configuration is
      * modified while the operation is in progress.
      * 
-     * @param containerType
+     * @param type
      *            the type of container that should be created
      * @return a new Container instance
      * @throws IllegalArgumentException
@@ -428,7 +428,7 @@ public abstract class ContainerConfiguration<T> {
      * Sets the type of container that should be created when calling
      * {@link #newContainerInstance()}.
      * 
-     * @param containerType
+     * @param type
      *            the type of container
      * @return this configuration
      */

@@ -78,28 +78,33 @@ public class CacheAttributeMapConfiguration extends DefaultAttributeConfiguratio
     public void setAccessAction(AccessAction accessAction) {
         this.accessAction = accessAction;
     }
-
+    public static CacheAttributeMapConfiguration getPredefinedConfigurationSoft(Attribute a) {
+        return getPredefinedConfiguration0(a,false);
+    }
     public static CacheAttributeMapConfiguration getPredefinedConfiguration(Attribute a) {
+        return getPredefinedConfiguration0(a,true);
+    }
+    private static CacheAttributeMapConfiguration getPredefinedConfiguration0(Attribute a, boolean isPublic) {
         CacheAttributeMapConfiguration sac = null;
         if (a == CacheEntry.TIME_CREATED) {
-            sac = new CacheAttributeMapConfiguration(a, true, false, true, true);
+            sac = new CacheAttributeMapConfiguration(a, isPublic, false, true, true);
             sac.setReadMapOnCreate(true);
             sac.setCreateAction(CreateAction.TIMESTAMP);
         } else if (a == CacheEntry.TIME_MODIFIED) {
-            sac = new CacheAttributeMapConfiguration(a, true, false, true, true);
+            sac = new CacheAttributeMapConfiguration(a, isPublic, false, true, true);
             sac.setReadMapOnCreate(true);
             sac.setCreateAction(CreateAction.TIMESTAMP);
             sac.setReadMapOnModify(true);
             sac.setModifyAction(ModifyAction.TIMESTAMP);
         } else if (a == CacheEntry.TIME_ACCESSED) {
-            sac = new CacheAttributeMapConfiguration(a, true, false, false, false);
+            sac = new CacheAttributeMapConfiguration(a, isPublic, false, false, false);
             sac.setReadMapOnCreate(true);
             sac.setCreateAction(CreateAction.TIMESTAMP);
             sac.setReadMapOnModify(true);
             sac.setModifyAction(ModifyAction.TIMESTAMP);
             sac.setAccessAction(AccessAction.TIMESTAMP);
         } else if (a == CacheEntry.HITS) {
-            sac = new CacheAttributeMapConfiguration(a, true, false, false, false);
+            sac = new CacheAttributeMapConfiguration(a, isPublic, false, false, false);
             sac.setReadMapOnCreate(true);
             sac.setCreateAction(CreateAction.SET_VALUE);
             sac.setCreateSetValue(0L);
@@ -107,14 +112,14 @@ public class CacheAttributeMapConfiguration extends DefaultAttributeConfiguratio
             sac.setModifyAction(ModifyAction.KEEP_EXISTING);
             sac.setAccessAction(AccessAction.INCREMENT);
         } else if (a == CacheEntry.VERSION) {
-            sac = new CacheAttributeMapConfiguration(a, true, false, true, true);
+            sac = new CacheAttributeMapConfiguration(a, isPublic, false, true, true);
             sac.setReadMapOnCreate(true);
             sac.setCreateAction(CreateAction.SET_VALUE);
             sac.setCreateSetValue(1L);
             sac.setReadMapOnModify(true);
             sac.setModifyAction(ModifyAction.INCREMENT);
         } else {
-            sac = new CacheAttributeMapConfiguration(a, true, false, true, true);
+            sac = new CacheAttributeMapConfiguration(a, isPublic, false, true, true);
             sac.setReadMapOnCreate(true);
             sac.setCreateAction(CreateAction.DEFAULT);
             sac.setReadMapOnModify(true);

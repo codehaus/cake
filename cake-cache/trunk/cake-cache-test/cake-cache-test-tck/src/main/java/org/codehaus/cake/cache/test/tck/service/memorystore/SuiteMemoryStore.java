@@ -13,9 +13,9 @@ import org.junit.runners.Suite;
  * @version $Id: LoadingSuite.java 522 2007-12-24 11:24:35Z kasper $
  */
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { MemoryStoreCachingDisabled.class, MemoryStoreEvictor.class,
-        MemoryStoreGeneral.class, MemoryStoreIsCacheable.class, MemoryStoreManagement.class,
-        MemoryStoreReplacementPolicy.class, MemoryStoreReplacementPolicyLRU.class,
-        MemoryStoreReplacementPolicyNone.class, MemoryStoreTrim.class,
-        MemoryStoreTrimComparator.class, MemoryStoreVolume.class })
+@Suite.SuiteClasses( { MemoryStoreCachingDisabled.class, MemoryStoreEvictor.class, MemoryStoreGeneral.class,
+        MemoryStoreIsCacheable.class, MemoryStoreManagement.class, MemoryStoreReplacementPolicy.class,
+        MemoryStoreReplacementPolicyAttributes.class, MemoryStoreReplacementPolicyLRU.class,
+        MemoryStoreReplacementPolicyNone.class, MemoryStoreTrim.class, MemoryStoreTrimComparator.class,
+        MemoryStoreVolume.class })
 public class SuiteMemoryStore {}

@@ -44,10 +44,6 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         return generator.create(key, value, params, null);
     }
 
-    public AttributeMap remove(AttributeMap params) {
-        throw new UnsupportedOperationException();
-    }
-
     public AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
         return generator.create(key, value, params, previous);
     }
@@ -56,15 +52,12 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     // WeakHashMap<Class, DefaultAttributeConfiguration>();
 
     private void updateAttributes() {
-        long start = System.nanoTime();
+        String name = "CacheEntryGenerator" + al.getAndIncrement();
         try {
-            String name = "CacheEntryGenerator" + al.getAndIncrement();
             generator = CacheAttributeMapFactoryGenerator.generate(name, new ArrayList(map.values()), clock, ies);
-            start = System.nanoTime();
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-//        System.out.println("generate" + generator.getClass().getName() + map.values());
     }
 
     public void attachToPolicy(Attribute<?> attribute) {
@@ -85,7 +78,7 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
 
     public void dependOnSoft(Attribute<?> attribute) {
         if (!map.containsKey(attribute)) {
-            CacheAttributeMapConfiguration sac = CacheAttributeMapConfiguration.getPredefinedConfiguration(attribute);
+            CacheAttributeMapConfiguration sac = CacheAttributeMapConfiguration.getPredefinedConfigurationSoft(attribute);
             map.put(attribute, sac);
         }
         updateAttributes();
