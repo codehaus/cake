@@ -66,7 +66,7 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
     /**
      * A {@link ServiceFactory} that returns the same service for any attributes.
      */
-    static class SingleServiceFactory<T> implements ServiceFactory<T>, CompositeService {
+    static class SingleServiceFactory<T> implements ServiceFactory<T> {
         private final Class<T> clazz;
         private final T service;
 
@@ -74,11 +74,6 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
             this.clazz = clazz;
             this.service = service;
         }
-
-        public Collection<?> getChildServices() {
-            return Arrays.asList(service);
-        }
-
 
         public T lookup(AttributeMap attributes) {
             return service;// TODO warn if attributes non empty??? I think so

@@ -4,7 +4,6 @@ import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
-import org.codehaus.cake.cache.service.store.CacheStoreConfiguration;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
@@ -45,7 +44,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         addConfiguration(new ManagementConfiguration());
         addConfiguration(new MemoryStoreConfiguration());
         addConfiguration(new ExecutorsConfiguration());
-        addConfiguration(new CacheStoreConfiguration());
+    //    addConfiguration(new CacheStoreConfiguration());
     }
 
     @Override
@@ -119,9 +118,9 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         return getConfigurationOfType(MemoryStoreConfiguration.class);
     }
 
-    public CacheStoreConfiguration<K, V> withStore() {
-        return getConfigurationOfType(CacheStoreConfiguration.class);
-    }
+//    public CacheStoreConfiguration<K, V> withStore() {
+//        return getConfigurationOfType(CacheStoreConfiguration.class);
+//    }
 
     /**
      * Returns a configuration object that can be used to control how services are remotely managed.
