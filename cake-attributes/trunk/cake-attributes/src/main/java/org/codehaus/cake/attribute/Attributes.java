@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.attribute;
 
 import java.io.Serializable;
@@ -28,12 +41,11 @@ public final class Attributes {
 
     // /CLOVER:ON
     /**
-     * Returns an immutable AttributeMap containing only the specified attribute mapping to the
-     * specified value. Attempts to modify the returned attribute map, whether direct or via its
-     * collection views, result in an <tt>UnsupportedOperationException</tt>.
+     * Returns an immutable AttributeMap containing only the specified attribute mapping to the specified value.
+     * Attempts to modify the returned attribute map, whether direct or via its collection views, result in an
+     * <tt>UnsupportedOperationException</tt>.
      * <p>
-     * The returned attribute map will be serializable if the specified attribute and its value are
-     * serializable.
+     * The returned attribute map will be serializable if the specified attribute and its value are serializable.
      * 
      * @param attribute
      *            the attribute to map from
@@ -84,11 +96,10 @@ public final class Attributes {
     // }
 
     /**
-     * Returns an unmodifiable view of the specified attribute map. This method allows modules to
-     * provide users with "read-only" access to internal attribute maps. Query operations on the
-     * returned attribute map "read through" to the specified attribute map, and attempts to modify
-     * the returned attribute map, whether direct or via its collection views, result in an
-     * <tt>UnsupportedOperationException</tt>.
+     * Returns an unmodifiable view of the specified attribute map. This method allows modules to provide users with
+     * "read-only" access to internal attribute maps. Query operations on the returned attribute map "read through" to
+     * the specified attribute map, and attempts to modify the returned attribute map, whether direct or via its
+     * collection views, result in an <tt>UnsupportedOperationException</tt>.
      * <p>
      * The returned attribute map will be serializable if the specified map is serializable.
      * 
@@ -108,10 +119,12 @@ public final class Attributes {
         /** serialVersionUID. */
         private static final long serialVersionUID = -3037602713439417782L;
 
+        /** {@inheritDoc} */
         public Set<Attribute> attributeSet() {
             return Collections.EMPTY_SET;
         }
 
+        /** {@inheritDoc} */
         public void clear() {}
 
         /** {@inheritDoc} */
@@ -119,6 +132,7 @@ public final class Attributes {
             return false;
         }
 
+        /** {@inheritDoc} */
         public Set<Entry<Attribute, Object>> entrySet() {
             return Collections.EMPTY_SET;
         }
@@ -129,10 +143,12 @@ public final class Attributes {
             return o instanceof AttributeMap && ((AttributeMap) o).size() == 0;
         }
 
+        /** {@inheritDoc} */
         public <T> T get(Attribute<T> key) {
             return key.getDefault();
         }
 
+        /** {@inheritDoc} */
         public <T> T get(Attribute<T> key, T defaultValue) {
             return defaultValue;
         }
@@ -228,6 +244,7 @@ public final class Attributes {
             return true;
         }
 
+        /** {@inheritDoc} */
         public <T> T put(Attribute<T> key, T value) {
             throw new UnsupportedOperationException("map is immutable");
         }
@@ -281,38 +298,47 @@ public final class Attributes {
             return EMPTY_ATTRIBUTE_MAP;
         }
 
+        /** {@inheritDoc} */
         public <T> T remove(Attribute<T> key) {
             return key.getDefault();
         }
 
+        /** {@inheritDoc} */
         public boolean remove(BooleanAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public byte remove(ByteAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public char remove(CharAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public double remove(DoubleAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public float remove(FloatAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public int remove(IntAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public long remove(LongAttribute key) {
             return key.getDefaultValue();
         }
 
+        /** {@inheritDoc} */
         public short remove(ShortAttribute key) {
             return key.getDefaultValue();
         }
@@ -322,10 +348,12 @@ public final class Attributes {
             return 0;
         }
 
+        /** {@inheritDoc} */
         public String toString() {
             return "{}";
         }
 
+        /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.EMPTY_SET;
         }
@@ -352,190 +380,236 @@ public final class Attributes {
             this.map = attributes;
         }
 
+        /** {@inheritDoc} */
         public Set<Attribute> attributeSet() {
             return Collections.unmodifiableSet(map.attributeSet());
         }
 
+        /** {@inheritDoc} */
         public void clear() {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public boolean contains(Attribute<?> attribute) {
             return map.contains(attribute);
         }
 
+        /** {@inheritDoc} */
         public Set<Entry<Attribute, Object>> entrySet() {
             return Collections.unmodifiableSet(map.entrySet());
         }
 
+        /** {@inheritDoc} */
         @Override
         public boolean equals(Object obj) {
             // TODO not sure this is safe
             return map.equals(obj);
         }
 
+        /** {@inheritDoc} */
         public <T> T get(Attribute<T> key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public <T> T get(Attribute<T> key, T defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public boolean get(BooleanAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public boolean get(BooleanAttribute key, boolean defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public byte get(ByteAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public byte get(ByteAttribute key, byte defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public char get(CharAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public char get(CharAttribute key, char defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public double get(DoubleAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public double get(DoubleAttribute key, double defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public float get(FloatAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public float get(FloatAttribute key, float defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public int get(IntAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public int get(IntAttribute key, int defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public long get(LongAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public long get(LongAttribute key, long defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         public short get(ShortAttribute key) {
             return map.get(key);
         }
 
+        /** {@inheritDoc} */
         public short get(ShortAttribute key, short defaultValue) {
             return map.get(key, defaultValue);
         }
 
+        /** {@inheritDoc} */
         @Override
         public int hashCode() {
             return map.hashCode();
         }
 
+        /** {@inheritDoc} */
         public boolean isEmpty() {
             return map.isEmpty();
         }
 
+        /** {@inheritDoc} */
         public <T> T put(Attribute<T> key, T value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public boolean put(BooleanAttribute key, boolean value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public byte put(ByteAttribute key, byte value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public char put(CharAttribute key, char value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public double put(DoubleAttribute key, double value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public float put(FloatAttribute key, float value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public int put(IntAttribute key, int value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public long put(LongAttribute key, long value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public short put(ShortAttribute key, short value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public <T> T remove(Attribute<T> key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public boolean remove(BooleanAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public byte remove(ByteAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public char remove(CharAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public double remove(DoubleAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public float remove(FloatAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public int remove(IntAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public long remove(LongAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public short remove(ShortAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public int size() {
             return map.size();
         }
 
+        /** {@inheritDoc} */
         @Override
         public String toString() {
             return map.toString();
         }
 
+        /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.unmodifiableCollection(map.values());
         }
@@ -570,6 +644,7 @@ public final class Attributes {
             this.value = value;
         }
 
+        /** {@inheritDoc} */
         public Set<Attribute> attributeSet() {
             return (Set) Collections.singleton(attribute);
         }
@@ -579,10 +654,12 @@ public final class Attributes {
             throw new UnsupportedOperationException();
         }
 
+        /** {@inheritDoc} */
         public boolean contains(Attribute<?> attribute) {
             return this.attribute == attribute;
         }
 
+        /** {@inheritDoc} */
         public Set<Entry<Attribute, Object>> entrySet() {
             return Collections
                     .<Map.Entry<Attribute, Object>> singleton(new AttributeHelper.SimpleImmutableEntry<Attribute, Object>(
@@ -604,14 +681,15 @@ public final class Attributes {
             }
             Object other = map.get(attribute);
             return AttributeHelper.eq(value, other)
-                    && (!AttributeHelper.eq(value, attribute.getDefault()) || map
-                            .contains(attribute));
+                    && (!AttributeHelper.eq(value, attribute.getDefault()) || map.contains(attribute));
         }
 
+        /** {@inheritDoc} */
         public <T> T get(Attribute<T> key) {
             return get(key, key.getDefault());
         }
 
+        /** {@inheritDoc} */
         public <T> T get(Attribute<T> key, T defaultValue) {
             return attribute == key ? (T) value : defaultValue;
         }
@@ -707,74 +785,92 @@ public final class Attributes {
             return false;
         }
 
+        /** {@inheritDoc} */
         public <T> T put(Attribute<T> key, T value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public boolean put(BooleanAttribute key, boolean value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public byte put(ByteAttribute key, byte value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public char put(CharAttribute key, char value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public double put(DoubleAttribute key, double value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public float put(FloatAttribute key, float value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public int put(IntAttribute key, int value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public long put(LongAttribute key, long value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public short put(ShortAttribute key, short value) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public <T> T remove(Attribute<T> key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public boolean remove(BooleanAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public byte remove(ByteAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public char remove(CharAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public double remove(DoubleAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public float remove(FloatAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public int remove(IntAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public long remove(LongAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        /** {@inheritDoc} */
         public short remove(ShortAttribute key) {
             throw new UnsupportedOperationException("map is immutable");
         }

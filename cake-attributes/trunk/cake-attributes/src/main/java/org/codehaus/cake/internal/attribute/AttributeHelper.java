@@ -1,9 +1,31 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.attribute;
 
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.codehaus.cake.attribute.Attributes;
+
+/**
+ * A small collection of attribute utility methods and classes. They are both used from {@link Attributes} and the
+ * attribute map generator package.
+ * 
+ */
 public class AttributeHelper {
     /**
      * Returns true if the specified arguments are equal, or both null.
@@ -13,9 +35,8 @@ public class AttributeHelper {
     }
 
     /**
-     * An Entry maintaining an immutable key and value. This class does not support method
-     * <tt>setValue</tt>. This class may be convenient in methods that return thread-safe
-     * snapshots of key-value mappings.
+     * An Entry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>. This
+     * class may be convenient in methods that return thread-safe snapshots of key-value mappings.
      */
     public static class SimpleImmutableEntry<K, V> implements Entry<K, V>, Serializable {
 

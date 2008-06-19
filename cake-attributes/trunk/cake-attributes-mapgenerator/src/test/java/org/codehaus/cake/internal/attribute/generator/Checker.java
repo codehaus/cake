@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.attribute.generator;
 
 import static org.junit.Assert.assertEquals;
@@ -74,14 +89,12 @@ public class Checker {
             try {
                 map.put(la, (byte) 34);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -90,8 +103,7 @@ public class Checker {
         assertEquals(l, map.get(la, (char) -56));
         assertEquals(l, map.get(la, l));
         assertEquals((char) 34, map.get(new CharAttribute("ff", (char) 44) {}, (char) 34));
-        assertEquals(Character.MIN_VALUE, map.get(new CharAttribute("ff", (char) 44) {},
-                Character.MIN_VALUE));
+        assertEquals(Character.MIN_VALUE, map.get(new CharAttribute("ff", (char) 44) {}, Character.MIN_VALUE));
         assertEquals(l, map.get(la));
         assertEquals((char) 44, map.get(new CharAttribute("ff", (char) 44) {}));
 
@@ -104,14 +116,12 @@ public class Checker {
             try {
                 map.put(la, (char) 34);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -120,8 +130,7 @@ public class Checker {
         assertEquals(l, map.get(la, -565656), 0);
         assertEquals(l, map.get(la, l), 0);
         assertEquals(34d, map.get(new DoubleAttribute("ff", 44) {}, 34), 0);
-        assertEquals(Double.MIN_VALUE, map.get(new DoubleAttribute("ff", 44) {}, Double.MIN_VALUE),
-                0);
+        assertEquals(Double.MIN_VALUE, map.get(new DoubleAttribute("ff", 44) {}, Double.MIN_VALUE), 0);
         assertEquals(l, map.get(la), 0);
         assertEquals(44d, map.get(new DoubleAttribute("ff", 44) {}), 0);
 
@@ -134,14 +143,12 @@ public class Checker {
             try {
                 map.put(la, 345345);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -163,14 +170,12 @@ public class Checker {
             try {
                 map.put(la, 345345);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -192,14 +197,12 @@ public class Checker {
             try {
                 map.put(la, 345345);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -221,14 +224,12 @@ public class Checker {
             try {
                 map.put(la, 345345);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -299,14 +300,12 @@ public class Checker {
             try {
                 map.put(la, o1);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -315,8 +314,7 @@ public class Checker {
         assertEquals(l, map.get(la, (short) -56));
         assertEquals(l, map.get(la, l));
         assertEquals((short) 34, map.get(new ShortAttribute("ff", (short) 44) {}, (short) 34));
-        assertEquals(Short.MIN_VALUE, map.get(new ShortAttribute("ff", (short) 44) {},
-                Short.MIN_VALUE));
+        assertEquals(Short.MIN_VALUE, map.get(new ShortAttribute("ff", (short) 44) {}, Short.MIN_VALUE));
         assertEquals(l, map.get(la));
         assertEquals((short) 44, map.get(new ShortAttribute("ff", (short) 44) {}));
 
@@ -329,14 +327,12 @@ public class Checker {
             try {
                 map.put(la, (short) 34);
                 throw new AssertionError("should fail");
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         try {
             map.remove(la);
             throw new AssertionError("should fail");
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         initMap();
     }
@@ -363,8 +359,7 @@ public class Checker {
         try {
             map.clear();
             throw new AssertionError();
-        } catch (UnsupportedOperationException ok) {
-        }
+        } catch (UnsupportedOperationException ok) {}
 
         assertEquals(visible.size(), map.size());
         assertEquals(visible.size(), map.values().size());
@@ -394,8 +389,7 @@ public class Checker {
             try {
                 iter.remove();
                 throw new AssertionError();
-            } catch (UnsupportedOperationException ok) {
-            }
+            } catch (UnsupportedOperationException ok) {}
         }
         assertEquals(hashCode.hashCode(), map.hashCode());
         assertEquals(map, map);
@@ -418,8 +412,8 @@ public class Checker {
         assertFalse(map.contains(new ObjectAttribute("dd", Object.class) {}));
     }
 
-    static AttributeMap newInstance(LinkedHashMap<DefaultAttributeConfiguration, Object> params,
-            Class c, boolean tryClone) {
+    static AttributeMap newInstance(LinkedHashMap<DefaultAttributeConfiguration, Object> params, Class c,
+            boolean tryClone) {
         Class<?>[] types = new Class[params.size()];
         Object[] args = new Object[params.size()];
         int count = 0;
@@ -492,16 +486,15 @@ public class Checker {
         run(m);
     }
 
-    public static void run(DefaultAttributeConfiguration a1, Object v1,
-            DefaultAttributeConfiguration a2, Object v2) {
+    public static void run(DefaultAttributeConfiguration a1, Object v1, DefaultAttributeConfiguration a2, Object v2) {
         LinkedHashMap<DefaultAttributeConfiguration, Object> m = new LinkedHashMap<DefaultAttributeConfiguration, Object>();
         m.put(a1, v1);
         m.put(a2, v2);
         run(m);
     }
 
-    public static void run(DefaultAttributeConfiguration a1, Object v1,
-            DefaultAttributeConfiguration a2, Object v2, DefaultAttributeConfiguration a3, Object v3) {
+    public static void run(DefaultAttributeConfiguration a1, Object v1, DefaultAttributeConfiguration a2, Object v2,
+            DefaultAttributeConfiguration a3, Object v3) {
         LinkedHashMap<DefaultAttributeConfiguration, Object> m = new LinkedHashMap<DefaultAttributeConfiguration, Object>();
         m.put(a1, v1);
         m.put(a2, v2);
@@ -509,9 +502,8 @@ public class Checker {
         run(m);
     }
 
-    public static void run(DefaultAttributeConfiguration a1, Object v1,
-            DefaultAttributeConfiguration a2, Object v2, DefaultAttributeConfiguration a3,
-            Object v3, DefaultAttributeConfiguration a4, Object v4) {
+    public static void run(DefaultAttributeConfiguration a1, Object v1, DefaultAttributeConfiguration a2, Object v2,
+            DefaultAttributeConfiguration a3, Object v3, DefaultAttributeConfiguration a4, Object v4) {
         LinkedHashMap<DefaultAttributeConfiguration, Object> m = new LinkedHashMap<DefaultAttributeConfiguration, Object>();
         m.put(a1, v1);
         m.put(a2, v2);
@@ -520,9 +512,8 @@ public class Checker {
         run(m);
     }
 
-    public static void run(DefaultAttributeConfiguration a1, Object v1,
-            DefaultAttributeConfiguration a2, Object v2, DefaultAttributeConfiguration a3,
-            Object v3, DefaultAttributeConfiguration a4, Object v4,
+    public static void run(DefaultAttributeConfiguration a1, Object v1, DefaultAttributeConfiguration a2, Object v2,
+            DefaultAttributeConfiguration a3, Object v3, DefaultAttributeConfiguration a4, Object v4,
             DefaultAttributeConfiguration a5, Object v5) {
         LinkedHashMap<DefaultAttributeConfiguration, Object> m = new LinkedHashMap<DefaultAttributeConfiguration, Object>();
         m.put(a1, v1);

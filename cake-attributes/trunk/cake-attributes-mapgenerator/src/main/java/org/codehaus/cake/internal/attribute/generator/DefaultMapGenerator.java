@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.attribute.generator;
 
 import static org.codehaus.cake.internal.asm.Type.getMethodDescriptor;
@@ -16,6 +31,7 @@ import org.codehaus.cake.internal.asm.Label;
 import org.codehaus.cake.internal.asm.MethodVisitor;
 import org.codehaus.cake.internal.asm.Opcodes;
 import org.codehaus.cake.internal.asm.Type;
+import org.codehaus.cake.internal.attribute.AttributeHelper.SimpleImmutableEntry;
 
 public class DefaultMapGenerator implements Opcodes {
     private final static String ATTRIBUTE_MAP_INTERFACE_DESCRIPTOR = "org/codehaus/cake/attribute/AttributeMap";
@@ -174,7 +190,7 @@ public class DefaultMapGenerator implements Opcodes {
         for (Info i : info) {
             if (i.allowGe) {
                 mv.visitVarInsn(ALOAD, 1);
-                mv.visitTypeInsn(NEW, "org/codehaus/cake/internal/attribute/AttributeHelper$SimpleImmutableEntry");
+                mv.visitTypeInsn(NEW, Type.getInternalName(SimpleImmutableEntry.class));
                 mv.visitInsn(DUP);
                 i.visitStaticGet(mv);
                 mv.visitVarInsn(ALOAD, 0);
@@ -183,8 +199,7 @@ public class DefaultMapGenerator implements Opcodes {
                     mv.visitMethodInsn(INVOKESTATIC, i.vType.getObjectType().getInternalName(), "valueOf", Type
                             .getMethodDescriptor(i.vType.getObjectType(), new Type[] { i.vType.getPrimType() }));
                 }
-                mv.visitMethodInsn(INVOKESPECIAL,
-                        "org/codehaus/cake/internal/attribute/AttributeHelper$SimpleImmutableEntry", "<init>",
+                mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(SimpleImmutableEntry.class), "<init>",
                         "(Ljava/lang/Object;Ljava/lang/Object;)V");
                 mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/HashSet", "add", "(Ljava/lang/Object;)Z");
                 mv.visitInsn(POP);
@@ -827,8 +842,8 @@ public class DefaultMapGenerator implements Opcodes {
         cw.visitEnd();
     }
 
-    public static Class<AttributeMap> generate(MyLoader loader, String className, List<? extends AttributeConfiguration> infos)
-            throws Exception {
+    public static Class<AttributeMap> generate(MyLoader loader, String className,
+            List<? extends AttributeConfiguration> infos) throws Exception {
         String descriptor = className.replace('.', '/');
 
         DefaultMapGenerator g = new DefaultMapGenerator(descriptor, infos);
