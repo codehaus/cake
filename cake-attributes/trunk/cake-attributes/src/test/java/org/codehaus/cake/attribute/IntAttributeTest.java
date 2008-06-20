@@ -20,16 +20,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.junit.Test;
+
 /**
  * Various tests for {@link IntAttribute}.
- *
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: IntAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class IntAttributeTest extends AtrStubs {
-    static final IntAttribute ATR0 = new IntAttribute("a0",0) {};
-    static final IntAttribute ATR1 = new IntAttribute("a1",1) {};
+    static final IntAttribute ATR0 = new IntAttribute("a0", 0) {};
+    static final IntAttribute ATR1 = new IntAttribute("a1", 1) {};
     static final IntAttribute ATR100 = new IntAttribute("a100", 100) {};
 
     static final IntAttribute NON_NEGATIVE = new IntAttribute("a50", 50) {
@@ -51,10 +55,10 @@ public final class IntAttributeTest extends AtrStubs {
         assertEquals(100, ATR100.getDefaultValue());
         assertEquals(100, ATR100.getDefault().intValue());
         assertEquals("a100", ATR100.getName());
-        
+
         assertSame(Integer.TYPE, ATR100.getType());
     }
-    
+
     @Test
     public void checkValid() {
         ATR100.checkValid(Integer.MIN_VALUE);
@@ -69,7 +73,7 @@ public final class IntAttributeTest extends AtrStubs {
     public void checkValidIAE() {
         NON_NEGATIVE.checkValid(4);
     }
-    
+
     @Test
     public void comparator() {
         WithAttributes wa1 = withAtr(ATR1.singleton(1));
@@ -84,8 +88,15 @@ public final class IntAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa1, wa3) < 0);
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
+
+        ArrayList<WithAttributes> al = new ArrayList<WithAttributes>();
+        al.add(wa2);
+        al.add(wa1);
+        Collections.sort(al, ATR1);
+        assertSame(wa1, al.get(0));
+        assertSame(wa2, al.get(1));
     }
-    
+
     @Test
     public void fromString() {
         assertEquals(-1, ATR100.fromString(Integer.valueOf(-1).toString()));
@@ -135,13 +146,13 @@ public final class IntAttributeTest extends AtrStubs {
         AttributeMap am = new DefaultAttributeMap();
         ATR100.set(am, 10);
         assertEquals(10, am.get(ATR100));
-        
+
         ATR100.set(withAtr(am), -111);
         assertEquals(-111, am.get(ATR100));
-        
+
         ATR100.set(am, Integer.valueOf(111));
         assertEquals(111, am.get(ATR100));
-        
+
         ATR100.set(am, Integer.MAX_VALUE);
         assertEquals(Integer.MAX_VALUE, am.get(ATR100));
     }

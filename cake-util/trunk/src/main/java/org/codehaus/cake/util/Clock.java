@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.util;
 
 import java.io.Serializable;
@@ -15,10 +28,10 @@ import java.util.concurrent.atomic.AtomicLong;
  * <li>Sometimes you want to run with a clock that is offset from your computers clock. This can be
  * particularly helpful in a situation like Planetlab where some nodes have incorrect system clocks
  * due to misconfigured NTP servers. </li>
- * </ul
+ * </ul>
  * 
- * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Clock.java 542 2008-01-02 21:50:05Z kasper $
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
+ * @version $Id: Logger.java 542 2008-01-02 21:50:05Z kasper $
  */
 public abstract class Clock {
 
@@ -58,7 +71,7 @@ public abstract class Clock {
      * {@link System#currentTimeMillis()}. {@link Clock#nanoTime()} returns a value obtained from
      * {@link System#nanoTime()}.
      */
-    public final static class DefaultClock extends Clock implements Serializable {
+    public static final  class DefaultClock extends Clock implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -3343971832371995608L;
 

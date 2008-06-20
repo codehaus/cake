@@ -62,8 +62,8 @@ public final class LongPredicatesTest {
     }
 
     /**
-     * Tests that {@link LongPredicates#and(LongPredicate, LongPredicate)} throws a
-     * {@link NullPointerException} when invoked with a left side <code>null</code> argument.
+     * Tests that {@link LongPredicates#and(LongPredicate, LongPredicate)} throws a {@link NullPointerException} when
+     * invoked with a left side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
@@ -71,8 +71,8 @@ public final class LongPredicatesTest {
     }
 
     /**
-     * Tests that {@link LongPredicates#and(LongPredicate, LongPredicate)} throws a
-     * {@link NullPointerException} when invoked with a right side <code>null</code> argument.
+     * Tests that {@link LongPredicates#and(LongPredicate, LongPredicate)} throws a {@link NullPointerException} when
+     * invoked with a right side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
@@ -161,8 +161,8 @@ public final class LongPredicatesTest {
     }
 
     /**
-     * Tests that {@link LongPredicates#not(LongPredicate)} throws a {@link NullPointerException}
-     * when invoked with a <code>null</code> argument.
+     * Tests that {@link LongPredicates#not(LongPredicate)} throws a {@link NullPointerException} when invoked with a
+     * <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
@@ -202,8 +202,8 @@ public final class LongPredicatesTest {
     }
 
     /**
-     * Tests that {@link LongPredicates#or(LongPredicate, LongPredicate)} throws a
-     * {@link NullPointerException} when invoked with a left side <code>null</code> argument.
+     * Tests that {@link LongPredicates#or(LongPredicate, LongPredicate)} throws a {@link NullPointerException} when
+     * invoked with a left side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
@@ -211,8 +211,8 @@ public final class LongPredicatesTest {
     }
 
     /**
-     * Tests that {@link LongPredicates#or(LongPredicate, LongPredicate)} throws a
-     * {@link NullPointerException} when invoked with a right side <code>null</code> argument.
+     * Tests that {@link LongPredicates#or(LongPredicate, LongPredicate)} throws a {@link NullPointerException} when
+     * invoked with a right side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {

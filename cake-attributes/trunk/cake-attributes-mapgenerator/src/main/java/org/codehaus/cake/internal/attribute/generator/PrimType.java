@@ -110,18 +110,18 @@ public enum PrimType {
     
 
     static class Info {
-        final static Class[] CLASSES = new Class[] { Boolean.class, Byte.class, Character.class, Double.class,
+        static final  Class[] CLASSES = new Class[] { Boolean.class, Byte.class, Character.class, Double.class,
                 Float.class, Integer.class, Long.class, Object.class, Short.class };
-        final static Class[] CLASSES_ATT = new Class[] { BooleanAttribute.class, ByteAttribute.class,
+        static final Class[] CLASSES_ATT = new Class[] { BooleanAttribute.class, ByteAttribute.class,
                 CharAttribute.class, DoubleAttribute.class, FloatAttribute.class, IntAttribute.class,
                 LongAttribute.class, ObjectAttribute.class, ShortAttribute.class };
-        final static Type[] TYPES = new Type[] { Type.BOOLEAN_TYPE, Type.BYTE_TYPE, Type.CHAR_TYPE, Type.DOUBLE_TYPE,
+        static final Type[] TYPES = new Type[] { Type.BOOLEAN_TYPE, Type.BYTE_TYPE, Type.CHAR_TYPE, Type.DOUBLE_TYPE,
                 Type.FLOAT_TYPE, Type.INT_TYPE, Type.LONG_TYPE, Type.getType(Object.class), Type.SHORT_TYPE };
-        final static int[] LOAD_OPCODES = new int[] { Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.DLOAD,
+        static final int[] LOAD_OPCODES = new int[] { Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.DLOAD,
                 Opcodes.FLOAD, Opcodes.ILOAD, Opcodes.LLOAD, Opcodes.ALOAD, Opcodes.ILOAD };
-        final static int[] STORE_OPCODES = new int[] { Opcodes.ISTORE, Opcodes.ISTORE, Opcodes.ISTORE, Opcodes.DSTORE,
+        static final int[] STORE_OPCODES = new int[] { Opcodes.ISTORE, Opcodes.ISTORE, Opcodes.ISTORE, Opcodes.DSTORE,
                 Opcodes.FSTORE, Opcodes.ISTORE, Opcodes.LSTORE, Opcodes.ASTORE, Opcodes.ISTORE };
-        final static int[] RETURN_OPCODES = new int[] { Opcodes.IRETURN, Opcodes.IRETURN, Opcodes.IRETURN,
+        static final int[] RETURN_OPCODES = new int[] { Opcodes.IRETURN, Opcodes.IRETURN, Opcodes.IRETURN,
                 Opcodes.DRETURN, Opcodes.FRETURN, Opcodes.IRETURN, Opcodes.LRETURN, Opcodes.ARETURN, Opcodes.IRETURN };
     }
 }

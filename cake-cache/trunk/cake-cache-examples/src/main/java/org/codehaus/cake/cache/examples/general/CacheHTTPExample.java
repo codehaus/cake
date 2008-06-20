@@ -18,7 +18,7 @@ import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
  * @version $Id: CacheHTTPExample.java 479 2007-11-27 13:40:08Z kasper $
  */
 public class CacheHTTPExample {
-    
+
     public static void main(String[] args) {
         CacheConfiguration<String, String> cc = CacheConfiguration.newConfiguration();
         cc.withLoading().setLoader(new UrlLoader());
@@ -30,8 +30,8 @@ public class CacheHTTPExample {
     public static void readGoogle(Cache<?, ?> c, String prefix) {
         long start = System.nanoTime();
         c.get("http://www.google.com");
-        System.out.println(prefix + " Time to read www.google.com: "
-                + ((System.nanoTime() - start) / 1000000.0) + " ms");
+        System.out.println(prefix + " Time to read www.google.com: " + ((System.nanoTime() - start) / 1000000.0)
+                + " ms");
     }
 
     public static class UrlLoader implements SimpleCacheLoader<String, String> {

@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.core.entryset;
 
 import java.util.Collections;
@@ -18,8 +31,8 @@ import org.junit.Test;
 public class EntrySetAdd extends AbstractCacheTCKTest {
 
     /**
-     * Tests that {@link Set#addAll(java.util.Collection)} throws a
-     * {@link NullPointerException} when invoked with <code>null</code>.
+     * Tests that {@link Set#addAll(java.util.Collection)} throws a {@link NullPointerException} when invoked with
+     * <code>null</code>.
      */
     @Test(expected = NullPointerException.class)
     public void addAllNPE() {
@@ -31,8 +44,8 @@ public class EntrySetAdd extends AbstractCacheTCKTest {
     }
 
     /**
-     * Tests that {@link Set#addAll(java.util.Collection)} throws a
-     * {@link UnsupportedOperationException} when invoked with a valid element.
+     * Tests that {@link Set#addAll(java.util.Collection)} throws a {@link UnsupportedOperationException} when invoked
+     * with a valid element.
      */
     @Test(expected = UnsupportedOperationException.class)
     public void addAllUOE() {
@@ -40,8 +53,7 @@ public class EntrySetAdd extends AbstractCacheTCKTest {
     }
 
     /**
-     * Tests that {@link Set#add(Object)} throws a {@link NullPointerException} when
-     * invoked with <code>null</code>.
+     * Tests that {@link Set#add(Object)} throws a {@link NullPointerException} when invoked with <code>null</code>.
      */
     @Test(expected = NullPointerException.class)
     public void addNPE() {
@@ -53,8 +65,8 @@ public class EntrySetAdd extends AbstractCacheTCKTest {
     }
 
     /**
-     * Tests that {@link Set#add(Object)} throws a {@link UnsupportedOperationException}
-     * when invoked with a valid element.
+     * Tests that {@link Set#add(Object)} throws a {@link UnsupportedOperationException} when invoked with a valid
+     * element.
      */
     @Test(expected = UnsupportedOperationException.class)
     public void addUOE() {

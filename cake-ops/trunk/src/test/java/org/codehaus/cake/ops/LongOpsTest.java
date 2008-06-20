@@ -214,8 +214,7 @@ public final class LongOpsTest {
         assertTrue(LongOps.reverseOrder(LongOps.COMPARATOR).compare(1L, 2L) > 0);
         LongOps.reverseOrder(LongOps.COMPARATOR).toString(); // does not fail
         assertIsSerializable(LongOps.reverseOrder(LongOps.COMPARATOR));
-        assertTrue(serializeAndUnserialize(LongOps.reverseOrder(LongOps.COMPARATOR))
-                .compare(2L, 1L) < 0);
+        assertTrue(serializeAndUnserialize(LongOps.reverseOrder(LongOps.COMPARATOR)).compare(2L, 1L) < 0);
     }
 
     @Test(expected = NullPointerException.class)

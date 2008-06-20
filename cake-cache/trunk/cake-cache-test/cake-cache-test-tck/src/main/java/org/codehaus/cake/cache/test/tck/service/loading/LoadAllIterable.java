@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import java.util.Arrays;
@@ -12,7 +27,6 @@ public class LoadAllIterable extends AbstractCacheTCKTest {
     public static final Attribute ATR1 = new ObjectAttribute("ATR1", String.class, "0") {};
     public static final Attribute ATR2 = new ObjectAttribute("ATR2", String.class, "1") {};
     public static final Attribute ATR3 = new ObjectAttribute("ATR3", String.class, "2") {};
-
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE1() {
@@ -33,10 +47,12 @@ public class LoadAllIterable extends AbstractCacheTCKTest {
     public void withKeysNPE4() {
         withLoading().loadAll(asList(1, null, 3), asDummy(AttributeMap.class));
     }
+
     @Test(expected = NullPointerException.class)
     public void withKeysNPE5() {
-        withLoading().loadAll(asList(1,  3), null);
+        withLoading().loadAll(asList(1, 3), null);
     }
+
     @Test
     public void withLoadAll() {
         assertSize(0);
@@ -56,12 +72,13 @@ public class LoadAllIterable extends AbstractCacheTCKTest {
     public void loadIgnoredAfterShutdown() {
         prestart();
         shutdown();
-        withLoading().loadAll(Arrays.asList(M1.getKey(),M2.getKey()));
+        withLoading().loadAll(Arrays.asList(M1.getKey(), M2.getKey()));
         awaitTermination();
-        withLoading().loadAll(Arrays.asList(M3.getKey(),M4.getKey()));
+        withLoading().loadAll(Arrays.asList(M3.getKey(), M4.getKey()));
         awaitFinishedThreads();
         assertSize(0);
     }
+
     @Test
     public void withLoadMany() {
         loadAll(M1, M3, M4);

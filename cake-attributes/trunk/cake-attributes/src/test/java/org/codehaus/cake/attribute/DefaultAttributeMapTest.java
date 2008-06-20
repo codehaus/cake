@@ -247,7 +247,7 @@ public class DefaultAttributeMapTest extends AtrStubs {
         assertEquals(F_1.getDefaultValue(), map.remove(F_1), 0);
         assertEquals(I_1.getDefaultValue(), map.remove(I_1));
         assertEquals(L_1.getDefaultValue(), map.remove(L_1));
-        assertEquals(O_1.getDefaultValue(), map.remove(O_1));
+        assertEquals(O_1.getDefault(), map.remove(O_1));
         assertEquals(S_1.getDefaultValue(), map.remove(S_1));
 
         map.put(B_TRUE, false);

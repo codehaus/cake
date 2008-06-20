@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.operations;
 
 import org.codehaus.cake.cache.Cache;
@@ -12,7 +25,7 @@ public class CacheOps {
 
     public static class Get<K, V> extends AbstractOperation<K, V> {
         /** The name of this operation. */
-        public final static String NAME = PREFIX + "get";
+        public static final String NAME = PREFIX + "get";
 
         /** {@inheritDoc} */
         public void run() {
@@ -25,7 +38,7 @@ public class CacheOps {
      */
     public static class EntrySetIterateAll<K, V> extends AbstractOperation<K, V> {
         /** The name of this operation. */
-        public final static String NAME = PREFIX + "entrySetIterateAll";
+        public static final String NAME = PREFIX + "entrySetIterateAll";
 
         /** {@inheritDoc} */
         public void run() {
@@ -48,7 +61,7 @@ public class CacheOps {
      */
     public static class Clear<K, V> extends AbstractOperation<K, V> {
         /** The name of this operation. */
-        public final static String NAME = PREFIX + "clear";
+        public static final String NAME = PREFIX + "clear";
 
         /** {@inheritDoc} */
         public void run() {
@@ -61,7 +74,7 @@ public class CacheOps {
      */
     public static class Shutdown<K, V> extends AbstractOperation<K, V> {
         /** The name of this operation. */
-        public final static String NAME = PREFIX + "shutdown";
+        public static final String NAME = PREFIX + "shutdown";
 
         /** {@inheritDoc} */
         public void run() {
@@ -74,7 +87,7 @@ public class CacheOps {
      */
     public static class ShutdownNow<K, V> extends AbstractOperation<K, V> {
         /** The name of this operation. */
-        public final static String NAME = PREFIX + "shutdownNow";
+        public static final String NAME = PREFIX + "shutdownNow";
 
         /** {@inheritDoc} */
         public void run() {
@@ -83,7 +96,7 @@ public class CacheOps {
     }
 
     public static class Peek<K, V> extends AbstractOperation<K, V> {
-        public final static String NAME = PREFIX + "peek";
+        public static final String NAME = PREFIX + "peek";
 
         /** {@inheritDoc} */
         public void run() {

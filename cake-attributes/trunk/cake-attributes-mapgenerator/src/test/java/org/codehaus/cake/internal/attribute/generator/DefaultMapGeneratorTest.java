@@ -35,49 +35,49 @@ import org.junit.Test;
 
 public class DefaultMapGeneratorTest {
 
-    private final static ByteAttribute B_4 = new ByteAttribute("B_4", (byte) 1) {};
-    private final static DefaultAttributeConfiguration BI4 = new DefaultAttributeConfiguration(B_4,
+    private static final ByteAttribute B_4 = new ByteAttribute("B_4", (byte) 1) {};
+    private static final DefaultAttributeConfiguration BI4 = new DefaultAttributeConfiguration(B_4,
             true, false,false,false);
-    private final static DoubleAttribute D_1 = new DoubleAttribute("D_1", 1.5) {};
-    private final static DefaultAttributeConfiguration DI1 = new DefaultAttributeConfiguration(D_1,
+    private static final DoubleAttribute D_1 = new DoubleAttribute("D_1", 1.5) {};
+    private static final DefaultAttributeConfiguration DI1 = new DefaultAttributeConfiguration(D_1,
             false, false,false,false);
-    private final static FloatAttribute F_1 = new FloatAttribute("F_1", 1.5f) {};
-    private final static DefaultAttributeConfiguration FI1 = new DefaultAttributeConfiguration(F_1,
+    private static final FloatAttribute F_1 = new FloatAttribute("F_1", 1.5f) {};
+    private static final DefaultAttributeConfiguration FI1 = new DefaultAttributeConfiguration(F_1,
             false, false,false,false);
-    private final static IntAttribute I_1 = new IntAttribute("L_1", 1) {};
-    private final static IntAttribute I_5 = new IntAttribute("L_5", 2) {};
-    private final static DefaultAttributeConfiguration II1 = new DefaultAttributeConfiguration(I_1,
+    private static final IntAttribute I_1 = new IntAttribute("L_1", 1) {};
+    private static final IntAttribute I_5 = new IntAttribute("L_5", 2) {};
+    private static final DefaultAttributeConfiguration II1 = new DefaultAttributeConfiguration(I_1,
             false, false,false,false);
-    private final static DefaultAttributeConfiguration II5 = new DefaultAttributeConfiguration(I_5,
+    private static final DefaultAttributeConfiguration II5 = new DefaultAttributeConfiguration(I_5,
             true, true,false,false);
-    private final static LongAttribute L_1 = new LongAttribute("L_1", 1) {};
-    private final static LongAttribute L_2 = new LongAttribute("L_2", 2) {};
-    private final static LongAttribute L_3 = new LongAttribute("L_3", 3) {};
-    private final static LongAttribute L_4 = new LongAttribute("L_4", 1) {};
-    private final static LongAttribute L_5 = new LongAttribute("L_5", 2) {};
-    private final static DefaultAttributeConfiguration LI1 = new DefaultAttributeConfiguration(L_1,
+    private static final LongAttribute L_1 = new LongAttribute("L_1", 1) {};
+    private static final LongAttribute L_2 = new LongAttribute("L_2", 2) {};
+    private static final LongAttribute L_3 = new LongAttribute("L_3", 3) {};
+    private static final LongAttribute L_4 = new LongAttribute("L_4", 1) {};
+    private static final LongAttribute L_5 = new LongAttribute("L_5", 2) {};
+    private static final DefaultAttributeConfiguration LI1 = new DefaultAttributeConfiguration(L_1,
             false, false,false,false);
-    private final static DefaultAttributeConfiguration LI2 = new DefaultAttributeConfiguration(L_2,
+    private static final DefaultAttributeConfiguration LI2 = new DefaultAttributeConfiguration(L_2,
             false, false,false,false);
-    private final static DefaultAttributeConfiguration LI3 = new DefaultAttributeConfiguration(L_3,
+    private static final DefaultAttributeConfiguration LI3 = new DefaultAttributeConfiguration(L_3,
             false, true,false,false);
-    private final static DefaultAttributeConfiguration LI4 = new DefaultAttributeConfiguration(L_4,
+    private static final DefaultAttributeConfiguration LI4 = new DefaultAttributeConfiguration(L_4,
             true, false,false,false);
-    private final static DefaultAttributeConfiguration LI5 = new DefaultAttributeConfiguration(L_5,
+    private static final DefaultAttributeConfiguration LI5 = new DefaultAttributeConfiguration(L_5,
             true, true,false,false);
-    private final static ObjectAttribute<String> O_1 = new ObjectAttribute<String>("O_1",
+    private static final ObjectAttribute<String> O_1 = new ObjectAttribute<String>("O_1",
             String.class, "1.5f") {};
-    private final static ObjectAttribute<Map> O_2 = new ObjectAttribute<Map>("O_1", Map.class,
+    private static final ObjectAttribute<Map> O_2 = new ObjectAttribute<Map>("O_1", Map.class,
             new HashMap()) {};
-    private final static DefaultAttributeConfiguration OI1 = new DefaultAttributeConfiguration(O_1,
+    private static final DefaultAttributeConfiguration OI1 = new DefaultAttributeConfiguration(O_1,
             true, false,false,false);
-    private final static DefaultAttributeConfiguration OI4 = new DefaultAttributeConfiguration(O_1,
+    private static final DefaultAttributeConfiguration OI4 = new DefaultAttributeConfiguration(O_1,
             true, false,false,false);
-    private final static DefaultAttributeConfiguration OI5 = new DefaultAttributeConfiguration(O_1,
+    private static final DefaultAttributeConfiguration OI5 = new DefaultAttributeConfiguration(O_1,
             false, true,false,false);
-    private final static Random r = new Random(3);
-    private final static ShortAttribute S_4 = new ShortAttribute("S_4", (short) 1) {};
-    private final static DefaultAttributeConfiguration SI4 = new DefaultAttributeConfiguration(S_4,
+    private static final Random r = new Random(3);
+    private static final ShortAttribute S_4 = new ShortAttribute("S_4", (short) 1) {};
+    private static final DefaultAttributeConfiguration SI4 = new DefaultAttributeConfiguration(S_4,
             true, false,false,false);
 
     public void addBoolean(Map<DefaultAttributeConfiguration, Object> map) {

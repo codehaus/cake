@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.core.entryset;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_NULL;
@@ -42,8 +55,7 @@ public class EntrySetRetain extends AbstractCacheTCKTest {
         c = newCache(5);
         c.entrySet().retainAll(Arrays.asList(M1, "F", M3, "G", M5));
         assertSize(3);
-        assertTrue(c.entrySet().contains(M1) && c.entrySet().contains(M3)
-                && c.entrySet().contains(M5));
+        assertTrue(c.entrySet().contains(M1) && c.entrySet().contains(M3) && c.entrySet().contains(M5));
 
     }
 

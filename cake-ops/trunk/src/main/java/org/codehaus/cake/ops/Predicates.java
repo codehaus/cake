@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -54,7 +54,7 @@ public final class Predicates {
 
     // /CLOVER:ON
     /**
-     * As {@link #allTrue(Predicate[])} except taking an {@link Iterable} as parameter.
+     * As {@link #allTrue(Predicate...)} except taking an {@link Iterable} as parameter.
      * 
      * @param predicates
      *            the predicates to evaluate against
@@ -162,7 +162,7 @@ public final class Predicates {
     }
 
     /**
-     * As {@link #anyTrue(Predicate[])} except taking an {@link Iterable} as parameter.
+     * As {@link #anyTrue(Predicate...)} except taking an {@link Iterable} as parameter.
      * 
      * @param predicates
      *            the predicates to evaluate against
@@ -902,7 +902,7 @@ public final class Predicates {
          * @param iterable
          *            the iterable to test
          */
-        public AnyPredicate(Iterable<? extends Predicate<? super E>> iterable) {
+        AnyPredicate(Iterable<? extends Predicate<? super E>> iterable) {
             this.predicates = iterableToArray(iterable);
         }
 
@@ -913,7 +913,7 @@ public final class Predicates {
          *            the predicates to test
          */
         @SuppressWarnings("unchecked")
-        public AnyPredicate(final Predicate<? super E>[] predicates) {
+        AnyPredicate(final Predicate<? super E>[] predicates) {
             this.predicates = new Predicate[predicates.length];
             System.arraycopy(predicates, 0, this.predicates, 0, predicates.length);
             for (int i = 0; i < this.predicates.length; i++) {
@@ -1259,7 +1259,7 @@ public final class Predicates {
          * @throws NullPointerException
          *             if the specified element is <code>null</code>
          */
-        public IsSamePredicate(E element) {
+        IsSamePredicate(E element) {
             if (element == null) {
                 throw new NullPointerException("element is null");
             }
@@ -1310,7 +1310,7 @@ public final class Predicates {
          * @throws IllegalArgumentException
          *             if the class represents a primitive type
          */
-        public IsTypePredicate(Class<?> theClass) {
+        IsTypePredicate(Class<?> theClass) {
             if (theClass == null) {
                 throw new NullPointerException("theClass is null");
             } else if (theClass.isPrimitive()) {
@@ -1366,7 +1366,7 @@ public final class Predicates {
          * @param comparator
          *            the comparator that should be used to compare elements
          */
-        public LessThenOrEqualPredicate(E object, final Comparator<? extends E> comparator) {
+        LessThenOrEqualPredicate(E object, final Comparator<? extends E> comparator) {
             if (object == null) {
                 throw new NullPointerException("element is null");
             } else if (comparator == null) {
@@ -1446,7 +1446,7 @@ public final class Predicates {
          * @param comparator
          *            the comparator that should be used to compare elements
          */
-        public LessThenPredicate(E object, final Comparator<? extends E> comparator) {
+        LessThenPredicate(E object, final Comparator<? extends E> comparator) {
             if (object == null) {
                 throw new NullPointerException("element is null");
             } else if (comparator == null) {
@@ -1523,7 +1523,7 @@ public final class Predicates {
          * @param predicate
          *            the predicate used to evaluate the mapped argument
          */
-        public MapAndEvaluatePredicate(Op<F, T> mapper, Predicate<? super T> predicate) {
+        MapAndEvaluatePredicate(Op<F, T> mapper, Predicate<? super T> predicate) {
             if (mapper == null) {
                 throw new NullPointerException("mapper is null");
             } else if (predicate == null) {
@@ -1588,7 +1588,7 @@ public final class Predicates {
          * @throws NullPointerException
          *             if the specified predicate is <code>null</code>
          */
-        public NotPredicate(Predicate<? super E> predicate) {
+        NotPredicate(Predicate<? super E> predicate) {
             if (predicate == null) {
                 throw new NullPointerException("predicate is null");
             }

@@ -54,8 +54,7 @@ public final class FloatOpsTest {
     public void add() {
         assertEquals(3F, FloatOps.ADD_REDUCER.op(1F, 2F), 0);
         assertEquals(3F, FloatOps.ADD_REDUCER.op(2F, 1F), 0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.ADD_REDUCER.op(1, Float.POSITIVE_INFINITY),
-                0);
+        assertEquals(Float.POSITIVE_INFINITY, FloatOps.ADD_REDUCER.op(1, Float.POSITIVE_INFINITY), 0);
         assertEquals(Float.NaN, FloatOps.ADD_REDUCER.op(1, Float.NaN), 0);
         assertSame(FloatOps.ADD_REDUCER, FloatOps.add());
         FloatOps.ADD_REDUCER.toString(); // does not fail
@@ -109,8 +108,7 @@ public final class FloatOpsTest {
     public void divide() {
         assertEquals(4F, FloatOps.DIVIDE_REDUCER.op(16F, 4F), 0);
         assertEquals(-4F, FloatOps.DIVIDE_REDUCER.op(-8F, 2F), 0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.DIVIDE_REDUCER
-                .op(Float.POSITIVE_INFINITY, 1), 0);
+        assertEquals(Float.POSITIVE_INFINITY, FloatOps.DIVIDE_REDUCER.op(Float.POSITIVE_INFINITY, 1), 0);
         assertEquals(Float.NaN, FloatOps.DIVIDE_REDUCER.op(1, Float.NaN), 0);
         assertSame(FloatOps.DIVIDE_REDUCER, FloatOps.divide());
         FloatOps.DIVIDE_REDUCER.toString(); // does not fail
@@ -139,8 +137,7 @@ public final class FloatOpsTest {
         assertEquals(2F, FloatOps.MAX_REDUCER.op(2F, 1F), 0);
         assertEquals(2F, FloatOps.MAX_REDUCER.op(1F, 2F), 0);
         assertEquals(2F, FloatOps.MAX_REDUCER.op(2F, 2F), 0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.MAX_REDUCER.op(1F, Float.POSITIVE_INFINITY),
-                0);
+        assertEquals(Float.POSITIVE_INFINITY, FloatOps.MAX_REDUCER.op(1F, Float.POSITIVE_INFINITY), 0);
         assertEquals(Float.NaN, FloatOps.MAX_REDUCER.op(1F, Float.NaN), 0);
         FloatOps.MAX_REDUCER.toString(); // does not fail
         assertIsSerializable(FloatOps.MAX_REDUCER);
@@ -212,8 +209,7 @@ public final class FloatOpsTest {
     public void multiply() {
         assertEquals(16F, FloatOps.MULTIPLY_REDUCER.op(4F, 4F), 0);
         assertEquals(-8F, FloatOps.MULTIPLY_REDUCER.op(-4F, 2F), 0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.MULTIPLY_REDUCER.op(Float.POSITIVE_INFINITY,
-                1), 0);
+        assertEquals(Float.POSITIVE_INFINITY, FloatOps.MULTIPLY_REDUCER.op(Float.POSITIVE_INFINITY, 1), 0);
         assertEquals(Float.NaN, FloatOps.MULTIPLY_REDUCER.op(1, Float.NaN), 0);
         assertSame(FloatOps.MULTIPLY_REDUCER, FloatOps.multiply());
         FloatOps.MULTIPLY_REDUCER.toString(); // does not fail
@@ -245,8 +241,7 @@ public final class FloatOpsTest {
         assertTrue(FloatOps.reverseOrder(FloatOps.COMPARATOR).compare(1F, 2F) > 0);
         FloatOps.reverseOrder(FloatOps.COMPARATOR).toString(); // does not fail
         assertIsSerializable(FloatOps.reverseOrder(FloatOps.COMPARATOR));
-        assertTrue(serializeAndUnserialize(FloatOps.reverseOrder(FloatOps.COMPARATOR)).compare(2F,
-                1F) < 0);
+        assertTrue(serializeAndUnserialize(FloatOps.reverseOrder(FloatOps.COMPARATOR)).compare(2F, 1F) < 0);
     }
 
     @Test(expected = NullPointerException.class)
@@ -261,8 +256,7 @@ public final class FloatOpsTest {
     public void subtract() {
         assertEquals(-1F, FloatOps.SUBTRACT_REDUCER.op(1F, 2F), 0);
         assertEquals(1F, FloatOps.SUBTRACT_REDUCER.op(2F, 1F), 0);
-        assertEquals(Float.NEGATIVE_INFINITY, FloatOps.SUBTRACT_REDUCER.op(1,
-                Float.POSITIVE_INFINITY), 0);
+        assertEquals(Float.NEGATIVE_INFINITY, FloatOps.SUBTRACT_REDUCER.op(1, Float.POSITIVE_INFINITY), 0);
         assertEquals(Float.NaN, FloatOps.SUBTRACT_REDUCER.op(1, Float.NaN), 0);
         assertSame(FloatOps.SUBTRACT_REDUCER, FloatOps.subtract());
         FloatOps.SUBTRACT_REDUCER.toString(); // does not fail

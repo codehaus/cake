@@ -31,16 +31,16 @@ import org.codehaus.cake.ops.Ops.LongReducer;
  * @version $Id: LongOps.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class LongOps {
-    final static LongAbsOp ABS_OP = new LongAbsOp();
+    static final LongAbsOp ABS_OP = new LongAbsOp();
 
-    final static LongAddReducer ADD_REDUCER = new LongAddReducer();
+    static final LongAddReducer ADD_REDUCER = new LongAddReducer();
 
     /**
      * A comparator for longs relying on natural ordering. The comparator is Serializable.
      */
     public static final LongComparator COMPARATOR = new NaturalLongComparator();
 
-    final static LongDivideReducer DIVIDE_REDUCER = new LongDivideReducer();
+    static final LongDivideReducer DIVIDE_REDUCER = new LongDivideReducer();
     /**
      * A reducer returning the maximum of two long elements, using natural comparator. The Reducer
      * is serializable.
@@ -53,7 +53,7 @@ public final class LongOps {
      */
     static final LongReducer MIN_REDUCER = new NaturalLongMinReducer();
 
-    final static LongMultiplyReducer MULTIPLY_REDUCER = new LongMultiplyReducer();
+    static final LongMultiplyReducer MULTIPLY_REDUCER = new LongMultiplyReducer();
 
     /**
      * A comparator that imposes the reverse of the <i>natural ordering</i> on longs. The
@@ -61,7 +61,7 @@ public final class LongOps {
      */
     public static final LongComparator REVERSE_COMPARATOR = new NaturalLongReverseComparator();
 
-    final static LongSubtractReducer SUBTRACT_REDUCER = new LongSubtractReducer();
+    static final LongSubtractReducer SUBTRACT_REDUCER = new LongSubtractReducer();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */

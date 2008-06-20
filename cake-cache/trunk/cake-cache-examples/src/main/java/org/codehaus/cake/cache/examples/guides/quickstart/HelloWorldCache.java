@@ -3,7 +3,7 @@
  */
 package org.codehaus.cake.cache.examples.guides.quickstart;
 
-//START SNIPPET: helloworld
+// START SNIPPET: helloworld
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.UnsynchronizedCache;
 

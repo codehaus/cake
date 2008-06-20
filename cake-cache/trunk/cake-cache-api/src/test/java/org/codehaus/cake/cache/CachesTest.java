@@ -1,14 +1,20 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
 
-import static org.codehaus.cake.cache.CacheEntry.COST;
-import static org.codehaus.cake.cache.CacheEntry.HITS;
-import static org.codehaus.cake.cache.CacheEntry.SIZE;
-import static org.codehaus.cake.cache.CacheEntry.TIME_ACCESSED;
-import static org.codehaus.cake.cache.CacheEntry.TIME_CREATED;
-import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
-import static org.codehaus.cake.cache.CacheEntry.VERSION;
 import static org.codehaus.cake.cache.Caches.emptyCache;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
@@ -26,11 +32,7 @@ import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.test.util.TestUtil;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;

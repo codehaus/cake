@@ -31,7 +31,7 @@ public class DefaultAttributeMap implements AttributeMap {
 
     /** serialVersionUID. */
     private static final long serialVersionUID = -5954819329578687686L;
-
+    /** The HashMap that is storing the attribute value pairs. */
     private final HashMap<Attribute, Object> map = new HashMap<Attribute, Object>();
 
     /** Creates a new empty DefaultAttributeMap. */
@@ -369,12 +369,12 @@ public class DefaultAttributeMap implements AttributeMap {
     }
 
     /** {@inheritDoc} */
-    public Collection<Object> values() {
-        return map.values();
+    public String toString() {
+        return map.toString();
     }
 
     /** {@inheritDoc} */
-    public String toString() {
-        return map.toString();
+    public Collection<Object> values() {
+        return map.values();
     }
 }

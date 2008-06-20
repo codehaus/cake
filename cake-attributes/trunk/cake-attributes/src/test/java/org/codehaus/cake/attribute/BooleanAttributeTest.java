@@ -44,10 +44,8 @@ public final class BooleanAttributeTest extends AtrStubs {
         assertEquals(false, new BooleanAttribute() {}.getDefault().booleanValue());
         assertEquals(false, new BooleanAttribute("a") {}.getDefaultValue());
         assertFalse(new BooleanAttribute() {}.getName().equals(new BooleanAttribute() {}.getName()));
-        assertFalse(new BooleanAttribute(false) {}.getName().equals(
-                new BooleanAttribute(false) {}.getName()));
-        assertTrue(new BooleanAttribute("a") {}.getName().equals(
-                new BooleanAttribute("a") {}.getName()));
+        assertFalse(new BooleanAttribute(false) {}.getName().equals(new BooleanAttribute(false) {}.getName()));
+        assertTrue(new BooleanAttribute("a") {}.getName().equals(new BooleanAttribute("a") {}.getName()));
         assertEquals(true, new BooleanAttribute(true) {}.getDefaultValue());
         assertEquals(false, ATR0.getDefaultValue());
         assertEquals(true, ATR1.getDefaultValue());
@@ -125,7 +123,7 @@ public final class BooleanAttributeTest extends AtrStubs {
         AttributeMap am = new DefaultAttributeMap();
         ATR1.set(am, true);
         assertTrue(am.get(ATR1));
-        
+
         ATR1.set(withAtr(am), false);
         assertFalse(am.get(ATR1));
     }
@@ -151,6 +149,5 @@ public final class BooleanAttributeTest extends AtrStubs {
     public void toSingletonIAE() {
         NON_NEGATIVE.singleton(false);
     }
-    
-    
+
 }

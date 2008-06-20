@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.attributes.cache;
 
 import static org.codehaus.cake.cache.CacheEntry.TIME_MODIFIED;
@@ -14,8 +27,8 @@ public class TimeModified extends AbstractAttributeTest {
     }
 
     /**
-     * Tests that timestamp is set for modification date. This also tests that put of the same
-     * values constitutes a new put ie modification time is updated.
+     * Tests that timestamp is set for modification date. This also tests that put of the same values constitutes a new
+     * put ie modification time is updated.
      */
     @Test
     public void put() {
@@ -135,7 +148,7 @@ public class TimeModified extends AbstractAttributeTest {
     public void loadedNoAttribute() {
         assertGet(M1);
         assertAttribute(M1, 10l);
-        
+
         clock.incrementTimeOfDay();
         forceLoad(M1);
         assertAttribute(M1, 11l);
@@ -152,7 +165,6 @@ public class TimeModified extends AbstractAttributeTest {
         loader.withLoader(M3).addAttribute(TIME_MODIFIED, 7l);
         loader.withLoader(M4).addAttribute(TIME_MODIFIED, 8l);
 
-
         assertGet(M1);
         assertAttribute(M1, 5l);
 
@@ -162,8 +174,8 @@ public class TimeModified extends AbstractAttributeTest {
         assertGetAll(M3, M4);
         assertAttribute(M3, 7l);
         assertAttribute(M4, 8l);
-        
+
         assertGet(M5);
-        assertAttribute(M5, 10l);//default
+        assertAttribute(M5, 10l);// default
     }
 }

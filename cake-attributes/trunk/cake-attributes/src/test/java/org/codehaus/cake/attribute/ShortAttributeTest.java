@@ -20,16 +20,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.junit.Test;
+
 /**
  * Various tests for {@link ShortAttribute}.
- *
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ShortAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class ShortAttributeTest extends AtrStubs {
-    static final ShortAttribute ATR0 = new ShortAttribute("a0",(short) 0) {};
-    static final ShortAttribute ATR1 = new ShortAttribute("a1",(short) 1) {};
+    static final ShortAttribute ATR0 = new ShortAttribute("a0", (short) 0) {};
+    static final ShortAttribute ATR1 = new ShortAttribute("a1", (short) 1) {};
     static final ShortAttribute ATR100 = new ShortAttribute("a100", (short) 100) {};
 
     static final ShortAttribute NON_NEGATIVE = new ShortAttribute("a50", (short) 50) {
@@ -51,10 +55,10 @@ public final class ShortAttributeTest extends AtrStubs {
         assertEquals((short) 100, ATR100.getDefaultValue());
         assertEquals((short) 100, ATR100.getDefault().shortValue());
         assertEquals("a100", ATR100.getName());
-        
+
         assertSame(Short.TYPE, ATR100.getType());
     }
-    
+
     @Test
     public void checkValid() {
         ATR100.checkValid(Short.MIN_VALUE);
@@ -69,7 +73,7 @@ public final class ShortAttributeTest extends AtrStubs {
     public void checkValidIAE() {
         NON_NEGATIVE.checkValid((short) 4);
     }
-    
+
     @Test
     public void comparator() {
         WithAttributes wa1 = withAtr(ATR1.singleton((short) 1));
@@ -84,8 +88,15 @@ public final class ShortAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa1, wa3) < 0);
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
+
+        ArrayList<WithAttributes> al = new ArrayList<WithAttributes>();
+        al.add(wa2);
+        al.add(wa1);
+        Collections.sort(al, ATR1);
+        assertSame(wa1, al.get(0));
+        assertSame(wa2, al.get(1));
     }
-    
+
     @Test
     public void fromString() {
         assertEquals((short) -1, ATR100.fromString(Integer.valueOf(-1).toString()));
@@ -135,13 +146,13 @@ public final class ShortAttributeTest extends AtrStubs {
         AttributeMap am = new DefaultAttributeMap();
         ATR100.set(am, (short) 10);
         assertEquals((short) 10, am.get(ATR100));
-        
+
         ATR100.set(withAtr(am), (short) -111);
         assertEquals((short) -111, am.get(ATR100));
-        
+
         ATR100.set(am, Short.valueOf((short) 111));
         assertEquals((short) 111, am.get(ATR100));
-        
+
         ATR100.set(am, Short.MAX_VALUE);
         assertEquals(Short.MAX_VALUE, am.get(ATR100));
     }

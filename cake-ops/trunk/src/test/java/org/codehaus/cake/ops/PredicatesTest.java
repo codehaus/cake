@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -60,7 +60,7 @@ import org.junit.Test;
  */
 public class PredicatesTest {
 
-    private final static Comparator<Dummy> COMP = new DummyComparator();
+    private static final Comparator<Dummy> COMP = new DummyComparator();
 
     private static Predicate[] PREDICATES_WITH_NULL_ARRAY = { TRUE, null, TRUE };
 

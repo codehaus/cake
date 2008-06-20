@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.service.loading;
 
 import java.util.Map;
@@ -11,14 +26,13 @@ public interface CacheLoadingService<K, V> {
      * A quick way to get a Forced instance is: Cache<?,?> someCache; someCache.with().withLoadingForced().load(5);
      */
     BooleanAttribute IS_FORCED = new CacheLoadingConfiguration.IsLoadingForcedAttribute();
-    //Additional attributes
-    //Priority?? ->should probably be implemented at the cache loader level
-    //Logger 
-    //Await load done, come up with use cases
-    //Runnable callback? come up with use cases
 
-    
-    
+    // Additional attributes
+    // Priority?? ->should probably be implemented at the cache loader level
+    // Logger
+    // Await load done, come up with use cases
+    // Runnable callback? come up with use cases
+
     /**
      * If a mapping for the specified key is not already in the cache. This method will attempt to load the value for
      * the specified key from the configured cache loader.
@@ -43,8 +57,8 @@ public interface CacheLoadingService<K, V> {
 
     /**
      * This method works analogous to the {@link #load(Object)} method. Except that all the attributes in the the
-     * specified attribute map will be parsed along to the {@link CacheLoader#load(Object, AttributeMap)} method of the
-     * configured cache loader.
+     * specified attribute map will be parsed along to the {@link SimpleCacheLoader#load(Object, AttributeMap)} method
+     * of the configured cache loader.
      * <p>
      * If this cache has been shutdown calls to this method is ignored.
      * 
@@ -52,7 +66,7 @@ public interface CacheLoadingService<K, V> {
      *            whose associated value is to be loaded.
      * @param attributes
      *            a map of attributes that will be available in the attribute map parsed to the
-     *            {@link CacheLoader#load(Object, AttributeMap)} method of the configured cache loader
+     *            {@link SimpleCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional).
      * @throws NullPointerException
@@ -72,7 +86,7 @@ public interface CacheLoadingService<K, V> {
      * 
      * @param attributes
      *            a map of attributes that will be available in the attribute map parsed to
-     *            {@link CacheLoader#load(Object, AttributeMap)} method of the configured cache loader
+     *            {@link SimpleCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
      * @throws NullPointerException
      *             if the specified attribute map is <tt>null</tt>
      */

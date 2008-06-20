@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
 
 import java.io.Serializable;
@@ -75,6 +88,8 @@ public final class Caches {
      * 
      * @see #EMPTY_CACHE
      */
+
+    @SuppressWarnings("unchecked")
     public static <K, V> Cache<K, V> emptyCache() {
         return EMPTY_CACHE;
     }
@@ -136,6 +151,7 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
+        @SuppressWarnings("unchecked")
         @Override
         public Set<java.util.Map.Entry<K, V>> entrySet() {
             return Collections.EMPTY_MAP.entrySet();

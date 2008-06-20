@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.CountDownLatch;
@@ -23,11 +38,11 @@ public final class SynchronizedRunState extends RunState {
         mutex = container;
     }
 
-     boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return terminationLatch.await(timeout, unit);
     }
 
-     void checkExceptions() {
+    void checkExceptions() {
         Throwable re = startupException.get();
         if (re != null) {
             throw new IllegalStateException("Cache failed to start previously", re);
@@ -39,7 +54,7 @@ public final class SynchronizedRunState extends RunState {
         return state.get();
     }
 
-     void shutdown(boolean shutdownNow) {
+    void shutdown(boolean shutdownNow) {
         synchronized (mutex) {
             if (!isAtLeastShutdown()) {
                 transitionTo(SHUTDOWN);
@@ -47,7 +62,7 @@ public final class SynchronizedRunState extends RunState {
         }
     }
 
-     boolean transitionTo(int state) {
+    boolean transitionTo(int state) {
         for (;;) {
             int s = get();
             if (s >= state)
@@ -69,11 +84,11 @@ public final class SynchronizedRunState extends RunState {
         }
     }
 
-     void trySetStartupException(Throwable cause) {
+    void trySetStartupException(Throwable cause) {
         startupException.compareAndSet(null, cause);
     }
 
-     void tryStart() {
+    void tryStart() {
         synchronized (mutex) {
             checkExceptions();
             if (isStarting()) {
@@ -84,7 +99,7 @@ public final class SynchronizedRunState extends RunState {
         }
     }
 
-     Throwable getStartupException() {
+    Throwable getStartupException() {
         return startupException.get();
     }
 }

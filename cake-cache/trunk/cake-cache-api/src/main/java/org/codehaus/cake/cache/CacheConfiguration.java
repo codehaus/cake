@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
 
 import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
@@ -18,8 +33,8 @@ import org.codehaus.cake.util.Logger;
  * <b>Usage Examples.</b> The following creates a new cache with the name <I>MyCache</I>. The cache can hold a maximum
  * of 1000 elements and uses a least-recently-used policy to determine which elements to evict when the specified
  * maximum size has been reached. Finally, the cache and all of its services are registered as a mbean with the
- * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform <tt>MBeanServer</tt>} using the
- * name of the cache.
+ * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform <tt>MBeanServer</tt>} using the name
+ * of the cache.
  * 
  * <pre>
  * CacheConfiguration&lt;String, Integer&gt; cc = CacheConfiguration.newConfiguration(&quot;MyCache&quot;);
@@ -44,7 +59,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         addConfiguration(new ManagementConfiguration());
         addConfiguration(new MemoryStoreConfiguration());
         addConfiguration(new ExecutorsConfiguration());
-    //    addConfiguration(new CacheStoreConfiguration());
+        // addConfiguration(new CacheStoreConfiguration());
     }
 
     @Override
@@ -92,6 +107,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
      * 
      * @return a ManagementConfiguration
      */
+    @SuppressWarnings("unchecked")
     public ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>> withExceptionHandling() {
         return getConfigurationOfType(ExceptionHandlingConfiguration.class);
     }
@@ -110,17 +126,19 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
      * 
      * @return a CacheLoadingConfiguration
      */
+    @SuppressWarnings("unchecked")
     public CacheLoadingConfiguration<K, V> withLoading() {
         return getConfigurationOfType(CacheLoadingConfiguration.class);
     }
 
+    @SuppressWarnings("unchecked")
     public MemoryStoreConfiguration<K, V> withMemoryStore() {
         return getConfigurationOfType(MemoryStoreConfiguration.class);
     }
 
-//    public CacheStoreConfiguration<K, V> withStore() {
-//        return getConfigurationOfType(CacheStoreConfiguration.class);
-//    }
+    // public CacheStoreConfiguration<K, V> withStore() {
+    // return getConfigurationOfType(CacheStoreConfiguration.class);
+    // }
 
     /**
      * Returns a configuration object that can be used to control how services are remotely managed.
@@ -144,6 +162,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         return new CacheConfiguration<K, V>();
     }
 
+    @SuppressWarnings("unchecked")
     public Cache<K, V> newInstance() {
         return super.newInstance();
     }

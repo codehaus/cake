@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.util;
 
 import java.util.logging.LogManager;
@@ -23,31 +36,32 @@ public class LazyLogger extends AbstractLogger {
 
     private final String msg;
     private final String lastCaller;
-   // private final LazyGenerator<Logger> lazyLoggerGenerator;
+
+    // private final LazyGenerator<Logger> lazyLoggerGenerator;
 
     public LazyLogger(String jdkLoggerName, String msg, String lastCaller) {
         this.msg = msg;
         this.jdkLoggerName = jdkLoggerName;
         this.lastCaller = lastCaller;
-//        lazyLoggerGenerator = new LazyGenerator<Logger>(new Generator<Logger>() {
-//            public Logger op() {
-//                Logger logger = LogManager.getLogManager().getLogger(LazyLogger.this.jdkLoggerName);
-//                if (logger == null) {
-//                    logger = java.util.logging.Logger.getLogger(LazyLogger.this.jdkLoggerName);
-//                    logger.setLevel(java.util.logging.Level.ALL);
-//                    logger.log(new LazyLogRecord(java.util.logging.Level.INFO, LazyLogger.this.msg,
-//                            LazyLogger.this.lastCaller));
-//                    logger.setLevel(java.util.logging.Level.WARNING);
-//                }
-//                return logger;
-//            }
-//
-//        });
+        // lazyLoggerGenerator = new LazyGenerator<Logger>(new Generator<Logger>() {
+        // public Logger op() {
+        // Logger logger = LogManager.getLogManager().getLogger(LazyLogger.this.jdkLoggerName);
+        // if (logger == null) {
+        // logger = java.util.logging.Logger.getLogger(LazyLogger.this.jdkLoggerName);
+        // logger.setLevel(java.util.logging.Level.ALL);
+        // logger.log(new LazyLogRecord(java.util.logging.Level.INFO, LazyLogger.this.msg,
+        // LazyLogger.this.lastCaller));
+        // logger.setLevel(java.util.logging.Level.WARNING);
+        // }
+        // return logger;
+        // }
+        //
+        // });
     }
 
     private Logger getLogger() {
-//        if (false)
-//        return lazyLoggerGenerator.op();
+        // if (false)
+        // return lazyLoggerGenerator.op();
         Logger logger = this.logger;
         if (logger != null) {
             return logger;

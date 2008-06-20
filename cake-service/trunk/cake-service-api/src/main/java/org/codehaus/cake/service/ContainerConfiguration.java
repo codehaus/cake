@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.service;
 
 import java.lang.reflect.Constructor;
@@ -65,7 +78,7 @@ public abstract class ContainerConfiguration<T> {
      * Adds an instantiated configuration object.
      * 
      * @param <T>
-     *            the type of configuration added
+     *            this type of configuration
      * @param configuration
      *            the configuration object that should be registered
      * @return the specified configuration object
@@ -75,13 +88,13 @@ public abstract class ContainerConfiguration<T> {
      *             if another configuration of the same type is already
      *             registered
      */
-    public final <U> ContainerConfiguration<T> addConfiguration(U configuration) {
+    public final ContainerConfiguration<T> addConfiguration(Object configuration) {
         if (configuration == null) {
             throw new NullPointerException("configuration is null");
         }
         if (configurations.containsKey(configuration.getClass())) {
-            throw new IllegalArgumentException("A configuration of type " + configuration.getClass()
-                    + " has already been added");
+            throw new IllegalArgumentException("A configuration of type "
+                    + configuration.getClass() + " has already been added");
         }
         configurations.put(configuration.getClass(), configuration);
         return this;
@@ -123,7 +136,8 @@ public abstract class ContainerConfiguration<T> {
         if (o == null) {
             throw new NullPointerException("o is null");
         } else if (registeredServices.containsKey(o)) {
-            throw new IllegalArgumentException("Object has already been registered");
+            throw new IllegalArgumentException(
+                    "Object has already been registered");
         }
         registeredServices.put(o, false);
         return this;
@@ -175,8 +189,8 @@ public abstract class ContainerConfiguration<T> {
 
     /**
      * Returns the objects that have been registered through
-     * {@link #add(Object)}. The service will be returned in the same order as
-     * the they have been added.
+     * {@link #addService(Object)}. The service will be returned in the same
+     * order as the they have been added.
      * 
      * @return the objects that have been registered
      */
@@ -191,7 +205,8 @@ public abstract class ContainerConfiguration<T> {
      * @see #setProperty(String, String)
      */
     public Map<String, String> getProperties() {
-        return Collections.unmodifiableMap(new HashMap<String, String>(additionalProperties));
+        return Collections.unmodifiableMap(new HashMap<String, String>(
+                additionalProperties));
     }
 
     /**
@@ -236,7 +251,7 @@ public abstract class ContainerConfiguration<T> {
     /**
      * Returns the type of container set by {@link #setContainerType(Class)}.
      * 
-     * @return the type of container set by {@link #setContainerType(Class)} or
+     * @return the type of container set by {@link #setType(Class)} or
      *         <code>null</code> if no type has been set
      */
     public Class<? extends T> getType() {
@@ -244,20 +259,20 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Creates a new Container of the type set using
-     * {@link #setContainerType(Class)} from this configuration.
+     * Creates a new Container of the type set using {@link #setType(Class)}
+     * from this configuration.
      * 
      * @return the newly created Container
      * @throws IllegalArgumentException
      *             if a container of the specified type could not be created
      * @throws IllegalStateException
-     *             if no container has been set using
-     *             {@link #setContainerType(Class)}
+     *             if no container has been set using {@link #setType(Class)}
      */
     public T newInstance() {
         Class<? extends T> typeToInstantiate = getType();
         if (typeToInstantiate == null) {
-            throw new IllegalStateException("no type has been set, using #setType");
+            throw new IllegalStateException(
+                    "no type has been set, using setType(Class)");
         }
         return newInstance(typeToInstantiate);
     }
@@ -276,7 +291,7 @@ public abstract class ContainerConfiguration<T> {
      *             if a container of the specified type could not be created
      * @throws NullPointerException
      *             if the specified type is <tt>null</tt>
-     * @param <T>
+     * @param <S>
      *            the type of container to create
      */
     public <S extends T> S newInstance(Class<S> type) {
@@ -288,32 +303,37 @@ public abstract class ContainerConfiguration<T> {
         while (!clazz.equals(ContainerConfiguration.class)) {
             try {
                 c = (Constructor<T>) type.getDeclaredConstructor(clazz);
-            } catch (NoSuchMethodException e) {
+            } catch (NoSuchMethodException e) {/* Should never happen */
             }
             clazz = clazz.getSuperclass();
         }
         if (c == null) {
-            throw new IllegalArgumentException("Could not create container instance, no public contructor "
-                    + "taking a single ContainerConfiguration instance for the specified class [class = " + type + "]");
+            throw new IllegalArgumentException(
+                    "Could not create container instance, no public contructor "
+                            + "taking a single ContainerConfiguration instance for the specified class [class = "
+                            + type + "]");
         }
         try {
             c = (Constructor<T>) type.getDeclaredConstructor(getClass());
-        } catch (NoSuchMethodException e) {
-
+        } catch (NoSuchMethodException e) {/* Should never happen */
         }
         try {
             return (S) c.newInstance(this);
         } catch (InstantiationException e) {
-            throw new IllegalArgumentException("Could not create container instance, specified clazz [class = " + type
-                    + "] is an interface or an abstract class", e);
+            throw new IllegalArgumentException(
+                    "Could not create container instance, specified clazz [class = "
+                            + type + "] is an interface or an abstract class",
+                    e);
         } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("Could not create instance of " + type, e);
+            throw new IllegalArgumentException("Could not create instance of "
+                    + type, e);
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             if (cause instanceof Error) {
                 throw (Error) cause;
             }
-            throw new IllegalArgumentException("Constructor threw exception", cause);
+            throw new IllegalArgumentException("Constructor threw exception",
+                    cause);
         }
     }
 
@@ -389,11 +409,13 @@ public abstract class ContainerConfiguration<T> {
      */
     public ContainerConfiguration<T> setName(String name) {
         if ("".equals(name)) {
-            throw new IllegalArgumentException("cannot set the empty string as name");
+            throw new IllegalArgumentException(
+                    "cannot set the empty string as name");
         } else if (name != null) {
             if (!Pattern.matches("[\\da-zA-Z\\x5F\\x2D]+", name)) {
                 throw new IllegalArgumentException(
-                        "not a valid name, must only contain alphanumeric characters and '_' or '-', was " + name);
+                        "not a valid name, must only contain alphanumeric characters and '_' or '-', was "
+                                + name);
             }
         }
         this.name = name;
@@ -426,7 +448,7 @@ public abstract class ContainerConfiguration<T> {
 
     /**
      * Sets the type of container that should be created when calling
-     * {@link #newContainerInstance()}.
+     * {@link #newInstance()}.
      * 
      * @param type
      *            the type of container
@@ -451,7 +473,9 @@ public abstract class ContainerConfiguration<T> {
     protected <U> U getConfigurationOfType(Class<U> configurationType) {
         Object o = configurations.get(configurationType);
         if (o == null) {
-            throw new IllegalArgumentException("Unknown service configuration [ type = " + configurationType + "]");
+            throw new IllegalArgumentException(
+                    "Unknown service configuration [ type = "
+                            + configurationType + "]");
         }
         return (U) o;
     }

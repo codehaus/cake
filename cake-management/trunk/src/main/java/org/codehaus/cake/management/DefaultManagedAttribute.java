@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.management;
 
 import java.beans.PropertyDescriptor;
@@ -42,11 +55,10 @@ class DefaultManagedAttribute extends AbstractManagedAttribute {
      * @param description
      *            the description of the attribute
      * @throws NullPointerException
-     *             if the specified object, name or description is <code>null</code>. Or if both
-     *             reader and writer are <code>null</code>
+     *             if the specified object, name or description is <code>null</code>. Or if both reader and writer
+     *             are <code>null</code>
      */
-    DefaultManagedAttribute(Object obj, Method reader, Method writer, String name,
-            String description) {
+    DefaultManagedAttribute(Object obj, Method reader, Method writer, String name, String description) {
         super(name, description);
         if (obj == null) {
             throw new NullPointerException("obj is null");
@@ -77,12 +89,12 @@ class DefaultManagedAttribute extends AbstractManagedAttribute {
             } else if (t instanceof Error) {
                 throw (Error) t;
             } else {
-                throw new ReflectionException((Exception) t,
-                        "Exception thrown in the getter for the attribute " + getName());
+                throw new ReflectionException((Exception) t, "Exception thrown in the getter for the attribute "
+                        + getName());
             }
         } catch (IllegalAccessException e) {
-            throw new ReflectionException(e, "Exception thrown trying to"
-                    + " invoke the getter for the attribute " + getName());
+            throw new ReflectionException(e, "Exception thrown trying to" + " invoke the getter for the attribute "
+                    + getName());
         }
     }
 
@@ -103,8 +115,7 @@ class DefaultManagedAttribute extends AbstractManagedAttribute {
             } else if (t instanceof Error) {
                 throw (Error) t;
             } else {
-                throw new ReflectionException((Exception) t,
-                        "Exception thrown in the MBean's setter");
+                throw new ReflectionException((Exception) t, "Exception thrown in the MBean's setter");
             }
         }
     }
@@ -117,36 +128,33 @@ class DefaultManagedAttribute extends AbstractManagedAttribute {
     }
 
     /**
-     * Creates a DefaultManagedAttribute from the specified PropertyDescriptor if the
-     * {@link ManagedAttribute} annotation is present on the getter or setter.
+     * Creates a DefaultManagedAttribute from the specified PropertyDescriptor if the {@link ManagedAttribute}
+     * annotation is present on the getter or setter.
      * 
      * @param pd
      *            the PropertyDescriptor of the attribute
      * @param obj
      *            the object where the attribute should be read and written to.
-     * @return a DefaultManagedAttribute if the ManagedAttribute annotation is present on the getter
-     *         or setter. Or <code>null</code> if no annotation is present.
+     * @return a DefaultManagedAttribute if the ManagedAttribute annotation is present on the getter or setter. Or
+     *         <code>null</code> if no annotation is present.
      * @throws IllegalArgumentException
-     *             if an attribute has the ManagedAttribute set for both the reader and the writter.
-     *             Or if it has a ManagedAttribute set on the reader where isWriteOnly is set to
-     *             <code>true</code>
+     *             if an attribute has the ManagedAttribute set for both the reader and the writter. Or if it has a
+     *             ManagedAttribute set on the reader where isWriteOnly is set to <code>true</code>
      */
     static DefaultManagedAttribute fromPropertyDescriptor(PropertyDescriptor pd, Object obj) {
-        ManagedAttribute readAttribute = pd.getReadMethod() == null ? null : pd.getReadMethod()
-                .getAnnotation(ManagedAttribute.class);
-        ManagedAttribute writeAttribute = pd.getWriteMethod() == null ? null : pd.getWriteMethod()
-                .getAnnotation(ManagedAttribute.class);
+        ManagedAttribute readAttribute = pd.getReadMethod() == null ? null : pd.getReadMethod().getAnnotation(
+                ManagedAttribute.class);
+        ManagedAttribute writeAttribute = pd.getWriteMethod() == null ? null : pd.getWriteMethod().getAnnotation(
+                ManagedAttribute.class);
         Method writer = null;
         Method reader = null;
         if (readAttribute != null) {
             if (writeAttribute != null) {
-                throw new IllegalArgumentException(
-                        "cannot define ManagedAttribute on both setter and getter for "
-                                + pd.getReadMethod());
+                throw new IllegalArgumentException("cannot define ManagedAttribute on both setter and getter for "
+                        + pd.getReadMethod());
             }
             if (readAttribute.isWriteOnly()) {
-                throw new IllegalArgumentException("cannot set writeonly on getter "
-                        + pd.getReadMethod());
+                throw new IllegalArgumentException("cannot set writeonly on getter " + pd.getReadMethod());
             }
             reader = pd.getReadMethod();
             writeAttribute = readAttribute;
@@ -176,8 +184,7 @@ class DefaultManagedAttribute extends AbstractManagedAttribute {
      *            the object that the properties can be set and retrieved from
      * @return a map mapping from the name of the attribute to the AbstractManagedAttribute
      */
-    static Map<String, AbstractManagedAttribute> fromPropertyDescriptors(PropertyDescriptor[] pds,
-            Object obj) {
+    static Map<String, AbstractManagedAttribute> fromPropertyDescriptors(PropertyDescriptor[] pds, Object obj) {
         Map<String, AbstractManagedAttribute> result = new HashMap<String, AbstractManagedAttribute>();
         for (PropertyDescriptor pd : pds) {
             AbstractManagedAttribute a = fromPropertyDescriptor(pd, obj);

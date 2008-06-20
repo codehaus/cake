@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -56,8 +56,7 @@ public class ProceduresTest {
         }
         assertIsSerializable(Procedures.SYS_OUT_PRINT_PROCEDURE);
         assertSame(Procedures.SYS_OUT_PRINT_PROCEDURE, Procedures.systemOutPrint());
-        assertSame(Procedures.SYS_OUT_PRINT_PROCEDURE, TestUtil.serializeAndUnserialize(Procedures
-                .systemOutPrint()));
+        assertSame(Procedures.SYS_OUT_PRINT_PROCEDURE, TestUtil.serializeAndUnserialize(Procedures.systemOutPrint()));
     }
 
     @Test

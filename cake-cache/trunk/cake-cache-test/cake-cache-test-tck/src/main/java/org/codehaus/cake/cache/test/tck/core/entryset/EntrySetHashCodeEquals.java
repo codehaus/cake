@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.core.entryset;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_SET;
@@ -28,11 +41,11 @@ public class EntrySetHashCodeEquals extends AbstractCacheTCKTest {
         assertTrue(new HashSet().equals(c.entrySet()));
         assertTrue(c.entrySet().equals(new HashSet()));
         assertTrue(c.entrySet().equals(c.entrySet()));
-        
+
         assertFalse(c.entrySet().equals(null));
         assertFalse(c.entrySet().equals(newCache(1).entrySet()));
 
-        //abstractCacheEntry corner case
+        // abstractCacheEntry corner case
         init();
         c.put(M1.getKey(), M2.getValue());
         assertFalse(c.entrySet().equals(new HashSet(Collections.singletonList(M1))));
@@ -45,12 +58,11 @@ public class EntrySetHashCodeEquals extends AbstractCacheTCKTest {
         assertFalse(c.entrySet().equals(newCache(4).entrySet()));
         assertFalse(c.entrySet().equals(newCache(6).entrySet()));
 
-
     }
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
-     *
+     * 
      * @throws InterruptedException
      *             was interrupted
      */
@@ -77,7 +89,7 @@ public class EntrySetHashCodeEquals extends AbstractCacheTCKTest {
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
-     *
+     * 
      * @throws InterruptedException
      *             was interrupted
      */

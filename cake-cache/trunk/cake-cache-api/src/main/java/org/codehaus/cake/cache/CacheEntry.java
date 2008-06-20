@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
 
 import java.util.Map;
@@ -65,7 +80,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     /**
      * Currently not in use.
      */
-    public static final TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeAccessedAttribute();
+    TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeAccessedAttribute();
 
     /**
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
@@ -99,7 +114,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public static final TimeInstanceAttribute TIME_CREATED = new Caches.TimeCreatedAttribute();
+    TimeInstanceAttribute TIME_CREATED = new Caches.TimeCreatedAttribute();
 
     /**
      * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is also the value
@@ -107,12 +122,12 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * <p>
      * The mapped value must be of a type <tt>long</tt> between 1 and {@link Long#MAX_VALUE}.
      */
-    public static final TimeInstanceAttribute TIME_MODIFIED = new Caches.TimeModificedAttribute();
+    TimeInstanceAttribute TIME_MODIFIED = new Caches.TimeModificedAttribute();
 
     /**
      * The size of the cache entry.
      */
-    public static final LongAttribute SIZE = new Caches.SizeAttribute();
+    LongAttribute SIZE = new Caches.SizeAttribute();
 
     /**
      * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
@@ -145,7 +160,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public static final LongAttribute HITS = new Caches.HitsAttribute();
+    LongAttribute HITS = new Caches.HitsAttribute();
 
     /**
      * A count of how many times the value of an entry has been modified.
@@ -178,9 +193,10 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public static final LongAttribute VERSION = new Caches.VersionAttribute();
+    LongAttribute VERSION = new Caches.VersionAttribute();
 
-    // public static final TimeInstanceAttribute ENTRY_TIME_TO_LIVE = ENTRY_DATE_MODIFIED;
+    // public static final TimeInstanceAttribute ENTRY_TIME_TO_LIVE =
+    // ENTRY_DATE_MODIFIED;
 
     // cost of retrieving the item
     // time to live

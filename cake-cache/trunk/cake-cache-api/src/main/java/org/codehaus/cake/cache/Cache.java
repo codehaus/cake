@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
 
 import java.util.Collection;
@@ -57,7 +70,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * if the state of the cache changed (cache was non-empty).
      * <p>
      * If the reason for clearing the cache is to get rid of stale data another alternative, if the cache has a
-     * CacheLoader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced() which will
+     * CacheLoader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will
      * reload all elements that currently in the cache.
      * <p>
      * If the cache has been shutdown calls to this method is ignored

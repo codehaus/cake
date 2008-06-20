@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.policy.paging;
 
 import static junit.framework.Assert.assertEquals;
@@ -67,21 +80,21 @@ public class LRUReplacementPolicyTest {
     @Test
     public void testRefresh() {
         addToPolicy(policy, 0, 9);
-        
+
         policy.touch(val(4));
         // assertEquals(asList(0, 1, 2, 3, 5, 6, 7, 8, 9, 4), policy.peekAll());
         policy.touch(val(4));
         // assertEquals(asList(0, 1, 2, 3, 5, 6, 7, 8, 9, 4), policy.peekAll());
-        //((LRUReplacementPolicy) policy).print();
+        // ((LRUReplacementPolicy) policy).print();
         policy.touch(val(0));
-        //((LRUReplacementPolicy) policy).print();
+        // ((LRUReplacementPolicy) policy).print();
         // assertEquals(asList(1, 2, 3, 5, 6, 7, 8, 9, 4, 0), policy.peekAll());
         policy.touch(val(3));
         policy.touch(val(2));
         policy.touch(val(9));
-        //((LRUReplacementPolicy) policy).print();
-        //System.out.println(policy.evictNext());
-        //((LRUReplacementPolicy) policy).print();
+        // ((LRUReplacementPolicy) policy).print();
+        // System.out.println(policy.evictNext());
+        // ((LRUReplacementPolicy) policy).print();
         assertEquals(asList(1, 5, 6, 7, 8, 4, 0, 3, 2, 9), empty(policy));
     }
 

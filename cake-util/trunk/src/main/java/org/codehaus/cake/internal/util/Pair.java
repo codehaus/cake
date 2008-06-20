@@ -1,17 +1,34 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.util;
 
 /**
- * A <tt>Pair</tt> consists of two references to two other objects. The two objects that are being
- * wrapped are
+ * A <tt>Pair</tt> consists of two references to two other objects.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
+ * @param <T1>
+ *            the type of the first operand
+ * @param <T2>the
+ *            type of the second operand
+ * 
  */
 public final class Pair<T1, T2> implements java.io.Serializable {
 
-    /** <code>serialVersionUID</code> */
+    /** serialVersionUID. */
     private static final long serialVersionUID = 3256720688860444465L;
 
     /** The first instance. */
@@ -21,12 +38,10 @@ public final class Pair<T1, T2> implements java.io.Serializable {
     private final T2 instance2;
 
     /**
-     * Constructs a new Pair. <tt>null</tt> values are permitted.
+     * Constructs a new Pair from an existing Pair.
      * 
-     * @param item1
-     *            the first item in the Pair
-     * @param item2
-     *            the second item in the Pair
+     * @param other
+     *            the existing pair
      */
     public Pair(Pair<T1, T2> other) {
         this.instance1 = other.instance1;
@@ -46,9 +61,7 @@ public final class Pair<T1, T2> implements java.io.Serializable {
         this.instance2 = item2;
     }
 
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object other) {
         return other instanceof Pair && equals((Pair) other);
@@ -84,13 +97,11 @@ public final class Pair<T1, T2> implements java.io.Serializable {
         return instance2;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         // we need to calculate the hashCode every time.
-        // if we keept the hashCode the hashCode/equals contract might fail.
+        // if we kept the hashCode the hashCode/equals contract might fail.
         return (instance1 == null ? 0 : instance1.hashCode())
                 ^ (instance2 == null ? 0 : instance2.hashCode());
     }

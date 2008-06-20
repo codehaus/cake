@@ -42,18 +42,16 @@ public final class FloatPredicates {
     // /CLOVER:ON
 
     /**
-     * Creates a FloatPredicate that performs a logical AND on two supplied predicates. The returned
-     * predicate uses short-circuit evaluation (or minimal evaluation). That is, if the specified
-     * left side predicate evaluates to <code>false</code> the right side predicate will not be
-     * evaluated. More formally
+     * Creates a FloatPredicate that performs a logical AND on two supplied predicates. The returned predicate uses
+     * short-circuit evaluation (or minimal evaluation). That is, if the specified left side predicate evaluates to
+     * <code>false</code> the right side predicate will not be evaluated. More formally
      * 
      * <pre>
      * left.evaluate(element) &amp;&amp; right.evaluate(element);
      * </pre>
      * 
      * <p>
-     * If both of the supplied predicates are serializable the returned predicate will also be
-     * serializable.
+     * If both of the supplied predicates are serializable the returned predicate will also be serializable.
      * 
      * @param left
      *            the left side FloatPredicate
@@ -81,8 +79,8 @@ public final class FloatPredicates {
     }
 
     /**
-     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is
-     * greater then the element being used to construct the predicate.
+     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is greater then the
+     * element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -95,8 +93,8 @@ public final class FloatPredicates {
     }
 
     /**
-     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is
-     * greater then or equals to the element being used to construct the predicate.
+     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is greater then or
+     * equals to the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -109,8 +107,8 @@ public final class FloatPredicates {
     }
 
     /**
-     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is
-     * less then the element being used to construct the predicate.
+     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is less then the
+     * element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -123,8 +121,8 @@ public final class FloatPredicates {
     }
 
     /**
-     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is
-     * less then or equals to the element being used to construct the predicate.
+     * Creates a FloatPredicate that evaluates to <code>true</code> if the element being tested is less then or equals
+     * to the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -137,8 +135,7 @@ public final class FloatPredicates {
     }
 
     /**
-     * Creates a FloatPredicate that performs a logical logical NOT on the supplied FloatPredicate.
-     * More formally
+     * Creates a FloatPredicate that performs a logical logical NOT on the supplied FloatPredicate. More formally
      * 
      * <pre>
      * !predicate.evaluate(value);
@@ -158,18 +155,16 @@ public final class FloatPredicates {
     }
 
     /**
-     * Creates a FloatPredicate that performs a logical OR on two supplied predicates. The returned
-     * predicate uses short-circuit evaluation (or minimal evaluation). That is, if the specified
-     * left side predicate evaluates to <code>true</code> the right side predicate will not be
-     * evaluated. More formally
+     * Creates a FloatPredicate that performs a logical OR on two supplied predicates. The returned predicate uses
+     * short-circuit evaluation (or minimal evaluation). That is, if the specified left side predicate evaluates to
+     * <code>true</code> the right side predicate will not be evaluated. More formally
      * 
      * <pre>
      * left.evaluate(element) || right.evaluate(element);
      * </pre>
      * 
      * <p>
-     * If both of the supplied predicates are serializable the returned predicate will also be
-     * serializable.
+     * If both of the supplied predicates are serializable the returned predicate will also be serializable.
      * 
      * @param left
      *            the left side FloatPredicate
@@ -267,13 +262,13 @@ public final class FloatPredicates {
         }
 
         /**
-         * Returns <code>true</code> if the specified value is equal to the value that was used
-         * when constructing this predicate, otherwise <code>false</code>.
+         * Returns <code>true</code> if the specified value is equal to the value that was used when constructing this
+         * predicate, otherwise <code>false</code>.
          * 
          * @param t
          *            the value to compare with
-         * @return <code>true</code> if the specified value is equal to the value that was used
-         *         when constructing this predicate, otherwise <code>false</code>.
+         * @return <code>true</code> if the specified value is equal to the value that was used when constructing this
+         *         predicate, otherwise <code>false</code>.
          */
         public boolean op(float t) {
             return equalsTo == t;
@@ -281,8 +276,8 @@ public final class FloatPredicates {
     }
 
     /**
-     * a FloatPredicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to get an
-     * instance of this FloatPredicate.
+     * a FloatPredicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to get an instance of this
+     * FloatPredicate.
      * 
      * @see TrueFloatPredicate
      */
@@ -396,8 +391,7 @@ public final class FloatPredicates {
     }
 
     /**
-     * A FloatPredicate that evaluates to true iff the Predicate used for constructing evaluates to
-     * <code>false</code>.
+     * A FloatPredicate that evaluates to true iff the Predicate used for constructing evaluates to <code>false</code>.
      */
     static final class NotFloatPredicate implements FloatPredicate, Serializable {
 
@@ -514,8 +508,8 @@ public final class FloatPredicates {
     }
 
     /**
-     * A FloatPredicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get an
-     * instance of this FloatPredicate.
+     * A FloatPredicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get an instance of this
+     * FloatPredicate.
      * 
      * @see FalseFloatPredicate
      */

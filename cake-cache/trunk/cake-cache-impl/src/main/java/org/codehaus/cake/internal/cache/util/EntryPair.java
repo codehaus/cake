@@ -1,18 +1,30 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.cache.util;
 
 import org.codehaus.cake.cache.CacheEntry;
 
 /**
- * A <tt>Pair</tt> consists of two references to two other objects. The two objects that are being
- * wrapped are
+ * A <tt>Pair</tt> consists of two references to two other objects. The two objects that are being wrapped are
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
  */
 public final class EntryPair<K, V> {
-    //private static final EntryPair NULLPAIR = new EntryPair(null, null);
+    // private static final EntryPair NULLPAIR = new EntryPair(null, null);
     /** The first instance. */
     private final CacheEntry<K, V> instance1;
 
@@ -32,9 +44,9 @@ public final class EntryPair<K, V> {
         this.instance2 = item2;
     }
 
-//    public static <K, V> EntryPair<K, V> nullPair() {
-//        return NULLPAIR;
-//    }
+    // public static <K, V> EntryPair<K, V> nullPair() {
+    // return NULLPAIR;
+    // }
 
     /**
      * Returns the first item in the Pair.

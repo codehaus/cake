@@ -42,18 +42,16 @@ public final class DoublePredicates {
     // /CLOVER:ON
 
     /**
-     * Creates a DoublePredicate that performs a logical AND on two supplied predicates. The
-     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is, if the
-     * specified left side predicate evaluates to <code>false</code> the right side predicate will
-     * not be evaluated. More formally
+     * Creates a DoublePredicate that performs a logical AND on two supplied predicates. The returned predicate uses
+     * short-circuit evaluation (or minimal evaluation). That is, if the specified left side predicate evaluates to
+     * <code>false</code> the right side predicate will not be evaluated. More formally
      * 
      * <pre>
      * left.evaluate(element) &amp;&amp; right.evaluate(element);
      * </pre>
      * 
      * <p>
-     * If both of the supplied predicates are serializable the returned predicate will also be
-     * serializable.
+     * If both of the supplied predicates are serializable the returned predicate will also be serializable.
      * 
      * @param left
      *            the left side DoublePredicate
@@ -81,8 +79,8 @@ public final class DoublePredicates {
     }
 
     /**
-     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested
-     * is greater then the element being used to construct the predicate.
+     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested is greater then the
+     * element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -95,8 +93,8 @@ public final class DoublePredicates {
     }
 
     /**
-     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested
-     * is greater then or equals to the element being used to construct the predicate.
+     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested is greater then or
+     * equals to the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -109,8 +107,8 @@ public final class DoublePredicates {
     }
 
     /**
-     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested
-     * is less then the element being used to construct the predicate.
+     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested is less then the
+     * element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -123,8 +121,8 @@ public final class DoublePredicates {
     }
 
     /**
-     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested
-     * is less then or equals to the element being used to construct the predicate.
+     * Creates a DoublePredicate that evaluates to <code>true</code> if the element being tested is less then or
+     * equals to the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
      * 
@@ -137,8 +135,7 @@ public final class DoublePredicates {
     }
 
     /**
-     * Creates a DoublePredicate that performs a logical logical NOT on the supplied
-     * DoublePredicate. More formally
+     * Creates a DoublePredicate that performs a logical logical NOT on the supplied DoublePredicate. More formally
      * 
      * <pre>
      * !predicate.evaluate(value);
@@ -158,18 +155,16 @@ public final class DoublePredicates {
     }
 
     /**
-     * Creates a DoublePredicate that performs a logical OR on two supplied predicates. The returned
-     * predicate uses short-circuit evaluation (or minimal evaluation). That is, if the specified
-     * left side predicate evaluates to <code>true</code> the right side predicate will not be
-     * evaluated. More formally
+     * Creates a DoublePredicate that performs a logical OR on two supplied predicates. The returned predicate uses
+     * short-circuit evaluation (or minimal evaluation). That is, if the specified left side predicate evaluates to
+     * <code>true</code> the right side predicate will not be evaluated. More formally
      * 
      * <pre>
      * left.evaluate(element) || right.evaluate(element);
      * </pre>
      * 
      * <p>
-     * If both of the supplied predicates are serializable the returned predicate will also be
-     * serializable.
+     * If both of the supplied predicates are serializable the returned predicate will also be serializable.
      * 
      * @param left
      *            the left side DoublePredicate
@@ -267,13 +262,13 @@ public final class DoublePredicates {
         }
 
         /**
-         * Returns <code>true</code> if the specified value is equal to the value that was used
-         * when constructing this predicate, otherwise <code>false</code>.
+         * Returns <code>true</code> if the specified value is equal to the value that was used when constructing this
+         * predicate, otherwise <code>false</code>.
          * 
          * @param t
          *            the value to compare with
-         * @return <code>true</code> if the specified value is equal to the value that was used
-         *         when constructing this predicate, otherwise <code>false</code>.
+         * @return <code>true</code> if the specified value is equal to the value that was used when constructing this
+         *         predicate, otherwise <code>false</code>.
          */
         public boolean op(double t) {
             return equalsTo == t;
@@ -281,8 +276,8 @@ public final class DoublePredicates {
     }
 
     /**
-     * a DoublePredicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to get an
-     * instance of this DoublePredicate.
+     * a DoublePredicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to get an instance of this
+     * DoublePredicate.
      * 
      * @see TrueDoublePredicate
      */
@@ -396,8 +391,7 @@ public final class DoublePredicates {
     }
 
     /**
-     * A DoublePredicate that evaluates to true iff the Predicate used for constructing evaluates to
-     * <code>false</code>.
+     * A DoublePredicate that evaluates to true iff the Predicate used for constructing evaluates to <code>false</code>.
      */
     static final class NotDoublePredicate implements DoublePredicate, Serializable {
 
@@ -514,8 +508,8 @@ public final class DoublePredicates {
     }
 
     /**
-     * A DoublePredicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get an
-     * instance of this DoublePredicate.
+     * A DoublePredicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get an instance of this
+     * DoublePredicate.
      * 
      * @see FalseDoublePredicate
      */

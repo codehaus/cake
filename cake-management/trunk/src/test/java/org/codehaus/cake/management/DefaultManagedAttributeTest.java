@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.management;
 
 import static org.junit.Assert.assertEquals;
@@ -88,8 +101,7 @@ public class DefaultManagedAttributeTest {
     public void illegalAccessGet() throws Exception {
         Method mGet = PrivateMethods.class.getDeclaredMethod("getIllegal");
         Method mSet = PrivateMethods.class.getDeclaredMethod("setIllegal", String.class);
-        DefaultManagedAttribute opr = new DefaultManagedAttribute(new PrivateMethods(), mGet, mSet,
-                "", "");
+        DefaultManagedAttribute opr = new DefaultManagedAttribute(new PrivateMethods(), mGet, mSet, "", "");
         opr.getValue();
     }
 
@@ -97,8 +109,7 @@ public class DefaultManagedAttributeTest {
     public void illegalAccessSet() throws Exception {
         Method mGet = PrivateMethods.class.getDeclaredMethod("getIllegal");
         Method mSet = PrivateMethods.class.getDeclaredMethod("setIllegal", String.class);
-        DefaultManagedAttribute opr = new DefaultManagedAttribute(new PrivateMethods(), mGet, mSet,
-                "", "");
+        DefaultManagedAttribute opr = new DefaultManagedAttribute(new PrivateMethods(), mGet, mSet, "", "");
         opr.setValue("dd");
     }
 
@@ -176,15 +187,13 @@ public class DefaultManagedAttributeTest {
     @Test(expected = IllegalArgumentException.class)
     public void twoAttributeAnnotations() throws Exception {
         BeanInfo bi = Introspector.getBeanInfo(TwoAttributes.class);
-        attr = DefaultManagedAttribute.fromPropertyDescriptors(bi.getPropertyDescriptors(),
-                new TwoAttributes());
+        attr = DefaultManagedAttribute.fromPropertyDescriptors(bi.getPropertyDescriptors(), new TwoAttributes());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void writableReader() throws Exception {
         BeanInfo bi = Introspector.getBeanInfo(WritableReader.class);
-        attr = DefaultManagedAttribute.fromPropertyDescriptors(bi.getPropertyDescriptors(),
-                new WritableReader());
+        attr = DefaultManagedAttribute.fromPropertyDescriptors(bi.getPropertyDescriptors(), new WritableReader());
     }
 
     @Test

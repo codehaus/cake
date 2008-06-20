@@ -4,7 +4,7 @@
  */
 package org.codehaus.cake.cache.examples.guides.quickstart;
 
-//START SNIPPET: CacheGoogle
+// START SNIPPET: CacheGoogle
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
@@ -22,8 +22,8 @@ public class ReadGoogle {
     public static void readGoogle(Cache<?, ?> c, String prefix) {
         long start = System.nanoTime();
         c.get("http://www.google.com");
-        System.out.println(prefix + " Time to read www.google.com: "
-                + ((System.nanoTime() - start) / 1000000.0) + " ms");
+        System.out.println(prefix + " Time to read www.google.com: " + ((System.nanoTime() - start) / 1000000.0)
+                + " ms");
     }
 }
 // END SNIPPET: CacheGoogle

@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class DefaultAttributeConfigurationTest {
 
-    private final static IntAttribute I_1 = new IntAttribute("L_1", 1) {};
+    private static final IntAttribute I_1 = new IntAttribute("L_1", 1) {};
 
     @Test(expected = NullPointerException.class)
     public void constructorNPE() {

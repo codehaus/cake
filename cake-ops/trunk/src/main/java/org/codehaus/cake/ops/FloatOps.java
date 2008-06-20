@@ -31,16 +31,16 @@ import org.codehaus.cake.ops.Ops.FloatReducer;
  * @version $Id: FloatOps.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class FloatOps {
-    final static FloatAbsOp ABS_OP = new FloatAbsOp();
+    static final FloatAbsOp ABS_OP = new FloatAbsOp();
 
-    final static FloatAddReducer ADD_REDUCER = new FloatAddReducer();
+    static final FloatAddReducer ADD_REDUCER = new FloatAddReducer();
 
     /**
      * A comparator for floats relying on natural ordering. The comparator is Serializable.
      */
     public static final FloatComparator COMPARATOR = new NaturalFloatComparator();
 
-    final static FloatDivideReducer DIVIDE_REDUCER = new FloatDivideReducer();
+    static final FloatDivideReducer DIVIDE_REDUCER = new FloatDivideReducer();
     /**
      * A reducer returning the maximum of two float elements, using natural comparator. The Reducer
      * is serializable.
@@ -53,7 +53,7 @@ public final class FloatOps {
      */
     static final FloatReducer MIN_REDUCER = new NaturalFloatMinReducer();
 
-    final static FloatMultiplyReducer MULTIPLY_REDUCER = new FloatMultiplyReducer();
+    static final FloatMultiplyReducer MULTIPLY_REDUCER = new FloatMultiplyReducer();
 
     /**
      * A comparator that imposes the reverse of the <i>natural ordering</i> on floats. The
@@ -61,7 +61,7 @@ public final class FloatOps {
      */
     public static final FloatComparator REVERSE_COMPARATOR = new NaturalFloatReverseComparator();
 
-    final static FloatSubtractReducer SUBTRACT_REDUCER = new FloatSubtractReducer();
+    static final FloatSubtractReducer SUBTRACT_REDUCER = new FloatSubtractReducer();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */

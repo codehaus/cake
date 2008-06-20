@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.util;
 
 import org.codehaus.cake.util.Logger;
@@ -14,22 +27,22 @@ import org.w3c.dom.Element;
  */
 public final class LogHelper {
 
-    public final static String LOG_LEVEL_ATRB = "level";
+    public static final  String LOG_LEVEL_ATRB = "level";
 
-    public final static String LOG_TYPE_ATRB = "type";
+    public static final  String LOG_TYPE_ATRB = "type";
 
     /*
-     * private final static String COMMONS_LOGGING = "commons";
+     * private static final String COMMONS_LOGGING = "commons";
      * 
-     * private final static String JDK_LOGGING = "jul";
+     * private static final String JDK_LOGGING = "jul";
      * 
-     * private final static String LOG4J = "log4j";
+     * private static final String LOG4J = "log4j";
      * 
-     * private final static String NULL_LOGGER = "null-logger";
+     * private static final String NULL_LOGGER = "null-logger";
      * 
-     * private final static String SYSTEM_ERR_LOGGER = "system.err-logger";
+     * private static final String SYSTEM_ERR_LOGGER = "system.err-logger";
      * 
-     * private final static String SYSTEM_OUT_LOGGER = "system.out-logger";
+     * private static final String SYSTEM_OUT_LOGGER = "system.out-logger";
      */
     // /CLOVER:OFF
     /** Cannot instantiate. */
@@ -88,7 +101,7 @@ public final class LogHelper {
     /**
      * An AbstractLogger that all logger wrappers extend.
      */
-    public static abstract class AbstractLogger implements Logger {
+    public abstract static  class AbstractLogger implements Logger {
         /** {@inheritDoc} */
         public void debug(String message) {
             log(Level.Debug, message);

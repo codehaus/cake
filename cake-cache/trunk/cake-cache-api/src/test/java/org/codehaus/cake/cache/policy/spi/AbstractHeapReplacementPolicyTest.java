@@ -1,13 +1,26 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.policy.spi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
-import java.util.PriorityQueue;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -129,57 +142,58 @@ public class AbstractHeapReplacementPolicyTest {
                 tp.add(te);
                 matching.add(te);
             }
-//            if (i == 11) {
-//                for (int q = 0; q < tp.queue.length; q++) {
-//                    System.out.println(tp.queue[q]);
-//                }
-//            }
+            // if (i == 11) {
+            // for (int q = 0; q < tp.queue.length; q++) {
+            // System.out.println(tp.queue[q]);
+            // }
+            // }
             for (int j = 0; j < Math.min(i, r.nextInt(10)); j++) {
                 Object[] take = matching.toArray();
                 Object o = take[r.nextInt(take.length)];
-//                if (i == 11) {
-//                    System.out.println("Removing " + o);
-//                }
-//                if (o.toString().equals("604:5")) {
-//                    System.out.println(Arrays.toString(matching.toArray()));
-//                }
+                // if (i == 11) {
+                // System.out.println("Removing " + o);
+                // }
+                // if (o.toString().equals("604:5")) {
+                // System.out.println(Arrays.toString(matching.toArray()));
+                // }
                 removeFromMatching(o);
-                //assertTrue(matching.remove(o));
-//                if (o.toString().equals("604:5")) {
-//                    System.out.println(Arrays.toString(matching.toArray()));
-//                }
+                // assertTrue(matching.remove(o));
+                // if (o.toString().equals("604:5")) {
+                // System.out.println(Arrays.toString(matching.toArray()));
+                // }
                 TestEntry te = new TestEntry(r.nextInt(Math.max(3, i - 3)));
                 matching.add(te);
                 assertSame(te, tp.replace((TestEntry) o, te));
             }
-//            if (i == 11) {
-//                System.out.println("ff");
-//                TestEntry te = (TestEntry) tp.evictNext();
-//                while (te != null) {
-//                    System.out.println(te);
-//                    te = (TestEntry) tp.evictNext();
-//                }
-//                System.out.println("prio");
-//                te = (TestEntry) matching.poll();
-//                while (te != null) {
-//                    System.out.println(te);
-//                    te = (TestEntry) matching.poll();
-//                }
-//            }
+            // if (i == 11) {
+            // System.out.println("ff");
+            // TestEntry te = (TestEntry) tp.evictNext();
+            // while (te != null) {
+            // System.out.println(te);
+            // te = (TestEntry) tp.evictNext();
+            // }
+            // System.out.println("prio");
+            // te = (TestEntry) matching.poll();
+            // while (te != null) {
+            // System.out.println(te);
+            // te = (TestEntry) matching.poll();
+            // }
+            // }
             emptyEquals();
         }
     }
 
-    //bug in priorityqueue.remove() 1.5
-    //which uses the comparator to compare items instead of equals
+    // bug in priorityqueue.remove() 1.5
+    // which uses the comparator to compare items instead of equals
     private void removeFromMatching(Object o) {
         for (Iterator iterator = matching.iterator(); iterator.hasNext();) {
-          if (o.equals(iterator.next())) {
-              iterator.remove();
-              return;
-          }
+            if (o.equals(iterator.next())) {
+                iterator.remove();
+                return;
+            }
         }
     }
+
     private void emptyEquals() {
         while (!matching.isEmpty()) {
             TestEntry peek = (TestEntry) tp.peek();

@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.core.entryset;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_NULL;
@@ -14,8 +27,8 @@ import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
 /**
- *
- *
+ * 
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: EntrySetContains.java 537 2007-12-30 19:21:20Z kasper $
  */
@@ -39,7 +52,7 @@ public class EntrySetContains extends AbstractCacheTCKTest {
     public void containsAll() {
         c = newCache(5);
         assertTrue(c.entrySet().containsAll(M1_TO_M5_SET));
-        assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M2, M3, M4, M5,M6)));
+        assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M2, M3, M4, M5, M6)));
         assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M1.getKey())));
         assertFalse(c.entrySet().containsAll(Arrays.asList(M1, M1.getValue())));
     }
@@ -73,7 +86,7 @@ public class EntrySetContains extends AbstractCacheTCKTest {
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
-     *
+     * 
      * @throws InterruptedException
      *             was interrupted
      */
@@ -113,7 +126,7 @@ public class EntrySetContains extends AbstractCacheTCKTest {
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
-     *
+     * 
      * @throws InterruptedException
      *             was interrupted
      */

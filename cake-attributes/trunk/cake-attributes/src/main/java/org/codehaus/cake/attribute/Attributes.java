@@ -33,7 +33,7 @@ import org.codehaus.cake.internal.attribute.AttributeHelper;
 public final class Attributes {
 
     /** The empty attribute map (immutable). This attribute map is serializable. */
-    public final static AttributeMap EMPTY_ATTRIBUTE_MAP = new EmptyAttributeMap();
+    public static final AttributeMap EMPTY_ATTRIBUTE_MAP = new EmptyAttributeMap();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */

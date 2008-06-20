@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.service.memorystore;
 
 import org.codehaus.cake.attribute.IntAttribute;
@@ -20,7 +33,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
  */
 public class MemoryStoreConfiguration<K, V> {
 
-    public static final IntAttribute MAXIMUM_SIZE = new IntAttribute("Maximum Size"){};
+    public static final IntAttribute MAXIMUM_SIZE = new IntAttribute("Maximum Size") {};
     private Ops.Procedure<MemoryStoreService<K, V>> evictor;
 
     /** A filter used for filtering what items should be cached. */
@@ -116,7 +129,7 @@ public class MemoryStoreConfiguration<K, V> {
      * </pre>
      * 
      * @param evictor
-     * @return
+     * @return this configuration
      */
     public MemoryStoreConfiguration<K, V> setEvictor(Ops.Procedure<MemoryStoreService<K, V>> evictor) {
         this.evictor = evictor;
@@ -128,7 +141,7 @@ public class MemoryStoreConfiguration<K, V> {
      * 
      * @param predicate
      *            the predicate that decides if a given key, value combination can be added to the cache
-     * @return this configration
+     * @return this configuration
      */
     public MemoryStoreConfiguration<K, V> setIsCacheableFilter(Predicate<? super CacheEntry<K, V>> predicate) {
         this.isCacheableFilter = predicate;
@@ -164,7 +177,7 @@ public class MemoryStoreConfiguration<K, V> {
 
     /**
      * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the individual element
-     * sizes (sum of all elements {@link CacheEntry#getSize()}. If the limit is reached the cache must evict existing
+     * sizes (sum of all elements {@link CacheEntry#SIZE}. If the limit is reached the cache must evict existing
      * elements before adding new elements.
      * <p>
      * To indicate that a cache can have an unlimited volume, {@link Long#MAX_VALUE} should be specified.

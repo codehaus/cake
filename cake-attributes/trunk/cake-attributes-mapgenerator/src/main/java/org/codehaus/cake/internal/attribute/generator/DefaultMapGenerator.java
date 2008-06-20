@@ -34,10 +34,10 @@ import org.codehaus.cake.internal.asm.Type;
 import org.codehaus.cake.internal.attribute.AttributeHelper.SimpleImmutableEntry;
 
 public class DefaultMapGenerator implements Opcodes {
-    private final static String ATTRIBUTE_MAP_INTERFACE_DESCRIPTOR = "org/codehaus/cake/attribute/AttributeMap";
-    final static WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
-    private final static String KEYSET_NAME = "ATTRIBUTES";
-    private final static Object lock = new Object();
+    private static final String ATTRIBUTE_MAP_INTERFACE_DESCRIPTOR = "org/codehaus/cake/attribute/AttributeMap";
+    static final WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
+    private static final String KEYSET_NAME = "ATTRIBUTES";
+    private static final Object lock = new Object();
     static final Type T_ATTRIBUTE = Type.getType(Attribute.class);
     private final String classDescriptor;
     ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);

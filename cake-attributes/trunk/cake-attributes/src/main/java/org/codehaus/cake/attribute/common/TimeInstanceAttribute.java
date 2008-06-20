@@ -17,9 +17,13 @@ package org.codehaus.cake.attribute.common;
 
 import org.codehaus.cake.attribute.LongAttribute;
 
+/**
+ *
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
 public abstract class TimeInstanceAttribute extends LongAttribute {
-    /** The default value of this attribute. */
-    static final long DEFAULT_VALUE = 0;
 
     /** serialVersionUID. */
     private static final long serialVersionUID = -2353351535602223603L;
@@ -31,14 +35,15 @@ public abstract class TimeInstanceAttribute extends LongAttribute {
      *            the name of the attribute
      */
     public TimeInstanceAttribute(String name) {
-        super(name, DEFAULT_VALUE);
+        super(name, 0);
     }
 
     /** {@inheritDoc} */
     @Override
     public void checkValid(long time) {
         if (time < 0) {
-            throw new IllegalArgumentException(getName() + " was negative (" + getName() + " = " + time + ")");
+            throw new IllegalArgumentException(getName() + " was negative ("
+                    + getName() + " = " + time + ")");
         }
     }
 

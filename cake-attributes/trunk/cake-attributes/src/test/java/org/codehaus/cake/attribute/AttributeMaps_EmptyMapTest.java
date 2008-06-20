@@ -96,7 +96,7 @@ public class AttributeMaps_EmptyMapTest extends AbstractAttributeMapTest {
         assertEquals(D_2.getDefaultValue(), map.remove(D_2), 0);
         assertEquals(F_2.getDefaultValue(), map.remove(F_2), 0);
         assertEquals(I_2.getDefaultValue(), map.remove(I_2));
-        assertEquals(O_2.getDefaultValue(), map.remove(O_2));
+        assertEquals(O_2.getDefault(), map.remove(O_2));
         assertEquals(L_2.getDefaultValue(), map.remove(L_2));
         assertEquals(S_2.getDefaultValue(), map.remove(S_2));
         assertEquals("{}", map.toString());

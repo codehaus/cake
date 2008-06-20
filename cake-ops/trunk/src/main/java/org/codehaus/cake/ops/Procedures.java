@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -33,19 +33,19 @@ public final class Procedures {
     /**
      * A Procedure that does nothing.
      */
-    public final static Procedure IGNORE_PROCEDURE = new NoopProcedure();
+    public static final Procedure IGNORE_PROCEDURE = new NoopProcedure();
 
     /**
      * A Procedure that prints the argument object to {@link System#out} using its
      * {@link Object#toString()} and {@link PrintStream#print(String)}.
      */
-    public final static Procedure SYS_OUT_PRINT_PROCEDURE = new SystemOutPrintProcedure();
+    public static final Procedure SYS_OUT_PRINT_PROCEDURE = new SystemOutPrintProcedure();
 
     /**
      * A Procedure that prints the argument object to {@link System#out} using its
      * {@link Object#toString()} and {@link PrintStream#println(String)} .
      */
-    public final static Procedure SYS_OUT_PRINTLN_PROCEDURE = new SystemOutPrintlnProcedure();
+    public static final Procedure SYS_OUT_PRINTLN_PROCEDURE = new SystemOutPrintlnProcedure();
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
@@ -93,7 +93,7 @@ public final class Procedures {
 //     * A Predicate that first applies the specified mapper to the argument before evaluating the
 //     * specified predicate.
 //     */
-//    final static class MapAndApplyPredicate<F, T> implements Procedure<F>, Serializable {
+//    static final class MapAndApplyPredicate<F, T> implements Procedure<F>, Serializable {
 //
 //        /** serialVersionUID. */
 //        private static final long serialVersionUID = -6292758840373110577L;
@@ -148,7 +148,7 @@ public final class Procedures {
     /**
      * A Procedure that does nothing.
      */
-    final static class NoopProcedure implements Procedure, Serializable {
+    static final class NoopProcedure implements Procedure, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 3258129137502925875L;
@@ -168,7 +168,7 @@ public final class Procedures {
     /**
      * A Procedure that calls {@link PrintStream#println(boolean)} on {@link System#out}.
      */
-    final static class SystemOutPrintlnProcedure implements Procedure, Serializable {
+    static final class SystemOutPrintlnProcedure implements Procedure, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 2524986731849709296L;
@@ -190,7 +190,7 @@ public final class Procedures {
     /**
      * A Procedure that calls {@link PrintStream#print(boolean)} on {@link System#out}.
      */
-    final static class SystemOutPrintProcedure implements Procedure, Serializable {
+    static final class SystemOutPrintProcedure implements Procedure, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 5504109727345743170L;

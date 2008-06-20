@@ -54,8 +54,7 @@ public final class DoubleOpsTest {
     public void add() {
         assertEquals(3D, DoubleOps.ADD_REDUCER.op(1D, 2D), 0);
         assertEquals(3D, DoubleOps.ADD_REDUCER.op(2D, 1D), 0);
-        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.ADD_REDUCER
-                .op(1, Double.POSITIVE_INFINITY), 0);
+        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.ADD_REDUCER.op(1, Double.POSITIVE_INFINITY), 0);
         assertEquals(Double.NaN, DoubleOps.ADD_REDUCER.op(1, Double.NaN), 0);
         assertSame(DoubleOps.ADD_REDUCER, DoubleOps.add());
         DoubleOps.ADD_REDUCER.toString(); // does not fail
@@ -109,8 +108,7 @@ public final class DoubleOpsTest {
     public void divide() {
         assertEquals(4D, DoubleOps.DIVIDE_REDUCER.op(16D, 4D), 0);
         assertEquals(-4D, DoubleOps.DIVIDE_REDUCER.op(-8D, 2D), 0);
-        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.DIVIDE_REDUCER.op(
-                Double.POSITIVE_INFINITY, 1), 0);
+        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.DIVIDE_REDUCER.op(Double.POSITIVE_INFINITY, 1), 0);
         assertEquals(Double.NaN, DoubleOps.DIVIDE_REDUCER.op(1, Double.NaN), 0);
         assertSame(DoubleOps.DIVIDE_REDUCER, DoubleOps.divide());
         DoubleOps.DIVIDE_REDUCER.toString(); // does not fail
@@ -139,8 +137,7 @@ public final class DoubleOpsTest {
         assertEquals(2D, DoubleOps.MAX_REDUCER.op(2D, 1D), 0);
         assertEquals(2D, DoubleOps.MAX_REDUCER.op(1D, 2D), 0);
         assertEquals(2D, DoubleOps.MAX_REDUCER.op(2D, 2D), 0);
-        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.MAX_REDUCER.op(1D,
-                Double.POSITIVE_INFINITY), 0);
+        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.MAX_REDUCER.op(1D, Double.POSITIVE_INFINITY), 0);
         assertEquals(Double.NaN, DoubleOps.MAX_REDUCER.op(1D, Double.NaN), 0);
         DoubleOps.MAX_REDUCER.toString(); // does not fail
         assertIsSerializable(DoubleOps.MAX_REDUCER);
@@ -212,8 +209,7 @@ public final class DoubleOpsTest {
     public void multiply() {
         assertEquals(16D, DoubleOps.MULTIPLY_REDUCER.op(4D, 4D), 0);
         assertEquals(-8D, DoubleOps.MULTIPLY_REDUCER.op(-4D, 2D), 0);
-        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.MULTIPLY_REDUCER.op(
-                Double.POSITIVE_INFINITY, 1), 0);
+        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.MULTIPLY_REDUCER.op(Double.POSITIVE_INFINITY, 1), 0);
         assertEquals(Double.NaN, DoubleOps.MULTIPLY_REDUCER.op(1, Double.NaN), 0);
         assertSame(DoubleOps.MULTIPLY_REDUCER, DoubleOps.multiply());
         DoubleOps.MULTIPLY_REDUCER.toString(); // does not fail
@@ -227,8 +223,7 @@ public final class DoubleOpsTest {
     public void multiplyArg() {
         assertEquals(-8D, DoubleOps.multiply(4D).op(-2D), 0);
         assertEquals(25D, DoubleOps.multiply(5D).op(5D), 0);
-        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.multiply(5).op(Double.POSITIVE_INFINITY),
-                0);
+        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.multiply(5).op(Double.POSITIVE_INFINITY), 0);
         assertEquals(Double.NaN, DoubleOps.multiply(5).op(Double.NaN), 0);
         DoubleOps.multiply(9D).toString(); // does not fail
         assertIsSerializable(DoubleOps.multiply(5D));
@@ -241,14 +236,12 @@ public final class DoubleOpsTest {
     @Test
     public void reverseOrder() {
         assertEquals(0, DoubleOps.reverseOrder(DoubleOps.COMPARATOR).compare(1D, 1D));
-        assertEquals(0, DoubleOps.reverseOrder(DoubleOps.COMPARATOR)
-                .compare(Double.NaN, Double.NaN));
+        assertEquals(0, DoubleOps.reverseOrder(DoubleOps.COMPARATOR).compare(Double.NaN, Double.NaN));
         assertTrue(DoubleOps.reverseOrder(DoubleOps.COMPARATOR).compare(2D, 1D) < 0);
         assertTrue(DoubleOps.reverseOrder(DoubleOps.COMPARATOR).compare(1D, 2D) > 0);
         DoubleOps.reverseOrder(DoubleOps.COMPARATOR).toString(); // does not fail
         assertIsSerializable(DoubleOps.reverseOrder(DoubleOps.COMPARATOR));
-        assertTrue(serializeAndUnserialize(DoubleOps.reverseOrder(DoubleOps.COMPARATOR)).compare(
-                2D, 1D) < 0);
+        assertTrue(serializeAndUnserialize(DoubleOps.reverseOrder(DoubleOps.COMPARATOR)).compare(2D, 1D) < 0);
     }
 
     @Test(expected = NullPointerException.class)
@@ -263,8 +256,7 @@ public final class DoubleOpsTest {
     public void subtract() {
         assertEquals(-1D, DoubleOps.SUBTRACT_REDUCER.op(1D, 2D), 0);
         assertEquals(1D, DoubleOps.SUBTRACT_REDUCER.op(2D, 1D), 0);
-        assertEquals(Double.NEGATIVE_INFINITY, DoubleOps.SUBTRACT_REDUCER.op(1,
-                Double.POSITIVE_INFINITY), 0);
+        assertEquals(Double.NEGATIVE_INFINITY, DoubleOps.SUBTRACT_REDUCER.op(1, Double.POSITIVE_INFINITY), 0);
         assertEquals(Double.NaN, DoubleOps.SUBTRACT_REDUCER.op(1, Double.NaN), 0);
         assertSame(DoubleOps.SUBTRACT_REDUCER, DoubleOps.subtract());
         DoubleOps.SUBTRACT_REDUCER.toString(); // does not fail
@@ -278,8 +270,7 @@ public final class DoubleOpsTest {
     public void subtractArg() {
         assertEquals(-1D, DoubleOps.subtract(5D).op(4D), 0);
         assertEquals(1D, DoubleOps.subtract(4D).op(5D), 0);
-        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.subtract(5).op(Double.POSITIVE_INFINITY),
-                0);
+        assertEquals(Double.POSITIVE_INFINITY, DoubleOps.subtract(5).op(Double.POSITIVE_INFINITY), 0);
         assertEquals(Double.NaN, DoubleOps.subtract(5).op(Double.NaN), 0);
         DoubleOps.subtract(9D).toString(); // does not fail
         assertIsSerializable(DoubleOps.subtract(5D));

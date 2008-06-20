@@ -37,7 +37,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
         AttributeMap am1_ = Attributes.singleton(coa, 1);
         AttributeMap am2 = Attributes.singleton(coa, 2);
 
-        assertNull(coa.getDefaultValue());
+        assertNull(coa.getDefault());
         assertEquals(0, coa.compare(withAtr(am1), withAtr(am1)));
         assertEquals(0, coa.compare(withAtr(am1), withAtr(am1_)));
         assertTrue(coa.compare(withAtr(am1), withAtr(am2)) < 0);
@@ -53,7 +53,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
         AttributeMap am1_ = Attributes.singleton(coa, Dummy.D1);
         AttributeMap am2 = Attributes.singleton(coa, Dummy.D2);
 
-        assertNull(coa.getDefaultValue());
+        assertNull(coa.getDefault());
         assertEquals(0, coa.compare(withAtr(am1), withAtr(am1)));
         assertEquals(0, coa.compare(withAtr(am1), withAtr(am1_)));
         assertTrue(coa.compare(withAtr(am1), withAtr(am2)) < 0);
@@ -69,7 +69,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
     public void nameTypeDefault() {
         ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, 55);
         assertEquals("foo", coa.getName());
-        assertEquals(55, coa.getDefaultValue());
+        assertEquals(55, coa.getDefault());
         AttributeMap am1 = Attributes.singleton(coa, 1);
         AttributeMap am1_ = Attributes.singleton(coa, 1);
 
@@ -84,7 +84,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
         ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, new DummyComparator(),
                 Dummy.D4);
         assertEquals("foo", coa.getName());
-        assertEquals(Dummy.D4, coa.getDefaultValue());
+        assertEquals(Dummy.D4, coa.getDefault());
         AttributeMap am1 = Attributes.singleton(coa, Dummy.D1);
         AttributeMap am1_ = Attributes.singleton(coa, Dummy.D1);
         AttributeMap am2 = Attributes.singleton(coa, Dummy.D2);

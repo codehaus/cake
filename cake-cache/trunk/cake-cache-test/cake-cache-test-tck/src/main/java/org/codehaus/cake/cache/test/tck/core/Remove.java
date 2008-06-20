@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.core;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN1;
@@ -44,6 +57,7 @@ public class Remove extends AbstractCacheTCKTest {
         c = newCache(1);
         c.remove(null, M1.getValue());
     }
+
     /**
      * {@link Cache#put(Object, Object)} lazy starts the cache.
      */
@@ -54,8 +68,6 @@ public class Remove extends AbstractCacheTCKTest {
         c.remove(M1.getKey(), M2.getValue());
         checkLazystart();
     }
-
-
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.

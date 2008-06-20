@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.service.loading;
 
 import java.util.Map;
@@ -65,11 +78,13 @@ public class TestLoader implements SimpleCacheLoader<Integer, String> {
             e.getValue().addAttribute(atr, op.op(e.getKey()));
         }
     }
+
     public <T> void setAttribute(LongAttribute atr, LongOp op) {
         for (Map.Entry<Integer, SingleLoader> e : map.entrySet()) {
             e.getValue().addAttribute(atr, op.op(e.getKey()));
         }
     }
+
     public void clearAndFromBase(int entries, int base) {
         map.clear();
         for (int i = 1; i <= entries; i++) {
@@ -100,10 +115,12 @@ public class TestLoader implements SimpleCacheLoader<Integer, String> {
         map.put(entry.getKey(), SingleLoader.from(entry.getKey(), value));
         return this;
     }
+
     public TestLoader add(Integer key, String value) {
         map.put(key, SingleLoader.from(key, value));
         return this;
     }
+
     public TestLoader add(Integer key, String value, AttributeMap attributes) {
         map.put(key, SingleLoader.from(key, value, attributes));
         return this;
@@ -113,8 +130,8 @@ public class TestLoader implements SimpleCacheLoader<Integer, String> {
         return add(entry.getKey(), entry.getValue(), attribute, avalue);
     }
 
-    public <T, S> TestLoader add(Map.Entry<Integer, String> entry, Attribute<T> attribute,
-            T avalue, Attribute<S> attributes, S svalue) {
+    public <T, S> TestLoader add(Map.Entry<Integer, String> entry, Attribute<T> attribute, T avalue,
+            Attribute<S> attributes, S svalue) {
         AttributeMap ma = new DefaultAttributeMap();
         ma.put(attribute, avalue);
         ma.put(attributes, svalue);

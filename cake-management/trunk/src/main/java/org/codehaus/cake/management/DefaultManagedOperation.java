@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.management;
 
 import java.beans.MethodDescriptor;
@@ -56,8 +69,8 @@ class DefaultManagedOperation extends AbstractManagedOperation {
     /** {@inheritDoc} */
     @Override
     MBeanOperationInfo getInfo() throws IntrospectionException {
-        return new MBeanOperationInfo(getName(), getDescription(), ManagementUtil
-                .methodSignature(m), m.getReturnType().getName(), MBeanOperationInfo.UNKNOWN);
+        return new MBeanOperationInfo(getName(), getDescription(), ManagementUtil.methodSignature(m), m.getReturnType()
+                .getName(), MBeanOperationInfo.UNKNOWN);
     }
 
     /** {@inheritDoc} */
@@ -66,8 +79,7 @@ class DefaultManagedOperation extends AbstractManagedOperation {
         try {
             return m.invoke(o, objects);
         } catch (IllegalAccessException e) {
-            throw new ReflectionException(e, "Exception thrown trying to"
-                    + " invoke the operation " + getName());
+            throw new ReflectionException(e, "Exception thrown trying to" + " invoke the operation " + getName());
         } catch (InvocationTargetException e) {
             Throwable t = e.getTargetException();
             if (t instanceof RuntimeException) {
@@ -75,15 +87,15 @@ class DefaultManagedOperation extends AbstractManagedOperation {
             } else if (t instanceof Error) {
                 throw (Error) t;
             } else {
-                throw new ReflectionException((Exception) t,
-                        "Exception thrown while invoking the operation " + getName());
+                throw new ReflectionException((Exception) t, "Exception thrown while invoking the operation "
+                        + getName());
             }
         }
     }
 
     /**
-     * Creates a DefaultManagedAttribute from the specified MethodDescriptors if the
-     * {@link ManagedOperation} annotation is present.
+     * Creates a DefaultManagedAttribute from the specified MethodDescriptors if the {@link ManagedOperation} annotation
+     * is present.
      * 
      * @param mds
      *            the MethodDescriptors for the object
@@ -91,8 +103,7 @@ class DefaultManagedOperation extends AbstractManagedOperation {
      *            the object that the operations should be invoked on
      * @return a map mapping from the combined name of the attribute to the AbstractManagedOperation
      */
-    static Map<OperationKey, AbstractManagedOperation> fromMethodDescriptors(
-            MethodDescriptor[] mds, Object obj) {
+    static Map<OperationKey, AbstractManagedOperation> fromMethodDescriptors(MethodDescriptor[] mds, Object obj) {
         Map<OperationKey, AbstractManagedOperation> result = new HashMap<OperationKey, AbstractManagedOperation>();
         for (MethodDescriptor pd : mds) {
             ManagedOperation mo = pd.getMethod().getAnnotation(ManagedOperation.class);
@@ -102,8 +113,7 @@ class DefaultManagedOperation extends AbstractManagedOperation {
                     name = pd.getName();
                 }
                 String description = ManagementUtil.filterString(obj, mo.description());
-                DefaultManagedOperation dmo = new DefaultManagedOperation(obj, pd.getMethod(),
-                        name, description);
+                DefaultManagedOperation dmo = new DefaultManagedOperation(obj, pd.getMethod(), name, description);
                 // create String[] signature
                 List<String> p = new ArrayList<String>();
                 for (Class c : pd.getMethod().getParameterTypes()) {

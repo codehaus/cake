@@ -25,9 +25,9 @@ import org.junit.Test;
 
 public class AttributeMaps_ImmutableMapTest extends AbstractAttributeMapTest {
 
-    private final static ObjectAttribute KEY = new ObjectAttribute("key", Integer.class, 5) {};
+    private static final ObjectAttribute KEY = new ObjectAttribute("key", Integer.class, 5) {};
 
-    private final static Object VALUE = "10";
+    private static final Object VALUE = "10";
 
     private AttributeMap realMap;
 

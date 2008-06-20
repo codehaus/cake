@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -25,8 +25,8 @@ import org.codehaus.cake.ops.Ops.LongComparator;
 import org.codehaus.cake.ops.Ops.Op;
 
 /**
- * Various implementations of {@link Comparator}, {@link LongComparator}, {@link DoubleComparator}
- * and {@link IntComparator}.
+ * Various implementations of {@link Comparator}, {@link LongComparator}, {@link DoubleComparator} and
+ * {@link IntComparator}.
  * <p>
  * This class is normally best used via <tt>import static</tt>.
  * 
@@ -36,14 +36,12 @@ import org.codehaus.cake.ops.Ops.Op;
 public final class Comparators {
 
     /**
-     * A Comparator for Comparable.objects using their <i>natural ordering</i>. The comparator is
-     * Serializable.
+     * A Comparator for Comparable.objects using their <i>natural ordering</i>. The comparator is Serializable.
      */
     public static final Comparator NATURAL_COMPARATOR = new NaturalComparator();
 
     /**
-     * A comparator that imposes the reverse of the <i>natural ordering</i>. This comparator is
-     * Serializable.
+     * A comparator that imposes the reverse of the <i>natural ordering</i>. This comparator is Serializable.
      */
     public static final Comparator NATURAL_REVERSE_COMPARATOR = Collections.reverseOrder();
 
@@ -57,30 +55,28 @@ public final class Comparators {
     /** Cannot instantiate. */
     // /CLOVER:OFF
     private Comparators() {}
-    // /CLOVER:ON
-    
-//    public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper) {
-//        throw new UnsupportedOperationException();
-//    }
-//
-//    public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper,
-//            LongComparator comparator) {
-//        throw new UnsupportedOperationException();
-//    }
 
-    public static <T, U extends Comparable<? super U>> Comparator<T> mappedComparator(
-            Op<? super T, U> mapper) {
+    // /CLOVER:ON
+
+    // public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper) {
+    // throw new UnsupportedOperationException();
+    // }
+    //
+    // public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper,
+    // LongComparator comparator) {
+    // throw new UnsupportedOperationException();
+    // }
+
+    public static <T, U extends Comparable<? super U>> Comparator<T> mappedComparator(Op<? super T, U> mapper) {
         return mappedComparator(mapper, NATURAL_COMPARATOR);
     }
 
-    public static <T, U> Comparator<T> mappedComparator(Op<? super T, U> mapper,
-            Comparator<? super U> comparator) {
+    public static <T, U> Comparator<T> mappedComparator(Op<? super T, U> mapper, Comparator<? super U> comparator) {
         return new MappedComparator<T, U>(comparator, mapper);
     }
 
     /**
-     * Returns a Comparator that use the objects natural comparator. The returned comparator is
-     * serializable.
+     * Returns a Comparator that use the objects natural comparator. The returned comparator is serializable.
      * <p>
      * This example illustrates the type-safe way to obtain a natural comparator:
      * 
@@ -88,10 +84,9 @@ public final class Comparators {
      * Comparator&lt;String&gt; s = Comparators.naturalComparator();
      * </pre>
      * 
-     * Implementation note: Implementations of this method need not create a separate
-     * <tt>comparator</tt> object for each call. Using this method is likely to have comparable
-     * cost to using the like-named field. (Unlike this method, the field does not provide type
-     * safety.)
+     * Implementation note: Implementations of this method need not create a separate <tt>comparator</tt> object for
+     * each call. Using this method is likely to have comparable cost to using the like-named field. (Unlike this
+     * method, the field does not provide type safety.)
      * 
      * @return a comparator for Comparable.objects
      * @param <T>
@@ -118,16 +113,15 @@ public final class Comparators {
     }
 
     /**
-     * Returns a comparator that imposes the reverse of the <i>natural ordering</i> on a collection
-     * of objects that implement the <tt>Comparable</tt> interface. (The natural ordering is the
-     * ordering imposed by the objects' own <tt>compareTo</tt> method.) This enables a simple
-     * idiom for sorting (or maintaining) collections (or arrays) of objects that implement the
-     * <tt>Comparable</tt> interface in reverse-natural-order.
+     * Returns a comparator that imposes the reverse of the <i>natural ordering</i> on a collection of objects that
+     * implement the <tt>Comparable</tt> interface. (The natural ordering is the ordering imposed by the objects' own
+     * <tt>compareTo</tt> method.) This enables a simple idiom for sorting (or maintaining) collections (or arrays) of
+     * objects that implement the <tt>Comparable</tt> interface in reverse-natural-order.
      * <p>
      * The returned comparator is serializable.
      * 
-     * @return a comparator that imposes the reverse of the <i>natural ordering</i> on a collection
-     *         of objects that implement the <tt>Comparable</tt> interface.
+     * @return a comparator that imposes the reverse of the <i>natural ordering</i> on a collection of objects that
+     *         implement the <tt>Comparable</tt> interface.
      * @param <T>
      *            the Comparable types accepted by the Comparator
      * @see Comparable
@@ -139,8 +133,7 @@ public final class Comparators {
     /**
      * Creates a comparator that imposes the reverse ordering of the specified comparator.
      * <p>
-     * The returned comparator is serializable (assuming the specified comparator is also
-     * serializable).
+     * The returned comparator is serializable (assuming the specified comparator is also serializable).
      * 
      * @param comparator
      *            the Comparator to reverse
@@ -183,8 +176,7 @@ public final class Comparators {
     }
 
     /** A Comparator for Comparable.objects. */
-    static final class NaturalComparator<T extends Comparable<? super T>> implements Comparator<T>,
-            Serializable {
+    static final class NaturalComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 949691819933412722L;
 
@@ -199,8 +191,7 @@ public final class Comparators {
         }
     }
 
-    static final class NullGreatestOrderComparatorPredicate<T> implements Comparator<T>,
-            Serializable {
+    static final class NullGreatestOrderComparatorPredicate<T> implements Comparator<T>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -5918068122775742745L;
 
@@ -219,8 +210,8 @@ public final class Comparators {
         }
     }
 
-    static final class NullGreatestOrderPredicate<T extends Comparable<? super T>> implements
-            Comparator<T>, Serializable {
+    static final class NullGreatestOrderPredicate<T extends Comparable<? super T>> implements Comparator<T>,
+            Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 4313874045537757310L;
 
@@ -254,8 +245,7 @@ public final class Comparators {
         }
     }
 
-    static final class NullLeastOrderPredicate<T extends Comparable<? super T>> implements
-            Comparator<T>, Serializable {
+    static final class NullLeastOrderPredicate<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -5791305305191186665L;
 

@@ -31,13 +31,13 @@ import org.junit.Test;
 
 public class AttributeMaps_SingletonMapTest extends AbstractAttributeMapTest {
 
-    private final static Attribute KEY = new ObjectAttribute("key", Integer.class, 5) {};
+    private static final Attribute KEY = new ObjectAttribute("key", Integer.class, 5) {};
 
-    private final static Attribute OTHER_KEY = new ObjectAttribute("key", Integer.class, 6) {};
+    private static final Attribute OTHER_KEY = new ObjectAttribute("key", Integer.class, 6) {};
 
-    private final static Object OTHER_VALUE = 10;
+    private static final Object OTHER_VALUE = 10;
 
-    private final static Object VALUE = "10";
+    private static final Object VALUE = "10";
     private final AttributeMap singleton_null = Attributes.singleton(KEY, null);
 
     @Test

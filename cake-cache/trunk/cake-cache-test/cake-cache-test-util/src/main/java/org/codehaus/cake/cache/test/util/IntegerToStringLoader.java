@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.util;
 
 import java.util.concurrent.CountDownLatch;
@@ -11,8 +24,8 @@ import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
 import org.codehaus.cake.test.util.TestUtil;
 
 /**
- * A simple cache loader used for testing. Will return 1->A, 2->B, 3->C, 4->D, 5->E and
- * <code>null</code> for any other key.
+ * A simple cache loader used for testing. Will return 1->A, 2->B, 3->C, 4->D, 5->E and <code>null</code> for any
+ * other key.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: IntegerToStringLoader.java 520 2007-12-21 17:53:31Z kasper $

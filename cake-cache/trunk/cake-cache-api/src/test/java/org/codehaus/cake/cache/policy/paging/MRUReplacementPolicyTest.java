@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.policy.paging;
 
 import static junit.framework.Assert.assertEquals;
@@ -15,6 +28,7 @@ import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
 
 import org.junit.Before;
 import org.junit.Test;
+
 /**
  * Test of the MRU policy.
  * 
@@ -22,12 +36,13 @@ import org.junit.Test;
  */
 public class MRUReplacementPolicyTest {
 
-    MRUReplacementPolicy<Integer,String> policy;
+    MRUReplacementPolicy<Integer, String> policy;
 
     @Before
     public void setUp() {
-        policy = new MRUReplacementPolicy<Integer,String>();
+        policy = new MRUReplacementPolicy<Integer, String>();
     }
+
     /**
      * Test adding of new elements.
      */
@@ -64,20 +79,19 @@ public class MRUReplacementPolicyTest {
      */
     @Test
     public void testRefresh() {
-         addToPolicy(policy, 0, 9);
+        addToPolicy(policy, 0, 9);
         policy.touch(val(4));
-        //assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
+        // assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
         policy.touch(val(4));
-        //assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
+        // assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
         policy.touch(val(0));
-        //assertEquals(asList(0, 4, 9, 8, 7, 6, 5, 3, 2, 1), policy.peekAll());
+        // assertEquals(asList(0, 4, 9, 8, 7, 6, 5, 3, 2, 1), policy.peekAll());
         policy.touch(val(3));
         policy.touch(val(2));
         policy.touch(val(9));
         assertEquals(asList(9, 2, 3, 0, 4, 8, 7, 6, 5, 1), empty(policy));
     }
 
-    
     @Test
     public void testClear() {
         addToPolicy(policy, 0, 9);

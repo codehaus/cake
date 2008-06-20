@@ -29,14 +29,11 @@ import org.junit.Test;
 
 public abstract class AbstractAttributeTest {
 
-    protected static final Collection<Long> NEGATIV_LONGS = Arrays.asList(Long.MIN_VALUE, -10l,
-            -5l, -1l);
+    protected static final Collection<Long> NEGATIV_LONGS = Arrays.asList(Long.MIN_VALUE, -10l, -5l, -1l);
 
-    protected static final Collection<Long> NON_NEGATIV_LONGS = Arrays.asList(0l, 1L, 10l,
-            Long.MAX_VALUE);
+    protected static final Collection<Long> NON_NEGATIV_LONGS = Arrays.asList(0l, 1L, 10l, Long.MAX_VALUE);
 
-    protected static final Collection<Long> NON_POSITIVE_LONGS = Arrays.asList(Long.MIN_VALUE,
-            -10l, -5l, -1l, 0L);
+    protected static final Collection<Long> NON_POSITIVE_LONGS = Arrays.asList(Long.MIN_VALUE, -10l, -5l, -1l, 0L);
 
     protected static final Collection<Long> POSITIV_LONGS = Arrays.asList(1L, 10l, Long.MAX_VALUE);
 

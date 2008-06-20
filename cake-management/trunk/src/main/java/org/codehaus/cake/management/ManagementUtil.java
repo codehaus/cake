@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.management;
 
 import java.lang.reflect.Method;
@@ -69,8 +82,7 @@ final class ManagementUtil {
      *            a Map of all operations
      * @return the newly created MBean
      */
-    public static DynamicMBean from(String name, String description,
-            Map<String, AbstractManagedAttribute> attributes,
+    public static DynamicMBean from(String name, String description, Map<String, AbstractManagedAttribute> attributes,
             Map<OperationKey, AbstractManagedOperation> ops) {
         return new MBean(name, description, attributes, ops);
     }
@@ -123,8 +135,7 @@ final class ManagementUtil {
          * @param ops
          *            a Map of all operations
          */
-        public MBean(String name, String description,
-                Map<String, AbstractManagedAttribute> attributes,
+        public MBean(String name, String description, Map<String, AbstractManagedAttribute> attributes,
                 Map<OperationKey, AbstractManagedOperation> ops) {
             this.name = name;
             this.description = description;
@@ -141,19 +152,17 @@ final class ManagementUtil {
          * @throws AttributeNotFoundException
          *             if no such attribute existed
          */
-        private AbstractManagedAttribute findAttribute(String attribute)
-                throws AttributeNotFoundException {
+        private AbstractManagedAttribute findAttribute(String attribute) throws AttributeNotFoundException {
             AbstractManagedAttribute att = attributes.get(attribute);
             if (att == null) {
-                throw new AttributeNotFoundException("Attribute " + attribute
-                        + " could not be found");
+                throw new AttributeNotFoundException("Attribute " + attribute + " could not be found");
             }
             return att;
         }
 
         /** {@inheritDoc} */
-        public Object getAttribute(String attribute) throws AttributeNotFoundException,
-                MBeanException, ReflectionException {
+        public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException,
+                ReflectionException {
             return findAttribute(attribute).getValue();
         }
 
@@ -199,8 +208,8 @@ final class ManagementUtil {
         }
 
         /** {@inheritDoc} */
-        public Object invoke(String actionName, Object[] params, String[] signature)
-                throws MBeanException, ReflectionException {
+        public Object invoke(String actionName, Object[] params, String[] signature) throws MBeanException,
+                ReflectionException {
             AbstractManagedOperation aa = ops.get(new OperationKey(actionName, signature));
             if (aa != null) {
                 return aa.invoke(params);

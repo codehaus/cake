@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org> 
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck.core;
 
 import java.util.concurrent.ConcurrentMap;
@@ -9,8 +22,7 @@ import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
 /**
- * Tests {@link ConcurrentMap#replace(Object, Object)} and
- * {@link ConcurrentMap#replace(Object, Object, Object)}.
+ * Tests {@link ConcurrentMap#replace(Object, Object)} and {@link ConcurrentMap#replace(Object, Object, Object)}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Replace.java 526 2007-12-27 01:32:16Z kasper $
@@ -46,6 +58,7 @@ public class Replace extends AbstractCacheTCKTest {
         c = newCache(1);
         c.replace(null, M2.getValue());
     }
+
     /**
      * {@link Cache#put(Object, Object)} lazy starts the cache.
      */
@@ -56,6 +69,7 @@ public class Replace extends AbstractCacheTCKTest {
         c.replace(M2.getKey(), M2.getValue());
         checkLazystart();
     }
+
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
      */
@@ -68,6 +82,7 @@ public class Replace extends AbstractCacheTCKTest {
         // should fail
         c.replace(M2.getKey(), M2.getValue());
     }
+
     @Test
     public void replace3() {
         c = newCache(2);
@@ -76,6 +91,7 @@ public class Replace extends AbstractCacheTCKTest {
         assertFalse(c.replace(M1.getKey(), M1.getValue(), M3.getValue()));
         assertFalse(c.containsValue(M1.getValue()));
     }
+
     /**
      * {@link Cache#put(Object, Object)} lazy starts the cache.
      */
@@ -86,7 +102,7 @@ public class Replace extends AbstractCacheTCKTest {
         c.replace(M1.getKey(), M1.getValue(), M3.getValue());
         checkLazystart();
     }
-    
+
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
      */
@@ -99,6 +115,7 @@ public class Replace extends AbstractCacheTCKTest {
         // should fail
         c.replace(M1.getKey(), M1.getValue(), M3.getValue());
     }
+
     /**
      * replace(Key,null) throws NPE.
      */

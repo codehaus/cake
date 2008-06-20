@@ -16,16 +16,16 @@
 package org.codehaus.cake.attribute;
 
 import java.util.Comparator;
+
 /**
- * An implementation of an {@link Attribute} mapping to a float. This implementation adds a number of
- * methods that works on primitive floats instead of their object counterpart.
+ * An implementation of an {@link Attribute} mapping to a float. This implementation adds a number of methods that works
+ * on primitive floats instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: FloatAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class FloatAttribute extends Attribute<Float> implements
-         Comparator<WithAttributes> {
-         
+public abstract class FloatAttribute extends Attribute<Float> implements Comparator<WithAttributes> {
+
     /** The default value of this attribute. */
     private final transient float defaultValue;
 
@@ -45,8 +45,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      * @param defaultValue
      *            the default value of this attribute
      * @throws IllegalArgumentException
-     *             if the specified default value is not a valid value according to
-     *             {@link #checkValid(float)}
+     *             if the specified default value is not a valid value according to {@link #checkValid(float)}
      */
     public FloatAttribute(float defaultValue) {
         super(Float.TYPE, defaultValue);
@@ -77,25 +76,24 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if the specified default value is not a valid value according to
-     *             {@link #checkValid(float)}
+     *             if the specified default value is not a valid value according to {@link #checkValid(float)}
      */
     public FloatAttribute(String name, float defaultValue) {
         super(name, Float.TYPE, defaultValue);
         this.defaultValue = defaultValue;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public final void checkValid(Float o) {
         checkValid(o.floatValue());
     }
-    
+
     /**
      * Analogous to {@link #checkValid(Float)} except taking a primitive float.
      * <p>
-     * The default implementation fails if the specified value is either
-     * {@link Float#NEGATIVE_INFINITY}, {@link Float#POSITIVE_INFINITY} or {@link Float#NaN}.
+     * The default implementation fails if the specified value is either {@link Float#NEGATIVE_INFINITY},
+     * {@link Float#POSITIVE_INFINITY} or {@link Float#NaN}.
      * 
      * @param value
      *            the value to check
@@ -104,19 +102,18 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      */
     public void checkValid(float value) {
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
-                    + ", type = " + getClass() + ", value = " + value + "]");
+            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName() + ", type = "
+                    + getClass() + ", value = " + value + "]");
         }
     }
-    
+
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
         float thisVal = get(w1);
         float anotherVal = get(w2);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
-    
-    
+
     /**
      * Creates a value instance of this attribute from the specified string.
      * 
@@ -131,19 +128,19 @@ public abstract class FloatAttribute extends Attribute<Float> implements
     }
 
     /**
-     * Returns the default primitive value of this attribute. This is equivalent to calling
-     * {@link #getDefault()}, but returning a primitive int instead.
+     * Returns the default primitive value of this attribute. This is equivalent to calling {@link #getDefault()}, but
+     * returning a primitive int instead.
      * 
      * @return the default value of this attribute
      */
     public float getDefaultValue() {
         return defaultValue;
     }
-    
+
     /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefaultValue()} will be returned instead.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of this attribute from
+     * the map. If this attribute is not set in the map, the value of {@link #getDefaultValue()} will be returned
+     * instead.
      * 
      * @param withAttributes
      *            an object containing an AttributeMap
@@ -161,17 +158,16 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the
-     *         specified default value
+     * @return the value of this attribute if this attribute is present in the map. Otherwise the specified default
+     *         value
      */
     public float get(WithAttributes withAttributes, float defaultValue) {
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
     /**
-     * Works as {@link Attribute#isValid(Object)} except taking a primitive float. The default
-     * implementation returns <code>false</code> for {@link Float#NEGATIVE_INFINITY},
-     * {@link Float#POSITIVE_INFINITY} and {@link Float#NaN}.
+     * Works as {@link Attribute#isValid(Object)} except taking a primitive float. The default implementation returns
+     * <code>false</code> for {@link Float#NEGATIVE_INFINITY}, {@link Float#POSITIVE_INFINITY} and {@link Float#NaN}.
      * 
      * @return whether or not the value is valid
      * @param value
@@ -180,6 +176,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements
     public boolean isValid(float value) {
         return !isNaNInfinity(value);
     }
+
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Float value) {
@@ -193,7 +190,6 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      *            the attribute map to set the value in.
      * @param value
      *            the value that should be set
-     * @return the specified attribute map
      * @throws IllegalArgumentException
      *             if the specified value is not valid accordingly to {@link #checkValid(float)}
      */
@@ -205,13 +201,23 @@ public abstract class FloatAttribute extends Attribute<Float> implements
         attributes.put(this, value);
     }
 
-    public void set(WithAttributes attributes, float value) {
-        set(attributes.getAttributes(), value);
+    /**
+     * Sets the specified value in the specified attribute holder (WithAttributes).
+     * 
+     * @param withAttributes
+     *            the the attribute holder to set the value in.
+     * @param value
+     *            the value that should be set
+     * @throws IllegalArgumentException
+     *             if the specified value is not valid accordingly to {@link #checkValid(float)}
+     */
+    public void set(WithAttributes withAttributes, float value) {
+        set(withAttributes.getAttributes(), value);
     }
 
     /**
-     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
-     * returned map is immutable.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is
+     * immutable.
      * 
      * @param value
      *            the value to create the singleton from
@@ -220,7 +226,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements
     public AttributeMap singleton(float value) {
         return super.singleton(value);
     }
-  
+
     /**
      * Returns <code>true</code> if the specified value is either {@link Float#NEGATIVE_INFINITY},
      * {@link Float#POSITIVE_INFINITY} or {@link Float#NaN}. Otherwise, false

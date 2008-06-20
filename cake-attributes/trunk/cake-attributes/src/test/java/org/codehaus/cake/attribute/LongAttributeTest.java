@@ -89,7 +89,7 @@ public final class LongAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
 
-        ArrayList al = new ArrayList();
+        ArrayList<WithAttributes> al = new ArrayList<WithAttributes>();
         al.add(wa2);
         al.add(wa1);
         Collections.sort(al, ATR1);

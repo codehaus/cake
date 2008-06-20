@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -59,10 +59,12 @@ public class CollectionOpsTest {
         assertNotNull(CollectionOps.containedWithin(Arrays.asList(1)).toString());
         assertIsSerializable(CollectionOps.containedWithin(Arrays.asList(1)));
     }
+
     @Test(expected = NullPointerException.class)
     public void containedWithin_NPE() {
         CollectionOps.containedWithin(null);
     }
+
     @Test
     public void addToCollection() {
         final Collection col = context.mock(Collection.class);

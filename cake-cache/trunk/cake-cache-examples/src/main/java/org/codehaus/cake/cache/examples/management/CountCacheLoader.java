@@ -35,8 +35,7 @@ public class CountCacheLoader implements SimpleCacheLoader<String, String>, Mana
     }
 
     public static void main(String[] args) throws InterruptedException {
-        CacheConfiguration<String, String> conf = CacheConfiguration
-                .newConfiguration("CountCacheUsage");
+        CacheConfiguration<String, String> conf = CacheConfiguration.newConfiguration("CountCacheUsage");
         conf.withLoading().setLoader(new CountCacheLoader()); // sets the loader
         conf.withManagement().setEnabled(true); // enables JMX management
         Cache<String, String> cache = conf.newInstance(SynchronizedCache.class);

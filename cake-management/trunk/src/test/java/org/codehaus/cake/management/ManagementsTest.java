@@ -1,5 +1,18 @@
-/* Copyright 2004 - 2008 Kasper Nielsen <kasper@codehaus.org>
- * Licensed under the Apache 2.0 License. */
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.management;
 
 import static org.junit.Assert.assertEquals;
@@ -104,8 +117,8 @@ public class ManagementsTest {
         SingleOperation childOpr = new SingleOperation();
         dmg.addChild("c", "desc").add(childOpr).addChild("d", "desc").add(new SingleOperation());
 
-        ManagedVisitor mgv = Managements.hierarchicalRegistrant(server,
-                "org.coconut.management.test", "l1", "l2", "l3");
+        ManagedVisitor mgv = Managements
+                .hierarchicalRegistrant(server, "org.coconut.management.test", "l1", "l2", "l3");
         assertSame(Void.TYPE, mgv.traverse(dmg));
         assertEquals(3 + initCount, server.getMBeanCount().intValue());
         ObjectName parent = new ObjectName("org.coconut.management.test:l1=fooa");
@@ -145,10 +158,12 @@ public class ManagementsTest {
         initCount = server.getMBeanCount();
         dmg = new DefaultManagedGroup("fooa", "booa");
     }
+
     @After
     public void release() {
         MBeanServerFactory.releaseMBeanServer(server);
     }
+
     @Test
     public void test() {
         Integer[] i = new Integer[] { 1, 2, 3 };

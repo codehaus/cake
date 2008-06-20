@@ -1,7 +1,19 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
@@ -49,10 +61,11 @@ public class CacheServices<K, V> {
     public ExecutorsService executors() {
         return getService(ExecutorsService.class);
     }
-//
-//    public ExecutorService executorService() {
-//        return executors().getExecutorService();
-//    }
+
+    //
+    // public ExecutorService executorService() {
+    // return executors().getExecutorService();
+    // }
 
     /**
      * This method can be called by subclasses to retrieve services from the cache that this object is wrapping.
@@ -76,7 +89,7 @@ public class CacheServices<K, V> {
      *            the type of service
      * @param serviceType
      *            the type of services
-     * @param a
+     * @param attributes
      *            map of attributes
      * @return an instance of the specified type with the specified attributes
      * @throws UnsupportedOperationException
@@ -92,15 +105,13 @@ public class CacheServices<K, V> {
      * @return the cache loading service for the cache
      * @throws UnsupportedOperationException
      *             if no cache loading service is available
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of mapped values
      */
+    @SuppressWarnings("unchecked")
     public CacheLoadingService<K, V> loading() {
         return getService(CacheLoadingService.class);
     }
 
+    @SuppressWarnings("unchecked")
     public CacheLoadingService<K, V> loadingForced() {
         return getService(CacheLoadingService.class, FORCE_LOAD);
     }
@@ -111,16 +122,13 @@ public class CacheServices<K, V> {
      * @return the memory store service for the cache
      * @throws UnsupportedOperationException
      *             if no memory store service is available
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of mapped values
      */
+    @SuppressWarnings("unchecked")
     public MemoryStoreService<K, V> memoryStore() {
         return getService(MemoryStoreService.class);
     }
 
-//    public ScheduledExecutorService scheduledExecutorService() {
-//        return executors().getScheduledExecutorService();
-//    }
+    // public ScheduledExecutorService scheduledExecutorService() {
+    // return executors().getScheduledExecutorService();
+    // }
 }

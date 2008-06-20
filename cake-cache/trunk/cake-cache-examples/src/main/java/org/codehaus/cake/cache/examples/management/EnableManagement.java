@@ -10,8 +10,7 @@ import org.codehaus.cake.cache.SynchronizedCache;
 
 public class EnableManagement {
     public static void main(String[] args) throws InterruptedException {
-        CacheConfiguration<String, String> conf = CacheConfiguration
-                .newConfiguration("ManagementTest");
+        CacheConfiguration<String, String> conf = CacheConfiguration.newConfiguration("ManagementTest");
         conf.withManagement().setEnabled(true); // enables JMX management
         Cache<String, String> cache = conf.newInstance(SynchronizedCache.class);
         cache.put("hello", "world");

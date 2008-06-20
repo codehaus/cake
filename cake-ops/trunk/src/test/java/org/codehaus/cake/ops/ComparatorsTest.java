@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -35,7 +35,7 @@ import org.junit.Test;
 public class ComparatorsTest {
 
     /**
-     *
+     * 
      */
     @Test
     public void mappedComparator() {
@@ -70,8 +70,7 @@ public class ComparatorsTest {
         Collection<Integer> c1 = Arrays.asList(1);
         Collection<Integer> c2 = Arrays.asList(1, 2);
 
-        Comparator c = Comparators.mappedComparator(new CollectionToSizeMapper(),
-                NATURAL_REVERSE_COMPARATOR);
+        Comparator c = Comparators.mappedComparator(new CollectionToSizeMapper(), NATURAL_REVERSE_COMPARATOR);
         assertEquals(0, c.compare(c1, Arrays.asList("A")));
         assertTrue(c.compare(c2, c1) < 0);
         assertTrue(c.compare(c1, c2) > 0);
@@ -114,8 +113,7 @@ public class ComparatorsTest {
      */
     @Test
     public void nullGreatestOrderComparator() {
-        Comparator<Integer> c = Comparators
-                .nullGreatestOrder(Comparators.NATURAL_REVERSE_COMPARATOR);
+        Comparator<Integer> c = Comparators.nullGreatestOrder(Comparators.NATURAL_REVERSE_COMPARATOR);
         assertEquals(0, c.compare(null, null));
         assertEquals(0, c.compare(Integer.MIN_VALUE, Integer.MIN_VALUE));
         assertTrue(c.compare(2, 1) < 0);
@@ -179,8 +177,8 @@ public class ComparatorsTest {
         assertSame(NATURAL_REVERSE_COMPARATOR, Comparators.<Integer> reverseOrder());
         NATURAL_REVERSE_COMPARATOR.toString(); // does not fail
         assertIsSerializable(Comparators.<Integer> reverseOrder());
-// assertSame(NATURAL_REVERSE_COMPARATOR, TestUtil
-// .serializeAndUnserialize(NATURAL_REVERSE_COMPARATOR));
+        // assertSame(NATURAL_REVERSE_COMPARATOR, TestUtil
+        // .serializeAndUnserialize(NATURAL_REVERSE_COMPARATOR));
     }
 
     @Test(expected = NullPointerException.class)

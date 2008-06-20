@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache.test.tck;
 
 import java.util.ArrayList;
@@ -21,7 +36,6 @@ import org.codehaus.cake.cache.test.service.loading.TestLoader;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.codehaus.cake.test.util.TestUtil;
-import org.junit.After;
 
 public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>, CacheConfiguration<Integer, String>> {
     public static final Map.Entry<Integer, String> M1 = CollectionTestUtil.M1;
@@ -42,7 +56,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     protected TestLoader loader;
     protected CacheTestExceptionHandler<Integer, String> exceptionHandler;
 
-  //  @After
+    // @After
     public void noExceptions() {
         if (exceptionHandler != null) {
             exceptionHandler.assertCleared();

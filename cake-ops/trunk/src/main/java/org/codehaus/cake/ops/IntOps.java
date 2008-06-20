@@ -31,16 +31,16 @@ import org.codehaus.cake.ops.Ops.IntReducer;
  * @version $Id: IntOps.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class IntOps {
-    final static IntAbsOp ABS_OP = new IntAbsOp();
+    static final IntAbsOp ABS_OP = new IntAbsOp();
 
-    final static IntAddReducer ADD_REDUCER = new IntAddReducer();
+    static final IntAddReducer ADD_REDUCER = new IntAddReducer();
 
     /**
      * A comparator for ints relying on natural ordering. The comparator is Serializable.
      */
     public static final IntComparator COMPARATOR = new NaturalIntComparator();
 
-    final static IntDivideReducer DIVIDE_REDUCER = new IntDivideReducer();
+    static final IntDivideReducer DIVIDE_REDUCER = new IntDivideReducer();
     /**
      * A reducer returning the maximum of two int elements, using natural comparator. The Reducer is serializable.
      */
@@ -51,14 +51,14 @@ public final class IntOps {
      */
     static final IntReducer MIN_REDUCER = new NaturalIntMinReducer();
 
-    final static IntMultiplyReducer MULTIPLY_REDUCER = new IntMultiplyReducer();
+    static final IntMultiplyReducer MULTIPLY_REDUCER = new IntMultiplyReducer();
 
     /**
      * A comparator that imposes the reverse of the <i>natural ordering</i> on ints. The comparator is Serializable.
      */
     public static final IntComparator REVERSE_COMPARATOR = new NaturalIntReverseComparator();
 
-    final static IntSubtractReducer SUBTRACT_REDUCER = new IntSubtractReducer();
+    static final IntSubtractReducer SUBTRACT_REDUCER = new IntSubtractReducer();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */

@@ -63,8 +63,8 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a
-     * {@link NullPointerException} when invoked with a left side <code>null</code> argument.
+     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
+     * invoked with a left side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
@@ -72,8 +72,8 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a
-     * {@link NullPointerException} when invoked with a right side <code>null</code> argument.
+     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
+     * invoked with a right side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
@@ -162,8 +162,8 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#not(IntPredicate)} throws a {@link NullPointerException} when
-     * invoked with a <code>null</code> argument.
+     * Tests that {@link IntPredicates#not(IntPredicate)} throws a {@link NullPointerException} when invoked with a
+     * <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
@@ -203,8 +203,8 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a
-     * {@link NullPointerException} when invoked with a left side <code>null</code> argument.
+     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
+     * invoked with a left side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
@@ -212,8 +212,8 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a
-     * {@link NullPointerException} when invoked with a right side <code>null</code> argument.
+     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
+     * invoked with a right side <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {

@@ -30,17 +30,17 @@ import org.codehaus.cake.ops.Ops.DoubleReducer;
  * @version $Id: DoubleOps.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class DoubleOps {
-    final static DoubleAbsOp ABS_OP = new DoubleAbsOp();
+    static final DoubleAbsOp ABS_OP = new DoubleAbsOp();
 
     
-    final static DoubleAddReducer ADD_REDUCER = new DoubleAddReducer();
+    static final DoubleAddReducer ADD_REDUCER = new DoubleAddReducer();
 
     /**
      * A comparator for doubles relying on natural ordering. The comparator is Serializable.
      */
     public static final DoubleComparator COMPARATOR = new NaturalDoubleComparator();
 
-    final static DoubleDivideReducer DIVIDE_REDUCER = new DoubleDivideReducer();
+    static final DoubleDivideReducer DIVIDE_REDUCER = new DoubleDivideReducer();
      /**
      * A reducer returning the maximum of two double elements, using natural comparator.
      * The Reducer is serializable.
@@ -53,7 +53,7 @@ public final class DoubleOps {
      */
      static final DoubleReducer MIN_REDUCER = new NaturalDoubleMinReducer();
     
-     final static DoubleMultiplyReducer MULTIPLY_REDUCER = new DoubleMultiplyReducer();
+     static final DoubleMultiplyReducer MULTIPLY_REDUCER = new DoubleMultiplyReducer();
     
      /**
      * A comparator that imposes the reverse of the <i>natural ordering</i> on doubles. The
@@ -61,7 +61,7 @@ public final class DoubleOps {
      */
     public static final DoubleComparator REVERSE_COMPARATOR = new NaturalDoubleReverseComparator();
 
-        final static DoubleSubtractReducer SUBTRACT_REDUCER = new DoubleSubtractReducer();
+        static final DoubleSubtractReducer SUBTRACT_REDUCER = new DoubleSubtractReducer();
     
     ///CLOVER:OFF
     /** Cannot instantiate. */

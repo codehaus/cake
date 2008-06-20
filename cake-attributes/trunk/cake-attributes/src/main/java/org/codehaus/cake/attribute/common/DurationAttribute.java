@@ -46,16 +46,16 @@ public abstract class DurationAttribute extends LongAttribute {
     }
 
     public long convertFrom(long value, TimeUnit unit) {
-        if (value == Long.MAX_VALUE) {
-            return Long.MAX_VALUE;
+        if (value == FOREVER) {
+            return FOREVER;
         } else {
             return unit.toNanos(value);
         }
     }
 
     public long convertTo(long value, TimeUnit unit) {
-        if (value == Long.MAX_VALUE) {
-            return Long.MAX_VALUE;
+        if (value == FOREVER) {
+            return FOREVER;
         } else {
             return unit.convert(value, TimeUnit.NANOSECONDS);
         }

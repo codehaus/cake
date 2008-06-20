@@ -5,7 +5,7 @@
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://cake.codehaus.org/LICENSE
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -54,6 +54,7 @@ public final class CollectionOps {
     /** Cannot instantiate. */
     // /CLOVER:OFF
     private CollectionOps() {}
+
     // /CLOVER:ON
     /**
      * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.
@@ -77,8 +78,8 @@ public final class CollectionOps {
     }
 
     /**
-     * Filters the specified iterable, returning a new list of those items that evaluated to true
-     * given the specified predicate.
+     * Filters the specified iterable, returning a new list of those items that evaluated to true given the specified
+     * predicate.
      * 
      * @param <E>
      *            the types of items that are filtered
@@ -104,8 +105,8 @@ public final class CollectionOps {
     }
 
     /**
-     * Filters the specified map, returning a new map of those items that evaluated to true given
-     * the specified predicate.
+     * Filters the specified map, returning a new map of those items that evaluated to true given the specified
+     * predicate.
      * 
      * @param <K>
      *            the type of keys in the map
@@ -117,8 +118,7 @@ public final class CollectionOps {
      *            the predicate to evaluate items accordingly to
      * @return a collection of filteres items
      */
-    public static <K, V> Map<K, V> filterMap(Map<K, V> map,
-            Predicate<? super Map.Entry<K, V>> predicate) {
+    public static <K, V> Map<K, V> filterMap(Map<K, V> map, Predicate<? super Map.Entry<K, V>> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");
         } else if (predicate == null) {
@@ -164,8 +164,7 @@ public final class CollectionOps {
     }
 
     /**
-     * Returns whether or not <b>all</b> of elements in the specified can be accepted by the
-     * specified predicate.
+     * Returns whether or not <b>all</b> of elements in the specified can be accepted by the specified predicate.
      * 
      * @param <E>
      *            the types accepted
@@ -173,8 +172,7 @@ public final class CollectionOps {
      *            the iterable to check
      * @param predicate
      *            the predicate to test against
-     * @return whether or not all of elements in the specified can be accepted by the specified
-     *         predicate
+     * @return whether or not all of elements in the specified can be accepted by the specified predicate
      */
     public static <E> boolean isAllTrue(Iterable<E> iterable, Predicate<? super E> predicate) {
         if (iterable == null) {
@@ -191,8 +189,7 @@ public final class CollectionOps {
     }
 
     /**
-     * Returns whether or not <b>any</b> of elements in the specified can be accepted by the
-     * specified predicate.
+     * Returns whether or not <b>any</b> of elements in the specified can be accepted by the specified predicate.
      * 
      * @param <E>
      *            the types accepted
@@ -200,8 +197,7 @@ public final class CollectionOps {
      *            the iterable to check
      * @param predicate
      *            the predicate to test against
-     * @return whether or not any of elements in the specified can be accepted by the specified
-     *         predicate
+     * @return whether or not any of elements in the specified can be accepted by the specified predicate
      */
     public static <E> boolean isAnyTrue(Iterable<E> iterable, Predicate<? super E> predicate) {
         if (iterable == null) {
@@ -287,8 +283,8 @@ public final class CollectionOps {
     }
 
     /**
-     * A Predicate that evaluates to <code>true</code> iff the element being evaluated is
-     * contained in the collection specified when construction it.
+     * A Predicate that evaluates to <code>true</code> iff the element being evaluated is contained in the collection
+     * specified when construction it.
      */
     static final class ContainsPredicate<E> implements Predicate<E>, Serializable {
 

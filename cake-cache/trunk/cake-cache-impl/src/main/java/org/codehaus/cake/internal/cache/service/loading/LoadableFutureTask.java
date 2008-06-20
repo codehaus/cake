@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.internal.cache.service.loading;
 
 import java.util.concurrent.Callable;
@@ -9,8 +24,7 @@ import org.codehaus.cake.cache.CacheEntry;
 
 class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
 
-    LoadableFutureTask(ThreadSafeCacheLoader<K, V> loaderService, K key,
-            AttributeMap attributes) {
+    LoadableFutureTask(ThreadSafeCacheLoader<K, V> loaderService, K key, AttributeMap attributes) {
         super(createLoadCallable(loaderService, key, attributes));
     }
 
@@ -30,9 +44,8 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
     }
 
     /**
-     * Creates a new Callable that will call the specified loader service to load a new
-     * AbstractCacheEntry.
-     *
+     * Creates a new Callable that will call the specified loader service to load a new AbstractCacheEntry.
+     * 
      * @param loaderService
      *            the loading service to load from
      * @param key
@@ -45,8 +58,8 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
      * @param <V>
      *            the type of mapped values
      */
-    static <K, V> Callable<CacheEntry<K, V>> createLoadCallable(
-            ThreadSafeCacheLoader<K, V> loaderService, K key, AttributeMap attributes) {
+    static <K, V> Callable<CacheEntry<K, V>> createLoadCallable(ThreadSafeCacheLoader<K, V> loaderService, K key,
+            AttributeMap attributes) {
         return new LoadValueCallable<K, V>(loaderService, key, attributes);
     }
 
@@ -66,7 +79,7 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
 
         /**
          * Creates a new LoadValueCallable.
-         *
+         * 
          * @param loadingService
          *            the loading service to load the value from
          * @param key
@@ -74,18 +87,16 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
          * @param attributes
          *            the attribute map that should be passed to the cache loader
          * @throws NullPointerException
-         *             if the specified loading service, key or attribute map is
-         *             <code>null</code>
+         *             if the specified loading service, key or attribute map is <code>null</code>
          */
-        LoadValueCallable(ThreadSafeCacheLoader<K, V> loadingService, K key,
-                AttributeMap attributes) {
-//            if (loadingService == null) {
-//                throw new NullPointerException("loadingService is null");
-//            } else if (key == null) {
-//                throw new NullPointerException("key is null");
-//            } else if (attributes == null) {
-//                throw new NullPointerException("attributes is null");
-//            }
+        LoadValueCallable(ThreadSafeCacheLoader<K, V> loadingService, K key, AttributeMap attributes) {
+            // if (loadingService == null) {
+            // throw new NullPointerException("loadingService is null");
+            // } else if (key == null) {
+            // throw new NullPointerException("key is null");
+            // } else if (attributes == null) {
+            // throw new NullPointerException("attributes is null");
+            // }
             this.key = key;
             this.loadingService = loadingService;
             this.attributes = attributes;
@@ -96,22 +107,22 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
             return loadingService.loadFromFuture(key, attributes);
         }
 
-//        /**
-//         * Returns the key whose corresponding value should be loaded.
-//         *
-//         * @return the key whose corresponding value should be loaded
-//         */
-//        public K getKey() {
-//            return key;
-//        }
-//
-//        /**
-//         * Returns the attribute map that should be passed to the cache loader.
-//         *
-//         * @return the attribute map that should be passed to the cache loader
-//         */
-//        public AttributeMap getAttributes() {
-//            return attributes;
-//        }
+        // /**
+        // * Returns the key whose corresponding value should be loaded.
+        // *
+        // * @return the key whose corresponding value should be loaded
+        // */
+        // public K getKey() {
+        // return key;
+        // }
+        //
+        // /**
+        // * Returns the attribute map that should be passed to the cache loader.
+        // *
+        // * @return the attribute map that should be passed to the cache loader
+        // */
+        // public AttributeMap getAttributes() {
+        // return attributes;
+        // }
     }
 }
