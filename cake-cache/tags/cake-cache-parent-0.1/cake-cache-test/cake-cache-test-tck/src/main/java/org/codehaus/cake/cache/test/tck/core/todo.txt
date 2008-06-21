@@ -1,0 +1,7 @@
+######OUTSTANDING
+ entrySet(). hashcode/equals - startup/shutdown
+ keySet() hashcode/equals - startup/shutdown
+ values() hashcode/equals - startup/shutdown
+
+ 
+
