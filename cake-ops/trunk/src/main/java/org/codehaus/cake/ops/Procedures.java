@@ -70,7 +70,7 @@ public final class Procedures {
     /**
      * Returns a Procedure that calls {@link PrintStream#print(boolean)} on {@link System#out}.
      * 
-     * @return an eventhandler that prints all processed elements to {@link System#out}
+     * @return a procedure that prints all processed elements to {@link System#out}
      * @param <E>
      *            the types of elements accepted by the procedure
      */
@@ -81,7 +81,7 @@ public final class Procedures {
     /**
      * Returns a Procedure that calls {@link PrintStream#println(boolean)} on {@link System#out}.
      * 
-     * @return an eventhandler that prints all processed elements to {@link System#out}
+     * @return a procedure that prints all processed elements to {@link System#out}
      * @param <E>
      *            the types of elements accepted by the procedure
      */

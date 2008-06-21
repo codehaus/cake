@@ -30,7 +30,7 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Policies.java 491 2007-11-30 22:05:50Z kasper $
  */
-public class Policies {
+public final class Policies {
     // /CLOVER:OFF
     /** Cannot instantiate. */
     private Policies() {}

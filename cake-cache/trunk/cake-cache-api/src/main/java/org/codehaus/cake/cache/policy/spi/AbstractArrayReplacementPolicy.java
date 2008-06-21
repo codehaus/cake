@@ -36,7 +36,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
     public AbstractArrayReplacementPolicy() {
         attachToEntry(index);
     }
-
+    /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
         add0(entry);
         return true;
@@ -48,7 +48,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
         list.add(entry);
         return i;
     }
-
+    /** {@inheritDoc} */
     public void clear() {
         list.clear();
     }
@@ -60,7 +60,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
     protected int getIndexOf(CacheEntry<K, V> entry) {
         return index.get(entry);
     }
-
+    /** {@inheritDoc} */
     public void remove(CacheEntry<K, V> entry) {
         remove0(entry);
     }
@@ -82,7 +82,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
         }
         return lastIndex;
     }
-
+    /** {@inheritDoc} */
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         replace0(previous, newEntry);
         return newEntry;
