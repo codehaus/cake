@@ -14,7 +14,13 @@
  * the License.
  */
 package org.codehaus.cake.test.util.throwables;
-
+/**
+ * An Error class used for testing.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ */
 public class Error3 extends Error {
+    /** The default instance. */
     public static Error3 INSTANCE = new Error3();
 }

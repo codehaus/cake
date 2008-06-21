@@ -14,7 +14,13 @@
  * the License.
  */
 package org.codehaus.cake.test.util.throwables;
-
+/**
+ * An Throwable class used for testing.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ */
 public class Throwable1 extends Throwable {
+    /** The default instance. */
     public static final Throwable1 INSTANCE = new Throwable1();
 }
