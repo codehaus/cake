@@ -28,34 +28,34 @@
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.cake.forkjoin</groupId>
       <artifactId>cake-forkjoin-collections</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.ops</groupId>
       <artifactId>cake-ops</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.attributes</groupId>
       <artifactId>cake-attributes</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.management</groupId>
       <artifactId>cake-management</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.util</groupId>
       <artifactId>cake-util</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
   </dependencies>
 </project>
