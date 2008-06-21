@@ -24,7 +24,7 @@
   </parent>
   <groupId>org.codehaus.cake.ops</groupId>
   <artifactId>cake-ops</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <name>Cake Ops</name>
   <description>This library contains the Cake Ops package</description>
   <dependencies>
@@ -36,9 +36,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/tags/cake-ops-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-ops/tags/cake-ops-0.1</developerConnection>
-    <url>http://svn.codehaus.org/cake/cake-ops/tags/cake-ops-0.1</url>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-ops/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/cake-ops/trunk</url>
   </scm>
   <repositories>
     <repository>
