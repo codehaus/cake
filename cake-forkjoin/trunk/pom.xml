@@ -14,7 +14,7 @@
   License for the specific language governing permissions and limitations under
   the License.
 -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.cake</groupId>
@@ -24,13 +24,13 @@
   </parent>
   <groupId>org.codehaus.cake.forkjoin</groupId>
   <artifactId>cake-forkjoin-parent</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <name>Cake ForkJoin Parent</name>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/cake/cake-forkjoin/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-forkjoin/trunk</developerConnection>
-    <url>http://svn.codehaus.org/cake/cake-forkjoin/trunk</url>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-forkjoin/tags/cake-forkjoin-parent-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-forkjoin/tags/cake-forkjoin-parent-0.1</developerConnection>
+    <url>http://svn.codehaus.org/cake/cake-forkjoin/tags/cake-forkjoin-parent-0.1</url>
   </scm>
   <modules>
     <module>cake-forkjoin</module>
