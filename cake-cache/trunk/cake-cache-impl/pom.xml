@@ -34,12 +34,12 @@
     <dependency>
       <groupId>org.codehaus.cake.attributes</groupId>
       <artifactId>cake-attributes-mapgenerator</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.service</groupId>
       <artifactId>cake-service-impl</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>${pom.groupId}.test</groupId>
