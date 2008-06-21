@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake.service</groupId>
+    <artifactId>cake-service-parent</artifactId>
+    <version>0.1</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>cake-service-tck</artifactId>
+  <name>Cake Service TCK</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cake.test</groupId>
+      <artifactId>cake-test-util</artifactId>
+      <version>0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>cake-service-api</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+  </dependencies>
+</project>
