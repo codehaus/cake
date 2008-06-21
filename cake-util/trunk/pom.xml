@@ -14,7 +14,7 @@
   License for the specific language governing permissions and limitations under
   the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.cake</groupId>
@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.cake.util</groupId>
   <artifactId>cake-util</artifactId>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
   <name>Cake Util</name>
   <description>This library contains Utility classes that are used across all Cake projects</description>
   <dependencies>
@@ -47,9 +47,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/cake/cake-util/tags/cake-util-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-util/tags/cake-util-0.1</developerConnection>
-    <url>http://svn.codehaus.org/cake/cake-util/tags/cake-util-0.1</url>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-util/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-util/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/cake-util/trunk</url>
   </scm>
   <repositories>
     <repository>
