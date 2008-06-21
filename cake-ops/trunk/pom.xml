@@ -32,7 +32,7 @@
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
   </dependencies>
   <scm>
