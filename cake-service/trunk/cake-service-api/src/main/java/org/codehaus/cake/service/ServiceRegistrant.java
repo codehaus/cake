@@ -16,57 +16,61 @@
 package org.codehaus.cake.service;
 
 /**
+ * A ServiceRegistrant is used for registering services or service factories at
+ * runtime. Services can then later be looked up by calling
+ * {@link ServiceManager#getService(Class)} or
+ * {@link ServiceManager#getService(Class, org.codehaus.cake.attribute.AttributeMap)}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
  */
 public interface ServiceRegistrant {
 
-    /**
-     * Registers the specified service. The service can then later be retrieved
-     * by calls to {@link ServiceManager#getService(Class)} with the specified
-     * key as parameter.
-     * 
-     * @param <T>
-     *            the type of the service
-     * @param key
-     *            the key of the service
-     * @param service
-     *            the service instance to register
-     * @return this ServiceRegistrant
-     * @throws NullPointerException
-     *             if either the specified key or service are <code>null</code>
-     * @throws IllegalStateException
-     *             if registration of new services is not allowed. For example,
-     *             if registering services in a container and the container has
-     *             already been started
-     */
-    <T> ServiceRegistrant registerService(Class<T> key, T service);
+	/**
+	 * Registers the specified service. The service can then later be retrieved
+	 * by calls to {@link ServiceManager#getService(Class)} with the specified
+	 * key as parameter.
+	 * 
+	 * @param <T>
+	 *            the type of the service
+	 * @param type
+	 *            the type of the service
+	 * @param service
+	 *            the service instance to register
+	 * @return this ServiceRegistrant
+	 * @throws NullPointerException
+	 *             if either the specified key or service are <code>null</code>
+	 * @throws IllegalStateException
+	 *             if registration of new services is not allowed. For example,
+	 *             if registering services in a container and the container has
+	 *             already been started
+	 */
+	<T> ServiceRegistrant registerService(Class<T> type, T service);
 
-    /**
-     * Registers the specified {@link ServiceFactory}. Services can then later
-     * be retrieved by calls to {@link ServiceManager#getService(Class)} or
-     * {@link ServiceManager#getService(Class, org.codehaus.cake.attribute.AttributeMap)}
-     * with the specified key as parameter and an optional AttributeMap.
-     * 
-     * @param <T>
-     *            the type of the service
-     * @param key
-     *            the key of the service
-     * @param serviceFactory
-     *            the service factory responsible for creating instances
-     * @return this ServiceRegistrant
-     * @throws NullPointerException
-     *             if either the specified key or service factory are
-     *             <code>null</code>
-     * @throws IllegalStateException
-     *             if registration of new services is not allowed. For example,
-     *             if registering services in a container and the container has
-     *             already been started
-     */
-    <T> ServiceRegistrant registerFactory(Class<T> key,
-            ServiceFactory<T> serviceFactory);
+	/**
+	 * Registers the specified {@link ServiceFactory}. Services can then later
+	 * be retrieved by calls to {@link ServiceManager#getService(Class)} or
+	 * {@link ServiceManager#getService(Class, org.codehaus.cake.attribute.AttributeMap)}
+	 * with the specified key as parameter and an optional AttributeMap.
+	 * 
+	 * @param <T>
+	 *            the type of the service
+	 * @param key
+	 *            the type of the service
+	 * @param serviceFactory
+	 *            the service factory responsible for creating instances
+	 * @return this ServiceRegistrant
+	 * @throws NullPointerException
+	 *             if either the specified key or service factory are
+	 *             <code>null</code>
+	 * @throws IllegalStateException
+	 *             if registration of new services is not allowed. For example,
+	 *             if registering services in a container and the container has
+	 *             already been started
+	 */
+	<T> ServiceRegistrant registerFactory(Class<T> type,
+			ServiceFactory<T> serviceFactory);
 
-    // replace service
-    // remove service
+	// replace service
+	// remove service
 }

@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
@@ -43,10 +44,9 @@ import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
-@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
-        ExecutorsService.class, Manageable.class })
+@Container.SupportedServices( { ExecutorService.class, MemoryStoreService.class, CacheLoadingService.class,
+        ServiceManager.class, Manageable.class })
 public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V> {
 
     InternalCacheLoader<K, V> loader;
@@ -99,7 +99,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         return false;
     }
 
-    public Map<K, V> getAll(Collection<? extends K> keys) {
+    public Map<K, V> getAll(Iterable<? extends K> keys) {
         HashMap<K, V> result = new HashMap<K, V>();
         for (K key : keys) {
             result.put(key, get(key));

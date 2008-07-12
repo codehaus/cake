@@ -29,8 +29,6 @@ import java.util.Map.Entry;
  */
 public class DefaultAttributeMap implements AttributeMap {
 
-    /** serialVersionUID. */
-    private static final long serialVersionUID = -5954819329578687686L;
     /** The HashMap that is storing the attribute value pairs. */
     private final HashMap<Attribute, Object> map = new HashMap<Attribute, Object>();
 

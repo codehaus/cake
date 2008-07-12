@@ -16,9 +16,9 @@
 package org.codehaus.cake.cache.test.util;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
-public class BlockingCacheLoader<K, V> implements SimpleCacheLoader<K, V> {
+public class BlockingTestCacheLoader<K, V> implements BlockingCacheLoader<K, V> {
 
     public V load(K key, AttributeMap attributes) throws Exception {
         // delay

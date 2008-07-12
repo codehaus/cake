@@ -101,7 +101,7 @@ public class DummyCache<K, V> implements Cache<K, V> {
     }
 
     /** {@inheritDoc} */
-    public Map<K, V> getAll(Collection<? extends K> keys) {
+    public Map<K, V> getAll(Iterable<? extends K> keys) {
         return null;
     }
 

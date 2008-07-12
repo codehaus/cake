@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.test.util.TestUtil;
 
 /**
@@ -30,7 +30,7 @@ import org.codehaus.cake.test.util.TestUtil;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: IntegerToStringLoader.java 520 2007-12-21 17:53:31Z kasper $
  */
-public class IntegerToStringLoader implements SimpleCacheLoader<Integer, String> {
+public class IntegerToStringLoader implements BlockingCacheLoader<Integer, String> {
 
     public static final Attribute RESULT_ATTRIBUTE_KEY = TestUtil.dummy(Attribute.class);
 

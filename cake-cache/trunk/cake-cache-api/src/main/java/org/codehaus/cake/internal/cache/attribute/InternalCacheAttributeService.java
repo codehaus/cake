@@ -16,16 +16,30 @@
 package org.codehaus.cake.internal.cache.attribute;
 
 import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.cache.policy.spi.AbstractReplacementPolicy;
 import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 
 /**
+ * WARNING: This is an internal class. Ordinary users should never need to reference this class.
+ * <p>
  * These are various internal methods used by {@link AbstractReplacementPolicy}.
- * 
  */
 public interface InternalCacheAttributeService {
+    /**
+     * Attaches an attribute to the cache. An {@link AttributeMap} where the attribute can be set or read can later be
+     * retrieved by calling {@link CacheEntry#getAttributes()}. <p/> NOTE: The value can only be read or set safely in
+     * methods that are implicitly called by the cache. The methods include {@link ReplacementPolicy#add(CacheEntry)},
+     * {@link ReplacementPolicy#clear()}, {@link ReplacementPolicy#evictNext()},
+     * {@link ReplacementPolicy#remove(CacheEntry)}, {@link ReplacementPolicy#replace(CacheEntry, CacheEntry)} and
+     * {@link ReplacementPolicy#touch(CacheEntry)}.
+     * 
+     * @param attribute
+     *            the attribute to attach
+     */
     void attachToPolicy(Attribute<?> attribute);
 
     /**
@@ -37,6 +51,7 @@ public interface InternalCacheAttributeService {
      * 
      * 
      * @param attribute
+     *            the attribute to attach
      */
     void dependOnSoft(Attribute<?> attribute);
 
@@ -46,7 +61,8 @@ public interface InternalCacheAttributeService {
      * make sense to use {@link ReplaceCostliestPolicy} if the user does not supply entries a {@link CacheEntry#COST}
      * attached.
      * 
-     * @see #dependOnSoft(Attribute)
+     * @param attribute
+     *            the attribute to attach
      */
     void dependOnHard(Attribute<?> attribute);
 }

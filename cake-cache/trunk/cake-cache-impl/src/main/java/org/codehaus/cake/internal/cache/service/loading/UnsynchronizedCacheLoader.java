@@ -19,7 +19,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 
@@ -27,7 +27,7 @@ public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
     private final InternalCache<K, V> cache;
 
-    private final SimpleCacheLoader<K, V> loader;
+    private final BlockingCacheLoader<K, V> loader;
 
     public UnsynchronizedCacheLoader(InternalCache<K, V> cache, CacheLoadingConfiguration<K, V> conf,
             InternalCacheExceptionService<K, V> exceptionHandler) {

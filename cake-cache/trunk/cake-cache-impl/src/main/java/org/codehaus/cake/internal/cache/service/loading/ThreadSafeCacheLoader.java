@@ -17,36 +17,43 @@ package org.codehaus.cake.internal.cache.service.loading;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Disposable;
+import org.codehaus.cake.service.ServiceManager;
+import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.Stoppable;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
 public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
     private final InternalCache<K, V> cache;
 
     private final ConcurrentHashMap<K, LoadableFutureTask<K, V>> futures = new ConcurrentHashMap<K, LoadableFutureTask<K, V>>();
-    private final SimpleCacheLoader<K, V> loader;
+    private final BlockingCacheLoader<K, V> loader;
 
     /** The Executor responsible for doing the actual load. */
-    private final Executor loadExecutor;
+    private volatile Executor loadExecutor;
 
     public ThreadSafeCacheLoader(InternalCache<K, V> cache, CacheLoadingConfiguration<K, V> conf,
-            InternalCacheExceptionService<K, V> exceptionHandler, ExecutorsService executorsService) {
+            InternalCacheExceptionService<K, V> exceptionHandler) {
         super(exceptionHandler);
         this.loader = getSimpleLoader(conf);
-        this.loadExecutor = executorsService.getExecutorService(CacheLoadingService.class);
         this.cache = cache;
+    }
+
+    @AfterStart
+    public void setExecutor(ServiceManager s) {
+        //TODO fix after start
+        this.loadExecutor = s.getService(ExecutorService.class);
     }
 
     private LoadableFutureTask<K, V> createFuture(K key, AttributeMap attributes) {

@@ -67,7 +67,6 @@ public class ValuesIterator extends AbstractCacheTCKTest {
     }
 
     @Test
-    @SuppressWarnings("unused")
     public void iteratorRemove() {
         c = newCache(5);
         Iterator<String> iter = c.values().iterator();

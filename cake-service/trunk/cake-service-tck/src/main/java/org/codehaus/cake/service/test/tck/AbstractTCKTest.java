@@ -27,7 +27,6 @@ import junit.framework.AssertionFailedError;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.junit.After;
@@ -121,10 +120,6 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         awaitTermination();
     }
 
-    protected final ExecutorsService withExecutors() {
-        return c.getService(ExecutorsService.class);
-    }
-
     protected final C newContainer() {
         c = (C) TckUtil.newContainer(conf);
         return c;
@@ -179,15 +174,21 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         return s;
     }
 
-    public T cheatInstantiate() throws Throwable {
+    /**
+     * Bypasses some checks in {@link ContainerConfiguration#newInstance(Class)}.
+     */
+    public C cheatInstantiate() throws Throwable {
+
         for (Constructor con : c.getClass().getConstructors()) {
             if (con.getParameterTypes().length == 1
                     && ContainerConfiguration.class.isAssignableFrom(con.getParameterTypes()[0])) {
                 try {
-                    return (T) con.newInstance(conf);
+                    return (C) con.newInstance(conf);
                 } catch (InvocationTargetException e) {
                     throw e.getCause();
                 } catch (Exception e) {
+                    System.out.println(c.getClass());
+                    e.printStackTrace();
                     throw new Error(e);
                 }
             }

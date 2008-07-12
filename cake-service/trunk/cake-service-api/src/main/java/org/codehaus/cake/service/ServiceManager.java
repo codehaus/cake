@@ -20,13 +20,48 @@ import java.util.Set;
 import org.codehaus.cake.attribute.AttributeMap;
 
 /**
- * 
- * This is the entry-point for accessing other services, An interface giving access to services.
+ * A ServiceManager is the entry-point for accessing other services.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheServiceManagerService.java 537 2007-12-30 19:21:20Z kasper $
  */
 public interface ServiceManager {
+
+    /**
+     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if no such service
+     * exists. Calling this method is equivalent to calling {@link #getService(Class, AttributeMap)} with an empty
+     * {@link AttributeMaps}.
+     * 
+     * @param <T>
+     *            the type of service to retrieve
+     * @param serviceType
+     *            the type of service to retrieve
+     * @return a service of the specified type
+     * @throws UnsupportedOperationException
+     *             if no service of the specified type exist
+     * @throws NullPointerException
+     *             if the specified service type is null
+     */
+    <T> T getService(Class<T> serviceType);
+
+    /**
+     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if no such service
+     * exists. The map of attributes will be parsed along to the {@link ServiceFactory} responsible for constructing the
+     * service.
+     * 
+     * @param <T>
+     *            the type of service to retrieve
+     * @param serviceType
+     *            the type of service to retrieve
+     * @param attributes
+     *            a map of additional attributes
+     * @return a service of the specified type
+     * @throws UnsupportedOperationException
+     *             if no service of the specified type exist
+     * @throws NullPointerException
+     *             if the specified service type is null
+     */
+    <T> T getService(Class<T> serviceType, AttributeMap attributes);
 
     /**
      * Returns whether or not this service manager contains a service of the specified type.
@@ -41,26 +76,10 @@ public interface ServiceManager {
      */
     boolean hasService(Class<?> serviceType);
 
-    //boolean hasService(Class<?> serviceType, AttributeMap attributes);
-
-    Set<Class<?>> serviceKeySet();
-    
-    //Map<Class<?>, ServiceFactory<?>> getAll();
     /**
-     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if no such service
-     * exists.
+     * Returns a {@link Set} consisting of the types of all registered services.
      * 
-     * @param <T>
-     *            the type of service to retrieve
-     * @param serviceType
-     *            the type of service to retrieve
-     * @return a service of the specified type
-     * @throws UnsupportedOperationException
-     *             if no service of the specified type exist
-     * @throws NullPointerException
-     *             if the specified service type is null
+     * @return a Set consisting of the types of all registered services
      */
-    <T> T getService(Class<T> serviceType);
-
-    <T> T getService(Class<T> serviceType, AttributeMap attributes);
+    Set<Class<?>> serviceKeySet();
 }

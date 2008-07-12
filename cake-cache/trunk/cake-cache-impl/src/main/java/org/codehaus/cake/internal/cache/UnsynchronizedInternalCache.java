@@ -86,7 +86,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return false;
     }
 
-    public Map<K, V> getAll(Collection<? extends K> keys) {
+    public Map<K, V> getAll(Iterable<? extends K> keys) {
         HashMap<K, V> result = new HashMap<K, V>();
         for (K key : keys) {
             result.put(key, get(key));

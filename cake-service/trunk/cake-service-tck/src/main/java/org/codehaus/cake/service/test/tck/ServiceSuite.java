@@ -26,7 +26,6 @@ import org.junit.runner.manipulation.Filter;
 import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runners.Suite;
 
-@SuppressWarnings("deprecation")
 public class ServiceSuite extends Suite {
     private final Set<Class> supportedServices;
 

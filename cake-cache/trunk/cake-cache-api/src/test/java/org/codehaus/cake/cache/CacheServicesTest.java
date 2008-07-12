@@ -18,9 +18,10 @@ package org.codehaus.cake.cache;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 import static org.junit.Assert.assertSame;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.test.util.TestUtil;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -73,23 +74,22 @@ public class CacheServicesTest {
     }
 
     /**
-     * Tests {@link CacheServices#executors()}.
+     * Tests {@link CacheServices#scheduledExecutor()}.
      */
     @Test
-    public void executorsService() {
-        final ExecutorsService service = TestUtil.dummy(ExecutorsService.class);
+    public void scheduledExecutorService() {
+        final ScheduledExecutorService service = TestUtil.dummy(ScheduledExecutorService.class);
         context.checking(new Expectations() {
             {
                 one(cache).with();
                 will(returnValue(new CacheServices(cache)));
-                one(cache).getService(ExecutorsService.class);
+                one(cache).getService(ScheduledExecutorService.class);
                 will(returnValue(service));
             }
         });
-        ExecutorsService ces = cache.with().executors();
+        ScheduledExecutorService ces = cache.with().scheduledExecutor();
         assertSame(service, ces);
     }
-
     /**
      * Tests {@link CacheServices#loading()}.
      */

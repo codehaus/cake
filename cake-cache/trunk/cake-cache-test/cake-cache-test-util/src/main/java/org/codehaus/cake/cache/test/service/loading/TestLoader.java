@@ -23,11 +23,11 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.ops.Ops.LongOp;
 import org.codehaus.cake.ops.Ops.Op;
 
-public class TestLoader implements SimpleCacheLoader<Integer, String> {
+public class TestLoader implements BlockingCacheLoader<Integer, String> {
 
     private final ConcurrentHashMap<Integer, SingleLoader> map = new ConcurrentHashMap<Integer, SingleLoader>();
 

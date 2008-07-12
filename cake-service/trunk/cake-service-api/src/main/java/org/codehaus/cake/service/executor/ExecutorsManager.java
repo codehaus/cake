@@ -28,6 +28,7 @@ import org.codehaus.cake.forkjoin.ForkJoinExecutor;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheWorkerManager.java 479 2007-11-27 13:40:08Z kasper $
  */
+@Deprecated
 public abstract class ExecutorsManager {
 
     /**

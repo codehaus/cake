@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @see AttributeMap
  */
 public abstract class Attribute<T> implements Serializable {
-    /* All fields are transient because all attribute implementations should be singletons. */
+    /* All fields are transient because attribute implementations should be singletons. */
 
     /** An AtomicLong for generating unique names, if user does not specify name. */
     private static final AtomicLong NAME = new AtomicLong();
@@ -68,9 +68,7 @@ public abstract class Attribute<T> implements Serializable {
         this.clazz = clazz;
         checkValid(defaultValue);
         this.defaultValue = defaultValue;
-        // not that smart, considering clazz uses Object.hashCode
-        // maybe just cache System.identityHashCode(x)
-        hashCode = name.hashCode() ^ clazz.hashCode();
+        hashCode = name.hashCode() ^ clazz.getName().hashCode();
     }
 
     /**
@@ -97,9 +95,7 @@ public abstract class Attribute<T> implements Serializable {
         this.clazz = clazz;
         checkValid(defaultValue);
         this.defaultValue = defaultValue;
-        // not that smart, considering clazz uses Object.hashCode
-        // maybe just cache System.identityHashCode(x)
-        hashCode = name.hashCode() ^ clazz.hashCode();
+        hashCode = name.hashCode() ^ clazz.getName().hashCode();
     }
 
     /**
@@ -125,7 +121,6 @@ public abstract class Attribute<T> implements Serializable {
      *            the reference object with which to compare.
      * @return true if the specified object is the same as this, otherwise false
      */
-
     public final boolean equals(Object obj) {
         return obj == this;
     }

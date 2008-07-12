@@ -15,8 +15,9 @@
  */
 package org.codehaus.cake.stubber;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.stubber.bubber.BubberService;
 
 public class StubberServices<T> {
@@ -40,8 +41,8 @@ public class StubberServices<T> {
      * @throws UnsupportedOperationException
      *             if no worker service is available
      */
-    public ExecutorsService executors() {
-        return getService(ExecutorsService.class);
+    public ScheduledExecutorService scheduledExecutor() {
+        return getService(ScheduledExecutorService.class);
     }
 
     /**

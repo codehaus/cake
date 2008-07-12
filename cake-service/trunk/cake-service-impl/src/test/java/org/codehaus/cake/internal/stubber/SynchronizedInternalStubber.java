@@ -22,13 +22,12 @@ import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.stubber.Stubber;
 import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
 import org.codehaus.cake.util.Logger;
 
-@Container.SupportedServices( { ExecutorsService.class, BubberService.class, Manageable.class })
+@Container.SupportedServices( { BubberService.class, Manageable.class })
 public class SynchronizedInternalStubber<T> extends AbstractInternalStubber<T> {
 
     private final InternalExceptionService exceptionService;

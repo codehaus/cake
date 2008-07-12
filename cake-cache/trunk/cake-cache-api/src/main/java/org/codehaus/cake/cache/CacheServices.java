@@ -15,11 +15,12 @@
  */
 package org.codehaus.cake.cache;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
 /**
  * A utility class to get hold of different cache services in an easy and typesafe manner. For example, the following
@@ -36,6 +37,7 @@ import org.codehaus.cake.service.executor.ExecutorsService;
  */
 public class CacheServices<K, V> {
 
+    /** A singleton attribute map which forces loading. */
     private static final AttributeMap FORCE_LOAD = CacheLoadingService.IS_FORCED.singleton(true);
 
     /** The service manager to extract cache services from. */
@@ -52,20 +54,15 @@ public class CacheServices<K, V> {
     }
 
     /**
-     * Returns the worker service.
+     * Returns the default {@link ScheduledExecutorService}.
      * 
-     * @return the worker service for the cache
+     * @return the default scheduled executor service for the cache
      * @throws UnsupportedOperationException
-     *             if no worker service is available
+     *             if no scheduled executor service is available
      */
-    public ExecutorsService executors() {
-        return getService(ExecutorsService.class);
+    public ScheduledExecutorService scheduledExecutor() {
+        return getService(ScheduledExecutorService.class);
     }
-
-    //
-    // public ExecutorService executorService() {
-    // return executors().getExecutorService();
-    // }
 
     /**
      * This method can be called by subclasses to retrieve services from the cache that this object is wrapping.

@@ -21,13 +21,11 @@ import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 
 /**
- * The attributes ordered according to their
- * {@linkplain Comparable natural ordering}, or by a {@link Comparator}
- * provided at attribute construction time, depending on which constructor is
- * used.
+ * The attributes ordered according to their {@linkplain Comparable natural ordering}, or by a {@link Comparator}
+ * provided at attribute construction time, depending on which constructor is used.
  * 
- * An attribute relying on natural ordering does not permit comparison of
- * non-comparable objects (doing so may result in {@code ClassCastException}).
+ * An attribute relying on natural ordering does not permit comparison of non-comparable objects (doing so may result in
+ * {@code ClassCastException}).
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
@@ -35,8 +33,7 @@ import org.codehaus.cake.attribute.WithAttributes;
  * @param <T>
  *            the datatype of this attribute
  */
-public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements
-        Comparator<WithAttributes> {
+public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<WithAttributes> {
 
     /**
      * The comparator, or null if attribute uses elements' natural ordering.
@@ -44,34 +41,33 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements
     private final Comparator<? super T> comparator;
 
     /**
-     * Creates a new ComparableObjectAttribute with a default value of
-     * <code>null</code> and that uses the natural ordering when comparing
-     * individual values of this attribute.
+     * Creates a new ComparableObjectAttribute with a default value of <code>null</code> and that uses the natural
+     * ordering when comparing individual values of this attribute.
      * 
      * @param name
      *            the name of the attribute
      * @param clazz
      *            the type of the attribute
      */
-    public ComparableObjectAttribute(String name, Class<T> clazz) {
+    protected ComparableObjectAttribute(String name, Class<T> clazz) {
         super(name, clazz);
         comparator = null;
+        if (!Comparable.class.isAssignableFrom(clazz)) {
+            throw new IllegalArgumentException("only clazz types assignable from Comparable are allowed");
+        }
     }
 
     /**
-     * Creates a new ComparableObjectAttribute with a default value of
-     * <code>null</code>.
+     * Creates a new ComparableObjectAttribute with a default value of <code>null</code>.
      * 
      * @param name
      *            the name of the attribute
      * @param clazz
      *            the type of the attribute
      * @param comparator
-     *            the Comparator to use when comparing individual values of this
-     *            attribute
+     *            the Comparator to use when comparing individual values of this attribute
      */
-    public ComparableObjectAttribute(String name, Class<T> clazz,
-            Comparator<? super T> comparator) {
+    protected ComparableObjectAttribute(String name, Class<T> clazz, Comparator<? super T> comparator) {
         super(name, clazz);
         if (comparator == null) {
             throw new NullPointerException("comparator is null");
@@ -87,13 +83,11 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements
      * @param clazz
      *            the type of the attribute
      * @param comparator
-     *            the Comparator to use when comparing individual values of this
-     *            attribute
+     *            the Comparator to use when comparing individual values of this attribute
      * @param defaultValue
      *            the default value of the attribute
      */
-    public ComparableObjectAttribute(String name, Class<T> clazz,
-            Comparator<? super T> comparator, T defaultValue) {
+    protected ComparableObjectAttribute(String name, Class<T> clazz, Comparator<? super T> comparator, T defaultValue) {
         super(name, clazz, defaultValue);
         if (comparator == null) {
             throw new NullPointerException("comparator is null");
@@ -102,8 +96,8 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements
     }
 
     /**
-     * Creates a new ComparableObjectAttribute that uses the natural ordering
-     * when comparing individual values of this attribute.
+     * Creates a new ComparableObjectAttribute that uses the natural ordering when comparing individual values of this
+     * attribute.
      * 
      * @param name
      *            the name of the attribute
@@ -112,9 +106,12 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements
      * @param defaultValue
      *            the default value of the attribute
      */
-    public ComparableObjectAttribute(String name, Class<T> clazz, T defaultValue) {
+    protected ComparableObjectAttribute(String name, Class<T> clazz, T defaultValue) {
         super(name, clazz, defaultValue);
         comparator = null;
+        if (!Comparable.class.isAssignableFrom(clazz)) {
+            throw new IllegalArgumentException("only clazz types assignable from Comparable are allowed");
+        }
     }
 
     /** {@inheritDoc} */

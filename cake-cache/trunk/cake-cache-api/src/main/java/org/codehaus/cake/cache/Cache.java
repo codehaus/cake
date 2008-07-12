@@ -189,7 +189,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * @throws IllegalStateException
      *             if the cache has been shutdown
      */
-    Map<K, V> getAll(Collection<? extends K> keys);
+    Map<K, V> getAll(Iterable<? extends K> keys);
 
     /**
      * <p>

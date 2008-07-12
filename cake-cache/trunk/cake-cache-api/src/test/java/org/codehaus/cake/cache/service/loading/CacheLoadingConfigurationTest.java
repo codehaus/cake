@@ -65,15 +65,15 @@ public class CacheLoadingConfigurationTest {
     public void loaderSimple() {
         CacheLoadingConfiguration<Number, Number> c = new CacheLoadingConfiguration<Number, Number>();
         assertNull(c.getLoader());
-        SimpleCacheLoader<Number, Number> scl = dummy(SimpleCacheLoader.class);
+        BlockingCacheLoader<Number, Number> scl = dummy(BlockingCacheLoader.class);
 
         assertSame(c, c.setLoader(scl));
         assertSame(scl, c.getLoader());
 
-        SimpleCacheLoader<Number, Integer> SimpleCacheLoader1 = dummy(SimpleCacheLoader.class);
+        BlockingCacheLoader<Number, Integer> SimpleCacheLoader1 = dummy(BlockingCacheLoader.class);
         c.setLoader(SimpleCacheLoader1);
 
-        SimpleCacheLoader<Object, Number> SimpleCacheLoader2 = dummy(SimpleCacheLoader.class);
+        BlockingCacheLoader<Object, Number> SimpleCacheLoader2 = dummy(BlockingCacheLoader.class);
         c.setLoader(SimpleCacheLoader2);
     }
 }

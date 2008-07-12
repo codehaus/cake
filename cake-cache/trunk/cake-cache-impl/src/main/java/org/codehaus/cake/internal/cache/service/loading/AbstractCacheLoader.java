@@ -19,7 +19,7 @@ import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.ops.Ops.Op;
 
@@ -31,7 +31,7 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K
         this.exceptionHandler = exceptionHandler;
     }
 
-    public V doLoad(SimpleCacheLoader<K, V> loader, K key, AttributeMap attributes) {
+    public V doLoad(BlockingCacheLoader<K, V> loader, K key, AttributeMap attributes) {
         V v = null;
         try {
             v = loader.load(key, attributes);
@@ -41,18 +41,18 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K
         return v;
     }
 
-    static <K, V> SimpleCacheLoader<K, V> getSimpleLoader(CacheLoadingConfiguration<K, V> conf) {
+    static <K, V> BlockingCacheLoader<K, V> getSimpleLoader(CacheLoadingConfiguration<K, V> conf) {
         Object loader = conf.getLoader();
         if (loader instanceof Op) {
             return new OpToSimpleLoader((Op) loader);
-        } else if (loader instanceof SimpleCacheLoader) {
-            return (SimpleCacheLoader) loader;
+        } else if (loader instanceof BlockingCacheLoader) {
+            return (BlockingCacheLoader) loader;
         } else {
             throw new IllegalArgumentException("Unknown loader type [type =" + loader.getClass() + "]");
         }
     }
 
-    static class OpToSimpleLoader<K, V> implements SimpleCacheLoader<K, V> {
+    static class OpToSimpleLoader<K, V> implements BlockingCacheLoader<K, V> {
         private final Op<K, V> op;
 
         public OpToSimpleLoader(Op<K, V> op) {

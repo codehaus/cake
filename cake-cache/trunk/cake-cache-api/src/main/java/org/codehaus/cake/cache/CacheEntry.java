@@ -189,7 +189,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * <tr>
      * <td>Unit</td>
-     * <td>Number of Modfications</td>
+     * <td>Number of modifications</td>
      * </tr>
      * </table> </blockquote>
      */

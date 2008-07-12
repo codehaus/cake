@@ -89,7 +89,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  * @param <V>
  *            the type of values that are loaded
  */
-public interface SimpleCacheLoader<K, V> {
+public interface BlockingCacheLoader<K, V> {
 
     /**
      * Loads a single value.

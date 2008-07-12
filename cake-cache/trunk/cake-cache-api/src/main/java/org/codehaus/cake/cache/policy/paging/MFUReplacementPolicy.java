@@ -34,7 +34,7 @@ public class MFUReplacementPolicy<K, V> extends AbstractHeapReplacementPolicy<K,
 
     public MFUReplacementPolicy() {
         // This is used to make sure that the cache will lazy register the HITS attribute
-        // if the user has not already done so using CacheAttributeConfiguration#add(Attribute...)}
+        // if the user has not already done so by using CacheAttributeConfiguration#add(Attribute...)}
         dependSoft(HITS);
     }
 

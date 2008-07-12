@@ -19,6 +19,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.codehaus.cake.attribute.AtrStubs;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
@@ -65,6 +67,16 @@ public class ComparableObjectAttributeTest extends AtrStubs {
         new ComparableObjectAttribute("foo", Dummy.class, null);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void nameTypeComparator_IAE() {
+        new ComparableObjectAttribute("foo", Dummy.class);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nameTypeComparator_IAE2() {
+        new ComparableObjectAttribute("foo", Dummy.class, Dummy.D1);
+    }
+
     @Test
     public void nameTypeDefault() {
         ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, 55);
@@ -94,10 +106,10 @@ public class ComparableObjectAttributeTest extends AtrStubs {
         assertTrue(coa.compare(withAtr(am1), withAtr(Attributes.EMPTY_ATTRIBUTE_MAP)) < 0);
         assertTrue(coa.compare(withAtr(Attributes.EMPTY_ATTRIBUTE_MAP), withAtr(am1)) > 0);
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void nameTypeDefaultComparator_NPE() {
-        new ComparableObjectAttribute("foo", Dummy.class, null,Dummy.D4);
+        new ComparableObjectAttribute("foo", Dummy.class, null, Dummy.D4);
     }
 
 }

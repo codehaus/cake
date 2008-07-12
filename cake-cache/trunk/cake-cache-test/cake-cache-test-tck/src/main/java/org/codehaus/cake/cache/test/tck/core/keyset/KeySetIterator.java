@@ -69,7 +69,6 @@ public class KeySetIterator extends AbstractCacheTCKTest {
     }
 
     @Test
-    @SuppressWarnings("unused")
     public void iteratorRemove() {
         c = newCache(5);
         Iterator<Integer> iter = c.keySet().iterator();

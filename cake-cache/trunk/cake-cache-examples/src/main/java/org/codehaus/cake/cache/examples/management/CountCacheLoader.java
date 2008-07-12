@@ -10,12 +10,12 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 
-public class CountCacheLoader implements SimpleCacheLoader<String, String>, Manageable {
+public class CountCacheLoader implements BlockingCacheLoader<String, String>, Manageable {
     /** Keeping count of the number of loads. */
     private final AtomicLong numberOfLoads = new AtomicLong();
 

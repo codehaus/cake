@@ -17,15 +17,15 @@ package org.codehaus.cake.service.test.tck.service.executors;
 
 import java.security.Permission;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@RequireService( { ExecutorsService.class })
+@RequireService( { ExecutorService.class })
 public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
 
     @Ignore
@@ -35,7 +35,7 @@ public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
 
-        ScheduledExecutorService ses = withExecutors().getScheduledExecutorService("ignore");
+        ScheduledExecutorService ses = c.getService(ScheduledExecutorService.class);
         ses.execute(new Runnable() {
             public void run() {
                 for (;;) {
@@ -75,7 +75,7 @@ public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
             newContainer();
 
             // manager
-            withExecutors().getScheduledExecutorService("ignore").execute(new Runnable() {
+            c.getService(ScheduledExecutorService.class).execute(new Runnable() {
                 public void run() {
                     if (tg != Thread.currentThread().getThreadGroup()) {
                         doFail("wrong threadgroup");
@@ -102,7 +102,7 @@ public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
         // manager
         Thread t = new Thread(new Runnable() {
             public void run() {
-                withExecutors().getScheduledExecutorService("ignore").execute(new Runnable() {
+                c.getService(ScheduledExecutorService.class).execute(new Runnable() {
                     public void run() {
                         if (Thread.currentThread().isDaemon()) {
                             doFail("should not be deamon");

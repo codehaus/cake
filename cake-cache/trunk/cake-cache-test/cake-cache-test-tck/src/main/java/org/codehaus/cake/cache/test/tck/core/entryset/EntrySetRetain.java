@@ -41,7 +41,6 @@ public class EntrySetRetain extends AbstractCacheTCKTest {
         checkLazystart();
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void retainAll() {
         c = newCache(1);

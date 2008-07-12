@@ -24,14 +24,14 @@ import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.service.test.tck.UnsupportedServices;
 import org.junit.Test;
 
-@UnsupportedServices(value = { ExecutorsService.class })
+@UnsupportedServices(value = { ExecutorService.class })
 public class ExecutorsNoSupport extends AbstractTCKTest<Container, ContainerConfiguration> {
-    @Test(expected = IllegalArgumentException.class)
+    //@Test(expected = IllegalArgumentException.class)
+    @Test
     public void noExecutorsSupport() throws Throwable {
         withConf(ExecutorsConfiguration.class).setExecutorManager(new ExecutorsManager() {
             public ExecutorService getExecutorService(Object service, AttributeMap attributes) {

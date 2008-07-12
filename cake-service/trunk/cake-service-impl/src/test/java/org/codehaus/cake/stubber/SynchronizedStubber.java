@@ -16,17 +16,17 @@
 package org.codehaus.cake.stubber;
 
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.internal.stubber.SynchronizedInternalStubber;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.stubber.bubber.BubberService;
 import org.codehaus.cake.util.Logger;
 
-@Container.SupportedServices( { ExecutorsService.class, BubberService.class, Manageable.class })
+@Container.SupportedServices( { ExecutorService.class, BubberService.class, Manageable.class })
 public class SynchronizedStubber<T> implements Stubber<T> {
 
     Stubber<T> container;

@@ -26,36 +26,32 @@ package org.codehaus.cake.attribute;
 public abstract class ObjectAttribute<T> extends Attribute<T> {
 
     /**
-     * Creates a new ObjectAttribute with the specified datatype, a generated
-     * name and a default value of <tt>null</tt>.
+     * Creates a new ObjectAttribute with the specified datatype, a generated name and a default value of <tt>null</tt>.
      * 
      * @param clazz
      *            the type of the values
      * @throws IllegalArgumentException
-     *             if null is not a valid value according to
-     *             {@link #checkValid(Object)}
+     *             if null is not a valid value according to {@link #checkValid(Object)}
      * @throws NullPointerException
      *             if the specified class is null
      */
-    public ObjectAttribute(Class<T> clazz) {
+    protected ObjectAttribute(Class<T> clazz) {
         this(clazz, null);
     }
 
     /**
-     * Creates a new ObjectAttribute with the specified datatype and default
-     * value, and a generated name.
+     * Creates a new ObjectAttribute with the specified datatype and default value, and a generated name.
      * 
      * @param clazz
      *            the type of the values
      * @param defaultValue
      *            default value of this attribute
      * @throws IllegalArgumentException
-     *             if the specified default value is not a valid value according
-     *             to {@link #checkValid(Object)}
+     *             if the specified default value is not a valid value according to {@link #checkValid(Object)}
      * @throws NullPointerException
      *             if the specified class is null
      */
-    public ObjectAttribute(Class<T> clazz, T defaultValue) {
+    protected ObjectAttribute(Class<T> clazz, T defaultValue) {
         super(clazz, defaultValue);
     }
 
@@ -67,7 +63,7 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      * @param clazz
      *            the type of this attribute
      */
-    public ObjectAttribute(String name, Class<T> clazz) {
+    protected ObjectAttribute(String name, Class<T> clazz) {
         this(name, clazz, null);
     }
 
@@ -81,14 +77,13 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      * @param defaultValue
      *            the default value of this attribute
      */
-    public ObjectAttribute(String name, Class<T> clazz, T defaultValue) {
+    protected ObjectAttribute(String name, Class<T> clazz, T defaultValue) {
         super(name, clazz, defaultValue);
     }
 
     /**
-     * Checks if the specified value is valid for this attribute. If the
-     * specified value is not valid this method will throw an
-     * {@link IllegalArgumentException}.
+     * Checks if the specified value is valid for this attribute. If the specified value is not valid this method will
+     * throw an {@link IllegalArgumentException}.
      * 
      * @param value
      *            the value to check
@@ -97,8 +92,7 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      */
     public void checkValid(T value) {
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute "
-                    + getName() + ", value = " + value);
+            throw new IllegalArgumentException("Illegal value for attribute " + getName() + ", value = " + value);
         }
     }
 
@@ -111,22 +105,19 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      * @throws UnsupportedOperationException
      *             if this operation is not supported by this attribute
      * @throws IllegalArgumentException
-     *             if a valid attribute value could not be created from the
-     *             string.
+     *             if a valid attribute value could not be created from the string.
      */
     public T fromString(String str) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and
-     * returns the value of this attribute from the map. If this attribute is
-     * not set in the map, the value of {@link Attribute#getDefault()} will be
-     * returned instead.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of this attribute from
+     * the map. If this attribute is not set in the map, the value of {@link Attribute#getDefault()} will be returned
+     * instead.
      * 
      * @param withAttributes
-     *            the object containing an attribute map for which to retrieve
-     *            the value of this attribute
+     *            the object containing an attribute map for which to retrieve the value of this attribute
      * @return the value of this attribute
      */
     public final T get(WithAttributes withAttributes) {
@@ -134,16 +125,13 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and
-     * returns the value of this attribute from the map. If this attribute is
-     * not set in the map, the specified default value will be returned.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of this attribute from
+     * the map. If this attribute is not set in the map, the specified default value will be returned.
      * 
      * @param withAttributes
-     *            the object containing an attribute map for which to retrieve
-     *            the value of this attribute
+     *            the object containing an attribute map for which to retrieve the value of this attribute
      * @param defaultValue
-     *            the default value to return if this attribute is not present
-     *            in the map
+     *            the default value to return if this attribute is not present in the map
      * @return the value of this attribute
      */
 
@@ -152,13 +140,12 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Returns whether or not the specified value is valid for this attribute.
-     * This method can be overriden to only accept certain values.
+     * Returns whether or not the specified value is valid for this attribute. This method can be overriden to only
+     * accept certain values.
      * 
      * @param value
      *            the specified value to check
-     * @return <code>true</code> if the specified value is valid for this
-     *         attribute, otherwise <code>false</code>
+     * @return <code>true</code> if the specified value is valid for this attribute, otherwise <code>false</code>
      */
     public boolean isValid(T value) {
         return true; // all values are accepted by default.
@@ -172,8 +159,7 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
      * @param value
      *            the value that should be set
      * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to
-     *             {@link #checkValid(Object)}
+     *             if the specified value is not valid accordingly to {@link #checkValid(Object)}
      */
     public void set(AttributeMap attributes, T value) {
         if (attributes == null) {
@@ -199,13 +185,12 @@ public abstract class ObjectAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Returns an AttributeMap containing only this attribute mapping to the
-     * specified value. The returned map is immutable.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is
+     * immutable.
      * 
      * @param value
      *            the value to create the singleton from
-     * @return an AttributeMap containing only this attribute mapping to the
-     *         specified value
+     * @return an AttributeMap containing only this attribute mapping to the specified value
      */
     public AttributeMap singleton(T value) {
         checkValid(value);

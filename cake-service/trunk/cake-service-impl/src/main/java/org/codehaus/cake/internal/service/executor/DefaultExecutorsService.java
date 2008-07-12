@@ -25,13 +25,13 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
-public class DefaultExecutorsService implements ExecutorsService, CompositeService {
+public class DefaultExecutorsService implements CompositeService {
     private final ExecutorsManager manager;
 
     // cache loader executor
@@ -73,10 +73,6 @@ public class DefaultExecutorsService implements ExecutorsService, CompositeServi
 
     }
 
-    public ScheduledExecutorService getScheduledExecutorService() {
-        return getScheduledExecutorService(null);
-    }
-
     public ScheduledExecutorService getScheduledExecutorService(Object service) {
         return getScheduledExecutorService(service, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
@@ -87,7 +83,24 @@ public class DefaultExecutorsService implements ExecutorsService, CompositeServi
 
     @Startable
     public void register(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
-        serviceRegistrant.registerService(ExecutorsService.class, this);
+        serviceRegistrant.registerFactory(ScheduledExecutorService.class,
+                new ServiceFactory<ScheduledExecutorService>() {
+                    public ScheduledExecutorService lookup(AttributeMap attributes) {
+                        return getScheduledExecutorService(null, attributes);
+                    }
+                });
+        serviceRegistrant.registerFactory(ExecutorService.class,
+                new ServiceFactory<ExecutorService>() {
+                    public ExecutorService lookup(AttributeMap attributes) {
+                        return getExecutorService(null, attributes);
+                    }
+                });
+        serviceRegistrant.registerFactory(ForkJoinExecutor.class,
+                new ServiceFactory<ForkJoinExecutor>() {
+                    public ForkJoinExecutor lookup(AttributeMap attributes) {
+                        return getForkJoinExecutor(null, attributes);
+                    }
+                });
     }
 
     public Collection<?> getChildServices() {

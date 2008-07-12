@@ -13,7 +13,6 @@ import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.service.AfterStart;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
 public class ScheduledClearManagement implements Manageable {
     private long scheduleMs;
@@ -42,8 +41,8 @@ public class ScheduledClearManagement implements Manageable {
     }
 
     @AfterStart
-    public synchronized void started(final Cache<?, ?> cache, ExecutorsService executors) {
-        ses = executors.getScheduledExecutorService(this);
+    public synchronized void started(final Cache<?, ?> cache) {
+        ses = cache.with().scheduledExecutor();
         runnable = new Runnable() {
             public void run() {
                 cache.clear();

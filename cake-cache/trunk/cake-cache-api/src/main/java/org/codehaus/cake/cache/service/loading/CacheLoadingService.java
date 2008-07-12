@@ -57,7 +57,7 @@ public interface CacheLoadingService<K, V> {
 
     /**
      * This method works analogous to the {@link #load(Object)} method. Except that all the attributes in the the
-     * specified attribute map will be parsed along to the {@link SimpleCacheLoader#load(Object, AttributeMap)} method
+     * specified attribute map will be parsed along to the {@link BlockingCacheLoader#load(Object, AttributeMap)} method
      * of the configured cache loader.
      * <p>
      * If this cache has been shutdown calls to this method is ignored.
@@ -66,7 +66,7 @@ public interface CacheLoadingService<K, V> {
      *            whose associated value is to be loaded.
      * @param attributes
      *            a map of attributes that will be available in the attribute map parsed to the
-     *            {@link SimpleCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
+     *            {@link BlockingCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional).
      * @throws NullPointerException
@@ -86,7 +86,7 @@ public interface CacheLoadingService<K, V> {
      * 
      * @param attributes
      *            a map of attributes that will be available in the attribute map parsed to
-     *            {@link SimpleCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
+     *            {@link BlockingCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
      * @throws NullPointerException
      *             if the specified attribute map is <tt>null</tt>
      */

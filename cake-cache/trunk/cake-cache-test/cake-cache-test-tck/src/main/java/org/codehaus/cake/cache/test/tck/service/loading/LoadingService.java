@@ -19,7 +19,7 @@ package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.test.util.TestUtil;
@@ -79,7 +79,7 @@ public class LoadingService extends AbstractCacheTCKTest {
      */
     @Test
     public void loadingServiceAvailableSimpleCacheLoader() {
-        conf.withLoading().setLoader(TestUtil.dummy(SimpleCacheLoader.class));
+        conf.withLoading().setLoader(TestUtil.dummy(BlockingCacheLoader.class));
         init();
         assertTrue(c.hasService(CacheLoadingService.class));
         // check that it doesn't fail with a classcast exception

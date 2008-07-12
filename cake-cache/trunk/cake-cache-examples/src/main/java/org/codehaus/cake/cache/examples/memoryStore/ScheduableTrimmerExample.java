@@ -47,8 +47,7 @@ public class ScheduableTrimmerExample {
 
     public static void main(String[] args) {
         SynchronizedCache<String, String> c = new SynchronizedCache<String, String>();
-        c.with().executors().getScheduledExecutorService(null).scheduleAtFixedRate(new TrimToSize(c, 1100, 1000), 0, 1,
-                TimeUnit.SECONDS);
+        c.with().scheduledExecutor().scheduleAtFixedRate(new TrimToSize(c, 1100, 1000), 0, 1, TimeUnit.SECONDS);
 
         // other code
         c.shutdown();

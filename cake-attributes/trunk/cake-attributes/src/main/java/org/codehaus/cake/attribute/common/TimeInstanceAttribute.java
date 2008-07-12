@@ -18,13 +18,13 @@ package org.codehaus.cake.attribute.common;
 import org.codehaus.cake.attribute.LongAttribute;
 
 /**
- *
+ * An attribute mapping to an instance in time relative to the standard base time known as "the epoch", namely January
+ * 1, 1970, 00:00:00 GMT. The unit of this attribute is milliseconds
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public abstract class TimeInstanceAttribute extends LongAttribute {
-
     /** serialVersionUID. */
     private static final long serialVersionUID = -2353351535602223603L;
 
@@ -34,7 +34,7 @@ public abstract class TimeInstanceAttribute extends LongAttribute {
      * @param name
      *            the name of the attribute
      */
-    public TimeInstanceAttribute(String name) {
+    protected TimeInstanceAttribute(String name) {
         super(name, 0);
     }
 
@@ -42,8 +42,7 @@ public abstract class TimeInstanceAttribute extends LongAttribute {
     @Override
     public void checkValid(long time) {
         if (time < 0) {
-            throw new IllegalArgumentException(getName() + " was negative ("
-                    + getName() + " = " + time + ")");
+            throw new IllegalArgumentException(getName() + " was negative (" + getName() + " = " + time + ")");
         }
     }
 

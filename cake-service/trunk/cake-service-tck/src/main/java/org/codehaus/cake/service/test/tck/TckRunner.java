@@ -19,10 +19,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Container.SupportedServices;
-import org.codehaus.cake.service.executor.ExecutorsService;
 import org.codehaus.cake.service.test.tck.core.CoreSuite;
 import org.codehaus.cake.service.test.tck.lifecycle.LifecycleSuite;
 import org.codehaus.cake.service.test.tck.service.executors.ExecutorsSuite;
@@ -125,7 +125,7 @@ public abstract class TckRunner extends CompositeRunner {
     }
 
     protected boolean isThreadSafe() {
-        return supportedServices.contains(ExecutorsService.class);
+        return supportedServices.contains(ExecutorService.class);
     }
 
     protected void initialize() throws Exception {

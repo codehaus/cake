@@ -158,9 +158,9 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public Map<K, V> getAll(Collection<? extends K> keys) {
+        public Map<K, V> getAll(Iterable<? extends K> keys) {
             CollectionUtils.checkCollectionForNulls(keys);
-            Map<K, V> result = new HashMap<K, V>(keys.size());
+            Map<K, V> result = new HashMap<K, V>();
             for (K key : keys) {
                 result.put(key, null);
             }
@@ -200,7 +200,7 @@ public final class Caches {
         /** {@inheritDoc} */
         public boolean hasService(Class<?> serviceType) {
             return false;
-        }
+        }   
 
         /** {@inheritDoc} */
         public boolean isShutdown() {

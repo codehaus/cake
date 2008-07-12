@@ -21,11 +21,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Container.SupportedServices;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
 class TckUtil {
 
@@ -51,7 +51,7 @@ class TckUtil {
     static boolean isThreadSafe() {
         Set<Class> supportedServices = new HashSet(Arrays.asList(containerImplementation.getAnnotation(
                 SupportedServices.class).value()));
-        return supportedServices.contains(ExecutorsService.class);
+        return supportedServices.contains(ExecutorService.class);
     }
 
     public static Container newContainer(ContainerConfiguration configuration) {

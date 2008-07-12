@@ -18,6 +18,7 @@ package org.codehaus.cake.cache;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
@@ -27,7 +28,6 @@ import org.codehaus.cake.internal.cache.SynchronizedInternalCache;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.executor.ExecutorsService;
 
 /**
  * A <tt>synchronized</tt> {@link Cache} implementation.
@@ -55,8 +55,8 @@ import org.codehaus.cake.service.executor.ExecutorsService;
  * @param <V>
  *            the type of mapped values
  */
-@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class,
-        ExecutorsService.class, Manageable.class })
+@Container.SupportedServices( { ExecutorService.class, MemoryStoreService.class, CacheLoadingService.class,
+        ServiceManager.class, Manageable.class })
 public class SynchronizedCache<K, V> implements Cache<K, V> {
     private final SynchronizedInternalCache<K, V> cache;
 
@@ -115,7 +115,7 @@ public class SynchronizedCache<K, V> implements Cache<K, V> {
     }
 
     /** {@inheritDoc} */
-    public Map<K, V> getAll(Collection<? extends K> keys) {
+    public Map<K, V> getAll(Iterable<? extends K> keys) {
         return cache.getAll(keys);
     }
 

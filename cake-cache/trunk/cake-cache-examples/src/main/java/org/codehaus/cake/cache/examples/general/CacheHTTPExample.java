@@ -11,7 +11,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
@@ -34,7 +34,7 @@ public class CacheHTTPExample {
                 + " ms");
     }
 
-    public static class UrlLoader implements SimpleCacheLoader<String, String> {
+    public static class UrlLoader implements BlockingCacheLoader<String, String> {
         public String load(String key, AttributeMap ignore) throws Exception {
             URL url = new URL(key);
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));

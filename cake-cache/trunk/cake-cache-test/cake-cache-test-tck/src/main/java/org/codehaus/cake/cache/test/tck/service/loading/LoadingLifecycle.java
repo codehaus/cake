@@ -17,7 +17,7 @@ package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.AfterStart;
@@ -41,7 +41,7 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
         assertEquals(1, loader.count);
     }
 
-    public static class TestLoader implements SimpleCacheLoader {
+    public static class TestLoader implements BlockingCacheLoader {
 
         volatile int count;
 

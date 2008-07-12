@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
-public class SimpleUrlLoader implements SimpleCacheLoader<String, String> {
+public class SimpleUrlLoader implements BlockingCacheLoader<String, String> {
     public String load(String key, AttributeMap ignore) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(new URL(key).openStream()));
         StringBuilder sb = new StringBuilder();

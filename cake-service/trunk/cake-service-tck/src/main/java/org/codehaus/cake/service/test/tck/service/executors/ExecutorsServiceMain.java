@@ -15,19 +15,20 @@
  */
 package org.codehaus.cake.service.test.tck.service.executors;
 
-import org.codehaus.cake.service.executor.ExecutorsService;
+import java.util.concurrent.ExecutorService;
+
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;
 
-@RequireService( { ExecutorsService.class })
+@RequireService( { ExecutorService.class })
 public class ExecutorsServiceMain extends AbstractExecutorsTckTest {
 
     @Test
     public void testServiceAvailable() {
         newConfigurationClean();
         newContainer();
-        assertTrue(c.hasService(ExecutorsService.class));
-        assertNotNull(c.getService(ExecutorsService.class));
-        assertTrue(c.serviceKeySet().contains(ExecutorsService.class));
+        assertTrue(c.hasService(ExecutorService.class));
+        assertNotNull(c.getService(ExecutorService.class));
+        assertTrue(c.serviceKeySet().contains(ExecutorService.class));
     }
 }

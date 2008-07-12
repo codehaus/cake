@@ -5,12 +5,12 @@ package org.codehaus.cake.cache.examples.attributes;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
-public class CostDecoratedLoader<K, V> implements SimpleCacheLoader<K, V> {
-    private final SimpleCacheLoader<K, V> realLoader;
+public class CostDecoratedLoader<K, V> implements BlockingCacheLoader<K, V> {
+    private final BlockingCacheLoader<K, V> realLoader;
 
-    public CostDecoratedLoader(SimpleCacheLoader<K, V> delegator) {
+    public CostDecoratedLoader(BlockingCacheLoader<K, V> delegator) {
         if (delegator == null) {
             throw new NullPointerException("delegator is null");
         }

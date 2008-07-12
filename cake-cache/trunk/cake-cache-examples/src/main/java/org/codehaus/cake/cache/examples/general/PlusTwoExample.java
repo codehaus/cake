@@ -7,10 +7,10 @@ package org.codehaus.cake.cache.examples.general;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 public class PlusTwoExample {
-    static class Plus2Loader implements SimpleCacheLoader<Integer, Integer> {
+    static class Plus2Loader implements BlockingCacheLoader<Integer, Integer> {
         public Integer load(Integer key, AttributeMap ignore) throws Exception {
             return key + 2;
         }

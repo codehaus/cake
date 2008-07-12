@@ -22,9 +22,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
-public class TestCacheLoader implements SimpleCacheLoader<Integer, String> {
+public class TestCacheLoader implements BlockingCacheLoader<Integer, String> {
 
     List<RequestInfo> list = new CopyOnWriteArrayList<RequestInfo>();
 

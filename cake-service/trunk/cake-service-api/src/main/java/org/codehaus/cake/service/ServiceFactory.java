@@ -17,6 +17,11 @@ package org.codehaus.cake.service;
 
 import org.codehaus.cake.attribute.AttributeMap;
 
+/**
+ * @author kasper
+ *
+ * @param <T>
+ */
 public interface ServiceFactory<T> {
 
     T lookup(AttributeMap attributes);

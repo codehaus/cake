@@ -19,9 +19,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
-public class CountdownLatchLoader implements SimpleCacheLoader<Integer, String> {
+public class CountdownLatchLoader implements BlockingCacheLoader<Integer, String> {
 
     private final AtomicLong loads = new AtomicLong();
 
@@ -31,13 +31,13 @@ public class CountdownLatchLoader implements SimpleCacheLoader<Integer, String> 
 
     private final CountDownLatch beforeLoad;
 
-    private final SimpleCacheLoader<Integer, String> loader;
+    private final BlockingCacheLoader<Integer, String> loader;
 
-    public CountdownLatchLoader(SimpleCacheLoader<Integer, String> loader, int counts) {
+    public CountdownLatchLoader(BlockingCacheLoader<Integer, String> loader, int counts) {
         this(loader, counts, 0);
     }
 
-    public CountdownLatchLoader(SimpleCacheLoader<Integer, String> loader, int counts, int beforeLoads) {
+    public CountdownLatchLoader(BlockingCacheLoader<Integer, String> loader, int counts, int beforeLoads) {
         this.latch = new CountDownLatch(counts);
         this.loader = loader;
         this.beforeLoad = new CountDownLatch(beforeLoads);

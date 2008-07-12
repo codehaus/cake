@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.util;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 /**
  * A simple cache loader used for testing. Will return 1->A, 2->B, 3->C, 4->D, 5->E and <code>null</code> for any
@@ -27,7 +27,7 @@ import org.codehaus.cake.cache.service.loading.SimpleCacheLoader;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: MutableLoader.java 544 2008-01-05 01:19:03Z kasper $
  */
-public class MutableLoader implements SimpleCacheLoader<Integer, String> {
+public class MutableLoader implements BlockingCacheLoader<Integer, String> {
 
     private final AtomicReference<String> ref = new AtomicReference<String>();
 

@@ -47,11 +47,11 @@ public class CacheLoadingConfiguration<K, V> {
 
     /**
      * Returns the cache loader that has been set using either {@link #setLoader(Op)} or
-     * {@link #setLoader(SimpleCacheLoader)}.
+     * {@link #setLoader(BlockingCacheLoader)}.
      * 
      * @return the loader that the cache should use for loading elements.
      * @see #setLoader(Op)
-     * @see #setLoader(SimpleCacheLoader)
+     * @see #setLoader(BlockingCacheLoader)
      */
     public Object getLoader() {
         return loader;
@@ -70,13 +70,13 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Sets a loader that should be used for loading new elements into the cache.
+     * Sets a blocking cache loader that should be used for loading new elements into the cache.
      * 
      * @param loader
      *            the cache loader to set
      * @return this configuration
      */
-    public CacheLoadingConfiguration<K, V> setLoader(SimpleCacheLoader<? super K, ? extends V> loader) {
+    public CacheLoadingConfiguration<K, V> setLoader(BlockingCacheLoader<? super K, ? extends V> loader) {
         this.loader = loader;
         return this;
     }
@@ -92,8 +92,8 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Sets a filter ({@link Predicate}) that is used for determining if an element needs to be reloaded. The
-     * predicate is checked when various load methods in {@link CacheLoadingService} are called.
+     * Sets a filter ({@link Predicate}) that is used for determining if an element needs to be reloaded. The predicate
+     * is checked when various load methods in {@link CacheLoadingService} are called.
      * <p>
      * Some implementations might also check the predicate on calls to
      * {@link org.codehaus.cake.cache.Cache#getAll(Collection)}, {@link org.codehaus.cake.cache.Cache#getEntry(Object)},
@@ -110,8 +110,7 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped value must be of a
-     * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
+     * An Attribute indicating whether or not a loading should be forced.
      */
     static final class IsLoadingForcedAttribute extends BooleanAttribute {
 

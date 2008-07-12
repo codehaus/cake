@@ -25,7 +25,7 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 
 /**
  * Factory methods for different {@link ReplacementPolicy} implementations. This class provides shortcuts for the
- * specific implementations of policies defined in <tt>org.codehaus.cake.cache.policy</tt>.
+ * specific implementations of policies defined in <tt>org.codehaus.cake.cache.policy</tt> and sub packages.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Policies.java 491 2007-11-30 22:05:50Z kasper $

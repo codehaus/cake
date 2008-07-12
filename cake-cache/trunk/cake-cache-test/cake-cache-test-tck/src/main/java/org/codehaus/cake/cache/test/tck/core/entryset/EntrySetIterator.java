@@ -68,7 +68,6 @@ public class EntrySetIterator extends AbstractCacheTCKTest {
     }
 
     @Test
-    @SuppressWarnings("unused")
     public void iteratorRemove() {
         c = newCache(5);
         Iterator<Map.Entry<Integer, String>> iter = c.entrySet().iterator();

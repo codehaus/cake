@@ -22,17 +22,24 @@ import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 /**
- * in addition providing .
- * lifecycle, register service, 
+ * A Container is the in addition providing .
+ * 
+ * Retrieving services that have been registered using {@link ContainerConfiguration#addService(Object)}, or registered
+ * dynamically through a {@link ServiceRegistrant}.
+ * 
+ * <p>
+ * Usually this interface is extended by a concrete container type, for example, a {@link org.codehaus.cake.cache.Cache}.
+ * 
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
  */
 public interface Container extends ServiceManager {
 
     /**
-     * Returns the name of this container. If no name has been specified while configuring the
-     * container. The implementation must choose a valid name. A valid name contains no other
-     * characters then alphanumeric characters and '_' or '-'.
+     * Returns the name of this container. If no name has been specified while configuring the container. The
+     * implementation must choose a valid name. A valid name contains no other characters then alphanumeric characters
+     * and '_' or '-'.
      * 
      * @return the name of the container
      * @see ContainerConfiguration#setName(String)
@@ -40,16 +47,14 @@ public interface Container extends ServiceManager {
     String getName();
 
     /**
-     * Blocks until all tasks within this container have completed execution after a shutdown
-     * request, or the timeout occurs, or the current thread is interrupted, whichever happens
-     * first.
+     * Blocks until all tasks within this container have completed execution after a shutdown request, or the timeout
+     * occurs, or the current thread is interrupted, whichever happens first.
      * 
      * @param timeout
      *            the maximum time to wait
      * @param unit
      *            the time unit of the timeout argument
-     * @return <tt>true</tt> if this container terminated and <tt>false</tt> if the timeout
-     *         elapsed before termination
+     * @return <tt>true</tt> if this container terminated and <tt>false</tt> if the timeout elapsed before termination
      * @throws InterruptedException
      *             if interrupted while waiting
      */
@@ -70,41 +75,36 @@ public interface Container extends ServiceManager {
     boolean isStarted();
 
     /**
-     * Returns <tt>true</tt> if all service tasks have completed following shut down. Note that
-     * <tt>isTerminated</tt> is never <tt>true</tt> unless either <tt>shutdown</tt> or
-     * <tt>shutdownNow</tt> was called first.
+     * Returns <tt>true</tt> if all service tasks have completed following shut down. Note that <tt>isTerminated</tt> is
+     * never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
      * 
      * @return <tt>true</tt> if all tasks have completed following shut down
      */
     boolean isTerminated();
 
     /**
-     * Initiates an orderly shutdown of the container. In which currently running tasks will be
-     * executed, but no new tasks will be started. Invocation has no additional effect if already
-     * shut down.
+     * Initiates an orderly shutdown of the container. In which currently running tasks will be executed, but no new
+     * tasks will be started. Invocation has no additional effect if already shut down.
      * 
      * @throws SecurityException
-     *             if a security manager exists and shutting down this container may manipulate
-     *             threads that the caller is not permitted to modify because it does not hold
-     *             {@link java.lang.RuntimePermission}<tt>("modifyThread")</tt>, or the security
-     *             manager's <tt>checkAccess</tt> method denies access.
+     *             if a security manager exists and shutting down this container may manipulate threads that the caller
+     *             is not permitted to modify because it does not hold {@link java.lang.RuntimePermission}
+     *             <tt>("modifyThread")</tt>, or the security manager's <tt>checkAccess</tt> method denies access.
      */
     void shutdown();
 
     /**
-     * Attempts to stop all actively executing tasks within the container and halts the processing
-     * of waiting tasks. Invocation has no additional effect if already shut down.
+     * Attempts to stop all actively executing tasks within the container and halts the processing of waiting tasks.
+     * Invocation has no additional effect if already shut down.
      * <p>
-     * There are no guarantees beyond best-effort attempts to stop processing actively executing
-     * tasks in the container. For example, typical implementations will cancel via
-     * {@link Thread#interrupt}, so any task that fails to respond to interrupts may never
-     * terminate.
+     * There are no guarantees beyond best-effort attempts to stop processing actively executing tasks in the container.
+     * For example, typical implementations will cancel via {@link Thread#interrupt}, so any task that fails to respond
+     * to interrupts may never terminate.
      * 
      * @throws SecurityException
-     *             if a security manager exists and shutting down this container may manipulate
-     *             threads that the caller is not permitted to modify because it does not hold
-     *             {@link java.lang.RuntimePermission}<tt>("modifyThread")</tt>, or the security
-     *             manager's <tt>checkAccess</tt> method denies access.
+     *             if a security manager exists and shutting down this container may manipulate threads that the caller
+     *             is not permitted to modify because it does not hold {@link java.lang.RuntimePermission}
+     *             <tt>("modifyThread")</tt>, or the security manager's <tt>checkAccess</tt> method denies access.
      */
     void shutdownNow();
 

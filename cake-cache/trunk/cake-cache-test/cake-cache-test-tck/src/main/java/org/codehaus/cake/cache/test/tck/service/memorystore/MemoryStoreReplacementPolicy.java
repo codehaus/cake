@@ -225,7 +225,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         c.put(M3.getKey(), M3.getValue());
     }
 
-    @SuppressWarnings( { "unchecked", "serial" })
+    @SuppressWarnings( { "serial" })
     static class RejectEntriesPolicy<K, V> extends LRUReplacementPolicy<K, V> {
         @Override
         public boolean add(CacheEntry<K, V> entry) {
