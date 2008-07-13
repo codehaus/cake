@@ -16,6 +16,7 @@
 package org.codehaus.cake.internal.service;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
@@ -23,9 +24,11 @@ import org.codehaus.cake.service.Startable;
 public class DefaultServiceRegistrant implements ServiceRegistrant {
     private final Object lock = new Object();
     private DefaultServiceManager manager;
+    private final InternalExceptionService logger;
 
-    public DefaultServiceRegistrant(DefaultServiceManager manager) {
+    public DefaultServiceRegistrant(DefaultServiceManager manager, InternalExceptionService logger) {
         this.manager = manager;
+        this.logger = logger;
     }
 
     void finished() {
@@ -49,6 +52,9 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
                 throw new IllegalArgumentException(
                         "A service with the specified key has already been registered [key= " + key + "]");
             }
+            if (logger.isDebugEnabled()) {
+                logger.debug("  A ServiceFactory was registered [key=" + key + ", factory=" + serviceFactory + "]");
+            }
             manager.services.put(key, serviceFactory);
         }
         return this;
@@ -68,6 +74,9 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
             if (manager.services.containsKey(key)) {
                 throw new IllegalArgumentException(
                         "A service with the specified key has already been registered [key= " + key + "]");
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
             }
             manager.services.put(key, new SingleServiceFactory(key, service));
         }

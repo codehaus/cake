@@ -22,6 +22,8 @@ import java.util.HashSet;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.util.Loggers;
+import org.codehaus.cake.util.Logger.Level;
 import org.junit.Test;
 
 /**
@@ -93,6 +95,7 @@ public class ValuesToArray extends AbstractCacheTCKTest {
     @Test
     public void toArrayShutdown1() {
         c = newCache(5);
+        
         assertTrue(c.isStarted());
         c.shutdown();
 

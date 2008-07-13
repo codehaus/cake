@@ -21,7 +21,7 @@ import org.codehaus.cake.service.management.ManagementConfiguration;
  * The management interface for the loading service.
  * <p>
  * This managed bean is only available at runtime if a cache loader has been set using
- * {@link CacheLoadingConfiguration#setLoader(SimpleCacheLoader)} or
+ * {@link CacheLoadingConfiguration#setLoader(BlockingCacheLoader)} or
  * {@link CacheLoadingConfiguration#setLoader(org.codehaus.cake.ops.Ops.Op)} and
  * {@link ManagementConfiguration#setEnabled(boolean)} has been set to <code>true</code>.
  * 

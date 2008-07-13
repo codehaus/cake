@@ -19,30 +19,49 @@ import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.cache.CacheServices;
+import org.codehaus.cake.service.Container;
 
+/**
+ * The CacheLoadingService can be used for prefetching entries into the cache. When an entry is actually needed, the
+ * instruction can be accessed much more quickly from the cache than if it had to make a request from some kind of
+ * external storage.
+ * 
+ * 
+ * <p>
+ * This method does not guarantee that the specified value is ever loaded into the cache. Implementations are free to
+ * ignore the hint, however, most implementations won't.
+ * 
+ * <p>
+ * Unless otherwise specified all methods are methods in this class are asynchronously. Any cache implementation that is
+ * not thread-safe (ie supposed to be accessed by a single thread only) will need to load the value before returning
+ * from this method. Because it cannot allow a background thread to add the value to cache once loaded.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: MemoryStoreService.java 563 2008-01-10 15:20:33Z kasper $
+ * @param <K>
+ *            the type of keys maintained by the cache
+ * @param <V>
+ *            the type of mapped values
+ */
 public interface CacheLoadingService<K, V> {
 
     /**
-     * A quick way to get a Forced instance is: Cache<?,?> someCache; someCache.with().withLoadingForced().load(5);
+     * An attribute that can be used with {@link Container#getService(Class, AttributeMap)} to acquire an instance of
+     * {@link CacheLoadingService} that will force loading of entries even if they are still valid.
+     * <p>
+     * A quick way to get a Forced instance of CacheLoadingService is calling {@link CacheServices#loadingForced()}.
      */
     BooleanAttribute IS_FORCED = new CacheLoadingConfiguration.IsLoadingForcedAttribute();
 
-    // Additional attributes
-    // Priority?? ->should probably be implemented at the cache loader level
-    // Logger
-    // Await load done, come up with use cases
-    // Runnable callback? come up with use cases
-
     /**
-     * If a mapping for the specified key is not already in the cache. This method will attempt to load the value for
-     * the specified key from the configured cache loader.
+     * If no mapping for the specified key exists in the cache. This method will attempt to load the value for the
+     * specified key from any configured cache loader. If a mapping already exists and a needs reload filter has been
+     * set using {@link CacheLoadingConfiguration#setNeedsReloadFilter(Predicate))}. The cache will use this filter to
+     * check if the entry needs to be reloaded.
      * <p>
-     * This method does not guarantee that the specified value is ever loaded into the cache. Implementations are free
-     * to ignore the hint, however, most implementations won't.
-     * <p>
-     * Unless otherwise specified the loading is done asynchronously. Any cache implementation that is not thread-safe
-     * (ie supposed to be accessed by a single thread only) will need to load the value before returning from this
-     * method. Because it cannot allow a background thread to add the value to cache once loaded.
+     * If this service is working in forced mode, calling this method will <tt>always</tt> force the cache to load a
+     * value for the specified key.
      * <p>
      * If this cache has been shutdown calls to this method is ignored.
      * 
@@ -56,17 +75,17 @@ public interface CacheLoadingService<K, V> {
     void load(K key);
 
     /**
-     * This method works analogous to the {@link #load(Object)} method. Except that all the attributes in the the
-     * specified attribute map will be parsed along to the {@link BlockingCacheLoader#load(Object, AttributeMap)} method
-     * of the configured cache loader.
+     * This method works analogous to the {@link #load(Object)} method. Except that all the attributes in the specified
+     * attribute map will be parsed along to the cache loader.
      * <p>
-     * If this cache has been shutdown calls to this method is ignored.
+     * The attribute map parsed along to the cache loader is not required to be the same as the specified attribute map.
+     * However, it will contain the same attribute->value pairs.
      * 
      * @param key
      *            whose associated value is to be loaded.
      * @param attributes
-     *            a map of attributes that will be available in the attribute map parsed to the
-     *            {@link BlockingCacheLoader#load(Object, AttributeMap)} method of the configured cache loader
+     *            a map of attributes whose content will be available in the attribute map parsed along to the cache
+     *            loader
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional).
      * @throws NullPointerException
@@ -76,11 +95,14 @@ public interface CacheLoadingService<K, V> {
 
     /**
      * Attempts to reload all entries that are either expired or which needs refreshing.
+     * <p>
+     * If this cache has been shutdown calls to this method is ignored.
      */
     void loadAll();
 
     /**
-     * Attempts to reload all entries that are either expired or which needs refreshing.
+     * This method works analogous to the {@link #loadAll()} method. Except that all the attributes in the specified
+     * attribute map will be parsed along to the cache loader for each entry being loaded.
      * <p>
      * If this cache has been shutdown calls to this method is ignored.
      * 
@@ -114,6 +136,14 @@ public interface CacheLoadingService<K, V> {
      */
     void loadAll(Iterable<? extends K> keys);
 
+    /**
+     * <p>
+     * If this cache has been shutdown calls to this method is ignored.
+     * 
+     * @param keys
+     *            whose associated values is to be loaded.
+     * @param attributes
+     */
     void loadAll(Iterable<? extends K> keys, AttributeMap attributes);
 
     /**
@@ -124,5 +154,11 @@ public interface CacheLoadingService<K, V> {
      *            a map with keys that should be loaded and a corresponding attribute map
      */
     void loadAll(Map<? extends K, ? extends AttributeMap> mapsWithAttributes);
+
+    // Additional attributes
+    // Priority?? ->should probably be implemented at the cache loader level
+    // Logger
+    // Await load done, come up with use cases
+    // Runnable callback? come up with use cases
 
 }

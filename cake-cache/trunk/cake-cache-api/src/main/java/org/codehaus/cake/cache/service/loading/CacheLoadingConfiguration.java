@@ -24,7 +24,7 @@ import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
- * This class is used to configure the loading service prior to usage.
+ * This class is used to configure the cache loading service prior to usage.
  * <p>
  * If the specified loader is <code>null</code> no loader will be used for loading new key-value bindings. And the
  * {@link CacheLoadingService} will not be available at runtime. All values must then put into the cache by using

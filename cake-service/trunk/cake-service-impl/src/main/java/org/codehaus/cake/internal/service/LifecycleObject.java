@@ -189,7 +189,7 @@ class LifecycleObject {
             Annotation a = m.getAnnotation(Startable.class);
             if (a != null) {
                 if (ies.isDebugEnabled()) {
-                    ies.debug("@Startable -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
+                    ies.debug("@Startable (Invoking) -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
                 }
                 try {
                     if (isInternal) {
@@ -217,6 +217,7 @@ class LifecycleObject {
                     // + "]", e);
                 } finally {
                     Throwable cause = state.getStartupException();
+
                     if (cause != null) {
                         // ies.error("@Startable -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()
                         // FAILED",

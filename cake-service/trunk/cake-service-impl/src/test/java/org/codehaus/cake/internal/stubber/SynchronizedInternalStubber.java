@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.internal.stubber;
 
+import java.util.concurrent.ExecutorService;
+
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.SynchronizedRunState;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
@@ -27,7 +29,7 @@ import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
 import org.codehaus.cake.util.Logger;
 
-@Container.SupportedServices( { BubberService.class, Manageable.class })
+@Container.SupportedServices( { ExecutorService.class, BubberService.class, Manageable.class })
 public class SynchronizedInternalStubber<T> extends AbstractInternalStubber<T> {
 
     private final InternalExceptionService exceptionService;

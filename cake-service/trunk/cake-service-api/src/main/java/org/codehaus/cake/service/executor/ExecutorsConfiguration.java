@@ -15,9 +15,6 @@
  */
 package org.codehaus.cake.service.executor;
 
-import java.util.concurrent.ScheduledExecutorService;
-
-import org.codehaus.cake.service.ServiceFactory;
 
 /**
  * This class is used to configure the executor manager service prior to usage.

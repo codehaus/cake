@@ -30,8 +30,7 @@ import org.junit.Test;
 
 @UnsupportedServices(value = { ExecutorService.class })
 public class ExecutorsNoSupport extends AbstractTCKTest<Container, ContainerConfiguration> {
-    //@Test(expected = IllegalArgumentException.class)
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void noExecutorsSupport() throws Throwable {
         withConf(ExecutorsConfiguration.class).setExecutorManager(new ExecutorsManager() {
             public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
