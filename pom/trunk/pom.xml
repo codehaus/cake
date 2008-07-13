@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
-  Copyright 2004-2008 Kasper Nielsen.
+  Copyright 2008 Kasper Nielsen.
   
   Licensed under the Apache License, Version 2.0 (the "License"); you may not
   use this file except in compliance with the License. You may obtain a copy of
@@ -18,13 +17,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>org.codehaus.cake</groupId>
   <artifactId>cake-parent</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <packaging>pom</packaging>
+
   <name>Cake</name>
-  <description>Cake provides multi-core tools.</description>
+  <description>Cake</description>
+  <url>http://cake.codehaus.org/</url>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -36,14 +37,11 @@
     <name>The Codehaus</name>
     <url>http://www.codehaus.org/</url>
   </organization>
-  <url>http://cake.codehaus.org/</url>
   <inceptionYear>2008</inceptionYear>
-
   <issueManagement>
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/CAKE</url>
   </issueManagement>
-
   <mailingLists>
     <mailingList>
       <name>Cake Announce List</name>
@@ -52,7 +50,6 @@
       <post>announce@cake.codehaus.org</post>
       <archive>http://archive.cake.codehaus.org/announce</archive>
     </mailingList>
-
     <mailingList>
       <name>Cake Developer List</name>
       <subscribe>http://xircles.codehaus.org/lists/dev@cake.codehaus.org/subscribe</subscribe>
@@ -60,7 +57,6 @@
       <post>dev@cake.codehaus.org</post>
       <archive>http://archive.cake.codehaus.org/dev</archive>
     </mailingList>
-
     <mailingList>
       <name>Cake Scm List</name>
       <subscribe>http://xircles.codehaus.org/lists/scm@cake.codehaus.org/subscribe</subscribe>
@@ -68,7 +64,6 @@
       <post>scm@cake.codehaus.org</post>
       <archive>http://archive.cake.codehaus.org/scm</archive>
     </mailingList>
-
     <mailingList>
       <name>Cake User List</name>
       <subscribe>http://xircles.codehaus.org/lists/user@cake.codehaus.org/subscribe</subscribe>
@@ -76,9 +71,7 @@
       <post>user@cake.codehaus.org</post>
       <archive>http://archive.cake.codehaus.org/user</archive>
     </mailingList>
-
   </mailingLists>
-
   <distributionManagement>
     <!-- 
       <repository>
@@ -118,8 +111,40 @@
           <showDeprecation>true</showDeprecation>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.cake.test</groupId>
+            <artifactId>cake-test-util</artifactId>
+            <version>0.1-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>checkstyle/checkstyle.xml</configLocation>
+          <headerLocation>checkstyle/checkstyle.license</headerLocation>
+          <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <profiles>
     <profile>
       <id>coverage</id>
@@ -143,12 +168,18 @@
         </plugins>
       </build>
     </profile>
-
     <profile>
       <id>release</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <!-- We want to sign the artifact, the POM, and all attached artifacts -->
+          <!-- 
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
@@ -163,6 +194,7 @@
               </execution>
             </executions>
           </plugin>
+           -->
           <!-- We want to deploy the artifact to a staging location for perusal -->
           <!-- 
             <plugin>
@@ -204,7 +236,6 @@
     </profile>
     <!-- END SNIPPET: release-profile -->
   </profiles>
-
   <repositories>
     <repository>
       <id>codehaus</id>
