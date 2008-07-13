@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.cake.math</groupId>
+    <artifactId>cake-math-parent</artifactId>
+    <version>0.2-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>cake-math</artifactId>
+  <name>Cake Service API</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cake.test</groupId>
+      <artifactId>cake-test-util</artifactId>
+      <version>0.2-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.ops</groupId>
+      <artifactId>cake-ops</artifactId>
+      <version>0.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.attributes</groupId>
+      <artifactId>cake-attributes</artifactId>
+      <version>0.2-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
