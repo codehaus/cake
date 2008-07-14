@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Copyright 2008 Kasper Nielsen.
-  
-  Licensed under the Apache License, Version 2.0 (the "License"); you may not
-  use this file except in compliance with the License. You may obtain a copy of
-  the License at
-  
-  http://cake.codehaus.org/LICENSE
-  
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-  License for the specific language governing permissions and limitations under
-  the License.
--->
+  <!--
+    Copyright 2008 Kasper Nielsen. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+    file except in compliance with the License. You may obtain a copy of the License at http://cake.codehaus.org/LICENSE
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations under the License.
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -21,11 +13,9 @@
   <artifactId>cake-parent</artifactId>
   <version>1</version>
   <packaging>pom</packaging>
-
   <name>Cake</name>
   <description>Cake</description>
   <url>http://cake.codehaus.org/</url>
-
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -73,13 +63,9 @@
     </mailingList>
   </mailingLists>
   <distributionManagement>
-    <!-- 
-      <repository>
-      <id>cake.staging</id>
-      <url>
-      scp://people.apache.org/www/people.apache.org/builds/cake/${project.version}/staging-repo
-      </url>
-      </repository>
+    <!--
+      <repository> <id>cake.staging</id> <url>
+      scp://people.apache.org/www/people.apache.org/builds/cake/${project.version}/staging-repo </url> </repository>
     -->
     <repository>
       <id>codehaus.org</id>
@@ -148,6 +134,12 @@
   <profiles>
     <profile>
       <id>coverage</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>coverage</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -179,33 +171,17 @@
       <build>
         <plugins>
           <!-- We want to sign the artifact, the POM, and all attached artifacts -->
-          <!-- 
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <configuration>
-              <passphrase>${gpg.passphrase}</passphrase>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-           -->
+          <!--
+            <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-gpg-plugin</artifactId>
+            <configuration> <passphrase>${gpg.passphrase}</passphrase> </configuration> <executions> <execution> <goals>
+            <goal>sign</goal> </goals> </execution> </executions> </plugin>
+          -->
           <!-- We want to deploy the artifact to a staging location for perusal -->
-          <!-- 
-            <plugin>
-            <inherited>true</inherited>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <configuration>
+          <!--
+            <plugin> <inherited>true</inherited> <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId> <configuration>
             <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
-            <updateReleaseInfo>true</updateReleaseInfo>
-            </configuration>
-            </plugin>
+            <updateReleaseInfo>true</updateReleaseInfo> </configuration> </plugin>
           -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
