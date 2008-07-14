@@ -382,7 +382,7 @@ public class ContainerConfigurationTest {
         }
 
         @Override
-        protected <U> U getConfigurationOfType(Class<U> configurationType) {
+        public <U> U getConfigurationOfType(Class<U> configurationType) {
             return super.getConfigurationOfType(configurationType);
         }
     }

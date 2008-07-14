@@ -20,7 +20,7 @@ import java.util.Set;
 import org.codehaus.cake.attribute.AttributeMap;
 
 /**
- * A ServiceManager is the entry-point for accessing other services.
+ * A ServiceManager is an entry-point for accessing other services.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheServiceManagerService.java 537 2007-12-30 19:21:20Z kasper $
@@ -28,9 +28,9 @@ import org.codehaus.cake.attribute.AttributeMap;
 public interface ServiceManager {
 
     /**
-     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if no such service
+     * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
      * exists. Calling this method is equivalent to calling {@link #getService(Class, AttributeMap)} with an empty
-     * {@link AttributeMaps}.
+     * {@link AttributeMap}.
      * 
      * @param <T>
      *            the type of service to retrieve
@@ -45,7 +45,7 @@ public interface ServiceManager {
     <T> T getService(Class<T> serviceType);
 
     /**
-     * Returns a service of the specified type or throws a {@link UnsupportedOperationException} if no such service
+     * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
      * exists. The map of attributes will be parsed along to the {@link ServiceFactory} responsible for constructing the
      * service.
      * 
@@ -59,7 +59,7 @@ public interface ServiceManager {
      * @throws UnsupportedOperationException
      *             if no service of the specified type exist
      * @throws NullPointerException
-     *             if the specified service type is null
+     *             if the specified service type or attribute map is null
      */
     <T> T getService(Class<T> serviceType, AttributeMap attributes);
 

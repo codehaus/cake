@@ -22,14 +22,14 @@ import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A Container is the in addition providing .
+ * A Container is the the in addition providing .
  * 
  * Retrieving services that have been registered using {@link ContainerConfiguration#addService(Object)}, or registered
  * dynamically through a {@link ServiceRegistrant}.
  * 
  * <p>
- * Usually this interface is extended by a concrete container type, for example, a {@link org.codehaus.cake.cache.Cache}.
- * 
+ * This interface is normally extended by a concrete container type, for example, a
+ * {@link org.codehaus.cake.cache.Cache}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $

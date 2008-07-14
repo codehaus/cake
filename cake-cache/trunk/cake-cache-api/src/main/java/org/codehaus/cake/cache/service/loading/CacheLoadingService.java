@@ -30,7 +30,7 @@ import org.codehaus.cake.service.Container;
  * 
  * <p>
  * This method does not guarantee that the specified value is ever loaded into the cache. Implementations are free to
- * ignore the hint, however, most implementations won't.
+ * ignore the hint, however, most implementations won't.>
  * 
  * <p>
  * Unless otherwise specified all methods are methods in this class are asynchronously. Any cache implementation that is

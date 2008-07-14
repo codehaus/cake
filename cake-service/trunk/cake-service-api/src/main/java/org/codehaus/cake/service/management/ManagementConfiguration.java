@@ -24,8 +24,7 @@ import org.codehaus.cake.management.ManagedVisitor;
 /**
  * This class is used to configure how a container can be remotely monitored and managed using JMX.
  * <p>
- * Remote management (JMX) is turned off by default and you need to call
- * {@link #setEnabled(boolean)} to enable it.
+ * Remote management (JMX) is turned off by default and you need to call {@link #setEnabled(boolean)} to enable it.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheManagementConfiguration.java 525 2007-12-26 18:42:40Z kasper $
@@ -85,24 +84,23 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets the specific domain that MBeans should register under. If no domain is specified the
-     * container will use a default name. For example, {@link org.codehaus.cake.cache.CacheMXBean}
-     * is registered under {@link org.codehaus.cake.cache.CacheMXBean#DEFAULT_JMX_DOMAIN}.
+     * Sets the specific domain that MBeans should register under. If no domain is specified the container will use a
+     * default name. For example, {@link org.codehaus.cake.cache.CacheMXBean} is registered under
+     * {@link org.codehaus.cake.cache.CacheMXBean#DEFAULT_JMX_DOMAIN}.
      * 
      * @param domain
      *            the domain name
      * @return this configuration
-     * @throws NullPointerException
-     *             if the specified domain is <tt>null</tt>
      * @throws IllegalArgumentException
      *             if the specified domain is not valid domain name
      */
     public ManagementConfiguration setDomain(String domain) {
-        try {
-            new ObjectName(domain + ":type=foo");
-        } catch (MalformedObjectNameException e) {
-            throw new IllegalArgumentException("The specified domain is not a valid domain name, "
-                    + e.getMessage());
+        if (domain != null) {
+            try {
+                new ObjectName(domain + ":type=foo");
+            } catch (MalformedObjectNameException e) {
+                throw new IllegalArgumentException("The specified domain is not a valid domain name, " + e.getMessage());
+            }
         }
         this.domain = domain;
         return this;
@@ -122,10 +120,9 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets the {@link MBeanServer}} that MBeans should register with. If no MBeanServer is set and
-     * this service is enabled; the
-     * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform MBeanServer}
-     * will be used.
+     * Sets the {@link MBeanServer} that MBeans should register with. If no MBeanServer is set and this service is
+     * enabled; the {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform MBeanServer} will be
+     * used.
      * 
      * @param server
      *            the server that MBeans should register with
@@ -138,11 +135,10 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets a ManagedVisitor that will used to register all managed objects. Normal users will
-     * seldom need to use this method. But if you need some kind of non standard naming of
-     * {@link javax.management.ObjectName ObjectNames}, wants to only register a specific service
-     * or another hierarchy then the one used by default by the container. This method can be used
-     * specify a special registrant.
+     * Sets a ManagedVisitor that will used to register all managed objects. Normal users will seldom need to use this
+     * method. But if you need some kind of non standard naming of {@link javax.management.ObjectName ObjectNames},
+     * wants to only register a specific service or another hierarchy then the one used by default by the container.
+     * This method can be used specify a special registrant.
      * <p>
      * If no registrant is specified the containers default registrant will be used.
      * 

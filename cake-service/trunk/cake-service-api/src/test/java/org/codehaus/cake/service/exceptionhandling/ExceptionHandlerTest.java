@@ -32,14 +32,14 @@ public class ExceptionHandlerTest {
 
     @Test
     public void lifecycle() throws Exception {
-        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>();
+        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>() {};
         eh.initialize(null);
         eh.terminated();
     }
 
     @Test
     public void noError() throws Exception {
-        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>();
+        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>() {};
         final Logger logger = context.mock(Logger.class);
         context.checking(new Expectations() {
             {
@@ -75,7 +75,7 @@ public class ExceptionHandlerTest {
 
     @Test(expected = Error1.class)
     public void error() throws Exception {
-        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>();
+        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>() {};
         final Logger logger = context.mock(Logger.class);
         context.checking(new Expectations() {
             {

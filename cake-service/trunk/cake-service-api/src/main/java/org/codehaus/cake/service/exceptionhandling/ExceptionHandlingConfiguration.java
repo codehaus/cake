@@ -18,8 +18,7 @@ package org.codehaus.cake.service.exceptionhandling;
 import org.codehaus.cake.util.Logger;
 
 /**
- * This class is used to configure the exception handling service prior to
- * usage.
+ * This class is used to configure the exception handling service prior to usage.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: containerExceptionHandler.java 538 2007-12-31 00:18:13Z kasper $
@@ -29,20 +28,17 @@ import org.codehaus.cake.util.Logger;
  */
 public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
 
-    /**
-     * The exception handler used for handling erroneous conditions in the
-     * cache.
-     */
+    /** The exception handler used for handling erroneous conditions in the container. */
     private T exceptionHandler;
 
     /** The default exception logger to log to. */
     private Logger logger;
 
     /**
-     * Returns the exception handler that should be used to handle all
-     * exceptions and warnings or <code>null</code> if it has been defined.
+     * Returns the exception handler that should be used to handle all exceptions and warnings. If no exception handler
+     * has been the container will use a default exception handler.
      * 
-     * @return the exceptionHandler that is configured for the cache
+     * @return the exceptionHandler that is configured for the container
      * @see #setExceptionHandler(ExceptionHandler)
      */
     public T getExceptionHandler() {
@@ -50,11 +46,9 @@ public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
     }
 
     /**
-     * Returns the logger that is used for exception handling, or <tt>null</tt>
-     * if no such logger has been set.
+     * Returns the logger that is used for exception handling, or <tt>null</tt> if no such logger has been set.
      * 
-     * @return the logger that is used for exception handling, or <tt>null</tt>
-     *         if no such logger has been set
+     * @return the logger that is used for exception handling, or <tt>null</tt> if no such logger has been set
      * @see #setExceptionLogger(Logger)
      */
     public Logger getExceptionLogger() {
@@ -62,35 +56,26 @@ public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
     }
 
     /**
-     * Sets the exception handler that should be used to handle all exceptions
-     * and warnings. If no exception handler is set using this method the cache
-     * should use the one specified to
-     * {@link org.codehaus.cake.container.AbstractConfiguration#setDefaultLogger(Logger)}.
-     * If a logger has not been set using that method either. The cache will,
-     * unless otherwise specified, use an instance of
-     * {@link CacheExceptionHandlers #defaultLoggingExceptionHandler()} to
-     * handle exceptions.
+     * Sets the exception handler that should be used to handle all exceptions and warnings. If no exception handler is
+     * set using this method the container will automatically use a default exception handler. That logs any output to
+     * the configured logger, or {@link System#err} if no logger has been set.
      * 
      * @param exceptionHandler
-     *            the exceptionHandler to use for handling exceptions and
-     *            warnings
+     *            the exceptionHandler to use for handling exceptions and warnings
      * @return this configuration
      */
-    public ExceptionHandlingConfiguration<T> setExceptionHandler(
-            T exceptionHandler) {
+    public ExceptionHandlingConfiguration<T> setExceptionHandler(T exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
         return this;
     }
 
     /**
-     * Sets the log that will be used for logging information whenever the cache
-     * or any of its services fails in some way.
+     * Sets the log that will be used for logging information whenever the cache or any of its services fails in some
+     * way.
      * <p>
-     * If no logger has been set using this method. The exception handling
-     * service will used the default logger returned from
-     * {@link org.codehaus.cake.container.AbstractConfiguration#getDefaultLogger()}.
-     * If no default logger has been set, output will be sent to
-     * {@link System#err}.
+     * If no logger has been set using this method. The exception handling service will used the default logger returned
+     * from {@link org.codehaus.cake.container.AbstractConfiguration#getDefaultLogger()}. If no default logger has been
+     * set, output will be sent to {@link System#err}.
      * 
      * @param logger
      *            the logger to use for exception handling

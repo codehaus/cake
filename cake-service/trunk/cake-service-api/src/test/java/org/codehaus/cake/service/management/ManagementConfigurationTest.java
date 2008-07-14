@@ -41,8 +41,10 @@ public class ManagementConfigurationTest {
     @Test
     public void domain() {
         assertNull(m.getDomain());
-        assertEquals(m, m.setDomain("mydomain"));
+        assertSame(m, m.setDomain("mydomain"));
         assertEquals("mydomain", m.getDomain());
+        assertSame(m, m.setDomain(null));
+        assertNull(m.getDomain());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -58,7 +60,7 @@ public class ManagementConfigurationTest {
     @Test
     public void enabled() {
         assertFalse(m.isEnabled());
-        assertEquals(m, m.setEnabled(true));
+        assertSame(m, m.setEnabled(true));
         assertTrue(m.isEnabled());
     }
 
@@ -66,8 +68,8 @@ public class ManagementConfigurationTest {
     public void mBeanServer() {
         assertNull(m.getMBeanServer());
         MBeanServer s = MBeanServerFactory.createMBeanServer();
-        assertEquals(m, m.setMBeanServer(s));
-        assertEquals(s, m.getMBeanServer());
+        assertSame(m, m.setMBeanServer(s));
+        assertSame(s, m.getMBeanServer());
         MBeanServerFactory.releaseMBeanServer(s);
     }
 

@@ -18,53 +18,49 @@ package org.codehaus.cake.service.exceptionhandling;
 import org.codehaus.cake.service.ContainerConfiguration;
 
 /**
- * The purpose of this class is to have one central place where all exceptions
- * that arise within a container or one of its associated services are handled.
- * One implementation of this class might shutdown the container for any raised
- * exception. This is often usefull in development environments. Another
- * implementation might just log the exception and continue serving other
- * requests. To allow for easily extending this class with new methods at a
- * later time this class is a class instead of an interface.
+ * The purpose of this class is to have one central place where all exceptions that arise within a container or one of
+ * its associated services are handled. Normally an ExceptionHandler just logs any exception that is raised. However, an
+ * implementation might instead shutdown the container whenever an exception is raised (can be useful in development
+ * environments). To allow for easily extending this class with new methods at a later time this class is a class
+ * instead of an interface.
+ * <p>
+ * This class is normally extended by an implementation for a specific container type.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: containerExceptionHandler.java 538 2007-12-31 00:18:13Z kasper $
  * @param <T>
  *            the type of the container
  */
-public class ExceptionHandler<T> {
+public abstract class ExceptionHandler<T> {
 
     /**
-     * Called to initialize the ExceptionHandler. This method must be called as
-     * the first operation from within the constructor of the container.
-     * Exceptions thrown by this method will not be handled by the container.
-     * The default implementation does nothing
+     * Called to initialize the ExceptionHandler. This method will be called as the first operation from within the
+     * constructor of the container. The default implementation does nothing.
+     * <p>
+     * Any exception thrown by this method will not be handled by the container
      * 
      * @param configuration
      *            the configuration of the container
      */
-    public void initialize(ContainerConfiguration<T> configuration) {
-    }
+    public void initialize(ContainerConfiguration<T> configuration) {}
 
     /**
-     * The default exception handler. Logs all exceptions and rethrows any
-     * errors.
+     * The default exception handler. Logs all exceptions and rethrows any errors.
      * 
      * @param context
      *            the context
      */
     public void handle(ExceptionContext<T> context) {
         Throwable cause = context.getCause();
-        context.getLogger()
-                .log(context.getLevel(), context.getMessage(), cause);
+        context.getLogger().log(context.getLevel(), context.getMessage(), cause);
         if (cause instanceof Error) {
             throw (Error) cause;
         }
     }
 
     /**
-     * Called as the last action by the container once it has been fully
-     * terminated.
+     * Called as the last action by the container once it has been fully terminated. The default implementation does
+     * nothing.
      */
-    public void terminated() {
-    }
+    public void terminated() {}
 }

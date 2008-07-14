@@ -453,7 +453,7 @@ public class CacheConfigurationTest {
         }
 
         @Override
-        protected <U> U getConfigurationOfType(Class<U> configurationType) {
+        public <U> U getConfigurationOfType(Class<U> configurationType) {
             return super.getConfigurationOfType(configurationType);
         }
     }

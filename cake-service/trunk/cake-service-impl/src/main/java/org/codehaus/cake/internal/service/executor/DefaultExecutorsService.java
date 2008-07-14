@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.service.ContainerConfiguration;
@@ -48,33 +47,12 @@ public class DefaultExecutorsService implements CompositeService {
         this.manager = manager;
     }
 
-    public ExecutorService getExecutorService() {
-        return getExecutorService(null);
-    }
-
-    public ExecutorService getExecutorService(Object service) {
-        return getExecutorService(service, Attributes.EMPTY_ATTRIBUTE_MAP);
-    }
-
     public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
         return manager.getExecutorService(service, attributes);
     }
 
-    public ForkJoinExecutor getForkJoinExecutor() {
-        return getForkJoinExecutor(null);
-    }
-
-    public ForkJoinExecutor getForkJoinExecutor(Object service) {
-        return getForkJoinExecutor(service, Attributes.EMPTY_ATTRIBUTE_MAP);
-    }
-
     public ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes) {
         return manager.getForkJoinExecutor(service, attributes);
-
-    }
-
-    public ScheduledExecutorService getScheduledExecutorService(Object service) {
-        return getScheduledExecutorService(service, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
 
     public ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes) {

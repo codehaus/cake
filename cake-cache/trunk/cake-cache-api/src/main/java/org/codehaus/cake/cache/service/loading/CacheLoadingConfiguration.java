@@ -93,7 +93,7 @@ public class CacheLoadingConfiguration<K, V> {
 
     /**
      * Sets a filter ({@link Predicate}) that is used for determining if an element needs to be reloaded. The predicate
-     * is checked when various load methods in {@link CacheLoadingService} are called.
+     * is checked with the various load methods in {@link CacheLoadingService}.
      * <p>
      * Some implementations might also check the predicate on calls to
      * {@link org.codehaus.cake.cache.Cache#getAll(Collection)}, {@link org.codehaus.cake.cache.Cache#getEntry(Object)},

@@ -19,8 +19,8 @@ import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;
 
 /**
- * A ExceptionContext is created by the container whenever an exceptional state is raised and parsed
- * along to the various methods defined in {@link ExceptionHandler} .
+ * A ExceptionContext is created by the container whenever an exceptional state is raised and parsed along to the
+ * various methods defined in {@link ExceptionHandler} .
  * <p>
  * Users will most likely never need to create instances of this class.
  * 
@@ -32,18 +32,16 @@ import org.codehaus.cake.util.Logger.Level;
 public abstract class ExceptionContext<T> {
 
     /**
-     * Returns the container in which the failure occured.
+     * Returns the container in which the failure occurred.
      * 
-     * @return the container in which the failure occured
+     * @return the container in which the failure occurred
      */
     public abstract T getContainer();
 
     /**
-     * Returns the default configured logger for handling exceptions for the container in which this
-     * failure occured.
+     * Returns the default configured logger for handling exceptions for the container in which this failure occurred.
      * 
-     * @return the default configured logger for handling exceptions for the container in which this
-     *         failure occured
+     * @return the default configured logger for handling exceptions for the container in which this failure occurred
      */
     public abstract Logger getLogger();
 
@@ -62,8 +60,8 @@ public abstract class ExceptionContext<T> {
     public abstract String getMessage();
 
     /**
-     * Returns the level of the failure. The returned level is either {@link Level#Warn},
-     * {@link Level#Error} or {@link Level#Fatal}.
+     * Returns the level of the failure. The returned level is either {@link Level#Warn}, {@link Level#Error} or
+     * {@link Level#Fatal}.
      * 
      * @return the level of the failure
      */

@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Starts the service. The specified service registrant can be used to retrieve other services or register services.
+ * An annotation for marking a method as startable. See {@link Container} for how it handles registered services with
+ * this annotation.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $

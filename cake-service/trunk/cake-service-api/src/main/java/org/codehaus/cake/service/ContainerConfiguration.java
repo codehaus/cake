@@ -42,8 +42,8 @@ import org.codehaus.cake.util.Loggers.Log4j;
  * This class is not meant to be directly instantiated, instead it should be overridden with a configuration object for
  * a concrete container type.
  * <p>
- * All general-purpose <tt>Container</tt> implementation classes should have a constructor with a single argument
- * taking a concrete class extending ContainerConfiguration.
+ * All general-purpose <tt>Container</tt> implementation classes should have a constructor with a single argument taking
+ * a concrete class extending ContainerConfiguration.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $
@@ -98,9 +98,9 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Registers a object for the container. Only objects of type {@link MapLifecycle} or {@link Manageable}, are
-     * valid. If the object is of type {@link MapLifecycle} the container will invoke the respective lifecycle methods
-     * on the object. If the object is of type {@link Manageable} and management is enabled for the container (see
+     * Registers a object for the container. Only objects of type {@link MapLifecycle} or {@link Manageable}, are valid.
+     * If the object is of type {@link MapLifecycle} the container will invoke the respective lifecycle methods on the
+     * object. If the object is of type {@link Manageable} and management is enabled for the container (see
      * {@link MapManagementConfiguration#setEnabled(boolean)}). It can be registered with a {@link ManagedGroup}.
      * <p>
      * Attaches the specified instance to the service map of the container. This object can then later be retrieved by
@@ -155,7 +155,7 @@ public abstract class ContainerConfiguration<T> {
      * @param <U>
      *            the type of the configuration
      */
-    protected <U> U getConfigurationOfType(Class<U> configurationType) {
+    public <U> U getConfigurationOfType(Class<U> configurationType) {
         Object o = configurations.get(configurationType);
         if (o == null) {
             throw new IllegalArgumentException("Unknown service configuration [ type = " + configurationType + "]");
@@ -205,8 +205,8 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the property value for the specified key or <tt>null</tt> if no such property exists. A <tt>null</tt>
-     * can also indicate that the key was explicitly mapped to <tt>null</tt>.
+     * Returns the property value for the specified key or <tt>null</tt> if no such property exists. A <tt>null</tt> can
+     * also indicate that the key was explicitly mapped to <tt>null</tt>.
      * 
      * @param key
      *            the key for which to retrieve the value
@@ -332,7 +332,7 @@ public abstract class ContainerConfiguration<T> {
      * {@link java.lang.System#currentTimeMillis()} and {@link java.lang.System#nanoTime()}. For example, a custom NTP
      * protocol.
      * <p>
-     * Setting a custom clock can also be usefull for interducing determinism while testing.
+     * Setting a custom clock can also be useful for introducing determinism while testing.
      * 
      * @param clock
      *            the Clock that the container should use
@@ -354,9 +354,9 @@ public abstract class ContainerConfiguration<T> {
      * logger. For example, for logging timing informations, auditing, ... etc. In this case this special logger will
      * take precedence over this specified logger when logging for the service.
      * <p>
-     * All available containers in Cake strives to be very conservative about what is logged, log as little as possible.
-     * That is, we actually recommend running with log level set at {@link org.codehaus.cake.util.Logger.Level#Info}
-     * even in production.
+     * All available containers in Cake strives to be very conservative about what is logged, logging as little as
+     * possible. That is, we actually recommend running with log level set at
+     * {@link org.codehaus.cake.util.Logger.Level#Info} even in production.
      * 
      * @param logger
      *            the logger to use
