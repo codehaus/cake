@@ -232,7 +232,8 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     // long started = listener.beforeRemoveAll((Collection) entries);
     //
     // lazyStart();
-    // ParallelArray<CacheEntry<K, V>> list = memoryCache.removeEntries(entries);
+    // ParallelArray<CacheEntry<K, V>> list =
+    // memoryCache.removeEntries(entries);
     //
     // listener.afterRemoveAll(started, (Collection) entries, list.asList());
     //
@@ -259,7 +260,9 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     // long started = listener.beforeRemove(null, value);
     // // TODO sync
     // lazyStart();
-    // CacheEntry<K, V> e = memoryCache.removeAny(Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP,
+    // CacheEntry<K, V> e =
+    // memoryCache.removeAny(Predicates.mapAndEvaluate(CollectionOps
+    // .MAP_ENTRY_TO_VALUE_OP,
     // Predicates.equalsTo(value)));
     //
     // listener.afterRemove(started, e);
@@ -310,16 +313,17 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     }
 
     public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
-        // TODO sync
-        if (value != null) {
-            long started = listener.beforePut(key, value, false);
+        synchronized (mutex) {
+            if (value != null) {
+                long started = listener.beforePut(key, value, false);
 
-            EntryPair<K, V> prev = memoryCache.put(key, value, map, false);
-            ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
+                EntryPair<K, V> prev = memoryCache.put(key, value, map, false);
+                ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-            listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(),
-                    (InternalCacheEntry) prev.getNew(), false);
-            return prev.getNew();
+                listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(),
+                        (InternalCacheEntry) prev.getNew(), false);
+                return prev.getNew();
+            }
         }
         return null;
     }
