@@ -43,7 +43,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addService(new Started1());
+        conf.addServiceToLifecycle(new Started1());
         init();
         prestart();
     }
@@ -51,7 +51,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void twoMethod() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started2());
+        conf.addServiceToLifecycle(new Started2());
         init();
         prestart();
     }
@@ -59,7 +59,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void cacheArg() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started8());
+        conf.addServiceToLifecycle(new Started8());
         init();
         prestart();
     }
@@ -67,7 +67,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void cacheAndServiceArg() {
         latch = new CountDownLatch(1);
-        conf.addService(new Started4());
+        conf.addServiceToLifecycle(new Started4());
         init();
         prestart();
     }
@@ -76,7 +76,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     public void noLoader() {
         newConfigurationClean();
         latch = new CountDownLatch(0);
-        conf.addService(new Started5());
+        conf.addServiceToLifecycle(new Started5());
         init();
         prestart();
     }
@@ -86,7 +86,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     public void runtimeExceptionMethod() {
         try {
             latch = new CountDownLatch(0);
-            conf.addService(new Started6());
+            conf.addServiceToLifecycle(new Started6());
             conf.withExceptionHandling().setExceptionHandler(exceptionHandler);
             init();
             prestart();
@@ -100,7 +100,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     public void exceptionMethod() {
         try {
             latch = new CountDownLatch(0);
-            conf.addService(new Started7());
+            conf.addServiceToLifecycle(new Started7());
             conf.withExceptionHandling().setExceptionHandler(exceptionHandler);
             init();
             prestart();

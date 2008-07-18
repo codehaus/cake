@@ -40,14 +40,14 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     @Test
     public void allConfigurations() {
         latch = new CountDownLatch(1);
-        conf.addService(new AllConfigurations());
+        conf.addServiceToLifecycle(new AllConfigurations());
         init();
         prestart();
     }
 
     @Test(expected = IllegalStateException.class)
     public void unknownConfiguration() {
-        conf.addService(new CustomConfiguration());
+        conf.addServiceToLifecycle(new CustomConfiguration());
         init();
         prestart();
     }
@@ -56,7 +56,7 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     public void customConfiguration() {
         latch = new CountDownLatch(1);
         conf = new TestConfiguration();
-        conf.addService(new CustomConfiguration());
+        conf.addServiceToLifecycle(new CustomConfiguration());
         init();
         prestart();
     }

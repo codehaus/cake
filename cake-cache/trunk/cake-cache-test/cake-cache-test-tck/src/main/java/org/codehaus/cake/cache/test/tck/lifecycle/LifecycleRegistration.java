@@ -26,7 +26,7 @@ import org.junit.Test;
 public class LifecycleRegistration extends AbstractCacheTCKTest {
     @Test(expected = IllegalArgumentException.class)
     public void registerExisting() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         prestart();
     }

@@ -29,6 +29,7 @@ import java.util.Collection;
 
 import junit.framework.AssertionFailedError;
 
+import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
@@ -90,9 +91,9 @@ public class CacheConfigurationTest {
 
     @Test
     public void addService() {
-        assertTrue(conf.getServices().isEmpty());
-        conf.addService(5);
-        assertTrue(conf.getServices().contains(5));
+        assertTrue(((ServiceList)conf.getServices()).getServices().isEmpty());
+        conf.addServiceToLifecycle(5);
+        assertTrue(((ServiceList)conf.getServices()).getServices().contains(5));
     }
 
     /**
