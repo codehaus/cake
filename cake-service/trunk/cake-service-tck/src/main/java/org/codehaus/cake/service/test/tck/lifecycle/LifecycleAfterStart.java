@@ -37,7 +37,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addService(new Started1());
+        conf.addServiceToLifecycle(new Started1());
         newContainer();
         prestart();
     }
@@ -45,7 +45,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void twoMethod() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started2());
+        conf.addServiceToLifecycle(new Started2());
         newContainer();
         prestart();
     }
@@ -53,7 +53,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void twoMethodWithArgs() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started3());
+        conf.addServiceToLifecycle(new Started3());
         newContainer();
         prestart();
     }
@@ -61,8 +61,8 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void register() {
         latch = new CountDownLatch(2);
-        conf.addService(new Register());
-        conf.addService(new CheckRegister());
+        conf.addServiceToLifecycle(new Register());
+        conf.addServiceToLifecycle(new CheckRegister());
         newContainer();
         prestart();
     }

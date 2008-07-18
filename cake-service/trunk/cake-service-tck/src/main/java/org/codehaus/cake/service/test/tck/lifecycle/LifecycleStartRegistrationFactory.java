@@ -38,14 +38,14 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test(expected = UnsupportedOperationException.class)
     public void registerUnknown() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         c.getService(Integer.class, I.singleton(-1)).intValue();
     }
 
     @Test
     public void register() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         prestart();
         assertEquals(100, c.getService(Integer.class, I.singleton(100)).intValue());
@@ -53,36 +53,36 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test(expected = NullPointerException.class)
     public void registerNullKey() {
-        conf.addService(new RegisterNullKey());
+        conf.addServiceToLifecycle(new RegisterNullKey());
         newContainer();
         prestart();
     }
 
     @Test(expected = NullPointerException.class)
     public void registerNullService() {
-        conf.addService(new RegisterNullService());
+        conf.addServiceToLifecycle(new RegisterNullService());
         newContainer();
         prestart();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void registerSame() {
-        conf.addService(new RegisterSame());
+        conf.addServiceToLifecycle(new RegisterSame());
         newContainer();
         prestart();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void registerSameOdd() {
-        conf.addService(new RegisterSameOdd());
+        conf.addServiceToLifecycle(new RegisterSameOdd());
         newContainer();
         prestart();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void registerSameTwice() {
-        conf.addService(new Register());
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         prestart();
     }

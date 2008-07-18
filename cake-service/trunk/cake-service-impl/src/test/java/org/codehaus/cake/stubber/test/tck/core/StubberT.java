@@ -23,7 +23,7 @@ import org.junit.Test;
 public class StubberT extends AbstraktStubberTCKTst {
     @Test(expected = IllegalStateException.class)
     public void t() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         c.getIt(5);
         assertTrue(c.hasService(Integer.class));

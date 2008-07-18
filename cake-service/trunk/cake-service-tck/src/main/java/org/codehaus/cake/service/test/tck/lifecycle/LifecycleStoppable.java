@@ -35,7 +35,7 @@ public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConf
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addService(new Stoppable1());
+        conf.addServiceToLifecycle(new Stoppable1());
         newContainer();
         assertFalse(c.isStarted());
         assertFalse(c.isShutdown());

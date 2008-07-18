@@ -39,7 +39,7 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
         assertFalse(c.isShutdown());
         assertFalse(c.isTerminated());
         latch = new CountDownLatch(1);
-        conf.addService(new Started1());
+        conf.addServiceToLifecycle(new Started1());
         newContainer();
         assertFalse(c.isStarted());
         assertFalse(c.isShutdown());
@@ -53,7 +53,7 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
     @Test
     public void twoMethod() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started2());
+        conf.addServiceToLifecycle(new Started2());
         newContainer();
         prestart();
     }
@@ -61,7 +61,7 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
     @Test
     public void twoMethodWithArgs() {
         latch = new CountDownLatch(2);
-        conf.addService(new Started3());
+        conf.addServiceToLifecycle(new Started3());
         newContainer();
         prestart();
     }

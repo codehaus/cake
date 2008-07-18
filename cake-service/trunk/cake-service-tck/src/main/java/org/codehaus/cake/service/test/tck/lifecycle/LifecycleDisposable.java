@@ -35,7 +35,7 @@ public class LifecycleDisposable extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addService(new Disposable1());
+        conf.addServiceToLifecycle(new Disposable1());
         newContainer();
         assertFalse(c.isStarted());
         assertFalse(c.isShutdown());

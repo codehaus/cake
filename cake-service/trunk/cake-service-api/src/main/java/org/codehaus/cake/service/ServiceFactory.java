@@ -16,6 +16,7 @@
 package org.codehaus.cake.service;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.WithAttributes;
 
 /**
  * A service factory can be implemented for
@@ -28,4 +29,10 @@ public interface ServiceFactory<T> {
 
     T lookup(AttributeMap attributes);
     // hasServiceWithAttributes(AttributeMap attributes);
+    
+    interface LookupContext<T> extends WithAttributes {
+        Class<? extends T> getKey();
+        AttributeMap getAttributes();
+        
+    }
 }

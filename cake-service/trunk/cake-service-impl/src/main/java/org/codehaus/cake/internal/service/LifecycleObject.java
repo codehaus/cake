@@ -25,11 +25,13 @@ import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
+import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Disposable;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.Stoppable;
@@ -39,10 +41,18 @@ class LifecycleObject {
     private final InternalExceptionService ies;
     private final Object o;
     private final RunState state;
+    private final Class serviceFactoryKey;
 
     LifecycleObject(RunState state, InternalExceptionService ies, Object service) {
         this.ies = ies;
-        this.o = service;
+        if (service instanceof ServiceList.Factory) {
+            ServiceList.Factory sf = (Factory) service;
+            o = sf.getFactory();
+            serviceFactoryKey = sf.getKey();
+        } else {
+            this.o = service;
+            serviceFactoryKey = null;
+        }
         this.state = state;
     }
 
@@ -183,6 +193,9 @@ class LifecycleObject {
         al.add(registrant);
         for (Object o : configuration.getConfigurations()) {
             al.add(o);
+        }
+        if (serviceFactoryKey != null) {
+            registrant.registerFactory(serviceFactoryKey, (ServiceFactory) o);
         }
         for (Method m : o.getClass().getMethods()) {
             boolean isInternal = m.getAnnotation(UseInternals.class) != null;

@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.util.Clock;
@@ -67,8 +68,7 @@ public abstract class ContainerConfiguration<T> {
     private String name;
 
     /** Additional configuration objects. */
-    private final Map<Object, Boolean> registeredServices = new LinkedHashMap<Object, Boolean>();
-
+    private final ServiceList serviceList = new ServiceList();
     /** The type of container that should be created. */
     private Class<? extends T> type;
 
@@ -124,13 +124,13 @@ public abstract class ContainerConfiguration<T> {
      * @throws IllegalArgumentException
      *             in case of an argument of invalid type or if the object has already been registered.
      */
-    public ContainerConfiguration<T> addService(Object o) {
-        if (o == null) {
-            throw new NullPointerException("o is null");
-        } else if (registeredServices.containsKey(o)) {
-            throw new IllegalArgumentException("Object has already been registered");
-        }
-        registeredServices.put(o, false);
+    public ContainerConfiguration<T> addServiceToLifecycle(Object o) {
+        serviceList.addLifecycle(o);
+        return this;
+    }
+
+    public <S> ContainerConfiguration<T> addServiceFactory(Class<? extends S> key, ServiceFactory<S> factory) {
+        serviceList.addServiceFactory(key, factory);
         return this;
     }
 
@@ -239,13 +239,13 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the objects that have been registered through {@link #addService(Object)}. The service will be returned
-     * in the same order as the they have been added.
+     * Returns the objects that have been registered through {@link #addServiceToLifecycle(Object)}. The service will be
+     * returned in the same order as the they have been added.
      * 
      * @return the objects that have been registered
      */
-    public List<Object> getServices() {
-        return new ArrayList<Object>(registeredServices.keySet());
+    public Object getServices() {
+        return serviceList;
     }
 
     /**

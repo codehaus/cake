@@ -38,7 +38,7 @@ public class ManagementServiceRegistrant extends AbstractTCKTest<Container, Cont
     public void registrant() throws Exception {
         MBeanServer mbs = MBeanServerFactory.createMBeanServer();
         int count = mbs.getMBeanCount();
-        conf.addService(new Manageable() {
+        conf.addServiceToLifecycle(new Manageable() {
             public void manage(ManagedGroup parent) {
                 parent.addChild("foo1", "foodesc").addChild("foo2", "foodesc2");
             }

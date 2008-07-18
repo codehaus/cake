@@ -94,7 +94,8 @@ public class Composer {
                 }
             }
         }
-        result.addAll(conf.getServices());
+        ServiceList sl=(ServiceList) conf.getServices();
+        result.addAll(sl.getServices());
         return result;
     }
 }

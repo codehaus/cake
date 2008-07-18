@@ -44,7 +44,7 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
     @Test(expected = IllegalStateException.class)
     public void serviceRegistrantAfterStart() {
         // latch = new CountDownLatch(1);
-        conf.addService(new ServiceRegistrantAfterStart());
+        conf.addServiceToLifecycle(new ServiceRegistrantAfterStart());
         newContainer();
         prestart();
     }
@@ -52,7 +52,7 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
     @Test(expected = IllegalStateException.class)
     public void serviceRegistrantFactoryAfterStart() {
         // latch = new CountDownLatch(1);
-        conf.addService(new ServiceRegistrantFactoryAfterStart());
+        conf.addServiceToLifecycle(new ServiceRegistrantFactoryAfterStart());
         newContainer();
         prestart();
     }
@@ -64,7 +64,7 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
      */
     @Test
     public void unknownObject() throws Throwable {
-        conf.addService(new StartObject());
+        conf.addServiceToLifecycle(new StartObject());
         newContainer();
         Throwable cause = null;
         try {
@@ -86,7 +86,7 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void unknown() throws Throwable {
-        conf.addService(new StartUnknown());
+        conf.addServiceToLifecycle(new StartUnknown());
         newContainer();
         Throwable cause = null;
         try {

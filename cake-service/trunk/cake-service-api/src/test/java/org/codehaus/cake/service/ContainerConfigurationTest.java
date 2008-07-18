@@ -23,10 +23,11 @@ import static junit.framework.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
+import java.util.Iterator;
 
 import junit.framework.AssertionFailedError;
 
+import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.service.TstStubs.PrivateConstructorStubber;
 import org.codehaus.cake.service.TstStubs.Stubber;
 import org.codehaus.cake.service.TstStubs.StubberConfiguration;
@@ -227,24 +228,26 @@ public class ContainerConfigurationTest {
     @Test
     public void addGetServices() {
         for (int i = 0; i < 100; i++) {
-            conf.addService(i);
+            conf.addServiceToLifecycle(i);
         }
-        List l = conf.getServices();
-        assertEquals(100, l.size());
+        ServiceList l =(ServiceList) conf.getServices();
+        assertEquals(100, l.getServices().size());
+        Iterator<Object> iter=l.getServices().iterator();
         for (int i = 0; i < 100; i++) {
-            assertEquals(i, l.get(i));
+            
+            assertEquals(i, iter.next());
         }
     }
 
     @Test(expected = NullPointerException.class)
     public void addServicesNPE() {
-        conf.addService(null);
+        conf.addServiceToLifecycle(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addServicesSame() {
-        conf.addService(1);
-        conf.addService(1);
+        conf.addServiceToLifecycle(1);
+        conf.addServiceToLifecycle(1);
     }
 
     @Test

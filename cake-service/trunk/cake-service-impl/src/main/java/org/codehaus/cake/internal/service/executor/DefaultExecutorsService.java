@@ -47,36 +47,24 @@ public class DefaultExecutorsService implements CompositeService {
         this.manager = manager;
     }
 
-    public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
-        return manager.getExecutorService(service, attributes);
-    }
-
-    public ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes) {
-        return manager.getForkJoinExecutor(service, attributes);
-    }
-
-    public ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes) {
-        return manager.getScheduledExecutorService(service, attributes);
-    }
-
     @Startable
     public void register(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
         serviceRegistrant.registerFactory(ScheduledExecutorService.class,
                 new ServiceFactory<ScheduledExecutorService>() {
                     public ScheduledExecutorService lookup(AttributeMap attributes) {
-                        return getScheduledExecutorService(null, attributes);
+                        return manager.getScheduledExecutorService(null, attributes);
                     }
                 });
         serviceRegistrant.registerFactory(ExecutorService.class,
                 new ServiceFactory<ExecutorService>() {
                     public ExecutorService lookup(AttributeMap attributes) {
-                        return getExecutorService(null, attributes);
+                        return manager.getExecutorService(null, attributes);
                     }
                 });
         serviceRegistrant.registerFactory(ForkJoinExecutor.class,
                 new ServiceFactory<ForkJoinExecutor>() {
                     public ForkJoinExecutor lookup(AttributeMap attributes) {
-                        return getForkJoinExecutor(null, attributes);
+                        return manager.getForkJoinExecutor(null, attributes);
                     }
                 });
     }

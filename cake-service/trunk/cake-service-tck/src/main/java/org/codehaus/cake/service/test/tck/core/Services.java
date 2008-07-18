@@ -44,7 +44,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
 
     @Test
     public void serviceGet() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         assertFalse(c.isStarted());
         assertNotNull(c.getService(Integer.class));
@@ -56,7 +56,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
      */
     @Test
     public void serviceGetShutdown() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         Integer i = c.getService(Integer.class);
         shutdownAndAwaitTermination();
@@ -65,7 +65,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
 
     @Test
     public void serviceNoHas() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         assertFalse(c.isStarted());
         assertFalse(c.hasService(Double.class));
@@ -74,7 +74,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
 
     @Test
     public void serviceHas() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         assertFalse(c.isStarted());
         assertTrue(c.hasService(Integer.class));
@@ -83,7 +83,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
 
     @Test
     public void serviceHasShutdown() {
-        conf.addService(new Register());
+        conf.addServiceToLifecycle(new Register());
         newContainer();
         assertTrue(c.hasService(Integer.class));
         shutdownAndAwaitTermination();
