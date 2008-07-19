@@ -22,11 +22,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceManager;
 
 public class DefaultServiceManager implements ServiceManager {
-    final Map<Class<?>, ServiceFactory> services = new ConcurrentHashMap<Class<?>, ServiceFactory>();
+    private final Map<Class<?>, ServiceFactory> services = new ConcurrentHashMap<Class<?>, ServiceFactory>();
+
+    private final InternalExceptionService<?> ies;
+
+    public DefaultServiceManager(InternalExceptionService<?> ies) {
+        this.ies = ies;
+    }
 
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType) {
@@ -60,5 +67,56 @@ public class DefaultServiceManager implements ServiceManager {
     /** {@inheritDoc} */
     public Set<Class<?>> serviceKeySet() {
         return new HashSet<Class<?>>(services.keySet());
+    }
+
+    <T> void registerService(Class<T> key, T service) {
+        if (key == null) {
+            throw new NullPointerException("key is null");
+        } else if (service == null) {
+            throw new NullPointerException("service is null");
+        }
+        if (services.containsKey(key)) {
+            throw new IllegalArgumentException(
+                    "A service with the specified key has already been registered [key= " + key + "]");
+        }
+        if (ies.isDebugEnabled()) {
+            ies.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
+        }
+        services.put(key, new SingleServiceFactory(key, service));
+    }
+
+    <T> void registerServiceFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
+        if (key == null) {
+            throw new NullPointerException("key is null");
+        } else if (serviceFactory == null) {
+            throw new NullPointerException("serviceFactory is null");
+        }
+        if (services.containsKey(key)) {
+            throw new IllegalArgumentException(
+                    "A service or servicefactory with the specified key has already been registered [key= " + key + "]");
+        }
+        if (ies.isDebugEnabled()) {
+            ies.debug("  A ServiceFactory was registered [key=" + key + ", factory=" + serviceFactory + "]");
+        }
+        services.put(key, serviceFactory);
+
+    }
+
+    /**
+     * A {@link ServiceFactory} that returns the same service for any attributes.
+     */
+    static class SingleServiceFactory<T> implements ServiceFactory<T> {
+     //   private final Class<T> clazz;
+        private final T service;
+
+        SingleServiceFactory(Class<T> clazz, T service) {
+            //this.clazz = clazz;
+            this.service = service;
+        }
+
+        public T lookup(AttributeMap attributes) {
+            return service;// TODO warn if attributes non empty??? I think so
+        }
+
     }
 }

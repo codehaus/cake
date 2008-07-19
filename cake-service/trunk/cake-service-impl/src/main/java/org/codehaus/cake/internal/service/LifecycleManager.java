@@ -97,8 +97,7 @@ public class LifecycleManager {
                 list.add(new LifecycleObject(state, ies, o));
             }
         }
-        DefaultServiceRegistrant dsr = new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class), composer
-                .get(InternalExceptionService.class));
+        DefaultServiceRegistrant dsr = new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class));
         try {
             for (LifecycleObject lo : list) {
                 lo.runStartable(allServices, composer.get(ContainerConfiguration.class), dsr);

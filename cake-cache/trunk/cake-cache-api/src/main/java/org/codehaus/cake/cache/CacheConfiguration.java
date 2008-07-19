@@ -20,6 +20,7 @@ import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
@@ -77,7 +78,14 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 		return this;
 	}
 
-	/**
+	   /** {@inheritDoc} */
+	@Override
+    public <S> CacheConfiguration<K,V> addServiceFactory(Class<? extends S> key, ServiceFactory<S> factory) {
+        super.addServiceFactory(key, factory);
+        return this;
+    }
+
+    /**
 	 * Creates a new Cache of the type set using {@link #setType(Class)} from
 	 * this configuration.
 	 * 
