@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.executor.ExecutorsConfiguration;
@@ -128,6 +129,14 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
     protected final T newConfigurationClean() {
         conf = (T) TckUtil.newConfiguration();
         return conf;
+    }
+
+    public <S> S getService(Class<S> type) {
+        return c.getService(type);
+    }
+
+    public <S> S getService(Class<S> type, AttributeMap attributes) {
+        return c.getService(type, attributes);
     }
 
     public final void prestart() {

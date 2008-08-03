@@ -19,6 +19,9 @@ import java.lang.reflect.Array;
 
 /**
  * This class contains various methods for manipulating arrays.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CollectionUtils.java 546 2008-01-07 20:47:32Z kasper $

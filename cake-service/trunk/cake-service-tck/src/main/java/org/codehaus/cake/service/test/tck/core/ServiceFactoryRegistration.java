@@ -17,10 +17,10 @@ public class ServiceFactoryRegistration extends AbstractTCKTest<Container, Conta
     public void serviceGet() {
         conf.addServiceFactory(Integer.class, new TestFactory());
         newContainer();
-        assertEquals(-1, c.getService(Integer.class).intValue());
-        assertEquals(-1, c.getService(Integer.class,Attributes.EMPTY_ATTRIBUTE_MAP).intValue());
-        assertEquals(Integer.MIN_VALUE, c.getService(Integer.class,TEST_ATR.singleton(Integer.MIN_VALUE)).intValue());
-        assertEquals(5, c.getService(Integer.class,TEST_ATR.singleton(5)).intValue());
+        assertEquals(-1, getService(Integer.class).intValue());
+        assertEquals(-1, getService(Integer.class,Attributes.EMPTY_ATTRIBUTE_MAP).intValue());
+        assertEquals(Integer.MIN_VALUE, getService(Integer.class,TEST_ATR.singleton(Integer.MIN_VALUE)).intValue());
+        assertEquals(5, getService(Integer.class,TEST_ATR.singleton(5)).intValue());
     }
 
     public static class TestFactory implements ServiceFactory<Integer> {

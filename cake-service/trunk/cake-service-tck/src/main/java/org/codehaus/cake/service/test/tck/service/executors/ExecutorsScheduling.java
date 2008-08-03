@@ -53,7 +53,7 @@ public class ExecutorsScheduling extends AbstractExecutorsTckTest {
         ar = new AssertableRunnable();
         ar1 = new AssertableRunnable();
         ar2 = new AssertableRunnable();
-        ses = c.getService(ScheduledExecutorService.class);
+        ses = getService(ScheduledExecutorService.class);
     }
 
     @Test

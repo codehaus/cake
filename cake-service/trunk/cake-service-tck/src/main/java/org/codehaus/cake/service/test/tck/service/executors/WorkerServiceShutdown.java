@@ -35,7 +35,7 @@ public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
 
-        ScheduledExecutorService ses = c.getService(ScheduledExecutorService.class);
+        ScheduledExecutorService ses = getService(ScheduledExecutorService.class);
         ses.execute(new Runnable() {
             public void run() {
                 for (;;) {
@@ -75,7 +75,7 @@ public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
             newContainer();
 
             // manager
-            c.getService(ScheduledExecutorService.class).execute(new Runnable() {
+            getService(ScheduledExecutorService.class).execute(new Runnable() {
                 public void run() {
                     if (tg != Thread.currentThread().getThreadGroup()) {
                         doFail("wrong threadgroup");
@@ -102,7 +102,7 @@ public class WorkerServiceShutdown extends AbstractExecutorsTckTest {
         // manager
         Thread t = new Thread(new Runnable() {
             public void run() {
-                c.getService(ScheduledExecutorService.class).execute(new Runnable() {
+                getService(ScheduledExecutorService.class).execute(new Runnable() {
                     public void run() {
                         if (Thread.currentThread().isDaemon()) {
                             doFail("should not be deamon");

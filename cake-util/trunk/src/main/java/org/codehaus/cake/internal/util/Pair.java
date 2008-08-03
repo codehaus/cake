@@ -17,13 +17,15 @@ package org.codehaus.cake.internal.util;
 
 /**
  * A <tt>Pair</tt> consists of two references to two other objects.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
  * @param <T1>
  *            the type of the first operand
- * @param <T2>the
- *            type of the second operand
+ * @param <T2>the type of the second operand
  * 
  */
 public final class Pair<T1, T2> implements java.io.Serializable {
@@ -102,8 +104,7 @@ public final class Pair<T1, T2> implements java.io.Serializable {
     public int hashCode() {
         // we need to calculate the hashCode every time.
         // if we kept the hashCode the hashCode/equals contract might fail.
-        return (instance1 == null ? 0 : instance1.hashCode())
-                ^ (instance2 == null ? 0 : instance2.hashCode());
+        return (instance1 == null ? 0 : instance1.hashCode()) ^ (instance2 == null ? 0 : instance2.hashCode());
     }
 
     /** {@inheritDoc} */

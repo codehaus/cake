@@ -24,6 +24,9 @@ import java.util.Map.Entry;
 
 /**
  * Various collection utility functions.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CollectionUtils.java 546 2008-01-07 20:47:32Z kasper $
@@ -31,14 +34,12 @@ import java.util.Map.Entry;
 public final class CollectionUtils {
     // /CLOVER:OFF
     /** Cannot instantiate. */
-    private CollectionUtils() {
-    }
+    private CollectionUtils() {}
 
     // /CLOVER:ON
 
     /**
-     * Checks whether or not the specified collection contains a
-     * <code>null</code>.
+     * Checks whether or not the specified collection contains a <code>null</code>.
      * 
      * @param col
      *            the collection to check
@@ -48,15 +49,13 @@ public final class CollectionUtils {
     public static void checkCollectionForNulls(Iterable<?> col) {
         for (Object entry : col) {
             if (entry == null) {
-                throw new NullPointerException(
-                        "collection contains a null entry");
+                throw new NullPointerException("collection contains a null entry");
             }
         }
     }
 
     /**
-     * Checks whether or not the specified map contains a null key or value
-     * <code>null</code>.
+     * Checks whether or not the specified map contains a null key or value <code>null</code>.
      * 
      * @param map
      *            the map to check
@@ -68,8 +67,7 @@ public final class CollectionUtils {
             if (entry.getKey() == null) {
                 throw new NullPointerException("map contains a null key");
             } else if (entry.getValue() == null) {
-                throw new NullPointerException(
-                        "map contains a null value for key = " + entry.getKey());
+                throw new NullPointerException("map contains a null value for key = " + entry.getKey());
             }
         }
     }
@@ -91,8 +89,7 @@ public final class CollectionUtils {
     /**
      * An immutable collection.
      */
-    public static class ImmutableCollection<E> implements Collection<E>,
-            Serializable {
+    public static class ImmutableCollection<E> implements Collection<E>, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -4490792944315035867L;
@@ -202,33 +199,28 @@ public final class CollectionUtils {
         }
     }
 
-    public static class ImmutableEntrySet<K, V> extends
-            ImmutableSet<Map.Entry<K, V>> {
+    public static class ImmutableEntrySet<K, V> extends ImmutableSet<Map.Entry<K, V>> {
         private static final long serialVersionUID = 7854390611657943733L;
 
-        public ImmutableEntrySet(
-                Set<? extends Map.Entry<? extends K, ? extends V>> s) {
+        public ImmutableEntrySet(Set<? extends Map.Entry<? extends K, ? extends V>> s) {
             super((Set) s);
         }
 
         /**
-         * This method is overridden to protect the backing set against an
-         * object with a nefarious equals function that senses that the
-         * equality-candidate is Map.Entry and calls its setValue method.
+         * This method is overridden to protect the backing set against an object with a nefarious equals function that
+         * senses that the equality-candidate is Map.Entry and calls its setValue method.
          */
         @Override
         public boolean contains(Object o) {
             if (!(o instanceof Map.Entry)) {
                 return false;
             }
-            return col.contains(new SimpleImmutableEntry<K, V>(
-                    (Map.Entry<K, V>) o));
+            return col.contains(new SimpleImmutableEntry<K, V>((Map.Entry<K, V>) o));
         }
 
         /**
-         * The next two methods are overridden to protect against an
-         * unscrupulous List whose contains(Object o) method senses when o is a
-         * Map.Entry, and calls o.setValue.
+         * The next two methods are overridden to protect against an unscrupulous List whose contains(Object o) method
+         * senses when o is a Map.Entry, and calls o.setValue.
          */
         @Override
         public boolean containsAll(Collection<?> coll) {
@@ -260,8 +252,7 @@ public final class CollectionUtils {
         @Override
         public Iterator<Map.Entry<K, V>> iterator() {
             return new Iterator<Map.Entry<K, V>>() {
-                private Iterator<? extends Map.Entry<? extends K, ? extends V>> i = col
-                        .iterator();
+                private Iterator<? extends Map.Entry<? extends K, ? extends V>> i = col.iterator();
 
                 public boolean hasNext() {
                     return i.hasNext();
@@ -291,12 +282,10 @@ public final class CollectionUtils {
             // We don't pass a to c.toArray, to avoid window of
             // vulnerability wherein an unscrupulous multithreaded client
             // could get his hands on raw (unwrapped) Entries from c.
-            Object[] arr = col.toArray(a.length == 0 ? a : ArrayUtils.copyOf(a,
-                    0));
+            Object[] arr = col.toArray(a.length == 0 ? a : ArrayUtils.copyOf(a, 0));
 
             for (int i = 0; i < arr.length; i++) {
-                arr[i] = new SimpleImmutableEntry<K, V>(
-                        (Map.Entry<K, V>) arr[i]);
+                arr[i] = new SimpleImmutableEntry<K, V>((Map.Entry<K, V>) arr[i]);
             }
 
             if (arr.length > a.length) {
@@ -311,8 +300,7 @@ public final class CollectionUtils {
         }
     }
 
-    public static class ImmutableSet<E> extends ImmutableCollection<E>
-            implements Set<E> {
+    public static class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E> {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -7936489435110973730L;
@@ -335,12 +323,10 @@ public final class CollectionUtils {
     }
 
     /**
-     * An Entry maintaining an immutable key and value. This class does not
-     * support method <tt>setValue</tt>. This class may be convenient in
-     * methods that return thread-safe snapshots of key-value mappings.
+     * An Entry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>. This class
+     * may be convenient in methods that return thread-safe snapshots of key-value mappings.
      */
-    public static class SimpleImmutableEntry<K, V> implements Entry<K, V>,
-            Serializable {
+    public static class SimpleImmutableEntry<K, V> implements Entry<K, V>, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -354750390197347279L;
@@ -352,8 +338,7 @@ public final class CollectionUtils {
         private final V value;
 
         /**
-         * Creates an entry representing the same mapping as the specified
-         * entry.
+         * Creates an entry representing the same mapping as the specified entry.
          * 
          * @param entry
          *            the entry to copy
@@ -364,8 +349,7 @@ public final class CollectionUtils {
         }
 
         /**
-         * Creates an entry representing a mapping from the specified key to the
-         * specified value.
+         * Creates an entry representing a mapping from the specified key to the specified value.
          * 
          * @param key
          *            the key represented by this entry
@@ -400,8 +384,7 @@ public final class CollectionUtils {
         /** {@inheritDoc} */
         @Override
         public int hashCode() {
-            return (key == null ? 0 : key.hashCode())
-                    ^ (value == null ? 0 : value.hashCode());
+            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
 
         /** {@inheritDoc} */

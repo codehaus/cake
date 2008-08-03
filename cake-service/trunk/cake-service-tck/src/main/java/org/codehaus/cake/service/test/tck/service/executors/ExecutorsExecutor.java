@@ -57,7 +57,7 @@ public class ExecutorsExecutor extends AbstractExecutorsTckTest {
     public void executeWithDefault() throws Exception {
         newConfigurationClean();
         newContainer();
-        c.getService(ExecutorService.class).execute(ar);
+        getService(ExecutorService.class).execute(ar);
         //withExecutors().getExecutorService("foo").execute(ar1);
         //withExecutors().getExecutorService("foo", Attributes.EMPTY_ATTRIBUTE_MAP).execute(ar2);
         ar.awaitAndAssertDone();
@@ -98,7 +98,7 @@ public class ExecutorsExecutor extends AbstractExecutorsTckTest {
             }
         });
         newContainer();
-        c.getService(ExecutorService.class).execute(ar);
+        getService(ExecutorService.class).execute(ar);
 //        withExecutors().getExecutorService(1).execute(ar1);
 //        withExecutors().getExecutorService(2, am).execute(ar2);
         assertEquals(3, step.get());
@@ -109,7 +109,7 @@ public class ExecutorsExecutor extends AbstractExecutorsTckTest {
     public void shutdown() {
         newConfigurationClean();
         newContainer();
-        ExecutorService es = c.getService(ExecutorService.class);
+        ExecutorService es = getService(ExecutorService.class);
         shutdownAndAwaitTermination();
         es.execute(ar);
     }

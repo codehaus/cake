@@ -29,17 +29,17 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
 
     @Test(expected = NullPointerException.class)
     public void getServiceNPE() {
-        c.getService(null);
+        getService(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void getServiceNPE1() {
-        c.getService(null, Attributes.EMPTY_ATTRIBUTE_MAP);
+        getService(null, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
 
     @Test(expected = NullPointerException.class)
     public void getServiceNPE2() {
-        c.getService(Integer.class, null);
+        getService(Integer.class, null);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
         conf.addServiceToLifecycle(new Register());
         newContainer();
         assertFalse(c.isStarted());
-        assertNotNull(c.getService(Integer.class));
+        assertNotNull(getService(Integer.class));
         checkLazystart();
     }
 
@@ -58,9 +58,9 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
     public void serviceGetShutdown() {
         conf.addServiceToLifecycle(new Register());
         newContainer();
-        Integer i = c.getService(Integer.class);
+        Integer i = getService(Integer.class);
         shutdownAndAwaitTermination();
-        assertSame(i, c.getService(Integer.class));
+        assertSame(i, getService(Integer.class));
     }
 
     @Test

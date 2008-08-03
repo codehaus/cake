@@ -126,7 +126,7 @@ public class TstStubs {
         private PrivateConstructorStubber(StubberConfiguration configuration) {}
     }
 
-    public static class AbstractStubber implements Container, Stubber<Integer> {
+    public static class AbstractStubber implements Stubber<Integer> {
 
         public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
             return false;

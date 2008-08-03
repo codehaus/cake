@@ -94,6 +94,14 @@ public final class Caches {
         return EMPTY_CACHE;
     }
 
+    public static <K, V> CacheEntry<K, V> newEntry(K key, V value) {
+        return newEntry(key, value, Attributes.EMPTY_ATTRIBUTE_MAP);
+    }
+
+    public static <K, V> CacheEntry<K, V> newEntry(K key, V value, AttributeMap attributes) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * A runnable used for calling clear on a cache.
      */
@@ -200,7 +208,7 @@ public final class Caches {
         /** {@inheritDoc} */
         public boolean hasService(Class<?> serviceType) {
             return false;
-        }   
+        }
 
         /** {@inheritDoc} */
         public boolean isShutdown() {
@@ -268,8 +276,8 @@ public final class Caches {
     }
 
     /**
-     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped value must be of a
-     * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
+     * The <tt>Hits</tt> attribute indicates the number of hits for a cache element. The mapped value must be of a type
+     * <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
      */
     static final class HitsAttribute extends LongAttribute {
 

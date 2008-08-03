@@ -21,13 +21,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used for annotating internal classes, or services that should use internal
- * classes.
+ * Used for annotating internal classes, or services that should use internal classes.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id: Logger.java 542 2008-01-02 21:50:05Z kasper $
  */
 @Target( { ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UseInternals {
-}
+public @interface UseInternals {}

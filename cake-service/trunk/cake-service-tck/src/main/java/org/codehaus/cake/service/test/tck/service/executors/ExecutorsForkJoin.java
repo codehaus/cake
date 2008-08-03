@@ -57,7 +57,7 @@ public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
     public void executeWithDefault() throws Exception {
         newConfigurationClean();
         newContainer();
-        c.getService(ForkJoinExecutor.class).execute(ar);
+        getService(ForkJoinExecutor.class).execute(ar);
         ar.awaitAndAssertDone();
 //        ar1.awaitAndAssertDone();
 //        ar2.awaitAndAssertDone();
@@ -96,7 +96,7 @@ public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
             }
         });
         newContainer();
-        c.getService(ForkJoinExecutor.class).execute(ar);
+        getService(ForkJoinExecutor.class).execute(ar);
 //        withExecutors().getForkJoinExecutor(1).execute(ar1);
         //withExecutors().getForkJoinExecutor(2, am).execute(ar2);
         assertEquals(1 /* 3 */, step.get());
@@ -108,7 +108,7 @@ public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         
-        ForkJoinExecutor e = c.getService(ForkJoinExecutor.class);
+        ForkJoinExecutor e = getService(ForkJoinExecutor.class);
         shutdownAndAwaitTermination();
         e.execute(ar1);
     }

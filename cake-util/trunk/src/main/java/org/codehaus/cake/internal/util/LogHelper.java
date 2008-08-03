@@ -21,15 +21,18 @@ import org.w3c.dom.Element;
 
 /**
  * Various {@link Logger} utilities.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: LogHelper.java 525 2007-12-26 18:42:40Z kasper $
  */
 public final class LogHelper {
 
-    public static final  String LOG_LEVEL_ATRB = "level";
+    public static final String LOG_LEVEL_ATRB = "level";
 
-    public static final  String LOG_TYPE_ATRB = "type";
+    public static final String LOG_TYPE_ATRB = "type";
 
     /*
      * private static final String COMMONS_LOGGING = "commons";
@@ -101,7 +104,7 @@ public final class LogHelper {
     /**
      * An AbstractLogger that all logger wrappers extend.
      */
-    public abstract static  class AbstractLogger implements Logger {
+    public abstract static class AbstractLogger implements Logger {
         /** {@inheritDoc} */
         public void debug(String message) {
             log(Level.Debug, message);

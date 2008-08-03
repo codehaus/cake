@@ -22,19 +22,19 @@ import org.codehaus.cake.attribute.Attribute;
 
 public class CacheAttributeConfiguration {
 
-    private List attributes = new ArrayList();
+    private List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
 
-    public List getAllAttributes() {
-        return new ArrayList(attributes);
+    public List<Attribute<?>> getAllAttributes() {
+        return new ArrayList<Attribute<?>>(attributes);
     }
 
-    public CacheAttributeConfiguration add(Attribute... a) {
-        for (Attribute aa : a) {
+    public CacheAttributeConfiguration add(Attribute<?>... a) {
+        for (Attribute<?> aa : a) {
             if (attributes.contains(aa)) {
                 throw new IllegalArgumentException("Attribute has already been added [Attribute =" + aa + "");
             }
         }
-        for (Attribute aa : a) {
+        for (Attribute<?> aa : a) {
             attributes.add(aa);
         }
         return this;

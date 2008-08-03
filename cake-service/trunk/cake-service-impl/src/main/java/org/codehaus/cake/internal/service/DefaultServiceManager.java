@@ -82,7 +82,7 @@ public class DefaultServiceManager implements ServiceManager {
         if (ies.isDebugEnabled()) {
             ies.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
         }
-        services.put(key, new SingleServiceFactory(key, service));
+        services.put(key, new SingleServiceFactory<T>(service));
     }
 
     <T> void registerServiceFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
@@ -106,11 +106,9 @@ public class DefaultServiceManager implements ServiceManager {
      * A {@link ServiceFactory} that returns the same service for any attributes.
      */
     static class SingleServiceFactory<T> implements ServiceFactory<T> {
-     //   private final Class<T> clazz;
         private final T service;
 
-        SingleServiceFactory(Class<T> clazz, T service) {
-            //this.clazz = clazz;
+        SingleServiceFactory(T service) {
             this.service = service;
         }
 

@@ -103,7 +103,7 @@ public class LifecycleManager {
                 lo.runStartable(allServices, composer.get(ContainerConfiguration.class), dsr);
             }
         } finally {
-            dsr.finished();
+            dsr.disableRegistration();
         }
 
         if (composer.hasService(DefaultManagementService.class)) {

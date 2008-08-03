@@ -28,7 +28,7 @@ public class ExecutorsServiceMain extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         assertTrue(c.hasService(ExecutorService.class));
-        assertNotNull(c.getService(ExecutorService.class));
+        assertNotNull(getService(ExecutorService.class));
         assertTrue(c.serviceKeySet().contains(ExecutorService.class));
     }
 }
