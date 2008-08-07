@@ -70,7 +70,6 @@ public interface ServiceRegistrant {
 	 */
 	<T> ServiceRegistrant registerFactory(Class<T> type,
 			ServiceFactory<T> serviceFactory);
-
 	// replace service
 	// remove service
 }

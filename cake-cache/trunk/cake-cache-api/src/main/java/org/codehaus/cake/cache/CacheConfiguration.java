@@ -22,7 +22,6 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
@@ -64,7 +63,6 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 		addConfiguration(new CacheLoadingConfiguration());
 		addConfiguration(new ManagementConfiguration());
 		addConfiguration(new MemoryStoreConfiguration());
-		addConfiguration(new ExecutorsConfiguration());
 		// addConfiguration(new CacheStoreConfiguration());
 	}
 
@@ -154,16 +152,6 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 	@SuppressWarnings("unchecked")
 	public ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>> withExceptionHandling() {
 		return getConfigurationOfType(ExceptionHandlingConfiguration.class);
-	}
-
-	/**
-	 * Returns a configuration object that can be used to control how tasks are
-	 * executed within a cache.
-	 * 
-	 * @return a ExecutorManagerBuilder
-	 */
-	public ExecutorsConfiguration withExecutors() {
-		return getConfigurationOfType(ExecutorsConfiguration.class);
 	}
 
 	/**

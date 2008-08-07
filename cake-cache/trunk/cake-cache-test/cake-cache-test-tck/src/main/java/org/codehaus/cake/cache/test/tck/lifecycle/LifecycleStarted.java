@@ -145,10 +145,10 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
 
     public class Started4 {
         @AfterStart
-        public void hullabulla(Cache<?, ?> cache, MemoryStoreService<?, ?> ms, CacheLoadingService<?, ?> ls) {
+        public void hullabulla(Cache<?, ?> cache) {
             assertSame(c, cache);
-            assertSame(withMemoryStore(), ms);
-            assertSame(withLoading(), ls);
+            assertSame(withMemoryStore(), cache.with().memoryStore());
+            assertSame(withLoading(), cache.with().loading());
             latch.countDown();
         }
     }

@@ -20,6 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
@@ -67,6 +68,13 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
         prestart();
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void notAvailable() {
+        conf.addServiceToLifecycle(new AfterStartNotAvailable());
+        newContainer();
+        prestart();
+    }
+
     public class Started1 {
         @AfterStart
         public void start() {
@@ -107,21 +115,24 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
             registrant.registerService(Integer.class, 1000);
             assertFalse(c.isStarted());
         }
+    }
+
+    public class AfterStartNotAvailable {
+        @Startable
+        public void start(ServiceRegistrant registrant) {
+            registrant.registerService(Integer.class, 1000);
+            assertFalse(c.isStarted());
+        }
 
         @AfterStart
-        public void start(Integer i) {
-            assertTrue(c.isStarted());
-            assertEquals(1000, i.intValue());
-            latch.countDown();
-
-        }
+        public void start(Integer i) {}
     }
 
     public class CheckRegister {
 
         @AfterStart
-        public void start(Integer i) {
-            assertEquals(1000, i.intValue());
+        public void start(ServiceManager i) {
+            assertEquals(1000, i.getService(Integer.class).intValue());
             latch.countDown();
         }
     }

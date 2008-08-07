@@ -19,17 +19,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.forkjoin.ForkJoinExecutor;
-import org.codehaus.cake.service.executor.ExecutorsManager;
+import org.codehaus.cake.service.ServiceFactory;
 
-public class ThreadServiceTestHelper extends ExecutorsManager {
+public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> {
 
     private static final int PERMITS = 100000;
 
@@ -72,7 +69,8 @@ public class ThreadServiceTestHelper extends ExecutorsManager {
         }
     }
 
-    public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
+    public ExecutorService lookup(
+            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExecutorService> context) {
         return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>())
         {
@@ -82,15 +80,6 @@ public class ThreadServiceTestHelper extends ExecutorsManager {
                 super.execute(new MyRunnable(command));
             }
         };
-    }
-
-    public ScheduledExecutorService getScheduledExecutorService(Object service,
-            AttributeMap attributes) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes) {
-        throw new UnsupportedOperationException();
     }
 
 }

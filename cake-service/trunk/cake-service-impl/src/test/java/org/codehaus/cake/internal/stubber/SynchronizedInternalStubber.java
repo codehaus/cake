@@ -20,7 +20,9 @@ import java.util.concurrent.ExecutorService;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.SynchronizedRunState;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
-import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
+import org.codehaus.cake.internal.service.executor.DefaultExecutorService;
+import org.codehaus.cake.internal.service.executor.DefaultForkJoinPool;
+import org.codehaus.cake.internal.service.executor.DefaultScheduledExecutorService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
@@ -68,7 +70,10 @@ public class SynchronizedInternalStubber<T> extends AbstractInternalStubber<T> {
         Composer composer = AbstractInternalStubber.newComposer(configuration);
 
         // Common components
-        composer.registerImplementation(DefaultExecutorsService.class);
+        composer.registerImplementation(DefaultExecutorService.class);
+        composer.registerImplementation(DefaultScheduledExecutorService.class);
+        composer.registerImplementation(DefaultForkJoinPool.class);
+
         composer.registerImplementation(SynchronizedRunState.class);
         if (configuration.withManagement().isEnabled()) {
             composer.registerImplementation(DefaultManagementService.class);

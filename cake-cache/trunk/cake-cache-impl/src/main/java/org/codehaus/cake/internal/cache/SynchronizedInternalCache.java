@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
@@ -28,6 +29,7 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.forkjoin.ForkJoinPool;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
@@ -38,7 +40,9 @@ import org.codehaus.cake.internal.cache.service.memorystore.views.SynchronizedCo
 import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
-import org.codehaus.cake.internal.service.executor.DefaultExecutorsService;
+import org.codehaus.cake.internal.service.executor.DefaultExecutorService;
+import org.codehaus.cake.internal.service.executor.DefaultForkJoinPool;
+import org.codehaus.cake.internal.service.executor.DefaultScheduledExecutorService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.Manageable;
@@ -341,7 +345,10 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         // Cache components
         composer.registerImplementation(SynchronizedCollectionViews.class);
         // composer.registerImplementation(DefaultAttributeService.class);
-        composer.registerImplementation(DefaultExecutorsService.class);
+        composer.registerImplementation(DefaultExecutorService.class);
+        composer.registerImplementation(DefaultScheduledExecutorService.class);
+        composer.registerImplementation(DefaultForkJoinPool.class);
+
         composer.registerImplementation(MemorySparseAttributeService.class);
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(ThreadSafeCacheLoader.class);

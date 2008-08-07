@@ -306,8 +306,6 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         composer.registerImplementation(UnsynchronizedRunState.class);
         if (configuration.withManagement().isEnabled()) {
             throw new IllegalArgumentException("Cache does not support Management");
-        } else if (configuration.withExecutors().getExecutorManager() != null) {
-            throw new IllegalArgumentException("Cache does not support an ExecutorsManagers");
         }
 
         // Cache components

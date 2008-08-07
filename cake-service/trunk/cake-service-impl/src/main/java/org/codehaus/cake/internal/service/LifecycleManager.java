@@ -93,7 +93,6 @@ public class LifecycleManager {
         Set allServices = composer.prepareStart();
         for (Object o : allServices) {
             if (o != null) {
-                
                 list.add(new LifecycleObject(state, ies, o));
             }
         }

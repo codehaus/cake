@@ -18,7 +18,7 @@
 
     <dependency>
       <groupId>org.codehaus.cake.forkjoin</groupId>
-      <artifactId>cake-forkjoin-collections</artifactId>
+      <artifactId>cake-forkjoin</artifactId>
       <version>0.2-SNAPSHOT</version>
     </dependency>
     <dependency>

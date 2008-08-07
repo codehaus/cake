@@ -24,11 +24,11 @@ public class ServiceFactoryRegistration extends AbstractTCKTest<Container, Conta
     }
 
     public static class TestFactory implements ServiceFactory<Integer> {
-        public Integer lookup(AttributeMap attributes) {
-            if (attributes.isEmpty()) {
+        public Integer lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<Integer> context) {
+            if (context.getAttributes().isEmpty()) {
                 return -1;
             }
-            return attributes.get(TEST_ATR);
+            return context.getAttributes().get(TEST_ATR);
         }
     }
 }

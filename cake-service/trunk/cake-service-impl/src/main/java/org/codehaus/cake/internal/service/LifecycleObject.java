@@ -107,7 +107,7 @@ class LifecycleObject {
                                 + " [method = " + m + "]");
                     }
                 } else {
-                    e = new IllegalStateException("No service registered for type " + type.getName() + " [method = "
+                    e = new IllegalStateException("Instances of " + type.getName() + " cannot be injected [method = "
                             + m + "]");
                 }
                 state.trySetStartupException(e);
@@ -123,12 +123,12 @@ class LifecycleObject {
         al.add(container);
 
         // lets dump this
-        for (Class key : container.serviceKeySet()) {
-            try {
-                Object o = container.getService(key);
-                al.add(o);
-            } catch (UnsupportedOperationException ok) {}
-        }
+//        for (Class key : container.serviceKeySet()) {
+//            try {
+//                Object o = container.getService(key);
+//                al.add(o);
+//            } catch (UnsupportedOperationException ok) {}
+//        }
 
         al.add(configuration);
 

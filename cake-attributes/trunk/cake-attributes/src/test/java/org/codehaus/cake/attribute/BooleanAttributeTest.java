@@ -104,7 +104,10 @@ public final class BooleanAttributeTest extends AtrStubs {
         assertFalse(ATR1.get(withAtr(am1), true));
         assertTrue(ATR1.get(withAtr(am2), true));
         assertTrue(ATR1.isTrue(am2));
+        assertTrue(ATR1.isTrue(withAtr(am2)));
         assertFalse(ATR1.isFalse(am2));
+        assertFalse(ATR1.isFalse(withAtr(am2)));
+        assertFalse(ATR1.isFalse(withAtr(am2)));
     }
 
     @Test

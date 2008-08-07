@@ -23,8 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.service.executor.ExecutorsConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsManager;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.codehaus.cake.test.util.AssertableRunnable;
 import org.jmock.Expectations;
@@ -79,11 +78,11 @@ public class ExecutorsScheduling extends AbstractExecutorsTckTest {
             }
         });
 
-        withConf(ExecutorsConfiguration.class).setExecutorManager(new ExecutorsManager() {
-            public ScheduledExecutorService getScheduledExecutorService(Object service, AttributeMap attributes) {
+        conf.addServiceFactory(ScheduledExecutorService.class, new ServiceFactory<ScheduledExecutorService>() {
+            public ScheduledExecutorService lookup(
+                    org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ScheduledExecutorService> context) {
                 if (step.get() == 0) {
-                    assertNull(service);
-                    assertTrue(attributes.isEmpty());
+                    assertTrue(context.getAttributes().isEmpty());
 //                } else if (step.get() == 1) {
 //                    assertEquals(1, service);
 //                    assertTrue(attributes.isEmpty());
@@ -97,6 +96,7 @@ public class ExecutorsScheduling extends AbstractExecutorsTckTest {
                 return ses;
             }
         });
+
         newContainer();
         ses.execute(ar);
 //        withExecutors().getScheduledExecutorService(1).execute(ar1);

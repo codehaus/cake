@@ -22,9 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceManager;
+import org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext;
 
 public class DefaultServiceManager implements ServiceManager {
     private final Map<Class<?>, ServiceFactory> services = new ConcurrentHashMap<Class<?>, ServiceFactory>();
@@ -41,7 +43,7 @@ public class DefaultServiceManager implements ServiceManager {
     }
 
     /** {@inheritDoc} */
-    public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
+    public <T> T getService(final Class<T> serviceType, final AttributeMap attributes) {
         if (serviceType == null) {
             throw new NullPointerException("serviceType is null");
         } else if (attributes == null) {
@@ -51,7 +53,19 @@ public class DefaultServiceManager implements ServiceManager {
         if (t == null) {
             throw new UnsupportedOperationException("Unknown service [type=" + serviceType.getCanonicalName() + "]");
         }
-        T service = t.lookup(attributes);
+        T service = t.lookup(new ServiceFactoryContext<T>() {
+            public AttributeMap getAttributes() {
+                return attributes;
+            }
+
+            public Class<? extends T> getKey() {
+                return serviceType;
+            }
+
+            public T handleNext() {
+                throw new UnsupportedOperationException();
+            }
+        });
         if (service == null) {
             throw new UnsupportedOperationException("Unknown service [type=" + serviceType.getCanonicalName()
                     + ", attributes=" + attributes + "]");
@@ -76,8 +90,8 @@ public class DefaultServiceManager implements ServiceManager {
             throw new NullPointerException("service is null");
         }
         if (services.containsKey(key)) {
-            throw new IllegalArgumentException(
-                    "A service with the specified key has already been registered [key= " + key + "]");
+            throw new IllegalArgumentException("A service with the specified key has already been registered [key= "
+                    + key + "]");
         }
         if (ies.isDebugEnabled()) {
             ies.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
@@ -91,7 +105,8 @@ public class DefaultServiceManager implements ServiceManager {
         } else if (serviceFactory == null) {
             throw new NullPointerException("serviceFactory is null");
         }
-        if (services.containsKey(key)) {
+        ServiceFactory<?> sf = services.get(key);
+        if (sf!=null && sf.getClass().getAnnotation(UseInternals.class) == null) {
             throw new IllegalArgumentException(
                     "A service or servicefactory with the specified key has already been registered [key= " + key + "]");
         }
@@ -112,7 +127,7 @@ public class DefaultServiceManager implements ServiceManager {
             this.service = service;
         }
 
-        public T lookup(AttributeMap attributes) {
+        public T lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<T> context) {
             return service;// TODO warn if attributes non empty??? I think so
         }
 

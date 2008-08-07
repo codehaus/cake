@@ -64,8 +64,6 @@ public class UnsynchronizedInternalStubber<T> extends AbstractInternalStubber<T>
 
         if (configuration.withManagement().isEnabled()) {
             throw new IllegalArgumentException("Cache does not support Management");
-        } else if (configuration.withExecutors().getExecutorManager() != null) {
-            throw new IllegalArgumentException("Cache does not support an ExecutorsManagers");
         }
         composer.registerImplementation(UnsynchronizedRunState.class);
         return composer;

@@ -20,6 +20,7 @@ import org.codehaus.cake.attribute.WithAttributes;
 
 /**
  * A service factory can be implemented for
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $ *
  * @param <T>
@@ -27,12 +28,27 @@ import org.codehaus.cake.attribute.WithAttributes;
  */
 public interface ServiceFactory<T> {
 
-    T lookup(AttributeMap attributes);
-    // hasServiceWithAttributes(AttributeMap attributes);
-    
-    interface LookupContext<T> extends WithAttributes {
+    T lookup(ServiceFactoryContext<T> context);
+
+    interface ServiceFactoryContext<T> extends WithAttributes {
+        /**
+         * @return the key that used for looking of the service, can be useful if a ServiceFactory is used for
+         *         constructing multiple services
+         */
         Class<? extends T> getKey();
+
+        /**
+         * @return attributes that was used for looking up the service
+         * @see ServiceManager#getService(Class, AttributeMap)
+         */
         AttributeMap getAttributes();
-        
+
+        /**
+         * This method should be called if the lookup method cannot construct a service based upon the key and attribute
+         * map
+         * 
+         * @return can be used for chaining instances
+         */
+        T handleNext();
     }
 }

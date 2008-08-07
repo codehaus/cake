@@ -89,12 +89,6 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
         return childServices;
     }
 
-    public CacheLoadingService lookup(AttributeMap attributes) {
-        if (attributes.get(CacheLoadingService.IS_FORCED)) {
-            return serviceForced;
-        }
-        return service;
-    }
 
     class NoForceLoading extends AbstractCacheLoadingService<K, V> {
         void doLoad(K key, AttributeMap attributes) {
@@ -154,6 +148,14 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
                 loader.loadAsync((Map) mapWithAttributes);
             }
         }
+    }
+
+    public CacheLoadingService lookup(
+            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<CacheLoadingService> context) {
+        if (CacheLoadingService.IS_FORCED.isTrue(context)) {
+            return serviceForced;
+        } 
+        return service;
     }
 
 }

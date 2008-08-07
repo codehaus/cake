@@ -21,10 +21,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.service.executor.ExecutorsConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsManager;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.test.tck.RequireService;
-import org.codehaus.cake.service.test.tck.UnsupportedServices;
 import org.codehaus.cake.test.util.AssertableRunnable;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -58,11 +56,11 @@ public class ExecutorsExecutor extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         getService(ExecutorService.class).execute(ar);
-        //withExecutors().getExecutorService("foo").execute(ar1);
-        //withExecutors().getExecutorService("foo", Attributes.EMPTY_ATTRIBUTE_MAP).execute(ar2);
+        // withExecutors().getExecutorService("foo").execute(ar1);
+        // withExecutors().getExecutorService("foo", Attributes.EMPTY_ATTRIBUTE_MAP).execute(ar2);
         ar.awaitAndAssertDone();
-        //ar1.awaitAndAssertDone();
-        //ar2.awaitAndAssertDone();
+        // ar1.awaitAndAssertDone();
+        // ar2.awaitAndAssertDone();
         shutdownAndAwaitTermination();
     }
 
@@ -78,18 +76,15 @@ public class ExecutorsExecutor extends AbstractExecutorsTckTest {
                 one(ses).execute(ar2);
             }
         });
-
-        withConf(ExecutorsConfiguration.class).setExecutorManager(new ExecutorsManager() {
-            public ExecutorService getExecutorService(Object service, AttributeMap attributes) {
+        conf.addServiceFactory(ExecutorService.class, new ServiceFactory<ExecutorService>() {
+            public ExecutorService lookup(
+                    org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExecutorService> context) {
                 if (step.get() == 0) {
-                    assertNull(service);
-                    assertTrue(attributes.isEmpty());
+                    assertTrue(context.getAttributes().isEmpty());
                 } else if (step.get() == 1) {
-                    assertEquals(1, service);
-                    assertTrue(attributes.isEmpty());
+                    assertTrue(context.getAttributes().isEmpty());
                 } else if (step.get() == 2) {
-                    assertEquals(2, service);
-                    assertSame(am, attributes);
+                    assertSame(am, context.getAttributes());
                 } else {
                     fail("Unknown step");
                 }
@@ -97,10 +92,11 @@ public class ExecutorsExecutor extends AbstractExecutorsTckTest {
                 return ses;
             }
         });
+        
         newContainer();
         getService(ExecutorService.class).execute(ar);
-//        withExecutors().getExecutorService(1).execute(ar1);
-//        withExecutors().getExecutorService(2, am).execute(ar2);
+        // withExecutors().getExecutorService(1).execute(ar1);
+        // withExecutors().getExecutorService(2, am).execute(ar2);
         assertEquals(3, step.get());
         shutdownAndAwaitTermination();
     }

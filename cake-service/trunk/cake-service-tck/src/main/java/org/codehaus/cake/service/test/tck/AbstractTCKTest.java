@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
@@ -27,7 +28,6 @@ import junit.framework.AssertionFailedError;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.junit.After;
@@ -128,7 +128,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
 
     protected final T newConfigurationClean() {
         conf = (T) TckUtil.newConfiguration();
-        return conf;
+        return (T) conf;
     }
 
     public <S> S getService(Class<S> type) {
@@ -147,9 +147,9 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         newConfigurationClean();
         if (TckUtil.isThreadSafe()) {
             threadHelper = new ThreadServiceTestHelper();
-            withConf(ExecutorsConfiguration.class).setExecutorManager(threadHelper);
+            conf.addServiceFactory(ExecutorService.class, threadHelper);
         }
-        return conf;
+        return (T) conf;
     }
 
     public <S> S withConf(Class<S> confType) {

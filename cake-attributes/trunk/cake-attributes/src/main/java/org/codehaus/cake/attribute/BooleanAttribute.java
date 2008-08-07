@@ -252,7 +252,14 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     public boolean isTrue(AttributeMap attributes) {
         return attributes.get(this);
     }
-
+    /**
+     * @param withAttributes
+     *            the object containing the attributes
+     * @return true if the attribute is mapped to true, otherwise false
+     */
+    public boolean isTrue(WithAttributes withAttributes) {
+        return isTrue(withAttributes.getAttributes());
+    }
     /**
      * @param attributes
      *            the map with attribute
@@ -260,5 +267,14 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
      */
     public boolean isFalse(AttributeMap attributes) {
         return !attributes.get(this);
+    }
+    
+    /**
+     * @param withAttributes
+     *            the object containing the attributes
+     * @return true if the attribute is mapped to false, otherwise false
+     */
+    public boolean isFalse(WithAttributes withAttributes) {
+        return isFalse(withAttributes.getAttributes());
     }
 }

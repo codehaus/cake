@@ -22,10 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
-import org.codehaus.cake.service.executor.ExecutorsConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsManager;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.test.tck.RequireService;
-import org.codehaus.cake.service.test.tck.UnsupportedServices;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -77,24 +75,7 @@ public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
             }
         });
 
-        withConf(ExecutorsConfiguration.class).setExecutorManager(new ExecutorsManager() {
-            public ForkJoinExecutor getForkJoinExecutor(Object service, AttributeMap attributes) {
-                if (step.get() == 0) {
-                    assertNull(service);
-                    assertTrue(attributes.isEmpty());
-//                } else if (step.get() == 1) {
-//                    assertEquals(1, service);
-//                    assertTrue(attributes.isEmpty());
-//                } else if (step.get() == 2) {
-//                    assertEquals(2, service);
-//                    assertSame(am, attributes);
-                } else {
-                    fail("Unknown step");
-                }
-                step.incrementAndGet();
-                return ses;
-            }
-        });
+
         newContainer();
         getService(ForkJoinExecutor.class).execute(ar);
 //        withExecutors().getForkJoinExecutor(1).execute(ar1);

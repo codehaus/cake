@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.executor.ExecutorsConfiguration;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 
 public class TstStubs {
@@ -32,7 +31,6 @@ public class TstStubs {
         public StubberConfiguration() {
             addConfiguration(new ExceptionHandlingConfiguration());
             addConfiguration(new ManagementConfiguration());
-            addConfiguration(new ExecutorsConfiguration());
         }
 
         public static StubberConfiguration newConfiguration() {

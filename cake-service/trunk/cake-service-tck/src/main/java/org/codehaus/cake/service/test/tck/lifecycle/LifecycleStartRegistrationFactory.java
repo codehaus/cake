@@ -134,8 +134,8 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     static class ServiceFactoryStub implements ServiceFactory<Integer> {
 
-        public Integer lookup(AttributeMap attributes) {
-            int val = attributes.get(I);
+        public Integer lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<Integer> context) {
+            int val = context.getAttributes().get(I);
             return val >= 0 ? val : null;
         }
     }

@@ -296,7 +296,6 @@ public class CacheConfigurationTest {
         CacheConfiguration<?, ?> conf = CacheConfiguration.newConfiguration();
         assertNotNull(conf.withAttributes());
         assertNotNull(conf.withExceptionHandling());
-        assertNotNull(conf.withExecutors());
         assertNotNull(conf.withLoading());
         assertNotNull(conf.withManagement());
         assertNotNull(conf.withMemoryStore());
