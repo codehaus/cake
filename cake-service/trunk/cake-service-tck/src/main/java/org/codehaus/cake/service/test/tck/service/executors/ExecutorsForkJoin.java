@@ -18,11 +18,11 @@ package org.codehaus.cake.service.test.tck.service.executors;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
-import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -35,7 +35,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(JMock.class)
 @RequireService(value = { ExecutorService.class })
-@Ignore
 public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
 
     Mockery context = new JUnit4Mockery();
@@ -57,8 +56,8 @@ public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
         newContainer();
         getService(ForkJoinExecutor.class).execute(ar);
         ar.awaitAndAssertDone();
-//        ar1.awaitAndAssertDone();
-//        ar2.awaitAndAssertDone();
+        // ar1.awaitAndAssertDone();
+        // ar2.awaitAndAssertDon´e();
         shutdownAndAwaitTermination();
     }
 
@@ -70,25 +69,23 @@ public class ExecutorsForkJoin extends AbstractExecutorsTckTest {
         context.checking(new Expectations() {
             {
                 one(ses).execute(ar);
-//                one(ses).execute(ar1);
-//                one(ses).execute(ar2);
-            }
+                step.incrementAndGet();
+             }
         });
-
-
+        conf.addService(ForkJoinExecutor.class, ses);
         newContainer();
         getService(ForkJoinExecutor.class).execute(ar);
-//        withExecutors().getForkJoinExecutor(1).execute(ar1);
-        //withExecutors().getForkJoinExecutor(2, am).execute(ar2);
-        assertEquals(1 /* 3 */, step.get());
+        // withExecutors().getForkJoinExecutor(1).execute(ar1);
+        // withExecutors().getForkJoinExecutor(2, am).execute(ar2);
+        assertEquals(1, step.get());
         shutdownAndAwaitTermination();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = RejectedExecutionException.class)
     public void shutdown() {
         newConfigurationClean();
         newContainer();
-        
+
         ForkJoinExecutor e = getService(ForkJoinExecutor.class);
         shutdownAndAwaitTermination();
         e.execute(ar1);

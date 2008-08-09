@@ -39,7 +39,7 @@ public class AssertableForkJoinTask extends RecursiveAction {
 
     public synchronized void compute() {
         long c = cdl.getCount();
-        if (c <= 0) {
+        if (c < 0) {
             System.err.println("Count was " + c);
         }
         assertTrue("Count was " + c, c > 0);

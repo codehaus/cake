@@ -26,10 +26,9 @@ import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext;
 
 public class DefaultServiceManager implements ServiceManager {
-    private final Map<Class<?>, ServiceFactory> services = new ConcurrentHashMap<Class<?>, ServiceFactory>();
+    private final Map<Class<?>, RegisteredFactory> services = new ConcurrentHashMap<Class<?>, RegisteredFactory>();
 
     private final InternalExceptionService<?> ies;
 
@@ -49,23 +48,11 @@ public class DefaultServiceManager implements ServiceManager {
         } else if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
-        ServiceFactory<T> t = services.get(serviceType);
-        if (t == null) {
+        RegisteredFactory<T> f = services.get(serviceType);
+        if (f == null) {
             throw new UnsupportedOperationException("Unknown service [type=" + serviceType.getCanonicalName() + "]");
         }
-        T service = t.lookup(new ServiceFactoryContext<T>() {
-            public AttributeMap getAttributes() {
-                return attributes;
-            }
-
-            public Class<? extends T> getKey() {
-                return serviceType;
-            }
-
-            public T handleNext() {
-                throw new UnsupportedOperationException();
-            }
-        });
+        T service = f.lookup(serviceType, attributes);
         if (service == null) {
             throw new UnsupportedOperationException("Unknown service [type=" + serviceType.getCanonicalName()
                     + ", attributes=" + attributes + "]");
@@ -89,10 +76,6 @@ public class DefaultServiceManager implements ServiceManager {
         } else if (service == null) {
             throw new NullPointerException("service is null");
         }
-        if (services.containsKey(key)) {
-            throw new IllegalArgumentException("A service with the specified key has already been registered [key= "
-                    + key + "]");
-        }
         if (ies.isDebugEnabled()) {
             ies.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
         }
@@ -105,31 +88,61 @@ public class DefaultServiceManager implements ServiceManager {
         } else if (serviceFactory == null) {
             throw new NullPointerException("serviceFactory is null");
         }
-        ServiceFactory<?> sf = services.get(key);
-        if (sf!=null && sf.getClass().getAnnotation(UseInternals.class) == null) {
-            throw new IllegalArgumentException(
-                    "A service or servicefactory with the specified key has already been registered [key= " + key + "]");
-        }
+        RegisteredFactory<?> previous = services.get(key);
         if (ies.isDebugEnabled()) {
             ies.debug("  A ServiceFactory was registered [key=" + key + ", factory=" + serviceFactory + "]");
         }
-        services.put(key, serviceFactory);
+        services.put(key, new LookupNextServiceFactory(serviceFactory, previous));
 
+    }
+
+    private interface RegisteredFactory<T> {
+        T lookup(Class<T> key, AttributeMap attributes);
     }
 
     /**
      * A {@link ServiceFactory} that returns the same service for any attributes.
      */
-    static class SingleServiceFactory<T> implements ServiceFactory<T> {
+    static class SingleServiceFactory<T> implements RegisteredFactory<T> {
         private final T service;
 
         SingleServiceFactory(T service) {
             this.service = service;
         }
 
-        public T lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<T> context) {
-            return service;// TODO warn if attributes non empty??? I think so
+        public T lookup(Class<T> key, AttributeMap attributes) {
+            return service;
+        }
+    }
+
+    static class LookupNextServiceFactory<T> implements RegisteredFactory<T> {
+        private final ServiceFactory<T> factory;
+        private final RegisteredFactory<T> next;
+
+        LookupNextServiceFactory(ServiceFactory<T> factory, RegisteredFactory<T> next) {
+            this.factory = factory;
+            this.next = next;
         }
 
+        public T lookup(final Class<T> key, final AttributeMap attributes) {
+            return factory.lookup(new ServiceFactory.ServiceFactoryContext<T>() {
+                public AttributeMap getAttributes() {
+                    return attributes;
+                }
+
+                public Class<? extends T> getKey() {
+                    return key;
+                }
+
+                public T handleNext() {
+                    if (next == null) {
+                        throw new UnsupportedOperationException(
+                                "No other services registered for the specified key, [key=" + key.getCanonicalName()
+                                        + "]");
+                    }
+                    return next.lookup(key, attributes);
+                }
+            });
+        }
     }
 }

@@ -38,12 +38,12 @@ import org.codehaus.cake.service.Stoppable;
 
 class LifecycleObject {
 
-    private final InternalExceptionService ies;
+    private final InternalExceptionService<?> ies;
     private final Object o;
     private final RunState state;
-    private final Class serviceFactoryKey;
+    private final Class<?> serviceFactoryKey;
 
-    LifecycleObject(RunState state, InternalExceptionService ies, Object service) {
+    LifecycleObject(RunState state, InternalExceptionService<?> ies, Object service) {
         this.ies = ies;
         if (service instanceof ServiceList.Factory) {
             ServiceList.Factory sf = (Factory) service;
@@ -66,7 +66,7 @@ class LifecycleObject {
         return false;
     }
 
-    private void matchAndInvoke(Method m, Iterable parameters, boolean start) throws IllegalArgumentException,
+    private void matchAndInvoke(Method m, Iterable<?> parameters, boolean start) throws IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         for (Object o : parameters) {
@@ -119,21 +119,13 @@ class LifecycleObject {
     }
 
     void runAfterStart(ContainerConfiguration configuration, Container container) {
-        ArrayList al = new ArrayList();
-        al.add(container);
+        ArrayList objectsAvailable = new ArrayList();
+        objectsAvailable.add(container); // add container
 
-        // lets dump this
-//        for (Class key : container.serviceKeySet()) {
-//            try {
-//                Object o = container.getService(key);
-//                al.add(o);
-//            } catch (UnsupportedOperationException ok) {}
-//        }
-
-        al.add(configuration);
+        objectsAvailable.add(configuration); // add Base configuration
 
         for (Object o : configuration.getConfigurations()) {
-            al.add(o);
+            objectsAvailable.add(o); // add each sub configuration
         }
         for (Method m : o.getClass().getMethods()) {
             Annotation a = m.getAnnotation(AfterStart.class);
@@ -142,7 +134,7 @@ class LifecycleObject {
                     ies.debug("@AfterStart -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
                 }
                 try {
-                    matchAndInvoke(m, al, false);
+                    matchAndInvoke(m, objectsAvailable, false);
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
                     state.trySetStartupException(cause);
@@ -195,7 +187,11 @@ class LifecycleObject {
             al.add(o);
         }
         if (serviceFactoryKey != null) {
-            registrant.registerFactory(serviceFactoryKey, (ServiceFactory) o);
+            if (o instanceof ServiceFactory) {
+                registrant.registerFactory(serviceFactoryKey, (ServiceFactory) o);
+            } else {
+                registrant.registerService((Class) serviceFactoryKey, o);
+            }
         }
         for (Method m : o.getClass().getMethods()) {
             boolean isInternal = m.getAnnotation(UseInternals.class) != null;

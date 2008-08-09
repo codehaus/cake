@@ -24,17 +24,21 @@ import org.codehaus.cake.service.Startable;
 import org.junit.Test;
 
 public class LifecycleRegistration extends AbstractCacheTCKTest {
-    @Test(expected = IllegalArgumentException.class)
+
+    private final static MemoryStoreService mss = dummy(MemoryStoreService.class);
+
+    @Test
     public void registerExisting() {
         conf.addServiceToLifecycle(new Register());
         newContainer();
         prestart();
+        assertSame(mss,c.with().memoryStore());
     }
 
     public class Register {
         @Startable
         public void start(ServiceRegistrant registrant) {
-            registrant.registerService(MemoryStoreService.class, dummy(MemoryStoreService.class));
+            registrant.registerService(MemoryStoreService.class, mss);
         }
     }
 }

@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.ServiceManager;
 
 /**
  * A <tt>cache</tt> is a collection of data duplicating original values stored elsewhere or computed earlier, where

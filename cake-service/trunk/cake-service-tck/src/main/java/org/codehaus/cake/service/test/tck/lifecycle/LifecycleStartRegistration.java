@@ -17,9 +17,11 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.Register1;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.Register2;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterKeyNull;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterServiceNull;
 import org.junit.Test;
 
 public class LifecycleStartRegistration extends AbstractTCKTest<Container, ContainerConfiguration> {
@@ -32,71 +34,32 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
 
     @Test
     public void register() {
-        conf.addServiceToLifecycle(new Register());
+        conf.addServiceToLifecycle(new Register1());
         newContainer();
         prestart();
-        assertEquals(1000, c.getService(Integer.class).intValue());
+        assertEquals(1, c.getService(Integer.class).intValue());
     }
 
     @Test(expected = NullPointerException.class)
     public void registerNullKey() {
-        conf.addServiceToLifecycle(new RegisterNullKey());
+        conf.addServiceToLifecycle(new RegisterKeyNull());
         newContainer();
         prestart();
     }
 
     @Test(expected = NullPointerException.class)
     public void registerNullService() {
-        conf.addServiceToLifecycle(new RegisterNullService());
+        conf.addServiceToLifecycle(new RegisterServiceNull());
         newContainer();
         prestart();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void registerSame() {
-        conf.addServiceToLifecycle(new RegisterSame());
+    @Test
+    public void registerLastIsActive() {
+        conf.addServiceToLifecycle(new Register1());
+        conf.addServiceToLifecycle(new Register2());
         newContainer();
         prestart();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void registerSameTwice() {
-        conf.addServiceToLifecycle(new Register());
-        conf.addServiceToLifecycle(new Register());
-        newContainer();
-        prestart();
-    }
-
-    public static class Register {
-        @Startable
-        public void start(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, 1000);
-        }
-    }
-
-    public static class RegisterNullKey {
-        @Startable
-        public void start(ServiceRegistrant registrant) {
-            registrant.registerService(null, 1000);
-        }
-    }
-
-    public static class RegisterNullService {
-        @Startable
-        public void start(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, null);
-        }
-    }
-
-    public static class RegisterSame {
-        @Startable
-        public void start1(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, 1000);
-        }
-
-        @Startable
-        public void start2(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, 1000);
-        }
+        assertEquals(2, c.getService(Integer.class).intValue()); // take last
     }
 }

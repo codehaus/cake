@@ -66,6 +66,7 @@ public abstract class ContainerConfiguration<T> {
 
     /** Additional configuration objects. */
     private final ServiceList serviceList = new ServiceList();
+
     /** The type of container that should be created. */
     private Class<? extends T> type;
 
@@ -123,6 +124,11 @@ public abstract class ContainerConfiguration<T> {
      */
     public ContainerConfiguration<T> addServiceToLifecycle(Object o) {
         serviceList.addLifecycle(o);
+        return this;
+    }
+
+    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, T service) {
+        serviceList.addService(key, service);
         return this;
     }
 
