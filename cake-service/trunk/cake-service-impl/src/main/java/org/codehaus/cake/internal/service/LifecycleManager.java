@@ -99,7 +99,7 @@ public class LifecycleManager {
         DefaultServiceRegistrant dsr = new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class));
         try {
             for (LifecycleObject lo : list) {
-                lo.runStartable(allServices, composer.get(ContainerConfiguration.class), dsr);
+                lo.runStart(allServices, composer.get(ContainerConfiguration.class), dsr);
             }
         } finally {
             dsr.disableRegistration();
@@ -127,11 +127,11 @@ public class LifecycleManager {
     void runShutdown() {
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.runStoppable();
+            lo.runStop();
         }
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.runDisposable();
+            lo.runDispose();
         }
         ies.terminated();
     }

@@ -98,8 +98,4 @@ public final class SynchronizedRunState extends RunState {
             transitionTo(STARTING);
         }
     }
-
-    Throwable getStartupException() {
-        return startupException.get();
-    }
 }

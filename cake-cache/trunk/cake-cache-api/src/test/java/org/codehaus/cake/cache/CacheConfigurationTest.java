@@ -21,15 +21,19 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 import junit.framework.AssertionFailedError;
 
 import org.codehaus.cake.internal.service.ServiceList;
+import org.codehaus.cake.internal.service.ServiceList.Factory;
+import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
@@ -91,9 +95,21 @@ public class CacheConfigurationTest {
 
     @Test
     public void addService() {
-        assertTrue(((ServiceList)conf.getServices()).getServices().isEmpty());
+        assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
+        ServiceFactory sf = dummy(ServiceFactory.class);
         conf.addServiceToLifecycle(5);
-        assertTrue(((ServiceList)conf.getServices()).getServices().contains(5));
+        conf.addService(Integer.class, 10);
+        conf.addServiceFactory(Long.class, sf);
+        ServiceList sl = (ServiceList) conf.getServices();
+        Iterator<Object> iter = sl.getServices().iterator();
+        assertEquals(5, iter.next());
+        ServiceList.Factory f10 = (Factory) iter.next();
+        assertEquals(Integer.class, f10.getKey());
+        assertEquals(10, f10.getFactory());
+        f10 = (Factory) iter.next();
+        assertEquals(Long.class, f10.getKey());
+        assertEquals(sf, f10.getFactory());
+        assertFalse(iter.hasNext());
     }
 
     /**

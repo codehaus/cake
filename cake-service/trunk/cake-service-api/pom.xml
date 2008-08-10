@@ -15,12 +15,6 @@
       <version>0.2-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.cake.forkjoin</groupId>
-      <artifactId>cake-forkjoin</artifactId>
-      <version>0.2-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <groupId>org.codehaus.cake.ops</groupId>
       <artifactId>cake-ops</artifactId>

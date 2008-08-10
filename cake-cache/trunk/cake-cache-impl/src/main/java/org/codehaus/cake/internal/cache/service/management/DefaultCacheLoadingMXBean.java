@@ -21,19 +21,27 @@ import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**
  * A class that exposes a {@link CacheLoadingService} as a {@link CacheLoadingMXBean}.
+ * <p>
+ * This class must be public to allow for reflection.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
  */
 public final class DefaultCacheLoadingMXBean implements CacheLoadingMXBean {
 
-    /** The CacheLoadingService that is wrapped. */
+    /** The forced CacheLoadingService that is being wrapped. */
     private final CacheLoadingService<?, ?> forced;
 
+    /** The non-forced CacheLoadingService that is being wrapped. */
     private final CacheLoadingService<?, ?> noForce;
 
     /**
      * Creates a new DelegatedCacheLoadingMXBean.
      * 
-     * @param service
-     *            the CacheLoadingService to wrap
+     * @param noForce
+     *            the non-forced CacheLoadingService to wrap
+     * @param forced
+     *            the forced CacheLoadingService to wrap
      */
     public DefaultCacheLoadingMXBean(CacheLoadingService<?, ?> noForce, CacheLoadingService<?, ?> forced) {
         if (forced == null) {

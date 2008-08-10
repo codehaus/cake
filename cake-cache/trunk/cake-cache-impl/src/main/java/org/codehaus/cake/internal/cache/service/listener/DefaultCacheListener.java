@@ -24,18 +24,18 @@ import org.codehaus.cake.internal.cache.InternalCacheEntry;
 
 public class DefaultCacheListener<K, V> implements InternalCacheListener<K, V> {
 
-    public void afterCacheClear(long timestamp, Collection<? extends CacheEntry<K, V>> entries) {
+    public void afterCacheClear(long timestamp, Iterable<? extends CacheEntry<K, V>> entries) {
     // TODO Auto-generated method stub
 
     }
 
-    public void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
+    public void afterPut(long started, Iterable<? extends CacheEntry<K, V>> evictedEntries,
             InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry, boolean fromLoader) {
     // TODO Auto-generated method stub
 
     }
 
-    public void afterPutAll(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
+    public void afterPutAll(long started, Iterable<? extends CacheEntry<K, V>> evictedEntries,
             Map<InternalCacheEntry<K, V>, InternalCacheEntry<K, V>> newPrevEntries, boolean fromLoader) {
     // TODO Auto-generated method stub
 
@@ -46,7 +46,7 @@ public class DefaultCacheListener<K, V> implements InternalCacheListener<K, V> {
 
     }
 
-    public void afterRemoveAll(long start, Collection<? extends K> keys, Collection<CacheEntry<K, V>> removed) {
+    public void afterRemoveAll(long start, Iterable<? extends K> keys, Iterable<CacheEntry<K, V>> removed) {
     // TODO Auto-generated method stub
 
     }
@@ -72,7 +72,7 @@ public class DefaultCacheListener<K, V> implements InternalCacheListener<K, V> {
         return 0;
     }
 
-    public long beforeRemoveAll(Collection<? extends K> keys) {
+    public long beforeRemoveAll(Iterable<? extends K> keys) {
         // TODO Auto-generated method stub
         return 0;
     }

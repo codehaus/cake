@@ -20,6 +20,7 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -28,6 +29,7 @@ import java.util.Iterator;
 import junit.framework.AssertionFailedError;
 
 import org.codehaus.cake.internal.service.ServiceList;
+import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.service.TstStubs.PrivateConstructorStubber;
 import org.codehaus.cake.service.TstStubs.Stubber;
 import org.codehaus.cake.service.TstStubs.StubberConfiguration;
@@ -226,15 +228,32 @@ public class ContainerConfigurationTest {
     }
 
     @Test
+    public void addService() {
+        assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
+        ServiceFactory sf = dummy(ServiceFactory.class);
+        conf.addServiceToLifecycle(5);
+        conf.addService(Integer.class, 10);
+        conf.addServiceFactory(Long.class, sf);
+        ServiceList sl = (ServiceList) conf.getServices();
+        Iterator<Object> iter = sl.getServices().iterator();
+        assertEquals(5, iter.next());
+        ServiceList.Factory f10 = (Factory) iter.next();
+        assertEquals(Integer.class, f10.getKey());
+        assertEquals(10, f10.getFactory());
+        f10 = (Factory) iter.next();
+        assertEquals(Long.class, f10.getKey());
+        assertEquals(sf, f10.getFactory());
+        assertFalse(iter.hasNext());
+    }
+    
+    @Test
     public void addGetServices() {
         for (int i = 0; i < 100; i++) {
             conf.addServiceToLifecycle(i);
         }
         ServiceList l =(ServiceList) conf.getServices();
-        assertEquals(100, l.getServices().size());
         Iterator<Object> iter=l.getServices().iterator();
         for (int i = 0; i < 100; i++) {
-            
             assertEquals(i, iter.next());
         }
     }

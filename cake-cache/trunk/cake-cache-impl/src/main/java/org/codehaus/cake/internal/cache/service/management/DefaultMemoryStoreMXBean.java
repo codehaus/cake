@@ -23,7 +23,10 @@ import org.codehaus.cake.management.annotation.ManagedOperation;
 /**
  * This class wraps CacheEvictionService as a CacheEvictionMXBean.
  * <p>
- * Must be a public class to allow for reflection.
+ * This class must be public to allow for reflection.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
  */
 public final class DefaultMemoryStoreMXBean implements MemoryStoreMXBean {
     /** The service we are wrapping. */
@@ -76,11 +79,13 @@ public final class DefaultMemoryStoreMXBean implements MemoryStoreMXBean {
         service.trimToVolume(capacity);
     }
 
+    /** {@inheritDoc} */
     @ManagedAttribute(description = "The current volume of the cache")
     public long getVolume() {
         return service.getVolume();
     }
 
+    /** {@inheritDoc} */
     @ManagedAttribute(description = "The current size of the cache")
     public int getSize() {
         return service.getSize();

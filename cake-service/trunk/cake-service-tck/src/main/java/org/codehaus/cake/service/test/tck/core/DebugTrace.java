@@ -36,7 +36,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
         }
 
         public boolean isEnabled(Level level) {
-            return true;
+            return level != Level.Trace;
         }
 
         public void log(Level level, String message, Throwable cause) {}

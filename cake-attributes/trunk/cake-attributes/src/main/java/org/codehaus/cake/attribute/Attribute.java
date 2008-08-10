@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *            the type of objects that this attribute maps to
  * @see AttributeMap
  */
-public abstract class Attribute<T> implements Serializable {
+public abstract class Attribute<T> implements Serializable{
     /* All fields are transient because attribute implementations should be singletons. */
 
     /** An AtomicLong for generating unique names, if user does not specify name. */

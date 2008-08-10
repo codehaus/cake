@@ -15,6 +15,7 @@
  */
 package org.codehaus.cake.attribute;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -24,7 +25,7 @@ import java.util.Comparator;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: DoubleAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class DoubleAttribute extends Attribute<Double> implements Comparator<WithAttributes> {
+public abstract class DoubleAttribute extends Attribute<Double> implements Comparator<WithAttributes>, Serializable {
 
     /** The default value of this attribute. */
     private final transient double defaultValue;

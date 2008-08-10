@@ -22,6 +22,11 @@ import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**
  * A class that exposes a {@link Cache} as a {@link CacheMXBean}.
+ * <p>
+ * This class must be public to allow for reflection.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
  */
 public final class DefaultCacheMXBean implements CacheMXBean {
     /** The cache that is wrapped. */

@@ -17,16 +17,12 @@ package org.codehaus.cake.cache.test.operations;
 
 import org.codehaus.cake.cache.Cache;
 
-
-
 public class CacheOps {
 
     static final String PREFIX = "test.opr.cache.";
 
+    @TestOperation(PREFIX + "get")
     public static class Get<K, V> extends AbstractOperation<K, V> {
-        /** The name of this operation. */
-        public static final String NAME = PREFIX + "get";
-
         /** {@inheritDoc} */
         public void run() {
             cache.get(keyGenerator.op());
@@ -49,8 +45,7 @@ public class CacheOps {
                     size++;
                 }
                 if (size != currentSize) {
-                    throw new AssertionError("Size difference should be 0, expected " + currentSize
-                            + ", was " + size);
+                    throw new AssertionError("Size difference should be 0, expected " + currentSize + ", was " + size);
                 }
             }
         }

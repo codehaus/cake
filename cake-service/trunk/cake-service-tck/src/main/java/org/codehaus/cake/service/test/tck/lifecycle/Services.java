@@ -1,5 +1,7 @@
 package org.codehaus.cake.service.test.tck.lifecycle;
 
+import static org.junit.Assert.assertEquals;
+
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
@@ -90,6 +92,7 @@ public class Services {
         }
 
         public Integer lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<Integer> context) {
+            assertEquals(Integer.class, context.getKey());
             int val = context.getAttributes().get(I) + stride;
             return val >= 0 ? val : context.handleNext();
         }

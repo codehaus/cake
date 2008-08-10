@@ -43,7 +43,7 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
      * @param previousVolume
      *            the previous volume of the cache
      */
-    void afterCacheClear(long timestamp, Collection<? extends CacheEntry<K, V>> entries);
+    void afterCacheClear(long timestamp, Iterable<? extends CacheEntry<K, V>> entries);
 
     // void afterCachePurge(long start, Collection<? extends CacheEntry<K, V>> purgedEntries, int previousSize, int
     // newSize);
@@ -59,15 +59,15 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
     // void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
     // InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry);
 
-    void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
+    void afterPut(long started, Iterable<? extends CacheEntry<K, V>> evictedEntries,
             InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry, boolean fromLoader);
 
-    void afterPutAll(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
+    void afterPutAll(long started, Iterable<? extends CacheEntry<K, V>> evictedEntries,
             Map<InternalCacheEntry<K, V>, InternalCacheEntry<K, V>> newPrevEntries, boolean fromLoader);
 
     void afterRemove(long started, CacheEntry<K, V> entry);
 
-    void afterRemoveAll(long start, Collection<? extends K> keys, Collection<CacheEntry<K, V>> removed);
+    void afterRemoveAll(long start, Iterable<? extends K> keys, Iterable<CacheEntry<K, V>> removed);
 
     // void afterContainerStart();
 
@@ -97,7 +97,7 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
 
     long beforeRemove(Object key, Object value);
 
-    long beforeRemoveAll(Collection<? extends K> keys);
+    long beforeRemoveAll(Iterable<? extends K> keys);
 
     // long beforeReplace(K key, V value);
 

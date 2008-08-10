@@ -91,16 +91,16 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public EntryPair<K, V> put(K key, V value, AttributeMap attributes, boolean isAbsent) {
-        final DefaultEntry<K, V> prev = map.get(key);
-        if (isDisabled || isAbsent && prev != null) {
-            return new EntryPair<K, V>(prev, null);
+        final DefaultEntry<K, V> previous = map.get(key);
+        if (isDisabled || isAbsent && previous != null) {
+            return new EntryPair<K, V>(previous, null);
         }
 
         final AttributeMap atr;
-        if (prev == null) {
+        if (previous == null) {
             atr = attributeService.create(key, value, attributes);
         } else {
-            atr = attributeService.update(key, value, attributes, prev.getAttributes());
+            atr = attributeService.update(key, value, attributes, previous.getAttributes());
         }
 
         final DefaultEntry<K, V> entry = new DefaultEntry<K, V>(key, value, atr);
@@ -118,16 +118,16 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         boolean evicted = false;
         if (keepNew && policy != null) {
             evicted = true;
-            if (prev == null) {
+            if (previous == null) {
                 keepNew = policy.add(entry);
             } else {
-                CacheEntry<K, V> e = policy.replace(prev, entry);
-                keepExisting = e == prev;
+                CacheEntry<K, V> e = policy.replace(previous, entry);
+                keepExisting = e == previous;
                 keepNew = e == entry;
             }
         }
-        if (prev != null && !keepExisting) {
-            removeEntry(prev, evicted);
+        if (previous != null && !keepExisting) {
+            removeEntry(previous, evicted);
             if (!keepNew) {
                 map.remove(key);
             }
@@ -136,7 +136,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             volume += SIZE.get(entry);
             map.put(key, entry);
         }
-        return new EntryPair<K, V>(prev, keepNew ? entry : null);
+        return new EntryPair<K, V>(previous, keepNew ? entry : null);
     }
 
     public Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(Map<K, Entry<V, AttributeMap>> data) {
@@ -198,8 +198,11 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     }
 
     public ParallelArray<CacheEntry<K, V>> trim() {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
+        ParallelArray<CacheEntry<K, V>> pa = null;
         while (map.size() > maximumSize || volume > maximumVolume) {
+            if (pa == null) {
+                pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
+            }
             if (evictor == null) {
                 pa.asList().add(evictNext());
             } else {

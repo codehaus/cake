@@ -154,8 +154,8 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         EntryPair<K, V> prev = memoryCache.put(key, value, attributes, OnlyIfAbsent);
         ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-        listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(), (InternalCacheEntry) prev
-                .getNew(), false);
+        listener.afterPut(started, trimmed, (InternalCacheEntry) prev.getPrevious(),
+                (InternalCacheEntry) prev.getNew(), false);
         return prev.getPrevious();
     }
 
@@ -175,7 +175,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         Map<CacheEntry<K, V>, CacheEntry<K, V>> result = memoryCache.putAllWithAttributes(data);
         ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-        listener.afterPutAll(started, trimmed.asList(), (Map) result, false);
+        listener.afterPutAll(started, trimmed, (Map) result, false);
     }
 
     public V putIfAbsent(K key, V value) {
@@ -206,12 +206,14 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         }
         CollectionUtils.checkCollectionForNulls(keys);
         // TODO sync
-        long started = listener.beforeRemoveAll((Collection) keys);
+        long started = listener.beforeRemoveAll(keys);
+        final Iterable<CacheEntry<K, V>> list;
+        synchronized (mutex) {
+            lazyStart();
+            list = memoryCache.removeAll(keys);
+        }
 
-        lazyStart();
-        ParallelArray<CacheEntry<K, V>> list = memoryCache.removeAll(keys);
-
-        listener.afterRemoveAll(started, (Collection) keys, list.asList());
+        listener.afterRemoveAll(started, keys, list);
 
         // return list.size() > 0;
     }
@@ -220,9 +222,11 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
     private CacheEntry<K, V> removeByKey(Object key, Object value) {
         long started = listener.beforeRemove(key, value);
         // TODO sync
-        lazyStart();
-        CacheEntry<K, V> e = memoryCache.remove(key, value);
-
+        final CacheEntry<K, V> e;
+        synchronized (mutex) {
+            lazyStart();
+            e = memoryCache.remove(key, value);
+        }
         listener.afterRemove(started, e);
         return e;
     }
@@ -324,8 +328,8 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
                 EntryPair<K, V> prev = memoryCache.put(key, value, map, false);
                 ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-                listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(),
-                        (InternalCacheEntry) prev.getNew(), false);
+                listener.afterPut(started, trimmed, (InternalCacheEntry) prev.getPrevious(), (InternalCacheEntry) prev
+                        .getNew(), false);
                 return prev.getNew();
             }
         }

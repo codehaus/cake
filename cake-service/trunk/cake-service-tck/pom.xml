@@ -19,5 +19,10 @@
       <artifactId>cake-service-api</artifactId>
       <version>${pom.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.forkjoin</groupId>
+      <artifactId>cake-forkjoin</artifactId>
+      <version>0.2-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

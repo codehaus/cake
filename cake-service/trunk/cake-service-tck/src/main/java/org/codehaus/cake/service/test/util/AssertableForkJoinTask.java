@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service.test.tck.service.executors;
+package org.codehaus.cake.service.test.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -131,7 +131,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         EntryPair<K, V> prev = memoryCache.put(key, value, attributes, OnlyIfAbsent);
         ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-        listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(), (InternalCacheEntry) prev
+        listener.afterPut(started, trimmed, (InternalCacheEntry) prev.getPrevious(), (InternalCacheEntry) prev
                 .getNew(), false);
         return prev.getPrevious();
     }
@@ -151,7 +151,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         Map<CacheEntry<K, V>, CacheEntry<K, V>> result = memoryCache.putAllWithAttributes(data);
         ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-        listener.afterPutAll(started, trimmed.asList(), (Map) result, false);
+        listener.afterPutAll(started, trimmed, (Map) result, false);
     }
 
     public V putIfAbsent(K key, V value) {
@@ -285,7 +285,7 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
             EntryPair<K, V> prev = memoryCache.put(key, value, map, false);
             ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
 
-            listener.afterPut(started, trimmed.asList(), (InternalCacheEntry) prev.getPrevious(),
+            listener.afterPut(started, trimmed, (InternalCacheEntry) prev.getPrevious(),
                     (InternalCacheEntry) prev.getNew(), false);
             return prev.getNew();
         }

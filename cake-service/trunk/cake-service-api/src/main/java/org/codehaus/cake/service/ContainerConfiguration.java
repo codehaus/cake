@@ -127,7 +127,7 @@ public abstract class ContainerConfiguration<T> {
         return this;
     }
 
-    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, T service) {
+    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, S service) {
         serviceList.addService(key, service);
         return this;
     }

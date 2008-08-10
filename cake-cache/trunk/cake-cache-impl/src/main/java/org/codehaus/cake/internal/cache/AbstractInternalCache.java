@@ -51,7 +51,7 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
 
     private final CollectionViews<K, V> views;
 
-    private final Cache realCache;
+    private final Cache<K, V> realCache;
 
     AbstractInternalCache(Composer composer) {
         super(composer);
@@ -105,13 +105,10 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         return prev == null ? null : prev.getValue();
     }
 
-    private boolean hasRun;
-
     /** {@inheritDoc} */
     public void manage(ManagedGroup parent) {
         ManagedGroup g = parent.addChild(CacheMXBean.MANAGED_SERVICE_NAME, "General Cache attributes and operations");
         g.add(new DefaultCacheMXBean(this));
-        hasRun = true;
     }
 
     public final void putAll(Map<? extends K, ? extends V> t) {

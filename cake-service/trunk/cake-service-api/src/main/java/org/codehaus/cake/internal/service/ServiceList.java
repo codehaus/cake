@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.service;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -26,41 +25,25 @@ public class ServiceList {
         services.add(new Factory(key, factory));
     }
 
-    public Collection<Object> getServices() {
+    public Iterable<Object> getServices() {
         return services;
     }
 
     public static class Factory {
+        private final Object factory;
+
+        private final Class key;
+
         public Factory(Class key, Object factory) {
             this.factory = factory;
             this.key = key;
         }
 
-        public Class getKey() {
-            return key;
-        }
-
         public Object getFactory() {
             return factory;
         }
-
-        private final Class key;
-        private final Object factory;
-    }
-
-    /**
-     * A {@link ServiceFactory} that returns the same service for any attributes.
-     */
-    static class SingleServiceFactory<T> implements ServiceFactory<T> {
-        private final T service;
-
-        SingleServiceFactory(T service) {
-            this.service = service;
+        public Class getKey() {
+            return key;
         }
-
-        public T lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<T> context) {
-            return service;// TODO warn if attributes non empty??? I think so
-        }
-
     }
 }

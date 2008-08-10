@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.cache;
 
+import static org.codehaus.cake.internal.attribute.AttributeHelper.eq;
+
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -99,7 +101,7 @@ public final class Caches {
     }
 
     public static <K, V> CacheEntry<K, V> newEntry(K key, V value, AttributeMap attributes) {
-        throw new UnsupportedOperationException();
+        return new SimpleImmutableEntry<K, V>(key, value, attributes);
     }
 
     /**
@@ -423,6 +425,87 @@ public final class Caches {
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.VERSION;
+        }
+    }
+
+    /**
+     * A CacheEntry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>. This
+     * class may be convenient in methods that return thread-safe snapshots of key-value mappings.
+     */
+    public static class SimpleImmutableEntry<K, V> implements CacheEntry<K, V>, Serializable {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        /** The key of the entry. */
+        private final K key;
+
+        /** The value of the entry. */
+        private final V value;
+
+        /** The attributes of the entry. */
+        private final AttributeMap attributes;
+
+        /**
+         * Creates an entry representing a mapping from the specified key to the specified value.
+         * 
+         * @param key
+         *            the key represented by this entry
+         * @param value
+         *            the value represented by this entry
+         */
+        public SimpleImmutableEntry(K key, V value, AttributeMap attributes) {
+            if (key == null) {
+                throw new NullPointerException("key is null");
+            } else if (value == null) {
+                throw new NullPointerException("value is null");
+            } else if (attributes == null) {
+                throw new NullPointerException("attributes is null");
+            }
+            this.key = key;
+            this.value = value;
+            this.attributes = attributes;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof CacheEntry)) {
+                return false;
+            }
+            CacheEntry e = (CacheEntry) o;
+            return eq(key, e.getKey()) && eq(value, e.getValue()) && eq(attributes, e.getAttributes());
+        }
+
+        /** {@inheritDoc} */
+        public K getKey() {
+            return key;
+        }
+
+        /** {@inheritDoc} */
+        public V getValue() {
+            return value;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int hashCode() {
+            return key.hashCode() ^ value.hashCode();
+        }
+
+        /** {@inheritDoc} */
+        public V setValue(V value) {
+            throw new UnsupportedOperationException();
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return key + "=" + value;
+        }
+
+        public AttributeMap getAttributes() {
+            return attributes;
         }
     }
 }

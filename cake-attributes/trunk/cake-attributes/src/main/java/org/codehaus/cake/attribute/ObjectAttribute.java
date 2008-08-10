@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
+import java.io.Serializable;
+
 /**
  * An implementation of an {@link Attribute} mapping to an Object.
  * 
@@ -23,7 +25,7 @@ package org.codehaus.cake.attribute;
  * @param <T>
  *            the datatype of this attribute
  */
-public abstract class ObjectAttribute<T> extends Attribute<T> {
+public abstract class ObjectAttribute<T> extends Attribute<T> implements Serializable {
 
     /**
      * Creates a new ObjectAttribute with the specified datatype, a generated name and a default value of <tt>null</tt>.
