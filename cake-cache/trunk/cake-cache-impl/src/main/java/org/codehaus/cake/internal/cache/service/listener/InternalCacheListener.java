@@ -15,13 +15,14 @@
  */
 package org.codehaus.cake.internal.cache.service.listener;
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.InternalCacheEntry;
+import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
+import org.codehaus.cake.internal.cache.service.memorystore.SingleEntryUpdate;
 import org.codehaus.cake.internal.service.listener.InternalContainerListener;
 
 /**
@@ -56,11 +57,7 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
     // void afterMiss(long started, K key, CacheEntry<K, V> previousEntry, CacheEntry<K, V> newEntry, boolean
     // isExpired);
 
-    // void afterPut(long started, Collection<? extends CacheEntry<K, V>> evictedEntries,
-    // InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry);
-
-    void afterPut(long started, Iterable<? extends CacheEntry<K, V>> evictedEntries,
-            InternalCacheEntry<K, V> oldEntry, InternalCacheEntry<K, V> newEntry, boolean fromLoader);
+    void afterPut(AddSingleEntry<K, V> entry);
 
     void afterPutAll(long started, Iterable<? extends CacheEntry<K, V>> evictedEntries,
             Map<InternalCacheEntry<K, V>, InternalCacheEntry<K, V>> newPrevEntries, boolean fromLoader);
@@ -91,7 +88,7 @@ public interface InternalCacheListener<K, V> extends InternalContainerListener {
 
     // long beforeGetAll(Collection<? extends K> keys);
 
-    long beforePut(K key, V value, boolean fromLoader);
+    void beforePut(AddSingleEntry<K, V> entry);
 
     long beforePutAll(Map<? extends K, ? extends V> map, Map<? extends K, AttributeMap> attributes, boolean fromLoader);
 

@@ -91,4 +91,21 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
         c.clear();
         assertVolume(0);
     }
+
+    /**
+     * Previous bug, where we did not trim the cache when doing a replace.
+     */
+    @Test
+    public void replace() {
+        newConfigurationClean();
+        conf.withLoading().setLoader(loader);
+        conf.withAttributes().add(SIZE);
+        conf.withMemoryStore().setMaximumVolume(2);
+        init();
+        loader.setAttribute(SIZE, LongOps.add(-1));// size=key+1
+        get(M1);
+        get(M3);
+        c.replace(M1.getKey(), "value");
+        assertValidSizeAndVolume();
+    }
 }

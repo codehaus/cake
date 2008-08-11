@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.cache.util;
+package org.codehaus.cake.internal.cache.service.memorystore;
 
 import org.codehaus.cake.cache.CacheEntry;
 
@@ -23,13 +23,15 @@ import org.codehaus.cake.cache.CacheEntry;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
  */
-public final class EntryPair<K, V> {
-    // private static final EntryPair NULLPAIR = new EntryPair(null, null);
+@Deprecated
+public final class SingleEntryUpdate<K, V> {
     /** The first instance. */
     private final CacheEntry<K, V> instance1;
 
     /** The second instance. */
     private final CacheEntry<K, V> instance2;
+
+    private final Iterable<CacheEntry<K, V>> trimmed;
 
     /**
      * Constructs a new Pair. <tt>null</tt> values are permitted.
@@ -39,30 +41,28 @@ public final class EntryPair<K, V> {
      * @param item2
      *            the second item in the Pair
      */
-    public EntryPair(final CacheEntry<K, V> item1, final CacheEntry<K, V> item2) {
+    public SingleEntryUpdate(final CacheEntry<K, V> item1, final CacheEntry<K, V> item2,
+            Iterable<CacheEntry<K, V>> trimmed) {
         this.instance1 = item1;
         this.instance2 = item2;
+        this.trimmed = trimmed;
     }
 
     // public static <K, V> EntryPair<K, V> nullPair() {
     // return NULLPAIR;
     // }
 
-    /**
-     * Returns the first item in the Pair.
-     * 
-     * @return the first item in the Pair
-     */
+    /** @return any previous entry that was removed. */
     public CacheEntry<K, V> getPrevious() {
         return instance1;
     }
 
-    /**
-     * Returns the second item in the Pair.
-     * 
-     * @return the second item in the Pair
-     */
-    public CacheEntry<K, V> getNew() {
+    /** @return the entry that was just created. */
+    public CacheEntry<K, V> getNewEntry() {
         return instance2;
+    }
+
+    public Iterable<CacheEntry<K, V>> trimmed() {
+        return trimmed;
     }
 }

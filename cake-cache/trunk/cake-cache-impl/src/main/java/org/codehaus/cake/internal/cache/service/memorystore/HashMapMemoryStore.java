@@ -19,6 +19,7 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,7 +36,6 @@ import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.InternalCacheEntry;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.internal.cache.util.EntryPair;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.Ops.Predicate;
@@ -90,10 +90,64 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return map.get(key);
     }
 
-    public EntryPair<K, V> put(K key, V value, AttributeMap attributes, boolean isAbsent) {
+    public void add(AddSingleEntry<K, V> entry) {
+        DefaultEntry<K, V> previous = map.get(entry.getKey());
+        entry.setPreviousEntry(previous);
+        if (isDisabled || entry.onlyIfAbsent() && previous != null) {
+            return;
+        }
+
+        final AttributeMap atr;
+        if (previous == null) {
+            atr = attributeService.create(entry.getKey(), entry.getValue(), entry.getAttributes());
+        } else {
+            atr = attributeService.update(entry.getKey(), entry.getValue(), entry.getAttributes(), previous
+                    .getAttributes());
+        }
+
+        final DefaultEntry<K, V> newEntry = new DefaultEntry<K, V>(entry.getKey(), entry.getValue(), atr);
+        boolean keepNew = true;
+        if (isCacheable != null) {
+            try {
+                keepNew = isCacheable.op(newEntry);
+            } catch (RuntimeException e) {
+                ies.fatal("IsCacheable predicate failed to validate, entry was not cached", e);
+                keepNew = false;
+            }
+        }
+
+        boolean keepExisting = false;
+        boolean evicted = false;
+        if (keepNew && policy != null) {
+            evicted = true;
+            if (previous == null) {
+                keepNew = policy.add(newEntry);
+            } else {
+                CacheEntry<K, V> e = policy.replace(previous, newEntry);
+                keepExisting = e == previous;
+                keepNew = e == newEntry;
+            }
+        }
+        if (previous != null && !keepExisting) {
+            removeEntry(previous, evicted);
+            if (!keepNew) {
+                map.remove(entry.getKey());
+            }
+        }
+        if (keepNew) {
+            volume += SIZE.get(newEntry);
+            map.put(entry.getKey(), newEntry);
+        }
+        if (keepNew) {
+            entry.setNewEntry(newEntry);
+            entry.setTrimmed(trim());
+        }
+    }
+
+    public SingleEntryUpdate<K, V> put(K key, V value, AttributeMap attributes, boolean isAbsent) {
         final DefaultEntry<K, V> previous = map.get(key);
         if (isDisabled || isAbsent && previous != null) {
-            return new EntryPair<K, V>(previous, null);
+            return new SingleEntryUpdate<K, V>(previous, null, Collections.EMPTY_LIST);
         }
 
         final AttributeMap atr;
@@ -136,43 +190,40 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
             volume += SIZE.get(entry);
             map.put(key, entry);
         }
-        return new EntryPair<K, V>(previous, keepNew ? entry : null);
+        return new SingleEntryUpdate<K, V>(previous, keepNew ? entry : null, keepNew ? trim() : Collections.EMPTY_LIST);
     }
 
     public Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(Map<K, Entry<V, AttributeMap>> data) {
         HashMap result = new HashMap<CacheEntry<K, V>, CacheEntry<K, V>>();
         for (Map.Entry<K, Entry<V, AttributeMap>> s : data.entrySet()) {
-            EntryPair<K, V> ss = put(s.getKey(), s.getValue().getKey(), s.getValue().getValue(), false);
-            result.put(ss.getPrevious(), ss.getNew());
+            SingleEntryUpdate<K, V> ss = put(s.getKey(), s.getValue().getKey(), s.getValue().getValue(), false);
+            result.put(ss.getPrevious(), ss.getNewEntry());
         }
         return result;
     }
 
+    public DefaultEntry<K, V> remove(Object key) {
+        DefaultEntry<K, V> entry = map.remove(key);
+        removeEntry(entry, false);
+        return entry;
+
+    }
+
     public DefaultEntry<K, V> remove(Object key, Object value) {
-        if (value == null) {
-            DefaultEntry<K, V> entry = map.remove(key);
+        DefaultEntry<K, V> entry = map.get(key);
+        if (entry != null && entry.getValue().equals(value)) {
+            map.remove(key);
             removeEntry(entry, false);
             return entry;
-        } else {
-            DefaultEntry<K, V> entry = map.get(key);
-            if (entry == null) {
-                return null;
-            }
-            if (entry.getValue().equals(value)) {
-                map.remove(key);
-                removeEntry(entry, false);
-                return entry;
-            } else {
-                return null;
-            }
         }
+        return null;
     }
 
     public ParallelArray<CacheEntry<K, V>> removeAll(Collection entries) {
         ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(entries.size(), CacheEntry.class, ParallelArray
                 .defaultExecutor());
         for (Object o : entries) {
-            DefaultEntry<K, V> entry = remove(o, null);
+            DefaultEntry<K, V> entry = remove(o);
             if (entry != null) {
                 removeEntry(entry, false);
                 pa.asList().add(entry);
@@ -188,7 +239,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
     }
 
-    private void removeEntry(DefaultEntry<K, V> entry, boolean isEvicted) {
+    private void removeEntry(CacheEntry<K, V> entry, boolean isEvicted) {
         if (entry != null) {
             volume -= SIZE.get(entry);
             if (!isEvicted && policy != null) {
@@ -397,12 +448,12 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         };
     }
 
-    public EntryPair<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
+    public SingleEntryUpdate<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
         CacheEntry<K, V> prev = map.get(key);
         if (oldValue == null && prev != null || oldValue != null && prev != null && oldValue.equals(prev.getValue())) {
             return put(key, newValue, attributes, false);
         }
-        return new EntryPair<K, V>(prev, null);
+        return new SingleEntryUpdate<K, V>(prev, null, Collections.EMPTY_LIST);
     }
 
     public int getMaximumSize() {
@@ -526,4 +577,5 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
     public Collection<?> getChildServices() {
         return Arrays.asList(policy);
     }
+
 }

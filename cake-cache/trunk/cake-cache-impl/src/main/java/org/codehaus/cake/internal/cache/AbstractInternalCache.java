@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
@@ -31,6 +32,7 @@ import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheEx
 import org.codehaus.cake.internal.cache.service.listener.DefaultCacheListener;
 import org.codehaus.cake.internal.cache.service.listener.InternalCacheListener;
 import org.codehaus.cake.internal.cache.service.management.DefaultCacheMXBean;
+import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViews;
 import org.codehaus.cake.internal.service.AbstractInternalContainer;
@@ -100,10 +102,7 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         size();
     }
 
-    public final V put(K key, V value) {
-        CacheEntry<K, V> prev = put(key, value, Attributes.EMPTY_ATTRIBUTE_MAP);
-        return prev == null ? null : prev.getValue();
-    }
+    abstract void process(AddSingleEntry<K, V> entry);
 
     /** {@inheritDoc} */
     public void manage(ManagedGroup parent) {
@@ -134,6 +133,27 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
             services = new CacheServices<K, V>(this);
         }
         return services;
+    }
+
+    public V put(K key, V value) {
+        AddSingleEntry<K, V> e = AddSingleEntry.put(key, value);
+        process(e);
+        return e.getPreviousEntry() == null ? null : e.getPreviousEntry().getValue();
+    }
+
+    public V putIfAbsent(K key, V value) {
+        AddSingleEntry<K, V> e = AddSingleEntry.putIfAbsent(key, value);
+        process(e);
+        return e.getPreviousEntry() == null ? null : e.getPreviousEntry().getValue();
+    }
+
+    public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
+        if (value != null) {
+            AddSingleEntry<K, V> e = AddSingleEntry.loadPut(key, value, map);
+            process(e);
+            return e.getNewEntry();
+        }
+        return null;
     }
 
     static void checkKeyValue(Object key, Object value) {

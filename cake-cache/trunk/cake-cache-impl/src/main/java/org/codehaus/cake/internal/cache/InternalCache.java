@@ -23,8 +23,6 @@ import org.codehaus.cake.cache.CacheEntry;
 
 public interface InternalCache<K, V> extends Cache<K, V>, Iterable<CacheEntry<K, V>> {
 
-    CacheEntry<K, V> put(K key, V value, AttributeMap attributes);
-
     void putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data);
 
     // boolean removeEntries(Collection<?> entries);
