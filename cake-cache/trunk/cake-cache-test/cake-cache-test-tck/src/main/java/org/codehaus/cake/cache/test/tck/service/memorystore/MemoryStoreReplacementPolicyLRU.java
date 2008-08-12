@@ -50,6 +50,16 @@ public class MemoryStoreReplacementPolicyLRU extends AbstractCacheTCKTest {
     }
 
     @Test
+    public void testPutAll() {
+        put(5);
+        assertSize(5);
+        putAll(entry(M1, "1"), entry(M2, "2"), entry(M3, "3"));
+        assertPeek(entry(M1, "1"));
+        assertPeek(entry(M2, "2"));
+        assertPeek(entry(M3, "3"));
+    }
+
+    @Test
     public void testTouch() {
         put(5);
         assertSize(5);

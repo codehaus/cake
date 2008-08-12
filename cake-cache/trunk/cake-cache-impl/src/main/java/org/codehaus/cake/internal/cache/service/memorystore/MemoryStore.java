@@ -16,33 +16,27 @@
 package org.codehaus.cake.internal.cache.service.memorystore;
 
 import java.util.Collection;
-import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 
 public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
+    void add(AddSingleEntry<K, V> entry);
+
+    void add(AddManyEntries<K, V> entries);
+
     CacheEntry<K, V> get(K key);
 
     CacheEntry<K, V> peek(K key);
 
+    
+    
     CacheEntry<K, V> remove(Object key);
 
     CacheEntry<K, V> remove(Object key, Object value);
 
     ParallelArray<CacheEntry<K, V>> removeAll(Collection entries);
-
-    ParallelArray<CacheEntry<K, V>> trim();
-
-    void add(AddSingleEntry<K, V> entry);
-    
-    SingleEntryUpdate<K, V> put(K key, V value, AttributeMap attributes, boolean OnlyIfAbsent);
-
-    SingleEntryUpdate<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes);
-
-    Map<CacheEntry<K, V>, CacheEntry<K, V>> putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data);
 
     ParallelArray<CacheEntry<K, V>> removeAll();
 

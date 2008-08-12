@@ -20,10 +20,10 @@ import java.util.Map;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.internal.cache.service.memorystore.AddManyEntries;
+import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
 
 public interface InternalCache<K, V> extends Cache<K, V>, Iterable<CacheEntry<K, V>> {
-
-    void putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data);
 
     // boolean removeEntries(Collection<?> entries);
 
@@ -36,4 +36,8 @@ public interface InternalCache<K, V> extends Cache<K, V>, Iterable<CacheEntry<K,
      * @return
      */
     CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map);
+
+    void process(AddSingleEntry<K, V> entry);
+
+    void process(AddManyEntries<K, V> entry);
 }

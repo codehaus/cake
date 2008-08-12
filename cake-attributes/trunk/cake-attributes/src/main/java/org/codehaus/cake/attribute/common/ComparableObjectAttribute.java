@@ -33,12 +33,15 @@ import org.codehaus.cake.attribute.WithAttributes;
  * @param <T>
  *            the datatype of this attribute
  */
-public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<WithAttributes> {
+public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<WithAttributes> {
 
-    /**
-     * The comparator, or null if attribute uses elements' natural ordering.
-     */
-    private final Comparator<? super T> comparator;
+    private static final long serialVersionUID = 1L;
+
+    /** The comparator, or null if attribute uses elements' natural ordering. */
+    private final transient Comparator<? super T> comparator;
+
+    /** When comparing whether null is least or greatest. */
+    private final transient boolean nullIsLeast;
 
     /**
      * Creates a new ComparableObjectAttribute with a default value of <code>null</code> and that uses the natural
@@ -48,13 +51,16 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements 
      *            the name of the attribute
      * @param clazz
      *            the type of the attribute
+     * @param nullIsLeast
+     *            when comparing whether null is least or greatest
      */
-    protected ComparableObjectAttribute(String name, Class<T> clazz) {
+    protected ComparableObjectAttribute(String name, Class<T> clazz, boolean nullIsLeast) {
         super(name, clazz);
         comparator = null;
         if (!Comparable.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("only clazz types assignable from Comparable are allowed");
         }
+        this.nullIsLeast = nullIsLeast;
     }
 
     /**
@@ -73,6 +79,7 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements 
             throw new NullPointerException("comparator is null");
         }
         this.comparator = comparator;
+        nullIsLeast = false;// ignore
     }
 
     /**
@@ -93,6 +100,7 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements 
             throw new NullPointerException("comparator is null");
         }
         this.comparator = comparator;
+        nullIsLeast = false;// ignore
     }
 
     /**
@@ -105,13 +113,16 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements 
      *            the type of the attribute
      * @param defaultValue
      *            the default value of the attribute
+     * @param nullIsLeast
+     *            when comparing whether null is least or greatest
      */
-    protected ComparableObjectAttribute(String name, Class<T> clazz, T defaultValue) {
+    protected ComparableObjectAttribute(String name, Class<T> clazz, T defaultValue, boolean nullIsLeast) {
         super(name, clazz, defaultValue);
         comparator = null;
         if (!Comparable.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("only clazz types assignable from Comparable are allowed");
         }
+        this.nullIsLeast = nullIsLeast;
     }
 
     /** {@inheritDoc} */
@@ -119,6 +130,11 @@ public class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements 
         if (comparator == null) {
             Comparable<? super T> thisVal = (Comparable<? super T>) get(o1);
             T anotherVal = (T) get(o2);
+            if (thisVal == null) {
+                return anotherVal == null ? 0 : nullIsLeast ? -1 : 1;
+            } else if (anotherVal == null) {
+                return nullIsLeast ? 1 : -1;
+            }
             return thisVal.compareTo(anotherVal);
         } else {
             T thisVal = get(o1);

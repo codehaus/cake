@@ -16,13 +16,11 @@
 package org.codehaus.cake.internal.cache;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
@@ -32,12 +30,12 @@ import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheEx
 import org.codehaus.cake.internal.cache.service.listener.DefaultCacheListener;
 import org.codehaus.cake.internal.cache.service.listener.InternalCacheListener;
 import org.codehaus.cake.internal.cache.service.management.DefaultCacheMXBean;
+import org.codehaus.cake.internal.cache.service.memorystore.AddManyEntries;
 import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViews;
 import org.codehaus.cake.internal.service.AbstractInternalContainer;
 import org.codehaus.cake.internal.service.Composer;
-import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.service.Stoppable;
@@ -102,8 +100,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         size();
     }
 
-    abstract void process(AddSingleEntry<K, V> entry);
-
     /** {@inheritDoc} */
     public void manage(ManagedGroup parent) {
         ManagedGroup g = parent.addChild(CacheMXBean.MANAGED_SERVICE_NAME, "General Cache attributes and operations");
@@ -111,12 +107,11 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
     }
 
     public final void putAll(Map<? extends K, ? extends V> t) {
-        HashMap map = new HashMap();
-        for (Map.Entry me : t.entrySet()) {
-            map.put(me.getKey(),
-                    new CollectionUtils.SimpleImmutableEntry(me.getValue(), Attributes.EMPTY_ATTRIBUTE_MAP));
+        if (t == null) {
+            throw new NullPointerException("t is null");
         }
-        putAllWithAttributes(map);
+        AddManyEntries<K, V> many = AddManyEntries.putAll(t);
+        process(many);
     }
 
     @Stoppable
@@ -135,19 +130,31 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
         return services;
     }
 
-    public V put(K key, V value) {
+    public final V put(K key, V value) {
         AddSingleEntry<K, V> e = AddSingleEntry.put(key, value);
         process(e);
         return e.getPreviousEntry() == null ? null : e.getPreviousEntry().getValue();
     }
 
-    public V putIfAbsent(K key, V value) {
+    public final V replace(K key, V value) {
+        AddSingleEntry<K, V> e = AddSingleEntry.replace(key, value);
+        process(e);
+        return e.getPreviousEntry() == null ? null : e.getPreviousEntry().getValue();
+    }
+
+    public final boolean replace(K key, V oldValue, V newValue) {
+        AddSingleEntry<K, V> e = AddSingleEntry.replace(key, oldValue, newValue);
+        process(e);
+        return e.getNewEntry() != null;
+    }
+
+    public final V putIfAbsent(K key, V value) {
         AddSingleEntry<K, V> e = AddSingleEntry.putIfAbsent(key, value);
         process(e);
         return e.getPreviousEntry() == null ? null : e.getPreviousEntry().getValue();
     }
 
-    public CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
+    public final CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map) {
         if (value != null) {
             AddSingleEntry<K, V> e = AddSingleEntry.loadPut(key, value, map);
             process(e);
@@ -161,26 +168,6 @@ public abstract class AbstractInternalCache<K, V> extends AbstractInternalContai
             throw new NullPointerException("key is null");
         } else if (value == null) {
             throw new NullPointerException("value is null");
-        }
-    }
-
-    static void checkPut(Object key, Object value, Object attributes) {
-        if (key == null) {
-            throw new NullPointerException("key is null");
-        } else if (value == null) {
-            throw new NullPointerException("value is null");
-        } else if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-    }
-
-    static void checkReplace(Object key, Object oldValue, Object newValue) {
-        if (key == null) {
-            throw new NullPointerException("key is null");
-        } else if (oldValue == null) {
-            throw new NullPointerException("oldValue is null");
-        } else if (newValue == null) {
-            throw new NullPointerException("newValue is null");
         }
     }
 

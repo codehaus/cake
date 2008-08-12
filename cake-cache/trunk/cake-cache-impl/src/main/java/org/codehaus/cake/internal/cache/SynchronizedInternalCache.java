@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
@@ -29,14 +28,13 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.forkjoin.ForkJoinPool;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
 import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
+import org.codehaus.cake.internal.cache.service.memorystore.AddManyEntries;
 import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
-import org.codehaus.cake.internal.cache.service.memorystore.SingleEntryUpdate;
 import org.codehaus.cake.internal.cache.service.memorystore.SynchronizedHashMapMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.SynchronizedCollectionViews;
 import org.codehaus.cake.internal.service.Composer;
@@ -142,25 +140,6 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         }
     }
 
-    public void putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data) {
-        // TODO sync
-        long started = listener.beforePutAll(null, null, false);
-
-        lazyStartFailIfShutdown();
-        for (Map.Entry<K, Map.Entry<V, AttributeMap>> entry : data.entrySet()) {
-            if (entry.getKey() == null) {
-                throw new NullPointerException();
-            }
-            if (entry.getValue().getKey() == null) {
-                throw new NullPointerException();
-            }
-        }
-        Map<CacheEntry<K, V>, CacheEntry<K, V>> result = memoryCache.putAllWithAttributes(data);
-        ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
-
-        listener.afterPutAll(started, trimmed, (Map) result, false);
-    }
-
     public V remove(Object key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -213,7 +192,7 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         return e;
     }
 
-    void process(AddSingleEntry<K, V> entry) {
+    public void process(AddSingleEntry<K, V> entry) {
         listener.beforePut(entry);
         synchronized (mutex) {
             lazyStartFailIfShutdown();
@@ -222,25 +201,14 @@ public class SynchronizedInternalCache<K, V> extends AbstractInternalCache<K, V>
         listener.afterPut(entry);
     }
 
-    public V replace(K key, V value) {
-        checkKeyValue(key, value);
-        CacheEntry<K, V> prev = replace(key, null, value, Attributes.EMPTY_ATTRIBUTE_MAP).getPrevious();
-        return prev == null ? null : prev.getValue();
-    }
+    public void process(AddManyEntries<K, V> entry) {
 
-    public boolean replace(K key, V oldValue, V newValue) {
-        checkReplace(key, oldValue, newValue);
-        CacheEntry<K, V> newEntry = replace(key, oldValue, newValue, Attributes.EMPTY_ATTRIBUTE_MAP).getNewEntry();
-        return newEntry != null;
-    }
-
-    private SingleEntryUpdate<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
         synchronized (mutex) {
             lazyStartFailIfShutdown();
-            SingleEntryUpdate pair = memoryCache.replace(key, oldValue, newValue, attributes);
-            // ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
-            return pair;
+            // listener.beforePut(entry);
+            memoryCache.add(entry);
         }
+        // listener.afterPut(entry);
     }
 
     public int size() {

@@ -22,7 +22,6 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.InternalCacheEntry;
 import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
-import org.codehaus.cake.internal.cache.service.memorystore.SingleEntryUpdate;
 import org.codehaus.cake.internal.service.listener.InternalContainerListener;
 
 /**

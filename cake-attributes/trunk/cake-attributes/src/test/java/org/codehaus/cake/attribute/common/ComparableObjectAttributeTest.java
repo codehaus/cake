@@ -32,7 +32,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
 
     @Test
     public void nameType() {
-        ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class);
+        ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, false){};
         assertEquals("foo", coa.getName());
 
         AttributeMap am1 = Attributes.singleton(coa, 1);
@@ -47,8 +47,25 @@ public class ComparableObjectAttributeTest extends AtrStubs {
     }
 
     @Test
+    public void nameTypeNull() {
+        ComparableObjectAttribute coaf = new ComparableObjectAttribute("foo", Integer.class, false){};
+        ComparableObjectAttribute coat = new ComparableObjectAttribute("foo", Integer.class, true){};
+
+        assertEquals(0, coaf.compare(withAtr(coaf.singleton(null)), withAtr(Attributes.EMPTY_ATTRIBUTE_MAP)));
+        assertEquals(0, coaf.compare(withAtr(coaf.singleton(null)), withAtr(coaf.singleton(null))));
+        assertTrue(coaf.compare(withAtr(coaf.singleton(null)), withAtr(coaf.singleton(-1))) > 0);
+        assertTrue(coaf.compare(withAtr(coaf.singleton(3)), withAtr(coaf.singleton(null))) < 0);
+
+        assertEquals(0, coat.compare(withAtr(coat.singleton(null)), withAtr(Attributes.EMPTY_ATTRIBUTE_MAP)));
+        assertEquals(0, coat.compare(withAtr(coat.singleton(null)), withAtr(coat.singleton(null))));
+        assertTrue(coat.compare(withAtr(coat.singleton(null)), withAtr(coat.singleton(-1))) < 0);
+        assertTrue(coat.compare(withAtr(coat.singleton(3)), withAtr(coat.singleton(null))) > 0);
+
+    }
+
+    @Test
     public void nameTypeComparator() {
-        ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Dummy.class, new DummyComparator());
+        ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Dummy.class, new DummyComparator()){};
         assertEquals("foo", coa.getName());
 
         AttributeMap am1 = Attributes.singleton(coa, Dummy.D1);
@@ -64,22 +81,22 @@ public class ComparableObjectAttributeTest extends AtrStubs {
 
     @Test(expected = NullPointerException.class)
     public void nameTypeComparator_NPE() {
-        new ComparableObjectAttribute("foo", Dummy.class, null);
+        new ComparableObjectAttribute("foo", Dummy.class, null){};
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nameTypeComparator_IAE() {
-        new ComparableObjectAttribute("foo", Dummy.class);
+        new ComparableObjectAttribute("foo", Dummy.class, false){};
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nameTypeComparator_IAE2() {
-        new ComparableObjectAttribute("foo", Dummy.class, Dummy.D1);
+        new ComparableObjectAttribute("foo", Dummy.class, Dummy.D1, false){};
     }
 
     @Test
     public void nameTypeDefault() {
-        ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, 55);
+        ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, 55, false){};
         assertEquals("foo", coa.getName());
         assertEquals(55, coa.getDefault());
         AttributeMap am1 = Attributes.singleton(coa, 1);
@@ -94,7 +111,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
     @Test
     public void nameTypeDefaultComparator() {
         ComparableObjectAttribute coa = new ComparableObjectAttribute("foo", Integer.class, new DummyComparator(),
-                Dummy.D4);
+                Dummy.D4){};
         assertEquals("foo", coa.getName());
         assertEquals(Dummy.D4, coa.getDefault());
         AttributeMap am1 = Attributes.singleton(coa, Dummy.D1);
@@ -109,7 +126,7 @@ public class ComparableObjectAttributeTest extends AtrStubs {
 
     @Test(expected = NullPointerException.class)
     public void nameTypeDefaultComparator_NPE() {
-        new ComparableObjectAttribute("foo", Dummy.class, null, Dummy.D4);
+        new ComparableObjectAttribute("foo", Dummy.class, null, Dummy.D4){};
     }
 
 }

@@ -13,6 +13,13 @@ public final class AddSingleEntry<K, V> {
     private CacheEntry<K, V> newEntry;
 
     private CacheEntry<K, V> previousEntry;
+
+    private Object replace;
+
+    public Object getReplace() {
+        return replace;
+    }
+
     private Iterable<CacheEntry<K, V>> trimmed = Collections.EMPTY_LIST;
     private final V value;
 
@@ -82,6 +89,23 @@ public final class AddSingleEntry<K, V> {
         return new AddSingleEntry<K, V>(key, value, Type.PUT);
     }
 
+    public static <K, V> AddSingleEntry<K, V> put(K key, V value, AttributeMap attributes) {
+        return new AddSingleEntry<K, V>(key, value, attributes, Type.PUT);
+    }
+
+    public static <K, V> AddSingleEntry<K, V> replace(K key, V value) {
+        return new AddSingleEntry<K, V>(key, value, Type.REPLACE);
+    }
+
+    public static <K, V> AddSingleEntry<K, V> replace(K key, V prevValue, V newValue) {
+        AddSingleEntry<K, V> e = new AddSingleEntry<K, V>(key, newValue, Type.REPLACE_IF_VALUE);
+        if (prevValue == null) {
+            throw new NullPointerException("prevValue is null");
+        }
+        e.replace = prevValue;
+        return e;
+    }
+
     public static <K, V> AddSingleEntry<K, V> putIfAbsent(K key, V value) {
         return new AddSingleEntry<K, V>(key, value, Type.PUT_IF_ABSENT);
     }
@@ -94,7 +118,11 @@ public final class AddSingleEntry<K, V> {
         return type == Type.PUT_IF_ABSENT;
     }
 
-    static enum Type {
-        PUT_IF_ABSENT, PUT, REPLACE, LOADED
+    public Type getType() {
+        return type;
+    }
+
+    public static enum Type {
+        PUT_IF_ABSENT, PUT, REPLACE, REPLACE_IF_VALUE, LOADED
     }
 }

@@ -32,9 +32,9 @@ import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeS
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoader;
 import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
+import org.codehaus.cake.internal.cache.service.memorystore.AddManyEntries;
 import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
 import org.codehaus.cake.internal.cache.service.memorystore.HashMapMemoryStore;
-import org.codehaus.cake.internal.cache.service.memorystore.SingleEntryUpdate;
 import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViews;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
@@ -120,31 +120,19 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return memoryCache.peek(key);
     }
 
-    void process(AddSingleEntry<K, V> entry) {
+    public void process(AddSingleEntry<K, V> entry) {
         lazyStartFailIfShutdown();
         listener.beforePut(entry);
         memoryCache.add(entry);
         listener.afterPut(entry);
     }
 
-    public void putAllWithAttributes(Map<K, Map.Entry<V, AttributeMap>> data) {
-        long started = listener.beforePutAll(null, null, false);
-
+    public void process(AddManyEntries<K, V> entry) {
         lazyStartFailIfShutdown();
-        for (Map.Entry<K, Map.Entry<V, AttributeMap>> entry : data.entrySet()) {
-            if (entry.getKey() == null) {
-                throw new NullPointerException();
-            }
-            if (entry.getValue().getKey() == null) {
-                throw new NullPointerException();
-            }
-        }
-        Map<CacheEntry<K, V>, CacheEntry<K, V>> result = memoryCache.putAllWithAttributes(data);
-        ParallelArray<CacheEntry<K, V>> trimmed = memoryCache.trim();
-
-        listener.afterPutAll(started, trimmed, (Map) result, false);
+        //listener.beforePut(entry);
+        memoryCache.add(entry);
+        //listener.afterPut(entry);
     }
-
     public V remove(Object key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -189,29 +177,10 @@ public class UnsynchronizedInternalCache<K, V> extends AbstractInternalCache<K, 
         return e;
     }
 
-    public V replace(K key, V value) {
-        checkKeyValue(key, value);
-        CacheEntry<K, V> prev = replace(key, null, value, Attributes.EMPTY_ATTRIBUTE_MAP).getPrevious();
-        return prev == null ? null : prev.getValue();
-    }
-
-    public boolean replace(K key, V oldValue, V newValue) {
-        checkReplace(key, oldValue, newValue);
-        CacheEntry<K, V> newEntry = replace(key, oldValue, newValue, Attributes.EMPTY_ATTRIBUTE_MAP).getNewEntry();
-        return newEntry != null;
-    }
-
-    private SingleEntryUpdate<K, V> replace(K key, V oldValue, V newValue, AttributeMap attributes) {
-        lazyStartFailIfShutdown();
-        SingleEntryUpdate pair = memoryCache.replace(key, oldValue, newValue, attributes);
-        return pair;
-    }
-
     public int size() {
         lazyStart();
         return memoryCache.getSize();
     }
-
 
     private static Composer createComposer(CacheConfiguration<?, ?> configuration, Cache<?, ?> cache) {
         Composer composer = createComposer(configuration);

@@ -29,6 +29,9 @@ import org.codehaus.cake.attribute.WithAttributes;
  */
 public abstract class DurationAttribute extends LongAttribute {
 
+    /** serialVersionUID. */
+    private static final long serialVersionUID = 1L;
+    
     /** The default value of this attribute. */
     protected static final long DEFAULT_DURATION = Long.MAX_VALUE;
 

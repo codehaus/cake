@@ -19,6 +19,7 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Arrays;
 
+import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.CollectionOps;
 import org.codehaus.cake.ops.LongOps;
@@ -121,6 +122,26 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
         init();
         put(M1);
         assertSize(0);
+        exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Fatal);
+    }
+
+    @Test
+    public void predicateFailSome() {
+        conf.withMemoryStore().setIsCacheableFilter(new Predicate<CacheEntry>() {
+            public boolean op(CacheEntry t) {
+                if (t.getKey() == M1.getKey()) {
+                    return true;
+                } else if (t.getKey() == M3.getKey()) {
+                    return false;
+                }
+                throw RuntimeException1.INSTANCE;
+            }
+        });
+        conf.withExceptionHandling().setExceptionHandler(exceptionHandler);
+        init();
+        putAll(M1, M2, M3);
+        assertSize(1);
+        assertGet(M1);
         exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Fatal);
     }
 

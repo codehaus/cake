@@ -26,10 +26,10 @@ import org.codehaus.cake.attribute.LongAttribute;
  */
 public abstract class TimeInstanceAttribute extends LongAttribute {
     /** serialVersionUID. */
-    private static final long serialVersionUID = -2353351535602223603L;
+    private static final long serialVersionUID = 1;
 
     /**
-     * Creates a new SizeAttribute.
+     * Creates a new TimeInstanceAttribute.
      * 
      * @param name
      *            the name of the attribute
