@@ -34,14 +34,12 @@ public class LifecycleManager {
     private final List<LifecycleObject> list = new LinkedList<LifecycleObject>();
     private final InternalExceptionService ies;
     RunState state;
-    Composer composer;
-    DefaultServiceManager dsm;
-    ContainerInfo info;
+    private Composer composer;
+    private ContainerInfo info;
 
     public LifecycleManager(InternalExceptionService ies, ContainerConfiguration conf, Composer composer) {
         this.ies = ies;
         this.composer = composer;
-        dsm = composer.get(DefaultServiceManager.class);
         info = composer.get(ContainerInfo.class);
     }
 
@@ -87,6 +85,7 @@ public class LifecycleManager {
         }
         ies.info(info.getContainerTypeName() + " started [name = " + info.getContainerName() + ", startup time = "
                 + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime) + "]");
+        info = null;
     }
 
     private void doStart() {
