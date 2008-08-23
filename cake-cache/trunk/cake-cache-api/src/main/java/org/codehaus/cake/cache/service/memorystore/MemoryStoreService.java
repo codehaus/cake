@@ -47,7 +47,7 @@ import org.codehaus.cake.cache.CacheServices;
  * @param <V>
  *            the type of mapped values
  */
-public interface MemoryStoreService<K, V> /* extends Map<K,V> */{
+public interface MemoryStoreService<K, V> {
 
     /**
      * Returns the maximum number of elements that this cache can hold. If the cache has no upper limit
