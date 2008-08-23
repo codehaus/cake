@@ -710,19 +710,20 @@ public class PredicatesTest {
      * Tests {@link Predicates#isNull()}.
      */
     @Test
-    public void isNotNull() {
+    public void isNull() {
         assertTrue(Predicates.isNull().op(null));
         assertFalse(Predicates.isNull().op(1));
         assertFalse(Predicates.isNull().op("f"));
         Predicates.IS_NOT_NULL.toString();// no fail
         TestUtil.assertIsSerializable(Predicates.IS_NOT_NULL);
+        assertSame(Predicates.IS_NULL, TestUtil.serializeAndUnserialize(Predicates.IS_NULL));
     }
 
     /**
      * Tests {@link Predicates#isNotNull()}.
      */
     @Test
-    public void isNull() {
+    public void isNotNull() {
         assertFalse(Predicates.isNotNull().op(null));
         assertTrue(Predicates.isNotNull().op(1));
         assertTrue(Predicates.isNotNull().op("f"));

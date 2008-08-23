@@ -43,7 +43,7 @@ public final class Predicates {
     public static final Predicate IS_NOT_NULL = new IsNotNullFilter();
 
     /** A Predicate that returns <code>true</code> if the element being tested is null. */
-    public static final Predicate IS_NULL = not(IS_NOT_NULL);
+    public static final Predicate IS_NULL = new IsNullFilter();
 
     /** A Predicate that always evaluates to <code>true</code>. */
     public static final Predicate TRUE = new TruePredicate();
@@ -1239,6 +1239,29 @@ public final class Predicates {
         }
     }
 
+    /**
+     * A Predicate that returns <code>true</code> if the element being tested is null.
+     */
+    static final class IsNullFilter implements Predicate, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        /** {@inheritDoc} */
+        public boolean op(Object element) {
+            return element == null;
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return IS_NULL;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return "is null";
+        }
+    }
     /**
      * A Predicate that evaluates to <code>true</code> iff the element being evaluated has the same object identity as
      * the element being specified.
