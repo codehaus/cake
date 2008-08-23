@@ -124,7 +124,7 @@ public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> im
         }
         this.nullIsLeast = nullIsLeast;
     }
-
+    //We should also override equals, per contract of Comparable
     /** {@inheritDoc} */
     public int compare(WithAttributes o1, WithAttributes o2) {
         if (comparator == null) {

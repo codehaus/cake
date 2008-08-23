@@ -37,7 +37,8 @@ public final class Attributes {
 
     // /CLOVER:OFF
     /** Cannot instantiate. */
-    private Attributes() {}
+    private Attributes() {
+    }
 
     // /CLOVER:ON
     /**
@@ -112,6 +113,25 @@ public final class Attributes {
     }
 
     /**
+     * Validates that all entries entries are valid in the specified attribute map according to
+     * {@link Attribute#checkValid(Object)}. The method returns a new immutable map with all the entries.
+     * 
+     * @param attributes
+     *            the map to validate
+     * @return a new immutable map with validated entries
+     */
+    public static AttributeMap validatedAttributeMap(AttributeMap attributes) {
+        DefaultAttributeMap result = new DefaultAttributeMap();
+        for (Map.Entry<Attribute, Object> e : attributes.entrySet()) {
+            Attribute a = e.getKey();
+            Object o = e.getValue();
+            a.checkValid(o);
+            result.put(a, o);
+        }
+        return unmodifiableAttributeMap(result);
+    }
+
+    /**
      * The default implementation of an immutable empty {@link AttributeMap}.
      */
     static final class EmptyAttributeMap implements AttributeMap, Serializable {
@@ -125,7 +145,8 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public void clear() {}
+        public void clear() {
+        }
 
         /** {@inheritDoc} */
         public boolean contains(Attribute<?> attribute) {
