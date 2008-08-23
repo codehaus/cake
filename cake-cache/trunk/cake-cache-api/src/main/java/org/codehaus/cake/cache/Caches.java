@@ -22,10 +22,12 @@ import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DoubleAttribute;
@@ -501,7 +503,25 @@ public final class Caches {
         /** {@inheritDoc} */
         @Override
         public String toString() {
-            return key + "=" + value;
+            StringBuilder sb = new StringBuilder();
+            sb.append(key);
+            sb.append("=");
+            sb.append(value);
+            sb.append(" [");
+
+            Iterator<Map.Entry<Attribute, Object>> i = attributes.entrySet().iterator();
+            if (!i.hasNext()) {
+                return sb.append("]").toString();
+            }
+            for (;;) {
+                Map.Entry<Attribute, Object> e = i.next();
+                sb.append(e.getKey());
+                sb.append("=");
+                sb.append(e.getValue());
+                if (!i.hasNext())
+                    return sb.append(']').toString();
+                sb.append(", ");
+            }
         }
 
         public AttributeMap getAttributes() {
