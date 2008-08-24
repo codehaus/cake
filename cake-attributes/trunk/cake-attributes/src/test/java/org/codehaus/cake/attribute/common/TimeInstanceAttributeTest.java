@@ -21,7 +21,11 @@ import static org.junit.Assert.assertTrue;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.junit.Test;
-
+/**
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
 public class TimeInstanceAttributeTest {
     static final TimeInstanceAttribute DA = new TimeInstanceAttribute("foo") {};
 

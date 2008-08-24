@@ -71,11 +71,6 @@ public class Composer {
         return service;
     }
 
-    public <T> T getIfAvailable(Class<T> serviceType) {
-        T service = (T) container.getComponentInstanceOfType(serviceType);
-        return service;
-    }
-
     Set<?> prepareStart() {
         ContainerConfiguration<?> conf = get(ContainerConfiguration.class);
         Set<Object> result = new LinkedHashSet<Object>(container.getComponentInstances());

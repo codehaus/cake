@@ -27,6 +27,11 @@ import java.util.Collection;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 
+/**
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
 public abstract class AbstractAttributeTest {
 
     protected static final Collection<Long> NEGATIV_LONGS = Arrays.asList(Long.MIN_VALUE, -10l, -5l, -1l);

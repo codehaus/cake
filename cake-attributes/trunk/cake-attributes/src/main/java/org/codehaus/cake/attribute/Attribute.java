@@ -19,10 +19,11 @@ import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Attribute-value pairs are a fundamental data representation in many computing systems and applications. Designers
- * often desire an open-ended data structure that allows for future extension without modifying existing code or data.
- * In such situations, all or part of the data model may be expressed as a collection of tuples attribute name, value;
- * each element is an attribute-value pair.
+ * Attribute-value pairs are a fundamental data representation in many computing systems and
+ * applications. Designers often desire an open-ended data structure that allows for future
+ * extension without modifying existing code or data. In such situations, all or part of the data
+ * model may be expressed as a collection of tuples attribute name, value; each element is an
+ * attribute-value pair.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
@@ -30,11 +31,15 @@ import java.util.concurrent.atomic.AtomicLong;
  *            the type of objects that this attribute maps to
  * @see AttributeMap
  */
-public abstract class Attribute<T> implements Serializable{
-    /* All fields are transient because attribute implementations should be singletons. */
+public abstract class Attribute<T> implements Serializable {
+
+    /** serialVersionUID. */
+    private static final long serialVersionUID = 1L;
 
     /** An AtomicLong for generating unique names, if user does not specify name. */
     private static final AtomicLong NAME = new AtomicLong();
+
+    // All fields are transient because attribute implementations should be singletons.
 
     /** The type of this attribute, as returned {@link #getType()}. */
     private final transient Class<T> clazz;
@@ -42,7 +47,7 @@ public abstract class Attribute<T> implements Serializable{
     /** The default value of this attribute. */
     private final transient T defaultValue;
 
-    /** The hashcode of this attribute. */
+    /** The hash code of this attribute. */
     private final transient int hashCode;
 
     /** The name of this attribute. */
@@ -56,7 +61,8 @@ public abstract class Attribute<T> implements Serializable{
      * @param defaultValue
      *            the default value of this attribute
      * @throws IllegalArgumentException
-     *             if the specified default value is not valid according to {@link #checkValid(Object)}
+     *             if the specified default value is not valid according to
+     *             {@link #checkValid(Object)}
      * @throws NullPointerException
      *             if the specified class is null
      */
@@ -81,7 +87,8 @@ public abstract class Attribute<T> implements Serializable{
      * @param defaultValue
      *            the default value of this attribute
      * @throws IllegalArgumentException
-     *             if the specified default value is not valid according to {@link #checkValid(Object)}
+     *             if the specified default value is not valid according to
+     *             {@link #checkValid(Object)}
      * @throws NullPointerException
      *             if the specified name or class is null
      */
@@ -99,8 +106,8 @@ public abstract class Attribute<T> implements Serializable{
     }
 
     /**
-     * Checks if the specified value is valid for this attribute. If the specified value is not valid this method will
-     * throw an {@link IllegalArgumentException}.
+     * Checks if the specified value is valid for this attribute. If the specified value is not
+     * valid this method will throw an {@link IllegalArgumentException}.
      * 
      * @param value
      *            the value to check
@@ -114,8 +121,8 @@ public abstract class Attribute<T> implements Serializable{
     }
 
     /**
-     * Returns the <code>true</code> if and only id the specified object is the same as this, otherwise returns
-     * <code>false</code>.
+     * Returns the <code>true</code> if and only id the specified object is the same as this,
+     * otherwise returns <code>false</code>.
      * 
      * @param obj
      *            the reference object with which to compare.
@@ -158,32 +165,35 @@ public abstract class Attribute<T> implements Serializable{
     }
 
     /**
-     * Returns whether or not this attribute is set in the specified attribute map. This method is useful for
-     * distinguishing those case where an attribute maps to the default value of the attribute.
+     * Returns whether or not this attribute is set in the specified attribute map. This method is
+     * useful for distinguishing those case where an attribute maps to the default value of the
+     * attribute.
      * 
      * @param attributes
      *            the attribute map to check if this attribute is set
-     * @return <code>true</code> if this attribute is set in the specified attribute map, otherwise false
+     * @return <code>true</code> if this attribute is set in the specified attribute map, otherwise
+     *         false
      */
     public boolean isSet(WithAttributes attributes) {
         return attributes.getAttributes().contains(this);
     }
 
     /**
-     * Returns whether or not the specified value is valid for this attribute. This method can be overridden to only
-     * accept certain values.
+     * Returns whether or not the specified value is valid for this attribute. This method can be
+     * overridden to only accept certain values.
      * 
      * @param value
      *            the specified value to check
-     * @return <code>true</code> if the specified value is valid for this attribute, otherwise <code>false</code>
+     * @return <code>true</code> if the specified value is valid for this attribute, otherwise
+     *         <code>false</code>
      */
     public boolean isValid(T value) {
         return true; // all values are accepted by default.
     }
 
     /**
-     * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is
-     * immutable.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

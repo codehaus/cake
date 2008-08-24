@@ -34,11 +34,8 @@ public abstract class AbstractContainer implements Container {
     public AbstractContainer(Composer composer) {
         ContainerInfo info = composer.get(ContainerInfo.class);
         name = info.getContainerName();
-        if (!composer.hasService(Container.class)) {
-            // This is an internal container,add self to composer
-            composer.registerInstance(Container.class, this);
-            composer.registerInstance(info.getContainerType(), this);
-        }
+        composer.registerInstance(Container.class, this);
+        composer.registerInstance(info.getContainerType(), this);
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
     }

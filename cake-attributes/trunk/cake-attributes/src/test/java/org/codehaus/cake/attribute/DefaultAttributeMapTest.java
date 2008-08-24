@@ -9,6 +9,11 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
 public class DefaultAttributeMapTest extends AtrStubs {
 
     ObjectAttribute a1 = new ObjectAttribute("a1", Integer.class, 6) {};

@@ -14,7 +14,11 @@
  * the License.
  */
 package org.codehaus.cake.attribute;
-
+/**
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
 public class AtrStubs {
 
     public static final ByteAttribute B_1 = new ByteAttribute("B_1", (byte) 1) {};
@@ -51,6 +55,15 @@ public class AtrStubs {
     public static final IntAttribute I_3 = new IntAttribute("I_3", 3) {};
     public static final IntAttribute I_MAX_VALUE = new IntAttribute("I_MAX_VALUE", Integer.MAX_VALUE) {};
     public static final IntAttribute I_MIN_VALUE = new IntAttribute("I_MIN_VALUE", Integer.MIN_VALUE) {};
+    public static final IntAttribute I_POSITIVE = new IntAttribute("I_POSITIVE", 1) {
+
+        @Override
+        public void checkValid(int value) {
+            if (value <= 0) {
+                throw new IllegalArgumentException();
+            }
+        }
+    };
 
     public static final LongAttribute L_1 = new LongAttribute("L_1", 1) {};
     public static final LongAttribute L_2 = new LongAttribute("L_2", 2) {};

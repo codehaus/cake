@@ -19,13 +19,16 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * An implementation of an {@link Attribute} mapping to a char. This implementation adds a number of methods that works
- * on primitive chars instead of their object counterpart.
+ * An implementation of an {@link Attribute} mapping to a char. This implementation adds a number of
+ * methods that works on primitive chars instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CharAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public abstract class CharAttribute extends Attribute<Character> implements Comparator<WithAttributes>, Serializable {
+
+    /** serialVersionUID. */
+    private static final long serialVersionUID = 1L;
 
     /** The default value of this attribute. */
     private final transient char defaultValue;
@@ -46,7 +49,8 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
      * @param defaultValue
      *            the default value of this attribute
      * @throws IllegalArgumentException
-     *             if the specified default value is not a valid value according to {@link #checkValid(char)}
+     *             if the specified default value is not a valid value according to
+     *             {@link #checkValid(char)}
      */
     public CharAttribute(char defaultValue) {
         super(Character.TYPE, defaultValue);
@@ -77,7 +81,8 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
      * @throws NullPointerException
      *             if the specified name is <code>null</code>
      * @throws IllegalArgumentException
-     *             if the specified default value is not a valid value according to {@link #checkValid(char)}
+     *             if the specified default value is not a valid value according to
+     *             {@link #checkValid(char)}
      */
     public CharAttribute(String name, char defaultValue) {
         super(name, Character.TYPE, defaultValue);
@@ -129,8 +134,8 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
     }
 
     /**
-     * Returns the default primitive value of this attribute. This is equivalent to calling {@link #getDefault()}, but
-     * returning a primitive int instead.
+     * Returns the default primitive value of this attribute. This is equivalent to calling
+     * {@link #getDefault()}, but returning a primitive int instead.
      * 
      * @return the default value of this attribute
      */
@@ -139,14 +144,14 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
     }
 
     /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of this attribute from
-     * the map. If this attribute is not set in the map, the value of {@link #getDefaultValue()} will be returned
-     * instead.
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
      * 
      * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
-     *         {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map.
+     *         Otherwise {@link #getDefaultValue()}
      */
     public char get(WithAttributes withAttributes) {
         return withAttributes.getAttributes().get(this);
@@ -159,8 +164,8 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
      *            an object containing an AttributeMap
      * @param defaultValue
      *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the specified default
-     *         value
+     * @return the value of this attribute if this attribute is present in the map. Otherwise the
+     *         specified default value
      */
     public char get(WithAttributes withAttributes, char defaultValue) {
         return withAttributes.getAttributes().get(this, defaultValue);
@@ -218,8 +223,8 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
     }
 
     /**
-     * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is
-     * immutable.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
      * 
      * @param value
      *            the value to create the singleton from

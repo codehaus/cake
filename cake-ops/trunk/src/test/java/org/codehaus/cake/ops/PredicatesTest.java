@@ -714,8 +714,8 @@ public class PredicatesTest {
         assertTrue(Predicates.isNull().op(null));
         assertFalse(Predicates.isNull().op(1));
         assertFalse(Predicates.isNull().op("f"));
-        Predicates.IS_NOT_NULL.toString();// no fail
-        TestUtil.assertIsSerializable(Predicates.IS_NOT_NULL);
+        Predicates.IS_NULL.toString();// no fail
+        TestUtil.assertIsSerializable(Predicates.IS_NULL);
         assertSame(Predicates.IS_NULL, TestUtil.serializeAndUnserialize(Predicates.IS_NULL));
     }
 
