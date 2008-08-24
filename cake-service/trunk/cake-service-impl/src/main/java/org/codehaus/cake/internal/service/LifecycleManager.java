@@ -32,14 +32,16 @@ import org.codehaus.cake.util.TimeFormatter;
 
 public class LifecycleManager {
     private final List<LifecycleObject> list = new LinkedList<LifecycleObject>();
-    private final InternalExceptionService ies;
+    private final InternalExceptionService<?> ies;
     RunState state;
-    private Composer composer;
-    private ContainerInfo info;
+    Composer composer;
+    final DefaultServiceManager dsm;
+    ContainerInfo info;
 
-    public LifecycleManager(InternalExceptionService ies, ContainerConfiguration conf, Composer composer) {
+    public LifecycleManager(InternalExceptionService<?> ies, Composer composer) {
         this.ies = ies;
         this.composer = composer;
+        dsm = composer.get(DefaultServiceManager.class);
         info = composer.get(ContainerInfo.class);
     }
 
@@ -89,7 +91,7 @@ public class LifecycleManager {
     }
 
     private void doStart() {
-        Set allServices = composer.prepareStart();
+        Set<?> allServices = composer.prepareStart();
         for (Object o : allServices) {
             if (o != null) {
                 list.add(new LifecycleObject(state, ies, o));

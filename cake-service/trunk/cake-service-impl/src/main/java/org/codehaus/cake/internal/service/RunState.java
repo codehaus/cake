@@ -75,7 +75,7 @@ public abstract class RunState {
     }
 
     /** {@inheritDoc} */
-    boolean isRunningLazyStart(boolean failIfShutdown) {
+    public boolean isRunningLazyStart(boolean failIfShutdown) {
         while (!isRunning()) {
             if (isAtLeastShutdown()) {
                 checkExceptions();

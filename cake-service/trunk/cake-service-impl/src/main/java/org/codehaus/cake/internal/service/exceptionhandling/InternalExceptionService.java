@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.internal.service.exceptionhandling;
 
-import org.codehaus.cake.internal.service.debug.InternalDebugService;
 
 /**
  * An exception service available as an internal service at runtime.

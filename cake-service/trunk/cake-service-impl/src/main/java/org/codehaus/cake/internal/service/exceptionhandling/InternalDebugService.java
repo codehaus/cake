@@ -12,11 +12,16 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */
-package org.codehaus.cake.internal.service.listener;
+ */package org.codehaus.cake.internal.service.exceptionhandling;
 
-public interface InternalContainerListener {
-    // void afterContainerStart();
+public interface InternalDebugService {
+    boolean isTraceEnabled();
 
-    // void afterContainerStop();
+    boolean isDebugEnabled();
+
+    void debug(String str);
+
+    void trace(String str);
+
+    void info(String str);
 }

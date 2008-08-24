@@ -35,7 +35,7 @@ public class Composer {
 
     private final MutablePicoContainer container;
 
-    public Composer(Class clazz, ContainerConfiguration configuration) {
+    public Composer(Class<?> clazz, ContainerConfiguration<?> configuration) {
         baseContainer = new DefaultPicoContainer();
         baseContainer.registerComponentInstance(configuration);
         baseContainer.registerComponentInstance(configuration.getClock());
@@ -54,11 +54,6 @@ public class Composer {
         container.registerComponentImplementation(clazz);
     }
 
-    //
-    // public void registerImplementation(Object key, Class<?> clazz) {
-    // container.registerComponentImplementation(key, clazz);
-    // }
-
     public void registerInstance(Object key, Object value) {
         container.registerComponentInstance(key, value);
     }
@@ -70,7 +65,8 @@ public class Composer {
     public <T> T get(Class<T> serviceType) {
         T service = (T) container.getComponentInstanceOfType(serviceType);
         // if (service == null) {
-        // throw new IllegalArgumentException("Unknown service: " + serviceType);
+        // throw new IllegalArgumentException("Unknown service: " +
+        // serviceType);
         // }
         return service;
     }
@@ -80,21 +76,17 @@ public class Composer {
         return service;
     }
 
-    // public Object getFromKeyIfAvailable(Object key) {
-    // return container.getComponentInstance(key);
-    // }
-
     Set<?> prepareStart() {
-        ContainerConfiguration conf = get(ContainerConfiguration.class);
-        Set result = new LinkedHashSet(container.getComponentInstances());
-        for (Object object : new ArrayList(result)) {
+        ContainerConfiguration<?> conf = get(ContainerConfiguration.class);
+        Set<Object> result = new LinkedHashSet<Object>(container.getComponentInstances());
+        for (Object object : new ArrayList<Object>(result)) {
             if (object instanceof CompositeService) {
                 for (Object oo : ((CompositeService) object).getChildServices()) {
                     result.add(oo);
                 }
             }
         }
-        ServiceList sl=(ServiceList) conf.getServices();
+        ServiceList sl = (ServiceList) conf.getServices();
         for (Object o : sl.getServices()) {
             result.add(o);
         }

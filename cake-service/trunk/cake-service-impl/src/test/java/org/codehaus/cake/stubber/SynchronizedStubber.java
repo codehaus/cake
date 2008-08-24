@@ -15,81 +15,57 @@
  */
 package org.codehaus.cake.stubber;
 
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.internal.stubber.SynchronizedInternalStubber;
+import org.codehaus.cake.internal.service.Composer;
+import org.codehaus.cake.internal.service.SynchronizedRunState;
+import org.codehaus.cake.internal.service.executor.DefaultExecutorService;
+import org.codehaus.cake.internal.service.executor.DefaultForkJoinPool;
+import org.codehaus.cake.internal.service.executor.DefaultScheduledExecutorService;
+import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.stubber.bubber.BubberService;
 import org.codehaus.cake.util.Logger;
 
 @Container.SupportedServices( { ExecutorService.class, BubberService.class, Manageable.class })
-public class SynchronizedStubber<T> implements Stubber<T> {
-
-    Stubber<T> container;
+public class SynchronizedStubber<T> extends AbstractStubber<T> implements Stubber<T> {
 
     public SynchronizedStubber() {
         this(StubberConfiguration.<T> newConfiguration());
     }
 
-    public SynchronizedStubber(StubberConfiguration<T> conf) {
-        this.container = new SynchronizedInternalStubber<T>(conf, this);
-    }
-
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return container.awaitTermination(timeout, unit);
+    public SynchronizedStubber(StubberConfiguration<T> configuration) {
+        super(createComposer(configuration));
     }
 
     public void fail(Logger.Level level, String message, Throwable cause) {
-        container.fail(level, message, cause);
-    }
-
-    /** {@inheritDoc} */
-    public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
-        return container.getService(serviceType, attributes);
+        synchronized (this) {
+            lazyStart();
+            super.fail(exceptionService, level, message, cause);
+        }
     }
 
     public T getIt(T t) {
-        return container.getIt(t);
+        synchronized (this) {
+            lazyStart();
+            return t;
+        }
     }
 
-    public String getName() {
-        return container.getName();
-    }
+    private static Composer createComposer(StubberConfiguration<?> configuration) {
+        Composer composer = AbstractStubber.newComposer(configuration);
 
-    public <T> T getService(Class<T> serviceType) {
-        return container.getService(serviceType);
-    }
+        // Common components
+        composer.registerImplementation(DefaultExecutorService.class);
+        composer.registerImplementation(DefaultScheduledExecutorService.class);
+        composer.registerImplementation(DefaultForkJoinPool.class);
 
-    public boolean hasService(Class<?> serviceType) {
-        return container.hasService(serviceType);
-    }
+        composer.registerImplementation(SynchronizedRunState.class);
+        if (configuration.withManagement().isEnabled()) {
+            composer.registerImplementation(DefaultManagementService.class);
+        }
 
-    public boolean isShutdown() {
-        return container.isShutdown();
+        return composer;
     }
-
-    public boolean isStarted() {
-        return container.isStarted();
-    }
-
-    public boolean isTerminated() {
-        return container.isTerminated();
-    }
-
-    public void shutdown() {
-        container.shutdown();
-    }
-
-    public void shutdownNow() {
-        container.shutdownNow();
-    }
-
-    public Set<Class<?>> serviceKeySet() {
-        return container.serviceKeySet();
-    }
-
 }

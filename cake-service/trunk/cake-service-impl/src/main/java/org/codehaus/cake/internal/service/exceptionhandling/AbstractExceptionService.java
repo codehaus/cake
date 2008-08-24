@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.internal.service.exceptionhandling;
 
-import org.codehaus.cake.internal.service.debug.InternalDebugService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.internal.util.LazyLogger;
 import org.codehaus.cake.service.Container;
@@ -88,7 +87,7 @@ public abstract class AbstractExceptionService<T extends Container> implements I
     }
 
     protected abstract void handle(ExceptionContext<T> context);
-
+    /** {@inheritDoc} */
     public void info(String str) {
         infoLogger.info(str);
     }
@@ -107,7 +106,7 @@ public abstract class AbstractExceptionService<T extends Container> implements I
     public void trace(String str) {
         infoLogger.trace(str);
     }
-
+    /** {@inheritDoc} */
     public void warning(String warning) {
         handle(createContext(warning, Level.Warn));
     }
@@ -150,6 +149,6 @@ public abstract class AbstractExceptionService<T extends Container> implements I
             return message;
         }
     }
-
+    /** {@inheritDoc} */
     public void terminated() {}
 }

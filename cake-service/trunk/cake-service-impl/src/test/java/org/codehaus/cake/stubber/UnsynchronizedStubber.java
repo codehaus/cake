@@ -15,79 +15,41 @@
  */
 package org.codehaus.cake.stubber;
 
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.internal.stubber.UnsynchronizedInternalStubber;
+import org.codehaus.cake.internal.service.Composer;
+import org.codehaus.cake.internal.service.UnsynchronizedRunState;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.stubber.bubber.BubberService;
 import org.codehaus.cake.util.Logger;
 
 @Container.SupportedServices( { BubberService.class })
-public class UnsynchronizedStubber<T> implements Stubber<T> {
+public class UnsynchronizedStubber<T> extends AbstractStubber<T> {
 
-    Stubber<T> container;
 
     public UnsynchronizedStubber() {
         this(StubberConfiguration.<T> newConfiguration());
     }
 
-    public UnsynchronizedStubber(StubberConfiguration<T> conf) {
-        this.container = new UnsynchronizedInternalStubber<T>(conf, this);
-    }
-
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return container.awaitTermination(timeout, unit);
+    public UnsynchronizedStubber(StubberConfiguration<T> configuration) {
+        super(createComposer(configuration));
     }
 
     public void fail(Logger.Level level, String message, Throwable cause) {
-        container.fail(level, message, cause);
-    }
-
-    /** {@inheritDoc} */
-    public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
-        return container.getService(serviceType, attributes);
+        lazyStart();
+        super.fail(exceptionService, level, message, cause);
     }
 
     public T getIt(T t) {
-        return container.getIt(t);
+        lazyStart();
+        return t;
     }
 
-    public String getName() {
-        return container.getName();
-    }
+    private static Composer createComposer(StubberConfiguration<?> configuration) {
+        Composer composer = AbstractStubber.newComposer(configuration);
 
-    public <T> T getService(Class<T> serviceType) {
-        return container.getService(serviceType);
+        if (configuration.withManagement().isEnabled()) {
+            throw new IllegalArgumentException("Cache does not support Management");
+        }
+        composer.registerImplementation(UnsynchronizedRunState.class);
+        return composer;
     }
-
-    public boolean hasService(Class<?> serviceType) {
-        return container.hasService(serviceType);
-    }
-
-    public boolean isShutdown() {
-        return container.isShutdown();
-    }
-
-    public boolean isStarted() {
-        return container.isStarted();
-    }
-
-    public boolean isTerminated() {
-        return container.isTerminated();
-    }
-
-    public void shutdown() {
-        container.shutdown();
-    }
-
-    public void shutdownNow() {
-        container.shutdownNow();
-    }
-
-    public Set<Class<?>> serviceKeySet() {
-        return container.serviceKeySet();
-    }
-
 }

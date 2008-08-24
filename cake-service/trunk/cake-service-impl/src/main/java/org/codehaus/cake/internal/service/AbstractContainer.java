@@ -23,7 +23,7 @@ import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceManager;
 
-public abstract class AbstractInternalContainer implements Container {
+public abstract class AbstractContainer implements Container {
 
     private final String name;;
 
@@ -31,7 +31,7 @@ public abstract class AbstractInternalContainer implements Container {
 
     private final ServiceManager sm;
 
-    public AbstractInternalContainer(Composer composer) {
+    public AbstractContainer(Composer composer) {
         ContainerInfo info = composer.get(ContainerInfo.class);
         name = info.getContainerName();
         if (!composer.hasService(Container.class)) {
@@ -43,61 +43,71 @@ public abstract class AbstractInternalContainer implements Container {
         runState = composer.get(RunState.class);
     }
 
+    /** {@inheritDoc} */
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return runState.awaitTermination(timeout, unit);
     }
 
+    /** {@inheritDoc} */
     public String getName() {
         return name;
     }
 
     /** {@inheritDoc} */
-    public final <T> T getService(Class<T> serviceType) {
+    public <T> T getService(Class<T> serviceType) {
         lazyStart();
         return sm.getService(serviceType);
     }
 
     /** {@inheritDoc} */
-    public final <T> T getService(Class<T> serviceType, AttributeMap attributes) {
+    public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
         lazyStart();
         return sm.getService(serviceType, attributes);
     }
 
     /** {@inheritDoc} */
-    public final boolean hasService(Class<?> type) {
+    public boolean hasService(Class<?> type) {
         lazyStart();
         return sm.hasService(type);
     }
 
+    /** {@inheritDoc} */
     public boolean isShutdown() {
         return runState.isAtLeastShutdown();
     }
 
+    /** {@inheritDoc} */
     public boolean isStarted() {
         return runState.isAtLeastRunning();
     }
 
+    /** {@inheritDoc} */
     public boolean isTerminated() {
         return runState.isTerminated();
     }
 
-    protected void lazyStart() {
+    /** {@inheritDoc} */
+    public void lazyStart() {
         runState.isRunningLazyStart(false);
     }
 
-    protected void lazyStartFailIfShutdown() {
+    /** {@inheritDoc} */
+    public void lazyStartFailIfShutdown() {
         runState.isRunningLazyStart(true);
     }
 
+    /** {@inheritDoc} */
     public Set<Class<?>> serviceKeySet() {
         lazyStart();
         return sm.serviceKeySet();
     }
 
+    /** {@inheritDoc} */
     public void shutdown() {
         runState.shutdown(false);
     }
 
+    /** {@inheritDoc} */
     public void shutdownNow() {
         runState.shutdown(true);
     }
