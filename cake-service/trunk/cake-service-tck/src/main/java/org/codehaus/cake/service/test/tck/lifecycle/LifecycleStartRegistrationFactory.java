@@ -15,16 +15,15 @@
  */
 package org.codehaus.cake.service.test.tck.lifecycle;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.service.test.tck.lifecycle.Services.*;
-import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.Register2;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterFactory0;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterFactory1;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterFactoryKeyNull;
+import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterFactoryServiceNull;
 import org.junit.Test;
 
 public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container, ContainerConfiguration> {

@@ -1,7 +1,6 @@
 package org.codehaus.cake.service.test.tck.core;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.service.Container;
