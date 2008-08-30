@@ -42,6 +42,11 @@ public abstract class AbstractAttributeMapTest extends AtrStubs {
 
     public void noPut() {
         try {
+            map.putAll(new DefaultAttributeMap());
+            fail("should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException ok) {/* ok */
+        }
+        try {
             map.put(O_1, "123");
             fail("should throw UnsupportedOperationException");
         } catch (UnsupportedOperationException ok) {/* ok */

@@ -115,6 +115,9 @@ public final class Managements {
             public void unregister() throws JMException {
                 group.unregister();
             }
+            public ManagedGroup getChild(String name) {
+                return group.getChild(name);
+            }
         };
     }
 

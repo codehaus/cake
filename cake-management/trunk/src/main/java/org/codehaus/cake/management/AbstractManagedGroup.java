@@ -207,4 +207,8 @@ public abstract class AbstractManagedGroup implements ManagedGroup {
             mainLock.unlock();
         }
     }
+
+    public ManagedGroup getChild(String name) {
+        return childGroups.get(name);
+    }
 }

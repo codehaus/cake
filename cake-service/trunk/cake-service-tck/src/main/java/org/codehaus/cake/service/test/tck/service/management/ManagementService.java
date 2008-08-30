@@ -26,6 +26,7 @@ import javax.management.ObjectName;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
+import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
@@ -38,7 +39,7 @@ import org.junit.Test;
 public class ManagementService extends AbstractTCKTest<Container, ContainerConfiguration> {
 
     @Test
-    public void defaults() throws Exception {
+    public void manageble() throws Exception {
         conf.addServiceToLifecycle(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true);
         newContainer();
@@ -46,6 +47,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
         ObjectName on = new ObjectName(pck + ":name=" + c.getName() + ",service=foofoo");
         prestart();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        assertEquals("desc", mbs.getMBeanInfo(on).getDescription());
         MyServiceMXBean mxBean = (MyServiceMXBean) MBeanServerInvocationHandler.newProxyInstance(mbs, on,
                 MyServiceMXBean.class, false);
         assertEquals(5, mxBean.getFoo());
@@ -55,6 +57,24 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
         assertEquals(300, mxBean.getFoo());
     }
 
+    @Test
+    public void managebleObject() throws Exception {
+        conf.addServiceToLifecycle(new MyServiceObject());
+        withConf(ManagementConfiguration.class).setEnabled(true);
+        newContainer();
+        String pck = getContainerInterface().getPackage().getName();
+        ObjectName on = new ObjectName(pck + ":name=" + c.getName() + ",service=Name");
+        prestart();
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        assertEquals("Desc", mbs.getMBeanInfo(on).getDescription());
+        MyServiceMXBean mxBean = (MyServiceMXBean) MBeanServerInvocationHandler.newProxyInstance(mbs, on,
+                MyServiceMXBean.class, false);
+        assertEquals(5, mxBean.getFoo());
+        mxBean.op();
+        assertEquals(105, mxBean.getFoo());
+        mxBean.setFoo(300);
+        assertEquals(300, mxBean.getFoo());
+    }
     @Test
     public void customServer() throws Exception {
         MBeanServer mbs = MBeanServerFactory.createMBeanServer();
@@ -140,7 +160,28 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
             this.i = i;
         }
     }
+    @ManagedObject(defaultValue = "Name", description = "Desc")
+    public static class MyServiceObject {
+        int i = 5;
 
+        public int getFoo() {
+            return i;
+        }
+
+        public void manage(ManagedGroup parent) {
+            parent.addChild("foofoo", "desc").add(this);
+        }
+
+        @ManagedOperation
+        public void op() {
+            i += 100;
+        }
+
+        @ManagedAttribute
+        public void setFoo(int i) {
+            this.i = i;
+        }
+    }
     public interface MyServiceMXBean {
         int getFoo();
 

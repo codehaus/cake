@@ -32,15 +32,16 @@ import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.ManagedVisitor;
 import org.codehaus.cake.management.Managements;
+import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.service.Stoppable;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 
 /**
- * The default implementation of the {@link MapManagementService} interface. All methods exposed through the
- * DefaultManagementService interface can be invoked in a thread safe manner.
+ * The default implementation of the {@link MapManagementService} interface. All methods exposed
+ * through the DefaultManagementService interface can be invoked in a thread safe manner.
  * <p>
- * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
- * this class between different releases.
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to
+ * the compatibility of this class between different releases.
  * <p>
  * This is class is thread-safe.
  * 
@@ -94,6 +95,16 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
                 Manageable m = (Manageable) o;
                 debugService.debug("  Managing " + m);
                 m.manage(group);
+            }
+            ManagedObject mo = o.getClass().getAnnotation(ManagedObject.class);
+            if (mo != null) {
+                String grp = mo.defaultValue();
+                String desc = mo.description();
+                ManagedGroup mg = group.getChild(grp);
+                if (mg == null) {
+                    mg = group.addChild(grp, desc);
+                }
+                mg.add(o);
             }
         }
 

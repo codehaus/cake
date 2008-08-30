@@ -69,6 +69,16 @@ public class DefaultAttributeMapTest extends AtrStubs {
     }
 
     @Test
+    public void putAll() {
+        AttributeMap put = create();
+        put.put(a1, "foo");
+        put.put(a2, true);
+        m.putAll(put);
+        assertEquals("foo", m.get(a1));
+        assertEquals(Boolean.TRUE, m.get(a2));
+    }
+
+    @Test
     public void putGet() {
         m.put(a1, "foo");
         m.put(a2, true);

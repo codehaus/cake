@@ -375,4 +375,11 @@ public class DefaultAttributeMap implements AttributeMap {
     public Collection<Object> values() {
         return map.values();
     }
+
+    /** {@inheritDoc} */
+    public void putAll(AttributeMap attributes) {
+        for (Map.Entry<Attribute, Object> m : attributes.entrySet()) {
+            put(m.getKey(), m.getValue());
+        }
+    }
 }

@@ -41,13 +41,12 @@ public final class Attributes {
 
     // /CLOVER:ON
     /**
-     * Returns an immutable AttributeMap containing only the specified attribute
-     * mapping to the specified value. Attempts to modify the returned attribute
-     * map, whether direct or via its collection views, result in an
-     * <tt>UnsupportedOperationException</tt>.
+     * Returns an immutable AttributeMap containing only the specified attribute mapping to the
+     * specified value. Attempts to modify the returned attribute map, whether direct or via its
+     * collection views, result in an <tt>UnsupportedOperationException</tt>.
      * <p>
-     * The returned attribute map will be serializable if the specified
-     * attribute and its value are serializable.
+     * The returned attribute map will be serializable if the specified attribute and its value are
+     * serializable.
      * 
      * @param attribute
      *            the attribute to map from
@@ -103,19 +102,16 @@ public final class Attributes {
     // }
 
     /**
-     * Returns an unmodifiable view of the specified attribute map. This method
-     * allows modules to provide users with "read-only" access to internal
-     * attribute maps. Query operations on the returned attribute map
-     * "read through" to the specified attribute map, and attempts to modify the
-     * returned attribute map, whether direct or via its collection views,
-     * result in an <tt>UnsupportedOperationException</tt>.
+     * Returns an unmodifiable view of the specified attribute map. This method allows modules to
+     * provide users with "read-only" access to internal attribute maps. Query operations on the
+     * returned attribute map "read through" to the specified attribute map, and attempts to modify
+     * the returned attribute map, whether direct or via its collection views, result in an
+     * <tt>UnsupportedOperationException</tt>.
      * <p>
-     * The returned attribute map will be serializable if the specified map is
-     * serializable.
+     * The returned attribute map will be serializable if the specified map is serializable.
      * 
      * @param attributes
-     *            the attribute map for which an unmodifiable view is to be
-     *            returned.
+     *            the attribute map for which an unmodifiable view is to be returned.
      * @return an unmodifiable view of the specified attribute map.
      */
     public static AttributeMap unmodifiableAttributeMap(AttributeMap attributes) {
@@ -123,9 +119,9 @@ public final class Attributes {
     }
 
     /**
-     * Validates that all entries entries are valid in the specified attribute
-     * map according to {@link Attribute#checkValid(Object)}. The method returns
-     * a new immutable map with all the entries.
+     * Validates that all entries entries are valid in the specified attribute map according to
+     * {@link Attribute#checkValid(Object)}. The method returns a new immutable map with all the
+     * entries.
      * 
      * @param attributes
      *            the map to validate
@@ -390,6 +386,10 @@ public final class Attributes {
         public Collection<Object> values() {
             return Collections.EMPTY_SET;
         }
+
+        public void putAll(AttributeMap attributes) {
+            throw new UnsupportedOperationException("map is immutable");
+        }
     }
 
     /** An unmodifiable view of an attribute map. */
@@ -645,6 +645,10 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.unmodifiableCollection(map.values());
+        }
+
+        public void putAll(AttributeMap attributes) {
+            throw new UnsupportedOperationException("map is immutable");
         }
 
     }
@@ -928,6 +932,10 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.singleton(value);
+        }
+
+        public void putAll(AttributeMap attributes) {
+            throw new UnsupportedOperationException("map is immutable");
         }
     }
 }

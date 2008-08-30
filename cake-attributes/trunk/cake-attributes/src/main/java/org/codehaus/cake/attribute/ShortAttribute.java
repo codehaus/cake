@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 
 /**
  * An implementation of an {@link Attribute} mapping to a short. This implementation adds a number
