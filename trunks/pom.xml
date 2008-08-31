@@ -13,9 +13,7 @@
   <packaging>pom</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/trunks</connection>
-    <developerConnection>
-      scm:svn:https://svn.codehaus.org/cake/trunks
-    </developerConnection>
+    <developerConnection> scm:svn:https://svn.codehaus.org/cake/trunks</developerConnection>
     <url>http://svn.codehaus.org/cake/trunks</url>
   </scm>
   <distributionManagement>
@@ -30,9 +28,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <excludePackageNames>
-            *.internal.*:*.tck.*:*.test.*:*.jcip.*:*.examples.*
-          </excludePackageNames>
+          <excludePackageNames> *.internal.*:*.tck.*:*.test.*:*.jcip.*:*.examples.*</excludePackageNames>
           <aggregate>true</aggregate>
           <links>
             <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
@@ -43,8 +39,6 @@
       </plugin>
     </plugins>
   </reporting>
-
-
   <profiles>
     <profile>
       <id>normal</id>
@@ -71,19 +65,15 @@
         </property>
       </activation>
       <modules>
- 
         <module>cake-attributes</module>
         <module>cake-management</module>
         <module>cake-ops</module>
         <module>cake-util</module>
- 
         <module>cake-cache</module>
         <module>cake-service</module>
-       </modules>
+      </modules>
     </profile>
   </profiles>
-
-
   <repositories>
     <repository>
       <id>codehaus.releases</id>
