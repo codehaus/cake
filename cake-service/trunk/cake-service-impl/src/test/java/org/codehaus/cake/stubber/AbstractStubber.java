@@ -2,6 +2,7 @@ package org.codehaus.cake.stubber;
 
 import org.codehaus.cake.internal.service.AbstractContainer;
 import org.codehaus.cake.internal.service.Composer;
+import org.codehaus.cake.internal.service.configuration.SynchronizedConfigurationService;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.internal.stubber.bubber.DefaultBubberService;
 import org.codehaus.cake.internal.stubber.exceptionhandling.DefaultStubberExceptionService;
@@ -13,17 +14,21 @@ import org.codehaus.cake.util.Logger;
 public abstract class AbstractStubber<T> extends AbstractContainer implements Stubber<T> {
     final InternalExceptionService exceptionService;
 
-
     public AbstractStubber(Composer composer) {
         super(composer);
         exceptionService = composer.get(InternalExceptionService.class);
 
     }
 
+    public StubberServices<T> with() {
+        return new StubberServices<T>(this);
+    }
+
     static Composer newComposer(ContainerConfiguration configuration) {
         Composer composer = new Composer(Stubber.class, configuration);
         composer.registerImplementation(DefaultStubberExceptionService.class);
         composer.registerImplementation(DefaultBubberService.class);
+        composer.registerImplementation(SynchronizedConfigurationService.class);
         composer.registerImplementation(DefaultTubberService.class);
         composer.registerImplementation(DefaultTubber1Service.class);
         return composer;

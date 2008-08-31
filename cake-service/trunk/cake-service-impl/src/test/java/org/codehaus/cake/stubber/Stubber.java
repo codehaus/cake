@@ -22,4 +22,6 @@ public interface Stubber<T> extends Container {
     T getIt(T t);
 
     void fail(Logger.Level level, String message, Throwable cause);
+    
+    StubberServices<T> with();
 }

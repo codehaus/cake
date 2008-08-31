@@ -91,23 +91,24 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
         debugService.debug("  Manageable.manage()");
         ManagedGroup group = Managements.delegatedManagedGroup(this);
         for (Object o : objects) {
-            if (o instanceof Manageable) {
-                Manageable m = (Manageable) o;
-                debugService.debug("  Managing " + m);
-                m.manage(group);
-            }
-            ManagedObject mo = o.getClass().getAnnotation(ManagedObject.class);
-            if (mo != null) {
-                String grp = mo.defaultValue();
-                String desc = mo.description();
-                ManagedGroup mg = group.getChild(grp);
-                if (mg == null) {
-                    mg = group.addChild(grp, desc);
+            if (o != null) {
+                if (o instanceof Manageable) {
+                    Manageable m = (Manageable) o;
+                    debugService.debug("  Managing " + m);
+                    m.manage(group);
                 }
-                mg.add(o);
+                ManagedObject mo = o.getClass().getAnnotation(ManagedObject.class);
+                if (mo != null) {
+                    String grp = mo.defaultValue();
+                    String desc = mo.description();
+                    ManagedGroup mg = group.getChild(grp);
+                    if (mg == null) {
+                        mg = group.addChild(grp, desc);
+                    }
+                    mg.add(o);
+                }
             }
         }
-
         try {
             registrant.traverse(group);
         } finally {

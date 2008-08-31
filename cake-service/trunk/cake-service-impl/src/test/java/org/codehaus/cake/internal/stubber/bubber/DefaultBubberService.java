@@ -17,18 +17,36 @@ package org.codehaus.cake.internal.stubber.bubber;
 
 import static org.junit.Assert.assertEquals;
 
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.internal.service.configuration.ConfigurableService;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubber1Service;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubberService;
+import org.codehaus.cake.service.ServiceRegistrant;
+import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
 
-public class DefaultBubberService<T> implements BubberService<T> {
+public class DefaultBubberService<T> implements BubberService<T>, ConfigurableService {
 
     public static final Object C = new String("DefaultBubberService_constructor");
+    int foofoo;
 
     public DefaultBubberService(StubberConfiguration conf, DefaultTubberService s, DefaultTubber1Service s1) {
         conf.verifier().hasHappenend(DefaultTubber1Service.c);
         conf.verifier().constructor(C);
         assertEquals("ok", s.get());
+    }
+
+    @Startable
+    public void register(ServiceRegistrant registrant) {
+        registrant.registerService(BubberService.class, this);
+    }
+
+    public void processUpdate(AttributeMap attributes) {
+        this.foofoo = attributes.get(BubberService.FOOFOO);
+    }
+
+    public int getFooFoo() {
+        return foofoo;
     }
 }

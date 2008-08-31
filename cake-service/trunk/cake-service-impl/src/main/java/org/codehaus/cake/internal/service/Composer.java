@@ -16,6 +16,7 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -60,6 +61,10 @@ public class Composer {
 
     <T> boolean hasService(Class<T> serviceType) {
         return container.getComponentAdapterOfType(serviceType) != null;
+    }
+
+    public <T> Collection<T> getAll(Class<T> serviceType) {
+        return container.getComponentInstancesOfType(serviceType);
     }
 
     public <T> T get(Class<T> serviceType) {

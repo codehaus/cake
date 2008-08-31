@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { StubberT.class })
+@Suite.SuiteClasses( { ConfigurationStubber.class, StubberT.class })
 public class CoreSuite {
 
 }
