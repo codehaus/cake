@@ -72,7 +72,10 @@ public abstract class Attribute<T> implements Serializable {
         }
         this.name = getClass().toString() + NAME.incrementAndGet();
         this.clazz = clazz;
-        checkValid(defaultValue);
+        if (!isValid(defaultValue)) {
+            throw new IllegalArgumentException("Default value must be valid, default value was '" + defaultValue + "'");
+        }
+        checkValid(defaultValue);//check again
         this.defaultValue = defaultValue;
         hashCode = name.hashCode() ^ clazz.getName().hashCode();
     }
