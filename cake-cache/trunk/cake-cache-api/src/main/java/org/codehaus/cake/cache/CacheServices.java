@@ -55,16 +55,16 @@ public class CacheServices<K, V> {
         this.serviceManager = cache;
     }
 
-    public <R> WriteService<K, V, R> crud(Op<CacheEntry<K, V>, R> extractor) {
+    public <R> WriteService<K, V, R> write(Op<CacheEntry<K, V>, R> extractor) {
         return getService(WriteService.class, WriteService.OP.singleton(extractor));
     }
 
-    public WriteService<K, V, CacheEntry<K, V>> crudReturnEntry() {
-        return crud((Op) CacheDataExtractor.WHOLE_ENTRY);
+    public WriteService<K, V, CacheEntry<K, V>> writeReturnEntry() {
+        return write((Op) CacheDataExtractor.WHOLE_ENTRY);
     }
 
-    public WriteService<K, V, V> crudReturnValue() {
-        return crud((Op) CacheDataExtractor.ONLY_VALUE);
+    public WriteService<K, V, V> writeReturnValue() {
+        return write((Op) CacheDataExtractor.ONLY_VALUE);
     }
 
     /**

@@ -420,30 +420,6 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         }
     }
 
-    /**
-     * Returns the maximum size configured in the specified configuration.
-     * 
-     * @param conf
-     *            the configuration to read the maximum size from
-     * @return the maximum size configured in the specified configuration
-     */
-    public static int initializeMaximumSize(MemoryStoreConfiguration<?, ?> conf) {
-        int tmp = conf.getMaximumSize();
-        return tmp == 0 ? Integer.MAX_VALUE : tmp;
-    }
-
-    /**
-     * Returns the maximum volume configured in the specified configuration.
-     * 
-     * @param conf
-     *            the configuration to read the maximum volume from
-     * @return the maximum volume configured in the specified configuration
-     */
-    public static long initializeMaximumVolume(MemoryStoreConfiguration<?, ?> conf) {
-        long tmp = conf.getMaximumVolume();
-        return tmp == 0 ? Long.MAX_VALUE : tmp;
-    }
-
     class Trim implements MemoryStoreService<K, V> {
         Comparator comparator;
         Integer newSize;
