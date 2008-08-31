@@ -19,13 +19,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.codehaus.cake.cache.AbstractCache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.util.CollectionUtils;
 
 class EntrySet<K, V> extends AbstractSetView<Map.Entry<K, V>> {
 
-    EntrySet(InternalCache<K, V> cache) {
+    EntrySet(AbstractCache<K, V> cache) {
         super(cache);
     }
 

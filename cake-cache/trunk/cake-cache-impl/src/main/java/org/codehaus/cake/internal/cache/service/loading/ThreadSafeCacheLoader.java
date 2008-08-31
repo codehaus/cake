@@ -22,37 +22,43 @@ import java.util.concurrent.Future;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.internal.cache.InternalCache;
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
+import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
+import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Disposable;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.Startable;
 import org.codehaus.cake.service.Stoppable;
 
 public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
-    private final InternalCache<K, V> cache;
+    private final Cache<K, V> cache;
 
     private final ConcurrentHashMap<K, LoadableFutureTask<K, V>> futures = new ConcurrentHashMap<K, LoadableFutureTask<K, V>>();
     private final BlockingCacheLoader<K, V> loader;
+    private final MemoryStore<K, V> store;
+    private final CacheRequestFactory<K, V> requestFactory;
 
     /** The Executor responsible for doing the actual load. */
     private volatile Executor loadExecutor;
 
-    public ThreadSafeCacheLoader(InternalCache<K, V> cache, CacheLoadingConfiguration<K, V> conf,
-            InternalCacheExceptionService<K, V> exceptionHandler) {
+    public ThreadSafeCacheLoader(Cache<K, V> cache, MemoryStore<K, V> store, CacheLoadingConfiguration<K, V> conf,
+            InternalCacheExceptionService<K, V> exceptionHandler, CacheRequestFactory<K, V> requestFactory) {
         super(exceptionHandler);
         this.loader = getSimpleLoader(conf);
         this.cache = cache;
+        this.store = store;
+        this.requestFactory = requestFactory;
     }
 
     @AfterStart
     public void setExecutor(ServiceManager s) {
-        //TODO fix after start
+        // TODO fix after start
         this.loadExecutor = s.getService(ExecutorService.class);
     }
 
@@ -88,7 +94,12 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         try {
             V value = doLoad(loader, key, map);
             // TODO cache = weak reference?, for ill behaving loaders?
-            return cache.valueLoaded(key, value, map);
+            if (value != null) {
+                AddEntryRequest<K, V> loaded = requestFactory.loaded(key, value, map);
+                store.process(loaded);
+                return loaded.getNewEntry();
+            }
+            return null;
         } finally {
             futures.remove(key);
         }
@@ -105,5 +116,4 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
             f.cancel(false);
         }
     }
-
 }

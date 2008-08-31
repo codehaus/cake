@@ -39,11 +39,12 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
         this.exceptionHandler = exceptionHandler == null ? new CacheExceptionHandler<K, V>() : exceptionHandler;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void handle(ExceptionContext<Cache<K, V>> context) {
         exceptionHandler.handle(context);
     }
-
+    /** {@inheritDoc} */
     public V loadFailed(Throwable cause, K key, AttributeMap map) {
         String message = "Loading of Value failed [key = " + key + "]";
         return exceptionHandler.loadingOfValueFailed(createContext(cause, message, Logger.Level.Error), key, map);

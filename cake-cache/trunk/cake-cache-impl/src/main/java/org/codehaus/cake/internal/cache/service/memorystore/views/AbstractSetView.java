@@ -19,11 +19,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.codehaus.cake.internal.cache.InternalCache;
+import org.codehaus.cake.cache.AbstractCache;
 
 abstract class AbstractSetView<E> extends AbstractCollectionView<E> implements Set<E> {
 
-    AbstractSetView(InternalCache cache) {
+    AbstractSetView(AbstractCache cache) {
         super(cache);
     }
 

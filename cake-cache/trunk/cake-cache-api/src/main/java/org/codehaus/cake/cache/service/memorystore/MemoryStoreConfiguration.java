@@ -15,9 +15,13 @@
  */
 package org.codehaus.cake.cache.service.memorystore;
 
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.ops.Ops;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -31,11 +35,12 @@ import org.codehaus.cake.ops.Ops.Predicate;
  * @param <V>
  *            the type of mapped values
  */
-public class MemoryStoreConfiguration<K, V> {
+public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
     public static final IntAttribute MAXIMUM_SIZE = new IntAttribute("Maximum Size") {};
     private Ops.Procedure<MemoryStoreService<K, V>> evictor;
 
+    private final AttributeMap attributes = new DefaultAttributeMap();
     /** A filter used for filtering what items should be cached. */
     private Predicate<? super CacheEntry<K, V>> isCacheableFilter;
 
@@ -57,7 +62,8 @@ public class MemoryStoreConfiguration<K, V> {
     /**
      * Returns the Predicate that determinds if a given key and value should be cached.
      * 
-     * @return the IsCacheable predicate configured or <code>null</code> if no predicate has been set
+     * @return the IsCacheable predicate configured or <code>null</code> if no predicate has been
+     *         set
      * @see #setIsCacheableFilter(Predicate)
      */
     public Predicate<? super CacheEntry<K, V>> getIsCacheableFilter() {
@@ -65,7 +71,8 @@ public class MemoryStoreConfiguration<K, V> {
     }
 
     /**
-     * Returns the maximum allowed size of the cache or {@link Integer#MAX_VALUE} if there is no upper limit.
+     * Returns the maximum allowed size of the cache or {@link Integer#MAX_VALUE} if there is no
+     * upper limit.
      * 
      * @return the maximum allowed size of the cache or Integer.MAX_VALUE if there is no limit.
      * @see #setMaximumSize(int)
@@ -75,7 +82,8 @@ public class MemoryStoreConfiguration<K, V> {
     }
 
     /**
-     * Returns the maximum allowed volume of the cache or {@link Long#MAX_VALUE} if there is no upper limit.
+     * Returns the maximum allowed volume of the cache or {@link Long#MAX_VALUE} if there is no
+     * upper limit.
      * 
      * @return the maximum allowed volume of the cache or Long.MAX_VALUE if there is no limit.
      * @see #setMaximumVolume(long)
@@ -98,8 +106,8 @@ public class MemoryStoreConfiguration<K, V> {
     }
 
     /**
-     * Sets whether or not caching is disabled. If caching is disabled, the cache will not cache any items added. This
-     * can sometimes be useful while testing.
+     * Sets whether or not caching is disabled. If caching is disabled, the cache will not cache any
+     * items added. This can sometimes be useful while testing.
      * 
      * @param isDisabled
      *            whether or not caching is disabled
@@ -107,17 +115,18 @@ public class MemoryStoreConfiguration<K, V> {
      */
     public MemoryStoreConfiguration<K, V> setDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
+        attributes.put(MemoryStoreAttributes.IS_DISABLED, isDisabled);
         return this;
     }
 
     /**
      * Controls how many entries are evicted whenever the maximum volume or size is reached.
      * <p>
-     * If no evictor is specified the cache will normally evict the minimum number of entries possible to make room for
-     * the new entry.
+     * If no evictor is specified the cache will normally evict the minimum number of entries
+     * possible to make room for the new entry.
      * <p>
-     * The following example shows a Procedure that trims the cache downto 80 % of if its maximum size whenever the
-     * maximum
+     * The following example shows a Procedure that trims the cache downto 80 % of if its maximum
+     * size whenever the maximum
      * 
      * <pre>
      * public class TrimTo80Pct implements Procedure&lt;MemoryStoreService&gt; {
@@ -137,10 +146,12 @@ public class MemoryStoreConfiguration<K, V> {
     }
 
     /**
-     * Sets a Predicate that the cache will use to determind if a cache entry can be cached. For example,
+     * Sets a Predicate that the cache will use to determind if a cache entry can be cached. For
+     * example,
      * 
      * @param predicate
-     *            the predicate that decides if a given key, value combination can be added to the cache
+     *            the predicate that decides if a given key, value combination can be added to the
+     *            cache
      * @return this configuration
      */
     public MemoryStoreConfiguration<K, V> setIsCacheableFilter(Predicate<? super CacheEntry<K, V>> predicate) {
@@ -149,20 +160,23 @@ public class MemoryStoreConfiguration<K, V> {
     }
 
     /**
-     * Sets that maximum number of elements that a cache can hold. If the limit is reached the cache must evict an
-     * existing element(s) before adding a new element. For example, if the maximum size is 10 and the cache currently
-     * holds 10 elements. Then, if a user tries to add a new element the cache must choose one of the 10 elements to
-     * remove from the cache before it inserts the new element. As an alternative the cache might choose to keep the 10
-     * existing elements and not add the new element. For example, if it estimates that the likelihood of requesting
-     * anyone of the 10 elements in the near future are higher then the likelihood of new element being requested.
+     * Sets that maximum number of elements that a cache can hold. If the limit is reached the cache
+     * must evict an existing element(s) before adding a new element. For example, if the maximum
+     * size is 10 and the cache currently holds 10 elements. Then, if a user tries to add a new
+     * element the cache must choose one of the 10 elements to remove from the cache before it
+     * inserts the new element. As an alternative the cache might choose to keep the 10 existing
+     * elements and not add the new element. For example, if it estimates that the likelihood of
+     * requesting anyone of the 10 elements in the near future are higher then the likelihood of new
+     * element being requested.
      * <p>
-     * To indicate that a cache can hold an unlimited number of elements, specify {@link Integer#MAX_VALUE}. This is
-     * also the default value.
+     * To indicate that a cache can hold an unlimited number of elements, specify
+     * {@link Integer#MAX_VALUE}. This is also the default value.
      * <p>
      * If the specified maximum size is 0, the cache will never store any elements internally.
      * 
      * @param maximumSize
-     *            the maximum number of elements the cache can hold or Integer.MAX_VALUE if there is no limit
+     *            the maximum number of elements the cache can hold or Integer.MAX_VALUE if there is
+     *            no limit
      * @throws IllegalArgumentException
      *             if the specified integer is negative
      * @return this configuration
@@ -171,16 +185,18 @@ public class MemoryStoreConfiguration<K, V> {
         if (maximumSize < 0) {
             throw new IllegalArgumentException("number of maximum elements must be 0 or greater, was " + maximumSize);
         }
+        attributes.put(MemoryStoreAttributes.MAX_SIZE, maximumSize);
         this.maximumSize = maximumSize;
         return this;
     }
 
     /**
-     * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the individual element
-     * sizes (sum of all elements {@link CacheEntry#SIZE}. If the limit is reached the cache must evict existing
-     * elements before adding new elements.
+     * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the
+     * individual element sizes (sum of all elements {@link CacheEntry#SIZE}. If the limit is
+     * reached the cache must evict existing elements before adding new elements.
      * <p>
-     * To indicate that a cache can have an unlimited volume, {@link Long#MAX_VALUE} should be specified.
+     * To indicate that a cache can have an unlimited volume, {@link Long#MAX_VALUE} should be
+     * specified.
      * 
      * @param maximumVolume
      *            the maximum volume.
@@ -190,6 +206,7 @@ public class MemoryStoreConfiguration<K, V> {
         if (maximumVolume < 0) {
             throw new IllegalArgumentException("maximumVolume must be a non-negative number, was " + maximumVolume);
         }
+        attributes.put(MemoryStoreAttributes.MAX_VOLUME, maximumVolume);
         this.maximumVolume = maximumVolume;
         return this;
     }
@@ -197,5 +214,9 @@ public class MemoryStoreConfiguration<K, V> {
     public MemoryStoreConfiguration<K, V> setPolicy(ReplacementPolicy replacementPolicy) {
         this.replacementPolicy = replacementPolicy;
         return this;
+    }
+
+    public AttributeMap getAttributes() {
+        return attributes;
     }
 }

@@ -472,11 +472,11 @@ public final class Caches {
         /** {@inheritDoc} */
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof CacheEntry)) {
+            if (!(o instanceof Map.Entry)) {
                 return false;
             }
-            CacheEntry e = (CacheEntry) o;
-            return eq(key, e.getKey()) && eq(value, e.getValue()) && eq(attributes, e.getAttributes());
+            Map.Entry e = (Map.Entry) o;
+            return eq(key, e.getKey()) && eq(value, e.getValue())/* && eq(attributes, e.getAttributes())*/;
         }
 
         /** {@inheritDoc} */

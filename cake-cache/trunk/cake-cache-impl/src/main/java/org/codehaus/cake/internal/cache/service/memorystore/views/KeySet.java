@@ -18,13 +18,13 @@ package org.codehaus.cake.internal.cache.service.memorystore.views;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.codehaus.cake.cache.AbstractCache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.internal.cache.InternalCache;
 import org.codehaus.cake.internal.util.CollectionUtils;
 
 class KeySet<K, V> extends AbstractSetView<K> {
 
-    KeySet(InternalCache<K, V> cache) {
+    KeySet(AbstractCache<K, V> cache) {
         super(cache);
     }
 

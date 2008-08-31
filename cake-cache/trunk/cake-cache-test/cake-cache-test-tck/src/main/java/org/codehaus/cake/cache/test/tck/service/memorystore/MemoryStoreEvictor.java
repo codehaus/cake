@@ -30,6 +30,7 @@ import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.LongOps;
 import org.codehaus.cake.ops.Ops.LongOp;
 import org.codehaus.cake.ops.Ops.Procedure;
+import org.codehaus.cake.util.Loggers;
 import org.codehaus.cake.util.Logger.Level;
 import org.junit.Test;
 
@@ -37,6 +38,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
 
     @Test
     public void evictorSize() {
+        conf.withExceptionHandling().setExceptionLogger(Loggers.systemErrLogger(Level.Warn));
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
 
             public void op(MemoryStoreService<Integer, String> a) {

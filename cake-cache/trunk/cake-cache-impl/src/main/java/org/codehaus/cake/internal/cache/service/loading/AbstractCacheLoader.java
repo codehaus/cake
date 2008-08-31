@@ -23,7 +23,7 @@ import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.ops.Ops.Op;
 
-public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K, V> {
+public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingService<K, V> {
 
     private InternalCacheExceptionService<K, V> exceptionHandler;
 
@@ -66,7 +66,7 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoader<K
 
     public void loadAsync(Map<? extends K, AttributeMap> map) {
         for (Map.Entry<? extends K, AttributeMap> e : map.entrySet()) {
-            loadAsync(e.getKey(), e.getValue());
+           loadAsync(e.getKey(), e.getValue());
         }
     }
 }

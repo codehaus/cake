@@ -17,66 +17,86 @@ package org.codehaus.cake.internal.cache.service.memorystore;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
-import org.codehaus.cake.internal.cache.InternalCacheEntry;
+import org.codehaus.cake.internal.cache.CachePredicates;
+import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
+import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
+import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
+import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
+import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
+import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
+import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
+import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry.Type;
+import org.codehaus.cake.internal.service.configuration.ConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
-import org.codehaus.cake.internal.util.CollectionUtils;
+import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
-import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.Stoppable;
 
-public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implements MemoryStoreService<K, V>,
-        CompositeService {
+public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeService, ConfigurableService {
 
-    private Map<K, DefaultEntry<K, V>> map = new HashMap<K, DefaultEntry<K, V>>();
-    private final InternalCacheExceptionService<K, V> ies;
     private final InternalAttributeService<K, V> attributeService;
+    private final Procedure<MemoryStoreService<K, V>> evictor;
+    private final InternalCacheExceptionService<K, V> ies;
+    private final Predicate<CacheEntry<K, V>> isCacheable;
+    private boolean isDisabled;
+    private final Map<K, CacheEntry<K, V>> map = new HashMap<K, CacheEntry<K, V>>();
     private int maximumSize;
     private long maximumVolume;
-    private long volume;
     private final ReplacementPolicy<K, V> policy;
-    private final Predicate isCacheable;
-    private boolean isDisabled;
-    private Procedure<MemoryStoreService<K, V>> evictor;
+    private long volume;
 
     public HashMapMemoryStore(MemoryStoreConfiguration<K, V> storeConfiguration,
             InternalAttributeService<K, V> attributeService, InternalCacheExceptionService<K, V> ies) {
         this.attributeService = attributeService;
         this.ies = ies;
-
-        maximumSize = initializeMaximumSize(storeConfiguration);
-        maximumVolume = initializeMaximumVolume(storeConfiguration);
         policy = storeConfiguration.getPolicy();
-        isCacheable = storeConfiguration.getIsCacheableFilter();
-        isDisabled = storeConfiguration.isDisabled();
+        isCacheable = (Predicate) storeConfiguration.getIsCacheableFilter();
         evictor = storeConfiguration.getEvictor();
     }
 
-    // public CacheEntry<K, V> any() {
-    // return map.size() == 0 ? null : map.values().iterator().next();
-    // }
+    private ParallelArray<CacheEntry<K, V>> all() {
+        return (ParallelArray) ParallelArray.createUsingHandoff(map.values().toArray(new CacheEntry[map.size()]),
+                ParallelArray.defaultExecutor());
+    }
+
+    private CacheEntry<K, V> evictNext() {
+        if (policy != null) {
+            CacheEntry<K, V> entry = (CacheEntry<K, V>) policy.evictNext();
+            map.remove(entry.getKey());
+            removeEntry(entry, true);
+            return entry;
+        }
+        // remove random
+        Iterator<CacheEntry<K, V>> iter = map.values().iterator();
+        CacheEntry<K, V> entry = iter.next();
+        iter.remove();
+        removeEntry(entry, false);
+        return entry;
+    }
 
     public CacheEntry<K, V> get(Object key) {
         CacheEntry<K, V> entry = map.get(key);
         if (entry != null) {
+            // Perhaps we can move .access to outer loop
             attributeService.access(entry.getAttributes());
             if (policy != null) {
                 policy.touch(entry);
@@ -85,22 +105,55 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         return entry;
     }
 
+    public Collection<?> getChildServices() {
+        return Arrays.asList(policy);
+    }
+
+    public int getSize() {
+        return map.size();
+    }
+
+    public long getVolume() {
+        return volume;
+    }
+
+    public Iterator<CacheEntry<K, V>> iterator() {
+        final Iterator<CacheEntry<K, V>> iter = map.values().iterator();
+        return new Iterator<CacheEntry<K, V>>() {
+            CacheEntry<K, V> current;
+
+            public boolean hasNext() {
+                return iter.hasNext();
+            }
+
+            public CacheEntry<K, V> next() {
+                current = iter.next();
+                return current;
+            }
+
+            public void remove() {
+                iter.remove();
+                removeEntry(current, false);
+            }
+        };
+    }
+
     public CacheEntry<K, V> peek(Object key) {
         return map.get(key);
     }
 
-    public void add(AddManyEntries<K, V> addMany) {
+    public void process(AddEntriesRequest<K, V> r) {
         if (isDisabled) {
             return;
         }
         // prepare
-        for (AddSingleEntry<K, V> e : addMany.getEntries()) {
-            DefaultEntry<K, V> previous = map.get(e.getKey());
+        for (AddEntryRequest<K, V> e : r.adds()) {
+            CacheEntry<K, V> previous = map.get(e.getKey());
             e.setPreviousEntry(previous);
         }
 
-        for (AddSingleEntry<K, V> entry : addMany.getEntries()) {
-            CacheEntry<K, V> previous = entry.getPreviousEntry();
+        for (AddEntryRequest<K, V> entry : r.adds()) {
+            CacheEntry<K, V> previous = entry.getPreviousAsEntry();
             final AttributeMap atr;
             if (previous == null) {
                 atr = attributeService.create(entry.getKey(), entry.getValue(), entry.getAttributes());
@@ -109,7 +162,7 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                         .getAttributes());
             }
 
-            final DefaultEntry<K, V> newEntry = new DefaultEntry<K, V>(entry.getKey(), entry.getValue(), atr);
+            final CacheEntry<K, V> newEntry = Caches.newEntry(entry.getKey(), entry.getValue(), atr);
             boolean keepNew = true;
             if (isCacheable != null) {
                 try {
@@ -146,29 +199,30 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                 entry.setNewEntry(newEntry);
             }
         }
-        addMany.setTrimmed(trim());
+        trim(r);
     }
 
-    public void add(AddSingleEntry<K, V> entry) {
+    public void process(AddEntryRequest<K, V> entry) {
         if (isDisabled) {
             return;
         }
-        DefaultEntry<K, V> previous = map.get(entry.getKey());
-        entry.setPreviousEntry(previous);
-        if (previous == null) {
-            if (entry.getType() == Type.REPLACE) {
-                return;
+        CacheEntry<K, V> previous = map.get(entry.getKey());
+        Predicate<CacheEntry<K, V>> updatePredicate = entry.getUpdatePredicate();
+        if (updatePredicate != null) {
+            if (previous == null) {
+                if (updatePredicate == Predicates.IS_NOT_NULL) {
+                    return;
+                }
+            } else {
+                if (updatePredicate == Predicates.IS_NULL) {
+                    entry.setPreviousEntry(previous);
+                    return;
+                }
+                if (updatePredicate instanceof CachePredicates.CacheValueEquals && !updatePredicate.op(previous)) {
+                    return;
+                }
             }
-        } else {
-            if (entry.onlyIfAbsent()) {
-                return;
-            }
-            if (entry.getType() == Type.REPLACE_IF_VALUE && !previous.getValue().equals(entry.getReplace())) {
-                return;
-            }
-
         }
-
         final AttributeMap atr;
         if (previous == null) {
             atr = attributeService.create(entry.getKey(), entry.getValue(), entry.getAttributes());
@@ -177,13 +231,13 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
                     .getAttributes());
         }
 
-        final DefaultEntry<K, V> newEntry = new DefaultEntry<K, V>(entry.getKey(), entry.getValue(), atr);
+        final CacheEntry<K, V> newEntry = Caches.newEntry(entry.getKey(), entry.getValue(), atr);
         boolean keepNew = true;
         if (isCacheable != null) {
             try {
                 keepNew = isCacheable.op(newEntry);
             } catch (RuntimeException e) {
-                ies.fatal("IsCacheable predicate failed to validate, entry was not cached", e);
+                ies.error("IsCacheable predicate failed to validate, entry was not cached", e);
                 keepNew = false;
             }
         }
@@ -209,46 +263,63 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         if (keepNew) {
             volume += SIZE.get(newEntry);
             map.put(entry.getKey(), newEntry);
-        }
-        if (keepNew) {
+            entry.setPreviousEntry(previous);
             entry.setNewEntry(newEntry);
-            entry.setTrimmed(trim());
+            trim(entry);
         }
     }
 
-    public DefaultEntry<K, V> remove(Object key) {
-        DefaultEntry<K, V> entry = map.remove(key);
-        removeEntry(entry, false);
-        return entry;
-    }
-
-    public DefaultEntry<K, V> remove(Object key, Object value) {
-        DefaultEntry<K, V> entry = map.get(key);
-        if (entry != null && entry.getValue().equals(value)) {
-            map.remove(key);
-            removeEntry(entry, false);
-            return entry;
-        }
-        return null;
-    }
-
-    public ParallelArray<CacheEntry<K, V>> removeAll(Collection entries) {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(entries.size(), CacheEntry.class, ParallelArray
-                .defaultExecutor());
-        for (Object o : entries) {
-            DefaultEntry<K, V> entry = remove(o);
-            if (entry != null) {
-                removeEntry(entry, false);
-                pa.asList().add(entry);
-            }
-        }
-        return pa;
-    }
-
-    private void clearEntries() {
+    public void process(ClearCacheRequest<K, V> r) {
+        map.clear();
         volume = 0;
         if (policy != null) {
             policy.clear();
+        }
+    }
+
+    public void process(RemoveEntriesRequest<K, V> r) {
+        for (RemoveEntryRequest<K, V> e : r.removes()) {
+            process(e);
+        }
+    }
+
+    public void process(RemoveEntryRequest<K, V> e) {
+        Predicate<CacheEntry<K, V>> p = e.getUpdatePredicate();
+        if (p == null) {
+            CacheEntry<K, V> entry = map.remove(e.getKey());
+            removeEntry(entry, false);
+            e.setPreviousEntry(entry);
+        } else {
+            CacheEntry<K, V> entry = map.get(e.getKey());
+            if (entry != null && p.op(entry)) {
+                map.remove(e.getKey());
+                removeEntry(entry, false);
+                e.setPreviousEntry(entry);
+            }
+        }
+    }
+
+    public void process(TrimToSizeRequest<K, V> r) {
+        int size = r.getSizeToTrimTo();
+        Comparator<CacheEntry<K, V>> comparator = r.getComparator();
+        trimToSize(r, comparator, size);
+    }
+
+    public void process(TrimToVolumeRequest<K, V> r) {
+        long volume = r.getVolumeToTrimTo();
+        Comparator<CacheEntry<K, V>> comparator = r.getComparator();
+        trimToVolume(r, comparator, volume);
+    }
+
+    public void processUpdate(AttributeMap attributes) {
+        isDisabled = attributes.get(MemoryStoreAttributes.IS_DISABLED, isDisabled);
+        maximumSize = attributes.get(MemoryStoreAttributes.MAX_SIZE, maximumSize);
+        if (maximumSize == 0) {
+            maximumSize = Integer.MAX_VALUE;
+        }
+        maximumVolume = attributes.get(MemoryStoreAttributes.MAX_VOLUME, maximumVolume);
+        if (maximumVolume == 0) {
+            maximumVolume = Long.MAX_VALUE;
         }
     }
 
@@ -261,55 +332,141 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
     }
 
-    public ParallelArray<CacheEntry<K, V>> trim() {
-        ParallelArray<CacheEntry<K, V>> pa = null;
+    @Stoppable
+    public final void stop() {
+        map.clear();
+    }
+
+    public void trim(Trimable<K, V> trimable) {
         while (map.size() > maximumSize || volume > maximumVolume) {
-            if (pa == null) {
-                pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
+            List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
+            if (trimmed == null) {
+                trimmed = new ArrayList<CacheEntry<K, V>>();
+                trimable.setTrimmed(trimmed);
             }
             if (evictor == null) {
-                pa.asList().add(evictNext());
+                trimmed.add(evictNext());
             } else {
                 Trim t = new Trim();
                 evictor.op(t);
-                if (t.volume != null) {
-                    trimToVolume(pa, t.volume, t.comparator);
+                if (t.newVolume != null) {
+                    trimToVolume(trimable, t.comparator, t.newVolume);
                 }
-                if (t.size != null) {
-                    trimToSize(pa, t.size, t.comparator);
+                Integer newSize = t.newSize;
+                if (newSize != null) {
+                    trimToSize(trimable, t.comparator, newSize);
                 }
-                if (pa.size() == 0) {
+                if (trimmed.size() == 0) {
                     ies.warning("Custom Evictor failed to reduce the size of the cache, manually removing 1 element");
-                    pa.asList().add(evictNext());
+                    trimmed.add(evictNext());
                 }
             }
         }
-        return pa;
+    }
+
+    private void trimToSize(Trimable<K, V> trimable, Comparator comparator, int size) {
+
+        int currentSize = map.size();
+        int trimSize = size >= 0 ? currentSize - size : Math.min(currentSize, -size);
+        if (size == Integer.MIN_VALUE) {
+            trimSize = currentSize; // Math.abs(Integer.MIN_VALUE)==Integer.
+            // MIN_VALUE
+        }
+        if (trimSize > 0) {
+            List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
+            if (trimmed == null) {
+                trimmed = new ArrayList<CacheEntry<K, V>>(trimSize);
+                trimable.setTrimmed(trimmed);
+            }
+            if (comparator == null) {
+                while (trimSize-- > 0) {
+                    trimmed.add(evictNext());
+                }
+            } else {
+                ParallelArray<CacheEntry<K, V>> sorter = all();
+                sorter.sort(comparator);
+                for (int i = 0; i < trimSize; i++) {
+                    CacheEntry<K, V> e = (CacheEntry<K, V>) sorter.get(i);
+                    removeEntry(e, false);
+                    map.remove(e.getKey());
+                    trimmed.add(e);
+                }
+            }
+        }
+    }
+
+    private void trimToVolume(Trimable<K, V> trimable, Comparator<CacheEntry<K, V>> comparator, long trimToVolume) {
+        long currentVolume = this.volume;
+        long trimTo = trimToVolume >= 0 ? trimToVolume : Math.max(0, currentVolume + trimToVolume);
+        List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
+        if (trimmed == null) {
+            trimmed = new ArrayList<CacheEntry<K, V>>();
+            trimable.setTrimmed(trimmed);
+        }
+        if (comparator == null) {
+            while (this.volume > trimTo) {
+                trimmed.add(evictNext());
+            }
+        } else {
+            ParallelArray sorter = all();
+            sorter.sort((Comparator) comparator);
+            int i = 0;
+            while (this.volume > trimTo) {
+                CacheEntry<K, V> e = (CacheEntry<K, V>) sorter.get(i++);
+                removeEntry(e, false);
+                map.remove(e.getKey());
+                trimmed.add(e);
+            }
+        }
+    }
+
+    /**
+     * Returns the maximum size configured in the specified configuration.
+     * 
+     * @param conf
+     *            the configuration to read the maximum size from
+     * @return the maximum size configured in the specified configuration
+     */
+    public static int initializeMaximumSize(MemoryStoreConfiguration<?, ?> conf) {
+        int tmp = conf.getMaximumSize();
+        return tmp == 0 ? Integer.MAX_VALUE : tmp;
+    }
+
+    /**
+     * Returns the maximum volume configured in the specified configuration.
+     * 
+     * @param conf
+     *            the configuration to read the maximum volume from
+     * @return the maximum volume configured in the specified configuration
+     */
+    public static long initializeMaximumVolume(MemoryStoreConfiguration<?, ?> conf) {
+        long tmp = conf.getMaximumVolume();
+        return tmp == 0 ? Long.MAX_VALUE : tmp;
     }
 
     class Trim implements MemoryStoreService<K, V> {
-        Long volume;
-        Integer size;
         Comparator comparator;
+        Integer newSize;
+        Long newVolume;
 
         public int getMaximumSize() {
-            return HashMapMemoryStore.this.getMaximumSize();
+            return maximumSize;
         }
 
         public long getMaximumVolume() {
-            return HashMapMemoryStore.this.getMaximumVolume();
+            return maximumVolume;
         }
 
         public int getSize() {
-            return HashMapMemoryStore.this.getSize();
+            return map.size();
         }
 
         public long getVolume() {
-            return HashMapMemoryStore.this.getVolume();
+            return volume;
         }
 
         public boolean isDisabled() {
-            return HashMapMemoryStore.this.isDisabled();
+            return isDisabled;
         }
 
         public void setDisabled(boolean isDisabled) {
@@ -325,262 +482,21 @@ public class HashMapMemoryStore<K, V> extends AbstractMemoryStore<K, V> implemen
         }
 
         public void trimToSize(int size) {
-            this.size = size;
-        }
-
-        public void trimToVolume(long volume) {
-            this.volume = volume;
+            this.newSize = size;
         }
 
         public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
-            this.size = size;
+            this.newSize = size;
             this.comparator = comparator;
+        }
+
+        public void trimToVolume(long volume) {
+            this.newVolume = volume;
         }
 
         public void trimToVolume(long volume, Comparator<? extends CacheEntry<K, V>> comparator) {
-            this.volume = volume;
+            this.newVolume = volume;
             this.comparator = comparator;
         }
     }
-
-    private CacheEntry<K, V> evictNext() {
-        if (policy != null) {
-            DefaultEntry<K, V> entry = (DefaultEntry<K, V>) policy.evictNext();
-            map.remove(entry.getKey());
-            removeEntry(entry, true);
-            return entry;
-        }
-        Iterator<DefaultEntry<K, V>> iter = map.values().iterator();
-        DefaultEntry<K, V> entry = iter.next();
-        iter.remove();
-        removeEntry(entry, false);
-        return entry;
-    }
-
-    public ParallelArray<CacheEntry<K, V>> removeAll() {
-        ParallelArray<CacheEntry<K, V>> array = (ParallelArray) ParallelArray.createUsingHandoff(map.values().toArray(
-                new DefaultEntry[0]), ParallelArray.defaultExecutor());
-        map.clear();
-        clearEntries();
-        return array;
-    }
-
-    static class DefaultEntry<K, V> implements CacheEntry<K, V>, InternalCacheEntry<K, V> {
-
-        private final AttributeMap attributes;
-        /** The key of the entry. */
-        private final K key;
-
-        /** The value of the entry. */
-        private final V value;
-
-        public DefaultEntry(K key, V value, AttributeMap attributes) {
-            this.key = key;
-            this.value = value;
-            this.attributes = attributes;
-        }
-
-        /** {@inheritDoc} */
-
-        public boolean equals(Object o) {
-            if (!(o instanceof Map.Entry)) {
-                return false;
-            }
-            Map.Entry e = (Map.Entry) o;
-            return CollectionUtils.eq(key, e.getKey()) && CollectionUtils.eq(value, e.getValue());
-        }
-
-        /** {@inheritDoc} */
-        public K getKey() {
-            return key;
-        }
-
-        /** {@inheritDoc} */
-        public V getValue() {
-            return value;
-        }
-
-        /** {@inheritDoc} */
-
-        public int hashCode() {
-            return (key.hashCode()) ^ value.hashCode();
-            // return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
-        }
-
-        /** {@inheritDoc} */
-        public V setValue(V value) {
-            throw new UnsupportedOperationException();
-        }
-
-        public AttributeMap getAttributes() {
-            return attributes;
-        }
-
-        /** {@inheritDoc} */
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(key);
-            sb.append("=");
-            sb.append(value);
-            sb.append(" [");
-
-            Iterator<Map.Entry<Attribute, Object>> i = attributes.entrySet().iterator();
-            if (!i.hasNext()) {
-                return sb.append("]").toString();
-            }
-            for (;;) {
-                Map.Entry<Attribute, Object> e = i.next();
-                sb.append(e.getKey());
-                sb.append("=");
-                sb.append(e.getValue());
-                if (!i.hasNext())
-                    return sb.append(']').toString();
-                sb.append(", ");
-            }
-        }
-    }
-
-    public Iterator<CacheEntry<K, V>> iterator() {
-        final Iterator<DefaultEntry<K, V>> iter = map.values().iterator();
-        return new Iterator<CacheEntry<K, V>>() {
-            DefaultEntry<K, V> current;
-
-            public boolean hasNext() {
-                return iter.hasNext();
-            }
-
-            public CacheEntry<K, V> next() {
-                current = iter.next();
-                return current;
-            }
-
-            public void remove() {
-                iter.remove();
-                removeEntry(current, false);
-            }
-        };
-    }
-
-    public int getMaximumSize() {
-        return maximumSize;
-    }
-
-    @Startable
-    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
-        serviceRegistrant.registerService(MemoryStoreService.class, this);
-    }
-
-    public long getMaximumVolume() {
-        return maximumVolume;
-    }
-
-    public int getSize() {
-        return map.size();
-    }
-
-    public long getVolume() {
-        return volume;
-    }
-
-    public boolean isDisabled() {
-        return isDisabled;
-    }
-
-    public void setDisabled(boolean isDisabled) {
-        this.isDisabled = isDisabled;
-    }
-
-    public void setMaximumSize(int maximumSize) {
-        if (maximumSize <= 0) {
-            throw new IllegalArgumentException();
-        }
-        this.maximumSize = maximumSize;
-    }
-
-    public void setMaximumVolume(long maximumVolume) {
-        if (maximumVolume <= 0) {
-            throw new IllegalArgumentException();
-        }
-        this.maximumVolume = maximumVolume;
-    }
-
-    public void trimToSize(int size) {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
-        trimToSize(pa, size, null);
-    }
-
-    public void trimToVolume(long volume) {
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
-        trimToVolume(pa, volume, null);
-    }
-
-    public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
-        if (comparator == null) {
-            throw new NullPointerException("comparator is null");
-        }
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
-        trimToSize(pa, size, (Comparator) comparator);
-    }
-
-    ParallelArray<CacheEntry<K, V>> all() {
-        return (ParallelArray) ParallelArray.createFromCopy(map.values().toArray(new CacheEntry[map.size()]),
-                ParallelArray.defaultExecutor());
-    }
-
-    private void trimToVolume(ParallelArray<CacheEntry<K, V>> pa, long volume, Comparator comparator) {
-        long currentVolume = this.volume;
-        long trimTo = volume >= 0 ? volume : Math.max(0, currentVolume + volume);
-        if (comparator == null) {
-            while (this.volume > trimTo) {
-                pa.asList().add(evictNext());
-            }
-        } else {
-            ParallelArray sorter = all();
-            sorter.sort((Comparator) comparator);
-            int i = 0;
-            while (this.volume > trimTo) {
-                DefaultEntry<K, V> e = (DefaultEntry<K, V>) sorter.get(i++);
-                removeEntry(e, false);
-                map.remove(e.getKey());
-                pa.asList().add(e);
-            }
-        }
-    }
-
-    private void trimToSize(ParallelArray<CacheEntry<K, V>> pa, int size, Comparator comparator) {
-        int currentSize = map.size();
-        int trimSize = size >= 0 ? currentSize - size : Math.min(currentSize, -size);
-        if (size == Integer.MIN_VALUE) {
-            trimSize = currentSize; // Math.abs(Integer.MIN_VALUE)==Integer.MIN_VALUE
-        }
-        if (trimSize > 0) {
-            if (comparator == null) {
-                while (trimSize-- > 0) {
-                    pa.asList().add(evictNext());
-                }
-            } else {
-                ParallelArray sorter = all();
-                sorter.sort((Comparator) comparator);
-                for (int i = 0; i < trimSize; i++) {
-                    DefaultEntry<K, V> e = (DefaultEntry<K, V>) sorter.get(i);
-                    removeEntry(e, false);
-                    map.remove(e.getKey());
-                    pa.asList().add(e);
-                }
-            }
-        }
-    }
-
-    public void trimToVolume(long volume, Comparator<? extends CacheEntry<K, V>> comparator) {
-        if (comparator == null) {
-            throw new NullPointerException("comparator is null");
-        }
-        ParallelArray<CacheEntry<K, V>> pa = ParallelArray.create(0, CacheEntry.class, ParallelArray.defaultExecutor());
-        trimToVolume(pa, volume, (Comparator) comparator);
-    }
-
-    public Collection<?> getChildServices() {
-        return Arrays.asList(policy);
-    }
-
 }

@@ -13,31 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.cache;
+package org.codehaus.cake.internal.cache.service.loading;
 
 import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.internal.cache.service.memorystore.AddManyEntries;
-import org.codehaus.cake.internal.cache.service.memorystore.AddSingleEntry;
 
-public interface InternalCache<K, V> extends Cache<K, V>, Iterable<CacheEntry<K, V>> {
+public interface InternalCacheLoadingService<K, V> {
 
-    // boolean removeEntries(Collection<?> entries);
+    void loadAsync(K key, AttributeMap attributes);
 
+    void loadAsync(Map<? extends K, AttributeMap> map);
+
+    // throws errors /runtime exceptions
     /**
-     * Called by a cache loader whenever a value has been loaded.
+     * <p>
+     * This method can be called without holding a lock.
      * 
      * @param key
-     * @param value
-     * @param map
+     * @param attributes
      * @return
      */
-    CacheEntry<K, V> valueLoaded(K key, V value, AttributeMap map);
+    CacheEntry<K, V> load(K key, AttributeMap attributes);
 
-    void process(AddSingleEntry<K, V> entry);
-
-    void process(AddManyEntries<K, V> entry);
 }

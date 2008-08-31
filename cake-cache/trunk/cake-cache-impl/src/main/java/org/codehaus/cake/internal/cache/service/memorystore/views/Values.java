@@ -18,12 +18,12 @@ package org.codehaus.cake.internal.cache.service.memorystore.views;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.codehaus.cake.cache.AbstractCache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.internal.cache.InternalCache;
 
 class Values<K, V> extends AbstractCollectionView<V> {
 
-    Values(InternalCache<K, V> cache) {
+    Values(AbstractCache<K, V> cache) {
         super(cache);
     }
 

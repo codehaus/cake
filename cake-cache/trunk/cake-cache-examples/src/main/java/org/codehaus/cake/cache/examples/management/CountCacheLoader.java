@@ -11,18 +11,12 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
-
-public class CountCacheLoader implements BlockingCacheLoader<String, String>, Manageable {
+import org.codehaus.cake.management.annotation.ManagedObject;
+@ManagedObject(defaultValue = "MyCacheLoader", description = "Cache Loading statistics")
+public class CountCacheLoader implements BlockingCacheLoader<String, String> {
     /** Keeping count of the number of loads. */
     private final AtomicLong numberOfLoads = new AtomicLong();
-
-    /** Add a new MBean with name=MyCacheLoader, description=Cache Loading statistics. */
-    public void manage(ManagedGroup parent) {
-        parent.addChild("MyCacheLoader", "Cache Loading statistics").add(this);
-    }
 
     @ManagedAttribute(defaultValue = "numberOfLoads", description = "The number of loads by the cache loader")
     public long getNumberOfLoads() {

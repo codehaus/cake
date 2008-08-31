@@ -9,26 +9,22 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.management.ManagedGroup;
+import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
+import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.service.AfterStart;
-
-public class ScheduledClearManagement implements Manageable {
+@ManagedObject(defaultValue = "ClearCache", description = "Controls Clearing of the cache")
+public class ScheduledClearManagement {
     private long scheduleMs;
 
     private Runnable runnable;
 
     private ScheduledExecutorService ses;
 
-    private ScheduledFuture sf;
+    private ScheduledFuture<?> sf;
 
     public synchronized long getClearScheduleMs() {
         return scheduleMs;
-    }
-
-    public synchronized void manage(ManagedGroup parent) {
-        parent.addChild("ClearCache", "Controls Clearing of the cache").add(this);
     }
 
     @ManagedAttribute(defaultValue = "clearMS", description = "The delay between clearings of the cache in Milliseconds")
@@ -43,11 +39,7 @@ public class ScheduledClearManagement implements Manageable {
     @AfterStart
     public synchronized void started(final Cache<?, ?> cache) {
         ses = cache.with().scheduledExecutor();
-        runnable = new Runnable() {
-            public void run() {
-                cache.clear();
-            }
-        };
+        runnable = Caches.clearAsRunnable(cache);
         setClearScheduleMs(60 * 60 * 1000);// default 1 hour
     }
 }

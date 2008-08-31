@@ -19,17 +19,18 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.cake.internal.cache.InternalCache;
+import org.codehaus.cake.cache.AbstractCache;
+import org.codehaus.cake.cache.Cache;
 
 public class UnsynchronizedCollectionViews<K, V> implements CollectionViews<K, V> {
     private Set<Map.Entry<K, V>> entrySet;
 
     private Set<K> keySet;
     private Collection<V> values;
-    private final InternalCache<K, V> cache;
+    private final AbstractCache<K, V> cache;
 
-    public UnsynchronizedCollectionViews(InternalCache<K, V> cache) {
-        this.cache = cache;
+    public UnsynchronizedCollectionViews(Cache<K, V> cache) {
+        this.cache = (AbstractCache<K, V>) cache;
     }
 
     public Set<Map.Entry<K, V>> entrySet() {

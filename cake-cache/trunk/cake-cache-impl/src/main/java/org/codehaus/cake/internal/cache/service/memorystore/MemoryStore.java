@@ -15,37 +15,41 @@
  */
 package org.codehaus.cake.internal.cache.service.memorystore;
 
-import java.util.Collection;
-
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.forkjoin.collections.ParallelArray;
+import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
+import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
+import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
+import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
+import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
+import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
+import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 
 public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
-    void add(AddSingleEntry<K, V> entry);
-
-    void add(AddManyEntries<K, V> entries);
-
+    
     CacheEntry<K, V> get(K key);
-
-    CacheEntry<K, V> peek(K key);
-
-    
-    
-    CacheEntry<K, V> remove(Object key);
-
-    CacheEntry<K, V> remove(Object key, Object value);
-
-    ParallelArray<CacheEntry<K, V>> removeAll(Collection entries);
-
-    ParallelArray<CacheEntry<K, V>> removeAll();
 
     int getSize();
 
-    // CacheEntry<K, V> removeAny(Predicate<? super CacheEntry<K, V>> selector);
+    long getVolume();
 
-    // ParallelArray<CacheEntry<K, V>> removeEntries(Collection entries);
+    CacheEntry<K, V> peek(K key);
 
-    // ParallelArray<CacheEntry<K, V>> removeValues(Collection entries);
+    void process(AddEntriesRequest<K, V> r);
 
+    void process(AddEntryRequest<K, V> r);
+
+    void process(ClearCacheRequest<K, V> r);
+    void process(RemoveEntriesRequest<K, V> r);
+
+    void process(RemoveEntryRequest<K, V> r);
+
+    void process(TrimToSizeRequest<K, V> r);
+    void process(TrimToVolumeRequest<K, V> r);
+    void processUpdate(AttributeMap attributes);
+  
 }

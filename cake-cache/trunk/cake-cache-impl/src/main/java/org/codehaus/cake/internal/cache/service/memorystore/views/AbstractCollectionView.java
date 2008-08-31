@@ -18,13 +18,13 @@ package org.codehaus.cake.internal.cache.service.memorystore.views;
 import java.util.AbstractCollection;
 import java.util.Collection;
 
-import org.codehaus.cake.internal.cache.InternalCache;
+import org.codehaus.cake.cache.AbstractCache;
 
 abstract class AbstractCollectionView<E> extends AbstractCollection<E> {
 
-    final InternalCache cache;
+    final AbstractCache cache;
 
-    AbstractCollectionView(InternalCache cache) {
+    AbstractCollectionView(AbstractCache cache) {
         this.cache = cache;
     }
 

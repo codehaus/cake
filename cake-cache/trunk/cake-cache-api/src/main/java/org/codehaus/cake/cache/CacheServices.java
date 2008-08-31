@@ -18,8 +18,10 @@ package org.codehaus.cake.cache;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.cache.service.crud.WriteService;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.ServiceManager;
 
 /**
@@ -53,15 +55,16 @@ public class CacheServices<K, V> {
         this.serviceManager = cache;
     }
 
-    /**
-     * Returns the default {@link ScheduledExecutorService}.
-     * 
-     * @return the default scheduled executor service for the cache
-     * @throws UnsupportedOperationException
-     *             if no scheduled executor service is available
-     */
-    public ScheduledExecutorService scheduledExecutor() {
-        return getService(ScheduledExecutorService.class);
+    public <R> WriteService<K, V, R> crud(Op<CacheEntry<K, V>, R> extractor) {
+        return getService(WriteService.class, WriteService.OP.singleton(extractor));
+    }
+
+    public WriteService<K, V, CacheEntry<K, V>> crudReturnEntry() {
+        return crud((Op) CacheDataExtractor.WHOLE_ENTRY);
+    }
+
+    public WriteService<K, V, V> crudReturnValue() {
+        return crud((Op) CacheDataExtractor.ONLY_VALUE);
     }
 
     /**
@@ -125,7 +128,14 @@ public class CacheServices<K, V> {
         return getService(MemoryStoreService.class);
     }
 
-    // public ScheduledExecutorService scheduledExecutorService() {
-    // return executors().getScheduledExecutorService();
-    // }
+    /**
+     * Returns the default {@link ScheduledExecutorService}.
+     * 
+     * @return the default scheduled executor service for the cache
+     * @throws UnsupportedOperationException
+     *             if no scheduled executor service is available
+     */
+    public ScheduledExecutorService scheduledExecutor() {
+        return getService(ScheduledExecutorService.class);
+    }
 }

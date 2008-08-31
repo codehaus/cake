@@ -26,22 +26,21 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.internal.cache.service.management.DefaultCacheLoadingMXBean;
 import org.codehaus.cake.internal.service.spi.CompositeService;
-import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.management.ManagedGroup;
+import org.codehaus.cake.management.annotation.ManagedObject;
+import org.codehaus.cake.management.annotation.ManagedOperation;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.Startable;
 
-public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService>, Manageable,
-        CompositeService {
+@ManagedObject(defaultValue = "Loading", description = "Cache Loading attributes and operations")
+public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService>, CompositeService {
 
     private Cache<K, V> cache;
 
-    private InternalCacheLoader<K, V> loader;
+    private InternalCacheLoadingService<K, V> loader;
     private Predicate<? super CacheEntry<K, V>> needsReloadFilter;
 
     private Collection<Object> childServices = new ArrayList<Object>();
@@ -50,7 +49,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     private CacheLoadingService<K, V> serviceForced = new ForcedLoading();
 
     public DefaultCacheLoadingService(Cache<K, V> cache, CacheLoadingConfiguration<K, V> loadingConf,
-            InternalCacheLoader<K, V> loader) {
+            InternalCacheLoadingService<K, V> loader) {
         this.cache = cache;
         this.loader = loader;
         this.needsReloadFilter = loadingConf.getNeedsReloadFilter();
@@ -69,9 +68,15 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     }
 
     /** {@inheritDoc} */
-    public void manage(ManagedGroup parent) {
-        ManagedGroup g = parent.addChild("Loading", "Cache Loading attributes and operations");
-        g.add(new DefaultCacheLoadingMXBean(service, serviceForced));
+    @ManagedOperation(description = "reload all mappings")
+    public void forceLoadAll() {
+        serviceForced.loadAll();
+    }
+
+    /** {@inheritDoc} */
+    @ManagedOperation(description = "Attempts to reload all entries that are either expired or which needs refreshing")
+    public void loadAll() {
+        service.loadAll();
     }
 
     boolean needsReload(K key) {
@@ -80,15 +85,13 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     }
 
     @Startable
-    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) throws Exception {
-        // serviceRegistrant.registerService(CacheLoadingService.class, LoadingUtils.wrapService(this));
+    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) {
         serviceRegistrant.registerFactory(CacheLoadingService.class, this);
     }
 
     public Collection<?> getChildServices() {
         return childServices;
     }
-
 
     class NoForceLoading extends AbstractCacheLoadingService<K, V> {
         void doLoad(K key, AttributeMap attributes) {
@@ -154,7 +157,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
             org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<CacheLoadingService> context) {
         if (CacheLoadingService.IS_FORCED.isTrue(context)) {
             return serviceForced;
-        } 
+        }
         return service;
     }
 
