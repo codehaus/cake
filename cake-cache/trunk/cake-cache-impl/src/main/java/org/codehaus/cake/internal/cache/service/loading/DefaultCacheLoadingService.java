@@ -30,12 +30,11 @@ import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.ExportAsService;
 
 @ManagedObject(defaultValue = "Loading", description = "Cache Loading attributes and operations")
+@ExportAsService(CacheLoadingService.class)
 public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService>, CompositeService {
 
     private Cache<K, V> cache;
@@ -82,11 +81,6 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     boolean needsReload(K key) {
         CacheEntry<K, V> entry = cache.peekEntry(key);
         return entry == null || (needsReloadFilter != null && needsReloadFilter.op(entry));
-    }
-
-    @Startable
-    public void start(ContainerConfiguration<?> configuration, ServiceRegistrant serviceRegistrant) {
-        serviceRegistrant.registerFactory(CacheLoadingService.class, this);
     }
 
     public Collection<?> getChildServices() {

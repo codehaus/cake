@@ -10,13 +10,10 @@ import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.service.configuration.ConfigurationService;
-import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;
-import org.codehaus.cake.service.AfterStart;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.ExportAsService;
 
 /**
  * This class wraps CacheEvictionService as a CacheEvictionMXBean.
@@ -27,6 +24,7 @@ import org.codehaus.cake.service.Startable;
  * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
  */
 @ManagedObject(defaultValue = "MemoryStore", description = "MemoryStore attributes and operations")
+@ExportAsService(MemoryStoreService.class)
 public final class ExportedMemoryStoreService<K, V> implements MemoryStoreService<K, V>, MemoryStoreMXBean {
     private final CacheProcessor<K, V> processor;
 
@@ -74,11 +72,6 @@ public final class ExportedMemoryStoreService<K, V> implements MemoryStoreServic
     /** {@inheritDoc} */
     public boolean isDisabled() {
         return settingsService.getAttributes().get(MemoryStoreAttributes.IS_DISABLED);
-    }
-
-    @Startable
-    public void register(ServiceRegistrant registrant) {
-        registrant.registerService(MemoryStoreService.class, this);
     }
 
     /** {@inheritDoc} */

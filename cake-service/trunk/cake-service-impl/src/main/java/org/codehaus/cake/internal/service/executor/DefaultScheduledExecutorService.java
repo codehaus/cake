@@ -7,10 +7,12 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
-import org.codehaus.cake.service.Stoppable;
+import org.codehaus.cake.service.annotation.ExportAsService;
+import org.codehaus.cake.service.annotation.Startable;
+import org.codehaus.cake.service.annotation.Stoppable;
 
 @UseInternals
+@ExportAsService(ScheduledExecutorService.class)
 public class DefaultScheduledExecutorService implements ServiceFactory<ScheduledExecutorService> {
 
     /** Default executor service. */
@@ -19,11 +21,6 @@ public class DefaultScheduledExecutorService implements ServiceFactory<Scheduled
     private boolean isShutdown;
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
-
-    @Startable
-    public void register(ServiceRegistrant registrant) {
-        registrant.registerFactory(ScheduledExecutorService.class, this);
-    }
 
     public ScheduledExecutorService lookup(
             org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ScheduledExecutorService> context) {

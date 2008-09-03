@@ -19,12 +19,12 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.util.concurrent.CountDownLatch;
 
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.AfterStart;
+import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;

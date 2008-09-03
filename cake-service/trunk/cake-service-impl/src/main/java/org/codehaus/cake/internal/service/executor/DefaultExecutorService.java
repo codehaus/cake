@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
-import org.codehaus.cake.service.Stoppable;
+import org.codehaus.cake.service.annotation.ExportAsService;
+import org.codehaus.cake.service.annotation.Stoppable;
 
 @UseInternals
+@ExportAsService(ExecutorService.class)
 public class DefaultExecutorService implements ServiceFactory<ExecutorService> {
 
     /** Default executor service. */
@@ -19,11 +19,6 @@ public class DefaultExecutorService implements ServiceFactory<ExecutorService> {
     private boolean isShutdown;
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
-
-    @Startable
-    public void register(ServiceRegistrant registrant) {
-        registrant.registerFactory(ExecutorService.class, this);
-    }
 
     public ExecutorService lookup(
             org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExecutorService> context) {

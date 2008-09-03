@@ -23,7 +23,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.Startable;
 
 public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPolicy<K, V> {
 

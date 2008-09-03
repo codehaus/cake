@@ -25,7 +25,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.service.ServiceFactory;
-
+import org.codehaus.cake.service.annotation.ExportAsService;
+@ExportAsService(ExecutorService.class)
 public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> {
 
     private static final int PERMITS = 100000;

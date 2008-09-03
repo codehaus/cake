@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service;
+package org.codehaus.cake.service.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,9 +22,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.codehaus.cake.service.Container;
+
 /**
- * Used to indicate a method that should be run after a container has been successfully started. If the method annotated
- * with annotation has a parameter with the type {@link Container}. The container that
+ * An annotation for marking a method as startable. See {@link Container} for how it handles registered services with
+ * this annotation.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
@@ -33,13 +35,4 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface AfterStart {
-
-    /**
-     * This attribute can be used indicate whether an AfterStart method can be run in parallel with other AfterStart
-     * methods or with ordinary user code.
-     * 
-     * @return
-     */
-    boolean isParallel() default false;
-}
+public @interface Startable {}

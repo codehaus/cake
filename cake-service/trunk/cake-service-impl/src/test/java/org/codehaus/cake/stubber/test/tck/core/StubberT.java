@@ -16,7 +16,7 @@
 package org.codehaus.cake.stubber.test.tck.core;
 
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.stubber.test.tck.AbstraktStubberTCKTst;
 import org.junit.Test;
 

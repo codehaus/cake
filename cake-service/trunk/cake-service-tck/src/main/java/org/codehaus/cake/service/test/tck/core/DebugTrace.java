@@ -16,12 +16,12 @@
 package org.codehaus.cake.service.test.tck.core;
 
 import org.codehaus.cake.internal.util.LogHelper;
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.Disposable;
-import org.codehaus.cake.service.Startable;
-import org.codehaus.cake.service.Stoppable;
+import org.codehaus.cake.service.annotation.AfterStart;
+import org.codehaus.cake.service.annotation.Disposable;
+import org.codehaus.cake.service.annotation.Startable;
+import org.codehaus.cake.service.annotation.Stoppable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;

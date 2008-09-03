@@ -6,11 +6,11 @@ import org.codehaus.cake.forkjoin.ForkJoinExecutor;
 import org.codehaus.cake.forkjoin.ForkJoinPool;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
-import org.codehaus.cake.service.Stoppable;
+import org.codehaus.cake.service.annotation.ExportAsService;
+import org.codehaus.cake.service.annotation.Stoppable;
 
 @UseInternals
+@ExportAsService(ForkJoinExecutor.class)
 public class DefaultForkJoinPool implements ServiceFactory<ForkJoinExecutor> {
 
     /** Default executor service. */
@@ -19,13 +19,9 @@ public class DefaultForkJoinPool implements ServiceFactory<ForkJoinExecutor> {
     private boolean isShutdown;
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
-    
-    @Startable
-    public void register(ServiceRegistrant registrant) {
-        registrant.registerFactory(ForkJoinExecutor.class, this);
-    }
 
-    public ForkJoinExecutor lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ForkJoinExecutor> context) {
+    public ForkJoinExecutor lookup(
+            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ForkJoinExecutor> context) {
         ForkJoinPool e = defaultExecutor;
         if (e == null) {
             synchronized (poolLock) {
@@ -37,7 +33,7 @@ public class DefaultForkJoinPool implements ServiceFactory<ForkJoinExecutor> {
                     // use ceil(7/8 * ncpus)
                     int nprocs = Runtime.getRuntime().availableProcessors();
                     int nthreads = nprocs - (nprocs >>> 3);
-//                    System.out.println("Starting");
+                    // System.out.println("Starting");
                     defaultExecutor = e = new ForkJoinPool(nthreads);
                 }
             }
@@ -52,7 +48,7 @@ public class DefaultForkJoinPool implements ServiceFactory<ForkJoinExecutor> {
             isShutdown = true;
             if (defaultExecutor != null) {
                 defaultExecutor.shutdown();
-//                System.out.println("Stopping");
+                // System.out.println("Stopping");
             }
             if (defaultExecutor != null) {
                 defaultExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);

@@ -49,7 +49,7 @@ import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
-import org.codehaus.cake.service.Stoppable;
+import org.codehaus.cake.service.annotation.Stoppable;
 
 public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeService, ConfigurableService {
 

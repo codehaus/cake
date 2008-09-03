@@ -17,7 +17,7 @@ package org.codehaus.cake.internal.service;
 
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.Startable;
 
 /**
  * Default implementation of {@link ServiceRegistrant}. Will throw {@link IllegalStateException} if registration methods

@@ -33,7 +33,7 @@ import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.ManagedVisitor;
 import org.codehaus.cake.management.Managements;
 import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.service.Stoppable;
+import org.codehaus.cake.service.annotation.Stoppable;
 import org.codehaus.cake.service.management.ManagementConfiguration;
 
 /**

@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import org.codehaus.cake.internal.util.LogHelper;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.Disposable;
+import org.codehaus.cake.service.annotation.Disposable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.Startable;
 
 public class Services {
 

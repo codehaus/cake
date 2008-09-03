@@ -20,7 +20,7 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.annotation.AfterStart;
 import org.junit.Test;
 
 public class LoadingLifecycle extends AbstractCacheTCKTest {

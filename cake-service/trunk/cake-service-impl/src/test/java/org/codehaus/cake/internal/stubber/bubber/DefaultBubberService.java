@@ -22,10 +22,12 @@ import org.codehaus.cake.internal.service.configuration.ConfigurableService;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubber1Service;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubberService;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.ExportAsService;
+import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
 
+@ExportAsService(BubberService.class)
 public class DefaultBubberService<T> implements BubberService<T>, ConfigurableService {
 
     public static final Object C = new String("DefaultBubberService_constructor");
@@ -36,12 +38,7 @@ public class DefaultBubberService<T> implements BubberService<T>, ConfigurableSe
         conf.verifier().constructor(C);
         assertEquals("ok", s.get());
     }
-
-    @Startable
-    public void register(ServiceRegistrant registrant) {
-        registrant.registerService(BubberService.class, this);
-    }
-
+    
     public void processUpdate(AttributeMap attributes) {
         this.foofoo = attributes.get(BubberService.FOOFOO);
     }

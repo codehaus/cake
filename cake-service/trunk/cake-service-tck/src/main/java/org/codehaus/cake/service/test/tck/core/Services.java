@@ -21,7 +21,7 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.Test;
 

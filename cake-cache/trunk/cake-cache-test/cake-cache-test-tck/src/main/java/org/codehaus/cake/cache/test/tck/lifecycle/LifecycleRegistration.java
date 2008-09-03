@@ -20,7 +20,7 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.Startable;
+import org.codehaus.cake.service.annotation.Startable;
 import org.junit.Test;
 
 public class LifecycleRegistration extends AbstractCacheTCKTest {
