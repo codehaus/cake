@@ -12,7 +12,7 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.annotation.AfterStart;
 @ManagedObject(defaultValue = "ClearCache", description = "Controls Clearing of the cache")
 public class ScheduledClearManagement {
     private long scheduleMs;
