@@ -231,7 +231,7 @@ public class ContainerConfigurationTest {
     public void addService() {
         assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
         ServiceFactory sf = dummy(ServiceFactory.class);
-        conf.addServiceToLifecycle(5);
+        conf.addToLifecycle(5);
         conf.addService(Integer.class, 10);
         conf.addServiceFactory(Long.class, sf);
         ServiceList sl = (ServiceList) conf.getServices();
@@ -249,7 +249,7 @@ public class ContainerConfigurationTest {
     @Test
     public void addGetServices() {
         for (int i = 0; i < 100; i++) {
-            conf.addServiceToLifecycle(i);
+            conf.addToLifecycle(i);
         }
         ServiceList l =(ServiceList) conf.getServices();
         Iterator<Object> iter=l.getServices().iterator();
@@ -260,13 +260,13 @@ public class ContainerConfigurationTest {
 
     @Test(expected = NullPointerException.class)
     public void addServicesNPE() {
-        conf.addServiceToLifecycle(null);
+        conf.addToLifecycle(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addServicesSame() {
-        conf.addServiceToLifecycle(1);
-        conf.addServiceToLifecycle(1);
+        conf.addToLifecycle(1);
+        conf.addToLifecycle(1);
     }
 
     @Test

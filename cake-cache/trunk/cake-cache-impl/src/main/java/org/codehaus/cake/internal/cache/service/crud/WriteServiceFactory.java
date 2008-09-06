@@ -19,7 +19,7 @@ public class WriteServiceFactory<K, V> implements ServiceFactory<WriteService> {
 
     public WriteService<K, V, ?> lookup(
             org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<WriteService> context) {
-        Op op = WriteService.OP.get(context);
+        Op op = WriteService.WRITE_TRANSFORMER.get(context);
         return DefaultWriteService.withPrevious(factory, processor, op);
     }
 }

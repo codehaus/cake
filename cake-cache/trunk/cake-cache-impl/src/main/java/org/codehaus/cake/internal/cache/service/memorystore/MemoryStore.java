@@ -16,9 +16,6 @@
 package org.codehaus.cake.internal.cache.service.memorystore;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -28,10 +25,24 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 
+/**
+ * MemoryStore is an in-memory store of data.
+ * 
+ * @param <K>
+ * @param <V>
+ */
 public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
-    
+    /**
+     * Returns the CacheEntry for the specified key, or <code>null</code> if it doesn't exist.
+     * 
+     * @param key
+     * @return
+     */
     CacheEntry<K, V> get(K key);
+
+    // will most likely have getValue(), getAttribute(Attribute a)
+    // if we start storing, the value, key, attributes in separate arrays.
 
     int getSize();
 
@@ -44,12 +55,15 @@ public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
     void process(AddEntryRequest<K, V> r);
 
     void process(ClearCacheRequest<K, V> r);
+
     void process(RemoveEntriesRequest<K, V> r);
 
     void process(RemoveEntryRequest<K, V> r);
 
     void process(TrimToSizeRequest<K, V> r);
+
     void process(TrimToVolumeRequest<K, V> r);
+
     void processUpdate(AttributeMap attributes);
-  
+
 }

@@ -19,6 +19,10 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 
 /**
+ * 
+ * ServiceFactory can be used for additional control.
+ * 
+ * The following can be used to introduce
  * A service factory can be implemented for
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>

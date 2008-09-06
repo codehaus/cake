@@ -34,8 +34,10 @@ public final class BooleanAttributeTest extends AtrStubs {
 
     static final BooleanAttribute NON_NEGATIVE = new BooleanAttribute("a50", true) {
         @Override
-        public boolean isValid(boolean value) {
-            return value == true;
+        public void checkValid(boolean value) {
+            if (!value) {
+                throw new IllegalArgumentException();
+            }
         }
     };
 

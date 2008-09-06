@@ -34,7 +34,7 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
 
     @Test
     public void register() {
-        conf.addServiceToLifecycle(new Register1());
+        conf.addToLifecycle(new Register1());
         newContainer();
         prestart();
         assertEquals(1, c.getService(Integer.class).intValue());
@@ -42,22 +42,22 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
 
     @Test(expected = NullPointerException.class)
     public void registerNullKey() {
-        conf.addServiceToLifecycle(new RegisterKeyNull());
+        conf.addToLifecycle(new RegisterKeyNull());
         newContainer();
         prestart();
     }
 
     @Test(expected = NullPointerException.class)
     public void registerNullService() {
-        conf.addServiceToLifecycle(new RegisterServiceNull());
+        conf.addToLifecycle(new RegisterServiceNull());
         newContainer();
         prestart();
     }
 
     @Test
     public void registerLastIsActive() {
-        conf.addServiceToLifecycle(new Register1());
-        conf.addServiceToLifecycle(new Register2());
+        conf.addToLifecycle(new Register1());
+        conf.addToLifecycle(new Register2());
         newContainer();
         prestart();
         assertEquals(2, c.getService(Integer.class).intValue()); // take last

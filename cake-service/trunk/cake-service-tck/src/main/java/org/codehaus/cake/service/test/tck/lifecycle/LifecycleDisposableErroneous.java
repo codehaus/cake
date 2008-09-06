@@ -44,7 +44,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
      */
     @Test
     public void unknownObject() throws Throwable {
-        conf.addServiceToLifecycle(new DisposeObject());
+        conf.addToLifecycle(new DisposeObject());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -73,7 +73,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
 
     @Test
     public void shutdownRuntimeException() throws Throwable {
-        conf.addServiceToLifecycle(new DisposeRuntimeException());
+        conf.addToLifecycle(new DisposeRuntimeException());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -102,7 +102,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
 
     @Test
     public void shutdownException() throws Throwable {
-        conf.addServiceToLifecycle(new DisposeException());
+        conf.addToLifecycle(new DisposeException());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -131,7 +131,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
 
     @Test(expected = Error1.class)
     public void shutdownError() throws Throwable {
-        conf.addServiceToLifecycle(new DisposeError());
+        conf.addToLifecycle(new DisposeError());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {

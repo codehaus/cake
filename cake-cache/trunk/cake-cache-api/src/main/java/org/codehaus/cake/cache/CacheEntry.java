@@ -24,12 +24,14 @@ import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 
 /**
  * A <tt>CacheEntry</tt> describes a value-key mapping much like {@link java.util.Map.Entry}. However, this interface
- * extends with a map of attribute->value pairs. Holding information such as creation time, access patterns, size, cost
- * etc.
+ * extends it with a map of attribute->value pairs. Holding information such as creation time, access patterns, size,
+ * cost etc.
  * <p>
  * Unless otherwise specified a cache entry obtained from a cache is always an immmutable copy of the existing entry. If
  * the value for a given key is updated while another thread holds a cache entry for the key. It will not be reflected
  * in calls to {@link #getValue()}.
+ * <p>
+ * Some of the attributes might be immutable. For example {@link #TIME_ACCESSED} and {@link #HITS}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheEntry.java 536 2007-12-30 00:14:25Z kasper $
@@ -78,7 +80,65 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     DoubleAttribute COST = new Caches.CostAttribute();
 
     /**
-     * Currently not in use.
+     * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
+     * {@link Cache#getEntry(Object)} or {@link Cache#getAll(java.util.Collection)}.
+     * 
+     * <p/> The following list describes how this attribute is obtained.
+     * <ul>
+     * <li> If the entry is being loaded and the <tt>HITS</tt> attribute has been set the cache will use this value.</li>
+     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry will be used. </li>
+     * <li> Else if this entry is accessed through <tt>get</tt>, <tt>getEntry</tt> or <tt>getAll</tt> the hit
+     * count is incremented by 1</li>
+     * </ul>
+     * <p>
+     * <blockquote> <table border>
+     * <tr>
+     * <td>Type</td>
+     * <td>long</td>
+     * </tr>
+     * <tr>
+     * <td>Default Value</td>
+     * <td>0</td>
+     * </tr>
+     * <tr>
+     * <td>Valid Values</td>
+     * <td>All positive values (>0)</td>
+     * </tr>
+     * <tr>
+     * <td>Unit</td>
+     * <td>Number of Accesses</td>
+     * </tr>
+     * </table> </blockquote>
+     */
+    LongAttribute HITS = new Caches.HitsAttribute();
+
+    /**
+     * The size of the cache entry.
+     */
+    LongAttribute SIZE = new Caches.SizeAttribute();
+
+    /**
+     * The time between when the entry was last accessed and midnight, January 1, 1970 UTC. This is also the value
+     * returned by {@link System#currentTimeMillis()}.
+     * <p>
+     * <blockquote> <table border>
+     * <tr>
+     * <td>Type</td>
+     * <td>long</td>
+     * </tr>
+     * <tr>
+     * <td>Default Value</td>
+     * <td>System#currentTimeMillis() (see previous description)</td>
+     * </tr>
+     * <tr>
+     * <td>Valid Values</td>
+     * <td>All positive values (>0)</td>
+     * </tr>
+     * <tr>
+     * <td>Unit</td>
+     * <td>Milliseconds</td>
+     * </tr>
+     * </table> </blockquote>
      */
     TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeAccessedAttribute();
 
@@ -125,44 +185,6 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     TimeInstanceAttribute TIME_MODIFIED = new Caches.TimeModificedAttribute();
 
     /**
-     * The size of the cache entry.
-     */
-    LongAttribute SIZE = new Caches.SizeAttribute();
-
-    /**
-     * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
-     * {@link Cache#getEntry(Object)} or {@link Cache#getAll(java.util.Collection)}.
-     * 
-     * <p/> The following list describes how this attribute is obtained.
-     * <ul>
-     * <li> If the entry is being loaded and the <tt>HITS</tt> attribute has been set the cache will use this value.</li>
-     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry will be used. </li>
-     * <li> Else if this entry is accessed through <tt>get</tt>, <tt>getEntry</tt> or <tt>getAll</tt> the hit
-     * count is incremented by 1</li>
-     * </ul>
-     * <p>
-     * <blockquote> <table border>
-     * <tr>
-     * <td>Type</td>
-     * <td>long</td>
-     * </tr>
-     * <tr>
-     * <td>Default Value</td>
-     * <td>0</td>
-     * </tr>
-     * <tr>
-     * <td>Valid Values</td>
-     * <td>All positive values (>0)</td>
-     * </tr>
-     * <tr>
-     * <td>Unit</td>
-     * <td>Number of Accesses</td>
-     * </tr>
-     * </table> </blockquote>
-     */
-    LongAttribute HITS = new Caches.HitsAttribute();
-
-    /**
      * A count of how many times the value of an entry has been modified.
      * 
      * <p/> The following list describes how this attribute is obtained.
@@ -195,12 +217,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      */
     LongAttribute VERSION = new Caches.VersionAttribute();
 
-    // public static final TimeInstanceAttribute ENTRY_TIME_TO_LIVE =
-    // ENTRY_DATE_MODIFIED;
-
     // cost of retrieving the item
-    // time to live
+    // time to live ENTRY_TIME_TO_LIVE =
     // expiration time = time to live + System.timestamp
     // Logger <-detailed logging about an entry.
-
 }

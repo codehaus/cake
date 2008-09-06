@@ -56,7 +56,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test
     public void debug() {
         conf.setDefaultLogger(DEBUG);
-        conf.addServiceToLifecycle(new TestIt(null, null, null, null));
+        conf.addToLifecycle(new TestIt(null, null, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();
@@ -65,7 +65,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test(expected = RuntimeException1.class)
     public void debug1() {
         conf.setDefaultLogger(DEBUG);
-        conf.addServiceToLifecycle(new TestIt(RuntimeException1.INSTANCE, null, null, null));
+        conf.addToLifecycle(new TestIt(RuntimeException1.INSTANCE, null, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();
@@ -74,7 +74,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test(expected = Error1.class)
     public void debug2() {
         conf.setDefaultLogger(DEBUG);
-        conf.addServiceToLifecycle(new TestIt(null, Error1.INSTANCE, null, null));
+        conf.addToLifecycle(new TestIt(null, Error1.INSTANCE, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();
@@ -83,7 +83,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test
     public void trace() {
         conf.setDefaultLogger(TRACE);
-        conf.addServiceToLifecycle(new TestIt(null, null, null, null));
+        conf.addToLifecycle(new TestIt(null, null, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();

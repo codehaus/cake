@@ -147,7 +147,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         newConfigurationClean();
         if (TckUtil.isThreadSafe()) {
             threadHelper = new ThreadServiceTestHelper();
-            conf.addServiceToLifecycle(threadHelper);
+            conf.addToLifecycle(threadHelper);
             //conf.addServiceFactory(ExecutorService.class, threadHelper);
         }
         return (T) conf;

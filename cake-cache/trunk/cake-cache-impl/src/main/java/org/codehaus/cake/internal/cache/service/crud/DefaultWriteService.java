@@ -17,7 +17,7 @@ import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
-public class DefaultWriteService<K, V, R> implements WriteService<K, V, R> {
+public class DefaultWriteService<K, V, R> extends AbstractWriteService<K, V, R> {
 
     public static Op NOT_NULL = new Op<CacheEntry<?, ?>, Boolean>() {
         public Boolean op(CacheEntry<?, ?> a) {
@@ -57,32 +57,27 @@ public class DefaultWriteService<K, V, R> implements WriteService<K, V, R> {
     }
 
     /** {@inheritDoc} */
-
     public R put(K key, V value) {
         return put(key, value, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
 
     /** {@inheritDoc} */
-
     public R put(K key, V value, AttributeMap attributes) {
         return add(key, value, attributes, null);
     }
 
     /** {@inheritDoc} */
-
     public void putAll(Map<? extends K, ? extends V> t) {
         AddEntriesRequest<K, V> r = factory.createEntries(t);
         processor.process(r);
     }
 
     /** {@inheritDoc} */
-
     public R putIfAbsent(K key, V value) {
         return add(key, value, Predicates.IS_NULL);
     }
 
     /** {@inheritDoc} */
-
     public R putIfAbsent(K key, V value, AttributeMap attributes) {
         return add(key, value, attributes, Predicates.IS_NULL);
     }
@@ -141,5 +136,4 @@ public class DefaultWriteService<K, V, R> implements WriteService<K, V, R> {
             CacheProcessor<K, V> processor, Op<CacheEntry<K, V>, R> previous) {
         return new DefaultWriteService<K, V, R>(factory, processor, previous, null);
     }
-
 }

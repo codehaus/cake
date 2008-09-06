@@ -39,7 +39,7 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test
     public void register() {
-        conf.addServiceToLifecycle(new RegisterFactory0());
+        conf.addToLifecycle(new RegisterFactory0());
         newContainer();
         assertEquals(0, c.getService(Integer.class).intValue());
         assertEquals(1, c.getService(Integer.class, Services.I.singleton(1)).intValue());
@@ -47,22 +47,22 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test(expected = NullPointerException.class)
     public void registerNullKey() {
-        conf.addServiceToLifecycle(new RegisterFactoryKeyNull());
+        conf.addToLifecycle(new RegisterFactoryKeyNull());
         newContainer();
         prestart();
     }
 
     @Test(expected = NullPointerException.class)
     public void registerNullService() {
-        conf.addServiceToLifecycle(new RegisterFactoryServiceNull());
+        conf.addToLifecycle(new RegisterFactoryServiceNull());
         newContainer();
         prestart();
     }
 
     @Test
     public void registerAskLatest() {
-        conf.addServiceToLifecycle(new RegisterFactory0());
-        conf.addServiceToLifecycle(new RegisterFactory1());
+        conf.addToLifecycle(new RegisterFactory0());
+        conf.addToLifecycle(new RegisterFactory1());
         newContainer();
         assertEquals(1, c.getService(Integer.class).intValue());
         assertEquals(0, c.getService(Integer.class, Services.I.singleton(-1)).intValue());
@@ -70,8 +70,8 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test
     public void registerDelegateToNextFactory() {
-        conf.addServiceToLifecycle(new RegisterFactory1());
-        conf.addServiceToLifecycle(new RegisterFactory0());
+        conf.addToLifecycle(new RegisterFactory1());
+        conf.addToLifecycle(new RegisterFactory0());
         newContainer();
         assertEquals(0, c.getService(Integer.class).intValue());
         assertEquals(1, c.getService(Integer.class, Services.I.singleton(1)).intValue());
@@ -81,8 +81,8 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test
     public void registerDelegateToNextService() {
-        conf.addServiceToLifecycle(new Register2());
-        conf.addServiceToLifecycle(new RegisterFactory0());
+        conf.addToLifecycle(new Register2());
+        conf.addToLifecycle(new RegisterFactory0());
         newContainer();
         assertEquals(0, c.getService(Integer.class).intValue());
         assertEquals(1, c.getService(Integer.class, Services.I.singleton(1)).intValue());
@@ -92,7 +92,7 @@ public class LifecycleStartRegistrationFactory extends AbstractTCKTest<Container
 
     @Test(expected = UnsupportedOperationException.class)
     public void delegateToUnknown() {
-        conf.addServiceToLifecycle(new RegisterFactory0());
+        conf.addToLifecycle(new RegisterFactory0());
         newContainer();
         c.getService(Integer.class, Services.I.singleton(-1));
     }

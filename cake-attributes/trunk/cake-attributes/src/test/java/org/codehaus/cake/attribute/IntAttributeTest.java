@@ -34,8 +34,10 @@ public final class IntAttributeTest extends AtrStubs {
 
     static final IntAttribute NON_NEGATIVE = new IntAttribute("a50", 50) {
         @Override
-        public boolean isValid(int value) {
-            return value >= 5;
+        public void checkValid(int value) {
+            if (value < 5) {
+                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
+            }
         }
     };
 

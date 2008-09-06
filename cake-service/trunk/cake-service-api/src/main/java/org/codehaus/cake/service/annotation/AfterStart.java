@@ -25,8 +25,8 @@ import java.lang.annotation.Target;
 import org.codehaus.cake.service.Container;
 
 /**
- * Used to indicate a method that should be run after a container has been successfully started. If the method annotated
- * with annotation has a parameter with the type {@link Container}. The container that
+ * Used to for annotating methods that should be run after a container has been successfully started. If the method
+ * annotated with annotation has a parameter with the type {@link Container}. The container that
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
@@ -43,5 +43,5 @@ public @interface AfterStart {
      * 
      * @return
      */
-    boolean isParallel() default false;
+   // boolean isParallel() default false;
 }

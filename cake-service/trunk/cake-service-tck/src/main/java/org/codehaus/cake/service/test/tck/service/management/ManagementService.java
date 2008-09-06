@@ -40,7 +40,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
 
     @Test
     public void manageble() throws Exception {
-        conf.addServiceToLifecycle(new MyService());
+        conf.addToLifecycle(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true);
         newContainer();
         String pck = getContainerInterface().getPackage().getName();
@@ -59,7 +59,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
 
     @Test
     public void managebleObject() throws Exception {
-        conf.addServiceToLifecycle(new MyServiceObject());
+        conf.addToLifecycle(new MyServiceObject());
         withConf(ManagementConfiguration.class).setEnabled(true);
         newContainer();
         String pck = getContainerInterface().getPackage().getName();
@@ -79,7 +79,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
     public void customServer() throws Exception {
         MBeanServer mbs = MBeanServerFactory.createMBeanServer();
 
-        conf.addServiceToLifecycle(new MyService());
+        conf.addToLifecycle(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true).setMBeanServer(mbs);
         newContainer();
         String pck = getContainerInterface().getPackage().getName();
@@ -98,7 +98,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
 
     @Test
     public void customDomain() throws Exception {
-        conf.addServiceToLifecycle(new MyService());
+        conf.addToLifecycle(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true).setDomain("org.foo");
         newContainer();
         ObjectName on = new ObjectName("org.foo:name=" + c.getName() + ",service=foofoo");
@@ -116,7 +116,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
     @Test
     public void onlyIfEnabled() throws Exception {
         // withConf(ManagementConfiguration.class).setEnabled(true);
-        conf.addServiceToLifecycle(new Manageable() {
+        conf.addToLifecycle(new Manageable() {
             public void manage(ManagedGroup parent) {
                 fail("Should not have been called");
             }
@@ -129,7 +129,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
     public void lateRegistering() throws Exception {
         final AtomicReference<ManagedGroup> ar = new AtomicReference<ManagedGroup>();
         withConf(ManagementConfiguration.class).setEnabled(true);
-        conf.addServiceToLifecycle(new Manageable() {
+        conf.addToLifecycle(new Manageable() {
             public void manage(ManagedGroup parent) {
                 ar.set(parent);
             }

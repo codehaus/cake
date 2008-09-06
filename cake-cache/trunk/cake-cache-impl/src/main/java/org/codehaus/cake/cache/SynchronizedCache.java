@@ -108,12 +108,12 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
 
     private static Composer createComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = newComposer(configuration);
+
         composer.registerImplementation(SynchronizedHashMapMemoryStore.class);
         composer.registerImplementation(SynchronizedConfigurationService.class);
         composer.registerImplementation(DefaultCacheRequestFactory.class);
         composer.registerImplementation(SynchronizedCacheProcessor.class);
-        composer.registerImplementation(ExportedMemoryStoreService.class);
-
+        
         // Common components
         composer.registerImplementation(UnsynchronizedRunState.class);
         if (configuration.withManagement().isEnabled()) {
@@ -122,7 +122,6 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
 
         // Cache components
         composer.registerImplementation(SynchronizedCollectionViews.class);
-        // composer.registerImplementation(DefaultAttributeService.class);
         composer.registerImplementation(DefaultExecutorService.class);
         composer.registerImplementation(DefaultScheduledExecutorService.class);
         composer.registerImplementation(DefaultForkJoinPool.class);

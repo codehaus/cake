@@ -13,6 +13,7 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.service.crud.DefaultWriteService;
 import org.codehaus.cake.internal.cache.service.crud.WriteServiceFactory;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheExceptionService;
+import org.codehaus.cake.internal.cache.service.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViews;
 import org.codehaus.cake.internal.service.AbstractContainer;
@@ -22,8 +23,8 @@ import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**
- * This class provides a skeletal implementation of the <tt>Cache</tt> interface, to minimize the
- * effort required to implement this interface.
+ * This class provides a skeletal implementation of the <tt>Cache</tt> interface, to minimize the effort required to
+ * implement this interface.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: SynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
@@ -38,13 +39,14 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     final MemoryStore<K, V> memoryCache;
 
-    private final WriteService<K, V, Boolean> previousNotNull;
-
     private final CacheProcessor<K, V> processor;
 
     private final CacheRequestFactory<K, V> requestFactory;
 
+    private final WriteService<K, V, Boolean> returnPreviousNotNull;
+
     private final WriteService<K, V, V> returnPreviousValue;
+    
     private CacheServices<K, V> services;
 
     /** Object containing the various collection views. */
@@ -63,7 +65,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         requestFactory = composer.get(CacheRequestFactory.class);
         processor = composer.get(CacheProcessor.class);
         returnPreviousValue = DefaultWriteService.returnPreviousValue(requestFactory, processor);
-        previousNotNull = DefaultWriteService.previousNotNull(requestFactory, processor);
+        returnPreviousNotNull = DefaultWriteService.previousNotNull(requestFactory, processor);
     }
 
     /** {@inheritDoc} */
@@ -163,7 +165,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     public boolean remove(Object key, Object value) {
         K k = (K) key;
         V v = (V) value;
-        return previousNotNull.remove(k, v).booleanValue();
+        return returnPreviousNotNull.remove(k, v).booleanValue();
     }
 
     /** {@inheritDoc} */
@@ -179,7 +181,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public boolean replace(K key, V oldValue, V newValue) {
-        return previousNotNull.replace(key, oldValue, newValue).booleanValue();
+        return returnPreviousNotNull.replace(key, oldValue, newValue).booleanValue();
     }
 
     /** {@inheritDoc} */
@@ -226,6 +228,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = new Composer(Cache.class, configuration);
+        composer.registerImplementation(ExportedMemoryStoreService.class);
         composer.registerInstance(CacheConfiguration.class, configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);
         composer.registerImplementation(WriteServiceFactory.class);

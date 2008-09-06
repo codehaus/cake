@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
 /**
  * A <tt>cache</tt> is a collection of data duplicating original values stored elsewhere or computed earlier, where
@@ -87,6 +88,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * <p>
      * This method does not check the expiration status of an element and will return if a expired element is present in
      * the cache for the specified key.
+     * <p>
+     * If this cache has been shutdown this method returns <tt>false</tt>.
      * 
      * @param key
      *            key whose presence in this cache is to be tested
@@ -106,6 +109,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * <p>
      * This method does not check the expiration status of an element and will return if a expired element is present in
      * the cache for the specified value.
+     * <p>
+     * If this cache has been shutdown this method returns <tt>false</tt>.
      * 
      * @param value
      *            value whose presence in this cache is to be tested
@@ -131,6 +136,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * <p>
      * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
      * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operation will throw an IllegalStateException.
+     * <p>
+     * If this cache has been shutdown this method returns an empty set.
      * 
      * @return a set view of the mappings contained in this map
      */
@@ -215,8 +222,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
     /**
      * Returns <tt>true</tt> if this cache contains no elements.
      * <p>
-     * If this cache has not been started a call to this method will automatically start it. If this cache has been
-     * shutdown this method returns <tt>true</tt>.
+     * If this cache has not been started a call to this method will automatically start it.
+     * <p>
+     * If this cache has been shutdown this method returns <tt>true</tt>.
      * 
      * @return <tt>true</tt> if this cache contains no elements
      */
@@ -244,8 +252,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * This method works analogues to the {@link #get(Object)} method with the following modifications.
      * <p>
      * It will not try to fetch missing items, it will only return a value if it actually exists in the cache.
-     * Furthermore, it will not effect the statistics gathered by the cache. Finally, even if the item is expired it
-     * will still be returned.
+     * Furthermore, it will not effect the statistics gathered by the cache.
      * <p>
      * All implementations of this method should take care to assure that a call to peek does not have any unforeseen
      * side effects. For example, it should not modify some state in addition to returning a value or not returning a
@@ -260,6 +267,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
      */
+    // Finally, even if the item is expired it will still be returned.
     V peek(K key);
 
     /**
@@ -487,7 +495,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      *             if the class of a specified key or value prevents it from being stored in this cache
      * @throws NullPointerException
      *             if a specified key or value is null
-     * @throws IllegalStateException
+     * @throws ContainerAlreadyShutdownException
      *             if the cache has been shutdown
      * @throws IllegalArgumentException
      *             if some property of a specified key or value prevents it from being stored in this cache
@@ -498,8 +506,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * Returns the number of elements in this cache. If the cache contains more than <tt>Integer.MAX_VALUE</tt>
      * elements, returns <tt>Integer.MAX_VALUE</tt>.
      * <p>
-     * If this cache has not been started calling this method will automatically start it. If this cache has been
-     * shutdown this method returns <tt>0</tt>.
+     * If this cache has not been started calling this method will automatically start it.
+     * <p>
+     * If this cache has been shutdown this method returns <tt>0</tt>.
      * 
      * @return the number of elements in this cache
      */
@@ -518,7 +527,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * though values the view might return an expired element.
      * <p>
      * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operation will throw an IllegalStateException.
+     * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
+     * <p>
+     * If this cache has been shutdown this method returns an empty collection.
      * 
      * @return a collection view of the values contained in this cache
      */

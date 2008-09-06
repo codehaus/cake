@@ -34,8 +34,10 @@ public final class LongAttributeTest extends AtrStubs {
 
     static final LongAttribute NON_NEGATIVE = new LongAttribute("a50", 50L) {
         @Override
-        public boolean isValid(long value) {
-            return value >= 5L;
+        public void checkValid(long value) {
+            if (value < 5L) {
+                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
+            }
         }
     };
 

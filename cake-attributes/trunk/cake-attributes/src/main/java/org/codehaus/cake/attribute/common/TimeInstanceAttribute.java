@@ -19,7 +19,7 @@ import org.codehaus.cake.attribute.LongAttribute;
 
 /**
  * An attribute mapping to an instance in time relative to the standard base time known as "the epoch", namely January
- * 1, 1970, 00:00:00 GMT. The unit of this attribute is milliseconds
+ * 1, 1970, 00:00:00 GMT. The unit of time is milliseconds.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $

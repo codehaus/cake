@@ -24,7 +24,7 @@ import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
 
-public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConfiguration> {
+public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConfiguration<?>> {
     private CountDownLatch latch = new CountDownLatch(0);
 
     @After
@@ -35,7 +35,7 @@ public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConf
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addServiceToLifecycle(new Stoppable1());
+        conf.addToLifecycle(new Stoppable1());
         newContainer();
         assertFalse(c.isStarted());
         assertFalse(c.isShutdown());

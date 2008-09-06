@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * A Container is the the in addition providing .
  * 
- * Retrieving services that have been registered using {@link ContainerConfiguration#addServiceToLifecycle(Object)}, or registered
+ * Retrieving services that have been registered using {@link ContainerConfiguration#addToLifecycle(Object)}, or registered
  * dynamically through a {@link ServiceRegistrant}.
  * 
  * <p>

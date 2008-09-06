@@ -38,7 +38,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addServiceToLifecycle(new Started1());
+        conf.addToLifecycle(new Started1());
         newContainer();
         prestart();
     }
@@ -46,7 +46,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void twoMethod() {
         latch = new CountDownLatch(2);
-        conf.addServiceToLifecycle(new Started2());
+        conf.addToLifecycle(new Started2());
         newContainer();
         prestart();
     }
@@ -54,7 +54,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void twoMethodWithArgs() {
         latch = new CountDownLatch(2);
-        conf.addServiceToLifecycle(new Started3());
+        conf.addToLifecycle(new Started3());
         newContainer();
         prestart();
     }
@@ -62,15 +62,15 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void register() {
         latch = new CountDownLatch(2);
-        conf.addServiceToLifecycle(new Register());
-        conf.addServiceToLifecycle(new CheckRegister());
+        conf.addToLifecycle(new Register());
+        conf.addToLifecycle(new CheckRegister());
         newContainer();
         prestart();
     }
 
     @Test(expected = IllegalStateException.class)
     public void notAvailable() {
-        conf.addServiceToLifecycle(new AfterStartNotAvailable());
+        conf.addToLifecycle(new AfterStartNotAvailable());
         newContainer();
         prestart();
     }

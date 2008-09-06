@@ -25,7 +25,9 @@ import java.lang.annotation.Target;
 import org.codehaus.cake.service.Container;
 
 /**
- * An annotation for marking a method as startable. See {@link Container} for how it handles registered services with
+ * An annotation for marking a method as startable.
+ * Methods annotated 
+ *  See {@link Container} for how it handles registered services with
  * this annotation.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>

@@ -21,8 +21,9 @@ import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 
 /**
- * The attributes ordered according to their {@linkplain Comparable natural ordering}, or by a {@link Comparator}
- * provided at attribute construction time, depending on which constructor is used.
+ * An attribute that can be used to impose order among the values of said attributes. The values can be ordered
+ * according to their {@linkplain Comparable natural ordering}, or by a {@link Comparator} provided at attribute
+ * construction time, depending on which constructor is used.
  * 
  * An attribute relying on natural ordering does not permit comparison of non-comparable objects (doing so may result in
  * {@code ClassCastException}).
@@ -34,7 +35,7 @@ import org.codehaus.cake.attribute.WithAttributes;
  *            the datatype of this attribute
  */
 public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<WithAttributes> {
-
+    /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** The comparator, or null if attribute uses elements' natural ordering. */
@@ -124,7 +125,7 @@ public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> im
         }
         this.nullIsLeast = nullIsLeast;
     }
-    //We should also override equals, per contract of Comparable
+
     /** {@inheritDoc} */
     public int compare(WithAttributes o1, WithAttributes o2) {
         if (comparator == null) {

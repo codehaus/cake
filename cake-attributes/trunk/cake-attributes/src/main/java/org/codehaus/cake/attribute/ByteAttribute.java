@@ -17,7 +17,6 @@ package org.codehaus.cake.attribute;
 
 import java.util.Comparator;
 import java.io.Serializable;
-
 /**
  * An implementation of an {@link Attribute} mapping to a byte. This implementation adds a number of
  * methods that works on primitive bytes instead of their object counterpart.
@@ -25,11 +24,12 @@ import java.io.Serializable;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ByteAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class ByteAttribute extends Attribute<Byte> implements Comparator<WithAttributes>, Serializable {
-
+public abstract class ByteAttribute extends Attribute<Byte> implements
+         Comparator<WithAttributes>, Serializable {
+    
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
+         
     /** The default value of this attribute. */
     private final transient byte defaultValue;
 
@@ -88,35 +88,32 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
         super(name, Byte.TYPE, defaultValue);
         this.defaultValue = defaultValue;
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public final void checkValid(Byte o) {
         checkValid(o.byteValue());
     }
-
+    
     /**
      * Analogous to {@link #checkValid(Byte)} except taking a primitive byte.
-     * 
+     * <p>
+     * The default implementation accept all values.
      * @param value
      *            the value to check
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(byte value) {
-        if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName() + ", type = "
-                    + getClass() + ", value = " + value + "]");
-        }
-    }
-
+    public void checkValid(byte value) { }
+    
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
         byte thisVal = get(w1);
         byte anotherVal = get(w2);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
-
+    
+    
     /**
      * Creates a value instance of this attribute from the specified string.
      * 
@@ -139,7 +136,7 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
     public byte getDefaultValue() {
         return defaultValue;
     }
-
+    
     /**
      * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
      * this attribute from the map. If this attribute is not set in the map, the value of
@@ -147,8 +144,8 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
      * 
      * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map.
-     *         Otherwise {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
+     *         {@link #getDefaultValue()}
      */
     public byte get(WithAttributes withAttributes) {
         return withAttributes.getAttributes().get(this);
@@ -168,8 +165,9 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
-    /**
-     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive byte as parameter.
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive byte as
+     * parameter.
      * <p>
      * The default version returns true for all parameters
      * 
@@ -178,7 +176,12 @@ public abstract class ByteAttribute extends Attribute<Byte> implements Comparato
      * @return whether or not the value is valid
      */
     public boolean isValid(byte value) {
-        return true;
+        try {
+            checkValid(value);
+            return true; // all values are accepted by default.
+        } catch (IllegalArgumentException e) {
+            return false;
+        }    
     }
 
     /** {@inheritDoc} */

@@ -34,8 +34,10 @@ public final class FloatAttributeTest extends AtrStubs {
 
     static final FloatAttribute NON_NEGATIVE = new FloatAttribute("a50", 50F) {
         @Override
-        public boolean isValid(float value) {
-            return value >= 5F;
+        public void checkValid(float value) {
+            if (value < 5F) {
+                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
+            }
         }
     };
 

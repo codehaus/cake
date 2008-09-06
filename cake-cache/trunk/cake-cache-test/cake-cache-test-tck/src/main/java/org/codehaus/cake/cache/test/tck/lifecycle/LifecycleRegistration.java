@@ -29,7 +29,7 @@ public class LifecycleRegistration extends AbstractCacheTCKTest {
 
     @Test
     public void registerExisting() {
-        conf.addServiceToLifecycle(new Register());
+        conf.addToLifecycle(new Register());
         newContainer();
         prestart();
         assertSame(mss,c.with().memoryStore());

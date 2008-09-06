@@ -101,8 +101,7 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
         composer.registerImplementation(SynchronizedConfigurationService.class);
         composer.registerImplementation(DefaultCacheRequestFactory.class);
         composer.registerImplementation(UnsynchronizedCacheProcessor.class);
-        
-        composer.registerImplementation(ExportedMemoryStoreService.class);
+
         // composer.registerImplementation(DefaultAttributeService.class);
         composer.registerImplementation(MemorySparseAttributeService.class);
 

@@ -56,7 +56,7 @@ public class CacheServices<K, V> {
     }
 
     public <R> WriteService<K, V, R> write(Op<CacheEntry<K, V>, R> extractor) {
-        return getService(WriteService.class, WriteService.OP.singleton(extractor));
+        return getService(WriteService.class, WriteService.WRITE_TRANSFORMER.singleton(extractor));
     }
 
     public WriteService<K, V, CacheEntry<K, V>> writeReturnEntry() {

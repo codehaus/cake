@@ -97,7 +97,7 @@ public class CacheConfigurationTest {
     public void addService() {
         assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
         ServiceFactory sf = dummy(ServiceFactory.class);
-        conf.addServiceToLifecycle(5);
+        conf.addToLifecycle(5);
         conf.addService(Integer.class, 10);
         conf.addServiceFactory(Long.class, sf);
         ServiceList sl = (ServiceList) conf.getServices();

@@ -17,7 +17,6 @@ package org.codehaus.cake.attribute;
 
 import java.util.Comparator;
 import java.io.Serializable;
-
 /**
  * An implementation of an {@link Attribute} mapping to a char. This implementation adds a number of
  * methods that works on primitive chars instead of their object counterpart.
@@ -25,11 +24,12 @@ import java.io.Serializable;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CharAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class CharAttribute extends Attribute<Character> implements Comparator<WithAttributes>, Serializable {
-
+public abstract class CharAttribute extends Attribute<Character> implements
+         Comparator<WithAttributes>, Serializable {
+    
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
+         
     /** The default value of this attribute. */
     private final transient char defaultValue;
 
@@ -88,35 +88,32 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
         super(name, Character.TYPE, defaultValue);
         this.defaultValue = defaultValue;
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public final void checkValid(Character o) {
         checkValid(o.charValue());
     }
-
+    
     /**
      * Analogous to {@link #checkValid(Character)} except taking a primitive char.
-     * 
+     * <p>
+     * The default implementation accept all values.
      * @param value
      *            the value to check
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(char value) {
-        if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName() + ", type = "
-                    + getClass() + ", value = " + value + "]");
-        }
-    }
-
+    public void checkValid(char value) { }
+    
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
         char thisVal = get(w1);
         char anotherVal = get(w2);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
-
+    
+    
     /**
      * Creates a value instance of this attribute from the specified string.
      * 
@@ -142,7 +139,7 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
     public char getDefaultValue() {
         return defaultValue;
     }
-
+    
     /**
      * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
      * this attribute from the map. If this attribute is not set in the map, the value of
@@ -150,8 +147,8 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
      * 
      * @param withAttributes
      *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map.
-     *         Otherwise {@link #getDefaultValue()}
+     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
+     *         {@link #getDefaultValue()}
      */
     public char get(WithAttributes withAttributes) {
         return withAttributes.getAttributes().get(this);
@@ -171,8 +168,9 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
-    /**
-     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive char as parameter.
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive char as
+     * parameter.
      * <p>
      * The default version returns true for all parameters
      * 
@@ -181,7 +179,12 @@ public abstract class CharAttribute extends Attribute<Character> implements Comp
      * @return whether or not the value is valid
      */
     public boolean isValid(char value) {
-        return true;
+        try {
+            checkValid(value);
+            return true; // all values are accepted by default.
+        } catch (IllegalArgumentException e) {
+            return false;
+        }    
     }
 
     /** {@inheritDoc} */

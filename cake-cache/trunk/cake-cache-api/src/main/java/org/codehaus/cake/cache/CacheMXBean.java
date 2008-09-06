@@ -35,7 +35,7 @@ import org.codehaus.cake.service.management.ManagementConfiguration;
 public interface CacheMXBean {
 
     /**
-     * This is service name this interface will be registered under.
+     * This is the service name this interface will be registered under.
      */
     String MANAGED_SERVICE_NAME = "General";
 

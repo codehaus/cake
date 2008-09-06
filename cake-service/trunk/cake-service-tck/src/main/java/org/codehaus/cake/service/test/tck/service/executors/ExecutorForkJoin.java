@@ -48,7 +48,7 @@ public class ExecutorForkJoin extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         final ForkJoinExecutor e = dummy(ForkJoinExecutor.class);
-        conf.addServiceToLifecycle(new Registrant(ForkJoinExecutor.class, e));
+        conf.addToLifecycle(new Registrant(ForkJoinExecutor.class, e));
 
         assertTrue(c.hasService(ForkJoinExecutor.class));
 

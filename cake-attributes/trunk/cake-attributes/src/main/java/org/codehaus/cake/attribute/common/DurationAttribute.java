@@ -22,7 +22,7 @@ import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 
 /**
- * An attribute mapping to a duration in time. The unit of time is nanoseconds.
+ * An attribute mapping to an amount of time. The unit of time is nanoseconds.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
@@ -31,7 +31,7 @@ public abstract class DurationAttribute extends LongAttribute {
 
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
-    
+
     /** The default value of this attribute. */
     protected static final long DEFAULT_DURATION = Long.MAX_VALUE;
 
@@ -81,10 +81,9 @@ public abstract class DurationAttribute extends LongAttribute {
         return convertTo(attributes.getAttributes().get(this), unit);
     }
 
-
     /**
-     * Analogous to {@link LongAttribute#getValue(AttributeMap)} except taking a parameter indicating what time unit the value should
-     * be returned in.
+     * Analogous to {@link LongAttribute#getValue(AttributeMap)} except taking a parameter indicating what time unit the
+     * value should be returned in.
      * 
      * @param attributes
      *            the attribute map to retrieve the value of this attribute from
@@ -107,6 +106,13 @@ public abstract class DurationAttribute extends LongAttribute {
         return value > 0;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public final void checkValid(long value) {
+        if (value<=0) {
+            throw new IllegalArgumentException("Duration must be greater then 0, was " + value);
+        }
+    }
     public void set(AttributeMap attributes, Long duration, TimeUnit unit) {
         set(attributes, duration.longValue(), unit);
     }

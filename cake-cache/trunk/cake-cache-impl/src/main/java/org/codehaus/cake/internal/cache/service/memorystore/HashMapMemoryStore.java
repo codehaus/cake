@@ -51,6 +51,12 @@ import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.annotation.Stoppable;
 
+/**
+ * The default Implementaiton of {@link MemoryStore}. Storing entries in an HashMap.
+ * 
+ * @param <K>
+ * @param <V>
+ */
 public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeService, ConfigurableService {
 
     private final InternalAttributeService<K, V> attributeService;

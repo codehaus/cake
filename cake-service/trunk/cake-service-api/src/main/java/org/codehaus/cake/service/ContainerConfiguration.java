@@ -17,6 +17,7 @@ package org.codehaus.cake.service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ import java.util.regex.Pattern;
 import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
+import org.codehaus.cake.service.annotation.ExportAsService;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Loggers.Commons;
@@ -96,6 +98,12 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
+     * Adds an object to the lifecycle of the container.
+     * <p>
+     * <p>
+     * If the object is annotated with the {@link ExportAsService} annotation the object can then later be retrieved by
+     * calling {@link org.codehaus.cake.container.Container#getService(Class)}
+     * 
      * Registers a object for the container. Only objects of type {@link MapLifecycle} or {@link Manageable}, are
      * valid. If the object is of type {@link MapLifecycle} the container will invoke the respective lifecycle methods
      * on the object. If the object is of type {@link Manageable} and management is enabled for the container (see
@@ -113,8 +121,10 @@ public abstract class ContainerConfiguration<T> {
      * assert &quot;fooboo&quot; = c.getService(String.class);
      * </pre>
      * 
-     * If the specified key conflicts with the key-type of any of the build in service an exception will be thrown when
-     * the container is constructed.
+     * If the service is exported with a key that conflicts with the key-type of any of the build-in services. The
+     * registered service will replace the build-in service when trying to retrive using
+     * {@link ServiceManager#getService(Class)} or
+     * {@link ServiceManager#getService(Class, org.codehaus.cake.attribute.AttributeMap)}.
      * 
      * @param o
      *            the object to register
@@ -122,7 +132,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws IllegalArgumentException
      *             in case of an argument of invalid type or if the object has already been registered.
      */
-    public ContainerConfiguration<T> addServiceToLifecycle(Object o) {
+    public ContainerConfiguration<T> addToLifecycle(Object o) {
         serviceList.addLifecycle(o);
         return this;
     }
@@ -244,8 +254,8 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the objects that have been registered through {@link #addServiceToLifecycle(Object)}. The service will
-     * be returned in the same order as the they have been added.
+     * Returns the objects that have been registered through {@link #addToLifecycle(Object)}. The service will be
+     * returned in the same order as the they have been added.
      * 
      * @return the objects that have been registered
      */
