@@ -17,7 +17,6 @@ package org.codehaus.cake.service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -137,15 +136,13 @@ public abstract class ContainerConfiguration<T> {
         return this;
     }
 
-    @Deprecated
-    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, S service) {
-        serviceList.addService(key, service);
+    public <S> ContainerConfiguration<T> addToLifecycleAndExport(Class<? extends S> key, S service) {
+        serviceList.add(key, service);
         return this;
     }
 
-    @Deprecated
-    public <S> ContainerConfiguration<T> addServiceFactory(Class<? extends S> key, ServiceFactory<S> factory) {
-        serviceList.addServiceFactory(key, factory);
+    public <S> ContainerConfiguration<T> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
+        serviceList.add(key, factory);
         return this;
     }
 

@@ -98,8 +98,8 @@ public class CacheConfigurationTest {
         assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
         ServiceFactory sf = dummy(ServiceFactory.class);
         conf.addToLifecycle(5);
-        conf.addService(Integer.class, 10);
-        conf.addServiceFactory(Long.class, sf);
+        conf.addToLifecycleAndExport(Integer.class, 10);
+        conf.addToLifecycleAndExport(Long.class, sf);
         ServiceList sl = (ServiceList) conf.getServices();
         Iterator<Object> iter = sl.getServices().iterator();
         assertEquals(5, iter.next());

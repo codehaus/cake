@@ -24,8 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * A Container is the the in addition providing .
  * 
- * Retrieving services that have been registered using {@link ContainerConfiguration#addToLifecycle(Object)}, or registered
- * dynamically through a {@link ServiceRegistrant}.
+ * Retrieving services that have been registered using {@link ContainerConfiguration#addToLifecycle(Object)}.
  * 
  * <p>
  * This interface is normally extended by a concrete container type, for example, a
@@ -54,7 +53,8 @@ public interface Container extends ServiceManager {
      *            the maximum time to wait
      * @param unit
      *            the time unit of the timeout argument
-     * @return <tt>true</tt> if this container terminated and <tt>false</tt> if the timeout elapsed before termination
+     * @return <tt>true</tt> if this container terminated and <tt>false</tt> if the timeout elapsed before
+     *         termination
      * @throws InterruptedException
      *             if interrupted while waiting
      */
@@ -75,8 +75,8 @@ public interface Container extends ServiceManager {
     boolean isStarted();
 
     /**
-     * Returns <tt>true</tt> if all service tasks have completed following shut down. Note that <tt>isTerminated</tt> is
-     * never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
+     * Returns <tt>true</tt> if all service tasks have completed following shut down. Note that <tt>isTerminated</tt>
+     * is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
      * 
      * @return <tt>true</tt> if all tasks have completed following shut down
      */

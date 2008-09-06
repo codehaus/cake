@@ -3,8 +3,6 @@ package org.codehaus.cake.internal.service;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.codehaus.cake.service.ServiceFactory;
-
 public class ServiceList {
     private Set<Object> services = new LinkedHashSet<Object>();
 
@@ -17,12 +15,13 @@ public class ServiceList {
         services.add(service);
     }
 
-    public <T> void addService(Class<? extends T> key, T service) {
+    public void add(Class<?> key, Object service) {
+        if (key == null) {
+            throw new NullPointerException("key, service is null");
+        } else if (service == null) {
+            throw new NullPointerException("service is null");
+        }
         services.add(new Factory(key, service));
-    }
-
-    public <T> void addServiceFactory(Class<? extends T> key, ServiceFactory<T> factory) {
-        services.add(new Factory(key, factory));
     }
 
     public Iterable<Object> getServices() {
@@ -42,6 +41,7 @@ public class ServiceList {
         public Object getFactory() {
             return factory;
         }
+
         public Class getKey() {
             return key;
         }

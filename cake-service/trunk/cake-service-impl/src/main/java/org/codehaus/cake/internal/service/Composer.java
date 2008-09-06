@@ -27,7 +27,6 @@ import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceManager;
-import org.codehaus.cake.service.ServiceRegistrant;
 
 @UseInternals
 public class Composer {

@@ -18,10 +18,6 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
-import org.codehaus.cake.service.test.tck.lifecycle.Services.Register1;
-import org.codehaus.cake.service.test.tck.lifecycle.Services.Register2;
-import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterKeyNull;
-import org.codehaus.cake.service.test.tck.lifecycle.Services.RegisterServiceNull;
 import org.junit.Test;
 
 public class LifecycleStartRegistration extends AbstractTCKTest<Container, ContainerConfiguration> {
@@ -31,35 +27,35 @@ public class LifecycleStartRegistration extends AbstractTCKTest<Container, Conta
         newContainer();
         c.getService(Integer.class).intValue();
     }
-
-    @Test
-    public void register() {
-        conf.addToLifecycle(new Register1());
-        newContainer();
-        prestart();
-        assertEquals(1, c.getService(Integer.class).intValue());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void registerNullKey() {
-        conf.addToLifecycle(new RegisterKeyNull());
-        newContainer();
-        prestart();
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void registerNullService() {
-        conf.addToLifecycle(new RegisterServiceNull());
-        newContainer();
-        prestart();
-    }
-
-    @Test
-    public void registerLastIsActive() {
-        conf.addToLifecycle(new Register1());
-        conf.addToLifecycle(new Register2());
-        newContainer();
-        prestart();
-        assertEquals(2, c.getService(Integer.class).intValue()); // take last
-    }
+//
+//    @Test
+//    public void register() {
+//        conf.addToLifecycle(new Register1());
+//        newContainer();
+//        prestart();
+//        assertEquals(1, c.getService(Integer.class).intValue());
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void registerNullKey() {
+//        conf.addToLifecycle(new RegisterKeyNull());
+//        newContainer();
+//        prestart();
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void registerNullService() {
+//        conf.addToLifecycle(new RegisterServiceNull());
+//        newContainer();
+//        prestart();
+//    }
+//
+//    @Test
+//    public void registerLastIsActive() {
+//        conf.addToLifecycle(new Register1());
+//        conf.addToLifecycle(new Register2());
+//        newContainer();
+//        prestart();
+//        assertEquals(2, c.getService(Integer.class).intValue()); // take last
+//    }
 }

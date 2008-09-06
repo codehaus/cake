@@ -15,15 +15,16 @@
  */
 package org.codehaus.cake.stubber.test.tck.core;
 
-import org.codehaus.cake.service.ServiceRegistrant;
+import org.codehaus.cake.internal.service.ServiceRegistrant;
 import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.stubber.test.tck.AbstraktStubberTCKTst;
 import org.junit.Test;
 
 public class StubberT extends AbstraktStubberTCKTst {
+    
     @Test(expected = IllegalStateException.class)
     public void t() {
-        conf.addToLifecycle(new Register());
+        conf.addToLifecycleAndExport(Register.class, new Register());
         newContainer();
         c.getIt(5);
         assertTrue(c.hasService(Integer.class));
@@ -33,8 +34,7 @@ public class StubberT extends AbstraktStubberTCKTst {
 
     public class Register {
         @Startable
-        public void start(ServiceRegistrant registrant) {
-            registrant.registerService(Integer.class, new Integer(1000));
+        public void start() {
             c.getIt(5);
         }
     }

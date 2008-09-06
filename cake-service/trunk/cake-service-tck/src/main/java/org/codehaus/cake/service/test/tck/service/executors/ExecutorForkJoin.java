@@ -6,10 +6,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.codehaus.cake.forkjoin.ForkJoinExecutor;
-import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.codehaus.cake.service.test.util.AssertableForkJoinTask;
 import org.junit.Before;
@@ -48,32 +44,13 @@ public class ExecutorForkJoin extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         final ForkJoinExecutor e = dummy(ForkJoinExecutor.class);
-        conf.addToLifecycle(new Registrant(ForkJoinExecutor.class, e));
+        conf.addToLifecycleAndExport(ForkJoinExecutor.class, e);
 
         assertTrue(c.hasService(ForkJoinExecutor.class));
 
         ForkJoinExecutor fje = getService(ForkJoinExecutor.class);
         assertSame(e, fje);
 
-    }
-
-    public static class Registrant {
-        private Class key;
-        private Object o;
-
-        public Registrant(Class key, Object o) {
-            this.key = key;
-            this.o = o;
-        }
-
-        @Startable
-        public void register(ServiceRegistrant sr) {
-            if (o instanceof ServiceFactory) {
-                sr.registerFactory(key, (ServiceFactory) o);
-            } else {
-                sr.registerService(key, o);
-            }
-        }
     }
 
     /** Tests that an exception is throw when we attempt to execute a task on executor from a shutdown container. */

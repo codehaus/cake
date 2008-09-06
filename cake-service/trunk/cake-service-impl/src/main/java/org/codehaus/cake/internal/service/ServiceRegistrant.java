@@ -13,7 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service;
+package org.codehaus.cake.internal.service;
+
+import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceManager;
 
 /**
  * A ServiceRegistrant is used for registering services or service factories at
@@ -45,7 +48,7 @@ public interface ServiceRegistrant {
 	 *             if registering services in a container and the container has
 	 *             already been started
 	 */
-	<T> ServiceRegistrant registerService(Class<T> type, T service);
+	<T> void registerService(Class<T> type, T service);
 
 	/**
 	 * Registers the specified {@link ServiceFactory}. Services can then later
@@ -68,8 +71,6 @@ public interface ServiceRegistrant {
 	 *             if registering services in a container and the container has
 	 *             already been started
 	 */
-	<T> ServiceRegistrant registerFactory(Class<T> type,
+	<T> void registerFactory(Class<T> type,
 			ServiceFactory<T> serviceFactory);
-	// replace service
-	// remove service
 }

@@ -16,7 +16,6 @@
 package org.codehaus.cake.internal.service;
 
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.annotation.Startable;
 
 /**
@@ -57,7 +56,7 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
     }
 
     /** {@inheritDoc} */
-    public <T> ServiceRegistrant registerFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
+    public <T> void registerFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
         synchronized (lock) {
             if (manager == null) {
                 throw new IllegalStateException("Services must be registered with methods using @"
@@ -65,11 +64,10 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
             }
             manager.registerServiceFactory(key, serviceFactory);
         }
-        return this;
     }
 
     /** {@inheritDoc} */
-    public <T> ServiceRegistrant registerService(Class<T> key, T service) {
+    public <T> void registerService(Class<T> key, T service) {
         synchronized (lock) {
             if (manager == null) {
                 throw new IllegalStateException("Services must be registered with methods using @"
@@ -77,6 +75,5 @@ public class DefaultServiceRegistrant implements ServiceRegistrant {
             }
             manager.registerService(key, service);
         }
-        return this;
     }
 }

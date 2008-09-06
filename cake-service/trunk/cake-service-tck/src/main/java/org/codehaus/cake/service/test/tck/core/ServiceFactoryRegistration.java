@@ -14,7 +14,7 @@ public class ServiceFactoryRegistration extends AbstractTCKTest<Container, Conta
 
     @Test
     public void serviceGet() {
-        conf.addServiceFactory(Integer.class, new TestFactory());
+        conf.addToLifecycleAndExport(Integer.class, new TestFactory());
         newContainer();
         assertEquals(-1, getService(Integer.class).intValue());
         assertEquals(-1, getService(Integer.class,Attributes.EMPTY_ATTRIBUTE_MAP).intValue());

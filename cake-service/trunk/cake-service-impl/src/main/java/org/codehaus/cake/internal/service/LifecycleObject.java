@@ -30,7 +30,6 @@ import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionSer
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.annotation.Disposable;
 import org.codehaus.cake.service.annotation.ExportAsService;

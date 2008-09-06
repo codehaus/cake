@@ -19,8 +19,6 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.ServiceRegistrant;
-import org.codehaus.cake.service.annotation.Startable;
 import org.junit.Test;
 
 public class LifecycleRegistration extends AbstractCacheTCKTest {
@@ -29,16 +27,10 @@ public class LifecycleRegistration extends AbstractCacheTCKTest {
 
     @Test
     public void registerExisting() {
-        conf.addToLifecycle(new Register());
+        conf.addToLifecycleAndExport(MemoryStoreService.class, mss);
         newContainer();
         prestart();
-        assertSame(mss,c.with().memoryStore());
+        assertSame(mss, c.with().memoryStore());
     }
 
-    public class Register {
-        @Startable
-        public void start(ServiceRegistrant registrant) {
-            registrant.registerService(MemoryStoreService.class, mss);
-        }
-    }
 }

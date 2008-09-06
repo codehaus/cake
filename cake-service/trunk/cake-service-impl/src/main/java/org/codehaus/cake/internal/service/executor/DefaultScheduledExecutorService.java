@@ -6,9 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.service.annotation.Stoppable;
 
 @UseInternals

@@ -74,15 +74,15 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addServiceFactory(Class<? extends S> key, ServiceFactory<S> factory) {
-        super.addServiceFactory(key, factory);
+    public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
+        super.addToLifecycleAndExport(key, factory);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, S service) {
-        super.addService(key, service);
+    public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, S service) {
+        super.addToLifecycleAndExport(key, service);
         return this;
     }
 

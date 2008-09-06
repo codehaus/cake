@@ -21,9 +21,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.internal.service.configuration.ConfigurableService;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubber1Service;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubberService;
-import org.codehaus.cake.service.ServiceRegistrant;
 import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.Startable;
 import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
 
