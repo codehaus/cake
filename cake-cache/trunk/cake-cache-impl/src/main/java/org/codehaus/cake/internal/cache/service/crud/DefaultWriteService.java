@@ -17,7 +17,7 @@ import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
-public class DefaultWriteService<K, V, R> extends AbstractWriteService<K, V, R> {
+public class DefaultWriteService<K, V, R> implements WriteService<K, V, R> {
 
     public static Op NOT_NULL = new Op<CacheEntry<?, ?>, Boolean>() {
         public Boolean op(CacheEntry<?, ?> a) {
