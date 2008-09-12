@@ -67,6 +67,18 @@ public class AttributeTest {
         a.checkValid("default");
     }
 
+    @Test
+    public void isValid() {
+        Attribute<String> a = new Attribute(String.class, "defaults") {
+            @Override
+            public void checkValid(Object value) {
+                if (value.equals("default")) {
+                throw new IllegalArgumentException();
+            }
+            }
+        };
+        assertFalse(a.isValid("default"));
+    }
     // @Test
     // public void get() {
     // assertEquals("default", ATR.get(am1));

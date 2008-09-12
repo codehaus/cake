@@ -22,8 +22,11 @@ import java.util.Map.Entry;
 import org.codehaus.cake.attribute.Attributes;
 
 /**
- * A small collection of attribute utility methods and classes. They are both
- * used from {@link Attributes} and the attribute map generator package.
+ * A small collection of attribute utility methods and classes. They are both used from {@link Attributes} and the
+ * attribute map generator package.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
@@ -41,20 +44,17 @@ public final class AttributeHelper {
      *            the first object to compare
      * @param o2
      *            the second object to compare
-     * @return true if the specified arguments are equal, or both null.
-     *         Otherwise null
+     * @return true if the specified arguments are equal, or both null. Otherwise null
      */
     public static boolean eq(Object o1, Object o2) {
         return o1 == null ? o2 == null : o1.equals(o2);
     }
 
     /**
-     * An Entry maintaining an immutable key and value. This class does not
-     * support method <tt>setValue</tt>. This class may be convenient in
-     * methods that return thread-safe snapshots of key-value mappings.
+     * An Entry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>. This
+     * class may be convenient in methods that return thread-safe snapshots of key-value mappings.
      */
-    public static class SimpleImmutableEntry<K, V> implements Entry<K, V>,
-            Serializable {
+    public static class SimpleImmutableEntry<K, V> implements Entry<K, V>, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -354750390197347279L;
@@ -66,8 +66,7 @@ public final class AttributeHelper {
         private final V value;
 
         /**
-         * Creates an entry representing the same mapping as the specified
-         * entry.
+         * Creates an entry representing the same mapping as the specified entry.
          * 
          * @param entry
          *            the entry to copy
@@ -78,8 +77,7 @@ public final class AttributeHelper {
         }
 
         /**
-         * Creates an entry representing a mapping from the specified key to the
-         * specified value.
+         * Creates an entry representing a mapping from the specified key to the specified value.
          * 
          * @param key
          *            the key represented by this entry
@@ -114,8 +112,7 @@ public final class AttributeHelper {
         /** {@inheritDoc} */
         @Override
         public int hashCode() {
-            return (key == null ? 0 : key.hashCode())
-                    ^ (value == null ? 0 : value.hashCode());
+            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
 
         /** {@inheritDoc} */

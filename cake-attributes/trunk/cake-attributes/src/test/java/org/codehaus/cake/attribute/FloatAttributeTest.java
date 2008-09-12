@@ -72,6 +72,11 @@ public final class FloatAttributeTest extends AtrStubs {
         NON_NEGATIVE.checkValid(4F);
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public void checkValidIAE2() {
+      ATR0.checkValid(Float.NEGATIVE_INFINITY); 
+    }
+
     @Test
     public void comparator() {
         WithAttributes wa1 = withAtr(ATR1.singleton(1F));

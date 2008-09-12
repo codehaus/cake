@@ -72,6 +72,11 @@ public final class DoubleAttributeTest extends AtrStubs {
         NON_NEGATIVE.checkValid(4D);
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public void checkValidIAE2() {
+      ATR0.checkValid(Double.NEGATIVE_INFINITY); 
+    }
+
     @Test
     public void comparator() {
         WithAttributes wa1 = withAtr(ATR1.singleton(1D));

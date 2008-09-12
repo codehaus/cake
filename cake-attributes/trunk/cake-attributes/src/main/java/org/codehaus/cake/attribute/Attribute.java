@@ -16,13 +16,23 @@
 package org.codehaus.cake.attribute;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Attribute-value pairs are a fundamental data representation in many computing systems and applications. Designers
  * often desire an open-ended data structure that allows for future extension without modifying existing code or data.
  * In such situations, all or part of the data model may be expressed as a collection of tuples attribute name, value;
  * each element is an attribute-value pair.
+ * <p>
+ * All (non-abstract) subclasses of Attribute should be declared final. static final class CostAttribute extends
+ * DoubleAttribute {
+ * 
+ * <pre>
+ *   public final Class MyAttribute extends 
+ *        private Object readResolve() {
+ *            return CacheEntry.COST;
+ *        }
+ *    }
+ * </pre>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
@@ -34,9 +44,6 @@ public abstract class Attribute<T> implements Serializable {
 
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
-    /** An AtomicLong for generating unique names, if user does not specify name. */
-    private static final AtomicLong NAME = new AtomicLong();
 
     // All fields are transient because attribute implementations should be singletons.
 
@@ -53,7 +60,7 @@ public abstract class Attribute<T> implements Serializable {
     private final transient String name;
 
     /**
-     * Creates a new Attribute.
+     * Creates a new Attribute (Disallow direct construction outside this package).
      * 
      * @param clazz
      *            the type of this attribute
@@ -68,7 +75,7 @@ public abstract class Attribute<T> implements Serializable {
         if (clazz == null) {
             throw new NullPointerException("clazz is null");
         }
-        this.name = getClass().toString() + NAME.incrementAndGet();
+        this.name = getClass().getSimpleName();// Doesn't work anonymous classes
         this.clazz = clazz;
         if (!isValid(defaultValue)) {
             throw new IllegalArgumentException("Default value must be valid, default value was '" + defaultValue + "'");
@@ -79,7 +86,7 @@ public abstract class Attribute<T> implements Serializable {
     }
 
     /**
-     * Creates a new AbstractAttribute.
+     * Creates a new Attribute (Disallow direct construction outside this package).
      * 
      * @param name
      *            the name of the attribute
@@ -139,8 +146,6 @@ public abstract class Attribute<T> implements Serializable {
     }
 
     /**
-     * Returns the name of the attribute.
-     * 
      * @return the name of the attribute
      */
     public final String getName() {
@@ -148,9 +153,7 @@ public abstract class Attribute<T> implements Serializable {
     }
 
     /**
-     * Returns the type of this attribute.
-     * 
-     * @return the type of this attribute
+     * @return the value type of this attribute
      */
     public final Class<T> getType() {
         return clazz;
@@ -199,7 +202,7 @@ public abstract class Attribute<T> implements Serializable {
      * @return an AttributeMap containing only this attribute mapping to the specified value
      */
     public AttributeMap singleton(T value) {
-        checkValid(value);
+        checkValid(value);// TODO check valid???
         return Attributes.singleton(this, value);
     }
 

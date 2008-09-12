@@ -25,27 +25,33 @@ import java.util.Map.Entry;
 import org.codehaus.cake.internal.attribute.AttributeHelper;
 
 /**
+ * 
+ * This class consists exclusively of static methods that operate on or return collections. It contains polymorphic
+ * algorithms that operate on collections, "wrappers", which return a new collection backed by a specified collection,
+ * and a few other odds and ends.
+ * 
+ * 
  * Contains various utility methods for a {@link AttributeMap}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: AttributeMaps.java 472 2007-11-19 09:34:26Z kasper $
  */
 public final class Attributes {
-
     /** The empty attribute map (immutable). This attribute map is serializable. */
     public static final AttributeMap EMPTY_ATTRIBUTE_MAP = new EmptyAttributeMap();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */
-    private Attributes() {}
+    private Attributes() {
+    }
 
     // /CLOVER:ON
     /**
-     * Returns an immutable AttributeMap containing only the specified attribute mapping to the
-     * specified value. Attempts to modify the returned attribute map, whether direct or via its
-     * collection views, result in an <tt>UnsupportedOperationException</tt>.
+     * Returns an immutable AttributeMap containing only the specified attribute mapping to the specified value.
+     * Attempts to modify the returned attribute map, whether direct or via its collection views, result in an
+     * <tt>UnsupportedOperationException</tt>.
      * <p>
-     * The returned attribute map will be serializable if the specified attribute and its value are
+     * The returned attribute map will be serializable if the specified attribute and the specified value is
      * serializable.
      * 
      * @param attribute
@@ -62,53 +68,13 @@ public final class Attributes {
         return new SingletonAttributeMap(attribute, value);
     }
 
-    // /**
-    // * Creates a new {@link Map} where all the specified keys maps to {@link
-    // #EMPTY_ATTRIBUTE_MAP}.
-    // *
-    // * @param <K>
-    // * the type of keys
-    // * @param keys
-    // * the collection of keys that should map to the empty AttributeMap
-    // * @return a new Map where all the specified keys maps to an empty
-    // AttributeMap
-    // */
-    // public static <K> Map<K, AttributeMap> toMap(Collection<? extends K>
-    // keys) {
-    // return toMap(keys, EMPTY_ATTRIBUTE_MAP);
-    // }
-    //
-    // /**
-    // * Creates a new {@link Map} where all the specified keys maps to the
-    // specified AttributeMap.
-    // *
-    // * @param <K>
-    // * the type of keys
-    // * @param keys
-    // * the collection of keys that should map to the specified AttributeMap
-    // * @param attributeMap
-    // * the AttributeMap that all the specified keys must map to
-    // * @return a new Map where all the specified keys maps to the specified
-    // AttributeMap
-    // */
-    // public static <K> Map<K, AttributeMap> toMap(Collection<? extends K>
-    // keys,
-    // AttributeMap attributeMap) {
-    // HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
-    // for (K key : keys) {
-    // map.put(key, attributeMap);
-    // }
-    // return map;
-    // }
-
     /**
-     * Returns an unmodifiable view of the specified attribute map. This method allows modules to
-     * provide users with "read-only" access to internal attribute maps. Query operations on the
-     * returned attribute map "read through" to the specified attribute map, and attempts to modify
-     * the returned attribute map, whether direct or via its collection views, result in an
-     * <tt>UnsupportedOperationException</tt>.
+     * Returns an unmodifiable view of the specified attribute map. This method allows modules to provide users with
+     * "read-only" access to internal attribute maps. Query operations on the returned attribute map "read through" to
+     * the specified attribute map, and attempts to modify the returned attribute map, whether direct or via its
+     * collection views, result in an <tt>UnsupportedOperationException</tt>.
      * <p>
-     * The returned attribute map will be serializable if the specified map is serializable.
+     * The returned attribute map will be serializable if the specified attribute map is serializable.
      * 
      * @param attributes
      *            the attribute map for which an unmodifiable view is to be returned.
@@ -120,8 +86,7 @@ public final class Attributes {
 
     /**
      * Validates that all entries entries are valid in the specified attribute map according to
-     * {@link Attribute#checkValid(Object)}. The method returns a new immutable map with all the
-     * entries.
+     * {@link Attribute#checkValid(Object)}. The method returns a new immutable map with all the entries.
      * 
      * @param attributes
      *            the map to validate
@@ -140,9 +105,7 @@ public final class Attributes {
         return unmodifiableAttributeMap(result);
     }
 
-    /**
-     * The default implementation of an immutable empty {@link AttributeMap}.
-     */
+    /** The default implementation of an immutable empty {@link AttributeMap}. */
     static final class EmptyAttributeMap implements AttributeMap, Serializable {
 
         /** serialVersionUID. */
@@ -154,7 +117,8 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public void clear() {}
+        public void clear() {
+        }
 
         /** {@inheritDoc} */
         public boolean contains(Attribute<?> attribute) {
