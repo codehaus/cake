@@ -1,0 +1,212 @@
+import static org.codehaus.cake.ops.${Type}Predicates.*;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
+
+import org.codehaus.cake.ops.${Type}Predicates.*;
+import org.codehaus.cake.ops.Ops.*;
+import org.codehaus.cake.test.util.TestUtil;
+import org.junit.Test;
+/**
+ * Various tests for {@link ${Type}Predicates}.
+ *
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ */
+public final class ${this} {
+
+    /**
+     * Tests {@link LongPredicates#and(LongPredicate, LongPredicate)}.
+     */
+    @Test
+    public void and() {
+        assertTrue(${Type}Predicates.and(TRUE, TRUE).op($util.val(1)));
+        assertFalse(${Type}Predicates.and(TRUE, FALSE).op($util.val(1)));
+        assertFalse(${Type}Predicates.and(FALSE, TRUE).op($util.val(1)));
+        assertFalse(${Type}Predicates.and(FALSE, FALSE).op($util.val(1)));
+
+        ${Type}Predicates.And${Type}Predicate p = new ${Type}Predicates.And${Type}Predicate(FALSE, TRUE);
+        assertSame(p.getLeft(), FALSE);
+        assertSame(p.getRight(), TRUE);
+        p.toString(); // no exception
+        assertIsSerializable(p);
+
+        // shortcircuted evaluation
+        ${Type}Predicates.and(FALSE, TestUtil.dummy(${Type}Predicate.class)).op($util.val(1));
+    }
+
+    /**
+     * Tests that {@link ${Type}Predicates#and(${Type}Predicate, ${Type}Predicate)} throws a
+     * {@link NullPointerException} when invoked with a left side <code>null</code>
+     * argument.
+     */
+    @Test(expected = NullPointerException.class)
+    public void andNPE() {
+        ${Type}Predicates.and(null, TRUE);
+    }
+
+    /**
+     * Tests that {@link ${Type}Predicates#and(${Type}Predicate, ${Type}Predicate)} throws a
+     * {@link NullPointerException} when invoked with a right side <code>null</code>
+     * argument.
+     */
+    @Test(expected = NullPointerException.class)
+    public void andNPE1() {
+        ${Type}Predicates.and(TRUE, null);
+    }
+    
+    /* Test greater then */
+    @Test
+    public void equalsTo() {
+        ${Type}Predicate f = ${Type}Predicates.equalsTo($util.val(5));
+        assertEquals($util.val(5), new EqualsTo${Type}Predicate($util.val(5)).getEqualsTo()${equalTest});
+        assertFalse(f.op($util.val(4)));
+        assertTrue(f.op($util.val(5)));
+        assertFalse(f.op($util.val(6)));
+
+        f.toString(); // no exceptions
+
+        TestUtil.assertIsSerializable(f);
+    }
+    
+    /**
+     * Tests {@link ${Type}Predicates#FALSE}.
+     */
+    @Test
+    public void falsePredicate() {
+        assertFalse(FALSE.op($util.val(2)));
+        assertFalse(FALSE.op(${object}.MIN_VALUE));
+        FALSE.toString(); // does not fail
+        assertIsSerializable(FALSE);
+        assertSame(FALSE, TestUtil.serializeAndUnserialize(FALSE));
+    }
+   
+    /* Test greater then */
+    @Test
+    public void greaterThen() {
+        ${Type}Predicate f = ${Type}Predicates.greaterThen($util.val(5));
+        assertEquals($util.val(5), new GreaterThen${Type}Predicate($util.val(5)).getGreaterThen()${equalTest});
+        assertFalse(f.op($util.val(4)));
+        assertFalse(f.op($util.val(5)));
+        assertTrue(f.op($util.val(6)));
+
+        f.toString(); // no exceptions
+
+        TestUtil.assertIsSerializable(f);
+    }
+
+    @Test
+    public void greaterThenOrEquals() {
+        ${Type}Predicate f = ${Type}Predicates.greaterThenOrEquals($util.val(5));
+        assertEquals($util.val(5), new GreaterThenOrEquals${Type}Predicate($util.val(5)).getGreaterThenOrEquals()${equalTest});
+        assertFalse(f.op($util.val(4)));
+        assertTrue(f.op($util.val(5)));
+        assertTrue(f.op($util.val(6)));
+
+        f.toString(); // no exceptions
+
+        TestUtil.assertIsSerializable(f);
+    }
+
+    /* Test greater then */
+    @Test
+    public void lessThen() {
+        ${Type}Predicate f = ${Type}Predicates.lessThen($util.val(5));
+        assertEquals($util.val(5), new LessThen${Type}Predicate($util.val(5)).getLessThen()${equalTest});
+        assertTrue(f.op($util.val(4)));
+        assertFalse(f.op($util.val(5)));
+        assertFalse(f.op($util.val(6)));
+
+        f.toString(); // no exceptions
+
+        TestUtil.assertIsSerializable(f);
+    }
+
+    /* Test greater then */
+    @Test
+    public void lessThenOrEquals() {
+        ${Type}Predicate f = ${Type}Predicates.lessThenOrEquals($util.val(5));
+        assertEquals($util.val(5), new LessThenOrEquals${Type}Predicate($util.val(5)).getLessThenOrEquals()${equalTest});
+        assertTrue(f.op($util.val(4)));
+        assertTrue(f.op($util.val(5)));
+        assertFalse(f.op($util.val(6)));
+
+        f.toString(); // no exceptions
+
+        TestUtil.assertIsSerializable(f);
+    }
+   
+   
+     /**
+     * Tests that {@link ${Type}Predicates#not(${Type}Predicate)} throws a
+     * {@link NullPointerException} when invoked with a <code>null</code> argument.
+     */
+    @Test(expected = NullPointerException.class)
+    public void notNPE() {
+        ${Type}Predicates.not(null);
+    }
+
+    /**
+     * Tests {@link ${Type}Predicates#TRUE}.
+     */
+    @Test
+    public void notPredicate() {
+        assertFalse(${Type}Predicates.not(TRUE).op($util.val(2)));
+        assertTrue(${Type}Predicates.not(FALSE).op($util.val(2)));
+        ${Type}Predicates.not(TRUE).toString(); // does not fail
+        assertIsSerializable(${Type}Predicates.not(TRUE));
+        assertSame(TRUE, ((Not${Type}Predicate) ${Type}Predicates.not(TRUE)).getPredicate());
+    }
+
+    /**
+     * Tests {@link ${Type}Predicates#or(${Type}Predicate, ${Type}Predicate)}.
+     */
+    @Test
+    public void or() {
+        assertTrue(${Type}Predicates.or(TRUE, TRUE).op($util.val(1)));
+        assertTrue(${Type}Predicates.or(TRUE, FALSE).op($util.val(1)));
+        assertTrue(${Type}Predicates.or(FALSE, TRUE).op($util.val(1)));
+        assertFalse(${Type}Predicates.or(FALSE, FALSE).op($util.val(1)));
+
+        ${Type}Predicates.Or${Type}Predicate p = new ${Type}Predicates.Or${Type}Predicate(FALSE, TRUE);
+        assertSame(p.getLeft(), FALSE);
+        assertSame(p.getRight(), TRUE);
+        p.toString(); // no exception
+        assertIsSerializable(p);
+
+        // shortcircuted evaluation
+        ${Type}Predicates.or(TRUE, TestUtil.dummy(${Type}Predicate.class)).op($util.val(1));
+    }
+
+    /**
+     * Tests that {@link ${Type}Predicates#or(${Type}Predicate, ${Type}Predicate)} throws a
+     * {@link NullPointerException} when invoked with a left side <code>null</code>
+     * argument.
+     */
+    @Test(expected = NullPointerException.class)
+    public void orNPE() {
+        ${Type}Predicates.or(null, TRUE);
+    }
+
+    /**
+     * Tests that {@link ${Type}Predicates#or(${Type}Predicate, ${Type}Predicate)} throws a
+     * {@link NullPointerException} when invoked with a right side <code>null</code>
+     * argument.
+     */
+    @Test(expected = NullPointerException.class)
+    public void orNPE1() {
+        ${Type}Predicates.or(TRUE, null);
+    }
+   
+    
+   /**
+     * Tests {@link ${Type}Predicates#TRUE}.
+     */
+    @Test
+    public void truePredicate() {
+        assertTrue(TRUE.op($util.val(2)));
+        assertTrue(TRUE.op(${object}.MIN_VALUE));
+        TRUE.toString(); // does not fail
+        assertIsSerializable(TRUE);
+        assertSame(TRUE, TestUtil.serializeAndUnserialize(TRUE));
+    }
+}

@@ -1,0 +1,28 @@
+import static org.junit.Assert.*;
+
+import static org.codehaus.cake.test.util.TestUtil.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import org.codehaus.cake.ops.Ops.DoubleReducer;
+import org.codehaus.cake.test.util.TestUtil;
+import org.junit.Test;
+import org.codehaus.cake.ops.Ops.*;
+import org.codehaus.cake.test.util.TestUtil;
+import org.junit.Test;
+import java.math.*;
+/**
+ * Various tests for {@link ${Type}Ops}.
+ *
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ */
+public final class ${this} {
+
+#parse("ops/TYPEops/absTest.include")
+#parse("ops/TYPEops/admsTest.include")  
+#if($isPrimitive)
+#parse("ops/TYPEops/comparatorsTest.include")
+#parse("ops/TYPEops/maxminTest.include")
+#end 
+}

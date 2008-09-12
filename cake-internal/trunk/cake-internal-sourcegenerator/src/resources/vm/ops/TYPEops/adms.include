@@ -1,0 +1,154 @@
+
+     final static ${Type}AddReducer ADD_REDUCER = new ${Type}AddReducer();
+
+     final static ${Type}SubtractReducer SUBTRACT_REDUCER = new ${Type}SubtractReducer();
+    
+     final static ${Type}DivideReducer DIVIDE_REDUCER = new ${Type}DivideReducer();
+    
+     final static ${Type}MultiplyReducer MULTIPLY_REDUCER = new ${Type}MultiplyReducer();
+
+        public static $util.op("Reducer") add() {
+        return ADD_REDUCER;
+    }
+    
+    public static $util.op("Op") add($type add) {
+        return new ${Type}AddOp(add);
+    }
+    
+    public static $util.op("Reducer") divide() {
+        return DIVIDE_REDUCER;
+    }
+    
+    public static $util.op("Op") divide($type divide) {
+        return new ${Type}DivideOp(divide);
+    }
+    
+    public static $util.op("Reducer") multiply() {
+        return MULTIPLY_REDUCER;
+    }
+    
+    public static $util.op("Op") multiply($type multiply) {
+        return new ${Type}MultiplyOp(multiply);
+    }
+    
+    public static $util.op("Reducer") subtract() {
+        return SUBTRACT_REDUCER;
+    }
+    
+    public static $util.op("Op") subtract($type substract) {
+        return new ${Type}SubtractOp(substract);
+    }
+
+    static final class ${Type}SubtractReducer implements $util.op("Reducer"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -8583260658972887816L;
+
+        public $type op($type a, $type b) {
+            return $util.subtract("a","b");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return SUBTRACT_REDUCER;
+        }
+    }
+    
+    static final class ${Type}AddReducer implements $util.op("Reducer"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -830758681673022439L;
+
+        public $type op($type a, $type b) {
+            return $util.add("a","b");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return ADD_REDUCER;
+        }
+    }
+    
+    
+    static final class ${Type}MultiplyReducer implements $util.op("Reducer"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -130758681673022439L;
+
+        public $type op($type a, $type b) {
+            return $util.multiply("a","b");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return MULTIPLY_REDUCER;
+        }
+    }
+    
+    static final class ${Type}DivideReducer implements $util.op("Reducer"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -330758681673022439L;
+
+        public $type op($type a, $type b) {
+            return $util.divide("a","b");
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return DIVIDE_REDUCER;
+        }
+    }
+         static final class ${Type}AddOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -6604604690824553900L;
+
+        private final $type add;
+
+        public ${Type}AddOp($type add) {
+            this.add = add;
+        }
+
+        public $type op($type a) {
+            return $util.add("a","add");
+        }
+    }
+    static final class ${Type}SubtractOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -23423423410L;
+
+        private final $type subtract;
+
+        public ${Type}SubtractOp($type subtract) {
+            this.subtract = subtract;
+        }
+
+        public $type op($type a) {
+            return $util.subtract("a","subtract");
+        }
+    }
+    static final class ${Type}DivideOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 661378303438906777L;
+
+        private final $type divide;
+
+        public ${Type}DivideOp($type divide) {
+            this.divide = divide;
+        }
+
+        public $type op($type a) {
+            return $util.divide("a","divide");
+        }
+    }
+
+    static final class ${Type}MultiplyOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 6099641660816235381L;
+
+        private final $type multiply;
+
+        public ${Type}MultiplyOp($type multiply) {
+            this.multiply = multiply;
+        }
+
+        public $type op($type a) {
+            return $util.multiply("a","multiply");
+        }
+    }

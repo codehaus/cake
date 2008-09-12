@@ -1,0 +1,90 @@
+import org.codehaus.cake.math.*;
+import org.codehaus.cake.math.matrix.*;
+import org.codehaus.cake.math.matrix.MatrixOps.*;
+
+import org.codehaus.cake.ops.*;
+import org.codehaus.cake.ops.Ops.*;
+#if($isObject)
+import static org.codehaus.cake.ops.Predicates.*;
+#else
+import static org.codehaus.cake.ops.${Type}Predicates.*;
+#end   
+import org.codehaus.cake.forkjoin.*;
+
+/**
+ * An implementation of an {@link ${Type}Matrix}.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
+public abstract class $this extends Abstract${Type}Matrix {
+
+#if($isObject)
+    private final ParallelArray<$type> areal;
+    private final ParallelArrayWithFilter<$type> a;
+#else
+	private final Parallel${Type}Array areal;
+	private final Parallel${Type}ArrayWithFilter a;
+#end    
+    private final $type[] array;
+
+    /**
+     * Size of the matrix.
+     */
+    private final int n;
+    private final int k1; //left
+    private final int k2; //right
+
+    
+    public ${this}(ForkJoinExecutor executor,final int n,final int k1,final int k2) {
+            super(n, n);
+        this.n = n;
+        int size=n * (1 + k1 + k2);
+#if($isObject)
+        areal = ParallelArray.create(n * (1 + k1 + k2), ${type}.class , executor);
+#else
+	    areal = Parallel${Type}Array.create(n * (1 + k1 + k2), executor);
+#end 
+        a = areal.withIndexedFilter(new $util.op("IntAnd*Predicate")() {
+            @Override
+            public boolean op(int a, $type b) {
+                int row = a / n + 1;
+                int column = a % n + 1;
+                System.out.println(row + ", " + column);
+                return (column - k2 <= row && row <= column + k1);
+            }
+        });
+        array = areal.getArray();
+        this.k1=k1;
+        this.k2=k2;
+    }
+    
+#parse($common)
+    
+   /**
+     * @return the number of lower diagonals
+     */
+    public int getLeftBandwidth() {
+        return k1;
+    }
+
+    /**
+     * Returns the number of upper diagonals
+     */
+    public int getRightBandwidth() {
+        return k2;
+    }
+	$type getFast(int row, int column) {
+	if (column - k2 <= row && row <= column + k1) {
+		
+	
+	}
+    return $util.val(0);
+	}
+
+      
+     @Override
+    public $this copy() {
+        return this;
+    }
+}

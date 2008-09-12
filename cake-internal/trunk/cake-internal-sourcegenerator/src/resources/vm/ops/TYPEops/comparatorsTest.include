@@ -1,0 +1,50 @@
+   /**
+     * Tests {@link {Type}Ops#COMPARATOR}.
+     */
+    @Test
+    public void comparator() {
+        assertEquals(0, ${Type}Ops.COMPARATOR.compare($util.val(1), $util.val(1)));
+#if($isReal) 
+        assertEquals(0, ${Type}Ops.COMPARATOR.compare(${object}.NaN, ${object}.NaN));
+#end
+        assertTrue(${Type}Ops.COMPARATOR.compare($util.val(2), $util.val(1)) > 0);
+        assertTrue(${Type}Ops.COMPARATOR.compare($util.val(1), $util.val(2)) < 0);
+        ${Type}Ops.COMPARATOR.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${Type}Ops.COMPARATOR);
+    }
+    
+   /**
+     * Tests {@link {Type}Ops#REVERSE_COMPARATOR}.
+     */
+    @Test
+    public void comparatorReverse() {
+        assertEquals(0, ${Type}Ops.REVERSE_COMPARATOR.compare($util.val(1), $util.val(1)));
+#if($isReal)
+        assertEquals(0, ${Type}Ops.REVERSE_COMPARATOR.compare(${object}.NaN, ${object}.NaN));
+#end
+        assertTrue(${Type}Ops.REVERSE_COMPARATOR.compare($util.val(2), $util.val(1)) < 0);
+        assertTrue(${Type}Ops.REVERSE_COMPARATOR.compare($util.val(1), $util.val(2)) > 0);
+        ${Type}Ops.REVERSE_COMPARATOR.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${Type}Ops.REVERSE_COMPARATOR);
+    }
+    
+    /**
+     * Tests {@link ${Type}Ops#reverseOrder}.
+     */
+    @Test
+    public void reverseOrder() {
+        assertEquals(0, ${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR).compare($util.val(1), $util.val(1)));
+#if($isReal)
+        assertEquals(0, ${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR).compare(${object}.NaN, ${object}.NaN));
+#end
+        assertTrue(${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR).compare($util.val(2), $util.val(1)) < 0);
+        assertTrue(${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR).compare($util.val(1), $util.val(2)) > 0);
+        ${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR).toString(); // does not fail
+        assertIsSerializable(${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR));
+        assertTrue(serializeAndUnserialize(${Type}Ops.reverseOrder(${Type}Ops.COMPARATOR)).compare($util.val(2), $util.val(1)) < 0);
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void reverseOrder_NPE() {
+        ${Type}Ops.reverseOrder(null);
+    }

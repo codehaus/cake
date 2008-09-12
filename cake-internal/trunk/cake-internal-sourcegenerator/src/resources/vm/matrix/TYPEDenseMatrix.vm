@@ -1,0 +1,108 @@
+import org.codehaus.cake.math.*;
+import org.codehaus.cake.math.matrix.*;
+import org.codehaus.cake.math.matrix.MatrixOps.*;
+
+import org.codehaus.cake.ops.*;
+import org.codehaus.cake.ops.Ops.*;
+#if($isObject)
+import static org.codehaus.cake.ops.Predicates.*;
+#else
+import static org.codehaus.cake.ops.${Type}Predicates.*;
+#end   
+import org.codehaus.cake.forkjoin.*;
+
+/**
+ * An implementation of an {@link ${Type}Matrix}.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
+public class $this extends Abstract${Type}Matrix {
+
+#if($isObject)
+    private final ParallelArray<$type> a;
+#else
+	private final Parallel${Type}Array a;
+#end    
+    private final $type[] array;
+
+    /**
+     * Size of the matrix.
+     */
+    private final int m;
+    private final int n;
+    
+    public ${this}(ForkJoinExecutor executor, int m, int n) {
+            super(m, n);
+        this.m = m;
+        this.n = n;
+#if($isObject)
+        a = ParallelArray.create(n * m, ${type}.class ,  executor);
+#else
+	    a = Parallel${Type}Array.create(n * m, executor);
+#end 
+        array = a.getArray();
+    }
+    
+#parse($common)
+    
+	$type getFast(int row, int column) {
+   	   return array[index(row,column)];
+	}
+
+    public boolean hasAllEqualElements(final ${Type}Matrix other) {
+        checkSameDimensions(other);
+        if (other instanceof $this) {
+            $this m = ($this) other;
+            return a.hasAllEqualElements(m.a);
+        } else {
+            return a.withIndexedFilter(new $util.op("IntAnd*Predicate")() {
+                @Override
+                public boolean op(int a, $type b) {
+                   int column = a % n;
+                   int row = a / n;
+                   return $util.neq("b" ,"other.get(row, column)");
+                }
+            }).isEmpty();
+        }
+    }
+
+    public $this replaceWithMappedIndex(final $util.op("IntAndIntTo*") op) {
+        a.replaceWithMappedIndex(new $util.op("IntTo*")() {
+            @Override
+            public $type op(int a) {
+                int column = a % n;
+                int row = a / n;
+                return op.op(row, column);
+            }
+        });
+        return this;
+    }
+
+    public $this replaceWithMappedIndex(final $util.op("IntAndIntAnd*To*") op) {
+        a.replaceWithMappedIndex(new $util.op("IntAnd*To*")() {
+            @Override
+            public $type op(int a, $type b) {
+                int column = a % n;
+                int row = a / n;
+                return op.op(row, column,b );
+            }
+        });
+        return this;
+    }
+
+    void setFast(int row, int column, $type value) {
+        array[index(row,column)]=value;
+    }    
+    private int index(int m, int n) {
+        return (n - 1) + (m - 1) * this.n;
+    }
+     @Override
+    public $this copy() {
+        return this;
+    }
+    
+    public $type trace() {
+        return withDiagonal().sum();
+    }
+}

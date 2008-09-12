@@ -1,0 +1,172 @@
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
+
+import java.util.*;
+import org.codehaus.cake.test.util.TestUtil;
+import org.junit.Test;
+/**
+ * Various tests for {@link ${Type}Attribute}.
+ *
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ */
+public final class ${this} extends AtrStubs {
+    static final ${Type}Attribute ATR0 = new ${Type}Attribute("a0",$util.val(0)) {};
+    static final ${Type}Attribute ATR1 = new ${Type}Attribute("a1",$util.val(1)) {};
+    static final ${Type}Attribute ATR100 = new ${Type}Attribute("a100", $util.val(100)) {};
+
+    static final ${Type}Attribute NON_NEGATIVE = new ${Type}Attribute("a50", $util.val(50)) {
+        @Override
+        public boolean isValid($type value) {
+            return value >= $util.val(5);
+        }
+    };
+
+    @Test
+    public void _constructors() {
+        assertEquals($util.val(0), new ${Type}Attribute() {}.getDefault().${type}Value()${equalTest});
+        assertEquals($util.val(0), new ${Type}Attribute("a") {}.getDefaultValue()${equalTest});
+        assertFalse(new ${Type}Attribute() {}.getName().equals(new ${Type}Attribute() {}.getName()));
+        assertFalse(new ${Type}Attribute($util.val(3)) {}.getName().equals(new ${Type}Attribute($util.val(3)) {}.getName()));
+        assertTrue(new ${Type}Attribute("a") {}.getName().equals(new ${Type}Attribute("a") {}.getName()));
+        assertEquals($util.val(3), new ${Type}Attribute($util.val(3)) {}.getDefaultValue()${equalTest});
+        assertEquals($util.val(0), ATR0.getDefaultValue()${equalTest});
+        assertEquals($util.val(100), ATR100.getDefaultValue()${equalTest});
+        assertEquals($util.val(100), ATR100.getDefault().${type}Value()${equalTest});
+        assertEquals("a100", ATR100.getName());
+        
+        assertSame(${object}.TYPE, ATR100.getType());
+    }
+    
+    @Test
+    public void checkValid() {
+        ATR100.checkValid(${object}.MIN_VALUE);
+        ATR100.checkValid(${object}.MAX_VALUE);
+        ATR100.checkValid(new ${object}(${object}.MIN_VALUE));
+        ATR100.checkValid(new ${object}(${object}.MIN_VALUE));
+
+        NON_NEGATIVE.checkValid($util.val(5));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void checkValidIAE() {
+        NON_NEGATIVE.checkValid($util.val(4));
+    }
+    
+    @Test
+    public void comparator() {
+        WithAttributes wa1 = withAtr(ATR1.singleton($util.val(1)));
+        WithAttributes wa2 = withAtr(ATR1.singleton($util.val(2)));
+        WithAttributes wa22 = withAtr(ATR1.singleton($util.val(2)));
+        WithAttributes wa3 = withAtr(ATR1.singleton($util.val(3)));
+        assertEquals(0, ATR1.compare(wa2, wa2)${equalTest});
+        assertEquals(0, ATR1.compare(wa2, wa22)${equalTest});
+        assertEquals(0, ATR1.compare(wa22, wa2)${equalTest});
+        assertTrue(ATR1.compare(wa1, wa2) < 0);
+        assertTrue(ATR1.compare(wa2, wa1) > 0);
+        assertTrue(ATR1.compare(wa1, wa3) < 0);
+        assertTrue(ATR1.compare(wa3, wa2) > 0);
+        assertTrue(ATR1.compare(wa2, wa3) < 0);
+        
+        ArrayList<WithAttributes> al = new ArrayList<WithAttributes>();
+        al.add(wa2);
+        al.add(wa1);
+        Collections.sort(al, ATR1);
+        assertSame(wa1, al.get(0));
+        assertSame(wa2, al.get(1));
+    }
+    
+    @Test
+    public void fromString() {
+#if($type=="char")
+        assertEquals('f', ATR100.fromString("f"));
+        assertEquals('F', ATR100.fromString("F"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void fromStringIAE() {
+        ATR100.fromString("foo");
+#else
+        assertEquals($util.val(-1), ATR100.fromString(Integer.valueOf(-1).toString())${equalTest});
+        assertEquals(${object}.MIN_VALUE, ATR100.fromString(new ${object}(${object}.MIN_VALUE).toString())${equalTest});
+        assertEquals(${object}.MAX_VALUE, ATR100.fromString(new ${object}(${object}.MAX_VALUE).toString())${equalTest});
+#end
+    }
+
+    @Test
+    public void get() {
+        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        AttributeMap am1 = Attributes.singleton(ATR100, $util.val(-1));
+        AttributeMap am111 = Attributes.singleton(ATR100, $util.val(111));
+        AttributeMap ammax = Attributes.singleton(ATR100, ${object}.MAX_VALUE);
+
+        assertEquals($util.val(100), ATR100.get(withAtr(am))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1))${equalTest});
+        assertEquals($util.val(111), ATR100.get(withAtr(am111))${equalTest});
+        assertEquals(${object}.MAX_VALUE, ATR100.get(withAtr(ammax))${equalTest});
+
+        assertEquals($util.val(10), ATR100.get(withAtr(am), $util.val(10))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1), $util.val(10))${equalTest});
+        assertEquals($util.val(111), ATR100.get(withAtr(am111), $util.val(10))${equalTest});
+        assertEquals(${object}.MAX_VALUE, ATR100.get(withAtr(ammax), $util.val(10))${equalTest});
+
+        assertEquals($util.val(-1), NON_NEGATIVE.get(withAtr(am), $util.val(-1))${equalTest});
+
+        assertEquals($util.val(100), ATR100.get(withAtr(am))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1))${equalTest});
+        assertEquals($util.val(10), ATR100.get(withAtr(am), $util.val(10))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1), $util.val(10))${equalTest});
+
+    }
+
+    @Test
+    public void isValid() {
+        assertTrue(ATR100.isValid(${object}.MIN_VALUE));
+        assertTrue(ATR100.isValid(${object}.MAX_VALUE));
+        assertTrue(ATR100.isValid(${object}.valueOf(${object}.MIN_VALUE)));
+        assertTrue(ATR100.isValid(${object}.valueOf(${object}.MAX_VALUE)));
+
+        assertTrue(NON_NEGATIVE.isValid($util.val(5)));
+        assertFalse(NON_NEGATIVE.isValid($util.val(4)));
+    }
+
+    @Test
+    public void set() {
+        AttributeMap am = new DefaultAttributeMap();
+        ATR100.set(am, $util.val(10));
+        assertEquals($util.val(10), am.get(ATR100)${equalTest});
+        
+        ATR100.set(withAtr(am), $util.val(-111));
+        assertEquals($util.val(-111), am.get(ATR100)${equalTest});
+        
+        ATR100.set(am, ${object}.valueOf($util.val(111)));
+        assertEquals($util.val(111), am.get(ATR100)${equalTest});
+        
+        ATR100.set(am, ${object}.MAX_VALUE);
+        assertEquals(${object}.MAX_VALUE, am.get(ATR100)${equalTest});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setIAE() {
+        NON_NEGATIVE.set(new DefaultAttributeMap(), $util.val(2));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void setNPE() {
+        ATR100.set((AttributeMap) null, $util.val(1));
+    }
+
+    @Test
+    public void toSingleton() {
+        assertEquals($util.val(-10), ATR100.singleton($util.val(-10)).get(ATR100)${equalTest});
+        assertEquals($util.val(10), ATR100.singleton($util.val(10)).get(ATR100)${equalTest});
+        assertEquals(${object}.MAX_VALUE, ATR100.singleton(${object}.MAX_VALUE).get(ATR100)${equalTest});
+
+        assertEquals($util.val(10), NON_NEGATIVE.singleton($util.val(10)).get(NON_NEGATIVE)${equalTest});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void toSingletonIAE() {
+        NON_NEGATIVE.singleton($util.val(3));
+    }
+}

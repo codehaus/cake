@@ -1,0 +1,166 @@
+import org.codehaus.cake.math.*;
+import org.codehaus.cake.math.matrix.*;
+import org.codehaus.cake.math.matrix.MatrixOps.*;
+
+import org.codehaus.cake.ops.*;
+import org.codehaus.cake.ops.Ops.*;
+#if($isObject)
+import static org.codehaus.cake.ops.Predicates.*;
+#else
+import static org.codehaus.cake.ops.${Type}Predicates.*;
+#end   
+import org.codehaus.cake.forkjoin.*;
+
+/**
+ * An implementation of an {@link ${Type}Matrix}.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
+public class $this extends Abstract${Type}Matrix {
+
+#if($isObject)
+    private final ParallelArray<$type> a;
+#else
+	private final Parallel${Type}Array a;
+#end    
+    private final $type[] array;
+
+    /**
+     * Size of the matrix.
+     */
+    private final int n;
+    private final int diagIndex;
+    private final int superIndex;
+
+    
+    public ${this}(ForkJoinExecutor executor, int n) {
+            super(n, n);
+        this.n = n;
+#if($isObject)
+        a = ParallelArray.create(n * 3 - 2, ${type}.class ,  executor);
+#else
+	    a = Parallel${Type}Array.create(n * 3 - 2, executor);
+#end 
+        array = a.getArray();
+        diagIndex = n - 1;
+        superIndex = 2 * n - 1;
+    }
+    
+#parse($common)
+    
+	$type getFast(int row, int column) {
+	    if (row == column) {
+            return array[this.n - 2 + column];
+        } else if (row == column - 1) { // super diagonal
+            return array[2 * this.n + this.n + row - 2];
+        } else if (row == column + 1) {// sub diagonal
+            return array[column - 1];
+        }
+        return $util.val(0);
+	}
+
+    public boolean hasAllEqualElements(final ${Type}Matrix other) {
+        checkSameDimensions(other);
+        if (other instanceof $this) {
+            $this m = ($this) other;
+            return a.hasAllEqualElements(m.a);
+        } else {
+            return a.withIndexedFilter(new $util.op("IntAnd*Predicate")() {
+                @Override
+                public boolean op(int a, $type b) {
+                    if (a < diagIndex) {
+                        return $util.neq("b" ,"other.get(a + 2, a + 1)");
+                    } else if (a < superIndex) {
+                        return $util.neq("b" , "other.get(a - diagIndex + 1, a - diagIndex + 1)");
+                    } else {
+                        return $util.neq("b" , "other.get(a - superIndex + 1, a - superIndex + 2)");
+                    }
+                }
+            }).isEmpty();
+        }
+    }
+
+    public $this replaceWithMappedIndex(final $util.op("IntAndIntTo*") op) {
+        a.replaceWithMappedIndex(new $util.op("IntTo*")() {
+            @Override
+            public $type op(int a) {
+                if (a < diagIndex) {
+                    return op.op(a + 2, a + 1);
+                } else if (a < superIndex) {
+                    return op.op(a - diagIndex + 1, a - diagIndex + 1);
+                } else {
+                    return op.op(a - superIndex + 1, a - superIndex + 2);
+                }
+            }
+        });
+        return this;
+    }
+
+    public $this replaceWithMappedIndex(final $util.op("IntAndIntAnd*To*") op) {
+        a.replaceWithMappedIndex(new $util.op("IntAnd*To*")() {
+            @Override
+            public $type op(int a, $type b) {
+                if (a < diagIndex) {
+                    return op.op(a + 2, a + 1, b);
+                } else if (a < superIndex) {
+                    return op.op(a - diagIndex + 1, a - diagIndex + 1, b);
+                } else {
+                    return op.op(a - superIndex + 1, a - superIndex + 2, b);
+                }
+            }
+        });
+        return this;
+    }
+
+    void setFast(int row, int column, $type value) {
+        if (row == column) {
+            array[this.n - 2 + column]=value;
+        } else if (row == column - 1) { // super diagonal
+            array[2 * this.n + this.n + row - 2]=value;
+        } else if (row == column + 1) {// sub diagonal
+            array[column - 1]=value;
+        }
+    }    
+
+
+    @Override
+    public $type trace() {
+        return a.withBounds(n - 1, n + n - 2).reduce(${Type}Ops.add(), $util.val(0));
+    }
+    
+     @Override
+    public $this copy() {
+        return this;
+    }
+
+    @Override
+    public ${Type}Matrix withBounds(int row, int column, int height, int width) {
+        return null;
+    }
+
+    @Override
+    public ${Type}Vector withColumn(int column) {
+        return null;
+    }
+
+    @Override
+    public ${Type}Vector withDiagonal() {
+        return null;
+    }
+
+    @Override
+    public ${Type}Matrix withMapping($util.op("Op") op) {
+        return null;
+    }
+
+    @Override
+    public ${Type}Vector withRow(int row) {
+        return null;
+    }
+
+    @Override
+    public ${Type}Matrix withTransposed() {
+        return null;
+    }
+}

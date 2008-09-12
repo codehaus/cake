@@ -1,0 +1,89 @@
+    /**
+     * Returns the $type value to which this attribute-map maps the specified key. Returns the value
+     * returned by the specified attributes {@link ${Type}Attribute#getDefaultValue()} method if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>{@link ${Type}Attribute#getDefaultValue()}</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>{@link ${Type}Attribute#getDefaultValue()}</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>{@link ${Type}Attribute#getDefaultValue()}</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the associated value is of another type then a $type (or $object)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
+    $type get(${Type}Attribute attribute);
+
+    /**
+     * Returns the $type value to which this attribute-map maps the specified key. Returns the specified 
+     * defaultValue if this
+     * map contains no mapping for the specified attribute. A return value of
+     * <tt>defaultValue</tt> does not <i>necessarily</i> indicate that
+     * this map contains no mapping for the key; it's also possible that this map
+     * explicitly maps the key to <tt>defaultValue</tt>. The
+     * <tt>{@link #contains(Attribute)}</tt> operation may be used to distinguish these two cases.
+     * 
+     * @param attribute
+     *            attribute whose associated value is to be returned.
+     * @param defaultValue
+     *            the default value to return if no mapping for the specified attribute exist
+     * @return the value to which this map maps the specified attribute, or
+     *         <tt>defaultValue</tt> if the map contains no mapping for
+     *         this attribute.
+     * @throws ClassCastException
+     *             if the associated value is of another type then a $type (or $object)
+     * @throws NullPointerException
+     *             if the specified attribute is <tt>null</tt>.
+     * @see #contains(Attribute)
+     */
+    $type get(${Type}Attribute attribute, $type defaultValue);
+
+    /**
+     * Associates the specified $type value with the specified key in this map
+     * (optional operation). If the map previously contained a mapping for this
+     * key, the old value is replaced by the specified value.
+     *
+     * @param attribute
+     *            key with which the specified value is to be associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link ${Type}Attribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map. For
+     *             example, for a read-only attribute-map
+     * @throws IllegalArgumentException
+     *             if some aspect of this key or value prevents it from being stored in
+     *             this map.
+     * @throws NullPointerException
+     *             if the key is <tt>null</tt>
+     */
+    $type put(${Type}Attribute attribute, $type value);
+
+    /**
+     * Removes the mapping for an attribute from this map if it is present
+     * (optional operation).
+     * <p>The map will not contain a mapping for the specified attribute once the
+     * call returns. 
+     *     
+     * @param attribute
+     *            the attribute to be removed
+     * @return the previous value associated with <tt>attribute</tt>, or
+     *         <tt>{@link ${Type}Attribute#getDefaultValue()}</tt> if there was no mapping for <tt>attribute</tt>.
+     *         (A default return value can also indicate that the map
+     *         previously associated the default value with <tt>attribute</tt>)
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     *         is not supported by this map
+     * @throws NullPointerException if the specified attribute is null
+     */
+    $type remove(${Type}Attribute attribute);
+
+    

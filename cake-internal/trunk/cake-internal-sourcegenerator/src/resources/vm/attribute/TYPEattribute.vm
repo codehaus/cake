@@ -1,0 +1,301 @@
+/**
+ * An implementation of an {@link Attribute} mapping to $a $type. This implementation adds a number of
+ * methods that works on primitive ${type}s instead of their object counterpart.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${Type}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
+public abstract class ${Type}Attribute extends Attribute<$object> implements
+         Comparator<WithAttributes>, Serializable {
+    
+    /** serialVersionUID. */
+    private static final long serialVersionUID = 1L;
+         
+    /** The default value of this attribute. */
+    private final transient $type defaultValue;
+
+    /**
+     * Creates a new ${Type}Attribute with a generated name and a default value of <tt>$util.valNoCast(0)</tt>.
+     * 
+     * @throws IllegalArgumentException
+     *             if $util.valNoCast(0) is not a valid value according to {@link #checkValid($type)}
+     */
+    public ${Type}Attribute() {
+        this($util.val(0));
+    }
+
+    /**
+     * Creates a new ${Type}Attribute with a generated name.
+     * 
+     * @param defaultValue
+     *            the default value of this attribute
+     * @throws IllegalArgumentException
+     *             if the specified default value is not a valid value according to
+     *             {@link #checkValid($type)}
+     */
+    public ${Type}Attribute($type defaultValue) {
+        super(${object}.TYPE, defaultValue);
+        this.defaultValue = defaultValue;
+    }
+
+    /**
+     * Creates a new ${Type}Attribute with a default value of <tt>$util.valNoCast(0)</tt>.
+     * 
+     * @param name
+     *            the name of the attribute
+     * @throws NullPointerException
+     *             if the specified name is <code>null</code>
+     * @throws IllegalArgumentException
+     *             if $util.valNoCast(0) is not a valid value according to {@link #checkValid($type)}
+     */
+    public ${Type}Attribute(String name) {
+        this(name, $util.val(0));
+    }
+
+    /**
+     * Creates a new ${Type}Attribute.
+     * 
+     * @param name
+     *            the name of the attribute
+     * @param defaultValue
+     *            the default value of the attribute
+     * @throws NullPointerException
+     *             if the specified name is <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the specified default value is not a valid value according to
+     *             {@link #checkValid($type)}
+     */
+    public ${Type}Attribute(String name, $type defaultValue) {
+        super(name, ${object}.TYPE, defaultValue);
+        this.defaultValue = defaultValue;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public final void checkValid(${object} o) {
+        checkValid(o.${type}Value());
+    }
+    
+#if($isReal)
+    /**
+     * Analogous to {@link #checkValid($object)} except taking a primitive $type.
+     * <p>
+     * The default implementation fails if the specified value is either
+     * {@link ${object}#NEGATIVE_INFINITY}, {@link ${object}#POSITIVE_INFINITY} or {@link ${object}#NaN}.
+     * 
+     * @param value
+     *            the value to check
+     * @throws IllegalArgumentException
+     *             if the specified value is not valid
+     */
+    public void checkValid($type value) {
+        if (isNaNInfinity(value)) {
+            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
+                    + ", type = " + getClass() + ", value = " + value + "]");
+        }
+    }
+#else        
+    /**
+     * Analogous to {@link #checkValid($object)} except taking a primitive $type.
+     * <p>
+     * The default implementation accept all values.
+     * @param value
+     *            the value to check
+     * @throws IllegalArgumentException
+     *             if the specified value is not valid
+     */
+    public void checkValid($type value) { }
+#end    
+    
+    /** {@inheritDoc} */
+    public int compare(WithAttributes w1, WithAttributes w2) {
+        ${type} thisVal = get(w1);
+        ${type} anotherVal = get(w2);
+#if($type=="boolean")
+        //fix this to something smarter
+        return (thisVal && !anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+#else
+        return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+#end
+    }
+    
+    
+    /**
+     * Creates a value instance of this attribute from the specified string.
+     * 
+     * @param str
+     *            the string to create the value from.
+     * @return a value instance from the specified string
+     * @throws IllegalArgumentException
+     *             if a valid value could not be created from the string.
+     */
+    public ${type} fromString(String str) {
+#if($type=="char")
+        if (str.length() != 1) {
+            throw new IllegalArgumentException();
+        }
+        return str.charAt(0);
+#else
+        return ${object}.parse${Type}(str);
+#end
+    }
+
+    /**
+     * Returns the default primitive value of this attribute. This is equivalent to calling
+     * {@link #getDefault()}, but returning a primitive int instead.
+     * 
+     * @return the default value of this attribute
+     */
+    public ${type} getDefaultValue() {
+        return defaultValue;
+    }
+    
+    /**
+     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
+     * this attribute from the map. If this attribute is not set in the map, the value of
+     * {@link #getDefaultValue()} will be returned instead.
+     * 
+     * @param withAttributes
+     *            an object containing an AttributeMap
+     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
+     *         {@link #getDefaultValue()}
+     */
+    public $type get(WithAttributes withAttributes) {
+        return withAttributes.getAttributes().get(this);
+    }
+
+    /**
+     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>$type</tt>.
+     * 
+     * @param withAttributes
+     *            an object containing an AttributeMap
+     * @param defaultValue
+     *            the default value to return if this attribute is not present in the map
+     * @return the value of this attribute if this attribute is present in the map. Otherwise the
+     *         specified default value
+     */
+    public $type get(WithAttributes withAttributes, $type defaultValue) {
+        return withAttributes.getAttributes().get(this, defaultValue);
+    }
+
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive $type as
+     * parameter.
+     * <p>
+     * The default version returns true for all parameters
+     * 
+     * @param value
+     *            the value to check
+     * @return whether or not the value is valid
+     */
+    public boolean isValid($type value) {
+        try {
+            checkValid(value);
+            return true; // all values are accepted by default.
+        } catch (IllegalArgumentException e) {
+            return false;
+        }    
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final boolean isValid($object value) {
+        return isValid(value.${type}Value());
+    }
+
+    /**
+     * Sets the specified value in the specified attribute map.
+     * 
+     * @param attributes
+     *            the attribute map to set the value in.
+     * @param value
+     *            the value that should be set
+     * @throws IllegalArgumentException
+     *             if the specified value is not valid accordingly to {@link #checkValid($type)}
+     */
+    public void set(AttributeMap attributes, $type value) {
+        if (attributes == null) {
+            throw new NullPointerException("attributes is null");
+        }
+        checkValid(value);
+        attributes.put(this, value);
+    }
+
+    /**
+     * Sets the specified value in the specified attribute holder (WithAttributes).
+     * 
+     * @param withAttributes
+     *            the the attribute holder to set the value in.
+     * @param value
+     *            the value that should be set
+     * @throws IllegalArgumentException
+     *             if the specified value is not valid accordingly to {@link #checkValid($type)}
+     */
+    public void set(WithAttributes withAttributes, $type value) {
+        set(withAttributes.getAttributes(), value);
+    }
+
+    /**
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
+     * returned map is immutable.
+     * 
+     * @param value
+     *            the value to create the singleton from
+     * @return an AttributeMap containing only this attribute mapping to the specified value
+     */
+    public AttributeMap singleton($type value) {
+        return super.singleton(value);
+    }
+#if($isReal)    
+  
+    /**
+     * Returns <code>true</code> if the specified value is either {@link $object#NEGATIVE_INFINITY},
+     * {@link $object#POSITIVE_INFINITY} or {@link $object#NaN}. Otherwise, false
+     * 
+     * @param value
+     *            the value to check
+     * @return whether or not the specified value is Infinity or NaN
+     */
+    protected boolean isNaNInfinity($type value) {
+        return ${object}.isNaN(value) || ${object}.isInfinite(value);
+    }
+#end
+#if($type=="boolean")
+
+    /**
+     * @param attributes
+     *            the map with attribute
+     * @return true if the attribute is mapped to true in specified map
+     */
+    public boolean isTrue(AttributeMap attributes) {
+        return attributes.get(this);
+    }
+
+    /**
+     * @param withAttributes
+     *            the object containing the attributes
+     * @return true if the attribute is mapped to true, otherwise false
+     */
+    public boolean isTrue(WithAttributes withAttributes) {
+        return isTrue(withAttributes.getAttributes());
+    }
+
+    /**
+     * @param attributes
+     *            the map with attribute
+     * @return true if the attribute is mapped to false in specified map
+     */
+    public boolean isFalse(AttributeMap attributes) {
+        return !attributes.get(this);
+    }
+
+    /**
+     * @param withAttributes
+     *            the object containing the attributes
+     * @return true if the attribute is mapped to false, otherwise false
+     */
+    public boolean isFalse(WithAttributes withAttributes) {
+        return isFalse(withAttributes.getAttributes());
+    }
+#end
+}

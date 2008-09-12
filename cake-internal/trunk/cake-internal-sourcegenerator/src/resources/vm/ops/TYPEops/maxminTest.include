@@ -1,0 +1,81 @@
+     /**
+     * Tests {@link ${Type}Ops#MIN_REDUCER}.
+     */
+    @Test
+    public void min() {
+        assertEquals($util.val(1), ${Type}Ops.MIN_REDUCER.op($util.val(1), $util.val(2))${equalTest});
+        assertEquals($util.val(1), ${Type}Ops.MIN_REDUCER.op($util.val(2), $util.val(1))${equalTest});
+        assertEquals($util.val(1), ${Type}Ops.MIN_REDUCER.op($util.val(1), $util.val(1))${equalTest});
+#if($isReal)
+        assertEquals($util.val(1), ${Type}Ops.MIN_REDUCER.op($util.val(1), ${object}.POSITIVE_INFINITY)${equalTest});
+        assertEquals(${object}.NaN, ${Type}Ops.MIN_REDUCER.op($util.val(1), ${object}.NaN)${equalTest});
+#end        
+        ${Type}Ops.MIN_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${Type}Ops.MIN_REDUCER);
+    }
+
+    /**
+     * Tests {@link ${Type}Ops#min}.
+     */
+    @Test
+    public void minArg() {
+        ${Type}Reducer r = ${Type}Ops.min(${Type}Ops.COMPARATOR);
+        assertEquals($util.val(1), r.op($util.val(1), $util.val(2))${equalTest});
+        assertEquals($util.val(1), r.op($util.val(2), $util.val(1))${equalTest});
+        assertEquals($util.val(1), r.op($util.val(1), $util.val(1))${equalTest});
+#if($isReal)
+        assertEquals($util.val(1), r.op($util.val(1), ${object}.POSITIVE_INFINITY),0);
+        // System.out.println(Double.compare(1, Double.NaN));
+        // System.out.println(Double.compare(Double.NaN,1));
+        assertEquals($util.val(1), r.op(${object}.NaN, $util.val(1)),0);
+#end
+        r.toString(); // does not fail
+        assertEquals($util.val(1), serializeAndUnserialize(r).op($util.val(1), $util.val(2))${equalTest});
+        assertIsSerializable(r);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void minNPE() {
+        ${Type}Ops.min(null);
+    }
+    
+        /**
+     * Tests {@link Reducers#MAX_REDUCER}.
+     */
+    @Test
+    public void doubleMaxReducer() {
+        assertEquals($util.val(2), ${Type}Ops.MAX_REDUCER.op($util.val(2), $util.val(1))${equalTest});
+        assertEquals($util.val(2), ${Type}Ops.MAX_REDUCER.op($util.val(1), $util.val(2))${equalTest});
+        assertEquals($util.val(2), ${Type}Ops.MAX_REDUCER.op($util.val(2), $util.val(2))${equalTest});
+#if($isReal)        
+        assertEquals(${object}.POSITIVE_INFINITY, ${Type}Ops.MAX_REDUCER.op($util.val(1), ${object}.POSITIVE_INFINITY)${equalTest});
+        assertEquals(${object}.NaN, ${Type}Ops.MAX_REDUCER.op($util.val(1), ${object}.NaN)${equalTest});
+#end
+        ${Type}Ops.MAX_REDUCER.toString(); // does not fail
+        assertIsSerializable(${Type}Ops.MAX_REDUCER);
+        TestUtil.assertSingletonSerializable(${Type}Ops.MAX_REDUCER);
+    }
+
+    /**
+     * Tests
+     * {@link Reducers#doubleMaxReducer(org.codehaus.cake.ops.Ops.DoubleComparator)}
+     */
+    @Test
+    public void doubleMaxReducerComparator() {
+        ${Type}Reducer r = ${Type}Ops.max(${Type}Ops.COMPARATOR);
+        assertEquals($util.val(2), r.op($util.val(1), $util.val(2))${equalTest});
+        assertEquals($util.val(2), r.op($util.val(2), $util.val(1))${equalTest});
+        assertEquals($util.val(2), r.op($util.val(2), $util.val(2))${equalTest});
+#if($isReal)
+        assertEquals(${object}.POSITIVE_INFINITY, r.op($util.val(1), ${object}.POSITIVE_INFINITY), 0);
+        assertEquals(${object}.NaN, r.op($util.val(1), ${object}.NaN), 0);
+#end
+assertEquals($util.val(2), serializeAndUnserialize(r).op($util.val(1), $util.val(2))${equalTest});
+        r.toString(); // does not fail
+        assertIsSerializable(r);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void maxNPE() {
+        ${Type}Ops.max(null);
+    }

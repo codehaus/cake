@@ -1,0 +1,139 @@
+    @Override
+    public $this add($type s) {
+        return replaceWithMapping(${Type}Ops.add(s));
+    }
+
+    @Override
+    public $this add(final ${Type}Matrix b) {
+        checkSameDimensions(b);
+        if (b instanceof $this) {
+            $this m = ($this) b;
+            a.replaceWithMapping(${Type}Ops.add(), m.a);
+        } else if (b instanceof Abstract${Type}Matrix){
+            final Abstract${Type}Matrix matrix =(Abstract${Type}Matrix) b;
+        replaceWithMappedIndex(new $util.op("IntAndIntAnd*To*")() {
+                public $type op(int m, int n, $type value) {
+                    return $util.add("value", "matrix.getFast(m, n)");
+            }});
+        } else {
+        replaceWithMappedIndex(new $util.op("IntAndIntAnd*To*")() {
+                public $type op(int m, int n, $type value) {
+                    return $util.add("value", "b.get(m, n)");
+            }});
+        }
+        return this;
+    }
+    
+    @Override
+    public $this apply($util.op("Procedure") procedure) {
+        a.apply(procedure);
+        return this;
+    }
+    
+    @Override
+    public int cardinality() {
+        return a.withFilter(not(equalsTo($util.val(0)))).size();
+    }
+    
+    @Override
+    public $this divide($type s) {
+        return replaceWithMapping(${Type}Ops.divide(s));
+    }
+    
+    @Override
+    public $this fill($type s) {
+        a.replaceWithValue(s);
+        return this;
+    }
+
+    @Override
+    public $type get(int row, int column) {
+        checkValidRowColumn(column, row);
+        return getFast(row,column);
+    }
+	
+    public boolean hasAllEqualElements($type s) {
+        return a.withFilter(not(equalsTo(s))).isEmpty();
+    }
+    
+    @Override
+    public $this multiply($type s) {
+        return replaceWithMapping(${Type}Ops.multiply(s));
+    }
+
+    @Override
+    public $type reduce($util.op("Reducer") reducer, $type base) {
+        return a.reduce(reducer, base);
+    }
+    
+    
+    @Override
+    public $this replaceWithGeneratedValue($util.op("Generator") generator) {
+        a.replaceWithGeneratedValue(generator);
+        return this;
+    }
+    
+    
+    @Override
+    public $this replaceWithMapping($util.op("Op") op) {
+        a.replaceWithMapping(op);
+        return this;
+    }
+
+    @Override
+    public $this set(int row, int column, $type value) {
+        checkValidRowColumn(column, row);
+        setFast(row,column,value);
+        return this;
+    }
+    
+    public $this set(final ${Type}Matrix b) {
+        checkSameDimensions(b);
+        if (b instanceof $this) {
+            $this m = ($this) b;
+            System.arraycopy(m.array, 0, array, 0, array.length);
+        }  else if (b instanceof Abstract${Type}Matrix){
+            final Abstract${Type}Matrix matrix =(Abstract${Type}Matrix) b;
+             replaceWithMappedIndex(new $util.op("IntAndIntTo*")() {
+                public $type op(int m, int n) {
+                    return matrix.getFast(m, n);
+            }});
+        } else {
+            replaceWithMappedIndex(new $util.op("IntAndIntTo*")() {
+                public $type op(int m, int n) {
+                    return b.get(m, n);
+                }
+            });
+        }
+        return this;
+    }
+    @Override
+    public $this subtract($type s) {
+        return replaceWithMapping(${Type}Ops.subtract(s));
+    }
+
+    @Override
+    public $this subtract(final ${Type}Matrix b) {
+        checkSameDimensions(b);
+        if (b instanceof $this) {
+            $this m = ($this) b;
+            a.replaceWithMapping(${Type}Ops.subtract(), m.a);
+        } else if (b instanceof Abstract${Type}Matrix){
+            final Abstract${Type}Matrix matrix =(Abstract${Type}Matrix) b;
+        replaceWithMappedIndex(new $util.op("IntAndIntAnd*To*")() {
+                public $type op(int m, int n, $type value) {
+                    return $util.subtract("value", "matrix.getFast(m, n)");
+            }});
+        } else {
+        replaceWithMappedIndex(new $util.op("IntAndIntAnd*To*")() {
+                public $type op(int m, int n, $type value) {
+                    return $util.subtract("value", "b.get(m, n)");
+            }});
+        }
+        return this;
+    }
+
+    @Override
+    public $type sum() {
+        return reduce(${Type}Ops.add(), $util.val(0));
+    }

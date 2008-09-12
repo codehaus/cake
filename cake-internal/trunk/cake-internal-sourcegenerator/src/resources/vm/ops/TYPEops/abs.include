@@ -1,0 +1,37 @@
+    final static ${Type}AbsOp ABS_OP = new ${Type}AbsOp();
+
+#if($type=="Complex")
+    public static ObjectToDouble<Complex> abs() {
+        return ABS_OP;
+    } 
+#else
+    public static $util.op("Op") abs() {
+        return ABS_OP;
+    }
+#end    
+
+#if($type=="Complex")    
+    static final class ${Type}AbsOp implements ObjectToDouble<Complex>, Serializable {
+#else
+    static final class ${Type}AbsOp implements $util.op("Op"), Serializable {
+#end    
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -8583260658972887816L;
+
+#if($type=="Complex")
+        public double op($type a) {
+#else        
+        public $type op($type a) {
+#end
+#if($isObject)
+            return a.abs();
+#else
+            return Math.abs(a);
+#end 
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return ABS_OP;
+        }
+    }

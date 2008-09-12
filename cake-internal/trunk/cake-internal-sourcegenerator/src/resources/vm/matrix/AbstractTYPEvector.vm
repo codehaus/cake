@@ -1,0 +1,95 @@
+import org.codehaus.cake.math.*;
+import org.codehaus.cake.math.matrix.*;
+import org.codehaus.cake.math.matrix.MatrixOps.*;
+
+import org.codehaus.cake.ops.*;
+import org.codehaus.cake.ops.Ops.*;
+#if($isObject)
+import static org.codehaus.cake.ops.Predicates.*;
+#else
+import static org.codehaus.cake.ops.${Type}Predicates.*;
+#end   
+import org.codehaus.cake.forkjoin.*;
+
+/**
+ * An implementation of an {@link ${Type}Vector}.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
+public abstract class $this extends AbstractVector implements ${Type}Matrix {
+    
+    public ${this}(int size) {
+        super(n, m);
+    }
+    
+    abstract $type getFast(int row, int column);
+    
+    public $type get(int row, int column) {
+        checkValidRowColumn(column, row);
+        return getFast(row,column);
+    }    
+    abstract void setFast(int row, int column, $type value);
+    
+    @Override
+    public $type sum() {
+        return reduce(${Type}Ops.add(), $util.val(0));
+    }
+    
+    $type[][] toArray() {
+        final $type[][] result = new $type[getNumberOfRows()][getNumberOfColumns()];
+        replaceWithMappedIndex(new $util.op("IntAndIntAnd*To*")() {
+            @Override
+            public $type op(int a, int b, $type c) {
+                result[a][b] = c;
+                return c;
+            }
+        });
+        return result;
+    }
+
+    public String toString() {
+        // need a better to string
+        StringBuffer res = new StringBuffer();
+        $type[][] a = toArray();
+        for (int i = 0; i < getNumberOfRows(); i++) {
+            res.append("| ");
+            for (int j = 0; j < getNumberOfColumns(); j++) {
+                res.append(a[i][j]);
+                res.append(" ");
+            }
+            res.append(" |\n");
+        }
+        return res.toString();
+    }
+    
+      @Override
+    public ${Type}Matrix withBounds(int row, int column, int height, int width) {
+        throw new UnsupportedOperationException("view not supported");
+    }
+
+    @Override
+    public ${Type}Vector withColumn(int column) {
+        throw new UnsupportedOperationException("view not supported");
+    }
+
+    @Override
+    public ${Type}Vector withDiagonal() {
+        throw new UnsupportedOperationException("view not supported");
+    }
+
+    @Override
+    public ${Type}Matrix withMapping($util.op("Op") op) {
+        throw new UnsupportedOperationException("view not supported");
+    }
+
+    @Override
+    public ${Type}Vector withRow(int row) {
+        throw new UnsupportedOperationException("view not supported");
+    }
+
+    @Override
+    public ${Type}Matrix withTransposed() {
+        throw new UnsupportedOperationException("view not supported");
+    }
+}

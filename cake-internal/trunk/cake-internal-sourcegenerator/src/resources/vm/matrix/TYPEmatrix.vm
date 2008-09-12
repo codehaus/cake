@@ -1,0 +1,253 @@
+import org.codehaus.cake.math.matrix.Matrix;
+import org.codehaus.cake.ops.Ops.*;
+import org.codehaus.cake.math.matrix.MatrixOps.*;
+/**
+ * An implementation of an {@link Attribute} mapping to $a $type. This implementation adds a number of
+ * methods that works on primitive ${type}s instead of their object counterpart.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ */
+public interface $this extends Matrix {
+
+    /**
+     * Adds the scalar <tt>s</tt> to each element of this matrix.
+     * 
+     * @param s
+     *            the scalar to add to each element
+     * @return this matrix
+#if($isObject)
+     * @throws NullPointerException
+     *             if the specified scalar is null
+#end     
+     */
+    $this add($type s);
+
+    /**
+     * Matrix addition: Computes the sum of this and the specified matrix.
+     * <p>
+     * If this matrix is represented with <tt>A</tt> and the specified matrix is
+     * represented with <tt>B</tt>. Calling this method is equivalent to
+     * <tt>A = A + B</tt>.
+     * 
+     * @param b
+     *            matrix to be added
+     * @return this
+     * @throws IllegalArgumentException
+     *             if the specified matrix does not have the same number of rows and
+     *             columns as this
+     */
+	$this add($this s);
+	
+	
+    /**
+     * Applies the given procedure to all elements in the matrix
+     * 
+     * @param procedure
+     *            the procedure
+     * @throws NullPointerException
+     *             if the specified procedure is null
+     */
+    $this apply($util.op("Procedure") procedure);
+
+    /**
+     * Calculates the cardinality of this matrix (number of elements that are non zero).  
+     * @return the cardinality of this matrix 
+     */
+	int cardinality();
+	
+    /**
+     * @return a (deep) copy of this matrix
+     */
+    $this copy();
+	
+    /**
+     * Divides each element of this matrix with the specified scalar <tt>s</tt>.
+     * 
+     * @param s
+     *            the scalar to divide each element with
+     * @return this matrix
+#if($isObject)
+     * @throws NullPointerException
+     *             if the specified scalar is null
+#end    
+     */
+    $this divide($type s);
+    
+    /**
+     * Replaces elements with the given value.
+     * @param value the value
+     * @return this (to simplify use in expressions)
+     */
+    $this fill($type s);
+    
+    /**
+     * Returns the element in the specified row and column.
+     * <p>
+     * 
+     *            row location of element to be fetched
+     * @param m
+     * @param n
+     *            column location of element to be fetched
+     * @return element in row,column
+     * @throws IllegalArgumentException
+     *             if the row or column index is not valid
+     */
+    $type get(int m, int n);
+
+    boolean hasAllEqualElements($type s);
+
+    /**
+     * Returns true if all elements at the same relative positions of this and other matrix are
+     * equal.
+     * 
+     * @param other
+     *            the other matrix
+     * @return true if equal
+     */
+    boolean hasAllEqualElements($this other);
+    
+    
+    /**
+     * Multiplies each element of this matrix with the specified scalar <tt>s</tt>.
+     * 
+     * @param s
+     *            the scalar to multiply each element with
+     * @return this matrix
+#if($isObject)
+     * @throws NullPointerException
+     *             if the specified scalar is null
+#end    
+     */
+    $this multiply($type s);
+
+    /**
+     * Returns reduction of all elements in the matrix
+     * 
+     * @param reducer
+     *            the reducer
+     * @param base
+     *            the result for an empty matrix
+     * @return reduction
+#if($isObject)
+     * @throws NullPointerException
+     *             if the specified reducer or base is null
+#else
+     * @throws NullPointerException
+     *             if the specified reducer is null
+#end    
+     */
+    $type reduce($util.op("Reducer") reducer, $type base);
+
+    /**
+     * Replaces elements with the results of applying the given generator.
+#if($isObject)
+#else
+     * <p> 
+     *  For example, to fill the matrix with uniform random values, use
+     * <tt>replaceWithGeneratedValue(CommonOps.${type}Random())</tt>
+#end
+     * 
+     * @param generator
+     *            the generator
+     * @return this (to simplify use in expressions)
+     */
+    $this replaceWithGeneratedValue($util.op("Generator") generator);
+
+#if($isObject)
+    $this replaceWithMappedIndex(IntAndIntToObject<$Type> op);
+#else
+    $this replaceWithMappedIndex(IntAndIntTo$Type op);
+#end    
+
+#if($isObject)
+    $this replaceWithMappedIndex(IntAndIntAndObjectToObject<$Type, $Type> op);
+#else
+    $this replaceWithMappedIndex(IntAndIntAnd${Type}To${Type} op);
+#end
+    
+
+    $this replaceWithMapping($util.op("Op") ops);
+
+	$this set(int row, int column, $type s);
+
+	$this set($this s);
+	
+    /**
+     * Substracts the scalar <tt>s</tt> to each element of this matrix.
+     * 
+     * @param s
+     *            the scalar to substract from each element
+     * @return this matrix
+#if($isObject)
+     * @throws NullPointerException
+     *             if the specified scalar is null
+#end    
+     */
+    $this subtract($type s);
+
+    /**
+     * Matrix subtraction; Computes the difference between this and the specified matrix.
+     * <p>
+     * If this matrix is represented with <tt>A</tt> and the specified matrix is
+     * represented with <tt>B</tt>. This method is equivalent to <tt>A = A - B</tt>.
+     * 
+     * @param b
+     *            matrix to be subtracted
+     * @return this (to simplify use in expressions)
+     * @throws IllegalArgumentException
+     *             if the specified matrix does not have the same number of rows and
+     *             columns as this
+     */
+    $this subtract($this b);
+    
+    /**
+     * @return the sum of all elements in the matrix
+     */
+    $type sum();
+
+//  /**
+//   * <p>
+//   * The returned array will be "safe" in that no references to it are maintained by this matrix.
+//   * (In other words, this method must allocate a new 2 dimensional array even if this collection
+//   * is backed by an 2 dimensional array). The caller is thus free to modify the returned 2
+//   * dimensional array.
+//   * 
+//   * @return a 2 dimensional array with the contents of this matrix
+//   */
+//   $type[][] toArray(boolean rowOrder);
+
+    /**
+     * Calculates the matrix trace. Which is defined as the sum of the elements on the main
+     * diagonal.
+     * 
+     * @return the matrix trace
+     */
+    $type trace();
+    
+    
+    $this withBounds(int row, int column, int height, int width);
+
+    ${Type}Vector withColumn(int column);
+
+    ${Type}Vector withDiagonal();
+
+    $this withMapping($util.op("Op") op);
+
+    ${Type}Vector withRow(int row);
+
+    $this withTransposed();
+}
+
+
+// interface Entry<T> {
+// int getColumn();
+//
+// int getRow();
+//
+// $type getValue();
+//
+// $type replace($type newValue);
+//
+// void setValue($type value);
+// }

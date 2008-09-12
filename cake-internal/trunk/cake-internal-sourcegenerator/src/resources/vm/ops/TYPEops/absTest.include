@@ -1,0 +1,20 @@
+    /**
+     * Tests {@link ${Type}Ops#ABS_OP}.
+     */
+    @Test
+    public void abs() {
+#if($type=="Complex") 
+        assertEquals(Math.sqrt(2), ComplexOps.ABS_OP.op(new Complex(-1, -1)), 0);
+        assertEquals(Math.sqrt(2), ComplexOps.ABS_OP.op(new Complex(1, 1)), 0);
+#else
+        assertEquals($util.val(1), ${Type}Ops.ABS_OP.op($util.val(-1))${equalTest});
+        assertEquals($util.val(1), ${Type}Ops.ABS_OP.op($util.val(1))${equalTest});
+#end
+        assertSame(${Type}Ops.ABS_OP, ${Type}Ops.abs());
+#if($isReal) 
+        assertEquals(${object}.POSITIVE_INFINITY, ${Type}Ops.ABS_OP.op(${object}.POSITIVE_INFINITY)${equalTest});
+        assertEquals(${object}.NaN, ${Type}Ops.ABS_OP.op(${object}.NaN)${equalTest});
+#end
+        ${Type}Ops.ABS_OP.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${Type}Ops.ABS_OP);
+    }

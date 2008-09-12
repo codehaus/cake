@@ -1,0 +1,527 @@
+#set( $visible = "" )
+/**
+ * Various implementations of {@link ${Type}Predicate}.
+ * <p>
+ * This class is normally best used via <tt>import static</tt>.
+ *
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ */
+public final class ${this} {
+
+    /** A ${Type}Predicate that always evaluates to <code>false</code>. */
+    public static final ${Type}Predicate FALSE = new False${Type}Predicate();
+
+    /** A ${Type}Predicate that always evaluates to <code>true</code>. */
+    public static final ${Type}Predicate TRUE = new True${Type}Predicate();
+
+    ///CLOVER:OFF
+    /** Cannot instantiate. */
+    private ${this}() {}
+    ///CLOVER:ON
+    
+    /**
+     * Creates a ${Type}Predicate that performs a logical AND on two supplied predicates. The
+     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is,
+     * if the specified left side predicate evaluates to <code>false</code> the right
+     * side predicate will not be evaluated. More formally
+     *
+     * <pre>
+     * left.evaluate(element) &amp;&amp; right.evaluate(element);
+     * </pre>
+     *
+     * <p>
+     * If both of the supplied predicates are serializable the returned predicate will
+     * also be serializable.
+     *
+     * @param left
+     *            the left side ${Type}Predicate
+     * @param right
+     *            the right side ${Type}Predicate
+     * @return the newly created ${Type}Predicate
+     * @throws NullPointerException
+     *             if any of the specified predicates are <code>null</code>
+     */
+    public static ${Type}Predicate and(${Type}Predicate left, ${Type}Predicate right) {
+        return new And${Type}Predicate(left, right);
+    }
+    
+    /**
+     * Creates a predicate that accepts any value that is equal to the value specified.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the value of the equals predicate
+     * @return a predicate that accepts any value that is equal to the value specified
+     */
+    public static ${Type}Predicate equalsTo($type element) {
+        return new EqualsTo${Type}Predicate(element);
+    }
+    
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is greater then the element being used to construct the predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate greaterThen($type element) {
+        return new GreaterThen${Type}Predicate(element);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is greater then or equals to the element being used to construct the
+     * predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate greaterThenOrEquals($type element) {
+        return new GreaterThenOrEquals${Type}Predicate(element);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is less then the element being used to construct the predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate lessThen($type element) {
+        return new LessThen${Type}Predicate(element);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is less then or equals to the element being used to construct the predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate lessThenOrEquals($type element) {
+        return new LessThenOrEquals${Type}Predicate(element);
+    }
+    
+    /**
+     * Creates a ${Type}Predicate that performs a logical logical NOT on the supplied
+     * ${Type}Predicate. More formally
+     *
+     * <pre>
+     * !predicate.evaluate(value);
+     * </pre>
+     *
+     * <p>
+     * If the specified predicate is serializable the returned predicate will also be
+     * serializable.
+     *
+     * @param predicate
+     *            the predicate to negate
+     * @return the newly created ${Type}Predicate
+     * @throws NullPointerException
+     *             if the specified predicate is <code>null</code>
+     */
+    public static ${Type}Predicate not(${Type}Predicate predicate) {
+        return new Not${Type}Predicate(predicate);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that performs a logical OR on two supplied predicates. The
+     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is,
+     * if the specified left side predicate evaluates to <code>true</code> the right
+     * side predicate will not be evaluated. More formally
+     *
+     * <pre>
+     * left.evaluate(element) || right.evaluate(element);
+     * </pre>
+     *
+     * <p>
+     * If both of the supplied predicates are serializable the returned predicate will
+     * also be serializable.
+     *
+     * @param left
+     *            the left side ${Type}Predicate
+     * @param right
+     *            the right side ${Type}Predicate
+     * @return the newly created ${Type}Predicate
+     * @throws NullPointerException
+     *             if any of the specified predicates are <code>null</code>
+     */
+    public static ${Type}Predicate or(${Type}Predicate left, ${Type}Predicate right) {
+        return new Or${Type}Predicate(left, right);
+    }
+    
+    /**
+     * A ${Type}Predicate that performs a logical exclusive AND on two supplied predicates.
+     */
+    ${visible}static final class And${Type}Predicate implements ${Type}Predicate, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = 6981902451700512606L;
+
+        /** The left side operand. */
+        private final ${Type}Predicate left;
+
+        /** The right side operand. */
+        private final ${Type}Predicate right;
+
+        /**
+         * Creates a new <code>And${Type}Predicate</code>.
+         *
+         * @param left
+         *            the left side ${Type}Predicate
+         * @param right
+         *            the right side ${Type}Predicate
+         * @throws NullPointerException
+         *             if any of the supplied predicates are <code>null</code>
+         */
+        ${visible}And${Type}Predicate(${Type}Predicate left, ${Type}Predicate right) {
+            if (left == null) {
+                throw new NullPointerException("left is null");
+            } else if (right == null) {
+                throw new NullPointerException("right is null");
+            }
+            this.left = left;
+            this.right = right;
+        }
+
+        /** {@inheritDoc} */
+        public boolean op($type element) {
+            return left.op(element) && right.op(element);
+        }
+
+        /**
+         * Returns the left side ${Type}Predicate.
+         *
+         * @return the left side ${Type}Predicate.
+         */
+        public ${Type}Predicate getLeft() {
+            return left;
+        }
+
+        /**
+         * Returns the right side ${Type}Predicate.
+         *
+         * @return the right side ${Type}Predicate.
+         */
+        public ${Type}Predicate getRight() {
+            return right;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return "(" + left + ") && (" + right + ")";
+        }
+    }
+    
+    ${visible}static class EqualsTo${Type}Predicate implements ${Type}Predicate, Serializable {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 8220487572042162409L;
+
+        /** The value to compare with. */
+        private final $type equalsTo;
+
+        ${visible}EqualsTo${Type}Predicate($type equalsTo) {
+            this.equalsTo = equalsTo;
+        }
+
+        /**
+         * Returns <code>true</code> if the specified value is equal to the value that
+         * was used when constructing this predicate, otherwise <code>false</code>.
+         *
+         * @param t
+         *            the value to compare with
+         * @return <code>true</code> if the specified value is equal to the value that
+         *         was used when constructing this predicate, otherwise <code>false</code>.
+         */
+        public boolean op($type t) {
+            return equalsTo == t;
+        }
+
+        /**
+         * @return the value we are comparing with
+         */
+        public $type getEqualsTo() {
+            return equalsTo;
+        }
+    }
+    
+     /**
+     * $a ${Type}Predicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to
+     * get an instance of this ${Type}Predicate.
+     *
+     * @see True${Type}Predicate
+     */
+    static final class False${Type}Predicate implements ${Type}Predicate, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = -3048464662394104180L;
+
+        /** Creates a new False${Type}Predicate. */
+        False${Type}Predicate() {}
+
+        /** {@inheritDoc} */
+        public boolean op($type value) {
+            return false;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return Boolean.FALSE.toString();
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return FALSE;
+        }
+    }
+    
+    static class GreaterThen${Type}Predicate implements ${Type}Predicate, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 7198592614364500859L;
+
+        /** The value to compare with. */
+        private final $type greaterThen;
+
+        GreaterThen${Type}Predicate($type greaterThen) {
+            this.greaterThen = greaterThen;
+        }
+
+        /** {@inheritDoc} */
+        public boolean op($type t) {
+            return greaterThen < t;
+        }
+
+        public $type getGreaterThen() {
+            return greaterThen;
+        }
+    }
+    
+    static class GreaterThenOrEquals${Type}Predicate implements ${Type}Predicate, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -4681995097900012563L;
+
+        /** The value to compare with. */
+        private final $type greaterThenOrEquals;
+
+        GreaterThenOrEquals${Type}Predicate($type greaterThenOrEquals) {
+            this.greaterThenOrEquals = greaterThenOrEquals;
+        }
+
+        /** {@inheritDoc} */
+        public boolean op($type t) {
+            return greaterThenOrEquals <= t;
+        }
+
+        public $type getGreaterThenOrEquals() {
+            return greaterThenOrEquals;
+        }
+    }
+    
+    static class LessThen${Type}Predicate implements ${Type}Predicate, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = -9180606923416408020L;
+
+        /** The value to compare with. */
+        private final $type lessThen;
+
+        LessThen${Type}Predicate($type lessThen) {
+            this.lessThen = lessThen;
+        }
+
+        /** {@inheritDoc} */
+        public boolean op($type t) {
+            return lessThen > t;
+        }
+
+        public $type getLessThen() {
+            return lessThen;
+        }
+    }
+
+    static class LessThenOrEquals${Type}Predicate implements ${Type}Predicate, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 8711220473905545122L;
+
+        /** The value to compare with. */
+        private final $type lessThenOrEquals;
+
+        LessThenOrEquals${Type}Predicate($type lessThenOrEquals) {
+            this.lessThenOrEquals = lessThenOrEquals;
+        }
+
+        /** {@inheritDoc} */
+        public boolean op($type t) {
+            return lessThenOrEquals >= t;
+        }
+
+        public $type getLessThenOrEquals() {
+            return lessThenOrEquals;
+        }
+    }
+    /**
+     * A ${Type}Predicate that evaluates to true iff the Predicate used for constructing
+     * evaluates to <code>false</code>.
+     */
+    static final class Not${Type}Predicate implements ${Type}Predicate, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = -5117781730584740429L;
+
+        /** The ${Type}Predicate to negate. */
+        private final ${Type}Predicate predicate;
+
+        /**
+         * Creates a new Not${Type}Predicate.
+         *
+         * @param predicate
+         *            the predicate to negate.
+         * @throws NullPointerException
+         *             if the specified predicate is <code>null</code>
+         */
+        Not${Type}Predicate(${Type}Predicate predicate) {
+            if (predicate == null) {
+                throw new NullPointerException("predicate is null");
+            }
+            this.predicate = predicate;
+        }
+
+        /**
+         * Returns a boolean representing the logical NOT value of the supplied
+         * ${Type}Predicate.
+         *
+         * @param element
+         *            the element to test
+         * @return the logical NOT of the supplied ${Type}Predicate
+         */
+        public boolean op($type element) {
+            return !predicate.op(element);
+        }
+
+        /**
+         * Returns the predicate that is being negated.
+         *
+         * @return the predicate that is being negated.
+         */
+        public ${Type}Predicate getPredicate() {
+            return predicate;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return "!(" + predicate + ")";
+        }
+    }
+
+    /**
+     * A ${Type}Predicate that performs a logical exclusive OR on two supplied predicates.
+     */
+    static final class Or${Type}Predicate implements ${Type}Predicate, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = 747277162607915666L;
+
+        /** The left side operand. */
+        private final ${Type}Predicate left;
+
+        /** The right side operand. */
+        private final ${Type}Predicate right;
+
+        /**
+         * Creates a new <code>Or${Type}Predicate</code>.
+         *
+         * @param left
+         *            the left side ${Type}Predicate
+         * @param right
+         *            the right side ${Type}Predicate
+         * @throws NullPointerException
+         *             if any of the supplied predicates are <code>null</code>
+         */
+        Or${Type}Predicate(${Type}Predicate left, ${Type}Predicate right) {
+            if (left == null) {
+                throw new NullPointerException("left is null");
+            } else if (right == null) {
+                throw new NullPointerException("right is null");
+            }
+            this.left = left;
+            this.right = right;
+        }
+
+        /** {@inheritDoc} */
+        public boolean op($type element) {
+            return left.op(element) || right.op(element);
+        }
+
+        /**
+         * Returns the left side ${Type}Predicate.
+         *
+         * @return the left side ${Type}Predicate.
+         */
+        public ${Type}Predicate getLeft() {
+            return left;
+        }
+
+        /**
+         * Returns the right side ${Type}Predicate.
+         *
+         * @return the right side ${Type}Predicate.
+         */
+        public ${Type}Predicate getRight() {
+            return right;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return "(" + left + ") && (" + right + ")";
+        }
+    }
+    
+    /**
+     * A ${Type}Predicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get
+     * an instance of this ${Type}Predicate.
+     *
+     * @see False${Type}Predicate
+     */
+    static final class True${Type}Predicate implements ${Type}Predicate, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = 3258129137502925875L;
+
+        /** Creates a new True${Type}Predicate. */
+        True${Type}Predicate() {}
+
+        /** {@inheritDoc} */
+        public boolean op($type value) {
+            return true;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return Boolean.TRUE.toString();
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return TRUE;
+        }
+    }
+}
