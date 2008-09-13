@@ -45,8 +45,8 @@ public final class IntAttributeTest extends AtrStubs {
     public void _constructors() {
         assertEquals(0, new IntAttribute() {}.getDefault().intValue());
         assertEquals(0, new IntAttribute("a") {}.getDefaultValue());
-        assertFalse(new IntAttribute() {}.getName().equals(new IntAttribute() {}.getName()));
-        assertFalse(new IntAttribute(3) {}.getName().equals(new IntAttribute(3) {}.getName()));
+//        assertFalse(new IntAttribute() {}.getName().equals(new IntAttribute() {}.getName()));
+//        assertFalse(new IntAttribute(3) {}.getName().equals(new IntAttribute(3) {}.getName()));
         assertTrue(new IntAttribute("a") {}.getName().equals(new IntAttribute("a") {}.getName()));
         assertEquals(3, new IntAttribute(3) {}.getDefaultValue());
         assertEquals(0, ATR0.getDefaultValue());

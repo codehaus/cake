@@ -45,8 +45,8 @@ public final class CharAttributeTest extends AtrStubs {
     public void _constructors() {
         assertEquals((char) 0, new CharAttribute() {}.getDefault().charValue());
         assertEquals((char) 0, new CharAttribute("a") {}.getDefaultValue());
-        assertFalse(new CharAttribute() {}.getName().equals(new CharAttribute() {}.getName()));
-        assertFalse(new CharAttribute((char) 3) {}.getName().equals(new CharAttribute((char) 3) {}.getName()));
+//        assertFalse(new CharAttribute() {}.getName().equals(new CharAttribute() {}.getName()));
+//        assertFalse(new CharAttribute((char) 3) {}.getName().equals(new CharAttribute((char) 3) {}.getName()));
         assertTrue(new CharAttribute("a") {}.getName().equals(new CharAttribute("a") {}.getName()));
         assertEquals((char) 3, new CharAttribute((char) 3) {}.getDefaultValue());
         assertEquals((char) 0, ATR0.getDefaultValue());

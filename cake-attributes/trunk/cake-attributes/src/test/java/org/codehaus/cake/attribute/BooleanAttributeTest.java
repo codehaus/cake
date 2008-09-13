@@ -45,8 +45,8 @@ public final class BooleanAttributeTest extends AtrStubs {
     public void _constructors() {
         assertEquals(false, new BooleanAttribute() {}.getDefault().booleanValue());
         assertEquals(false, new BooleanAttribute("a") {}.getDefaultValue());
-        assertFalse(new BooleanAttribute() {}.getName().equals(new BooleanAttribute() {}.getName()));
-        assertFalse(new BooleanAttribute(false) {}.getName().equals(new BooleanAttribute(false) {}.getName()));
+//        assertFalse(new BooleanAttribute() {}.getName().equals(new BooleanAttribute() {}.getName()));
+//        assertFalse(new BooleanAttribute(false) {}.getName().equals(new BooleanAttribute(false) {}.getName()));
         assertTrue(new BooleanAttribute("a") {}.getName().equals(new BooleanAttribute("a") {}.getName()));
         assertEquals(true, new BooleanAttribute(true) {}.getDefaultValue());
         assertEquals(false, ATR0.getDefaultValue());
