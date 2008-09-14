@@ -34,7 +34,7 @@ import org.codehaus.cake.service.TstStubs.PrivateConstructorStubber;
 import org.codehaus.cake.service.TstStubs.Stubber;
 import org.codehaus.cake.service.TstStubs.StubberConfiguration;
 import org.codehaus.cake.service.TstStubs.StubberImpl;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
@@ -245,14 +245,14 @@ public class ContainerConfigurationTest {
         assertEquals(sf, f10.getFactory());
         assertFalse(iter.hasNext());
     }
-    
+
     @Test
     public void addGetServices() {
         for (int i = 0; i < 100; i++) {
             conf.addToLifecycle(i);
         }
-        ServiceList l =(ServiceList) conf.getServices();
-        Iterator<Object> iter=l.getServices().iterator();
+        ServiceList l = (ServiceList) conf.getServices();
+        Iterator<Object> iter = l.getServices().iterator();
         for (int i = 0; i < 100; i++) {
             assertEquals(i, iter.next());
         }
@@ -267,6 +267,26 @@ public class ContainerConfigurationTest {
     public void addServicesSame() {
         conf.addToLifecycle(1);
         conf.addToLifecycle(1);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addToLifecycleAndExportNPE1() {
+        conf.addToLifecycleAndExport(null, new Object());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addToLifecycleAndExportNPE2() {
+        conf.addToLifecycleAndExport(Integer.class, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addToLifecycleAndExportNPE3() {
+        conf.addToLifecycleAndExport(null, new Object());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addToLifecycleAndExportNPE4() {
+        conf.addToLifecycleAndExport(Integer.class,(ServiceFactory) null);
     }
 
     @Test

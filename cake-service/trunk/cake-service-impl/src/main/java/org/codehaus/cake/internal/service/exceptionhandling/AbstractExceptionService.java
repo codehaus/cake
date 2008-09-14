@@ -19,7 +19,7 @@ import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.internal.util.LazyLogger;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
+import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Loggers;
 import org.codehaus.cake.util.Logger.Level;

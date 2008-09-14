@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service.exceptionhandling;
+package org.codehaus.cake.service.common.exceptionhandling;
 
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;

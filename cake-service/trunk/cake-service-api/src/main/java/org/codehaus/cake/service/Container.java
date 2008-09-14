@@ -118,6 +118,6 @@ public interface Container extends ServiceManager {
         /**
          * Returns the type of services the container implementation supports.
          */
-        Class[] value();
+        Class<?>[] value();
     }
 }

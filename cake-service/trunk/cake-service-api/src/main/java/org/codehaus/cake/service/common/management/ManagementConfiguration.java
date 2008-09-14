@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service.management;
+package org.codehaus.cake.service.common.management;
 
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;

@@ -17,8 +17,13 @@ package org.codehaus.cake.internal.stubber.bubber;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.internal.service.configuration.ConfigurableService;
+import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubber1Service;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubberService;
 import org.codehaus.cake.service.annotation.ExportAsService;
@@ -26,7 +31,7 @@ import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
 
 @ExportAsService(BubberService.class)
-public class DefaultBubberService<T> implements BubberService<T>, ConfigurableService {
+public class DefaultBubberService<T> implements BubberService<T>, RuntimeConfigurableService {
 
     public static final Object C = new String("DefaultBubberService_constructor");
     int foofoo;
@@ -37,11 +42,18 @@ public class DefaultBubberService<T> implements BubberService<T>, ConfigurableSe
         assertEquals("ok", s.get());
     }
     
-    public void processUpdate(AttributeMap attributes) {
+    public void updateConfiguration(AttributeMap attributes) {
         this.foofoo = attributes.get(BubberService.FOOFOO);
     }
 
     public int getFooFoo() {
         return foofoo;
+    }
+
+    public Set<Attribute<?>> getRuntimeConfigurableAttributes() {
+        return new HashSet<Attribute<?>>(Arrays.asList(BubberService.FOOFOO));
+    }
+    public Set<Attribute<?>> getRuntimeConfigurableAttribute2s() {
+        return new HashSet<Attribute<?>>(Arrays.asList(BubberService.FOOFOO));
     }
 }

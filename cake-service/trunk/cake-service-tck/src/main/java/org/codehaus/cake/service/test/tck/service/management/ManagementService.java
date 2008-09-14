@@ -30,7 +30,7 @@ import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;

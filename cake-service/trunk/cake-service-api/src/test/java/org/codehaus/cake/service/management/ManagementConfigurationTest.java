@@ -26,6 +26,7 @@ import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 
 import org.codehaus.cake.management.ManagedVisitor;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 

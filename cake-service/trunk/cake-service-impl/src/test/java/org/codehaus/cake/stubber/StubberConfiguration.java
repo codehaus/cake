@@ -16,8 +16,8 @@
 package org.codehaus.cake.stubber;
 
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberConfiguration;
 import org.codehaus.cake.stubber.exceptionhandling.StubberExceptionHandler;
 

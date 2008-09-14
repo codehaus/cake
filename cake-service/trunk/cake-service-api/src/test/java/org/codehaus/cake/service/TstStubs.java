@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 
 public class TstStubs {
     public interface Stubber<T> extends Container {}

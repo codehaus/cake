@@ -12,7 +12,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
 
 public class SynchronizedConfigurationService implements ConfigurationService {
     private volatile AttributeMap defaults = new DefaultAttributeMap();
-    private final Collection<ConfigurableService> services;
+    private final Collection<RuntimeConfigurableService> services;
 
     public SynchronizedConfigurationService(ContainerConfiguration<?> configurations, Composer composer) {
         for (Object o : configurations.getConfigurations()) {
@@ -22,7 +22,7 @@ public class SynchronizedConfigurationService implements ConfigurationService {
                 defaults.putAll(validated);
             }
         }
-        services = composer.getAll(ConfigurableService.class);
+        services = composer.getAll(RuntimeConfigurableService.class);
         updateAll(defaults);
     }
 
@@ -40,8 +40,8 @@ public class SynchronizedConfigurationService implements ConfigurationService {
         synchronized (this) {
             update(attributes);
             defaults = new DefaultAttributeMap(defaults);
-            for (ConfigurableService cs : services) {
-                cs.processUpdate(defaults);
+            for (RuntimeConfigurableService cs : services) {
+                cs.updateConfiguration(defaults);
             }
         }
     }

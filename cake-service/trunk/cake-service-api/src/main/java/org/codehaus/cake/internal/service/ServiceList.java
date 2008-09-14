@@ -31,9 +31,9 @@ public class ServiceList {
     public static class Factory {
         private final Object factory;
 
-        private final Class key;
+        private final Class<?> key;
 
-        public Factory(Class key, Object factory) {
+        public Factory(Class<?> key, Object factory) {
             this.factory = factory;
             this.key = key;
         }
@@ -42,7 +42,7 @@ public class ServiceList {
             return factory;
         }
 
-        public Class getKey() {
+        public Class<?> getKey() {
             return key;
         }
     }

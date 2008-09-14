@@ -34,7 +34,7 @@ import org.codehaus.cake.management.ManagedVisitor;
 import org.codehaus.cake.management.Managements;
 import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.service.annotation.Stoppable;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 
 /**
  * The default implementation of the {@link MapManagementService} interface. All methods exposed
