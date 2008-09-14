@@ -28,6 +28,7 @@ import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
+import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.stubs.SingleOperation;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
@@ -63,6 +64,8 @@ public class ManagementsTest {
                 will(returnValue(mg));
                 one(mg).addChild("name", "description");
                 will(returnValue(c1));
+                one(mg).getChild("foo");
+                will(returnValue(c1));
                 one(mg).getChildren();
                 will(returnValue(Arrays.asList(c1, c2)));
                 one(mg).getDescription();
@@ -81,6 +84,7 @@ public class ManagementsTest {
                 will(returnValue(true));
                 one(mg).register(server, on);
 
+                
                 one(mg).remove();
                 one(mg).unregister();
             }
@@ -88,6 +92,7 @@ public class ManagementsTest {
         ManagedGroup m = Managements.delegatedManagedGroup(mg);
         assertSame(m, m.add(1));
         assertTrue(m.addChild("name", "description") != m);
+        assertSame(c1, m.getChild("foo"));
         assertEquals(2, m.getChildren().size());
         assertEquals("desc", m.getDescription());
         assertEquals("name", m.getName());

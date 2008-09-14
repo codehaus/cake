@@ -190,10 +190,10 @@ public final class Managements {
         // /CLOVER:OFF
         /** {@inheritDoc} */
         public void visitManagedObject(Object o) throws JMException {}
+        // /CLOVER:ON
     }
 
     static class UnregisterAll implements ManagedVisitor<Map<ManagedGroup, Exception>> {
-        // /CLOVER:ON
         private void depthFirstVisit(ManagedGroup group, Map<ManagedGroup, Exception> map) {
             for (ManagedGroup child : group.getChildren()) {
                 depthFirstVisit(child, map);
@@ -221,6 +221,6 @@ public final class Managements {
         /** {@inheritDoc} */
         // /CLOVER:OFF
         public void visitManagedObject(Object o) throws JMException {}
-
+        // /CLOVER:ON
     }
 }

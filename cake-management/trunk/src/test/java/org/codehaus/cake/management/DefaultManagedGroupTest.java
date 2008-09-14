@@ -71,6 +71,7 @@ public class DefaultManagedGroupTest {
         ManagedGroup mg = dmg.addChild("abb", "bcc");
         assertEquals("abb", mg.getName());
         assertEquals("bcc", mg.getDescription());
+        assertSame(mg, dmg.getChild("abb"));
         assertEquals(0, mg.getChildren().size());
         assertNull(mg.getObjectName());
         assertEquals(0, mg.getObjects().size());
