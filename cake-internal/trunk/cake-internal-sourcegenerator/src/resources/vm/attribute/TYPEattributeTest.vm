@@ -28,8 +28,8 @@ public final class ${this} extends AtrStubs {
     public void _constructors() {
         assertEquals($util.val(0), new ${Type}Attribute() {}.getDefault().${type}Value()${equalTest});
         assertEquals($util.val(0), new ${Type}Attribute("a") {}.getDefaultValue()${equalTest});
-        assertFalse(new ${Type}Attribute() {}.getName().equals(new ${Type}Attribute() {}.getName()));
-        assertFalse(new ${Type}Attribute($util.val(3)) {}.getName().equals(new ${Type}Attribute($util.val(3)) {}.getName()));
+//        assertFalse(new ${Type}Attribute() {}.getName().equals(new ${Type}Attribute() {}.getName()));
+//        assertFalse(new ${Type}Attribute($util.val(3)) {}.getName().equals(new ${Type}Attribute($util.val(3)) {}.getName()));
         assertTrue(new ${Type}Attribute("a") {}.getName().equals(new ${Type}Attribute("a") {}.getName()));
         assertEquals($util.val(3), new ${Type}Attribute($util.val(3)) {}.getDefaultValue()${equalTest});
         assertEquals($util.val(0), ATR0.getDefaultValue()${equalTest});
