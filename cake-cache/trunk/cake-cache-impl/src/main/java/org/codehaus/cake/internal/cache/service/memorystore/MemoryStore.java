@@ -64,6 +64,6 @@ public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
 
     void process(TrimToVolumeRequest<K, V> r);
 
-    void processUpdate(AttributeMap attributes);
+    void updateConfiguration(AttributeMap attributes);
 
 }

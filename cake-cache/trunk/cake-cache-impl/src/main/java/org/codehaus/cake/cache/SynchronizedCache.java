@@ -142,4 +142,19 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
             return super.toString();
         }
     }
+    
+    /**
+     * Creates a new UnsynchronizedCache from the specified configuration.
+     * 
+     * @param configuration
+     *            the cache configuration to create the cache from
+     * @param <K>
+     *            the types of key maintained by the cache
+     * @param <V>
+     *            the types of values maintained by the cache
+     * @return a new UnsynchronizedCache
+     */
+    public static <K, V> SynchronizedCache<K, V> from(CacheConfiguration<K, V> configuration) {
+        return new SynchronizedCache<K, V>(configuration);
+    }
 }

@@ -34,7 +34,7 @@ import junit.framework.AssertionFailedError;
 import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;

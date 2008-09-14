@@ -12,7 +12,7 @@ public class EnableManagement {
     public static void main(String[] args) throws InterruptedException {
         CacheConfiguration<String, String> conf = CacheConfiguration.newConfiguration("ManagementTest");
         conf.withManagement().setEnabled(true); // enables JMX management
-        Cache<String, String> cache = conf.newInstance(SynchronizedCache.class);
+        Cache<String, String> cache = SynchronizedCache.from(conf);
         cache.put("hello", "world");
         Thread.sleep(10 * 60 * 1000); // sleep 10 minutes, to allow management console to startup
     }

@@ -10,6 +10,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
+import org.codehaus.cake.cache.UnsynchronizedCache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.annotation.ManagedObject;
@@ -32,7 +33,7 @@ public class CountCacheLoader implements BlockingCacheLoader<String, String> {
         CacheConfiguration<String, String> conf = CacheConfiguration.newConfiguration("CountCacheUsage");
         conf.withLoading().setLoader(new CountCacheLoader()); // sets the loader
         conf.withManagement().setEnabled(true); // enables JMX management
-        Cache<String, String> cache = conf.newInstance(SynchronizedCache.class);
+        Cache<String, String> cache = SynchronizedCache.from(conf);
 
         // load one value each second for 10 minutes
         for (int i = 0; i < 600; i++) {

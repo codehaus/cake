@@ -12,8 +12,8 @@ public class SetNameExample {
     public static void main(String[] args) {
         CacheConfiguration<String, String> cc = CacheConfiguration.newConfiguration();
         cc.setName("MyCache");
-        Cache<String, String> c = cc.newInstance(UnsynchronizedCache.class);
-        System.out.println(c);
+        Cache<String, String> c = UnsynchronizedCache.from(cc);
+        System.out.println(c.getName());
     }
 }
 // END SNIPPET: class

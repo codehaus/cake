@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
-import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
+import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.util.Logger.Level;
 
 public class CacheTestExceptionHandler<K, V> extends CacheExceptionHandler<K, V> {

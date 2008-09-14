@@ -22,7 +22,7 @@ public class CacheHTTPExample {
     public static void main(String[] args) {
         CacheConfiguration<String, String> cc = CacheConfiguration.newConfiguration();
         cc.withLoading().setLoader(new UrlLoader());
-        UnsynchronizedCache<String, String> c = cc.newInstance(UnsynchronizedCache.class);
+        UnsynchronizedCache<String, String> c = UnsynchronizedCache.from(cc);
         readGoogle(c, "Not Cached : ");
         readGoogle(c, "Cached     : ");
     }

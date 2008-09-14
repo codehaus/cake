@@ -37,7 +37,6 @@ import org.codehaus.cake.ops.Ops.Predicate;
  */
 public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
-    public static final IntAttribute MAXIMUM_SIZE = new IntAttribute("Maximum Size") {};
     private Ops.Procedure<MemoryStoreService<K, V>> evictor;
 
     private final AttributeMap attributes = new DefaultAttributeMap();

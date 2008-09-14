@@ -36,11 +36,10 @@ import org.codehaus.cake.service.ServiceManager;
 /**
  * An <tt>unsynchronized</tt> {@link Cache} implementation.
  * <p>
- * If multiple threads access this cache concurrently, and at least one of the
- * threads modifies the cache structurally, it <i>must</i> be synchronized
- * externally. (A structural modification is any operation that adds, deletes or
- * changes one or more mappings.) This is typically accomplished by
- * synchronizing on some object that naturally encapsulates the cache.
+ * If multiple threads access this cache concurrently, and at least one of the threads modifies the cache structurally,
+ * it <i>must</i> be synchronized externally. (A structural modification is any operation that adds, deletes or changes
+ * one or more mappings.) This is typically accomplished by synchronizing on some object that naturally encapsulates the
+ * cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: UnsynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
@@ -67,12 +66,27 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
         super(createComposer(configuration));
     }
 
+    /**
+     * Creates a new UnsynchronizedCache from the specified configuration.
+     * 
+     * @param configuration
+     *            the cache configuration to create the cache from
+     * @param <K>
+     *            the types of key maintained by the cache
+     * @param <V>
+     *            the types of values maintained by the cache
+     * @return a new UnsynchronizedCache
+     */
+    public static <K, V> UnsynchronizedCache<K, V> from(CacheConfiguration<K, V> configuration) {
+        return new UnsynchronizedCache<K, V>(configuration);
+    }
+
     /** {@inheritDoc} */
     public boolean containsValue(Object value) {
         if (value == null) {
             throw new NullPointerException("value is null");
         }
-        for ( V v : values()) {
+        for (V v : values()) {
             if (v.equals(value)) {
                 return true;
             }

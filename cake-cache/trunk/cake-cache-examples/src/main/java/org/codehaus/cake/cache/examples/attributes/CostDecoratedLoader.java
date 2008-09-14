@@ -10,11 +10,8 @@ import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 public class CostDecoratedLoader<K, V> implements BlockingCacheLoader<K, V> {
     private final BlockingCacheLoader<K, V> realLoader;
 
-    public CostDecoratedLoader(BlockingCacheLoader<K, V> delegator) {
-        if (delegator == null) {
-            throw new NullPointerException("delegator is null");
-        }
-        this.realLoader = delegator;
+    public CostDecoratedLoader(BlockingCacheLoader<K, V> realLoader) {
+        this.realLoader = realLoader;
     }
 
     public V load(K key, AttributeMap attributes) throws Exception {

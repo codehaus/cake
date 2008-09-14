@@ -19,7 +19,7 @@ public class PlusTwoExample {
     public static void main(String[] args) {
         CacheConfiguration<Integer, Integer> cc = CacheConfiguration.newConfiguration();
         cc.withLoading().setLoader(new Plus2Loader());
-        UnsynchronizedCache<Integer, Integer> c = cc.newInstance(UnsynchronizedCache.class);
+        UnsynchronizedCache<Integer, Integer> c = UnsynchronizedCache.from(cc);
         System.out.println(c.get(5)); // prints 7
         System.out.println(c.get(8));// prints 10
     }

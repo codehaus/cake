@@ -277,6 +277,11 @@ public final class Caches {
         public CacheServices<K, V> with() {
             return new CacheServices<K, V>(this);
         }
+        
+        /** {@inheritDoc} */
+        public CacheCrud<K, V> withCrud() {
+            return new CacheCrud<K, V>(this);
+        }
     }
 
     /**

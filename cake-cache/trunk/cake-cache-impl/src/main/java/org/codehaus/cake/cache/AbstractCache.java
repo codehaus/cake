@@ -48,7 +48,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     private final WriteService<K, V, V> returnPreviousValue;
     
     private CacheServices<K, V> services;
-
+    private CacheCrud<K, V> crud;
     /** Object containing the various collection views. */
     private final CollectionViews<K, V> views;
 
@@ -225,7 +225,13 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         }
         return services;
     }
-
+    /** {@inheritDoc} */
+    public CacheCrud<K, V> withCrud() {
+        if (crud == null) {
+            crud = new CacheCrud<K, V>(this);
+        }
+        return crud;
+    }
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = new Composer(Cache.class, configuration);
         composer.registerImplementation(ExportedMemoryStoreService.class);

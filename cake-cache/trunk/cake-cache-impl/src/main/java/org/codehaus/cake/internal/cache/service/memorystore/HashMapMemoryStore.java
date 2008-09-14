@@ -22,10 +22,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
@@ -44,7 +47,7 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.internal.service.configuration.ConfigurableService;
+import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
@@ -57,7 +60,7 @@ import org.codehaus.cake.service.annotation.Stoppable;
  * @param <K>
  * @param <V>
  */
-public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeService, ConfigurableService {
+public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeService, RuntimeConfigurableService {
 
     private final InternalAttributeService<K, V> attributeService;
     private final Procedure<MemoryStoreService<K, V>> evictor;
@@ -76,6 +79,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         this.ies = ies;
         policy = storeConfiguration.getPolicy();
         isCacheable = (Predicate) storeConfiguration.getIsCacheableFilter();
+        updateConfiguration(storeConfiguration.getAttributes());
         evictor = storeConfiguration.getEvictor();
     }
 
@@ -99,7 +103,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         return entry;
     }
 
-    public CacheEntry<K, V> get(Object key) {
+    public CacheEntry<K, V> get(K key) {
         CacheEntry<K, V> entry = map.get(key);
         if (entry != null) {
             // Perhaps we can move .access to outer loop
@@ -144,7 +148,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         };
     }
 
-    public CacheEntry<K, V> peek(Object key) {
+    public CacheEntry<K, V> peek(K key) {
         return map.get(key);
     }
 
@@ -317,7 +321,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         trimToVolume(r, comparator, volume);
     }
 
-    public void processUpdate(AttributeMap attributes) {
+    public void updateConfiguration(AttributeMap attributes) {
         isDisabled = attributes.get(MemoryStoreAttributes.IS_DISABLED, isDisabled);
         maximumSize = attributes.get(MemoryStoreAttributes.MAX_SIZE, maximumSize);
         if (maximumSize == 0) {
@@ -480,5 +484,10 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
             this.newVolume = volume;
             this.comparator = comparator;
         }
+    }
+
+    public Set<Attribute<?>> getRuntimeConfigurableAttributes() {
+        return new HashSet<Attribute<?>>(Arrays.<Attribute<?>> asList(MemoryStoreAttributes.IS_DISABLED,
+                MemoryStoreAttributes.MAX_SIZE, MemoryStoreAttributes.MAX_VOLUME));
     }
 }

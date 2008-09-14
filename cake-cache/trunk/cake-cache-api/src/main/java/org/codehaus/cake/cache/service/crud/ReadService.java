@@ -20,6 +20,9 @@ public interface ReadService<K, R> {
     BooleanAttribute PEEK = new BooleanAttribute() {};
 
     BooleanAttribute READ_THROUGH = new BooleanAttribute() {};
+    //Get throws IllegalStateException if a value could not be found
+    //getAll() if not _all_ values could be found
+    BooleanAttribute ASSERT_GET = new BooleanAttribute() {}; //FAIL_IF_NOT_AVAILABLE
 
     public enum ReadType {
         PEEK, NORMAL, READ_THROUGH, READ_THROUGH_NO_CACHE
@@ -51,6 +54,7 @@ public interface ReadService<K, R> {
      */
     R get(K key, AttributeMap attributes);
 
+    Map<K,R> get(K arg, K... args);
     /**
      * Attempts to retrieve all of the mappings for the specified collection of keys. The effect of this call is
      * equivalent to that of calling {@link #get(Object)} on this cache once for each key in the specified collection.

@@ -23,8 +23,8 @@ import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.annotation.Startable;
-import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.junit.After;
 import org.junit.Test;
 

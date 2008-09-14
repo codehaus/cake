@@ -136,4 +136,8 @@ public class DefaultWriteService<K, V, R> implements WriteService<K, V, R> {
             CacheProcessor<K, V> processor, Op<CacheEntry<K, V>, R> previous) {
         return new DefaultWriteService<K, V, R>(factory, processor, previous, null);
     }
+
+    public R putIfAbsentLazyCreate(K key, Op<K, CacheEntry<K, V>> factory) {
+        throw new UnsupportedOperationException();
+    }
 }

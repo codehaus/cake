@@ -218,7 +218,5 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     LongAttribute VERSION = new Caches.VersionAttribute();
 
     // cost of retrieving the item
-    // time to live ENTRY_TIME_TO_LIVE =
-    // expiration time = time to live + System.timestamp
     // Logger <-detailed logging about an entry.
 }

@@ -218,7 +218,10 @@ public class DummyCache<K, V> implements Cache<K, V> {
     public Collection<V> values() {
         return null;
     }
-
+    /** {@inheritDoc} */
+    public CacheCrud<K, V> withCrud() {
+        return new CacheCrud<K, V>(this);
+    }
     /**
      * A Cache that is abstract.
      */

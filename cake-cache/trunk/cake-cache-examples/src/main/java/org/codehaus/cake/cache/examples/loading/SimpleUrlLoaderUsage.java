@@ -9,7 +9,7 @@ public class SimpleUrlLoaderUsage {
     public static void main(String[] args) {
         CacheConfiguration<String, String> conf = CacheConfiguration.newConfiguration();
         conf.withLoading().setLoader(new SimpleUrlLoader());
-        Cache<String, String> cache = conf.newInstance(UnsynchronizedCache.class);
+        Cache<String, String> cache = UnsynchronizedCache.from(conf);
         System.out.println(cache.get("http://www.google.com")); // uses CacheLoader
         System.out.println(cache.get("http://www.google.com")); // uses cached version
     }

@@ -71,8 +71,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * if the state of the cache changed (cache was non-empty).
      * <p>
      * If the reason for clearing the cache is to get rid of stale data another alternative, if the cache has a
-     * CacheLoader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will
-     * reload all elements that currently in the cache.
+     * cache loader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will
+     * reload all elements that are in the cache.
      * <p>
      * If the cache has been shutdown calls to this method is ignored
      * 
@@ -254,10 +254,10 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * It will not try to fetch missing items, it will only return a value if it actually exists in the cache.
      * Furthermore, it will not effect the statistics gathered by the cache.
      * <p>
-     * All implementations of this method should take care to assure that a call to peek does not have any unforeseen
+     * All implementations of this method should take care to assure that a call to peek does not have any observable
      * side effects. For example, it should not modify some state in addition to returning a value or not returning a
      * value.
-     * 
+     *
      * @param key
      *            key whose associated value is to be returned.
      * @return the value to which this cache maps the specified key, or <tt>null</tt> if the cache contains no mapping
@@ -273,7 +273,10 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
     /**
      * This method works analogues to the {@link #peek(Object)} method. However, it will return a cache entry instead of
      * just the value.
-     * 
+     * <p>
+     * All implementations of this method should take care to assure that a call to peek does not have any observable
+     * side effects. For example, it should not modify some state in addition to returning a value or not returning a
+     * value.
      * @param key
      *            key whose associated cache entry is to be returned.
      * @return the cache entry to which this cache maps the specified key, or <tt>null</tt> if the cache contains no
@@ -539,4 +542,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * @return a CacheServices object
      */
     CacheServices<K, V> with();
+    
+    CacheCrud<K, V> withCrud();
 }

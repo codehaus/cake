@@ -17,7 +17,7 @@ package org.codehaus.cake.cache;
 
 import javax.management.MBeanServer;
 
-import org.codehaus.cake.service.management.ManagementConfiguration;
+import org.codehaus.cake.service.common.management.ManagementConfiguration;
 
 /**
  * The management interface for a {@link Cache}. Some cache implementations might define additional methods in addition
