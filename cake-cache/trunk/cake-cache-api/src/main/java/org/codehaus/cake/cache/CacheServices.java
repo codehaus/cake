@@ -18,7 +18,7 @@ package org.codehaus.cake.cache;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.crud.WriteService;
+import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.ops.Ops.Op;
@@ -55,15 +55,15 @@ public class CacheServices<K, V> {
         this.serviceManager = cache;
     }
 
-    public <R> WriteService<K, V, R> write(Op<CacheEntry<K, V>, R> extractor) {
-        return getService(WriteService.class, WriteService.WRITE_TRANSFORMER.singleton(extractor));
+    public <R> CrudWriter<K, V, R> write(Op<CacheEntry<K, V>, R> extractor) {
+        return getService(CrudWriter.class, CrudWriter.WRITE_TRANSFORMER.singleton(extractor));
     }
 
-    public WriteService<K, V, CacheEntry<K, V>> writeReturnEntry() {
+    public CrudWriter<K, V, CacheEntry<K, V>> writeReturnEntry() {
         return write((Op) CacheDataExtractor.WHOLE_ENTRY);
     }
 
-    public WriteService<K, V, V> writeReturnValue() {
+    public CrudWriter<K, V, V> writeReturnValue() {
         return write((Op) CacheDataExtractor.ONLY_VALUE);
     }
 

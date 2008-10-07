@@ -425,23 +425,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
     boolean remove(Object key, Object value);
 
     /**
-     * Attempts to remove all of the mappings for the specified collection of keys. The effect of this call is
-     * equivalent to that of calling {@link org.codehaus.cake.cache.Cache#removeByIndex(Object)} on the cache once for
-     * each key in the specified collection. However, in some cases it can be much faster to remove several cache items
-     * at once, for example, if some of the values must also be removed on a remote host.
-     * 
-     * @param keys
-     *            a collection of keys whose associated mappings are to be removed.
-     * @throws UnsupportedOperationException
-     *             if the <tt>remove</tt> operation is not supported by this cache.
-     * @throws IllegalStateException
-     *             if the cache has been shutdown
-     * @throws NullPointerException
-     *             if the specified collection or any of its containing keys are <tt>null</tt>.
-     */
-    void removeAll(Collection<? extends K> keys);
-
-    /**
      * Replaces the entry for a key only if currently mapped to some value. This is equivalent to
      * 
      * <pre>
@@ -543,5 +526,5 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      */
     CacheServices<K, V> with();
     
-    CacheCrud<K, V> withCrud();
+    CacheCrud<K, V> crud();
 }

@@ -8,14 +8,12 @@ import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
-public interface ReadService<K, R> {
+public interface CrudReader<K, R> {
 
     /**
      * An attribute used to indicate that a ReadService should only look in the in-memory store. It will not try to
      * fetch missing items, it will only return a value if it actually exists in the cache. Furthermore, it will not
      * effect any statistics gathered by the cache.
-     * 
-     * 
      */
     BooleanAttribute PEEK = new BooleanAttribute() {};
 
@@ -54,7 +52,6 @@ public interface ReadService<K, R> {
      */
     R get(K key, AttributeMap attributes);
 
-    Map<K,R> get(K arg, K... args);
     /**
      * Attempts to retrieve all of the mappings for the specified collection of keys. The effect of this call is
      * equivalent to that of calling {@link #get(Object)} on this cache once for each key in the specified collection.
