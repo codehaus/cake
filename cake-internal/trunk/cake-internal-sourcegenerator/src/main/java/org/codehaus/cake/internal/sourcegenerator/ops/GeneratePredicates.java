@@ -37,13 +37,13 @@ public class GeneratePredicates extends GeneratorBuilder {
             gb.addImport("static org.codehaus.cake.ops.Ops.*");
             gb.setClassName(cl.getTypeCap() + "Predicates");
             cl.add(gb.context());
-            gb.generate("ops/TYPEpredicates.vm", "cake-core/cake-ops/src/main/java/");
+            gb.generate("ops/TYPEpredicates.vm", "cake-ops/src/main/java/");
 
             gb = new GeneratorBuilder();
             gb.setPackage("org.codehaus.cake.ops");
             gb.setClassName(cl.getTypeCap() + "PredicatesTest");
             cl.add(gb.context());
-            gb.generate("ops/TYPEpredicatesTest.vm", "cake-core/cake-ops/src/test/java/");
+            gb.generate("ops/TYPEpredicatesTest.vm", "cake-ops/src/test/java/");
         }
     }
 }

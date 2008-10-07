@@ -76,6 +76,7 @@ public class GeneratorBuilder {
     public void generate(String templateFile, String target) throws Exception {
         String t = target + "/" + context.get("package").toString().replace('.', '/') + "/";
         t += context.get("this").toString() + ".java";
+        System.out.println(t);
         File f = new File(t);
         f.getParentFile().mkdirs();
         BufferedWriter writer = new BufferedWriter(new FileWriter(t));

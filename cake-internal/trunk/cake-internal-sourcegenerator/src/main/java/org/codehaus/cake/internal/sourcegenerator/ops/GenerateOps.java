@@ -38,13 +38,13 @@ public class GenerateOps extends GeneratorBuilder {
             gb.addImport("static org.codehaus.cake.ops.Ops.*");
             gb.setClassName(cl.getTypeCap() + "Ops");
             cl.add(gb.context());
-            gb.generate("ops/TYPEops.vm", "cake-ops/trunk/src/main/java/");
+            gb.generate("ops/TYPEops.vm", "cake-ops/src/main/java/");
 
             gb = new GeneratorBuilder();
             gb.setPackage("org.codehaus.cake.ops");
             gb.setClassName(cl.getTypeCap() + "OpsTest");
             cl.add(gb.context());
-            gb.generate("ops/TYPEOpsTest.vm", "cake-ops/trunk/src/test/java/");
+            gb.generate("ops/TYPEOpsTest.vm", "cake-ops/src/test/java/");
         }
     }
 }

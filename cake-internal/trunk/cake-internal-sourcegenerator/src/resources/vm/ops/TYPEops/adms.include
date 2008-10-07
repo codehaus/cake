@@ -7,14 +7,18 @@
     
      final static ${Type}MultiplyReducer MULTIPLY_REDUCER = new ${Type}MultiplyReducer();
 
-        public static $util.op("Reducer") add() {
+    public static $util.op("Reducer") add() {
         return ADD_REDUCER;
     }
     
     public static $util.op("Op") add($type add) {
         return new ${Type}AddOp(add);
     }
-    
+
+    public static $util.op("Op") constant($type constant) {
+        return new ${Type}ConstantOp(constant);
+    }
+        
     public static $util.op("Reducer") divide() {
         return DIVIDE_REDUCER;
     }
@@ -150,5 +154,20 @@
 
         public $type op($type a) {
             return $util.multiply("a","multiply");
+        }
+    }
+    
+    static final class ${Type}ConstantOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1;
+
+        private final $type constant;
+
+        public ${Type}ConstantOp($type constant) {
+            this.constant = constant;
+        }
+
+        public $type op($type a) {
+            return constant;
         }
     }
