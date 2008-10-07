@@ -26,6 +26,19 @@ import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Logger;
 
+/**
+ * An exception service available as an internal service at runtime.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: InternalCacheExceptionService.java 544 2008-01-05 01:19:03Z kasper $
+ * @param <K>
+ *            the type of keys maintained by the cache
+ * @param <V>
+ *            the type of mapped values
+ */
 public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService<Cache<K, V>> implements
         InternalCacheExceptionService<K, V> {
     /** The CacheExceptionHandler configured for this cache. */
@@ -46,7 +59,7 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
     }
     /** {@inheritDoc} */
     public V loadFailed(Throwable cause, K key, AttributeMap map) {
-        String message = "Loading of Value failed [key = " + key + "]";
+        String message = "Loading failed [key = " + key + "]";
         return exceptionHandler.loadingOfValueFailed(createContext(cause, message, Logger.Level.Error), key, map);
     }
 }

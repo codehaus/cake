@@ -5,13 +5,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.cake.cache.service.crud.WriteService;
+import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
+import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
-import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
-import org.codehaus.cake.internal.cache.service.crud.DefaultWriteService;
-import org.codehaus.cake.internal.cache.service.crud.WriteServiceFactory;
+import org.codehaus.cake.internal.cache.service.crud.DefaultCrudBatchWriter;
+import org.codehaus.cake.internal.cache.service.crud.DefaultCrudWriter;
+import org.codehaus.cake.internal.cache.service.crud.CrudWriterFactory;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
@@ -43,10 +44,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     private final CacheRequestFactory<K, V> requestFactory;
 
-    private final WriteService<K, V, Boolean> returnPreviousNotNull;
+    private final CrudWriter<K, V, Boolean> returnPreviousNotNull;
+    private final CrudWriter<K, V, V> returnPreviousValue;
+    private final CrudBatchWriter<K, V, Void> returnPreviousNull;
 
-    private final WriteService<K, V, V> returnPreviousValue;
-    
     private CacheServices<K, V> services;
     private CacheCrud<K, V> crud;
     /** Object containing the various collection views. */
@@ -64,8 +65,9 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         views = composer.get(CollectionViews.class);
         requestFactory = composer.get(CacheRequestFactory.class);
         processor = composer.get(CacheProcessor.class);
-        returnPreviousValue = DefaultWriteService.returnPreviousValue(requestFactory, processor);
-        returnPreviousNotNull = DefaultWriteService.previousNotNull(requestFactory, processor);
+        returnPreviousValue = DefaultCrudWriter.returnPreviousValue(requestFactory, processor);
+        returnPreviousNotNull = DefaultCrudWriter.previousNotNull(requestFactory, processor);
+        returnPreviousNull = DefaultCrudBatchWriter.returnVoid(requestFactory, processor);
     }
 
     /** {@inheritDoc} */
@@ -148,7 +150,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public void putAll(Map<? extends K, ? extends V> t) {
-        returnPreviousValue.putAll(t);
+        returnPreviousNull.putAll(t);
     }
 
     /** {@inheritDoc} */
@@ -166,12 +168,6 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         K k = (K) key;
         V v = (V) value;
         return returnPreviousNotNull.remove(k, v).booleanValue();
-    }
-
-    /** {@inheritDoc} */
-    public void removeAll(Collection<? extends K> keys) {
-        RemoveEntriesRequest<K, V> request = requestFactory.removeAll(keys);
-        processor.process(request);
     }
 
     /** {@inheritDoc} */
@@ -225,19 +221,21 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         }
         return services;
     }
+
     /** {@inheritDoc} */
-    public CacheCrud<K, V> withCrud() {
+    public CacheCrud<K, V> crud() {
         if (crud == null) {
             crud = new CacheCrud<K, V>(this);
         }
         return crud;
     }
+
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = new Composer(Cache.class, configuration);
         composer.registerImplementation(ExportedMemoryStoreService.class);
         composer.registerInstance(CacheConfiguration.class, configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);
-        composer.registerImplementation(WriteServiceFactory.class);
+        composer.registerImplementation(CrudWriterFactory.class);
         return composer;
     }
 }

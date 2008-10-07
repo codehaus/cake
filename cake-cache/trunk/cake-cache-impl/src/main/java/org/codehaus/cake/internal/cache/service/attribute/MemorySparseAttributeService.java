@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,24 +25,21 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
-import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.util.Clock;
 
 public class MemorySparseAttributeService<K, V> implements InternalAttributeService<K, V> {
     private static final AtomicLong al = new AtomicLong();
-    private Composer composer;
-    private Constructor<AttributeMap> constructor;
+    // private Constructor<AttributeMap> constructor;
 
     private CacheAttributeMapFactory<K, V> generator;
 
     private final Map<Attribute, CacheAttributeMapConfiguration> map = new HashMap<Attribute, CacheAttributeMapConfiguration>();
     private final Clock clock;
-    private final InternalExceptionService ies;
+    private final InternalExceptionService<?> ies;
 
-    public MemorySparseAttributeService(Composer composer, CacheAttributeConfiguration configuration, Clock clock,
-            InternalExceptionService ies) {
-        this.composer = composer;
+    public MemorySparseAttributeService(CacheAttributeConfiguration configuration, Clock clock,
+            InternalExceptionService<?> ies) {
         this.clock = clock;
         this.ies = ies;
         for (Object o : configuration.getAllAttributes()) {
@@ -61,9 +57,6 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     public AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
         return generator.create(key, value, params, previous);
     }
-
-    // private static Map<Class, Set<DefaultAttributeConfiguration>> constructors = new
-    // WeakHashMap<Class, DefaultAttributeConfiguration>();
 
     private void updateAttributes() {
         String name = "CacheEntryGenerator" + al.getAndIncrement();

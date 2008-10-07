@@ -5,10 +5,10 @@ import java.util.Comparator;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultAddAllRequest;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultCreateUpdateRequest;
+import org.codehaus.cake.internal.cache.processor.defaults.DefaultCreateUpdateWithFactoryRequest;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultRemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultRemoveRequest;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultTrimToSizeRequest;
@@ -27,6 +27,14 @@ import org.codehaus.cake.ops.Ops.Predicate;
 
 public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, V> {
 
+    public ClearCacheRequest<K, V> createClear() {
+        return new InternalCacheClearEvent();
+    }
+
+    public AddEntriesRequest<K, V> createEntries(Map<? extends K, ? extends V> t, AttributeMap attributes) {
+        return new DefaultAddAllRequest<K, V>(t, attributes);
+    }
+
     public TrimToSizeRequest<K, V> createTrimToSizeRequest(int trimToSize,
             Comparator<? extends CacheEntry<K, V>> comparator) {
         return new DefaultTrimToSizeRequest<K, V>(trimToSize, comparator);
@@ -37,15 +45,22 @@ public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, 
         return new DefaultTrimToVolumeRequest<K, V>(volume, comparator);
     }
 
-    public ClearCacheRequest<K, V> createClear() {
-        return new InternalCacheClearEvent();
-    }
-
     public AddEntryRequest<K, V> createUpdate(K key, AttributeMap attributes, Object value,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate) {
         return new DefaultCreateUpdateRequest<K, V>(key, attributes, value, updatePredicate, previousEntryUpdate,
                 nextEntryUpdate);
+    }
+
+    public AddEntryRequest<K, V> createUpdate(K key, Predicate<? extends CacheEntry<K, V>> updatePredicate,
+            Op<? extends K, CacheEntry<K, V>> factory, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
+            Op<CacheEntry<K, V>, ?> nextEntryUpdate) {
+        return new DefaultCreateUpdateWithFactoryRequest<K, V>(key,factory, updatePredicate, previousEntryUpdate,
+                nextEntryUpdate);
+    }
+
+    public AddEntryRequest<K, V> loaded(K key, V value, AttributeMap attributes) {
+        return new DefaultCreateUpdateRequest<K, V>(key, attributes, value, null, null, null);
     }
 
     public RemoveEntryRequest<K, V> remove(K key, Predicate<? extends CacheEntry<K, V>> removePredicate,
@@ -59,14 +74,6 @@ public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, 
         }
         CollectionUtils.checkCollectionForNulls(keys);
         return new DefaultRemoveEntriesRequest<K, V>(keys);
-    }
-
-    public AddEntriesRequest<K, V> createEntries(Map<? extends K, ? extends V> t) {
-        return new DefaultAddAllRequest<K, V>(t);
-    }
-
-    public AddEntryRequest<K, V> loaded(K key, V value, AttributeMap attributes) {
-        return new DefaultCreateUpdateRequest<K, V>(key, attributes, value, null, null, null);
     }
 
 }

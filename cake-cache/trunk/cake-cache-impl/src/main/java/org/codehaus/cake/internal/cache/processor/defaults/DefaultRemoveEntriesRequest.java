@@ -2,10 +2,7 @@ package org.codehaus.cake.internal.cache.processor.defaults;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.ops.Ops.Predicate;

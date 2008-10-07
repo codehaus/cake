@@ -22,12 +22,17 @@ public interface CacheRequestFactory<K, V> {
     TrimToVolumeRequest<K, V> createTrimToVolumeRequest(long volume, Comparator<? extends CacheEntry<K, V>> comparator);
 
     AddEntryRequest<K, V> loaded(K key, V value, AttributeMap attributes);
-    
+
     AddEntryRequest<K, V> createUpdate(K key, AttributeMap attributes, Object value,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate);
 
-    AddEntriesRequest<K, V> createEntries(Map<? extends K, ? extends V> t);
+    AddEntryRequest<K, V> createUpdate(K key, Predicate<? extends CacheEntry<K, V>> updatePredicate,
+            Op<? extends K, CacheEntry<K, V>> factory, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
+            Op<CacheEntry<K, V>, ?> nextEntryUpdate);
+
+    AddEntriesRequest<K, V> createEntries(Map<? extends K, ? extends V> t, AttributeMap attributes);
+
     RemoveEntryRequest<K, V> remove(K key, Predicate<? extends CacheEntry<K, V>> removePredicate,
             Op<CacheEntry<K, V>, ?> previousEntryUpdate);
 

@@ -66,11 +66,12 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
     private final Procedure<MemoryStoreService<K, V>> evictor;
     private final InternalCacheExceptionService<K, V> ies;
     private final Predicate<CacheEntry<K, V>> isCacheable;
+    private final ReplacementPolicy<K, V> policy;
+
     private boolean isDisabled;
     private final Map<K, CacheEntry<K, V>> map = new HashMap<K, CacheEntry<K, V>>();
     private int maximumSize;
     private long maximumVolume;
-    private final ReplacementPolicy<K, V> policy;
     private long volume;
 
     public HashMapMemoryStore(MemoryStoreConfiguration<K, V> storeConfiguration,

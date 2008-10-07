@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.internal.cache.service.loading;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,14 +35,14 @@ import org.codehaus.cake.service.annotation.ExportAsService;
 
 @ManagedObject(defaultValue = "Loading", description = "Cache Loading attributes and operations")
 @ExportAsService(CacheLoadingService.class)
-public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService>, CompositeService {
+public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService<?, ?>>, CompositeService {
 
     private Cache<K, V> cache;
 
+    private final Collection<Object> childServices;
     private InternalCacheLoadingService<K, V> loader;
-    private Predicate<? super CacheEntry<K, V>> needsReloadFilter;
 
-    private Collection<Object> childServices = new ArrayList<Object>();
+    private Predicate<? super CacheEntry<K, V>> needsReloadFilter;
 
     private CacheLoadingService<K, V> service = new NoForceLoading();
     private CacheLoadingService<K, V> serviceForced = new ForcedLoading();
@@ -52,8 +52,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
         this.cache = cache;
         this.loader = loader;
         this.needsReloadFilter = loadingConf.getNeedsReloadFilter();
-        childServices.add(loadingConf.getLoader());
-        childServices.add(needsReloadFilter);
+        childServices = Arrays.asList(loadingConf.getLoader(), needsReloadFilter);
     }
 
     Map<? extends K, ? extends AttributeMap> filterNeedsReload(Map<? extends K, ? extends AttributeMap> map) {
@@ -72,50 +71,27 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
         serviceForced.loadAll();
     }
 
+    public Collection<?> getChildServices() {
+        return childServices;
+    }
+
     /** {@inheritDoc} */
     @ManagedOperation(description = "Attempts to reload all entries that are either expired or which needs refreshing")
     public void loadAll() {
         service.loadAll();
     }
 
+    public CacheLoadingService<?, ?> lookup(
+            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<CacheLoadingService<?, ?>> context) {
+        if (CacheLoadingService.IS_FORCED.isTrue(context)) {
+            return serviceForced;
+        }
+        return service;
+    }
+
     boolean needsReload(K key) {
         CacheEntry<K, V> entry = cache.peekEntry(key);
         return entry == null || (needsReloadFilter != null && needsReloadFilter.op(entry));
-    }
-
-    public Collection<?> getChildServices() {
-        return childServices;
-    }
-
-    class NoForceLoading extends AbstractCacheLoadingService<K, V> {
-        void doLoad(K key, AttributeMap attributes) {
-            if (!cache.isShutdown()) {
-                if (needsReload(key)) {
-                    loader.loadAsync(key, attributes);
-                }
-            }
-        }
-
-        void doLoadAll(AttributeMap attributes) {
-            loadAll(cache.keySet(), attributes);
-        }
-
-        void doLoadAll(Iterable<? extends K> keys, AttributeMap attributes) {
-            HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
-            for (K key : keys) {
-                if (key == null) {
-                    throw new NullPointerException("Collection contains a null key");
-                }
-                map.put(key, attributes);
-            }
-            doLoadAll(map);
-        }
-
-        void doLoadAll(Map<? extends K, ? extends AttributeMap> mapWithAttributes) {
-            if (!cache.isShutdown()) {
-                loader.loadAsync((Map) filterNeedsReload(mapWithAttributes));
-            }
-        }
     }
 
     class ForcedLoading extends AbstractCacheLoadingService<K, V> {
@@ -147,12 +123,35 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
         }
     }
 
-    public CacheLoadingService lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<CacheLoadingService> context) {
-        if (CacheLoadingService.IS_FORCED.isTrue(context)) {
-            return serviceForced;
+    class NoForceLoading extends AbstractCacheLoadingService<K, V> {
+        void doLoad(K key, AttributeMap attributes) {
+            if (!cache.isShutdown()) {
+                if (needsReload(key)) {
+                    loader.loadAsync(key, attributes);
+                }
+            }
         }
-        return service;
+
+        void doLoadAll(AttributeMap attributes) {
+            loadAll(cache.keySet(), attributes);
+        }
+
+        void doLoadAll(Iterable<? extends K> keys, AttributeMap attributes) {
+            HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
+            for (K key : keys) {
+                if (key == null) {
+                    throw new NullPointerException("Collection contains a null key");
+                }
+                map.put(key, attributes);
+            }
+            doLoadAll(map);
+        }
+
+        void doLoadAll(Map<? extends K, ? extends AttributeMap> mapWithAttributes) {
+            if (!cache.isShutdown()) {
+                loader.loadAsync((Map) filterNeedsReload(mapWithAttributes));
+            }
+        }
     }
 
 }
