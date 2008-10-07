@@ -56,5 +56,5 @@ public @interface ExportAsService {
      * 
      * @return the key of the service
      */
-    Class<?> value();
+    Class<?>[] value();
 }

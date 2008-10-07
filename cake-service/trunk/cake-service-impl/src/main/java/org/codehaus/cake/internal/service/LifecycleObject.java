@@ -138,10 +138,12 @@ class LifecycleObject {
         }
         ExportAsService exportedKey = o.getClass().getAnnotation(ExportAsService.class);
         if (exportedKey != null) {
-            if (o instanceof ServiceFactory) {
-                registrant.registerFactory(exportedKey.value(), (ServiceFactory) o);
-            } else {
-                registrant.registerService((Class) exportedKey.value(), o);
+            for (Class c: exportedKey.value()) {
+                if (o instanceof ServiceFactory) {
+                    registrant.registerFactory(c, (ServiceFactory) o);
+                } else {
+                    registrant.registerService(c, o);
+                }
             }
         }
         for (Method m : o.getClass().getMethods()) {
