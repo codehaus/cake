@@ -351,7 +351,9 @@ public final class Ops {
     public static interface BinaryPredicate<A, B> {
         boolean op(A a, B b);
     }
-
+    public static interface BinaryProcedure<A, B> {
+        void op(A a, B b);
+    }
     public static interface Procedure<A> {
         void op(A a);
     }
@@ -500,7 +502,9 @@ public final class Ops {
     public static interface ObjectToLong<A> {
         long op(A a);
     }
-
+    public static interface ObjectToFloat<A> {
+        float op(A a);
+    }
     public static interface ObjectToDouble<A> {
         double op(A a);
     }
