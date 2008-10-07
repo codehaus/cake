@@ -189,11 +189,6 @@ public class DummyCache<K, V> implements Cache<K, V> {
     }
 
     /** {@inheritDoc} */
-    public void removeAll(Collection<? extends K> keys) {
-
-    }
-
-    /** {@inheritDoc} */
     public V replace(K key, V value) {
         return null;
     }
@@ -219,7 +214,7 @@ public class DummyCache<K, V> implements Cache<K, V> {
         return null;
     }
     /** {@inheritDoc} */
-    public CacheCrud<K, V> withCrud() {
+    public CacheCrud<K, V> crud() {
         return new CacheCrud<K, V>(this);
     }
     /**

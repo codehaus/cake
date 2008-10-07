@@ -131,7 +131,6 @@ public class CachesTest {
 
         assertNull(emptyCache().remove(1));
         assertFalse(emptyCache().remove(1, 2));
-        emptyCache().removeAll(Arrays.asList(1, 2, 3));
         try {
             assertNull(emptyCache().replace(1, 2));
             fail("should throw UnsupportedOperationException");
