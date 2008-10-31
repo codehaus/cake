@@ -27,6 +27,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>
         <configuration>
           <excludePackageNames> *.internal.*:*.tck.*:*.test.*:*.jcip.*:*.examples.*</excludePackageNames>
           <aggregate>true</aggregate>
@@ -66,11 +67,11 @@
       </activation>
       <modules>
         <module>cake-attributes</module>
+
         <module>cake-management</module>
         <module>cake-ops</module>
-        <module>cake-util</module>
-        <module>cake-cache</module>
         <module>cake-service</module>
+        <module>cake-util</module>
       </modules>
     </profile>
   </profiles>
