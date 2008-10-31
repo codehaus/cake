@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -217,6 +218,11 @@ public class DummyCache<K, V> implements Cache<K, V> {
     public CacheCrud<K, V> crud() {
         return new CacheCrud<K, V>(this);
     }
+    
+    public Iterator<CacheEntry<K, V>> iterator() {
+        return Collections.EMPTY_LIST.iterator();
+    }
+
     /**
      * A Cache that is abstract.
      */
@@ -320,5 +326,9 @@ public class DummyCache<K, V> implements Cache<K, V> {
 
     public Set<Class<?>> serviceKeySet() {
         return Collections.emptySet();
+    }
+
+    public CacheSelector<K, V> select() {
+        return Caches.EMPTY_SELECTOR;
     }
 }

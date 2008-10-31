@@ -27,6 +27,7 @@ public class ExplicitNeedsReload extends AbstractCacheTCKTest {
         conf.withLoading().setNeedsReloadFilter(predicate);
         assertPeek(entry(M1, null));
         load(M1);
+        assertLoads(1);
         load(entry(M1, null));
         assertPeek(M1);
         assertLoads(1);

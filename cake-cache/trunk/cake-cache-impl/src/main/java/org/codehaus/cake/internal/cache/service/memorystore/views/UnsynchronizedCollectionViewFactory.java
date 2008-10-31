@@ -13,27 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.cache.service.loading;
+package org.codehaus.cake.internal.cache.service.memorystore.views;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.Cache;
 
-public interface InternalCacheLoadingService<K, V> {
+public class UnsynchronizedCollectionViewFactory<K, V> implements CollectionViewFactory<K, V> {
 
-    void loadAsync(K key, AttributeMap attributes);
+    public Set<Map.Entry<K, V>> entrySet(Cache<K,V> cache) {
+        return new EntrySet<K, V>(cache);
+    }
 
-    void loadAsync(Map<? extends K, AttributeMap> map);
+    public Set<K> keySet(Cache<K,V> cache) {
+        return new KeySet<K, V>(cache);
+    }
 
-    // throws errors /runtime exceptions
-    /**
-     * <p>
-     * This method can be called without holding a lock.
-     * 
-     * @param key
-     * @param attributes
-     * @return
-     */
-    CacheEntry<K, V> load(K key, AttributeMap attributes);
+    public Collection<V> values(Cache<K,V> cache) {
+        return new Values<K, V>(cache);
+    }
 }

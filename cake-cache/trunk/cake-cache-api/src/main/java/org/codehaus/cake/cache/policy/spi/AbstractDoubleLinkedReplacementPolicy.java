@@ -44,6 +44,17 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
         attachToEntry(prevPointer);
         attachToEntry(nextPointer);
     }
+//
+//    public int size() {
+//        int count = 0;
+//        CacheEntry<K, V> e = first;
+//        while (e != null) {
+//            count++;
+//            e = getNext(e);
+//        }
+//        return count;
+//
+//    }
 
     /**
      * Adds the specified entry to the front of the list.

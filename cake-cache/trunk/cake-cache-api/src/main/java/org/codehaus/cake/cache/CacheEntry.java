@@ -21,17 +21,32 @@ import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 
 /**
  * A <tt>CacheEntry</tt> describes a value-key mapping much like {@link java.util.Map.Entry}. However, this interface
  * extends it with a map of attribute->value pairs. Holding information such as creation time, access patterns, size,
  * cost etc.
  * <p>
+ * Per default the cache does not keep track of any attributes. Attributes that should be retained at runtime must first
+ * be specified in {@link CacheAttributeConfiguration} before starting the cache.
+ * 
+ * For example, this snippet shows how to configure the cache to keep track of when an entry was created and when it was
+ * last modified.
+ * 
+ * <pre>
+ * CacheConfiguration&lt;Integer, String&gt; conf = CacheConfiguration.newConfiguration();
+ * conf.withAttributes().add(CacheEntry.TIME_CREATED, CacheEntry.TIME_MODIFIED);
+ * Cache&lt;Integer, String&gt; cache = SynchronizedCache.from(conf);
+ * cache.put(5, &quot;test&quot;);
+ * long creationTime = cache.getEntry(5).getAttributes().get(CacheEntry.TIME_CREATED);
+ * </pre>
+ * 
+ * <p>
  * Unless otherwise specified a cache entry obtained from a cache is always an immmutable copy of the existing entry. If
  * the value for a given key is updated while another thread holds a cache entry for the key. It will not be reflected
- * in calls to {@link #getValue()}.
- * <p>
- * Some of the attributes might be immutable. For example {@link #TIME_ACCESSED} and {@link #HITS}
+ * in calls to {@link #getValue()}. Some implementations might allow for certain attributes to be continuesly updated
+ * in the entry for performance reasons. For example {@link #TIME_ACCESSED} and {@link #HITS}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheEntry.java 536 2007-12-30 00:14:25Z kasper $

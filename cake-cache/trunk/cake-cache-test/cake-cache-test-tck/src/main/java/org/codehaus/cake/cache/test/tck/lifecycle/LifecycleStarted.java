@@ -19,7 +19,6 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.annotation.AfterStart;
@@ -64,7 +63,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
         prestart();
     }
 
-    @Test
+    @Test @Ignore
     public void cacheAndServiceArg() {
         latch = new CountDownLatch(1);
         conf.addToLifecycle(new Started4());

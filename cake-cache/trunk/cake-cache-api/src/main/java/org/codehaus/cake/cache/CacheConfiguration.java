@@ -30,11 +30,11 @@ import org.codehaus.cake.util.Logger;
  * This class is the primary class used for representing the configuration of a {@link Cache}. All general-purpose
  * <tt>Cache</tt> implementation classes should have a constructor with a single argument taking a CacheConfiguration.
  * <p>
- * <b>Usage Examples.</b> The following creates a new cache with the name <I>MyCache</I>. The cache can hold a maximum
- * of 1000 elements and uses a least-recently-used policy to determine which elements to evict when the specified
- * maximum size has been reached. Finally, the cache and all of its services are registered as a mbean with the
- * {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform <tt>MBeanServer</tt>} using the name
- * of the cache. The cache is
+ * <b>Usage Examples.</b> <The following creates a new cache with the name <I>MyCache</I>. The cache can hold a
+ * maximum of 1000 elements and uses a least-recently-used policy to determine which elements to evict when the
+ * specified maximum size has been reached. Finally, the cache and all of its services are registered as a mbean with
+ * the {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform <tt>MBeanServer</tt>} using the
+ * name of the cache. The cache is
  * 
  * <pre>
  * CacheConfiguration&lt;String, Integer&gt; cc = CacheConfiguration.newConfiguration(&quot;MyCache&quot;);
@@ -56,9 +56,9 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
     public CacheConfiguration() {
         addConfiguration(new ExceptionHandlingConfiguration());
         addConfiguration(new CacheAttributeConfiguration());
-        addConfiguration(new CacheLoadingConfiguration());
+        addConfiguration(new CacheLoadingConfiguration<K, V>());
         addConfiguration(new ManagementConfiguration());
-        addConfiguration(new MemoryStoreConfiguration());
+        addConfiguration(new MemoryStoreConfiguration<K, V>());
         // addConfiguration(new CacheStoreConfiguration());
     }
 

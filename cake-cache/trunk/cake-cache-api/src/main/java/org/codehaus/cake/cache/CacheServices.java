@@ -18,11 +18,8 @@ package org.codehaus.cake.cache;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.service.ServiceManager;
 
 /**
  * A utility class to get hold of different cache services in an easy and typesafe manner. For example, the following
@@ -43,7 +40,7 @@ public class CacheServices<K, V> {
     private static final AttributeMap FORCE_LOAD = CacheLoadingService.IS_FORCED.singleton(true);
 
     /** The service manager to extract cache services from. */
-    private final ServiceManager serviceManager;
+    private final Cache<?,?> cache;
 
     /**
      * Creates a new {@link CacheServices} from the specified {@link Cache}
@@ -52,19 +49,7 @@ public class CacheServices<K, V> {
      *            the cache to retrieve services from
      */
     public CacheServices(Cache<?, ?> cache) {
-        this.serviceManager = cache;
-    }
-
-    public <R> CrudWriter<K, V, R> write(Op<CacheEntry<K, V>, R> extractor) {
-        return getService(CrudWriter.class, CrudWriter.WRITE_TRANSFORMER.singleton(extractor));
-    }
-
-    public CrudWriter<K, V, CacheEntry<K, V>> writeReturnEntry() {
-        return write((Op) CacheDataExtractor.WHOLE_ENTRY);
-    }
-
-    public CrudWriter<K, V, V> writeReturnValue() {
-        return write((Op) CacheDataExtractor.ONLY_VALUE);
+        this.cache = cache;
     }
 
     /**
@@ -79,7 +64,7 @@ public class CacheServices<K, V> {
      *             if no service of the specified type is available
      */
     protected <T> T getService(Class<T> serviceType) {
-        return serviceManager.getService(serviceType);
+        return cache.getService(serviceType);
     }
 
     /**
@@ -96,7 +81,7 @@ public class CacheServices<K, V> {
      *             if no service of the specified type and attributes is available
      */
     protected <T> T getService(Class<T> serviceType, AttributeMap attributes) {
-        return serviceManager.getService(serviceType, attributes);
+        return cache.getService(serviceType, attributes);
     }
 
     /**
@@ -111,6 +96,14 @@ public class CacheServices<K, V> {
         return getService(CacheLoadingService.class);
     }
 
+    /**
+     * Returns a forced cache loading service. Unlike the non forced cache loading service the forced cache loading
+     * service will always load elements even if they are already in the cache.
+     * 
+     * @return the cache loading service for the cache
+     * @throws UnsupportedOperationException
+     *             if no forced cache loading service is available
+     */
     @SuppressWarnings("unchecked")
     public CacheLoadingService<K, V> loadingForced() {
         return getService(CacheLoadingService.class, FORCE_LOAD);
@@ -129,7 +122,7 @@ public class CacheServices<K, V> {
     }
 
     /**
-     * Returns the default {@link ScheduledExecutorService}.
+     * Returns the default {@link ScheduledExecutorService} for the cache.
      * 
      * @return the default scheduled executor service for the cache
      * @throws UnsupportedOperationException

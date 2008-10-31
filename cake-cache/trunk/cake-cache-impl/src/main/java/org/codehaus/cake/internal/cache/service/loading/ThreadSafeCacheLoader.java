@@ -22,7 +22,6 @@ import java.util.concurrent.Future;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
@@ -30,14 +29,12 @@ import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
-import org.codehaus.cake.service.ServiceManager;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.annotation.Disposable;
 import org.codehaus.cake.service.annotation.Stoppable;
 
 public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
-
-    private final Cache<K, V> cache;
 
     private final ConcurrentHashMap<K, LoadableFutureTask<K, V>> futures = new ConcurrentHashMap<K, LoadableFutureTask<K, V>>();
     private final BlockingCacheLoader<K, V> loader;
@@ -47,17 +44,16 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
     /** The Executor responsible for doing the actual load. */
     private volatile Executor loadExecutor;
 
-    public ThreadSafeCacheLoader(Cache<K, V> cache, MemoryStore<K, V> store, CacheLoadingConfiguration<K, V> conf,
+    public ThreadSafeCacheLoader(MemoryStore<K, V> store, CacheLoadingConfiguration<K, V> conf,
             InternalCacheExceptionService<K, V> exceptionHandler, CacheRequestFactory<K, V> requestFactory) {
         super(exceptionHandler);
         this.loader = getSimpleLoader(conf);
-        this.cache = cache;
         this.store = store;
         this.requestFactory = requestFactory;
     }
 
     @AfterStart
-    public void setExecutor(ServiceManager s) {
+    public void setExecutor(Container s) {
         // TODO fix after start
         this.loadExecutor = s.getService(ExecutorService.class);
     }
@@ -87,6 +83,9 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
     /** {@inheritDoc} */
     public void loadAsync(K key, AttributeMap attributes) {
+        if (key==null) {
+            throw new NullPointerException("key is null");
+        }
         loadExecutor.execute(createFuture(key, attributes));
     }
 

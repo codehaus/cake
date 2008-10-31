@@ -18,9 +18,23 @@ public interface CrudReader<K, R> {
     BooleanAttribute PEEK = new BooleanAttribute() {};
 
     BooleanAttribute READ_THROUGH = new BooleanAttribute() {};
-    //Get throws IllegalStateException if a value could not be found
-    //getAll() if not _all_ values could be found
-    BooleanAttribute ASSERT_GET = new BooleanAttribute() {}; //FAIL_IF_NOT_AVAILABLE
+    // Get throws IllegalStateException if a value could not be found
+    // getAll() if not _all_ values could be found
+    
+    /**
+     * This attribute can be used for asserting that a mapping exists for the specified key(s) when calling any of the
+     * <tt>get</tt> methods. If this attribute is set calling, for example, {@link #get(Object)} with a key for which
+     * no mapping exists in the cache. The method will throw an {@link IllegalStateException}.
+     * 
+     * The following example shows how this attribute can be set.
+     * 
+     * <pre>
+     * Cache&lt;Integer, String&gt; c = somecache;
+     * AttributeMap attributes = CrudReader.ASSERT_GET.singleton(true);
+     * c.crud().reader(attributes).get(4);
+     * </pre>
+     */
+    BooleanAttribute ASSERT_GET = new BooleanAttribute() {};
 
     public enum ReadType {
         PEEK, NORMAL, READ_THROUGH, READ_THROUGH_NO_CACHE
@@ -29,6 +43,11 @@ public interface CrudReader<K, R> {
     ObjectAttribute<Op<?, ?>> READ_TRANSFORMER = (ObjectAttribute) new ObjectAttribute<Op>(Op.class) {};
 
     /**
+     * Works as {@link Map#get(Object)} with the following modifications.
+     * <p>
+     * If the cache has a configured CacheLoader. And no mapping exists for the specified key or the specific mapping
+     * has expired. The cache will transparently attempt to load a value for the specified key through the cache loader.
+     * <p>
      * 
      * @param key
      *            key whose associated value is to be returned.
@@ -40,12 +59,13 @@ public interface CrudReader<K, R> {
      *             if the specified key is <tt>null</tt>
      * @throws ContainerAlreadyShutdownException
      *             if the cache has been shutdown
-     * @param key
-     * @return
+     * @return the associated value
      */
     R get(K key);
 
     /**
+     * As
+     * 
      * @param key
      * @param attributes
      * @return

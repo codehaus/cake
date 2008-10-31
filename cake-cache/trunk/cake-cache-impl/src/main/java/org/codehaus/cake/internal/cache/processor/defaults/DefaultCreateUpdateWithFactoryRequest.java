@@ -5,6 +5,7 @@ import java.util.List;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
+import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -12,13 +13,13 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
     private AttributeMap attributes;
     private final K key;
     private Object value;
-    private Op<K, CacheEntry<K, V>> factory;
+    private Op<K, Pair<V, AttributeMap>> factory;
     private CacheEntry<K, V> previousEntry;
     private CacheEntry<K, V> newEntry;
 
     private final Predicate<? extends CacheEntry<K, V>> updatePredicate;
 
-    public DefaultCreateUpdateWithFactoryRequest(K key, Op<? extends K, CacheEntry<K, V>> factory,
+    public DefaultCreateUpdateWithFactoryRequest(K key, Op<? extends K, Pair<V, AttributeMap>> factory,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate) {
         if (key == null) {
@@ -35,9 +36,9 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
 
     public AttributeMap getAttributes() {
         if (factory == null) {
-            CacheEntry<K, V> entry = factory.op(key);
-            attributes = entry.getAttributes();
-            value = entry.getValue();
+            Pair<V, AttributeMap> entry = factory.op(key);
+            attributes = entry.getSecond();
+            value = entry.getFirst();
             factory = null;
         }
         return attributes;
@@ -72,9 +73,9 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
 
     public V getValue() {
         if (factory == null) {
-            CacheEntry<K, V> entry = factory.op(key);
-            attributes = entry.getAttributes();
-            value = entry.getValue();
+            Pair<V, AttributeMap> entry = factory.op(key);
+            attributes = entry.getSecond();
+            value = entry.getFirst();
             factory = null;
         }
         return (V) value;

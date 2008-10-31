@@ -17,12 +17,12 @@ package org.codehaus.cake.internal.cache.service.memorystore.views;
 
 import java.util.Collection;
 
-import org.codehaus.cake.cache.AbstractCache;
+import org.codehaus.cake.cache.Cache;
 
 final class SynchronizedKeySet<K, V> extends KeySet<K, V> {
     private final Object mutex;
 
-    SynchronizedKeySet(Object mutex, AbstractCache<K, V> cache) {
+    SynchronizedKeySet(Object mutex, Cache<K, V> cache) {
         super(cache);
         this.mutex = mutex;
     }

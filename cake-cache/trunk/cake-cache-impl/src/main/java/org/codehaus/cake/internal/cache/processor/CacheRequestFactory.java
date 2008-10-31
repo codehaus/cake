@@ -13,6 +13,7 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
+import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -28,7 +29,7 @@ public interface CacheRequestFactory<K, V> {
             Op<CacheEntry<K, V>, ?> nextEntryUpdate);
 
     AddEntryRequest<K, V> createUpdate(K key, Predicate<? extends CacheEntry<K, V>> updatePredicate,
-            Op<? extends K, CacheEntry<K, V>> factory, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
+            Op<? extends K, Pair<V,AttributeMap>> factory, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate);
 
     AddEntriesRequest<K, V> createEntries(Map<? extends K, ? extends V> t, AttributeMap attributes);

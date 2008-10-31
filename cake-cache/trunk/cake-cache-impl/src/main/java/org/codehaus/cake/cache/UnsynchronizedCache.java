@@ -17,6 +17,7 @@ package org.codehaus.cake.cache;
 
 import java.util.Iterator;
 
+import org.codehaus.cake.cache.SynchronizedCache.SelectedCache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
@@ -26,12 +27,13 @@ import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingServi
 import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
 import org.codehaus.cake.internal.cache.service.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.service.memorystore.HashMapMemoryStore;
-import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViews;
+import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViewFactory;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
 import org.codehaus.cake.internal.service.configuration.SynchronizedConfigurationService;
+import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.ServiceManager;
 
 /**
  * An <tt>unsynchronized</tt> {@link Cache} implementation.
@@ -48,7 +50,7 @@ import org.codehaus.cake.service.ServiceManager;
  * @param <V>
  *            the type of mapped values
  */
-@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class, ServiceManager.class })
+@Container.SupportedServices( { MemoryStoreService.class, CacheLoadingService.class})
 public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
 
     /** Creates a new UnsynchronizedCache with default configuration. */
@@ -97,7 +99,7 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
     /** {@inheritDoc} */
     public Iterator<CacheEntry<K, V>> iterator() {
         lazyStart();
-        return memoryCache.iterator();
+        return memoryCache.iterator(null);
     }
 
     private static Composer createComposer(CacheConfiguration<?, ?> configuration) {
@@ -110,8 +112,8 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
         }
 
         // Cache components
-        composer.registerImplementation(UnsynchronizedCollectionViews.class);
-        composer.registerImplementation(HashMapMemoryStore.class);
+        composer.registerImplementation(ExportedMemoryStoreService.class);
+        composer.registerImplementation(UnsynchronizedCollectionViewFactory.class);
         composer.registerImplementation(SynchronizedConfigurationService.class);
         composer.registerImplementation(DefaultCacheRequestFactory.class);
         composer.registerImplementation(UnsynchronizedCacheProcessor.class);
@@ -124,5 +126,29 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
             composer.registerImplementation(DefaultCacheLoadingService.class);
         }
         return composer;
+    }
+    
+
+    public CacheSelector<K, V> select() {
+        return new AbstractCacheSelector<K, V>() {
+            public Cache<K, V> on(Predicate<CacheEntry<K, V>> filter) {
+                return new SelectedCache(filter);
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    class SelectedCache extends AbstractCache.AbstractSelectedCache {
+        SelectedCache(Predicate<CacheEntry<K, V>> filter) {
+            super(filter);
+        }
+
+        public CacheSelector<K, V> select() {
+            return new AbstractCacheSelector<K, V>() {
+                public Cache<K, V> on(Predicate<CacheEntry<K, V>> selector) {
+                    return new SelectedCache(Predicates.and(filter,selector));
+                }
+            };
+        }
     }
 }

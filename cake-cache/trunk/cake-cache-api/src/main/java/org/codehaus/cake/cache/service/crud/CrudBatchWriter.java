@@ -29,5 +29,8 @@ public interface CrudBatchWriter<K, V, R> {
      * @throws NullPointerException
      *             if the specified collection or any of its containing keys are <tt>null</tt>.
      */
-    void removeAll(Iterable<? extends K> keys);
+    R removeAll(Iterable<? extends K> keys);
+
+    R removeAll();
+
 }

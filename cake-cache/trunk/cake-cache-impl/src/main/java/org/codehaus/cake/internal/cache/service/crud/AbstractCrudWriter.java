@@ -5,6 +5,7 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.internal.cache.CachePredicates;
+import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
@@ -37,7 +38,7 @@ public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R>
     }
 
     /** {@inheritDoc} */
-    public final R putIfAbsentLazy(K key, Op<? extends K, CacheEntry<K, V>> factory) {
+    public final R putIfAbsentLazy(K key, Op<? extends K, Pair<V, AttributeMap>> factory) {
         return putLazy(key, Predicates.IS_NULL, factory);
     }
 

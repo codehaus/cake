@@ -29,10 +29,25 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.ByteAttribute;
+import org.codehaus.cake.attribute.CharAttribute;
 import org.codehaus.cake.attribute.DoubleAttribute;
+import org.codehaus.cake.attribute.FloatAttribute;
+import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.internal.util.CollectionUtils;
+import org.codehaus.cake.ops.Ops.BinaryPredicate;
+import org.codehaus.cake.ops.Ops.BytePredicate;
+import org.codehaus.cake.ops.Ops.CharPredicate;
+import org.codehaus.cake.ops.Ops.DoublePredicate;
+import org.codehaus.cake.ops.Ops.FloatPredicate;
+import org.codehaus.cake.ops.Ops.IntPredicate;
+import org.codehaus.cake.ops.Ops.LongPredicate;
+import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.ops.Ops.ShortPredicate;
 
 /**
  * Various Factory and utility methods.
@@ -49,9 +64,11 @@ public final class Caches {
      */
     public static final Cache EMPTY_CACHE = new EmptyCache();
 
+    static final CacheSelector EMPTY_SELECTOR=new StaticCacheSelector();
     // /CLOVER:OFF
     /** Cannot instantiate. */
-    private Caches() {}
+    private Caches() {
+    }
 
     // /CLOVER:ON
     /**
@@ -98,8 +115,11 @@ public final class Caches {
 
     /**
      * Creates a new CacheEntry from the specified key and value.
-     * @param key the key 
-     * @param value the value
+     * 
+     * @param key
+     *            the key
+     * @param value
+     *            the value
      * @return a CacheEntry with the specified key and value
      */
     public static <K, V> CacheEntry<K, V> newEntry(K key, V value) {
@@ -107,10 +127,14 @@ public final class Caches {
     }
 
     /**
-     * Creates a new CacheEntry from the specified key, value and map of attributes.
-     * @param key the key 
-     * @param value the value
-     * @param attributes the attributes
+     * Creates a new CacheEntry from the specified key, value and attributes.
+     * 
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @param attributes
+     *            the attributes
      * @return a CacheEntry with the specified key and value
      */
     public static <K, V> CacheEntry<K, V> newEntry(K key, V value, AttributeMap attributes) {
@@ -291,6 +315,80 @@ public final class Caches {
         /** {@inheritDoc} */
         public CacheCrud<K, V> crud() {
             return new CacheCrud<K, V>(this);
+        }
+
+        public CacheSelector<K, V> select() {
+            return EMPTY_SELECTOR;
+        }
+
+        public Iterator<CacheEntry<K, V>> iterator() {
+            return Collections.EMPTY_LIST.iterator();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    static class StaticCacheSelector<K, V> implements CacheSelector<K, V>, Serializable {
+
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        public Cache<K, V> on(BinaryPredicate<? super K, ? super V> selector) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(BooleanAttribute a, boolean value) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(ByteAttribute a, BytePredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(CharAttribute a, CharPredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(DoubleAttribute a, DoublePredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(FloatAttribute a, FloatPredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(IntAttribute a, IntPredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(LongAttribute a, LongPredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public <T> Cache<K, V> on(Attribute<T> a, Predicate<T> p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(Predicate<CacheEntry<K, V>> p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> on(ShortAttribute a, ShortPredicate p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> onKey(Predicate<K> p) {
+            return EMPTY_CACHE;
+        }
+
+        public <T extends K> Cache<T, V> onKeyType(Class<T> p) {
+            return EMPTY_CACHE;
+        }
+
+        public Cache<K, V> onValue(Predicate<V> p) {
+            return EMPTY_CACHE;
+        }
+
+        public <T extends V> Cache<K, T> onValueType(Class<T> clazz) {
+            return EMPTY_CACHE;
         }
     }
 

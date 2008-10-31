@@ -59,7 +59,7 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  * @param <V>
  *            the type of mapped values
  */
-public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
+public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<CacheEntry<K, V>> {
 
     /**
      * Removes all entries from this cache. This method will not attempt to remove entries that are stored externally,
@@ -70,9 +70,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * {@link org.codehaus.cake.cache.service.event.CacheEvent.CacheCleared} will be raised. This event is only raised
      * if the state of the cache changed (cache was non-empty).
      * <p>
-     * If the reason for clearing the cache is to get rid of stale data another alternative, if the cache has a
-     * cache loader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will
-     * reload all elements that are in the cache.
+     * If the reason for clearing the cache is to get rid of stale data another alternative, if the cache has a cache
+     * loader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will reload
+     * all elements that are in the cache.
      * <p>
      * If the cache has been shutdown calls to this method is ignored
      * 
@@ -121,6 +121,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      *             if the specified value is null
      */
     boolean containsValue(Object value);
+
+    CacheCrud<K, V> crud();
 
     /**
      * Returns a {@link Set} view of the mappings contained in this cache. The set is backed by the cache, so changes to
@@ -257,7 +259,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * All implementations of this method should take care to assure that a call to peek does not have any observable
      * side effects. For example, it should not modify some state in addition to returning a value or not returning a
      * value.
-     *
+     * 
      * @param key
      *            key whose associated value is to be returned.
      * @return the value to which this cache maps the specified key, or <tt>null</tt> if the cache contains no mapping
@@ -277,6 +279,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
      * All implementations of this method should take care to assure that a call to peek does not have any observable
      * side effects. For example, it should not modify some state in addition to returning a value or not returning a
      * value.
+     * 
      * @param key
      *            key whose associated cache entry is to be returned.
      * @return the cache entry to which this cache maps the specified key, or <tt>null</tt> if the cache contains no
@@ -489,12 +492,44 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
     boolean replace(K key, V oldValue, V newValue);
 
     /**
+     * Returns a selector that can be used to create a filtered view of the mappings contained in this cache. Used for
+     * creating a view of the cache. The filtered view is backed by the cache, so changes to the cache are reflected in
+     * the view, and vice-versa.
+     * 
+     * Some cautions should apply, for example the following methods will not work.
+     * {@link Container#awaitTermination(long, java.util.concurrent.TimeUnit)}, {@link Container#shutdown()},{@link Container#shutdownNow()},
+     * insertion??
+     * <p>
+     * When operating on a filtered view some operations will be slower. For example, to calculate the
+     * {@link Cache#size()} of a filtered view, the cache will need to evaluate all elements to see if they match the
+     * specified filter.
+     * <p>
+     * The following snippet will create a new cache view that only contains elements that have values of type
+     * {@link Integer}.
+     * 
+     * <pre>
+     * Cache&lt;String, Number&gt; c = null;
+     * Cache&lt;String, Integer&gt; onlyInts = c.select().onValueType(Integer.class);
+     * </pre>
+     * 
+     * The next snippet will reload all cache elements that have not been modified doing the last hour.
+     * 
+     * <pre>
+     * long oneHourAgo = new Date().getTime() - 60 * 60 * 1000;
+     * c.select().on(CacheEntry.TIME_MODIFIED, LongPredicates.lessThen(oneHourAgo)).with().loadingForced().loadAll();
+     * </pre>
+     * 
+     * @throws UnsupportedOperationException
+     *             if the <tt>select</tt> operation is not supported by this cache
+     */
+    CacheSelector<K, V> select();
+
+    /**
      * Returns the number of elements in this cache. If the cache contains more than <tt>Integer.MAX_VALUE</tt>
      * elements, returns <tt>Integer.MAX_VALUE</tt>.
      * <p>
-     * If this cache has not been started calling this method will automatically start it.
-     * <p>
-     * If this cache has been shutdown this method returns <tt>0</tt>.
+     * If this cache has not been started calling this method will automatically start it. If this cache has been
+     * shutdown this method returns <tt>0</tt>.
      * 
      * @return the number of elements in this cache
      */
@@ -522,9 +557,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container {
     Collection<V> values();
 
     /**
+     * Returns a {@link CacheServices} instance that can be used for easily acquiring a number of cache services.
+     * 
      * @return a CacheServices object
      */
     CacheServices<K, V> with();
-    
-    CacheCrud<K, V> crud();
 }

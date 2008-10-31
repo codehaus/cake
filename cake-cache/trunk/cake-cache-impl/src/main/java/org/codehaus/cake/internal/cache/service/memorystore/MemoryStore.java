@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.internal.cache.service.memorystore;
 
+import java.util.Iterator;
+
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
@@ -24,6 +26,7 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
+import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
  * MemoryStore is an in-memory store of data.
@@ -31,24 +34,20 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
  * @param <K>
  * @param <V>
  */
-public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
+public interface MemoryStore<K, V> {
 
-    /**
-     * Returns the CacheEntry for the specified key, or <code>null</code> if it doesn't exist.
-     * 
-     * @param key
-     * @return
-     */
-    CacheEntry<K, V> get(K key);
+    void touch(CacheEntry<K,V> entry);
 
+    Iterator<CacheEntry<K, V>> iterator(Predicate<CacheEntry<K, V>> predicate);
+    
     // will most likely have getValue(), getAttribute(Attribute a)
     // if we start storing, the value, key, attributes in separate arrays.
 
-    int getSize();
+    int size(Predicate<CacheEntry<K,V>> filter);
 
-    long getVolume();
+    long getVolume(Predicate<CacheEntry<K,V>> filter);
 
-    CacheEntry<K, V> peek(K key);
+    CacheEntry<K, V> get(K key);
 
     void process(AddEntriesRequest<K, V> r);
 
@@ -65,5 +64,4 @@ public interface MemoryStore<K, V> extends Iterable<CacheEntry<K, V>> {
     void process(TrimToVolumeRequest<K, V> r);
 
     void updateConfiguration(AttributeMap attributes);
-
 }

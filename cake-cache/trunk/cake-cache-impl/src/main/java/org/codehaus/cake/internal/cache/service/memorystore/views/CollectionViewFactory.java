@@ -19,10 +19,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public interface CollectionViews<K, V> {
-    Set<K> keySet();
+import org.codehaus.cake.cache.Cache;
 
-    Collection<V> values();
+public interface CollectionViewFactory<K, V> {
+    Set<K> keySet(Cache<K, V> cache);
 
-    Set<Map.Entry<K, V>> entrySet();
+    Collection<V> values(Cache<K, V> cache);
+
+    Set<Map.Entry<K, V>> entrySet(Cache<K, V> cache);
 }

@@ -6,6 +6,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
+import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
@@ -168,9 +169,9 @@ public interface CrudWriter<K, V, R> {
      * @see {@link Caches#newEntry(Object, Object)}
      * @see Caches#newEntry(Object, Object, AttributeMap)
      */
-    R putIfAbsentLazy(K key, Op<? extends K, CacheEntry<K, V>> factory);
+    R putIfAbsentLazy(K key, Op<? extends K, Pair<V, AttributeMap>> factory);
 
-    R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, CacheEntry<K, V>> factory);
+    R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, Pair<V, AttributeMap>> factory);
 
     /**
      * Removes the mapping for a key from this cache if it is present (optional operation). More formally, if this cache

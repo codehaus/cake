@@ -8,6 +8,7 @@ import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
+import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -48,7 +49,7 @@ public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
         return put(factory.createUpdate(key, attributes, value, updatePredicate, null, null));
     }
 
-    public R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, CacheEntry<K, V>> factory) {
+    public R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, Pair<V, AttributeMap>> factory) {
         return put(this.factory.createUpdate(key, predicate, factory, null, null));
     }
 

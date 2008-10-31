@@ -48,7 +48,7 @@ public class AttributeCombinations extends AbstractCacheTCKTest {
         clock.setTimeOfDay(1000);
         init();
         put(M1);
-        assertTrue("1=A [CreationTime=1000, ModificationTime=1000]".equals(c.getEntry(M1.getKey()).toString())
+        assertTrue(c.getEntry(M1.getKey()).toString(), "1=A [CreationTime=1000, ModificationTime=1000]".equals(c.getEntry(M1.getKey()).toString())
                 || "1=A [ModificationTime=1000, CreationTime=1000]".equals(c.getEntry(M1.getKey()).toString()));
         // assertEquals("1=A [CreationTime=1000, ModificationTime=1000]", c.getEntry(M1.getKey()).toString());
     }

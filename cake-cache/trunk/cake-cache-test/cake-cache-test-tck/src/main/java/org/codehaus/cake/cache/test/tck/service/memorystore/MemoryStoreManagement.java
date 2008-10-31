@@ -77,6 +77,7 @@ public class MemoryStoreManagement extends AbstractManagementTest {
      */
     @Test
     public void maximumVolume() {
+        assertVolume(0);
         assertEquals(Long.MAX_VALUE, mxBean().getMaximumVolume());
         mxBean().setMaximumVolume(1000);
         assertEquals(1000, mxBean().getMaximumVolume());

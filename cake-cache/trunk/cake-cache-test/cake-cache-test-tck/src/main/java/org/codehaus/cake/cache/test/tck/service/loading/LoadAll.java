@@ -20,6 +20,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LoadAll extends AbstractCacheTCKTest {
@@ -28,7 +29,7 @@ public class LoadAll extends AbstractCacheTCKTest {
     public static final Attribute<String> ATR2 = new ObjectAttribute("ATR2", String.class, "1") {};
     public static final Attribute<String> ATR3 = new ObjectAttribute("ATR3", String.class, "2") {};
 
-    @Test
+    @Test 
     public void withLoadAttributesTwice() {
         loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M2, M3);
         // already here
@@ -36,7 +37,7 @@ public class LoadAll extends AbstractCacheTCKTest {
         assertLoads(3);
     }
 
-    @Test
+    @Test 
     public void withLoadAttributesTwiceDiff() {
         loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M3, M4);
         // already here
@@ -44,7 +45,7 @@ public class LoadAll extends AbstractCacheTCKTest {
         assertLoads(5);
     }
 
-    @Test
+    @Test 
     public void withLoadAll() {
         withLoading().loadAll();
         assertSize(0);
@@ -63,10 +64,13 @@ public class LoadAll extends AbstractCacheTCKTest {
         put(M2);
         withLoading().loadAll();
         withLoading().loadAll(new DefaultAttributeMap());
+        awaitFinishedThreads();
         assertLoadCount(0);
         loader.withLoader(M1).setValue("3");
+
         withLoadingForced().loadAll();
         awaitFinishedThreads();
+
         assertLoadCount(2);
         assertPeek(entry(M1, "3"));
         withLoadingForced().loadAll();

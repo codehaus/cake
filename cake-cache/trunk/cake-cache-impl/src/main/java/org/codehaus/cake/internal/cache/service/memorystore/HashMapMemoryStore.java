@@ -21,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
@@ -47,9 +45,11 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
+import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.ops.Ops.ObjectToLong;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.annotation.Stoppable;
@@ -60,7 +60,8 @@ import org.codehaus.cake.service.annotation.Stoppable;
  * @param <K>
  * @param <V>
  */
-public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeService, RuntimeConfigurableService {
+public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemoryStore<K, V>, CompositeService,
+        RuntimeConfigurableService {
 
     private final InternalAttributeService<K, V> attributeService;
     private final Procedure<MemoryStoreService<K, V>> evictor;
@@ -69,7 +70,6 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
     private final ReplacementPolicy<K, V> policy;
 
     private boolean isDisabled;
-    private final Map<K, CacheEntry<K, V>> map = new HashMap<K, CacheEntry<K, V>>();
     private int maximumSize;
     private long maximumVolume;
     private long volume;
@@ -85,27 +85,42 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
     }
 
     private ParallelArray<CacheEntry<K, V>> all() {
-        return (ParallelArray) ParallelArray.createUsingHandoff(map.values().toArray(new CacheEntry[map.size()]),
-                ParallelArray.defaultExecutor());
+        return (ParallelArray) ParallelArray.createUsingHandoff(allAsArray(), ParallelArray.defaultExecutor());
+    }
+
+    private void print() {
+        System.out.println("---- " + size + "---------");
+        for (int i = 0; i < table.length; i++) {
+            HashEntry he = table[i];
+            String s = "";
+            while (he != null) {
+                s += he.getKey() + ",";
+                he = he.next;
+            }
+            System.out.println(i + ":" + s);
+        }
+        System.out.println("-------------");
     }
 
     private CacheEntry<K, V> evictNext() {
         if (policy != null) {
             CacheEntry<K, V> entry = (CacheEntry<K, V>) policy.evictNext();
-            map.remove(entry.getKey());
+            // print();
+            if (remove(entry.getKey()) == null) {
+                throw new AssertionError();
+            }
             removeEntry(entry, true);
             return entry;
         }
         // remove random
-        Iterator<CacheEntry<K, V>> iter = map.values().iterator();
+        Iterator<CacheEntry<K, V>> iter = newEntrySetIterator(Predicates.TRUE);
         CacheEntry<K, V> entry = iter.next();
         iter.remove();
         removeEntry(entry, false);
         return entry;
     }
 
-    public CacheEntry<K, V> get(K key) {
-        CacheEntry<K, V> entry = map.get(key);
+    public void touch(CacheEntry<K, V> entry) {
         if (entry != null) {
             // Perhaps we can move .access to outer loop
             attributeService.access(entry.getAttributes());
@@ -113,23 +128,32 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
                 policy.touch(entry);
             }
         }
-        return entry;
     }
 
     public Collection<?> getChildServices() {
         return Arrays.asList(policy);
     }
 
-    public int getSize() {
-        return map.size();
+    public long getVolume(Predicate<CacheEntry<K, V>> filter) {
+        if (filter == null || filter == Predicates.TRUE) {
+            return volume;
+        } else {
+            HashEntry<K, V>[] tab = table;
+            long count = 0;
+            int len = tab.length;
+            for (int i = 0; i < len; i++) {
+                for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                    if (filter.op(e)) {
+                        count += e.getAttributes().get(CacheEntry.SIZE);
+                    }
+                }
+            }
+            return count;
+        }
     }
 
-    public long getVolume() {
-        return volume;
-    }
-
-    public Iterator<CacheEntry<K, V>> iterator() {
-        final Iterator<CacheEntry<K, V>> iter = map.values().iterator();
+    public Iterator<CacheEntry<K, V>> iterator(Predicate<CacheEntry<K, V>> predicate) {
+        final Iterator<CacheEntry<K, V>> iter = newEntrySetIterator(predicate);
         return new Iterator<CacheEntry<K, V>>() {
             CacheEntry<K, V> current;
 
@@ -149,17 +173,13 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         };
     }
 
-    public CacheEntry<K, V> peek(K key) {
-        return map.get(key);
-    }
-
     public void process(AddEntriesRequest<K, V> r) {
         if (isDisabled) {
             return;
         }
         // prepare
         for (AddEntryRequest<K, V> e : r.adds()) {
-            CacheEntry<K, V> previous = map.get(e.getKey());
+            CacheEntry<K, V> previous = get(e.getKey());
             e.setPreviousEntry(previous);
         }
 
@@ -199,12 +219,12 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
             if (previous != null && !keepExisting) {
                 removeEntry(previous, evicted);
                 if (!keepNew) {
-                    map.remove(entry.getKey());
+                    remove(entry.getKey());
                 }
             }
             if (keepNew) {
                 volume += SIZE.get(newEntry);
-                map.put(entry.getKey(), newEntry);
+                put(entry.getKey(), newEntry.getValue(), newEntry.getAttributes());
             }
             if (keepNew) {
                 entry.setNewEntry(newEntry);
@@ -214,10 +234,24 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
     }
 
     public void process(AddEntryRequest<K, V> entry) {
+        // int ss = ((AbstractDoubleLinkedReplacementPolicy) policy).size();
+        // Set<K> s = new HashSet<K>();
+        // for (Iterator<CacheEntry<K, V>> iterator = iterator(Predicates.TRUE); iterator.hasNext();) {
+        // s.add(iterator.next().getKey());
+        // }
+        // System.out.println(size + " " + ss + " " + s);
+        //
+        // if (ss != size || ss != s.size()) {
+        // throw new AssertionError();
+        // }
+        // if (size == 20) {
+        // System.out.println("Stop");
+        // }
+
         if (isDisabled) {
             return;
         }
-        CacheEntry<K, V> previous = map.get(entry.getKey());
+        CacheEntry<K, V> previous = get(entry.getKey());
         Predicate<CacheEntry<K, V>> updatePredicate = entry.getUpdatePredicate();
         if (updatePredicate != null) {
             if (previous == null) {
@@ -268,12 +302,12 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         if (previous != null && !keepExisting) {
             removeEntry(previous, evicted);
             if (!keepNew) {
-                map.remove(entry.getKey());
+                remove(entry.getKey());
             }
         }
         if (keepNew) {
             volume += SIZE.get(newEntry);
-            map.put(entry.getKey(), newEntry);
+            put(entry.getKey(), newEntry.getValue(), newEntry.getAttributes());
             entry.setPreviousEntry(previous);
             entry.setNewEntry(newEntry);
             trim(entry);
@@ -281,7 +315,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
     }
 
     public void process(ClearCacheRequest<K, V> r) {
-        map.clear();
+        clear();
         volume = 0;
         if (policy != null) {
             policy.clear();
@@ -294,18 +328,35 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         }
     }
 
-    public void process(RemoveEntryRequest<K, V> e) {
-        Predicate<CacheEntry<K, V>> p = e.getUpdatePredicate();
+    public void process(RemoveEntryRequest<K, V> r) {
+        Predicate<CacheEntry<K, V>> p = r.getUpdatePredicate();
         if (p == null) {
-            CacheEntry<K, V> entry = map.remove(e.getKey());
+            CacheEntry<K, V> entry = remove(r.getKey());
             removeEntry(entry, false);
-            e.setPreviousEntry(entry);
+            r.setPreviousEntry(entry);
         } else {
-            CacheEntry<K, V> entry = map.get(e.getKey());
-            if (entry != null && p.op(entry)) {
-                map.remove(e.getKey());
-                removeEntry(entry, false);
-                e.setPreviousEntry(entry);
+            K key = r.getKey();
+            int hash = hash(key.hashCode());
+            HashEntry<K, V>[] tab = table;
+            int index = hash & (tab.length - 1);
+            HashEntry<K, V> first = tab[index];
+            HashEntry<K, V> e = first;
+            HashEntry<K, V> prev = first;
+            while (e != null && (e.hash != hash || !key.equals(e.key))) {
+                e = e.next;
+                prev = e;
+            }
+            if (e != null && p.op(e)) {
+                ++modCount;
+                if (prev == e) { // first entry
+                    table[index] = e.next;
+                } else {
+                    prev.next = e.next;
+                }
+                e.entryRemoved(this);
+                size--;
+                removeEntry(e, false);
+                r.setPreviousEntry(e);
             }
         }
     }
@@ -345,11 +396,13 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
 
     @Stoppable
     public final void stop() {
-        map.clear();
+        modCount++;
+        size = 0;
+        table = HashEntry.newArray(1);
     }
 
     public void trim(Trimable<K, V> trimable) {
-        while (map.size() > maximumSize || volume > maximumVolume) {
+        while (size(null) > maximumSize || volume > maximumVolume) {
             List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
             if (trimmed == null) {
                 trimmed = new ArrayList<CacheEntry<K, V>>();
@@ -377,7 +430,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
 
     private void trimToSize(Trimable<K, V> trimable, Comparator comparator, int size) {
 
-        int currentSize = map.size();
+        int currentSize = size(null);
         int trimSize = size >= 0 ? currentSize - size : Math.min(currentSize, -size);
         if (size == Integer.MIN_VALUE) {
             trimSize = currentSize; // Math.abs(Integer.MIN_VALUE)==Integer.
@@ -399,7 +452,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
                 for (int i = 0; i < trimSize; i++) {
                     CacheEntry<K, V> e = (CacheEntry<K, V>) sorter.get(i);
                     removeEntry(e, false);
-                    map.remove(e.getKey());
+                    remove(e.getKey());
                     trimmed.add(e);
                 }
             }
@@ -425,7 +478,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
             while (this.volume > trimTo) {
                 CacheEntry<K, V> e = (CacheEntry<K, V>) sorter.get(i++);
                 removeEntry(e, false);
-                map.remove(e.getKey());
+                remove(e.getKey());
                 trimmed.add(e);
             }
         }
@@ -445,7 +498,7 @@ public class HashMapMemoryStore<K, V> implements MemoryStore<K, V>, CompositeSer
         }
 
         public int getSize() {
-            return map.size();
+            return size;
         }
 
         public long getVolume() {

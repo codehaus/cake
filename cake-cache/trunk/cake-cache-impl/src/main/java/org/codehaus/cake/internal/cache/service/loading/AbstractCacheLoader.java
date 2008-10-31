@@ -32,13 +32,11 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingS
     }
 
     public V doLoad(BlockingCacheLoader<K, V> loader, K key, AttributeMap attributes) {
-        V v = null;
         try {
-            v = loader.load(key, attributes);
+            return loader.load(key, attributes);
         } catch (Throwable e) {
-            v = exceptionHandler.loadFailed(e, key, attributes);
+            return exceptionHandler.loadFailed(e, key, attributes);
         }
-        return v;
     }
 
     static <K, V> BlockingCacheLoader<K, V> getSimpleLoader(CacheLoadingConfiguration<K, V> conf) {

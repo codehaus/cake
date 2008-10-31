@@ -16,6 +16,7 @@ import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoadingServ
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.service.RunState;
 import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.ops.Ops.Predicate;
 
 public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
     private final MemoryStore<K, V> memoryStore;
@@ -38,35 +39,33 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
         memoryStore.process(r);
     }
 
-    public <T> T get(K key, Op<CacheEntry<K, V>, T> extractor, boolean isPeek) {
+    public <T> T get(Predicate<CacheEntry<K,V>> selector, K key, Op<CacheEntry<K, V>, T> extractor, boolean isPeek) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
-        CacheEntry<K, V> entry;
-        if (isPeek) {
-            runState.isRunningLazyStart(false);
-            entry = memoryStore.peek(key);
-        } else {
-            runState.isRunningLazyStart(true);
-            entry = memoryStore.get(key);
-            if (entry == null && loading != null) {
-                entry = loading.load(key, new DefaultAttributeMap());
-            }
+        runState.isRunningLazyStart(!isPeek);
+        CacheEntry<K, V> entry = memoryStore.get(key);
+        if (!isPeek && entry == null && loading != null) {
+            entry = loading.load(key, new DefaultAttributeMap());
         }
-        if (entry != null) {
-            return extractor.op(entry);
+        if (entry != null && selector != null && !selector.op(entry)) {
+            entry = null;
         }
-        return null;
+        if (!isPeek && entry != null) {
+            memoryStore.touch(entry);
+
+        }
+        return entry == null ? null : extractor.op(entry);
     }
 
-    public <T> Map<K, T> getAll(Iterable<? extends K> keys, Op<CacheEntry<K, V>, T> extractor, boolean isPeek) {
+    public <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> keys, Op<CacheEntry<K, V>, T> extractor, boolean isPeek) {
         if (keys == null) {
             throw new NullPointerException("keys is null");
         }
-        runState.isRunningLazyStart(true);
+        runState.isRunningLazyStart(!isPeek);
         HashMap<K, T> result = new HashMap<K, T>();
         for (K key : keys) {
-            result.put(key, get(key, extractor, isPeek));
+            result.put(key, get(selector, key, extractor, isPeek));
         }
         return result;
     }
@@ -74,7 +73,6 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
     public void process(AddEntriesRequest<K, V> r) {
         runState.isRunningLazyStart(true);
         memoryStore.process(r);
-
     }
 
     public void process(ClearCacheRequest<K, V> r) {
@@ -85,19 +83,16 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
     public void process(RemoveEntriesRequest<K, V> r) {
         runState.isRunningLazyStart(false);
         memoryStore.process(r);
-
     }
 
     public void process(RemoveEntryRequest<K, V> r) {
         runState.isRunningLazyStart(false);
         memoryStore.process(r);
-
     }
 
     public void process(TrimToSizeRequest<K, V> r) {
         runState.isRunningLazyStart(false);
         memoryStore.process(r);
-
     }
 
     public void process(TrimToVolumeRequest<K, V> r) {

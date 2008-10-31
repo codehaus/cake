@@ -15,32 +15,28 @@
  */
 package org.codehaus.cake.internal.cache.service.memorystore.views;
 
-import java.util.AbstractCollection;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import org.codehaus.cake.cache.Cache;
 
-abstract class AbstractCollectionView<E> extends AbstractCollection<E> {
+public class SynchronizedCollectionViewFactory<K, V> implements CollectionViewFactory<K, V> {
+    private final Object mutex;
 
-    final Cache cache;
-
-    AbstractCollectionView(Cache cache) {
-        this.cache = cache;
+    public SynchronizedCollectionViewFactory(Cache<K, V> cache) {
+        this.mutex = cache;
     }
 
-    public final boolean addAll(Collection<? extends E> c) {
-        throw new UnsupportedOperationException();
+    public Set<Map.Entry<K, V>> entrySet(Cache<K,V> cache) {
+        return new SynchronizedEntrySet<K, V>(mutex, cache);
     }
 
-    public final void clear() {
-        cache.clear();
+    public Set<K> keySet(Cache<K,V> cache) {
+        return new SynchronizedKeySet<K, V>(mutex, cache);
     }
 
-    public final boolean isEmpty() {
-        return cache.isEmpty();
-    }
-
-    public final int size() {
-        return cache.size();
+    public Collection<V> values(Cache<K,V> cache) {
+        return new SynchronizedValues<K, V>(mutex, cache);
     }
 }

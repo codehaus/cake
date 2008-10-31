@@ -41,8 +41,11 @@ public class DefaultCrudBatchWriter<K, V, R> implements CrudBatchWriter<K, V, R>
         return new DefaultCrudBatchWriter<K, V, Void>(factory, processor, null, null);
     }
 
-    public void removeAll(Iterable<? extends K> keys) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public R removeAll(Iterable<? extends K> keys) {
+        return null;
+    }
+
+    public R removeAll() {
+        return null;
     }
 }
