@@ -57,6 +57,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
     private ManagedVisitor<?> registrant;
 
     private final String containerType;
+    
     private final InternalDebugService debugService;
 
     /**

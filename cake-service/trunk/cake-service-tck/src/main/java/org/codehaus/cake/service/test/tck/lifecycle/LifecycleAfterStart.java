@@ -19,7 +19,6 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
@@ -129,7 +128,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     public class CheckRegister {
 
         @AfterStart
-        public void start(ServiceManager i) {
+        public void start(Container i) {
             assertEquals(1000, i.getService(Integer.class).intValue());
             latch.countDown();
         }

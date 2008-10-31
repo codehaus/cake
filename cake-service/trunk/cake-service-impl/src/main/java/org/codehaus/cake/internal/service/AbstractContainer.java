@@ -19,9 +19,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.ServiceManager;
 
 public abstract class AbstractContainer implements Container {
 
@@ -52,8 +52,7 @@ public abstract class AbstractContainer implements Container {
 
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType) {
-        lazyStart();
-        return sm.getService(serviceType);
+        return getService(serviceType, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
 
     /** {@inheritDoc} */
@@ -84,12 +83,12 @@ public abstract class AbstractContainer implements Container {
     }
 
     /** {@inheritDoc} */
-    public void lazyStart() {
+    protected void lazyStart() {
         runState.isRunningLazyStart(false);
     }
 
     /** {@inheritDoc} */
-    public void lazyStartFailIfShutdown() {
+    protected void lazyStartFailIfShutdown() {
         runState.isRunningLazyStart(true);
     }
 

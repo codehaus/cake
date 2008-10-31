@@ -99,7 +99,6 @@ public abstract class ContainerConfiguration<T> {
     /**
      * Adds an object to the lifecycle of the container.
      * <p>
-     * <p>
      * If the object is annotated with the {@link ExportAsService} annotation the object can then later be retrieved by
      * calling {@link org.codehaus.cake.container.Container#getService(Class)}
      * 
@@ -122,8 +121,8 @@ public abstract class ContainerConfiguration<T> {
      * 
      * If the service is exported with a key that conflicts with the key-type of any of the build-in services. The
      * registered service will replace the build-in service when trying to retrive using
-     * {@link ServiceManager#getService(Class)} or
-     * {@link ServiceManager#getService(Class, org.codehaus.cake.attribute.AttributeMap)}.
+     * {@link Container#getService(Class)} or
+     * {@link Container#getService(Class, org.codehaus.cake.attribute.AttributeMap)}.
      * 
      * @param o
      *            the object to register

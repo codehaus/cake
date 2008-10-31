@@ -17,12 +17,11 @@ package org.codehaus.cake.stubber;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.codehaus.cake.service.ServiceManager;
 import org.codehaus.cake.stubber.bubber.BubberService;
 
 public class StubberServices<T> {
     /** The service manager to extract cache services from. */
-    private final ServiceManager serviceManager;
+    private final Stubber<?> stubber;
 
     /**
      * Creates a new {@link StubberServices} from the specified {@link Stubber}
@@ -31,7 +30,7 @@ public class StubberServices<T> {
      *            the cache to retrieve services from
      */
     public StubberServices(Stubber<?> stubber) {
-        this.serviceManager = stubber;
+        this.stubber = stubber;
     }
 
     /**
@@ -72,7 +71,7 @@ public class StubberServices<T> {
      *             if no service of the specified type is available
      */
     protected <T> T getService(Class<T> serviceType) {
-        return serviceManager.getService(serviceType);
+        return stubber.getService(serviceType);
     }
 
 }

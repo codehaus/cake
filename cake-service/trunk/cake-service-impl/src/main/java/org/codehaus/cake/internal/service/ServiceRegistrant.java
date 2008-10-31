@@ -15,14 +15,14 @@
  */
 package org.codehaus.cake.internal.service;
 
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceManager;
 
 /**
  * A ServiceRegistrant is used for registering services or service factories at
  * runtime. Services can then later be looked up by calling
- * {@link ServiceManager#getService(Class)} or
- * {@link ServiceManager#getService(Class, org.codehaus.cake.attribute.AttributeMap)}
+ * {@link Container#getService(Class)} or
+ * {@link Container#getService(Class, org.codehaus.cake.attribute.AttributeMap)}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
@@ -31,7 +31,7 @@ public interface ServiceRegistrant {
 
 	/**
 	 * Registers the specified service. The service can then later be retrieved
-	 * by calls to {@link ServiceManager#getService(Class)} with the specified
+	 * by calls to {@link Container#getService(Class)} with the specified
 	 * key as parameter.
 	 * 
 	 * @param <T>

@@ -861,6 +861,9 @@ public final class Ops {
         double op(A a, B b);
     }
 
+    public static interface ObjectAndFloatProcedure<A> {
+        void op(A a, float b);
+    }
     public static interface FloatOp {
         float op(float a);
     }

@@ -21,7 +21,8 @@
  */
 
 package org.codehaus.cake.forkjoin;
-import java.util.concurrent.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * An object that executes {@link ForkJoinTask} computations.  This

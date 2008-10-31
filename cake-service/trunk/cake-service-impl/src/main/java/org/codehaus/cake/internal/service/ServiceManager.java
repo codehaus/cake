@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service;
+package org.codehaus.cake.internal.service;
 
 import java.util.Set;
 
@@ -72,7 +72,7 @@ public interface ServiceManager {
      * @throws NullPointerException
      *             if the specified service type is null
      * 
-     * @see ServiceManager#serviceKeySet()
+     * @see #serviceKeySet()
      */
     boolean hasService(Class<?> serviceType);
 

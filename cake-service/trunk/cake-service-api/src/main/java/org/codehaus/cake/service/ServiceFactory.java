@@ -43,7 +43,7 @@ public interface ServiceFactory<T> {
 
         /**
          * @return attributes that was used for looking up the service
-         * @see ServiceManager#getService(Class, AttributeMap)
+         * @see Container#getService(Class, AttributeMap)
          */
         AttributeMap getAttributes();
 

@@ -19,7 +19,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.codehaus.cake.attribute.AttributeMap;
 
 /**
  * A Container is the the in addition providing .
@@ -33,8 +36,63 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
  */
-public interface Container extends ServiceManager {
+public interface Container {
 
+    /**
+     * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
+     * exists. Calling this method is equivalent to calling {@link #getService(Class, AttributeMap)} with an empty
+     * {@link AttributeMap}.
+     * 
+     * @param <T>
+     *            the type of service to retrieve
+     * @param serviceType
+     *            the type of service to retrieve
+     * @return a service of the specified type
+     * @throws UnsupportedOperationException
+     *             if no service of the specified type exist
+     * @throws NullPointerException
+     *             if the specified service type is null
+     */
+    <T> T getService(Class<T> serviceType);
+
+    /**
+     * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
+     * exists. The map of attributes will be parsed along to the {@link ServiceFactory} responsible for constructing the
+     * service.
+     * 
+     * @param <T>
+     *            the type of service to retrieve
+     * @param serviceType
+     *            the type of service to retrieve
+     * @param attributes
+     *            a map of additional attributes
+     * @return a service of the specified type
+     * @throws UnsupportedOperationException
+     *             if no service of the specified type exist
+     * @throws NullPointerException
+     *             if the specified service type or attribute map is null
+     */
+    <T> T getService(Class<T> serviceType, AttributeMap attributes);
+
+    /**
+     * Returns whether or not this service manager contains a service of the specified type.
+     * 
+     * @param serviceType
+     *            the type of service
+     * @return true if this service manager contains a service of the specified type, otherwise false
+     * @throws NullPointerException
+     *             if the specified service type is null
+     * 
+     * @see #serviceKeySet()
+     */
+    boolean hasService(Class<?> serviceType);
+
+    /**
+     * Returns a {@link Set} consisting of the types of all registered services.
+     * 
+     * @return a Set consisting of the types of all registered services
+     */
+    Set<Class<?>> serviceKeySet();
     /**
      * Returns the name of this container. If no name has been specified while configuring the container. The
      * implementation must choose a valid name. A valid name contains no other characters then alphanumeric characters

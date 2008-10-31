@@ -24,7 +24,6 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.ServiceManager;
 
 public class DefaultServiceManager implements ServiceManager {
     private final Map<Class<?>, RegisteredFactory> services = new ConcurrentHashMap<Class<?>, RegisteredFactory>();
