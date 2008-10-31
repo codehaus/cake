@@ -25,7 +25,8 @@ package org.codehaus.cake.internal.util;
  * @version $Id$
  * @param <T1>
  *            the type of the first operand
- * @param <T2>the type of the second operand
+ * @param <T2>the
+ *            type of the second operand
  * 
  */
 public final class Pair<T1, T2> implements java.io.Serializable {
@@ -61,6 +62,10 @@ public final class Pair<T1, T2> implements java.io.Serializable {
     public Pair(final T1 item1, final T2 item2) {
         this.instance1 = item1;
         this.instance2 = item2;
+    }
+
+    public static <T1, T2> Pair<T1, T2> from(T1 item1, T2 item2) {
+        return new Pair<T1,T2>(item1, item2);
     }
 
     /** {@inheritDoc} */
