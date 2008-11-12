@@ -5,6 +5,7 @@ import java.util.Map;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
+import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
@@ -20,7 +21,7 @@ public interface CrudReader<K, R> {
     BooleanAttribute READ_THROUGH = new BooleanAttribute() {};
     // Get throws IllegalStateException if a value could not be found
     // getAll() if not _all_ values could be found
-    
+
     /**
      * This attribute can be used for asserting that a mapping exists for the specified key(s) when calling any of the
      * <tt>get</tt> methods. If this attribute is set calling, for example, {@link #get(Object)} with a key for which
@@ -40,7 +41,8 @@ public interface CrudReader<K, R> {
         PEEK, NORMAL, READ_THROUGH, READ_THROUGH_NO_CACHE
     }
 
-    ObjectAttribute<Op<?, ?>> READ_TRANSFORMER = (ObjectAttribute) new ObjectAttribute<Op>(Op.class) {};
+    ObjectAttribute<Op<?, ?>> READ_TRANSFORMER = (ObjectAttribute) new ObjectAttribute<Op>(Op.class,
+            CacheDataExtractor.ONLY_VALUE) {};
 
     /**
      * Works as {@link Map#get(Object)} with the following modifications.

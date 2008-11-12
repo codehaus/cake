@@ -24,7 +24,6 @@ import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
-import org.codehaus.cake.internal.service.RunState;
 
 public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
@@ -34,8 +33,7 @@ public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
     private final CacheRequestFactory<K, V> requestFactory;
 
     public UnsynchronizedCacheLoader(MemoryStore<K, V> store, CacheLoadingConfiguration<K, V> conf,
-            InternalCacheExceptionService<K, V> exceptionHandler, RunState state,
-            CacheRequestFactory<K, V> requestFactory) {
+            InternalCacheExceptionService<K, V> exceptionHandler, CacheRequestFactory<K, V> requestFactory) {
         super(exceptionHandler);
         loader = getSimpleLoader(conf);
         this.store = store;

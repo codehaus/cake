@@ -50,7 +50,8 @@ public final class Predicates {
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
-    private Predicates() {}
+    private Predicates() {
+    }
 
     // /CLOVER:ON
     /**
@@ -632,6 +633,17 @@ public final class Predicates {
      *             if the specified predicate is <code>null</code>
      */
     public static <E> Predicate<E> not(Predicate<? super E> predicate) {
+        if (predicate == TRUE) {
+            return FALSE;
+        } else if (predicate == FALSE) {
+            return TRUE;
+        } else if (predicate == IS_NULL) {
+            return IS_NOT_NULL;
+        } else if (predicate == IS_NOT_NULL) {
+            return IS_NULL;
+        } else if (predicate instanceof NotPredicate) {
+            return ((NotPredicate) predicate).predicate;
+        }
         return new NotPredicate<E>(predicate);
     }
 
@@ -1262,6 +1274,7 @@ public final class Predicates {
             return "is null";
         }
     }
+
     /**
      * A Predicate that evaluates to <code>true</code> iff the element being evaluated has the same object identity as
      * the element being specified.
@@ -1720,7 +1733,8 @@ public final class Predicates {
         private static final long serialVersionUID = 3258129137502925875L;
 
         /** Creates a new TruePredicate. */
-        private TruePredicate() {}
+        private TruePredicate() {
+        }
 
         /**
          * Returns <tt>true</tt> for any element.

@@ -22,9 +22,11 @@ import java.util.concurrent.Future;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
@@ -36,20 +38,21 @@ import org.codehaus.cake.service.annotation.Stoppable;
 
 public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
+    private final Cache cache;
     private final ConcurrentHashMap<K, LoadableFutureTask<K, V>> futures = new ConcurrentHashMap<K, LoadableFutureTask<K, V>>();
     private final BlockingCacheLoader<K, V> loader;
-    private final MemoryStore<K, V> store;
     private final CacheRequestFactory<K, V> requestFactory;
-
+    private final MemoryStore<K, V> store;
     /** The Executor responsible for doing the actual load. */
     private volatile Executor loadExecutor;
 
-    public ThreadSafeCacheLoader(MemoryStore<K, V> store, CacheLoadingConfiguration<K, V> conf,
+    public ThreadSafeCacheLoader(MemoryStore<K, V> store, CacheLoadingConfiguration<K, V> conf, Cache<K, V> cache,
             InternalCacheExceptionService<K, V> exceptionHandler, CacheRequestFactory<K, V> requestFactory) {
         super(exceptionHandler);
+        this.cache = cache;
         this.loader = getSimpleLoader(conf);
-        this.store = store;
         this.requestFactory = requestFactory;
+        this.store = store;
     }
 
     @AfterStart
@@ -83,7 +86,7 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
     /** {@inheritDoc} */
     public void loadAsync(K key, AttributeMap attributes) {
-        if (key==null) {
+        if (key == null) {
             throw new NullPointerException("key is null");
         }
         loadExecutor.execute(createFuture(key, attributes));
@@ -95,7 +98,9 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
             // TODO cache = weak reference?, for ill behaving loaders?
             if (value != null) {
                 AddEntryRequest<K, V> loaded = requestFactory.loaded(key, value, map);
-                store.process(loaded);
+                synchronized (cache) {
+                    store.process(loaded);
+                }
                 return loaded.getNewEntry();
             }
             return null;

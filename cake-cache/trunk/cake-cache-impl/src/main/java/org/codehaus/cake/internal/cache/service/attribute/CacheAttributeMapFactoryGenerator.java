@@ -46,7 +46,8 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
     private static final String IES_DESCRIPTOR = Type.getType(InternalExceptionService.class).getDescriptor();
     static final WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
     private static final String INTERFACE_DESCRIPTOR = Type.getType(CacheAttributeMapFactory.class).getDescriptor();
-    private static final String INTERFACE_INTERNAL_NAME = Type.getType(CacheAttributeMapFactory.class).getInternalName();
+    private static final String INTERFACE_INTERNAL_NAME = Type.getType(CacheAttributeMapFactory.class)
+            .getInternalName();
     private static final Object lock = new Object();
     private final String classDescriptor;
     private final String classDescriptorMap;
@@ -99,8 +100,8 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
         MethodVisitor mv = cw.visitMethod(ACC_STATIC, "<clinit>", "()V", null, null);
         mv.visitCode();
         mv.visitLdcInsn(Type.getType("L" + classDescriptor + ";"));
-        mv.visitMethodInsn(INVOKESTATIC, getType(CacheAttributeMapFactoryGenerator.class).getInternalName(), "init", getMethodDescriptor(
-                getType(Attribute[].class), new Type[] { getType(Class.class) }));
+        mv.visitMethodInsn(INVOKESTATIC, getType(CacheAttributeMapFactoryGenerator.class).getInternalName(), "init",
+                getMethodDescriptor(getType(Attribute[].class), new Type[] { getType(Class.class) }));
         mv.visitVarInsn(ASTORE, 0);
         for (Info i : info) {
             mv.visitVarInsn(ALOAD, 0);
@@ -133,8 +134,13 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
 
                 mv.visitVarInsn(ALOAD, 3);
                 info.visitStaticGet(mv);
-                mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get", "("
-                        + info.attributeDescriptor + ")" + info.descriptor);
+                if (info.vType == PrimType.OBJECT) {
+                    mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get", "(Lorg/codehaus/cake/attribute/Attribute;)Ljava/lang/Object;");
+                    mv.visitTypeInsn(CHECKCAST, info.type.getInternalName());
+                } else {
+                    mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get", "("
+                            + info.attributeDescriptor + ")" + info.descriptor);
+                }
                 mv.visitVarInsn(info.vType.storeCode(), index);
 
                 info.visitStaticGet(mv);
@@ -197,7 +203,10 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
             } else if ((isCreate && info.impl.getCreateAction() == CreateAction.DEFAULT)
                     || (!isCreate && info.impl.getModifyAction() == ModifyAction.DEFAULT)) { // default
                 if (info.vType == PrimType.OBJECT) {
-                    mv.visitInsn(ACONST_NULL);
+                    info.visitStaticGet(mv);
+//                    System.out.println(classDescriptor);
+                    mv.visitMethodInsn(INVOKEVIRTUAL, "org/codehaus/cake/attribute/Attribute", "getDefault", "()Ljava/lang/Object;");
+                    mv.visitTypeInsn(CHECKCAST, info.type.getInternalName());
                 } else {
                     mv.visitLdcInsn(info.impl.getAttribute().getDefault());
                 }
@@ -208,11 +217,11 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
                 int i = checkMap ? 4 : 3;
                 mv.visitVarInsn(ALOAD, i);
                 info.visitStaticGet(mv);
-                //System.out.println(info.vType.getPrimDescriptor());
-                if (info.vType==PrimType.OBJECT) {
+                // System.out.println(info.vType.getPrimDescriptor());
+                if (info.vType == PrimType.OBJECT) {
                     mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get", "("
                             + ATTRIBUTE_DESCRIPTOR + ")" + info.vType.getPrimDescriptor());
-                    
+
                 } else {
                     mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get", "("
                             + info.attributeDescriptor + ")" + info.vType.getPrimDescriptor());
@@ -468,8 +477,9 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
 
             attribute = info.getAttribute();
             type = Type.getType(attribute.getType());
-            descriptor = type.getDescriptor();
             vType = PrimType.from(attribute);
+           // System.out.println(type);
+            descriptor = vType == PrimType.OBJECT ? Type.getType(Object.class).getDescriptor() : type.getDescriptor();
             attributeDescriptor = vType.getDescriptor();
         }
 
@@ -480,8 +490,6 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
         String getFieldStaticName() {
             return "A" + index;
         }
-
-
 
         void visitStaticGet(MethodVisitor mv) {
             mv.visitFieldInsn(GETSTATIC, classDescriptor, getFieldStaticName(), vType.getDescriptor());

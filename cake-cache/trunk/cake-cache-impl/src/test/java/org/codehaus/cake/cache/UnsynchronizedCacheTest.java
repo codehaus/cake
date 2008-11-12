@@ -15,6 +15,7 @@
  */
 package org.codehaus.cake.cache;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -33,6 +34,13 @@ public class UnsynchronizedCacheTest {
         assertFalse(c.isStarted());
         c.prestart();
         assertTrue(c.isStarted());
+    }
+
+    @Test
+    public void from() {
+        CacheConfiguration<Integer, String> conf = CacheConfiguration.newConfiguration("foo");
+        UnsynchronizedCache<Integer, String> c = UnsynchronizedCache.from(conf);
+        assertEquals("foo", c.getName());
     }
 
 }

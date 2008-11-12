@@ -314,11 +314,36 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         }
     }
 
-    public void process(ClearCacheRequest<K, V> r) {
-        clear();
-        volume = 0;
-        if (policy != null) {
-            policy.clear();
+    public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {
+        if (filter == null || filter == Predicates.TRUE) {
+            clear();
+            volume = 0;
+            if (policy != null) {
+                policy.clear();
+            }
+        } else {
+            modCount++;
+            HashEntry<K, V>[] tab = table;
+            int len = tab.length;
+            for (int i = 0; i < len; i++) {
+                HashEntry<K, V> e = tab[i];
+                HashEntry<K, V> prev = e;
+                while (e != null) {
+                    if (filter.op(e)) {
+                        if (prev == e) { // first entry
+                            table[i] = e.next;
+                            prev = e.next;
+                        } else {
+                            System.out.println("nofirst");
+                            prev.next = e.next;
+                        }
+                        size--;
+                        removeEntry(e, false);
+                    }
+                    e = e.next;
+                }
+
+            }
         }
     }
 

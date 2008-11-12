@@ -24,6 +24,7 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.ops.Ops;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
@@ -34,9 +35,12 @@ public class CacheMemoryStoreConfigurationTest {
     @Test
     public void maximumVolume() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
-        assertEquals(0, c.getMaximumVolume());
+        assertEquals(Long.MAX_VALUE, c.getMaximumVolume());
+        assertEquals(Long.MAX_VALUE, MemoryStoreAttributes.MAX_VOLUME.get(c));
+
         assertSame(c, c.setMaximumVolume(1));
         assertEquals(1, c.getMaximumVolume());
+        assertEquals(1, MemoryStoreAttributes.MAX_VOLUME.get(c));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -47,9 +51,13 @@ public class CacheMemoryStoreConfigurationTest {
     @Test
     public void maximumSize() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
-        assertEquals(0, c.getMaximumSize());
+        assertEquals(Integer.MAX_VALUE, c.getMaximumSize());
+        assertEquals(Integer.MAX_VALUE, MemoryStoreAttributes.MAX_SIZE.get(c));
+
         assertSame(c, c.setMaximumSize(1));
         assertEquals(1, c.getMaximumSize());
+        assertEquals(1, MemoryStoreAttributes.MAX_SIZE.get(c));
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -61,8 +69,10 @@ public class CacheMemoryStoreConfigurationTest {
     public void isDisabled() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertFalse(c.isDisabled());
+        assertFalse(MemoryStoreAttributes.IS_DISABLED.get(c));
         assertSame(c, c.setDisabled(true));
         assertTrue(c.isDisabled());
+        assertTrue(MemoryStoreAttributes.IS_DISABLED.get(c));
     }
 
     @Test

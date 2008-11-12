@@ -143,7 +143,7 @@ public final class IntOpsTest {
         assertEquals(-33, serializeAndUnserialize(IntOps.subtract(12)).op(-21));
     }
    /**
-     * Tests {@link {Type}Ops#COMPARATOR}.
+     * Tests {@link IntOps#COMPARATOR}.
      */
     @Test
     public void comparator() {
@@ -155,7 +155,7 @@ public final class IntOpsTest {
     }
     
    /**
-     * Tests {@link {Type}Ops#REVERSE_COMPARATOR}.
+     * Tests {@link IntOps#REVERSE_COMPARATOR}.
      */
     @Test
     public void comparatorReverse() {

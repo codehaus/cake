@@ -143,7 +143,7 @@ public final class LongOpsTest {
         assertEquals(-33L, serializeAndUnserialize(LongOps.subtract(12L)).op(-21L));
     }
    /**
-     * Tests {@link {Type}Ops#COMPARATOR}.
+     * Tests {@link LongOps#COMPARATOR}.
      */
     @Test
     public void comparator() {
@@ -155,7 +155,7 @@ public final class LongOpsTest {
     }
     
    /**
-     * Tests {@link {Type}Ops#REVERSE_COMPARATOR}.
+     * Tests {@link LongOps#REVERSE_COMPARATOR}.
      */
     @Test
     public void comparatorReverse() {

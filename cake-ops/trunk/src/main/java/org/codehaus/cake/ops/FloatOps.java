@@ -67,10 +67,6 @@ public final class FloatOps {
     public static FloatOp add(float add) {
         return new FloatAddOp(add);
     }
-
-    public static FloatOp constant(float constant) {
-        return new FloatConstantOp(constant);
-    }
         
     public static FloatReducer divide() {
         return DIVIDE_REDUCER;
@@ -209,21 +205,7 @@ public final class FloatOps {
             return a * multiply;
         }
     }
-    
-    static final class FloatConstantOp implements FloatOp, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1;
-
-        private final float constant;
-
-        public FloatConstantOp(float constant) {
-            this.constant = constant;
-        }
-
-        public float op(float a) {
-            return constant;
-        }
-    }    /**
+    /**
      * A comparator for floats relying on natural ordering. The comparator is Serializable.
      */
     public static final FloatComparator COMPARATOR = new NaturalFloatComparator();

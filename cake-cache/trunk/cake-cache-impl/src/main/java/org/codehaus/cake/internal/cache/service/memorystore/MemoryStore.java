@@ -43,17 +43,22 @@ public interface MemoryStore<K, V> {
     // will most likely have getValue(), getAttribute(Attribute a)
     // if we start storing, the value, key, attributes in separate arrays.
 
+    boolean containsKey(Predicate<CacheEntry<K,V>> filter, Object key);
+
+    boolean containsValue(Predicate<CacheEntry<K,V>> filter, Object value);
+
+    boolean isEmpty(Predicate<CacheEntry<K,V>> filter);
     int size(Predicate<CacheEntry<K,V>> filter);
 
     long getVolume(Predicate<CacheEntry<K,V>> filter);
-
+    CacheEntry<K, V> get(Predicate<CacheEntry<K,V>> filter, Object key);
     CacheEntry<K, V> get(K key);
 
     void process(AddEntriesRequest<K, V> r);
 
     void process(AddEntryRequest<K, V> r);
 
-    void process(ClearCacheRequest<K, V> r);
+    void process(Predicate<CacheEntry<K,V>> filter, ClearCacheRequest<K, V> r);
 
     void process(RemoveEntriesRequest<K, V> r);
 

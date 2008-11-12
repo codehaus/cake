@@ -3,7 +3,6 @@ package org.codehaus.cake.internal.cache.processor;
 import java.util.Map;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheSelector;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
@@ -20,7 +19,7 @@ public interface CacheProcessor<K, V> {
 
     void process(AddEntryRequest<K, V> r);
 
-    void process(ClearCacheRequest<K, V> r);
+    void process(Predicate<CacheEntry<K,V>> filter, ClearCacheRequest<K, V> r);
 
     void process(RemoveEntriesRequest<K, V> r);
 
@@ -30,9 +29,9 @@ public interface CacheProcessor<K, V> {
 
     void process(TrimToVolumeRequest<K, V> r);
 
-    <T> T get(Predicate<CacheEntry<K,V>> selector, K key, Op<CacheEntry<K, V>, T> extractor, boolean isPeek);
+    <T> T get(Predicate<CacheEntry<K,V>> selector, K key, Op<CacheEntry<K, V>, T> extractor);
 
-    <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> key, Op<CacheEntry<K, V>, T> extractor, boolean isPeek);
+    <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> key, Op<CacheEntry<K, V>, T> extractor);
 
 //    Iterable<K> getKeys(Predicate<CacheEntry<K, V>> predicate);
 

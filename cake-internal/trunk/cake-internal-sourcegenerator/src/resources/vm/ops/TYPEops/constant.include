@@ -1,0 +1,32 @@
+    
+    /**
+     * Tests {@link IntOps#constant(int)}.
+     */
+    @Test
+    public void constant() {
+        assertEquals(0, IntOps.constant(0).op(a));
+        assertEquals(1, IntOps.constant(1));
+        assertIsSerializable(IntOps.constant(1));
+        assertEquals(1, serializeAndUnserialize(IntOps.constant(2)));
+    }
+    
+    
+    public static $util.op("Op") constant($type constant) {
+        return new ${Type}ConstantOp(constant);
+    }
+    
+        
+    static final class ${Type}ConstantOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1;
+
+        private final $type constant;
+
+        public ${Type}ConstantOp($type constant) {
+            this.constant = constant;
+        }
+
+        public $type op($type a) {
+            return constant;
+        }
+    }

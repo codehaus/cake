@@ -11,14 +11,8 @@ import java.util.NoSuchElementException;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.SynchronizedCache;
-import org.codehaus.cake.forkjoin.ForkJoinExecutor;
-import org.codehaus.cake.forkjoin.ForkJoinPool;
-import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.ObjectToLong;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
@@ -91,17 +85,6 @@ public class CacheMap<K, V> {
         return h ^ (h >>> 7) ^ (h >>> 4);
     }
 
-    /**
-     * Returns the table entry that should be used for key with given hash
-     * 
-     * @param hash
-     *            the hash code for the key
-     * @return the table entry
-     */
-    static int indexFor(int hash, int tableLength) {
-        return hash & (tableLength - 1);
-    }
-
     /* ---------------- Inner Classes -------------- */
 
     /**
@@ -148,7 +131,7 @@ public class CacheMap<K, V> {
         this.loadFactor = loadFactor;
         threshold = (int) (16 * loadFactor);
         table = new HashEntry[16];
-        //pa = (ParallelArray) ParallelArray.createUsingHandoff(table, ParallelArray.defaultExecutor());
+        // pa = (ParallelArray) ParallelArray.createUsingHandoff(table, ParallelArray.defaultExecutor());
     }
 
     /**
@@ -170,8 +153,7 @@ public class CacheMap<K, V> {
         }
     }
 
-    public boolean containsKey(Object key) {
-        // DONE
+    public boolean containsKey(Predicate<CacheEntry<K, V>> filter, Object key) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
@@ -179,7 +161,7 @@ public class CacheMap<K, V> {
             int hash = hash(key.hashCode());
             HashEntry<K, V> e = getFirst(hash);
             while (e != null) {
-                if (e.hash == hash && key.equals(e.key)) {
+                if (e.hash == hash && (filter == null || filter.op(e)) && key.equals(e.key)) {
                     return true;
                 }
                 e = e.next;
@@ -188,19 +170,20 @@ public class CacheMap<K, V> {
         return false;
     }
 
-    public boolean containsValue(Object value) {
-        // DONE
+    public boolean containsValue(final Predicate<CacheEntry<K, V>> filter, final Object value) {
         if (value == null) {
             throw new NullPointerException("value is null");
         }
-        if (size != 0) { // read-volatile
+        if (size != 0) {
             HashEntry<K, V>[] tab = table;
             int len = tab.length;
             for (int i = 0; i < len; i++) {
                 for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
-                    V v = e.value;
-                    if (value == v || value.equals(v)) {
-                        return true;
+                    if (filter == null || filter == Predicates.TRUE || filter.op(e)) {
+                        V v = e.value;
+                        if (value == v || value.equals(v)) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -208,8 +191,20 @@ public class CacheMap<K, V> {
         return false;
     }
 
+    public CacheEntry<K, V> get(Predicate<CacheEntry<K, V>> filter, Object key) {
+        if (size != 0) {
+            int hash = hash(key.hashCode());
+            HashEntry<K, V> e = getFirst(hash);
+            while (e != null) {
+                if (e.hash == hash && (filter == null || filter.op(e)) && key.equals(e.key)) {
+                    return e;
+                }
+                e = e.next;
+            }
+        }
+        return null;
+    }
     public CacheEntry<K, V> get(Object key) {
-        // DONE
         if (size != 0) {
             int hash = hash(key.hashCode());
             HashEntry<K, V> e = getFirst(hash);
@@ -221,23 +216,6 @@ public class CacheMap<K, V> {
             }
         }
         return null;
-    }
-
-    public CacheEntry<K, V> get(Object key, int hash) {
-        if (size != 0) {
-            HashEntry<K, V> e = getFirst(hash);
-            while (e != null) {
-                if (e.hash == hash && key.equals(e.key)) {
-                    return e;
-                }
-                e = e.next;
-            }
-        }
-        return null;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     public V put(K key, V value, AttributeMap attributes) {
@@ -352,6 +330,23 @@ public class CacheMap<K, V> {
         return remove(key, hash, value) != null;
     }
 
+    public boolean isEmpty(final Predicate<CacheEntry<K, V>> filter) {
+        if (filter == null || filter == Predicates.TRUE) {
+            return size == 0;
+        } else {
+            HashEntry<K, V>[] tab = table;
+            int len = tab.length;
+            for (int i = 0; i < len; i++) {
+                for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                    if (filter.op(e)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
     public int size(final Predicate<CacheEntry<K, V>> filter) {
         if (filter == null || filter == Predicates.TRUE) {
             return size;
@@ -367,25 +362,25 @@ public class CacheMap<K, V> {
                 }
             }
             return count;
-        } 
-//        else {
-//            long size = pa.withFilter(Predicates.IS_NOT_NULL).withMapping(
-//                    new ObjectToLong<HashEntry<Integer, String>>() {
-//                        public long op(HashEntry<Integer, String> a) {
-//                            long count = 0;
-//                            for (HashEntry<Integer, String> e = a; e != null; e = a.next) {
-//                                if (filter.op((CacheEntry) e)) {
-//                                    count++;
-//                                }
-//                            }
-//                            return count;
-//                        }
-//                    }).sum();
-//            return (int) size;
-//        }
+        }
+        // else {
+        // long size = pa.withFilter(Predicates.IS_NOT_NULL).withMapping(
+        // new ObjectToLong<HashEntry<Integer, String>>() {
+        // public long op(HashEntry<Integer, String> a) {
+        // long count = 0;
+        // for (HashEntry<Integer, String> e = a; e != null; e = a.next) {
+        // if (filter.op((CacheEntry) e)) {
+        // count++;
+        // }
+        // }
+        // return count;
+        // }
+        // }).sum();
+        // return (int) size;
+        // }
     }
 
-   // ParallelArray<HashEntry<Integer, String>> pa;
+    // ParallelArray<HashEntry<Integer, String>> pa;
 
     /**
      * @param i
@@ -414,11 +409,11 @@ public class CacheMap<K, V> {
             }
         }
         table = newTable;
-       // pa = (ParallelArray) ParallelArray.createUsingHandoff(table, fje);
+        // pa = (ParallelArray) ParallelArray.createUsingHandoff(table, fje);
 
     }
 
-    //ForkJoinExecutor fje = new ForkJoinPool(2);
+    // ForkJoinExecutor fje = new ForkJoinPool(2);
 
     Iterator<CacheEntry<K, V>> newEntrySetIterator(Predicate<CacheEntry<K, V>> predicate) {
         return new EntrySetIterator<K, V>(this, predicate);
@@ -553,7 +548,7 @@ public class CacheMap<K, V> {
         }
 
         public final int hashCode() {
-            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
+            return  key.hashCode() ^ value.hashCode();
         }
 
         public final V setValue(V newValue) {
@@ -596,12 +591,12 @@ public class CacheMap<K, V> {
         void entryRemoved(CacheMap<K, V> m) {
         }
 
-        /**
-         * This method is invoked whenever the value in an entry is overwritten by an invocation of put(k,v) for a key k
-         * that's already in the HashMap.
-         */
-        void entryValueUpdated(CacheMap<K, V> m) {
-        }
+//        /**
+//         * This method is invoked whenever the value in an entry is overwritten by an invocation of put(k,v) for a key k
+//         * that's already in the HashMap.
+//         */
+//        void entryValueUpdated(CacheMap<K, V> m) {
+//        }
 
         public AttributeMap getAttributes() {
             return attributes;

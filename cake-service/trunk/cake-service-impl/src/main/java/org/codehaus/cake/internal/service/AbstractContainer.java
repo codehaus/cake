@@ -25,19 +25,25 @@ import org.codehaus.cake.service.Container;
 
 public abstract class AbstractContainer implements Container {
 
-    private final String name;;
+    private final String name;
 
     private final RunState runState;
 
     private final ServiceManager sm;
 
-    public AbstractContainer(Composer composer) {
+    protected AbstractContainer(Composer composer) {
         ContainerInfo info = composer.get(ContainerInfo.class);
         name = info.getContainerName();
         composer.registerInstance(Container.class, this);
         composer.registerInstance(info.getContainerType(), this);
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
+    }
+
+    protected AbstractContainer(AbstractContainer parent) {
+        this.runState = parent.runState;
+        this.sm = parent.sm;
+        this.name = parent.name;
     }
 
     /** {@inheritDoc} */

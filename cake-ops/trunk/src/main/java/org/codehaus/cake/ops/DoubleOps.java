@@ -67,10 +67,6 @@ public final class DoubleOps {
     public static DoubleOp add(double add) {
         return new DoubleAddOp(add);
     }
-
-    public static DoubleOp constant(double constant) {
-        return new DoubleConstantOp(constant);
-    }
         
     public static DoubleReducer divide() {
         return DIVIDE_REDUCER;
@@ -209,21 +205,7 @@ public final class DoubleOps {
             return a * multiply;
         }
     }
-    
-    static final class DoubleConstantOp implements DoubleOp, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1;
-
-        private final double constant;
-
-        public DoubleConstantOp(double constant) {
-            this.constant = constant;
-        }
-
-        public double op(double a) {
-            return constant;
-        }
-    }    /**
+    /**
      * A comparator for doubles relying on natural ordering. The comparator is Serializable.
      */
     public static final DoubleComparator COMPARATOR = new NaturalDoubleComparator();

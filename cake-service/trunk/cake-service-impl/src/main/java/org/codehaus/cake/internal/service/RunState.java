@@ -27,7 +27,7 @@ public abstract class RunState {
     protected static final int SHUTDOWN = 4;
     protected static final int STOPPING = 8;
     protected static final int TERMINATED = 16;
-    final String containerType;
+    private final String containerType;
     private final String containerName;
     final LifecycleManager lifecycleManager;
 
@@ -35,7 +35,6 @@ public abstract class RunState {
         this.containerType = info.getContainerTypeName();
         this.containerName = info.getContainerName();
         this.lifecycleManager = lifecycleManager;
-        lifecycleManager.state = this;
     }
 
     final boolean isRunning() {
@@ -79,7 +78,7 @@ public abstract class RunState {
     public boolean isRunningLazyStart(boolean failIfShutdown) {
         while (!isRunning()) {
             if (isAtLeastShutdown()) {
-                checkExceptions();
+                lifecycleManager.checkExceptions();
                 if (failIfShutdown) {
                     throw new ContainerAlreadyShutdownException(containerType + " [name=" + containerName
                             + "] has been shutdown, cannot invoke method");
@@ -98,11 +97,7 @@ public abstract class RunState {
 
     abstract boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
 
-    abstract void checkExceptions();
-
     abstract void shutdown(boolean shutdownNow);
-
-    abstract void trySetStartupException(Throwable cause);
 
     abstract void tryStart();
 }

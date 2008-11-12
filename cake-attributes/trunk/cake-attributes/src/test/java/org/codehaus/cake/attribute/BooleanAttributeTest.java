@@ -147,6 +147,9 @@ public final class BooleanAttributeTest extends AtrStubs {
     public void toSingleton() {
         assertTrue(ATR1.singleton(true).get(ATR1));
         assertFalse(ATR1.singleton(false).get(ATR1));
+        assertTrue(ATR1.singletonTrue().get(ATR1));
+        assertFalse(ATR1.singletonFalse().get(ATR1));
+
         assertTrue(NON_NEGATIVE.singleton(true).get(NON_NEGATIVE));
     }
 

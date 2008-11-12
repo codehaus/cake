@@ -141,7 +141,7 @@ public abstract class Attribute<T> implements Serializable {
      * 
      * @return the default value of this attribute
      */
-    public T getDefault() {
+    public final T getDefault() {
         return defaultValue;
     }
 

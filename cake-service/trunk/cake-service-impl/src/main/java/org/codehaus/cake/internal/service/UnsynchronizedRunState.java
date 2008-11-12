@@ -23,21 +23,19 @@ public class UnsynchronizedRunState extends RunState {
 
     private int state;
 
-    private Throwable startupException;
-
     public UnsynchronizedRunState(ContainerInfo info, LifecycleManager lifecycleManager) {
         super(info, lifecycleManager);
     }
 
     void tryStart() {
-        checkExceptions();
+        lifecycleManager.checkExceptions();
         if (isStarting()) {
             throw new IllegalStateException(
                     "Cannot invoke this method from a @Startable method, should be invoked from an @AfterStart method");
         }
         if (state < STARTING) {
             state = STARTING;
-            lifecycleManager.start();
+            lifecycleManager.start(this);
         }
     }
 
@@ -62,24 +60,10 @@ public class UnsynchronizedRunState extends RunState {
         }
     }
 
-    @Override
-    void trySetStartupException(Throwable cause) {
-        if (startupException == null) {
-            startupException = cause;
-        }
-    }
-
     boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return isTerminated();
     }
 
-    @Override
-    void checkExceptions() {
-        Throwable re = startupException;
-        if (re != null) {
-            throw new IllegalStateException(containerType + " failed while starting previously", re);
-        }
-    }
 
     @Override
     protected int get() {

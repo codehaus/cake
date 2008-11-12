@@ -1,21 +1,5 @@
-/*
- * Copyright 2008 Kasper Nielsen.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://cake.codehaus.org/LICENSE
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package org.codehaus.cake.cache;
 
-import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
@@ -35,7 +19,6 @@ import org.codehaus.cake.internal.service.executor.DefaultForkJoinPool;
 import org.codehaus.cake.internal.service.executor.DefaultScheduledExecutorService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.Container;
 
@@ -84,6 +67,8 @@ import org.codehaus.cake.service.Container;
         Manageable.class })
 public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
 
+    private final Object mutex;
+
     /** Creates a new SynchronizedCache with default configuration. */
     public SynchronizedCache() {
         this(CacheConfiguration.<K, V> newConfiguration());
@@ -97,28 +82,72 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
      */
     public SynchronizedCache(CacheConfiguration<K, V> configuration) {
         super(createComposer(configuration));
+        this.mutex = this;
+    }
+
+    SynchronizedCache(SynchronizedCache<K, V> parent, Predicate<CacheEntry<K, V>> filter) {
+        super(parent, filter);
+        mutex = parent.mutex;
     }
 
     /** {@inheritDoc} */
+    @Override
+    public boolean containsKey(Object key) {
+        synchronized (mutex) {
+            return super.containsKey(key);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public boolean containsValue(Object value) {
-        if (value == null) {
-            throw new NullPointerException("value is null");
+        synchronized (mutex) {
+            return super.containsValue(value);
         }
-        synchronized (this) {
-            lazyStart();
-            for (V v : values()) {
-                if (v.equals(value)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /** {@inheritDoc} */
-    public Iterator<CacheEntry<K, V>> iterator() {
-        lazyStart();
-        return memoryCache.iterator(null);
+    @Override
+    public V peek(K key) {
+        synchronized (mutex) {
+            return super.peek(key);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CacheEntry<K, V> peekEntry(K key) {
+        synchronized (mutex) {
+            return super.peekEntry(key);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public CacheSelector<K, V> select() {
+        return new AbstractCacheSelector<K, V>() {
+            public Cache<K, V> on(Predicate<CacheEntry<K, V>> filter) {
+                if (filter == null) {
+                    throw new NullPointerException("filter is null");
+                }
+                return new SynchronizedCache<K, V>(SynchronizedCache.this, filter);
+            }
+        };
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int size() {
+        synchronized (mutex) {
+            return super.size();
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        synchronized (mutex) {
+            return super.toString();
+        }
     }
 
     private static Composer createComposer(CacheConfiguration<?, ?> configuration) {
@@ -151,16 +180,8 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
         return composer;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        synchronized (this) {
-            return super.toString();
-        }
-    }
-
     /**
-     * Creates a new UnsynchronizedCache from the specified configuration.
+     * Creates a new SynchronizedCache from the specified configuration.
      * 
      * @param configuration
      *            the cache configuration to create the cache from
@@ -168,39 +189,9 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
      *            the types of key maintained by the cache
      * @param <V>
      *            the types of values maintained by the cache
-     * @return a new UnsynchronizedCache
+     * @return a new SynchronizedCache
      */
     public static <K, V> SynchronizedCache<K, V> from(CacheConfiguration<K, V> configuration) {
         return new SynchronizedCache<K, V>(configuration);
-    }
-
-    public CacheSelector<K, V> select() {
-        return new AbstractCacheSelector<K, V>() {
-            public Cache<K, V> on(Predicate<CacheEntry<K, V>> filter) {
-                return new SelectedCache(filter);
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    class SelectedCache extends AbstractCache.AbstractSelectedCache {
-        SelectedCache(Predicate<CacheEntry<K, V>> filter) {
-            super(filter);
-        }
-
-        @Override
-        public int size() {
-            synchronized (SynchronizedCache.this) {
-                return super.size();
-            }
-        }
-
-        public CacheSelector<K, V> select() {
-            return new AbstractCacheSelector<K, V>() {
-                public Cache<K, V> on(Predicate<CacheEntry<K, V>> selector) {
-                    return new SelectedCache(Predicates.and(filter, selector));
-                }
-            };
-        }
     }
 }

@@ -8,12 +8,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.junit.Test;
 
 public class Caches_newEntryTest {
-    Attribute a = new LongAttribute() {};
-    Attribute a1 = new LongAttribute() {};
+    Attribute a = new LongAttribute("A") {};
+    Attribute a1 = new LongAttribute("B") {};
     private final AttributeMap am = a.singleton(3L);
     private final AttributeMap am1 = a1.singleton(4L);
 
@@ -32,7 +34,12 @@ public class Caches_newEntryTest {
         assertEquals(0, me.getKey().intValue());
         assertEquals(1, me.getValue().intValue());
         assertSame(am, me.getAttributes());
-        assertTrue(me.toString().contains("0=1"));
+        assertEquals("0=1 [A=3]", me.toString());
+        AttributeMap map = new DefaultAttributeMap();
+        map.put(a, 5);
+        map.put(a1, 6);
+        me = Caches.newEntry(0, 1, map);
+        assertTrue(me.toString().equals("0=1 [A=5, B=6]") || me.toString().equals("0=1 [B=6, A=5]"));
     }
 
     @Test(expected = NullPointerException.class)
@@ -59,9 +66,9 @@ public class Caches_newEntryTest {
         assertFalse(Caches.newEntry(0, 1).equals(Caches.newEntry(0, 0)));
         assertFalse(Caches.newEntry(0, 1).equals(Caches.newEntry(1, 1)));
         assertTrue(Caches.newEntry(0, 1).equals(Caches.newEntry(0, 1)));
-  //      assertFalse(Caches.newEntry(0, 1).equals(Caches.newEntry(0, 1, am1)));
+        // assertFalse(Caches.newEntry(0, 1).equals(Caches.newEntry(0, 1, am1)));
         assertTrue(Caches.newEntry(0, 1, am1).equals(Caches.newEntry(0, 1, am1)));
-  //      assertFalse(Caches.newEntry(0, 1, am).equals(Caches.newEntry(0, 1, am1)));
+        // assertFalse(Caches.newEntry(0, 1, am).equals(Caches.newEntry(0, 1, am1)));
     }
 
     @Test

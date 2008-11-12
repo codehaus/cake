@@ -161,7 +161,7 @@ public final class DoubleOpsTest {
         assertEquals(-33D, serializeAndUnserialize(DoubleOps.subtract(12D)).op(-21D),0);
     }
    /**
-     * Tests {@link {Type}Ops#COMPARATOR}.
+     * Tests {@link DoubleOps#COMPARATOR}.
      */
     @Test
     public void comparator() {
@@ -174,7 +174,7 @@ public final class DoubleOpsTest {
     }
     
    /**
-     * Tests {@link {Type}Ops#REVERSE_COMPARATOR}.
+     * Tests {@link DoubleOps#REVERSE_COMPARATOR}.
      */
     @Test
     public void comparatorReverse() {

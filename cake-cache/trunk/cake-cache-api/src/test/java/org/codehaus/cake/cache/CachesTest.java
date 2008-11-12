@@ -17,6 +17,7 @@ package org.codehaus.cake.cache;
 
 import static org.codehaus.cake.cache.Caches.emptyCache;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.codehaus.cake.test.util.TestUtil.dummy;
 import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -31,8 +32,27 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.ByteAttribute;
+import org.codehaus.cake.attribute.CharAttribute;
+import org.codehaus.cake.attribute.DoubleAttribute;
+import org.codehaus.cake.attribute.FloatAttribute;
+import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.attribute.ObjectAttribute;
+import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.ops.Ops.BinaryPredicate;
+import org.codehaus.cake.ops.Ops.BytePredicate;
+import org.codehaus.cake.ops.Ops.CharPredicate;
+import org.codehaus.cake.ops.Ops.DoublePredicate;
+import org.codehaus.cake.ops.Ops.FloatPredicate;
+import org.codehaus.cake.ops.Ops.IntPredicate;
+import org.codehaus.cake.ops.Ops.LongPredicate;
+import org.codehaus.cake.ops.Ops.ShortPredicate;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -103,6 +123,7 @@ public class CachesTest {
         assertFalse(emptyCache().isTerminated());
         assertEquals(0, Caches.emptyCache().size());
         assertTrue(Caches.emptyCache().isEmpty());
+        assertFalse(Caches.emptyCache().iterator().hasNext());
         assertEquals(0, Caches.emptyCache().keySet().size());
         assertEquals(0, Caches.emptyCache().values().size());
         assertNull(emptyCache().get(1));
@@ -161,9 +182,33 @@ public class CachesTest {
         assertFalse(emptyCache().hasService(CacheLoadingService.class));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void emptyCacheServicesNPE() {
-        emptyCache().getService(null);
+    @Test(expected=UnsupportedOperationException.class)
+    public void emptyCrud() {
+        ObjectAttribute<String> oa=new ObjectAttribute<String>(String.class,"foo"){};
+        assertEquals("foo", emptyCache().crud().attribute(oa));
+    }
+    @Test
+    public void emptyCacheSelection() {
+        assertSame(emptyCache(), emptyCache().select().on(new BinaryPredicate() {
+            public boolean op(Object a, Object b) {
+                return true;
+            }
+        }));
+        assertSame(emptyCache(),emptyCache().select().on(Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().select().on(((Attribute) new IntAttribute() {}), Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().select().on((new BooleanAttribute() {}), true));
+        assertSame(emptyCache(),emptyCache().select().on((new ByteAttribute() {}), dummy(BytePredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().on((new CharAttribute() {}), dummy(CharPredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().on((new DoubleAttribute() {}), dummy(DoublePredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().on((new FloatAttribute() {}), dummy(FloatPredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().on((new IntAttribute() {}), dummy(IntPredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().on((new LongAttribute() {}), dummy(LongPredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().on((new ShortAttribute() {}), dummy(ShortPredicate.class)));
+        assertSame(emptyCache(),emptyCache().select().onKey(Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().select().onKeyType(Predicates.class));
+        assertSame(emptyCache(),emptyCache().select().onValue(Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().select().onValueType(Predicates.class));
+
     }
 
     @Test(expected = NullPointerException.class)

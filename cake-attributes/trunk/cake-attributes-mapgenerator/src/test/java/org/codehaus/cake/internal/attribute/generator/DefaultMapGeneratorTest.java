@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
@@ -30,6 +31,7 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
+import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator.MyLoader;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -204,6 +206,15 @@ public class DefaultMapGeneratorTest {
         Checker.run(new DefaultAttributeConfiguration(O_2, true, false,false,false), new HashMap());
     }
 
+    @Test
+    public void getObjectAttribute() {
+//        AttributeMap map = null;
+//            Class<AttributeMap> c = DefaultMapGenerator.generate(new MyLoader(), "foo" + System.nanoTime(), list);
+//            map = newInstance(m, c, false);
+//
+//        DefaultAttributeConfiguration dac= new DefaultAttributeConfiguration(O_2, true, false,false,false), new HashMap()
+
+    }
     DefaultAttributeConfiguration newInfo(Attribute<?> a) {
         return new DefaultAttributeConfiguration(a, r.nextBoolean(), r.nextBoolean(),false,false);
     }

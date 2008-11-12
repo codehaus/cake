@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.annotation.ExportAsService;
+
 @ExportAsService(ExecutorService.class)
 public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> {
 
@@ -64,7 +65,7 @@ public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> 
                         }
                     }
                 }
-            }finally {
+            } finally {
                 awaits.release();
             }
         }
@@ -72,9 +73,7 @@ public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> 
 
     public ExecutorService lookup(
             org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExecutorService> context) {
-        return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>())
-        {
+        return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>()) {
             @Override
             public void execute(Runnable command) {
                 awaits.acquireUninterruptibly();

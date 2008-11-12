@@ -56,8 +56,8 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
         this.needsReloadFilter = needsReloadFilter == null ? Predicates.FALSE : needsReloadFilter;
         childServices = Arrays.asList(loadingConf.getLoader(), needsReloadFilter);
         forceLoadAll = new Loading(cache, true);
-        loadAll = new Loading(needsReloadFilter == null ? cache : cache.select().on((Predicate) Predicates.not(needsReloadFilter)),
-                false);
+        loadAll = new Loading(needsReloadFilter == null ? cache : cache.select().on(
+                (Predicate) Predicates.not(needsReloadFilter)), false);
     }
 
     /** {@inheritDoc} */
@@ -79,7 +79,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     public CacheLoadingService<?, ?> lookup(
             org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<CacheLoadingService<?, ?>> context) {
         Cache<K, V> cache = context.getAttributes().get(InternalCacheAttributes.CONTAINER);
-
+        assert cache != null;
         if (CacheLoadingService.IS_FORCED.isTrue(context)) {
             return new Loading(cache, true);
         }

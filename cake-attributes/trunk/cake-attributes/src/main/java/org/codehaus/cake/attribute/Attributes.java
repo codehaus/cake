@@ -68,6 +68,13 @@ public final class Attributes {
         return new SingletonAttributeMap(attribute, value);
     }
 
+    public static <T1, T2> AttributeMap from(Attribute<T1> attribute1, T1 value1,Attribute<T2> attribute2, T2 value2) {
+        DefaultAttributeMap map=new DefaultAttributeMap();
+        map.put(attribute1, value1);
+        map.put(attribute2, value2);
+        return map;
+    }
+
     /**
      * Returns an unmodifiable view of the specified attribute map. This method allows modules to provide users with
      * "read-only" access to internal attribute maps. Query operations on the returned attribute map "read through" to

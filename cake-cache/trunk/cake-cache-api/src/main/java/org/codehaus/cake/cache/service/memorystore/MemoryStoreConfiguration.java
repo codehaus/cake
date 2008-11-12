@@ -17,7 +17,6 @@ package org.codehaus.cake.cache.service.memorystore;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
@@ -33,7 +32,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>
- *            the type of mapped values
+ *            the type of mapped values<
  */
 public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
@@ -47,10 +46,10 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
     private boolean isDisabled;
 
     /** The maximum size of the cache. */
-    private int maximumSize;
+    private int maximumSize=Integer.MAX_VALUE;
 
     /** The maximum volume of the cache. */
-    private long maximumVolume;
+    private long maximumVolume=Long.MAX_VALUE;
 
     private ReplacementPolicy<K, V> replacementPolicy;
 

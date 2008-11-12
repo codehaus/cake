@@ -25,8 +25,7 @@ public class PairTest {
 
     @Test
     public void simpleImmutableEntry() {
-
-        Pair<Integer, Integer> me = new Pair(0, 1);
+        Pair<Integer, Integer> me = Pair.from(0, 1);
         assertEquals(0, me.getFirst().intValue());
         assertEquals(me.getFirst(), new Pair(me).getFirst());
         assertEquals(1, me.getSecond().intValue());

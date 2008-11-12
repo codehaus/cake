@@ -16,7 +16,7 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -45,8 +45,7 @@ public class Composer {
         container.registerComponentInstance(this);
         container.registerComponentInstance(new ContainerInfo(clazz, configuration));
         container.registerComponentImplementation(LifecycleManager.class);
-        container.registerComponentImplementation(ServiceManager.class, DefaultServiceManager.class);
-        container.registerComponentImplementation(ServiceRegistrant.class, DefaultServiceRegistrant.class);
+        container.registerComponentImplementation(ServiceManager.class);
     }
 
     public void registerImplementation(Class<?> clazz) {
@@ -61,20 +60,22 @@ public class Composer {
         return container.getComponentAdapterOfType(serviceType) != null;
     }
 
-    public <T> Collection<T> getAll(Class<T> serviceType) {
-        return container.getComponentInstancesOfType(serviceType);
+    /**
+     * Returns all services of the specific type or all service factories that create instances of the specific type
+     * 
+     * @param <T>
+     * @param serviceType
+     * @return
+     */
+    public <T> Set<T> getAll(Class<T> serviceType) {
+        return new LinkedHashSet<T>(container.getComponentInstancesOfType(serviceType));
     }
 
     public <T> T get(Class<T> serviceType) {
-        T service = (T) container.getComponentInstanceOfType(serviceType);
-        // if (service == null) {
-        // throw new IllegalArgumentException("Unknown service: " +
-        // serviceType);
-        // }
-        return service;
+        return (T) container.getComponentInstanceOfType(serviceType);
     }
 
-    Set<?> prepareStart() {
+    Set<?> initializeComponents() {
         ContainerConfiguration<?> conf = get(ContainerConfiguration.class);
         Set<Object> result = new LinkedHashSet<Object>(container.getComponentInstances());
         for (Object object : new ArrayList<Object>(result)) {

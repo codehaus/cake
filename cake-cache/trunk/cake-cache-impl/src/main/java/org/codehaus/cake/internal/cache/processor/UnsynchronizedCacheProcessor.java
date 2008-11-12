@@ -39,33 +39,37 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
         memoryStore.process(r);
     }
 
-    public <T> T get(Predicate<CacheEntry<K,V>> selector, K key, Op<CacheEntry<K, V>, T> extractor, boolean isPeek) {
+    public <T> T get(Predicate<CacheEntry<K,V>> selector, K key, Op<CacheEntry<K, V>, T> extractor) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
-        runState.isRunningLazyStart(!isPeek);
+        runState.isRunningLazyStart(true);
         CacheEntry<K, V> entry = memoryStore.get(key);
-        if (!isPeek && entry == null && loading != null) {
+        if (entry != null && selector != null && !selector.op(entry)) {
+            return extractor.op(null);
+        }
+        if (entry == null && loading != null) {
             entry = loading.load(key, new DefaultAttributeMap());
         }
-        if (entry != null && selector != null && !selector.op(entry)) {
-            entry = null;
+        if (entry == null) {
+            return extractor.op(entry);
         }
-        if (!isPeek && entry != null) {
+        if (selector == null || selector.op(entry)) {
             memoryStore.touch(entry);
-
+            return extractor.op(entry);
         }
-        return entry == null ? null : extractor.op(entry);
+        return extractor.op(null);
+
     }
 
-    public <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> keys, Op<CacheEntry<K, V>, T> extractor, boolean isPeek) {
+    public <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> keys, Op<CacheEntry<K, V>, T> extractor) {
         if (keys == null) {
             throw new NullPointerException("keys is null");
         }
-        runState.isRunningLazyStart(!isPeek);
+        runState.isRunningLazyStart(true);
         HashMap<K, T> result = new HashMap<K, T>();
         for (K key : keys) {
-            result.put(key, get(selector, key, extractor, isPeek));
+            result.put(key, get(selector, key, extractor));
         }
         return result;
     }
@@ -75,9 +79,9 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
         memoryStore.process(r);
     }
 
-    public void process(ClearCacheRequest<K, V> r) {
+    public void process(Predicate<CacheEntry<K,V>> filter, ClearCacheRequest<K, V> r) {
         runState.isRunningLazyStart(false);
-        memoryStore.process(r);
+        memoryStore.process(filter, r);
     }
 
     public void process(RemoveEntriesRequest<K, V> r) {

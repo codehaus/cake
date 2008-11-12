@@ -15,10 +15,11 @@
  */
 package org.codehaus.cake.internal.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.management.JMException;
 
@@ -31,21 +32,70 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.util.TimeFormatter;
 
 public class LifecycleManager {
-    private final List<LifecycleObject> list = new LinkedList<LifecycleObject>();
+    private Composer composer;
     private final InternalExceptionService<?> ies;
-    RunState state;
-    Composer composer;
-    final DefaultServiceManager dsm;
-    ContainerInfo info;
+    private ContainerInfo info;
+    private final List<LifecycleObject> list = new ArrayList<LifecycleObject>();
+
+    private final AtomicReference<Throwable> startupException = new AtomicReference<Throwable>();
 
     public LifecycleManager(InternalExceptionService<?> ies, Composer composer) {
         this.ies = ies;
         this.composer = composer;
-        dsm = composer.get(DefaultServiceManager.class);
         info = composer.get(ContainerInfo.class);
     }
 
-    void start() {
+    void checkExceptions() {
+        Throwable re = startupException.get();
+        if (re != null) {
+            throw new IllegalStateException("Cache failed to start previously", re);
+        }
+    }
+
+    private void doStart(RunState state) {
+        Set<?> allServices = composer.initializeComponents();
+        for (Object o : allServices) {
+            if (o != null) {
+                list.add(new LifecycleObject(this, ies, o));
+            }
+        }
+        ServiceManager dsr = composer.get(ServiceManager.class);
+        for (LifecycleObject lo : list) {
+            lo.runStart(allServices, composer.get(ContainerConfiguration.class), dsr);
+        }
+
+        if (composer.hasService(DefaultManagementService.class)) {
+            try {
+                composer.get(DefaultManagementService.class).register(composer, allServices);
+            } catch (JMException e) {
+                trySetStartupException(e);
+                throw new IllegalStateException("Could not start cache", e);
+            }
+        }
+        state.transitionToRunning();
+        /* AfterStart */
+        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
+            LifecycleObject lo = iterator.next();
+            lo.runAfterStart(composer.get(ContainerConfiguration.class), composer.get(Container.class));
+            if (!lo.isStoppableOrDisposable()) {
+                iterator.remove();
+            }
+        }
+    }
+
+    void runShutdown() {
+        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
+            LifecycleObject lo = iterator.next();
+            lo.runStop();
+        }
+        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
+            LifecycleObject lo = iterator.next();
+            lo.runDispose();
+        }
+        ies.terminated();
+    }
+
+    void start(RunState state) {
         long startTime = System.nanoTime();
 
         // debugging information
@@ -74,13 +124,13 @@ public class LifecycleManager {
 
         // Run start
         try {
-            doStart();
+            doStart(state);
         } catch (RuntimeException e) {
-            state.trySetStartupException(e);
+            trySetStartupException(e);
             runShutdown(); // should we run shutdown;??
             throw e;
         } catch (Error e) {
-            state.trySetStartupException(e);
+            trySetStartupException(e);
             throw e;
         } finally {
             composer = null;
@@ -90,50 +140,7 @@ public class LifecycleManager {
         info = null;
     }
 
-    private void doStart() {
-        Set<?> allServices = composer.prepareStart();
-        for (Object o : allServices) {
-            if (o != null) {
-                list.add(new LifecycleObject(state, ies, o));
-            }
-        }
-        DefaultServiceRegistrant dsr = new DefaultServiceRegistrant(composer.get(DefaultServiceManager.class));
-        try {
-            for (LifecycleObject lo : list) {
-                lo.runStart(allServices, composer.get(ContainerConfiguration.class), dsr);
-            }
-        } finally {
-            dsr.disableRegistration();
-        }
-
-        if (composer.hasService(DefaultManagementService.class)) {
-            try {
-                composer.get(DefaultManagementService.class).register(composer, allServices);
-            } catch (JMException e) {
-                state.trySetStartupException(e);
-                throw new IllegalStateException("Could not start cache", e);
-            }
-        }
-        state.transitionToRunning();
-        /* AfterStart */
-        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
-            LifecycleObject lo = iterator.next();
-            lo.runAfterStart(composer.get(ContainerConfiguration.class), composer.get(Container.class));
-            if (!lo.isStoppableOrDisposable()) {
-                iterator.remove();
-            }
-        }
-    }
-
-    void runShutdown() {
-        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
-            LifecycleObject lo = iterator.next();
-            lo.runStop();
-        }
-        for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
-            LifecycleObject lo = iterator.next();
-            lo.runDispose();
-        }
-        ies.terminated();
+    void trySetStartupException(Throwable cause) {
+        startupException.compareAndSet(null, cause);
     }
 }

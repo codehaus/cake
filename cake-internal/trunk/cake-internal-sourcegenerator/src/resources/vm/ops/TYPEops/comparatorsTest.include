@@ -1,5 +1,5 @@
    /**
-     * Tests {@link {Type}Ops#COMPARATOR}.
+     * Tests {@link ${Type}Ops#COMPARATOR}.
      */
     @Test
     public void comparator() {
@@ -14,7 +14,7 @@
     }
     
    /**
-     * Tests {@link {Type}Ops#REVERSE_COMPARATOR}.
+     * Tests {@link ${Type}Ops#REVERSE_COMPARATOR}.
      */
     @Test
     public void comparatorReverse() {

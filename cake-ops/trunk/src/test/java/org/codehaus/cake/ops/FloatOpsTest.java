@@ -161,7 +161,7 @@ public final class FloatOpsTest {
         assertEquals(-33F, serializeAndUnserialize(FloatOps.subtract(12F)).op(-21F),0);
     }
    /**
-     * Tests {@link {Type}Ops#COMPARATOR}.
+     * Tests {@link FloatOps#COMPARATOR}.
      */
     @Test
     public void comparator() {
@@ -174,7 +174,7 @@ public final class FloatOpsTest {
     }
     
    /**
-     * Tests {@link {Type}Ops#REVERSE_COMPARATOR}.
+     * Tests {@link FloatOps#REVERSE_COMPARATOR}.
      */
     @Test
     public void comparatorReverse() {

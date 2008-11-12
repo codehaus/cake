@@ -67,10 +67,6 @@ public final class IntOps {
     public static IntOp add(int add) {
         return new IntAddOp(add);
     }
-
-    public static IntOp constant(int constant) {
-        return new IntConstantOp(constant);
-    }
         
     public static IntReducer divide() {
         return DIVIDE_REDUCER;
@@ -209,21 +205,7 @@ public final class IntOps {
             return a * multiply;
         }
     }
-    
-    static final class IntConstantOp implements IntOp, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1;
-
-        private final int constant;
-
-        public IntConstantOp(int constant) {
-            this.constant = constant;
-        }
-
-        public int op(int a) {
-            return constant;
-        }
-    }    /**
+    /**
      * A comparator for ints relying on natural ordering. The comparator is Serializable.
      */
     public static final IntComparator COMPARATOR = new NaturalIntComparator();

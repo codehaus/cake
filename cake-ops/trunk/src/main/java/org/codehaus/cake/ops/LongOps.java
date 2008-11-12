@@ -67,10 +67,6 @@ public final class LongOps {
     public static LongOp add(long add) {
         return new LongAddOp(add);
     }
-
-    public static LongOp constant(long constant) {
-        return new LongConstantOp(constant);
-    }
         
     public static LongReducer divide() {
         return DIVIDE_REDUCER;
@@ -209,21 +205,7 @@ public final class LongOps {
             return a * multiply;
         }
     }
-    
-    static final class LongConstantOp implements LongOp, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1;
-
-        private final long constant;
-
-        public LongConstantOp(long constant) {
-            this.constant = constant;
-        }
-
-        public long op(long a) {
-            return constant;
-        }
-    }    /**
+    /**
      * A comparator for longs relying on natural ordering. The comparator is Serializable.
      */
     public static final LongComparator COMPARATOR = new NaturalLongComparator();

@@ -40,10 +40,10 @@ class LifecycleObject {
 
     private final InternalExceptionService<?> ies;
     private final Object o;
-    private final RunState state;
+    private final LifecycleManager parent;
     private final Class<?> serviceFactoryKey;
 
-    LifecycleObject(RunState state, InternalExceptionService<?> ies, Object service) {
+    LifecycleObject(LifecycleManager parent, InternalExceptionService<?> ies, Object service) {
         this.ies = ies;
         if (service instanceof ServiceList.Factory) {
             ServiceList.Factory sf = (Factory) service;
@@ -53,7 +53,7 @@ class LifecycleObject {
             this.o = service;
             serviceFactoryKey = null;
         }
-        this.state = state;
+        this.parent = parent;
     }
 
     private boolean hasAnnotation(Class<? extends Annotation> annotation) {
@@ -84,7 +84,7 @@ class LifecycleObject {
             if (type.equals(Object.class)) {
                 RuntimeException e = new IllegalStateException("Cannot depend on an Object as a parameter [method ="
                         + m.toString() + "]");
-                state.trySetStartupException(e);
+                parent.trySetStartupException(e);
                 throw e;
             }
 
@@ -93,7 +93,7 @@ class LifecycleObject {
                 oo = mpc.getComponentInstanceOfType(type);
             } catch (AmbiguousComponentResolutionException ee) {
                 RuntimeException e = new IllegalStateException("Method " + m + "." + ee.getMessage());
-                state.trySetStartupException(e);
+                parent.trySetStartupException(e);
                 throw e;
             }
             if (oo == null) {
@@ -114,7 +114,7 @@ class LifecycleObject {
                     e = new IllegalStateException("Instances of " + type.getName() + " cannot be injected [method = "
                             + m + "]");
                 }
-                state.trySetStartupException(e);
+                parent.trySetStartupException(e);
                 throw e;
             }
             obs[i] = oo;
@@ -122,7 +122,7 @@ class LifecycleObject {
         m.invoke(o, obs);
     }
 
-    void runStart(Set<?> all, ContainerConfiguration<?> configuration, ServiceRegistrant registrant) {
+    void runStart(Set<?> all, ContainerConfiguration<?> configuration, ServiceManager registrant) {
         ArrayList<Object> al = new ArrayList<Object>();
         al.add(configuration);
         al.add(registrant);
@@ -131,7 +131,7 @@ class LifecycleObject {
         }
         if (serviceFactoryKey != null) {
             if (o instanceof ServiceFactory) {
-                registrant.registerFactory(serviceFactoryKey, (ServiceFactory) o);
+                registrant.registerServiceFactory(serviceFactoryKey, (ServiceFactory) o);
             } else {
                 registrant.registerService((Class) serviceFactoryKey, o);
             }
@@ -140,7 +140,7 @@ class LifecycleObject {
         if (exportedKey != null) {
             for (Class c: exportedKey.value()) {
                 if (o instanceof ServiceFactory) {
-                    registrant.registerFactory(c, (ServiceFactory) o);
+                    registrant.registerServiceFactory(c, (ServiceFactory) o);
                 } else {
                     registrant.registerService(c, o);
                 }
@@ -161,7 +161,7 @@ class LifecycleObject {
                     }
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
-                    state.trySetStartupException(cause);
+                    parent.trySetStartupException(cause);
                     if (cause instanceof Error) {
                         throw (Error) cause;
                     }
@@ -173,7 +173,7 @@ class LifecycleObject {
                     // ", type=" + o.getClass() + ", method=" + m
                     // + "]", cause);
                 } catch (IllegalAccessException e) {
-                    state.trySetStartupException(e);
+                    parent.trySetStartupException(e);
                     throw new IllegalStateException("Failed to start", e);
                 }
             }
@@ -197,7 +197,7 @@ class LifecycleObject {
                     matchAndInvoke(m, objectsAvailable, false);
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
-                    state.trySetStartupException(cause);
+                    parent.trySetStartupException(cause);
                     if (cause instanceof Error) {
                         throw (Error) cause;
                     }
@@ -210,7 +210,7 @@ class LifecycleObject {
                     // ", type=" + o.getClass() + ", method=" + m
                     // + "]", cause);
                 } catch (IllegalAccessException e) {
-                    state.trySetStartupException(e);
+                    parent.trySetStartupException(e);
                     ies.error("Started of service failed [method=" + m + "]", e.getCause());
                 }
             }
@@ -254,14 +254,10 @@ class LifecycleObject {
                     try {
                         m.invoke(o);
                     } catch (InvocationTargetException e) {
-                        ies.error("Disposal of service failed [method=" + m + "]", e.getCause()); // ies
-                        // .
-                        // error
-                        // rethrows
-                        // errors
+                        // ies.error rethrows errors
+                        ies.error("Disposal of service failed [method=" + m + "]", e.getCause()); 
                     } catch (IllegalAccessException e) {
-                        // Should never happen because we only iterating on
-                        // public methods
+                        // Should never happen because we only iterating on public methods
                         ies.error("Disposal of service failed [method=" + m + "]", e.getCause());
                     }
                 }

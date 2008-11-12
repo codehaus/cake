@@ -234,6 +234,12 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     public AttributeMap singleton(boolean value) {
         return super.singleton(value);
     }
+    public AttributeMap singletonTrue() {
+        return singleton(true);
+    }
+    public AttributeMap singletonFalse() {
+        return singleton(false);
+    }
 
     /**
      * @param attributes

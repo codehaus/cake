@@ -14,4 +14,8 @@ public interface ConfigurationService extends WithAttributes {
     <T> void update(Attribute<T> attribute, T value);
 
     void updateAll(AttributeMap attributes);
+
+    // Compare and Set update
+    //<T> void update(Attribute<T> attribute, T value, T previousValue);
+
 }
