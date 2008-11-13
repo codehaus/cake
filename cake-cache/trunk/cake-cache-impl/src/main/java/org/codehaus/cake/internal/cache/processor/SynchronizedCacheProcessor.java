@@ -52,7 +52,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
         boolean dontLoad = false;
         synchronized (mutex) {
             runState.isRunningLazyStart(true);
-            entry = memoryStore.get(key);
+            entry = memoryStore.get(null,key);
             if (entry != null || loading == null) {
                 if (entry != null && selector != null && !selector.op(entry)) {
                     entry = null;

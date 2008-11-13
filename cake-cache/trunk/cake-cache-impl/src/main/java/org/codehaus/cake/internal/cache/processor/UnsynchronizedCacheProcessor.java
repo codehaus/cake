@@ -44,7 +44,7 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
             throw new NullPointerException("key is null");
         }
         runState.isRunningLazyStart(true);
-        CacheEntry<K, V> entry = memoryStore.get(key);
+        CacheEntry<K, V> entry = memoryStore.get(null,key);
         if (entry != null && selector != null && !selector.op(entry)) {
             return extractor.op(null);
         }

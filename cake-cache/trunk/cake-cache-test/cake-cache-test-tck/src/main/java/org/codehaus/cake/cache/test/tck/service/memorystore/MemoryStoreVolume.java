@@ -108,4 +108,16 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
         c.replace(M1.getKey(), "value");
         assertValidSizeAndVolume();
     }
+    
+    @Test
+    public void volumeZeroShutdown() {
+        newConfigurationClean();
+        conf.withLoading().setLoader(loader);
+        conf.withAttributes().add(SIZE);
+        init();
+        c.crud().write().put(1, "2", SIZE.singleton(4));
+        assertVolume(4);
+        shutdownAndAwaitTermination();
+        assertVolume(0);
+    }
 }

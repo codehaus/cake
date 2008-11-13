@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
@@ -49,7 +51,6 @@ import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.ObjectToLong;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.annotation.Stoppable;
@@ -64,18 +65,25 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         RuntimeConfigurableService {
 
     private final InternalAttributeService<K, V> attributeService;
+    /** Used for evicting entries if no eviction policy is set. */
+    private int clock;
     private final Procedure<MemoryStoreService<K, V>> evictor;
     private final InternalCacheExceptionService<K, V> ies;
     private final Predicate<CacheEntry<K, V>> isCacheable;
-    private final ReplacementPolicy<K, V> policy;
 
     private boolean isDisabled;
     private int maximumSize;
     private long maximumVolume;
+    private final ReplacementPolicy<K, V> policy;
+
+    private final boolean volumeEnabled;
+    /** The total sizes of all elements in the cache. */
     private long volume;
 
-    public HashMapMemoryStore(MemoryStoreConfiguration<K, V> storeConfiguration,
-            InternalAttributeService<K, V> attributeService, InternalCacheExceptionService<K, V> ies) {
+    public HashMapMemoryStore(CacheAttributeConfiguration attributeConfiguration,
+            MemoryStoreConfiguration<K, V> storeConfiguration, InternalAttributeService<K, V> attributeService,
+            InternalCacheExceptionService<K, V> ies) {
+        volumeEnabled = attributeConfiguration.getAllAttributes().contains(CacheEntry.SIZE);
         this.attributeService = attributeService;
         this.ies = ies;
         policy = storeConfiguration.getPolicy();
@@ -84,25 +92,26 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         evictor = storeConfiguration.getEvictor();
     }
 
+    //
+    // private void print() {
+    // System.out.println("---- " + size + "---------");
+    // for (int i = 0; i < table.length; i++) {
+    // HashEntry he = table[i];
+    // String s = "";
+    // while (he != null) {
+    // s += he.getKey() + ",";
+    // he = he.next;
+    // }
+    // System.out.println(i + ":" + s);
+    // }
+    // }
+
     private ParallelArray<CacheEntry<K, V>> all() {
         return (ParallelArray) ParallelArray.createUsingHandoff(allAsArray(), ParallelArray.defaultExecutor());
     }
 
-    private void print() {
-        System.out.println("---- " + size + "---------");
-        for (int i = 0; i < table.length; i++) {
-            HashEntry he = table[i];
-            String s = "";
-            while (he != null) {
-                s += he.getKey() + ",";
-                he = he.next;
-            }
-            System.out.println(i + ":" + s);
-        }
-        System.out.println("-------------");
-    }
-
     private CacheEntry<K, V> evictNext() {
+        assert size != 0;
         if (policy != null) {
             CacheEntry<K, V> entry = (CacheEntry<K, V>) policy.evictNext();
             // print();
@@ -112,29 +121,43 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             removeEntry(entry, true);
             return entry;
         }
-        // remove random
-        Iterator<CacheEntry<K, V>> iter = newEntrySetIterator(Predicates.TRUE);
-        CacheEntry<K, V> entry = iter.next();
-        iter.remove();
-        removeEntry(entry, false);
-        return entry;
-    }
+        // No replacement policy defined by the user we try to remove a random element
+        // The following uses a primitive clock algorithm that gives precedens to recently inserted items
+        // This algorithm is rather slow if the table size is very big, but the amount of entries are small
 
-    public void touch(CacheEntry<K, V> entry) {
-        if (entry != null) {
-            // Perhaps we can move .access to outer loop
-            attributeService.access(entry.getAttributes());
-            if (policy != null) {
-                policy.touch(entry);
+        int tableLength = table.length - 1;
+        int clock = this.clock; // TODO we might want to initialize it to this.clock+1;
+        // so we don't keep hammering the same slot the whole time
+        HashEntry<K, V> e = table[clock];
+        while (e == null) {
+            if (++clock > tableLength) {
+                clock = 0;
             }
+            e = table[clock];
         }
+        ++modCount;
+        table[clock] = e.next;
+        size--;
+        if (volumeEnabled) {
+            volume -= SIZE.get(e);
+        }
+        this.clock = clock;
+        return e;
     }
 
     public Collection<?> getChildServices() {
         return Arrays.asList(policy);
     }
 
+    public Set<Attribute<?>> getRuntimeConfigurableAttributes() {
+        return new HashSet<Attribute<?>>(Arrays.<Attribute<?>> asList(MemoryStoreAttributes.IS_DISABLED,
+                MemoryStoreAttributes.MAX_SIZE, MemoryStoreAttributes.MAX_VOLUME));
+    }
+
     public long getVolume(Predicate<CacheEntry<K, V>> filter) {
+        if (!volumeEnabled) {
+            return size(filter);
+        }
         if (filter == null || filter == Predicates.TRUE) {
             return volume;
         } else {
@@ -179,7 +202,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         }
         // prepare
         for (AddEntryRequest<K, V> e : r.adds()) {
-            CacheEntry<K, V> previous = get(e.getKey());
+            CacheEntry<K, V> previous = get(null, e.getKey());
             e.setPreviousEntry(previous);
         }
 
@@ -223,7 +246,9 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
                 }
             }
             if (keepNew) {
-                volume += SIZE.get(newEntry);
+                if (volumeEnabled) {
+                    volume += SIZE.get(newEntry);
+                }
                 put(entry.getKey(), newEntry.getValue(), newEntry.getAttributes());
             }
             if (keepNew) {
@@ -234,53 +259,60 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     }
 
     public void process(AddEntryRequest<K, V> entry) {
-        // int ss = ((AbstractDoubleLinkedReplacementPolicy) policy).size();
-        // Set<K> s = new HashSet<K>();
-        // for (Iterator<CacheEntry<K, V>> iterator = iterator(Predicates.TRUE); iterator.hasNext();) {
-        // s.add(iterator.next().getKey());
-        // }
-        // System.out.println(size + " " + ss + " " + s);
-        //
-        // if (ss != size || ss != s.size()) {
-        // throw new AssertionError();
-        // }
-        // if (size == 20) {
-        // System.out.println("Stop");
-        // }
-
         if (isDisabled) {
             return;
         }
-        CacheEntry<K, V> previous = get(entry.getKey());
+        if (size + 1 > threshold) {
+            // ensure capacity
+            rehash();
+        }
+        HashEntry<K, V>[] tab = table;
+        K key = entry.getKey();
+        int hash = hash(key.hashCode());
+        int index = hash & (tab.length - 1);
+        HashEntry<K, V> first = tab[index];
+        HashEntry<K, V> existing = first;
+        HashEntry<K, V> prev = first;
+
+        // Find previous entry
+        while (existing != null && (existing.hash != hash || !key.equals(existing.key))) {
+            prev = existing;
+            existing = existing.next;
+        }
+
+        // See if there are any conditional inserts
         Predicate<CacheEntry<K, V>> updatePredicate = entry.getUpdatePredicate();
         if (updatePredicate != null) {
-            if (previous == null) {
+            if (existing == null) {
                 if (updatePredicate == Predicates.IS_NOT_NULL) {
                     return;
                 }
             } else {
                 if (updatePredicate == Predicates.IS_NULL) {
-                    entry.setPreviousEntry(previous);
+                    entry.setPreviousEntry(existing);
                     return;
                 }
-                if (updatePredicate instanceof CachePredicates.CacheValueEquals && !updatePredicate.op(previous)) {
+                if (updatePredicate instanceof CachePredicates.CacheValueEquals && !updatePredicate.op(existing)) {
                     return;
                 }
             }
         }
-        final AttributeMap atr;
-        if (previous == null) {
-            atr = attributeService.create(entry.getKey(), entry.getValue(), entry.getAttributes());
+
+        // Create the attributemap for the new entry
+        V value = entry.getValue();
+        final HashEntry<K, V> ne;
+        if (existing == null) {
+            AttributeMap atr = attributeService.create(key, value, entry.getAttributes());
+            ne = newEntry(key, hash, first, value, atr);
         } else {
-            atr = attributeService.update(entry.getKey(), entry.getValue(), entry.getAttributes(), previous
-                    .getAttributes());
+            AttributeMap atr = attributeService.update(key, value, entry.getAttributes(), existing.getAttributes());
+            ne = newEntry(key, hash, existing.next, value, atr);
         }
 
-        final CacheEntry<K, V> newEntry = Caches.newEntry(entry.getKey(), entry.getValue(), atr);
         boolean keepNew = true;
         if (isCacheable != null) {
             try {
-                keepNew = isCacheable.op(newEntry);
+                keepNew = isCacheable.op(ne);
             } catch (RuntimeException e) {
                 ies.error("IsCacheable predicate failed to validate, entry was not cached", e);
                 keepNew = false;
@@ -291,35 +323,73 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         boolean evicted = false;
         if (keepNew && policy != null) {
             evicted = true;
-            if (previous == null) {
-                keepNew = policy.add(newEntry);
+            if (existing == null) {
+                keepNew = policy.add(ne);
             } else {
-                CacheEntry<K, V> e = policy.replace(previous, newEntry);
-                keepExisting = e == previous;
-                keepNew = e == newEntry;
+                CacheEntry<K, V> e = policy.replace(existing, ne);
+                keepExisting = e == existing;
+                keepNew = e == ne;
             }
         }
-        if (previous != null && !keepExisting) {
-            removeEntry(previous, evicted);
-            if (!keepNew) {
-                remove(entry.getKey());
+        if (existing != null && !keepExisting) {
+            boolean trim = false;
+            if (volumeEnabled) {
+                long existingVolume = SIZE.get(existing);
+                trim = existingVolume < 0;
+                volume -= existingVolume;
+            }
+            if (!evicted && policy != null) {
+                policy.remove(existing);
+            }
+            if (!keepNew) { // Remove in table
+                ++modCount;
+                if (prev == existing) { // first entry
+                    tab[index] = existing.next;
+                } else {
+                    prev.next = existing.next;
+                }
+                existing.entryRemoved(this);
+                size--;
+                if (trim) {// In the rare cases where we have nagative volume
+                    trim(entry);
+                }
+                return;
             }
         }
         if (keepNew) {
-            volume += SIZE.get(newEntry);
-            put(entry.getKey(), newEntry.getValue(), newEntry.getAttributes());
-            entry.setPreviousEntry(previous);
-            entry.setNewEntry(newEntry);
+            if (volumeEnabled) {
+                volume += SIZE.get(ne);
+            }
+            modCount++;
+            if (existing == null) {// Insert
+                tab[index] = ne;
+                size++;
+            } else { // Replace
+                if (prev == existing) { // first entry
+                    tab[index] = ne;
+                } else {
+                    prev.next = ne;
+                }
+            }
+            entry.setPreviousEntry(existing);
+            entry.setNewEntry(ne);
             trim(entry);
         }
     }
 
     public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {
         if (filter == null || filter == Predicates.TRUE) {
-            clear();
-            volume = 0;
-            if (policy != null) {
-                policy.clear();
+            if (size != 0) {
+                modCount++;
+                HashEntry<K, V>[] tab = table;
+                for (int i = 0; i < tab.length; i++) {
+                    tab[i] = null;
+                }
+                size = 0;
+                volume = 0;
+                if (policy != null) {
+                    policy.clear();
+                }
             }
         } else {
             modCount++;
@@ -329,20 +399,20 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
                 HashEntry<K, V> e = tab[i];
                 HashEntry<K, V> prev = e;
                 while (e != null) {
-                    if (filter.op(e)) {
+                    if (filter.op(e)) {// remove it
                         if (prev == e) { // first entry
-                            table[i] = e.next;
+                            tab[i] = e.next;
                             prev = e.next;
                         } else {
-                            System.out.println("nofirst");
                             prev.next = e.next;
                         }
                         size--;
                         removeEntry(e, false);
+                    } else {
+                        prev = e;
                     }
                     e = e.next;
                 }
-
             }
         }
     }
@@ -354,35 +424,35 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     }
 
     public void process(RemoveEntryRequest<K, V> r) {
+        K key = r.getKey();
+        int hash = hash(key.hashCode());
+        HashEntry<K, V>[] tab = table;
+        int index = hash & (tab.length - 1);
+        HashEntry<K, V> e = tab[index];
+        HashEntry<K, V> prev = e;
+        while (e != null && (e.hash != hash || !key.equals(e.key))) {
+            prev = e;
+            e = e.next;
+        }
         Predicate<CacheEntry<K, V>> p = r.getUpdatePredicate();
-        if (p == null) {
-            CacheEntry<K, V> entry = remove(r.getKey());
-            removeEntry(entry, false);
-            r.setPreviousEntry(entry);
-        } else {
-            K key = r.getKey();
-            int hash = hash(key.hashCode());
-            HashEntry<K, V>[] tab = table;
-            int index = hash & (tab.length - 1);
-            HashEntry<K, V> first = tab[index];
-            HashEntry<K, V> e = first;
-            HashEntry<K, V> prev = first;
-            while (e != null && (e.hash != hash || !key.equals(e.key))) {
-                e = e.next;
-                prev = e;
+        if (e != null && (p == null || p.op(e))) {
+            ++modCount;
+            if (prev == e) { // first entry
+                tab[index] = e.next;
+            } else {
+                prev.next = e.next;
             }
-            if (e != null && p.op(e)) {
-                ++modCount;
-                if (prev == e) { // first entry
-                    table[index] = e.next;
-                } else {
-                    prev.next = e.next;
-                }
-                e.entryRemoved(this);
-                size--;
-                removeEntry(e, false);
-                r.setPreviousEntry(e);
+            e.entryRemoved(this);
+            size--;
+            if (volumeEnabled) {
+                long existingVolume = SIZE.get(e);
+                volume -= existingVolume;
             }
+            if (policy != null) {
+                policy.remove(e);
+            }
+            // TODO we should trim if existingVolume<0
+            r.setPreviousEntry(e);
         }
     }
 
@@ -398,24 +468,12 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         trimToVolume(r, comparator, volume);
     }
 
-    public void updateConfiguration(AttributeMap attributes) {
-        isDisabled = attributes.get(MemoryStoreAttributes.IS_DISABLED, isDisabled);
-        maximumSize = attributes.get(MemoryStoreAttributes.MAX_SIZE, maximumSize);
-        if (maximumSize == 0) {
-            maximumSize = Integer.MAX_VALUE;
-        }
-        maximumVolume = attributes.get(MemoryStoreAttributes.MAX_VOLUME, maximumVolume);
-        if (maximumVolume == 0) {
-            maximumVolume = Long.MAX_VALUE;
-        }
-    }
-
     private void removeEntry(CacheEntry<K, V> entry, boolean isEvicted) {
-        if (entry != null) {
+        if (volumeEnabled) {
             volume -= SIZE.get(entry);
-            if (!isEvicted && policy != null) {
-                policy.remove(entry);
-            }
+        }
+        if (!isEvicted && policy != null) {
+            policy.remove(entry);
         }
     }
 
@@ -423,11 +481,23 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     public final void stop() {
         modCount++;
         size = 0;
+        volume = 0;
+        if (policy != null) {
+            policy.clear();
+        }
         table = HashEntry.newArray(1);
     }
 
+    public void touch(CacheEntry<K, V> entry) {
+        // Perhaps we can move .access to outer loop
+        attributeService.access(entry.getAttributes());
+        if (policy != null) {
+            policy.touch(entry);
+        }
+    }
+
     public void trim(Trimable<K, V> trimable) {
-        while (size(null) > maximumSize || volume > maximumVolume) {
+        while (size(null) > maximumSize || (volumeEnabled ? this.volume : this.size) > maximumVolume) {
             List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
             if (trimmed == null) {
                 trimmed = new ArrayList<CacheEntry<K, V>>();
@@ -485,7 +555,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     }
 
     private void trimToVolume(Trimable<K, V> trimable, Comparator<CacheEntry<K, V>> comparator, long trimToVolume) {
-        long currentVolume = this.volume;
+        long currentVolume = volumeEnabled ? this.volume : this.size;
         long trimTo = trimToVolume >= 0 ? trimToVolume : Math.max(0, currentVolume + trimToVolume);
         List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
         if (trimmed == null) {
@@ -493,7 +563,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             trimable.setTrimmed(trimmed);
         }
         if (comparator == null) {
-            while (this.volume > trimTo) {
+            while ((volumeEnabled ? this.volume : this.size) > trimTo) {
                 trimmed.add(evictNext());
             }
         } else {
@@ -506,6 +576,18 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
                 remove(e.getKey());
                 trimmed.add(e);
             }
+        }
+    }
+
+    public void updateConfiguration(AttributeMap attributes) {
+        isDisabled = attributes.get(MemoryStoreAttributes.IS_DISABLED, isDisabled);
+        maximumSize = attributes.get(MemoryStoreAttributes.MAX_SIZE, maximumSize);
+        if (maximumSize == 0) {
+            maximumSize = Integer.MAX_VALUE;
+        }
+        maximumVolume = attributes.get(MemoryStoreAttributes.MAX_VOLUME, maximumVolume);
+        if (maximumVolume == 0) {
+            maximumVolume = Long.MAX_VALUE;
         }
     }
 
@@ -527,7 +609,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         }
 
         public long getVolume() {
-            return volume;
+            return volumeEnabled ? volume : size;
         }
 
         public boolean isDisabled() {
@@ -563,10 +645,5 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             this.newVolume = volume;
             this.comparator = comparator;
         }
-    }
-
-    public Set<Attribute<?>> getRuntimeConfigurableAttributes() {
-        return new HashSet<Attribute<?>>(Arrays.<Attribute<?>> asList(MemoryStoreAttributes.IS_DISABLED,
-                MemoryStoreAttributes.MAX_SIZE, MemoryStoreAttributes.MAX_VOLUME));
     }
 }

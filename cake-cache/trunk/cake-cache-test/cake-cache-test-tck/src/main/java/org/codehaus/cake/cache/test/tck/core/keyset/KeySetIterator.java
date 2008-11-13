@@ -17,6 +17,7 @@ package org.codehaus.cake.cache.test.tck.core.keyset;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_TO_M5_KEY_SET;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -66,6 +67,19 @@ public class KeySetIterator extends AbstractCacheTCKTest {
         Iterator<Integer> iter = c.keySet().iterator();
         iter.next();
         iter.next();
+    }
+
+    @Test(expected = ConcurrentModificationException.class)
+    public void iteratorCME() {
+        c = newCache(1);
+        Iterator<Integer> iter = c.keySet().iterator();
+        Iterator<Integer> iter2 = c.keySet().iterator();
+        iter.next();
+        iter.remove();
+        //It is actually not stricly required that we throw
+        //An CME but all implementations does it for now.
+        //Let us keep it in
+        iter2.next();
     }
 
     @Test

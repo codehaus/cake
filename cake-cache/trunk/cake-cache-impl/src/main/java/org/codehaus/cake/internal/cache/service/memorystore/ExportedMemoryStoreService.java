@@ -151,28 +151,4 @@ public class ExportedMemoryStoreService<K, V> implements ServiceFactory<Exported
         TrimToVolumeRequest<K, V> r = requestFactory.createTrimToVolumeRequest(volume, comparator);
         processor.process(r);
     }
-
-    public static void main(String[] args) {
-        SynchronizedCache<Integer, Integer> uc = new SynchronizedCache<Integer, Integer>();
-        for (int i = 0; i < 5000000; i++) {
-            uc.put(i, i);
-        }
-
-        Cache<Integer, Integer> c = uc.select().onKey(new Predicate<Integer>() {
-            public boolean op(Integer a) {
-                return a > 2;
-            }
-        });
-        long start = System.nanoTime();
-        System.out.println(c.with().memoryStore().getSize());
-        System.out.println(System.nanoTime() - start);
-
-        ParallelArray<Integer> pa = ParallelArray.create(10000000, Integer.class, ParallelArray.defaultExecutor());
-        for (int i = 0; i < 5000000; i++) {
-            pa.set(i * 2, i);
-        }
-        start = System.nanoTime();
-        System.out.println(pa.withFilter(Predicates.IS_NOT_NULL).size());
-        System.out.println(System.nanoTime() - start);
-    }
 }

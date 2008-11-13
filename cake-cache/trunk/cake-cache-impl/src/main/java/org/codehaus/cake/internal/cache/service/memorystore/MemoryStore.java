@@ -52,7 +52,6 @@ public interface MemoryStore<K, V> {
 
     long getVolume(Predicate<CacheEntry<K,V>> filter);
     CacheEntry<K, V> get(Predicate<CacheEntry<K,V>> filter, Object key);
-    CacheEntry<K, V> get(K key);
 
     void process(AddEntriesRequest<K, V> r);
 

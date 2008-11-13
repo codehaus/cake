@@ -41,6 +41,40 @@ public class Remove extends AbstractCacheTCKTest {
     }
 
     @Test
+    public void removeMany() {
+        for (int i = 0; i < 1000; i++) {
+            c.put(i, "" + i);
+        }
+        for (int i = 0; i < 1000; i++) {
+            assertSize(1000 - i);
+            assertEquals("" + i, c.remove(i));
+        }
+    }
+
+    @Test
+    public void removeManyStep100() {
+        int step = 1000;
+        for (int i = 0; i < step; i++) {
+            c.put(i * 100, "" + i);
+        }
+        for (int i = 0; i < step; i++) {
+            assertSize(step - i);
+            assertEquals("" + i, c.remove(i * 100));
+        }
+    }
+
+    @Test
+    public void removeManyReverse() {
+        for (int i = 0; i < 1000; i++) {
+            c.put(i, "" + i);
+        }
+        for (int i = 999; i >= 0; i--) {
+            assertSize(i + 1);
+            assertEquals("" + i, c.remove(i));
+        }
+    }
+
+    @Test
     public void remove2() {
         c = newCache(2);
         assertTrue(c.remove(M2.getKey(), M2.getValue()));

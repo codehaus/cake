@@ -137,20 +137,9 @@ public class CacheMap<K, V> {
     /**
      * Return properly casted first entry of bin for given hash
      */
-    private HashEntry<K, V> getFirst(int hash) {
+    HashEntry<K, V> getFirst(int hash) {
         HashEntry[] tab = table;
         return (HashEntry<K, V>) tab[hash & (tab.length - 1)];
-    }
-
-    public void clear() {
-        if (size != 0) {
-            modCount++;
-            HashEntry<K, V>[] tab = table;
-            for (int i = 0; i < tab.length; i++) {
-                tab[i] = null;
-            }
-            size = 0;
-        }
     }
 
     public boolean containsKey(Predicate<CacheEntry<K, V>> filter, Object key) {
@@ -204,19 +193,6 @@ public class CacheMap<K, V> {
         }
         return null;
     }
-    public CacheEntry<K, V> get(Object key) {
-        if (size != 0) {
-            int hash = hash(key.hashCode());
-            HashEntry<K, V> e = getFirst(hash);
-            while (e != null) {
-                if (e.hash == hash && key.equals(e.key)) {
-                    return e;
-                }
-                e = e.next;
-            }
-        }
-        return null;
-    }
 
     public V put(K key, V value, AttributeMap attributes) {
         return put(key, value, attributes, false);
@@ -261,13 +237,6 @@ public class CacheMap<K, V> {
         return oldValue;
     }
 
-    /**
-     * @see java.util.concurrent.ConcurrentMap#putIfAbsent(java.lang.Object, java.lang.Object)
-     */
-    public V putIfAbsent(K key, V value, AttributeMap attributes) {
-        return put(key, value, attributes, true);
-    }
-
     public CacheEntry<K, V> remove(Object key) {
         if (key == null) {
             throw new NullPointerException("key is null");
@@ -292,9 +261,8 @@ public class CacheMap<K, V> {
     CacheEntry<K, V> remove(Object key, int hash, Object value) {
         HashEntry<K, V>[] tab = table;
         int index = hash & (tab.length - 1);
-        HashEntry<K, V> first = tab[index];
-        HashEntry<K, V> e = first;
-        HashEntry<K, V> prev = first;
+        HashEntry<K, V> e = tab[index];
+        HashEntry<K, V> prev = e;
         while (e != null && (e.hash != hash || !key.equals(e.key))) {
             prev = e;
             e = e.next;
@@ -385,7 +353,7 @@ public class CacheMap<K, V> {
     /**
      * @param i
      */
-    private void rehash() {
+    void rehash() {
         HashEntry<K, V>[] oldTable = table;
         int oldCapacity = oldTable.length;
         if (oldCapacity >= MAXIMUM_CAPACITY)
@@ -506,7 +474,7 @@ public class CacheMap<K, V> {
         return new HashEntry<K, V>(key, hash, next, value, attributes);
     }
 
-    public static class HashEntry<K, V> implements CacheEntry<K, V> {
+    public static final class HashEntry<K, V> implements CacheEntry<K, V> {
         final int hash;
 
         final K key;
@@ -524,7 +492,7 @@ public class CacheMap<K, V> {
             this.attributes = attributes;
         }
 
-        public final boolean equals(Object o) {
+        public boolean equals(Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
             Map.Entry e = (Map.Entry) o;
@@ -539,26 +507,26 @@ public class CacheMap<K, V> {
             return false;
         }
 
-        public final K getKey() {
+        public K getKey() {
             return key;
         }
 
-        public final V getValue() {
+        public V getValue() {
             return value;
         }
 
-        public final int hashCode() {
+        public int hashCode() {
             return  key.hashCode() ^ value.hashCode();
         }
 
-        public final V setValue(V newValue) {
+        public V setValue(V newValue) {
             throw new UnsupportedOperationException("setValue not supported");
             // V oldValue = value;
             // value = newValue;
             // return oldValue;
         }
 
-        public final String toString() {
+        public  String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(key);
             sb.append("=");
@@ -581,7 +549,7 @@ public class CacheMap<K, V> {
         }
 
         @SuppressWarnings("unchecked")
-        static final <K, V> HashEntry<K, V>[] newArray(int i) {
+        static <K, V> HashEntry<K, V>[] newArray(int i) {
             return new HashEntry[i];
         }
 
