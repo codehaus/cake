@@ -92,19 +92,19 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         evictor = storeConfiguration.getEvictor();
     }
 
-    //
-    // private void print() {
-    // System.out.println("---- " + size + "---------");
-    // for (int i = 0; i < table.length; i++) {
-    // HashEntry he = table[i];
-    // String s = "";
-    // while (he != null) {
-    // s += he.getKey() + ",";
-    // he = he.next;
-    // }
-    // System.out.println(i + ":" + s);
-    // }
-    // }
+//    
+//     private void print() {
+//     System.out.println("---- " + size + "---------");
+//     for (int i = 0; i < table.length; i++) {
+//     HashEntry he = table[i];
+//     String s = "";
+//     while (he != null) {
+//     s += he.getKey() + ",";
+//     he = he.next;
+//     }
+//     System.out.println(i + ":" + s);
+//     }
+//     }
 
     private ParallelArray<CacheEntry<K, V>> all() {
         return (ParallelArray) ParallelArray.createUsingHandoff(allAsArray(), ParallelArray.defaultExecutor());

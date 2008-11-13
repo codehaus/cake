@@ -50,6 +50,9 @@ public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
     }
 
     public R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, Pair<V, AttributeMap>> factory) {
+        if (factory == null) {
+            throw new NullPointerException("factory is null");
+        }
         return put(this.factory.createUpdate(key, predicate, factory, null, null));
     }
 

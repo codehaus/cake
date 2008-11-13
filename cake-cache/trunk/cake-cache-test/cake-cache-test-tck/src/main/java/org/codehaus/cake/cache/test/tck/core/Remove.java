@@ -42,11 +42,13 @@ public class Remove extends AbstractCacheTCKTest {
 
     @Test
     public void removeMany() {
-        for (int i = 0; i < 1000; i++) {
+        int step = 1000;
+        for (int i = 0; i < step; i++) {
             c.put(i, "" + i);
         }
-        for (int i = 0; i < 1000; i++) {
-            assertSize(1000 - i);
+     
+        for (int i = 0; i < step; i++) {
+            assertSize(step - i);
             assertEquals("" + i, c.remove(i));
         }
     }

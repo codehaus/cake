@@ -35,12 +35,7 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
     }
 
     public AttributeMap getAttributes() {
-        if (factory == null) {
-            Pair<V, AttributeMap> entry = factory.op(key);
-            attributes = entry.getSecond();
-            value = entry.getFirst();
-            factory = null;
-        }
+        lazyCreate();
         return attributes;
     }
 
@@ -72,13 +67,26 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
     }
 
     public V getValue() {
-        if (factory == null) {
+        lazyCreate();
+        return (V) value;
+    }
+
+    private void lazyCreate() {
+        if (factory != null) {
             Pair<V, AttributeMap> entry = factory.op(key);
-            attributes = entry.getSecond();
+            if (entry == null) {
+                throw new NullPointerException("A null pair was returned");
+            }
             value = entry.getFirst();
+            if (value == null) {
+                throw new IllegalArgumentException("A null value was returned");
+            }
+            attributes = entry.getSecond();
+            if (attributes == null) {
+                throw new IllegalArgumentException("A null attributemap was returned");
+            }
             factory = null;
         }
-        return (V) value;
     }
 
     public void setPreviousEntry(CacheEntry<K, V> entry) {
