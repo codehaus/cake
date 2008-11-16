@@ -31,9 +31,9 @@ import org.junit.Test;
 
 public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
 
-    static Predicate ic = Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_KEY_OP, Predicates.anyEquals(1, 2));
+    static Predicate ic = Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_KEY_OP, Predicates.equalsToAny(1, 2));
 
-    static Predicate ivalue = Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP, Predicates.anyEquals("A",
+    static Predicate ivalue = Predicates.mapAndEvaluate(CollectionOps.MAP_ENTRY_TO_VALUE_OP, Predicates.equalsToAny("A",
             "B"));
 
     @Test

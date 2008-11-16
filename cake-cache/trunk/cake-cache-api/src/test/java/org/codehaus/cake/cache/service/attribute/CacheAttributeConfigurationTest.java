@@ -16,6 +16,7 @@
 package org.codehaus.cake.cache.service.attribute;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertSame;
 
 import org.codehaus.cake.attribute.Attribute;
@@ -41,5 +42,10 @@ public class CacheAttributeConfigurationTest {
     @Test(expected = IllegalArgumentException.class)
     public void addSame_IAE() {
         new CacheAttributeConfiguration().add(A1).add(A1);
+    }
+
+    @Test
+    public void toString_() {
+        assertNotNull(new CacheAttributeConfiguration().toString());
     }
 }

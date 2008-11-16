@@ -21,9 +21,8 @@ import java.util.List;
 import org.codehaus.cake.attribute.Attribute;
 
 /**
- * This configurer is used to determind which attributes the cache will keep for each entry.
- * For example, the following
- *
+ * This configurer is used to determind which attributes the cache will keep for each entry. For example, the following
+ * 
  * <p>
  * It is also possible to add custom attributes
  */
@@ -55,5 +54,9 @@ public class CacheAttributeConfiguration {
             attributes.add(aa);
         }
         return this;
+    }
+
+    public String toString() {
+        return attributes.toString();
     }
 }

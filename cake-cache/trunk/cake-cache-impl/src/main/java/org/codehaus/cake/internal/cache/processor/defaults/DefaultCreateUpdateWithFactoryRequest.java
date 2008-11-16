@@ -79,11 +79,11 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
             }
             value = entry.getFirst();
             if (value == null) {
-                throw new IllegalArgumentException("A null value was returned");
+                throw new NullPointerException("The specified factory created a null value");
             }
             attributes = entry.getSecond();
             if (attributes == null) {
-                throw new IllegalArgumentException("A null attributemap was returned");
+                throw new NullPointerException("The specified factory created a null attributemap");
             }
             factory = null;
         }

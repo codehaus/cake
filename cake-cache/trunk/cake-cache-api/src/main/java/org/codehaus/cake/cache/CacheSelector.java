@@ -63,7 +63,7 @@ public interface CacheSelector<K, V> {
      *            the predicate that keys should be tested against
      * @return
      */
-    Cache<K, V> onKey(Predicate<K> filter);
+    Cache<K, V> onKey(Predicate<? super K> filter);
 
     /**
      * Returns a filtered view containing only those elements where the elements key is of the specified type.
@@ -76,7 +76,7 @@ public interface CacheSelector<K, V> {
      */
     <T extends K> Cache<T, V> onKeyType(Class<T> c);
 
-    Cache<K, V> onValue(Predicate<V> filter);
+    Cache<K, V> onValue(Predicate<? super V> filter);
 
     /**
      * Returns a filtered view containing only those elements where the elements value is of the specified type.

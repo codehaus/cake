@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
@@ -50,10 +51,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     private CacheServices<K, V> services;
     private Collection<V> values;
-    
+
     /** A factory for collection views. */
     private final CollectionViewFactory<K, V> views;
-    
+
     AbstractCache(AbstractCache<K, V> parent, Predicate<CacheEntry<K, V>> filter) {
         super(parent);
         views = parent.views;
@@ -119,7 +120,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     @SuppressWarnings("unchecked")
     public V get(Object key) {
         K k = (K) key;
-        return (V) processor.get(filter, k, CacheDataExtractor.ONLY_VALUE);
+        return (V) processor.get(filter, k, Attributes.EMPTY_ATTRIBUTE_MAP, CacheDataExtractor.ONLY_VALUE);
     }
 
     /** {@inheritDoc} */
@@ -129,7 +130,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public CacheEntry<K, V> getEntry(K key) {
-        return (CacheEntry<K, V>) processor.get(filter, key, CacheDataExtractor.WHOLE_ENTRY);
+        return (CacheEntry<K, V>) processor.get(filter, key, Attributes.EMPTY_ATTRIBUTE_MAP,CacheDataExtractor.WHOLE_ENTRY);
     }
 
     /** {@inheritDoc} */
@@ -137,6 +138,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     public String getName() {
         return filter == null ? super.getName() : super.getName() + " (Filtered)";
     }
+
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
         AttributeMap map = new DefaultAttributeMap(attributes);

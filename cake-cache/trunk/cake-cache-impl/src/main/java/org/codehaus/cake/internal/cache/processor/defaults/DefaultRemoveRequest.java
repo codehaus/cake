@@ -14,15 +14,15 @@ public class DefaultRemoveRequest<K, V> implements RemoveEntryRequest<K, V> {
 
     private final V value;
     private final Predicate<? extends CacheEntry<K, V>> removePredicate;
-
-    public DefaultRemoveRequest(K key, V value) {
-        if (key == null) {
-            throw new NullPointerException("key is null");
-        }
-        this.key = key;
-        this.value = value;
-        removePredicate = value == null ? null : new CachePredicates.CacheValueEquals(value);
-    }
+//
+//    public DefaultRemoveRequest(K key, V value) {
+//        if (key == null) {
+//            throw new NullPointerException("key is null");
+//        }
+//        this.key = key;
+//        this.value = value;
+//        removePredicate = value == null ? null : new CachePredicates.CacheValueEquals(value);
+//    }
 
     public DefaultRemoveRequest(K key, Predicate<? extends CacheEntry<K, V>> removePredicate) {
         if (key == null) {

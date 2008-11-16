@@ -375,7 +375,7 @@ public final class Caches {
             return EMPTY_CACHE;
         }
 
-        public Cache<K, V> onKey(Predicate<K> p) {
+        public Cache<K, V> onKey(Predicate<? super K> p) {
             return EMPTY_CACHE;
         }
 
@@ -383,7 +383,7 @@ public final class Caches {
             return EMPTY_CACHE;
         }
 
-        public Cache<K, V> onValue(Predicate<V> p) {
+        public Cache<K, V> onValue(Predicate<? super V> p) {
             return EMPTY_CACHE;
         }
 

@@ -26,8 +26,6 @@ import org.codehaus.cake.service.Container;
  * The CacheLoadingService can be used for prefetching entries into the cache. When an entry is actually needed, the
  * instruction can be accessed much more quickly from the cache than if it had to make a request from some kind of
  * external storage.
- * 
- * 
  * <p>
  * This method does not guarantee that the specified value is ever loaded into the cache. Implementations are free to
  * ignore the hint, however, most implementations won't.>
@@ -35,7 +33,8 @@ import org.codehaus.cake.service.Container;
  * <p>
  * Unless otherwise specified all methods are methods in this class are asynchronously. Any cache implementation that is
  * not thread-safe (ie supposed to be accessed by a single thread only) will need to load the value before returning
- * from this method. Because it cannot allow a background thread to add the value to cache once loaded.
+ * from any of the methods in this class. Because it cannot allow a background thread to add or update a mapping in the
+ * cache once loaded.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: MemoryStoreService.java 563 2008-01-10 15:20:33Z kasper $
@@ -115,9 +114,7 @@ public interface CacheLoadingService<K, V> {
     void loadAll(AttributeMap attributes);
 
     /**
-     * For all keys in the specified collection and where a valid mapping from the key is not already in the cache. This
-     * method will attempt to load the value for the key from the configured cache loader. The effect of this call is
-     * equivalent to that of calling {@link #load(Object)} once for each key in the specified collection. However, This
+     * Equivalent to that of calling {@link #load(Object)} once for each key in the specified collection. However, This
      * operation may be more efficient than repeatedly calling {@link #load(Object)} for each key.
      * <p>
      * The behavior of this operation is unspecified if the specified collection is modified while the operation is in
@@ -137,28 +134,41 @@ public interface CacheLoadingService<K, V> {
     void loadAll(Iterable<? extends K> keys);
 
     /**
+     * Equivalent to that of calling {@link #load(Object, AttributeMap)} once for each key in the specified collection
+     * and with the specified attribute map as a parameter. However, This operation may be more efficient than
+     * repeatedly calling {@link #load(Object, AttributeMap)} for each key.
+     * <p>
+     * The behavior of this operation is unspecified if the specified collection or attributemap is modified while the
+     * operation is in progress.
      * <p>
      * If this cache has been shutdown calls to this method is ignored.
      * 
      * @param keys
      *            whose associated values is to be loaded.
      * @param attributes
+     *            a parameter attribute map
+     * @throws ClassCastException
+     *             if any of the keys in the specified collection are of an inappropriate type for this cache
+     *             (optional).
+     * @throws NullPointerException
+     *             if the specified collection of keys is <tt>null</tt>, the specified collection contains a
+     *             <tt>null</tt> value or the specified attribute map is null
      */
     void loadAll(Iterable<? extends K> keys, AttributeMap attributes);
 
     /**
+     * Equivalent to calling {@link #load(Object, AttributeMap)} for each entry in the map.
      * <p>
      * If this cache has been shutdown calls to this method is ignored.
      * 
-     * @param mapsWithAttributes
-     *            a map with keys that should be loaded and a corresponding attribute map
+     * @param keysAttributes
+     *            the keys that should be loaded and the corresponding attribute map
      */
-    void loadAll(Map<? extends K, ? extends AttributeMap> mapsWithAttributes);
+    void loadAll(Map<? extends K, ? extends AttributeMap> keysAttributes);
 
     // Additional attributes
     // Priority?? ->should probably be implemented at the cache loader level
     // Logger
-    // Await load done, come up with use cases
+    // Await load done, come up with use cases, I think it should be Get with readThrough instead
     // Runnable callback? come up with use cases
-
 }

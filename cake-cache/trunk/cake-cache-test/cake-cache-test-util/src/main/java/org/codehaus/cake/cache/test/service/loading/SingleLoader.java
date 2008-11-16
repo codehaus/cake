@@ -25,6 +25,8 @@ import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 public class SingleLoader implements BlockingCacheLoader<Integer, String> {
 
+    private AttributeMap initialParameters;
+
     private AttributeMap attributes;
 
     private Throwable cause;
@@ -51,8 +53,13 @@ public class SingleLoader implements BlockingCacheLoader<Integer, String> {
         return value;
     }
 
+    public AttributeMap getParameters() {
+        return initialParameters;
+    }
+
     public String load(Integer key, AttributeMap attributes) throws Exception {
         if (key.equals(this.key)) {
+            initialParameters = attributes;
             count.incrementAndGet();
             if (cause instanceof Error) {
                 throw (Error) cause;

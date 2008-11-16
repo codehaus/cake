@@ -3,6 +3,8 @@ package org.codehaus.cake.internal.cache.processor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
@@ -39,17 +41,18 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
         memoryStore.process(r);
     }
 
-    public <T> T get(Predicate<CacheEntry<K,V>> selector, K key, Op<CacheEntry<K, V>, T> extractor) {
+    public <T> T get(Predicate<CacheEntry<K, V>> selector, K key, AttributeMap attributes,
+            Op<CacheEntry<K, V>, T> extractor) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
         runState.isRunningLazyStart(true);
-        CacheEntry<K, V> entry = memoryStore.get(null,key);
+        CacheEntry<K, V> entry = memoryStore.get(null, key);
         if (entry != null && selector != null && !selector.op(entry)) {
             return extractor.op(null);
         }
         if (entry == null && loading != null) {
-            entry = loading.load(key, new DefaultAttributeMap());
+            entry = loading.load(key, new DefaultAttributeMap(attributes));
         }
         if (entry == null) {
             return extractor.op(entry);
@@ -62,14 +65,15 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
 
     }
 
-    public <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> keys, Op<CacheEntry<K, V>, T> extractor) {
+    public <T> Map<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> keys,
+            Op<CacheEntry<K, V>, T> extractor) {
         if (keys == null) {
             throw new NullPointerException("keys is null");
         }
         runState.isRunningLazyStart(true);
         HashMap<K, T> result = new HashMap<K, T>();
         for (K key : keys) {
-            result.put(key, get(selector, key, extractor));
+            result.put(key, get(selector, key, Attributes.EMPTY_ATTRIBUTE_MAP, extractor));
         }
         return result;
     }
@@ -79,7 +83,7 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
         memoryStore.process(r);
     }
 
-    public void process(Predicate<CacheEntry<K,V>> filter, ClearCacheRequest<K, V> r) {
+    public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {
         runState.isRunningLazyStart(false);
         memoryStore.process(filter, r);
     }

@@ -12,11 +12,16 @@ public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>
 
     public static final Op ONLY_KEY = new Ops.Op<CacheEntry<?, ?>, Object>() {
         public Object op(CacheEntry<?, ?> e) {
-            return e==null ? null : e.getKey();
+            return e == null ? null : e.getKey();
+        }
+    };
+    public static final Op IS_NOT_NULL = new Ops.Op<CacheEntry<?, ?>, Object>() {
+        public Object op(CacheEntry<?, ?> e) {
+            return Boolean.valueOf(e != null);
         }
     };
 
-    public static <K, V, T> Op<CacheEntry<K, V>, T> attribute(Attribute<T> attribute) {
+    public static <K, V, T> Op<CacheEntry<K, V>, T> toAttribute(Attribute<T> attribute) {
         return new ExtractAttribute<K, V, T>(attribute);
     }
 
@@ -34,7 +39,7 @@ public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>
 
     public static final Op ONLY_VALUE = new Ops.Op<CacheEntry<?, ?>, Object>() {
         public Object op(CacheEntry<?, ?> e) {
-            return e==null ? null : e.getValue();
+            return e == null ? null : e.getValue();
         }
     };
 
@@ -46,7 +51,7 @@ public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>
         private final Attribute<T> attribute;
 
         public T op(CacheEntry<K, V> a) {
-            if (a==null) {
+            if (a == null) {
                 return attribute.getDefault();
             }
             return a.getAttributes().get(attribute);

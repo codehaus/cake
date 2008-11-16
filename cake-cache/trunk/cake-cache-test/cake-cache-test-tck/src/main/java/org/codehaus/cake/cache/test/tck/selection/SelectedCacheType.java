@@ -39,7 +39,6 @@ public enum SelectedCacheType {
             cache.crud().write().put(4, "D", O_2.singleton("D"));
             cache.crud().write().put(5, "E", O_2.singleton("E"));
             return cache.select().on(O_2, new Predicate() {
-
                 public boolean op(Object a) {
                     return a.equals("A") || a.equals("C") || a.equals("E");
                 }

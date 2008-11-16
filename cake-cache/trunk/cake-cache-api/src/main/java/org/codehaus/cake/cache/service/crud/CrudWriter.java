@@ -21,7 +21,7 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  * @param <V>
  *            the type of mapped values
  * @param <R>
- *            the type returned from methods
+ *            the type returned from methods, this is ordinarily determined by the {@link #WRITE_TRANSFORMER} used
  */
 public interface CrudWriter<K, V, R> {
 
@@ -32,25 +32,21 @@ public interface CrudWriter<K, V, R> {
      */
     ObjectAttribute<Op<?, ?>> WRITE_TRANSFORMER = (ObjectAttribute) new ObjectAttribute<Op>(Op.class) {};
 
-    R replace(K key, V oldValue, V newValue);
-
-    R replace(K key, V oldValue, V newValue, AttributeMap attributes);
-
     /**
-     * Associates the specified value with the specified key in this cache (optional operation). If the cache previously
+     * Associates the specified value with the specified key in the cache (optional operation). If the cache previously
      * contained a mapping for this key, the old value is replaced by the specified value. (A cache <tt>c</tt> is said
      * to contain a mapping for a key <tt>k</tt> if and only if
      * {@link org.codehaus.cake.cache.Cache#containsKey(Object) c.containsKey(k)} would return <tt>true</tt>.))
      * <p>
      * It is often more efficient to specify a {@link org.codehaus.cake.cache.service.loading.BlockingCacheLoader} that
-     * implicitly loads values then to explicitly add them to cache using the various <tt>put</tt> and <tt>putAll</tt>
-     * methods.
+     * implicitly loads values then to explicitly add them to cache using the various write operations in this
+     * interface.
      * 
      * @param key
      *            key with which the specified value is to be associated.
      * @param value
      *            value to be associated with the specified key.
-     * @return previous value associated with specified key, or <tt>null</tt> if there was no mapping for key.
+     * @return context dependent information about what was previous associated with the specified key
      * @throws UnsupportedOperationException
      *             if the <tt>put</tt> operation is not supported by this cache.
      * @throws ClassCastException
@@ -66,18 +62,38 @@ public interface CrudWriter<K, V, R> {
 
     R put(K key, V value, AttributeMap attributes);
 
-    R put(K key, Predicate<CacheEntry<K, V>> predicate, V value);
+    /**
+     * Conditionally associates the specified value with the specified key in the cache.
+     * 
+     * <pre>
+     * CacheEntry e = cache.getEntry(key)
+     * if (condition.op(e))
+     *     return cache.put(key, value);
+     * else
+     *     return cache.get(key);
+     * </pre>
+     * 
+     * except that the action is performed atomically.
+     * 
+     * @param condition
+     * @param key
+     * @param value
+     * @return
+     */
+    R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value);
 
     /**
      * The cache entry provided to the specified predicate will be null if no entry exists for the specified key.
      * 
+     * @parem condition
      * @param key
+     *            key with which the specified value is to be associated
      * @param value
+     *            value to be associated with the specified key
      * @param attributes
-     * @param predicate
      * @return
      */
-    R put(K key, Predicate<CacheEntry<K, V>> predicate, V value, AttributeMap attributes);
+    R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, AttributeMap attributes);
 
     /**
      * If the specified key is not already associated with a value, associate it with the given value. This is
@@ -171,7 +187,7 @@ public interface CrudWriter<K, V, R> {
      */
     R putIfAbsentLazy(K key, Op<? extends K, Pair<V, AttributeMap>> factory);
 
-    R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, Pair<V, AttributeMap>> factory);
+    R putIfLazy(Predicate<CacheEntry<K, V>> condition, K key, Op<? extends K, Pair<V, AttributeMap>> factory);
 
     /**
      * Removes the mapping for a key from this cache if it is present (optional operation). More formally, if this cache
@@ -199,7 +215,16 @@ public interface CrudWriter<K, V, R> {
      */
     R remove(K key);
 
-    R remove(K key, Predicate<CacheEntry<K, V>> predicate);
+    /**
+     * Conditionally removes the mapping for a key from this cache if it is present (optional operation)
+     * 
+     * @param condition
+     *            the predicate that the entry being removed must fulfill
+     * @param key
+     *            key whose mapping is to be removed from the cache
+     * @return
+     */
+    R removeIf(Predicate<CacheEntry<K, V>> condition, K key);
 
     /**
      * Removes the entry for a key only if currently mapped to a given value. This is equivalent to
@@ -233,4 +258,8 @@ public interface CrudWriter<K, V, R> {
     R replace(K key, V value);
 
     R replace(K key, V value, AttributeMap attributes);
+
+    R replace(K key, V oldValue, V newValue);
+
+    R replace(K key, V oldValue, V newValue, AttributeMap attributes);
 }

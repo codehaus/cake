@@ -13,8 +13,8 @@ import org.codehaus.cake.ops.Ops.Predicate;
 public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R> {
 
     /** {@inheritDoc} */
-    public final R put(K key, Predicate<CacheEntry<K, V>> predicate, V value) {
-        return put(key, predicate, value, Attributes.EMPTY_ATTRIBUTE_MAP);
+    public final R putIf(Predicate<CacheEntry<K, V>> predicate, K key, V value) {
+        return putIf(predicate, key, value, Attributes.EMPTY_ATTRIBUTE_MAP);
     }
 
     /** {@inheritDoc} */
@@ -24,7 +24,7 @@ public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R>
 
     /** {@inheritDoc} */
     public final R put(K key, V value, AttributeMap attributes) {
-        return put(key, Predicates.TRUE, value, attributes);
+        return putIf(Predicates.TRUE, key, value, attributes);
     }
 
     /** {@inheritDoc} */
@@ -34,22 +34,22 @@ public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R>
 
     /** {@inheritDoc} */
     public final R putIfAbsent(K key, V value, AttributeMap attributes) {
-        return put(key, Predicates.IS_NULL, value, attributes);
+        return putIf(Predicates.IS_NULL, key, value, attributes);
     }
 
     /** {@inheritDoc} */
     public final R putIfAbsentLazy(K key, Op<? extends K, Pair<V, AttributeMap>> factory) {
-        return putLazy(key, Predicates.IS_NULL, factory);
+        return putIfLazy(Predicates.IS_NULL, key, factory);
     }
 
     /** {@inheritDoc} */
     public final R remove(K key) {
-        return remove(key, Predicates.TRUE);
+        return removeIf(Predicates.TRUE, key);
     }
 
     /** {@inheritDoc} */
     public final R remove(K key, V value) {
-        return remove(key, CachePredicates.<K, V> valueEquals(value));
+        return removeIf(CachePredicates.<K, V> valueEquals(value), key);
     }
 
     /** {@inheritDoc} */
@@ -59,7 +59,7 @@ public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R>
 
     /** {@inheritDoc} */
     public final R replace(K key, V value, AttributeMap attributes) {
-        return put(key, Predicates.IS_NOT_NULL, value, attributes);
+        return putIf(Predicates.IS_NOT_NULL, key, value, attributes);
     }
 
     /** {@inheritDoc} */
@@ -69,6 +69,6 @@ public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R>
 
     /** {@inheritDoc} */
     public final R replace(K key, V oldValue, V newValue, AttributeMap attributes) {
-        return put(key, CachePredicates.<K, V> valueEquals(oldValue), newValue, attributes);
+        return putIf(CachePredicates.<K, V> valueEquals(oldValue), key, newValue, attributes);
     }
 }

@@ -14,12 +14,6 @@ import org.codehaus.cake.ops.Ops.Predicate;
 
 public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
 
-    public static Op NOT_NULL = new Op<CacheEntry<?, ?>, Boolean>() {
-        public Boolean op(CacheEntry<?, ?> a) {
-            return a != null;
-        }
-    };
-
     private final CacheRequestFactory<K, V> factory;
     private final Op<CacheEntry<K, V>, R> newEntry;
     private final Op<CacheEntry<K, V>, R> previous;
@@ -35,43 +29,37 @@ public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
 
     private R put(AddEntryRequest<K, V> r) {
         processor.process(r);
-        if (previous == null) {
-            return null;
-        }
-        CacheEntry<K, V> e = r.getPreviousAsEntry();
-        if (previous == NOT_NULL) {
-            return e == null ? (R) Boolean.FALSE : previous.op(e);
-        }
-        return e == null ? null : previous.op(e);
+        return previous == null ? null : previous.op(r.getPreviousAsEntry());
     }
 
-    public R put(K key, Predicate<CacheEntry<K, V>> updatePredicate, V value, AttributeMap attributes) {
-        return put(factory.createUpdate(key, attributes, value, updatePredicate, null, null));
+    public R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, AttributeMap attributes) {
+        if (condition == null) {
+            throw new NullPointerException("condition is null");
+        }
+        return put(factory.createUpdate(key, attributes, value, condition, null, null));
     }
 
-    public R putLazy(K key, Predicate<CacheEntry<K, V>> predicate, Op<? extends K, Pair<V, AttributeMap>> factory) {
-        if (factory == null) {
+    public R putIfLazy(Predicate<CacheEntry<K, V>> condition, K key, Op<? extends K, Pair<V, AttributeMap>> factory) {
+        if (condition == null) {
+            throw new NullPointerException("condition is null");
+        } else if (factory == null) {
             throw new NullPointerException("factory is null");
         }
-        return put(this.factory.createUpdate(key, predicate, factory, null, null));
+        return put(this.factory.createUpdate(key, condition, factory, null, null));
     }
 
-    public R remove(K key, Predicate<CacheEntry<K, V>> updatePredicate) {
-        RemoveEntryRequest<K, V> r = factory.remove(key, updatePredicate, previous);
+    public R removeIf(Predicate<CacheEntry<K, V>> condition, K key) {
+        if (condition == null) {
+            throw new NullPointerException("condition is null");
+        }
+        RemoveEntryRequest<K, V> r = factory.remove(key, condition, previous);
         processor.process(r);
-        if (previous == null) {
-            return null;
-        }
-        CacheEntry<K, V> e = r.getPreviousEntry();
-        if (previous == NOT_NULL) {
-            return e == null ? (R) Boolean.FALSE : previous.op(e);
-        }
-        return e == null ? null : previous.op(e);
+        return previous == null ? null : previous.op(r.getPreviousEntry());
     }
 
     public static <K, V> CrudWriter<K, V, Boolean> previousNotNull(CacheRequestFactory<K, V> factory,
             CacheProcessor<K, V> processor) {
-        return new DefaultCrudWriter<K, V, Boolean>(factory, processor, (Op) NOT_NULL, null);
+        return new DefaultCrudWriter<K, V, Boolean>(factory, processor, CacheDataExtractor.IS_NOT_NULL, null);
     }
 
     public static <K, V> CrudWriter<K, V, V> returnPreviousValue(CacheRequestFactory<K, V> factory,

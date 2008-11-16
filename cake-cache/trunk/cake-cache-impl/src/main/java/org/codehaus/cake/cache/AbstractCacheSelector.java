@@ -170,7 +170,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         });
     }
     /** {@inheritDoc} */
-    public Cache<K, V> onKey(final Predicate<K> filter) {
+    public Cache<K, V> onKey(final Predicate<? super K> filter) {
         if (filter == null) {
             throw new NullPointerException("filter is null");
         }
@@ -194,7 +194,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         });
     }
     /** {@inheritDoc} */
-    public Cache<K, V> onValue(final Predicate<V> filter) {
+    public Cache<K, V> onValue(final Predicate<? super V> filter) {
         if (filter == null) {
             throw new NullPointerException("filter is null");
         }

@@ -1,12 +1,34 @@
 package org.codehaus.cake.cache.test.tck.selection;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.cache.test.util.AtrStubs;
 import org.codehaus.cake.ops.Predicates;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class SelectedCache extends AbstractCacheTCKTest {
+    SelectedCacheType type;
+
+    public SelectedCache(SelectedCacheType type) {
+        this.type = type;
+    }
+
+    @Parameters
+    public static Collection<Object[]> data() {
+        LinkedList<Object[]> ll = new LinkedList<Object[]>();
+        for (SelectedCacheType type : SelectedCacheType.values()) {
+            ll.add(new Object[] { type });
+        }
+        return ll;
+    }
 
     /** Tests that we don't load an item that is filtered */
     @Test
@@ -24,7 +46,7 @@ public class SelectedCache extends AbstractCacheTCKTest {
         assertNull(c.peek(1));
         assertEquals("B", c.get(2));
         assertNull(c.peek(10));
-        
+
         assertNull(c.select().on(Predicates.FALSE).get(1));
         assertNull(c.select().on(Predicates.FALSE).get(2));
         assertNull(c.select().on(Predicates.FALSE).get(10));
@@ -35,15 +57,9 @@ public class SelectedCache extends AbstractCacheTCKTest {
     }
 
     @Test
-    public void test() {
-        for (SelectedCacheType sc : SelectedCacheType.values()) {
-            newConfiguration().withAttributes().add(sc.getAttribute().toArray(new Attribute[0]));
-            c = (Cache) sc.fillAndSelect((Cache) newCache());
-            test2();
-        }
-    }
-
-    private void test2() {
+    public void test2() {
+        newConfiguration().withAttributes().add(type.getAttribute().toArray(new Attribute[0]));
+        c = (Cache) type.fillAndSelect((Cache) newCache());
         assertSize(3);
         assertNotNull(c.getName());
         assertContainsKey(M1).assertContainsKey(M3).assertContainsKey(M5);
@@ -54,14 +70,13 @@ public class SelectedCache extends AbstractCacheTCKTest {
 
     @Test
     public void clear_() {
-        for (SelectedCacheType sc : SelectedCacheType.values()) {
-            newConfiguration().withAttributes().add(sc.getAttribute().toArray(new Attribute[0]));
-            Cache orig = newCache();
-            c = (Cache) sc.fillAndSelect((Cache) c);
-            int initSize = orig.size();
-            clear();
-            assertSize(0);
-            assertEquals(initSize - 3, orig.size());
-        }
+        newConfiguration().withAttributes().add(type.getAttribute().toArray(new Attribute[0]));
+        Cache orig = newCache();
+        c = (Cache) type.fillAndSelect(orig);
+        int initSize = orig.size();
+        clear();
+        assertSize(0);
+        assertEquals(initSize - 3, orig.size());
     }
+
 }

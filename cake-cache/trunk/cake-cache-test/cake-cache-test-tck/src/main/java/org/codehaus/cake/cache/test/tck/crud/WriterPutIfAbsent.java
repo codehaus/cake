@@ -1,13 +1,10 @@
 package org.codehaus.cake.cache.test.tck.crud;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.internal.util.Pair;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.cache.test.tck.crud.CrudSuite.LazyOp;
 import org.junit.Test;
 
-public class CrudWriterPutIfAbsent extends AbstractCacheTCKTest {
+public class WriterPutIfAbsent extends AbstractCacheTCKTest {
 
     private void fill() {
         int step = 1000;
@@ -38,15 +35,6 @@ public class CrudWriterPutIfAbsent extends AbstractCacheTCKTest {
         assertEquals("1", c.get(100));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void putIfAbsentLazyReturnVoidNPE1() {
-        c.crud().write().putIfAbsentLazy(null, new LazyOp(1, "1"));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void putIfAbsentLazyReturnVoidNPE2() {
-        c.crud().write().putIfAbsentLazy(1, null);
-    }
 
     @Test
     public void putIfAbsentLazyReturnVoid() {
@@ -59,25 +47,4 @@ public class CrudWriterPutIfAbsent extends AbstractCacheTCKTest {
         assertEquals("1", c.get(100));
     }
 
-    static class LazyOp implements Op<Integer, Pair<String, AttributeMap>> {
-        private final int key;
-        private final String v;
-        private final AttributeMap attributes;
-
-        public Pair<String, AttributeMap> op(Integer a) {
-            assertEquals(key, a.intValue());
-            return new Pair<String, AttributeMap>(v, attributes);
-        }
-
-        public LazyOp(int key, String value) {
-            this(key, value, Attributes.EMPTY_ATTRIBUTE_MAP);
-        }
-
-        public LazyOp(int key, String value, AttributeMap attributes) {
-            this.key = key;
-            this.v = value;
-            this.attributes = attributes;
-        }
-
-    }
 }

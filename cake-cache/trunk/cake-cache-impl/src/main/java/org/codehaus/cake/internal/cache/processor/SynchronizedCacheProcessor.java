@@ -3,6 +3,8 @@ package org.codehaus.cake.internal.cache.processor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
@@ -44,7 +46,8 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
         }
     }
 
-    public <T> T get(Predicate<CacheEntry<K, V>> selector, K key, Op<CacheEntry<K, V>, T> extractor) {
+    public <T> T get(Predicate<CacheEntry<K, V>> selector, K key, AttributeMap attributes,
+            Op<CacheEntry<K, V>, T> extractor) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
@@ -52,7 +55,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
         boolean dontLoad = false;
         synchronized (mutex) {
             runState.isRunningLazyStart(true);
-            entry = memoryStore.get(null,key);
+            entry = memoryStore.get(null, key);
             if (entry != null || loading == null) {
                 if (entry != null && selector != null && !selector.op(entry)) {
                     entry = null;
@@ -67,7 +70,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
             return extractor.op(entry);
         }
 
-        entry = loading.load(key, new DefaultAttributeMap());
+        entry = loading.load(key, new DefaultAttributeMap(attributes));
 
         if (entry == null) {
             return extractor.op(entry);
@@ -92,7 +95,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
         synchronized (mutex) {
             runState.isRunningLazyStart(true);
             for (K key : keys) {
-                result.put(key, get(selector, key, extractor));
+                result.put(key, get(selector, key, Attributes.EMPTY_ATTRIBUTE_MAP, extractor));
             }
         }
         return result;

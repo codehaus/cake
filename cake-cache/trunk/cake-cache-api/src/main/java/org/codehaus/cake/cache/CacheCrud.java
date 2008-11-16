@@ -92,7 +92,7 @@ public class CacheCrud<K, V> {
      */
     public <T> CrudReader<K, T> attribute(Attribute<T> attribute) {
         // TODO remember to return default value if mapped to null
-        Op extractor = CacheDataExtractor.attribute(attribute);
+        Op extractor = CacheDataExtractor.toAttribute(attribute);
         AttributeMap attributes = CrudReader.READ_TRANSFORMER.singleton(extractor);
         return serviceManager.getService(CrudReader.class, attributes);
     }

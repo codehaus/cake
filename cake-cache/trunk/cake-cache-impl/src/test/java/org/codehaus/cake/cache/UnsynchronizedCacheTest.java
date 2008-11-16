@@ -28,7 +28,6 @@ import org.junit.runner.RunWith;
 @TckImplementationSpecifier(UnsynchronizedCache.class)
 public class UnsynchronizedCacheTest {
     @Test
-    
     public void prestart() {
         UnsynchronizedCache c = new UnsynchronizedCache();
         assertFalse(c.isStarted());
