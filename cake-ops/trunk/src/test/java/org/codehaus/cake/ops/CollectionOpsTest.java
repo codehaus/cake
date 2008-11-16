@@ -84,7 +84,7 @@ public class CollectionOpsTest {
 
     @Test
     public void filter() {
-        Predicate<Number> p = Predicates.<Number> anyEquals(2, 3);
+        Predicate<Number> p = Predicates.<Number> equalsToAny(2, 3);
         Collection<Integer> col = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
         List<Integer> list = CollectionOps.filter(col, p);
         assertEquals(2, list.size());
@@ -188,8 +188,8 @@ public class CollectionOpsTest {
 
     @Test
     public void isAllTrue() {
-        Predicate<Number> p = Predicates.<Number> anyEquals(2, 3);
-        Predicate<Number> p2 = Predicates.<Number> anyEquals(1, 2, 3, 4, 5);
+        Predicate<Number> p = Predicates.<Number> equalsToAny(2, 3);
+        Predicate<Number> p2 = Predicates.<Number> equalsToAny(1, 2, 3, 4, 5);
         List<Integer> list = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
         assertFalse(CollectionOps.isAllTrue(list, p));
         assertTrue(CollectionOps.isAllTrue(list, p2));
@@ -207,8 +207,8 @@ public class CollectionOpsTest {
 
     @Test
     public void isAnyTrue() {
-        Predicate<Number> p = Predicates.<Number> anyEquals(2, 3);
-        Predicate<Number> p2 = Predicates.<Number> anyEquals(5, 6, 7, 8);
+        Predicate<Number> p = Predicates.<Number> equalsToAny(2, 3);
+        Predicate<Number> p2 = Predicates.<Number> equalsToAny(5, 6, 7, 8);
         List<Integer> list = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
         assertTrue(CollectionOps.isAnyTrue(list, p));
         assertFalse(CollectionOps.isAnyTrue(list, p2));
@@ -257,7 +257,7 @@ public class CollectionOpsTest {
 
     @Test
     public void retain() {
-        Predicate<Number> p = Predicates.<Number> anyEquals(2, 3);
+        Predicate<Number> p = Predicates.<Number> equalsToAny(2, 3);
         List<Integer> list = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
         CollectionOps.retain(list, p);
         assertEquals(2, list.size());

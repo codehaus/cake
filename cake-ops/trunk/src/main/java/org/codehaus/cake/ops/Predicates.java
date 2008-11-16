@@ -117,52 +117,6 @@ public final class Predicates {
     }
 
     /**
-     * Creates a Predicate that evaluates to true if any of the specified elements are equal to the element that is
-     * being tested. The returned predicate uses short-circuit evaluation (or minimal evaluation). That is, subsequent
-     * arguments are only evaluated if the previous arguments does not suffice to determine the truth value.
-     * <p>
-     * The Predicate will use a copy of the array of supplied predicates.
-     * <p>
-     * If all the supplied predicates are serializable the returned predicate will also be serializable.
-     * 
-     * @param elements
-     *            the elements to test against
-     * @return the newly created Predicate
-     * @param <E>
-     *            the type of elements accepted by the predicate
-     * @throws NullPointerException
-     *             if any of the specified elements are <code>null</code>
-     * @see #equalsTo(Object)
-     */
-    public static <E> Predicate<E> anyEquals(E... elements) {
-        List<Predicate<E>> list = new ArrayList<Predicate<E>>();
-        for (E e : elements) {
-            list.add(equalsTo(e));
-        }
-        return anyTrue(list);
-    }
-
-    /**
-     * As {@link #anyEquals(Object...)} except taking an {@link Iterable} as parameter.
-     * 
-     * @param elements
-     *            the elements to test against
-     * @return the newly created Predicate
-     * @param <E>
-     *            the type of elements accepted by the predicate
-     * @throws NullPointerException
-     *             if the specified iterable is <code>null</code> or contains a null element
-     * @see #equalsTo(Object)
-     */
-    public static <E> Predicate<E> anyEquals(Iterable<? extends E> elements) {
-        List<Predicate<E>> list = new ArrayList<Predicate<E>>();
-        for (E e : elements) {
-            list.add(equalsTo(e));
-        }
-        return anyTrue(list);
-    }
-
-    /**
      * As {@link #anyTrue(Predicate...)} except taking an {@link Iterable} as parameter.
      * 
      * @param predicates
@@ -292,6 +246,52 @@ public final class Predicates {
      */
     public static <E> Predicate<E> between(E left, E right, Comparator<? extends E> comparator) {
         return and((Predicate) greaterThenOrEqual(left, comparator), (Predicate) lessThenOrEqual(right, comparator));
+    }
+
+    /**
+     * Creates a Predicate that evaluates to true if any of the specified elements are equal to the element that is
+     * being tested. The returned predicate uses short-circuit evaluation (or minimal evaluation). That is, subsequent
+     * arguments are only evaluated if the previous arguments does not suffice to determine the truth value.
+     * <p>
+     * The Predicate will use a copy of the array of supplied predicates.
+     * <p>
+     * If all the supplied predicates are serializable the returned predicate will also be serializable.
+     * 
+     * @param elements
+     *            the elements to test against
+     * @return the newly created Predicate
+     * @param <E>
+     *            the type of elements accepted by the predicate
+     * @throws NullPointerException
+     *             if any of the specified elements are <code>null</code>
+     * @see #equalsTo(Object)
+     */
+    public static <E> Predicate<E> equalsToAny(E... elements) {
+        List<Predicate<E>> list = new ArrayList<Predicate<E>>();
+        for (E e : elements) {
+            list.add(equalsTo(e));
+        }
+        return anyTrue(list);
+    }
+
+    /**
+     * As {@link #equalsToAny(Object...)} except taking an {@link Iterable} as parameter.
+     * 
+     * @param elements
+     *            the elements to test against
+     * @return the newly created Predicate
+     * @param <E>
+     *            the type of elements accepted by the predicate
+     * @throws NullPointerException
+     *             if the specified iterable is <code>null</code> or contains a null element
+     * @see #equalsTo(Object)
+     */
+    public static <E> Predicate<E> equalsToAny(Iterable<? extends E> elements) {
+        List<Predicate<E>> list = new ArrayList<Predicate<E>>();
+        for (E e : elements) {
+            list.add(equalsTo(e));
+        }
+        return anyTrue(list);
     }
 
     /**
