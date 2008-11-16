@@ -1,7 +1,9 @@
 package org.codehaus.cake.attribute;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -40,5 +42,15 @@ public class AttributesTest {
         map.put(AtrStubs.B_TRUE, true);
         map.put(AtrStubs.I_POSITIVE, 0);
         Attributes.validatedAttributeMap(map);
+    }
+    
+    @Test
+    public void from2() {
+        AttributeMap map=Attributes.from(AtrStubs.B_TRUE, false, AtrStubs.B_FALSE, false);
+        assertEquals(2,map.size());
+        assertTrue(map.contains(AtrStubs.B_TRUE));
+        assertTrue(map.contains(AtrStubs.B_FALSE));
+        assertFalse(map.get(AtrStubs.B_TRUE));
+        assertFalse(map.get(AtrStubs.B_FALSE));
     }
 }

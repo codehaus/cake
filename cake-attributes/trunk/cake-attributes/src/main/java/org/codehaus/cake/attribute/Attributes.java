@@ -45,6 +45,30 @@ public final class Attributes {
     private Attributes() {
     }
 
+    /**
+     * Creates a new AttributeMap from the 2 specified attributes and respective values.
+     * 
+     * @param <T1>
+     *            the type of the first attribute
+     * @param <T2>
+     *            the type of the second attribute
+     * @param attribute1
+     *            the first attribute
+     * @param value1
+     *            the value of the first attribute
+     * @param attribute2
+     *            the second attribute
+     * @param value2
+     *            the value of the second attribute
+     * @return a new AttributeMap from the 2 specified attributes and respective values
+     */
+    public static <T1, T2> AttributeMap from(Attribute<T1> attribute1, T1 value1, Attribute<T2> attribute2, T2 value2) {
+        DefaultAttributeMap map = new DefaultAttributeMap();
+        map.put(attribute1, value1);
+        map.put(attribute2, value2);
+        return map;
+    }
+
     // /CLOVER:ON
     /**
      * Returns an immutable AttributeMap containing only the specified attribute mapping to the specified value.
@@ -66,13 +90,6 @@ public final class Attributes {
      */
     public static <T> AttributeMap singleton(Attribute<T> attribute, T value) {
         return new SingletonAttributeMap(attribute, value);
-    }
-
-    public static <T1, T2> AttributeMap from(Attribute<T1> attribute1, T1 value1,Attribute<T2> attribute2, T2 value2) {
-        DefaultAttributeMap map=new DefaultAttributeMap();
-        map.put(attribute1, value1);
-        map.put(attribute2, value2);
-        return map;
     }
 
     /**
@@ -289,6 +306,10 @@ public final class Attributes {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        public void putAll(AttributeMap attributes) {
+            throw new UnsupportedOperationException("map is immutable");
+        }
+
         /**
          * Preserves singleton property.
          * 
@@ -356,10 +377,6 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.EMPTY_SET;
-        }
-
-        public void putAll(AttributeMap attributes) {
-            throw new UnsupportedOperationException("map is immutable");
         }
     }
 
@@ -557,6 +574,10 @@ public final class Attributes {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        public void putAll(AttributeMap attributes) {
+            throw new UnsupportedOperationException("map is immutable");
+        }
+
         /** {@inheritDoc} */
         public <T> T remove(Attribute<T> key) {
             throw new UnsupportedOperationException("map is immutable");
@@ -616,10 +637,6 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.unmodifiableCollection(map.values());
-        }
-
-        public void putAll(AttributeMap attributes) {
-            throw new UnsupportedOperationException("map is immutable");
         }
 
     }
@@ -838,6 +855,10 @@ public final class Attributes {
             throw new UnsupportedOperationException("map is immutable");
         }
 
+        public void putAll(AttributeMap attributes) {
+            throw new UnsupportedOperationException("map is immutable");
+        }
+
         /** {@inheritDoc} */
         public <T> T remove(Attribute<T> key) {
             throw new UnsupportedOperationException("map is immutable");
@@ -903,10 +924,6 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.singleton(value);
-        }
-
-        public void putAll(AttributeMap attributes) {
-            throw new UnsupportedOperationException("map is immutable");
         }
     }
 }

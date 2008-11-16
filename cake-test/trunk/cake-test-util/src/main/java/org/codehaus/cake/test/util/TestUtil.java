@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
@@ -35,6 +37,24 @@ import org.jmock.Mockery;
  */
 public class TestUtil {
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    public static List<Object[]> params(int split, Object... o) {
+        if (split <= 0) {
+            throw new IllegalArgumentException("Split must be bigger then 0");
+        } else if (o.length % split != 0) {
+            throw new IllegalArgumentException(o.length + " objects to split " + split);
+        }
+        ArrayList<Object[]> list = new ArrayList<Object[]>();
+        for (int i = 0; i < o.length / split; i++) {
+            Object[] oo = new Object[split];
+            for (int j = 0; j < oo.length; j++) {
+                oo[j] = o[split * i + j];
+            }
+            list.add(oo);
+        }
+        return list;
+
+    }
 
     @SuppressWarnings("unchecked")
     public static <V> V dummy(Class<V> arg) {

@@ -16,10 +16,7 @@
 package org.codehaus.cake.internal.util;
 
 /**
- * A <tt>Pair</tt> consists of two references to two other objects.
- * <p>
- * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
- * this class between different releases.
+ * A <tt>Pair</tt> consists of two references to two objects.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
@@ -32,7 +29,7 @@ package org.codehaus.cake.internal.util;
 public final class Pair<T1, T2> implements java.io.Serializable {
 
     /** serialVersionUID. */
-    private static final long serialVersionUID = 3256720688860444465L;
+    private static final long serialVersionUID = 1L;
 
     /** The first instance. */
     private final T1 instance1;
@@ -65,7 +62,7 @@ public final class Pair<T1, T2> implements java.io.Serializable {
     }
 
     public static <T1, T2> Pair<T1, T2> from(T1 item1, T2 item2) {
-        return new Pair<T1,T2>(item1, item2);
+        return new Pair<T1, T2>(item1, item2);
     }
 
     /** {@inheritDoc} */
@@ -81,7 +78,7 @@ public final class Pair<T1, T2> implements java.io.Serializable {
      *            the other Pair to compare with
      * @return true if the pairs are equal
      */
-    public boolean equals(Pair other) {
+    public boolean equals(Pair<?, ?> other) {
         return other != null && CollectionUtils.eq(instance1, other.instance1)
                 && CollectionUtils.eq(instance2, other.instance2);
     }

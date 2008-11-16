@@ -94,11 +94,6 @@ public abstract class AbstractContainer implements Container {
     }
 
     /** {@inheritDoc} */
-    protected void lazyStartFailIfShutdown() {
-        runState.isRunningLazyStart(true);
-    }
-
-    /** {@inheritDoc} */
     public Set<Class<?>> serviceKeySet() {
         lazyStart();
         return sm.serviceKeySet();

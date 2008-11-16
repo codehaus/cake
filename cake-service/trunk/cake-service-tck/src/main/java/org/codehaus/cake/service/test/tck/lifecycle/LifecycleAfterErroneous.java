@@ -21,6 +21,8 @@ import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
+import org.codehaus.cake.service.test.tck.lifecycle.LifecycleStartErroneous.StartException;
+import org.codehaus.cake.service.test.tck.lifecycle.LifecycleStartErroneous.StartRuntimeException;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
@@ -31,26 +33,28 @@ import org.junit.Test;
 public class LifecycleAfterErroneous extends AbstractTCKTest<Container, ContainerConfiguration> {
     private CountDownLatch latch = new CountDownLatch(0);
 
+    private static final boolean errorsRethrowLater = false;
+
     @After
     public void after() {
         assertEquals(0, latch.getCount());
     }
 
-//    @Test(expected = IllegalStateException.class)
-//    public void serviceRegistrantAfterStart() {
-//        // latch = new CountDownLatch(1);
-//        conf.addToLifecycle(new ServiceRegistrantAfterStart());
-//        newContainer();
-//        prestart();
-//    }
-//
-//    @Test(expected = IllegalStateException.class)
-//    public void serviceRegistrantFactoryAfterStart() {
-//        // latch = new CountDownLatch(1);
-//        conf.addToLifecycle(new ServiceRegistrantFactoryAfterStart());
-//        newContainer();
-//        prestart();
-//    }
+    // @Test(expected = IllegalStateException.class)
+    // public void serviceRegistrantAfterStart() {
+    // // latch = new CountDownLatch(1);
+    // conf.addToLifecycle(new ServiceRegistrantAfterStart());
+    // newContainer();
+    // prestart();
+    // }
+    //
+    // @Test(expected = IllegalStateException.class)
+    // public void serviceRegistrantFactoryAfterStart() {
+    // // latch = new CountDownLatch(1);
+    // conf.addToLifecycle(new ServiceRegistrantFactoryAfterStart());
+    // newContainer();
+    // prestart();
+    // }
 
     /**
      * Same as {@link #unknownObject()} except that it checks that the original exception is rethrown for subsequent
@@ -71,12 +75,80 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
 
         // TODO fix
         // // check that we throw the same exception again when invoking method
-        // try {
-        // c.getAllServices();
-        // fail("should fail");
-        // } catch (IllegalStateException t) {
-        // assertSame(cause, t.getCause());
-        // }
+        if (errorsRethrowLater) {
+            try {
+                c.serviceKeySet();
+                fail("should fail");
+            } catch (IllegalStateException t) {
+                assertSame(cause, t.getCause());
+            }
+        }
+    }
+
+    @Test
+    public void startError() throws Throwable {
+        conf.addToLifecycle(new StartError());
+        newContainer();
+        try {
+            prestart();
+            fail("should fail");
+        } catch (Error1 ok) {
+            assertSame(Error1.INSTANCE, ok);
+        }
+
+        // check that we throw the same exception again when invoking method
+        if (errorsRethrowLater) {
+            try {
+                c.serviceKeySet();
+                fail("should fail");
+            } catch (IllegalStateException t) {
+                assertSame(Error1.INSTANCE, t.getCause());
+            }
+        }
+    }
+
+    @Test
+    public void startRuntimeException() throws Throwable {
+        conf.addToLifecycle(new StartRuntimeException());
+        newContainer();
+        try {
+            prestart();
+            fail("should fail");
+        } catch (RuntimeException1 ok) {
+            assertSame(RuntimeException1.INSTANCE, ok);
+        }
+
+        // check that we throw the same exception again when invoking method
+        if (errorsRethrowLater) {
+            try {
+                c.serviceKeySet();
+                fail("should fail");
+            } catch (IllegalStateException t) {
+                assertSame(RuntimeException1.INSTANCE, t.getCause());
+            }
+        }
+    }
+
+    @Test
+    public void startException() throws Throwable {
+        conf.addToLifecycle(new StartException());
+        newContainer();
+        try {
+            prestart();
+            fail("should fail");
+        } catch (IllegalStateException ok) {
+            assertSame(Exception1.INSTANCE, ok.getCause());
+        }
+
+        // check that we throw the same exception again when invoking method
+        if (errorsRethrowLater) {
+            try {
+                c.serviceKeySet();
+                fail("should fail");
+            } catch (IllegalStateException t) {
+                assertSame(Exception1.INSTANCE, t.getCause());
+            }
+        }
     }
 
     @Test
@@ -93,41 +165,44 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
 
         // TODO fix
         // check that we throw the same exception again when invoking method
-        // try {
-        // c.getAllServices();
-        // fail("should fail");
-        // } catch (IllegalStateException t) {
-        // assertSame(cause, t.getCause());
-        // }
+        if (errorsRethrowLater) {
+            try {
+                c.serviceKeySet();
+                fail("should fail");
+            } catch (IllegalStateException t) {
+                assertSame(cause, t.getCause());
+            }
+        }
     }
-//
-//    public class ServiceRegistrantAfterStart {
-//        ServiceRegistrant s;
-//
-//        @Startable
-//        public void start1(ServiceRegistrant s) {
-//            this.s = s;
-//        }
-//
-//        @AfterStart
-//        public void start2() {
-//            s.registerService(Integer.class, 1);
-//        }
-//    }
-//
-//    public class ServiceRegistrantFactoryAfterStart {
-//        ServiceRegistrant s;
-//
-//        @Startable
-//        public void start1(ServiceRegistrant s) {
-//            this.s = s;
-//        }
-//
-//        @AfterStart
-//        public void start2() {
-//            s.registerFactory(Integer.class, dummy(ServiceFactory.class));
-//        }
-//    }
+
+    //
+    // public class ServiceRegistrantAfterStart {
+    // ServiceRegistrant s;
+    //
+    // @Startable
+    // public void start1(ServiceRegistrant s) {
+    // this.s = s;
+    // }
+    //
+    // @AfterStart
+    // public void start2() {
+    // s.registerService(Integer.class, 1);
+    // }
+    // }
+    //
+    // public class ServiceRegistrantFactoryAfterStart {
+    // ServiceRegistrant s;
+    //
+    // @Startable
+    // public void start1(ServiceRegistrant s) {
+    // this.s = s;
+    // }
+    //
+    // @AfterStart
+    // public void start2() {
+    // s.registerFactory(Integer.class, dummy(ServiceFactory.class));
+    // }
+    // }
 
     public class StartRuntimeException {
         @AfterStart
@@ -152,7 +227,8 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
 
     public class StartContainer {
         @AfterStart
-        public void start(Container conf) {}
+        public void start(Container conf) {
+        }
     }
 
     public class StartThrowable {
@@ -164,16 +240,19 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
 
     public class StartObject {
         @AfterStart
-        public void start(Object object) {}
+        public void start(Object object) {
+        }
     }
 
     public class StartUnknown {
         @AfterStart
-        public void start(Integer unknown) {}
+        public void start(Integer unknown) {
+        }
     }
 
     public class StartPackageProtected {
         @AfterStart
-        void start(Integer unknown) {}
+        void start(Integer unknown) {
+        }
     }
 }

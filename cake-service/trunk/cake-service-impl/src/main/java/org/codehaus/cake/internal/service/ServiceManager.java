@@ -80,11 +80,6 @@ public class ServiceManager {
     }
 
     <T> void registerService(Class<T> key, T service) {
-        if (key == null) {
-            throw new NullPointerException("key is null");
-        } else if (service == null) {
-            throw new NullPointerException("service is null");
-        }
         if (ies.isDebugEnabled()) {
             ies.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
         }
@@ -92,11 +87,6 @@ public class ServiceManager {
     }
 
     <T> void registerServiceFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
-        if (key == null) {
-            throw new NullPointerException("key is null");
-        } else if (serviceFactory == null) {
-            throw new NullPointerException("serviceFactory is null");
-        }
         RegisteredFactory<?> previous = services.get(key);
         if (ies.isDebugEnabled()) {
             ies.debug("  A ServiceFactory was registered [key=" + key + ", factory=" + serviceFactory + "]");
