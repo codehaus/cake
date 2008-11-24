@@ -24,8 +24,7 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  *            the type returned from methods, this is ordinarily determined by the {@link #WRITE_TRANSFORMER} used
  */
 public interface CrudWriter<K, V, R> {
-
-    // CrudWriter, CrudBatchWriter, Crud, CrudReader, CRUDPM
+    // CacheWriter??
 
     /**
      * Used for transforming the CacheEntry that is created/updated/delete to something the user needs.
@@ -202,8 +201,8 @@ public interface CrudWriter<K, V, R> {
      * 
      * @param key
      *            key whose mapping is to be removed from the cache
-     * @return the previous value associated with <tt>key</tt>, or <tt>null</tt> if there was no mapping for
-     *         <tt>key</tt>.
+     * @return the previous value associated with the specified <tt>key</tt>, or <tt>null</tt> if there was no
+     *         mapping for the specified <tt>key</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported by this cache
      * @throws ContainerAlreadyShutdownException
@@ -216,13 +215,32 @@ public interface CrudWriter<K, V, R> {
     R remove(K key);
 
     /**
-     * Conditionally removes the mapping for a key from this cache if it is present (optional operation)
+     * Conditionally removes the mapping for a key from this cache if it is present (optional operation). This is
+     * equivalent to
+     * 
+     * <pre>
+     * if (cache.containsKey(key) &amp;&amp; condition.op(cache.getEntry(key))
+     *     return cache.remove(key); //Previous
+     * } else
+     *     return null; //Previous
+     * </pre>
+     * 
+     * except that the action is performed atomically.
      * 
      * @param condition
-     *            the predicate that the entry being removed must fulfill
+     *            the predicate that the entry being removed must be accepted by before it can be removed
      * @param key
      *            key whose mapping is to be removed from the cache
-     * @return
+     * @return the previous value associated with the specified key, or <tt>null</tt> if there was no mapping for the
+     *         key.
+     * @throws UnsupportedOperationException
+     *             if the <tt>remove</tt> operation is not supported by this cache
+     * @throws ContainerAlreadyShutdownException
+     *             if the cache has been shutdown
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this cache (optional)
+     * @throws NullPointerException
+     *             if the specified condition or key is null
      */
     R removeIf(Predicate<CacheEntry<K, V>> condition, K key);
 
@@ -231,10 +249,9 @@ public interface CrudWriter<K, V, R> {
      * 
      * <pre>
      * if (cache.containsKey(key) &amp;&amp; cache.get(key).equals(value)) {
-     *     cache.remove(key);
-     *     return true;
+     *     return cache.remove(key); //Previous
      * } else
-     *     return false;
+     *     return null; //Previous
      * </pre>
      * 
      * except that the action is performed atomically.
@@ -243,9 +260,9 @@ public interface CrudWriter<K, V, R> {
      *            key with which the specified value is associated
      * @param value
      *            value expected to be associated with the specified key
-     * @return <tt>true</tt> if the value was removed
+     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
      * @throws UnsupportedOperationException
-     *             if the <tt>remove</tt> operation is not supported by this cache
+     *             if the <tt>remove</tt> operation is not supported
      * @throws ContainerAlreadyShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
@@ -255,11 +272,121 @@ public interface CrudWriter<K, V, R> {
      */
     R remove(K key, V value);
 
+    /**
+     * Replace the entry for the specified key only if it is currently mapped to some value. Acts as
+     * 
+     * <pre>
+     *  if ((cache.containsKey(key)) {
+     *     return cache.put(key, value);
+     * } else return null;
+     * </pre>
+     * 
+     * except that the action is performed atomically.
+     * 
+     * @param key
+     *            key with which the specified value is associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
+     * @throws UnsupportedOperationException
+     *             if the <tt>update</tt> operation is not supported by this cache
+     * @throws ContainerAlreadyShutdownException
+     *             if the cache has been shutdown
+     * @throws ClassCastException
+     *             if the key or value is of an inappropriate type for this cache (optional)
+     * @throws NullPointerException
+     *             if the specified key or value is <tt>null</tt>.
+     */
     R replace(K key, V value);
 
+    /**
+     * Replace the entry for the specified key only if it is currently mapped to some value. Acts as
+     * 
+     * <pre>
+     *  if ((cache.containsKey(key)) {
+     *     return cache.put(key, value, attributes);
+     * } else return null;
+     * </pre>
+     * 
+     * except that the action is performed atomically.
+     * 
+     * @param key
+     *            key with which the specified value is associated.
+     * @param value
+     *            value to be associated with the specified key.
+     * @param attributes
+     *            a map of attributes
+     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
+     * @throws UnsupportedOperationException
+     *             if the <tt>update</tt> operation is not supported by this cache
+     * @throws ContainerAlreadyShutdownException
+     *             if the cache has been shutdown
+     * @throws ClassCastException
+     *             if the key or value is of an inappropriate type for this cache (optional)
+     * @throws NullPointerException
+     *             if the specified key, value or attribute map is <tt>null</tt>
+     */
     R replace(K key, V value, AttributeMap attributes);
 
+    /**
+     * Replace entry for key only if currently mapped to given value. Acts as
+     * 
+     * <pre>
+     *  
+     *  if ((cache.containsKey(key) &amp;&amp; cache.get(key).equals(oldValue)) {
+     *     return cache.put(key, newValue);
+     * } else return null;
+     * </pre>
+     * 
+     * except that the action is performed atomically.
+     * 
+     * @param key
+     *            key with which the specified value is associated.
+     * @param oldValue
+     *            value expected to be associated with the specified key.
+     * @param newValue
+     *            value to be associated with the specified key.
+     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
+     * @throws UnsupportedOperationException
+     *             if the <tt>update</tt> operation is not supported by this cache
+     * @throws ContainerAlreadyShutdownException
+     *             if the cache has been shutdown
+     * @throws ClassCastException
+     *             if the key or any of the values are of an inappropriate type for this cache (optional)
+     * @throws NullPointerException
+     *             if the specified key or any of the values are <tt>null</tt>
+     */
     R replace(K key, V oldValue, V newValue);
 
+    /**
+     * Replace entry for key only if currently mapped to given value. Acts as
+     * 
+     * <pre>
+     *  
+     *  if ((cache.containsKey(key) &amp;&amp; cache.get(key).equals(oldValue)) {
+     *     return cache.put(key, newValue, attributes);
+     * } else return null;
+     * </pre>
+     * 
+     * except that the action is performed atomically.
+     * 
+     * @param key
+     *            key with which the specified value is associated.
+     * @param oldValue
+     *            value expected to be associated with the specified key.
+     * @param newValue
+     *            value to be associated with the specified key.
+     * @param attributes
+     *            a map of attributes
+     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
+     * @throws UnsupportedOperationException
+     *             if the <tt>update</tt> operation is not supported by this cache.
+     * @throws ContainerAlreadyShutdownException
+     *             if the cache has been shutdown
+     * @throws ClassCastException
+     *             if the key or any of the values are of an inappropriate type for this cache (optional)
+     * @throws NullPointerException
+     *             if the specified key, any of the values or the  attribute map is <tt>null</tt>
+     */
     R replace(K key, V oldValue, V newValue, AttributeMap attributes);
 }

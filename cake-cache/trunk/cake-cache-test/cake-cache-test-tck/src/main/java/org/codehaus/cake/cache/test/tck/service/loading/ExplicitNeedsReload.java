@@ -24,7 +24,7 @@ public class ExplicitNeedsReload extends AbstractCacheTCKTest {
     @Test
     public void withLoad() {
         VolatilePredicate predicate = new VolatilePredicate();
-        conf.withLoading().setNeedsReloadFilter(predicate);
+        conf.withLoading().setNeedsReloadCondition(predicate);
         assertPeek(entry(M1, null));
         load(M1);
         assertLoads(1);
@@ -45,7 +45,7 @@ public class ExplicitNeedsReload extends AbstractCacheTCKTest {
     @Test
     public void withLoadAll() {
         VolatilePredicate predicate = new VolatilePredicate();
-        conf.withLoading().setNeedsReloadFilter(predicate);
+        conf.withLoading().setNeedsReloadCondition(predicate);
 
         assertPeek(entry(M1, null));
         load(M1);

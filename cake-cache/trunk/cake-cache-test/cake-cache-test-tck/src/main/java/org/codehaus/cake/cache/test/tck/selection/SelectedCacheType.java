@@ -33,11 +33,11 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
 public enum SelectedCacheType {
     ObjectSelection(O_2) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
-            cache.crud().write().put(1, "A", O_2.singleton("A"));
-            cache.crud().write().put(2, "B", O_2.singleton("B"));
-            cache.crud().write().put(3, "C", O_2.singleton("C"));
-            cache.crud().write().put(4, "D", O_2.singleton("D"));
-            cache.crud().write().put(5, "E", O_2.singleton("E"));
+            cache.withCrud().write().put(1, "A", O_2.singleton("A"));
+            cache.withCrud().write().put(2, "B", O_2.singleton("B"));
+            cache.withCrud().write().put(3, "C", O_2.singleton("C"));
+            cache.withCrud().write().put(4, "D", O_2.singleton("D"));
+            cache.withCrud().write().put(5, "E", O_2.singleton("E"));
             return cache.select().on(O_2, new Predicate() {
                 public boolean op(Object a) {
                     return a.equals("A") || a.equals("C") || a.equals("E");
@@ -47,11 +47,11 @@ public enum SelectedCacheType {
     },
     BooleanSelection(B_FALSE) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
-            cache.crud().write().put(1, "A", B_FALSE.singletonFalse());
-            cache.crud().write().put(2, "B", B_FALSE.singletonTrue());
+            cache.withCrud().write().put(1, "A", B_FALSE.singletonFalse());
+            cache.withCrud().write().put(2, "B", B_FALSE.singletonTrue());
             cache.put(3, "C");
-            cache.crud().write().put(4, "D", B_FALSE.singletonTrue());
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(4, "D", B_FALSE.singletonTrue());
+            cache.withCrud().write().put(5, "E");
             return cache.select().on(B_FALSE, false);
         }
     },
@@ -62,8 +62,8 @@ public enum SelectedCacheType {
             map.put(3, "C");
             map.put(5, "E");
             cache.putAll(map);
-            cache.crud().write().put(2, "B", B_3.singleton((byte) 11));
-            cache.crud().write().put(4, "D", B_3.singleton((byte) 0));
+            cache.withCrud().write().put(2, "B", B_3.singleton((byte) 11));
+            cache.withCrud().write().put(4, "D", B_3.singleton((byte) 0));
             return cache.select().on(B_3, new BytePredicate() {
                 public boolean op(byte a) {
                     return a == B_3.getDefaultValue();
@@ -74,7 +74,7 @@ public enum SelectedCacheType {
     CharSelection(C_1, I_1) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
             for (int i = 0; i < 100; i++) {
-                cache.crud().write().put(i, Character.toString((char) (64 + i)),
+                cache.withCrud().write().put(i, Character.toString((char) (64 + i)),
                         Attributes.from(I_1, i, C_1, (char) (64 + i)));
             }
             return cache.select().on(I_1, IntPredicates.lessThen(6)).select().on(C_1, new CharPredicate() {
@@ -86,12 +86,12 @@ public enum SelectedCacheType {
     },
     DoubleSelection(D_2) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
-            cache.crud().write().put(1, "A", D_2.singleton(1.1f));
-            cache.crud().write().put(3, "C", D_2.singleton(-1f));
-            cache.crud().write().put(5, "E", D_2.singleton(8f));
+            cache.withCrud().write().put(1, "A", D_2.singleton(1.1f));
+            cache.withCrud().write().put(3, "C", D_2.singleton(-1f));
+            cache.withCrud().write().put(5, "E", D_2.singleton(8f));
 
-            cache.crud().write().put(4, "D");
-            cache.crud().write().put(2, "B", D_2.singleton(4.1f));
+            cache.withCrud().write().put(4, "D");
+            cache.withCrud().write().put(2, "B", D_2.singleton(4.1f));
             return cache.select().on(D_2, new DoublePredicate() {
                 public boolean op(double a) {
                     return a < 2 || a > 5;
@@ -101,12 +101,12 @@ public enum SelectedCacheType {
     },
     FloatSelection(F_2) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
-            cache.crud().write().put(1, "A", F_2.singleton(1.1f));
-            cache.crud().write().put(3, "C", F_2.singleton(-1f));
-            cache.crud().write().put(5, "E", F_2.singleton(8f));
+            cache.withCrud().write().put(1, "A", F_2.singleton(1.1f));
+            cache.withCrud().write().put(3, "C", F_2.singleton(-1f));
+            cache.withCrud().write().put(5, "E", F_2.singleton(8f));
 
-            cache.crud().write().put(4, "D");
-            cache.crud().write().put(2, "B", F_2.singleton(4.1f));
+            cache.withCrud().write().put(4, "D");
+            cache.withCrud().write().put(2, "B", F_2.singleton(4.1f));
             return cache.select().on(F_2, new FloatPredicate() {
                 public boolean op(float a) {
                     return a < 2 || a > 5;
@@ -116,11 +116,11 @@ public enum SelectedCacheType {
     },
     IntSelection(I_3) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
-            cache.crud().write().put(1, "A", I_3.singleton(1));
-            cache.crud().write().put(2, "B", I_3.singleton(11));
-            cache.crud().write().put(3, "C", I_3.singleton(2));
-            cache.crud().write().put(4, "D", I_3.singleton(0));
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A", I_3.singleton(1));
+            cache.withCrud().write().put(2, "B", I_3.singleton(11));
+            cache.withCrud().write().put(3, "C", I_3.singleton(2));
+            cache.withCrud().write().put(4, "D", I_3.singleton(0));
+            cache.withCrud().write().put(5, "E");
             return cache.select().on(I_3, new IntPredicate() {
                 public boolean op(int a) {
                     return a > 0 && a < 4;
@@ -130,9 +130,9 @@ public enum SelectedCacheType {
     },
     LongSelection(L_3) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
-            cache.crud().write().put(1, "A", L_3.singleton(-1));
-            cache.crud().write().put(3, "C", L_3.singleton(-2));
-            cache.crud().write().put(5, "E", L_3.singleton(-3));
+            cache.withCrud().write().put(1, "A", L_3.singleton(-1));
+            cache.withCrud().write().put(3, "C", L_3.singleton(-2));
+            cache.withCrud().write().put(5, "E", L_3.singleton(-3));
             return cache.select().on(L_3, new LongPredicate() {
                 public boolean op(long a) {
                     return a < 0;
@@ -143,11 +143,11 @@ public enum SelectedCacheType {
     ShortSelection(S_2) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {
             for (int i = 0; i < 100; i++) {
-                cache.crud().write().put(i, "A", S_2.singleton((short) i));
+                cache.withCrud().write().put(i, "A", S_2.singleton((short) i));
             }
-            cache.crud().write().put(1, "A", S_2.singleton((short) -1));
-            cache.crud().write().put(3, "C", S_2.singleton((short) -3));
-            cache.crud().write().put(5, "E", S_2.singleton(Short.MIN_VALUE));
+            cache.withCrud().write().put(1, "A", S_2.singleton((short) -1));
+            cache.withCrud().write().put(3, "C", S_2.singleton((short) -3));
+            cache.withCrud().write().put(5, "E", S_2.singleton(Short.MIN_VALUE));
             return cache.select().on(S_2, new ShortPredicate() {
                 public boolean op(short a) {
                     return a < 0;
@@ -160,9 +160,9 @@ public enum SelectedCacheType {
             for (int i = 0; i < 100; i++) {
                 cache.put(i, "A");
             }
-            cache.crud().write().put(1, "A");
-            cache.crud().write().put(3, "C");
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A");
+            cache.withCrud().write().put(3, "C");
+            cache.withCrud().write().put(5, "E");
             return cache.select().onKey(new Predicate() {
                 public boolean op(Object a) {
                     return a.equals(1) || a.equals(3) || a.equals(5);
@@ -175,9 +175,9 @@ public enum SelectedCacheType {
             for (int i = 0; i < 100; i++) {
                 cache.put(new Long(i), "A");
             }
-            cache.crud().write().put(1, "A");
-            cache.crud().write().put(3, "C");
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A");
+            cache.withCrud().write().put(3, "C");
+            cache.withCrud().write().put(5, "E");
             return (Cache) cache.select().onKeyType(Integer.class);
         }
     },
@@ -186,9 +186,9 @@ public enum SelectedCacheType {
             for (int i = 0; i < 100; i++) {
                 cache.put(i, "B");
             }
-            cache.crud().write().put(1, "A");
-            cache.crud().write().put(3, "C");
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A");
+            cache.withCrud().write().put(3, "C");
+            cache.withCrud().write().put(5, "E");
             return cache.select().onValue((Predicate) Predicates.notEqualsTo("B"));
         }
     },
@@ -197,9 +197,9 @@ public enum SelectedCacheType {
             for (int i = 0; i < 100; i++) {
                 cache.put(i, 'A');
             }
-            cache.crud().write().put(1, "A");
-            cache.crud().write().put(3, "C");
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A");
+            cache.withCrud().write().put(3, "C");
+            cache.withCrud().write().put(5, "E");
             return (Cache) cache.select().onValueType(String.class);
         }
     },
@@ -208,8 +208,8 @@ public enum SelectedCacheType {
             for (int i = 0; i < 100; i++) {
                 cache.put(i, "C");
             }
-            cache.crud().write().put(1, "A");
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A");
+            cache.withCrud().write().put(5, "E");
             return (Cache) cache.select().on(new BinaryPredicate() {
                 public boolean op(Object a, Object b) {
                     return !b.equals("C") || a.equals(3);
@@ -222,8 +222,8 @@ public enum SelectedCacheType {
             for (int i = 0; i < 100; i++) {
                 cache.put(i, "C");
             }
-            cache.crud().write().put(1, "A");
-            cache.crud().write().put(5, "E");
+            cache.withCrud().write().put(1, "A");
+            cache.withCrud().write().put(5, "E");
             return (Cache) cache.select().on(new Predicate<CacheEntry<Object, Object>>() {
                 public boolean op(CacheEntry<Object, Object> e) {
                     return e.getKey().equals(3) || e.getValue().equals("A") || e.getValue().equals("E");

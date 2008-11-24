@@ -19,6 +19,8 @@ import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
+import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;
+import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
@@ -83,6 +85,11 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
     @Override
     public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, S service) {
         super.addToLifecycleAndExport(key, service);
+        return this;
+    }
+
+    public CacheConfiguration<K, V> runAfterStart(Procedure<Cache<K, V>> runAfterStartProcedure) {
+        super.addToLifecycle(new RunAfterCacheStartProcedure<K, V>(runAfterStartProcedure));
         return this;
     }
 

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://cake.codehaus.org/LICENSE
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.codehaus.cake.cache;
 
 import org.codehaus.cake.attribute.Attribute;
@@ -23,9 +38,14 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  * A CacheSelector is used for creating views of a cache where the ret A CacheSelector is normally acquire through calls
  * to {@link Cache#select()}
  * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
  * @param <K>
+ *            the type of keys maintained by this cache
  * @param <V>
+ *            the type of mapped values
  */
+
 public interface CacheSelector<K, V> {
     <T> Cache<K, V> on(Attribute<T> a, Predicate<T> p);
 
@@ -57,33 +77,74 @@ public interface CacheSelector<K, V> {
     Cache<K, V> on(ShortAttribute attribute, ShortPredicate filter);
 
     /**
-     * Returns a cache view where the all the keys of elements is accepted by the specified predicate.
+     * Returns a filtered view containing only those elements key that are accepted by the specified filter. Given a
+     * cache full of Strings mapping to an Integer the following example will create a cache view that contains only
+     * those mappings where the key starts with <tt>https://</tt>
      * 
-     * @param p
-     *            the predicate that keys should be tested against
-     * @return
+     * <pre>
+     * Cache&lt;String, Integer&gt; cache = null;
+     * Cache&lt;String, Integer&gt; longStrings = cache.select().onKey(StringOps.startsWith(&quot;https://&quot;));
+     * </pre>
+     * 
+     * @param filter
+     *            the filter used to evaluate whether a key should be included in the view
+     * @return a cache view where all keys are accepted by the specified filter
      */
     Cache<K, V> onKey(Predicate<? super K> filter);
 
     /**
-     * Returns a filtered view containing only those elements where the elements key is of the specified type.
+     * Returns a filtered view containing only those elements where the elements key is of the specified type. Given a
+     * cache full of {@link Number}s mapping to a String the following will create a cache view that contains only
+     * those mappings where the value is of type {@link Double}.
+     * 
+     * <pre>
+     * Cache&lt;Number, String&gt; cache = somecache;
+     * Cache&lt;Double, String&gt; onlyDoubles = cache.select().onKeyType(Double.class);
+     * </pre>
      * 
      * @param <T>
-     *            the type of the keys that should be visible in the view
-     * @param c
-     *            the type of the keys that should be visible in the view
-     * @return a cache view where all the keys are of the specified type
+     *            the type of keys that are accepted
+     * @param clazz
+     *            the type of keys that are accepted
+     * @return a cache view with only the specific type of keys
      */
     <T extends K> Cache<T, V> onKeyType(Class<T> c);
 
+    /**
+     * Returns a filtered view containing only those elements value that accepted by the specified filter. Given a cache
+     * full of integers mapping to strings the following example will create a cache view that contains only those
+     * mappings where the length of the string value is greater then 5.
+     * 
+     * <pre>
+     * Cache&lt;Integer, String&gt; cache = somecache;
+     * Cache&lt;Integer, String&gt; longStrings = cache.select().onValue(new Predicate&lt;String&gt;() {
+     *     public boolean op(String a) {
+     *         return a.length() &gt; 5;
+     *     }
+     * });
+     * </pre>
+     * 
+     * @param filter
+     *            the filter used to evaluate whether a value should be included in the view
+     * @return a cache view where all values are accepted by the specified filter
+     */
     Cache<K, V> onValue(Predicate<? super V> filter);
 
     /**
-     * Returns a filtered view containing only those elements where the elements value is of the specified type.
+     * Returns a filtered view containing only those elements where the elements value is of the specified type. Given a
+     * cache full of Strings mapping to a {@link Number} the following will create a cache view that contains only those
+     * mappings where the value is of type {@link Integer}.
+     * 
+     * <pre>
+     * Cache&lt;String, Number&gt; cache = somecache;
+     * Cache&lt;String, Integer&gt; onlyIntegers = cache.select().onValueType(Integer.class);
+     * </pre>
      * 
      * @param <T>
+     *            the type of values that are accepted
      * @param clazz
-     * @return
+     *            the type of values that are accepted
+     * @return a cache view with only the specific type of values
      */
     <T extends V> Cache<K, T> onValueType(Class<T> clazz);
 }

@@ -39,6 +39,7 @@ import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.internal.util.CollectionUtils;
+import org.codehaus.cake.ops.StringOps;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.ops.Ops.BytePredicate;
 import org.codehaus.cake.ops.Ops.CharPredicate;
@@ -64,7 +65,9 @@ public final class Caches {
      */
     public static final Cache EMPTY_CACHE = new EmptyCache();
 
-    static final CacheSelector EMPTY_SELECTOR=new StaticCacheSelector();
+    /** A CacheSelector that returns the empty cache for all argument. */
+    static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
+
     // /CLOVER:OFF
     /** Cannot instantiate. */
     private Caches() {
@@ -114,7 +117,7 @@ public final class Caches {
     }
 
     /**
-     * Creates a new CacheEntry from the specified key and value.
+     * Creates a new CacheEntry with no attributes from the specified key and value.
      * 
      * @param key
      *            the key
@@ -127,7 +130,7 @@ public final class Caches {
     }
 
     /**
-     * Creates a new CacheEntry from the specified key, value and attributes.
+     * Creates a new CacheEntry from the specified key, value and attribute map.
      * 
      * @param key
      *            the key
@@ -135,15 +138,13 @@ public final class Caches {
      *            the value
      * @param attributes
      *            the attributes
-     * @return a CacheEntry with the specified key and value
+     * @return a CacheEntry with the specified key and value and attributes
      */
     public static <K, V> CacheEntry<K, V> newEntry(K key, V value, AttributeMap attributes) {
         return new SimpleImmutableEntry<K, V>(key, value, attributes);
     }
 
-    /**
-     * A runnable used for calling clear on a cache.
-     */
+    /** A runnable used for calling clear on a cache. */
     static class ClearRunnable implements Runnable {
 
         /** The cache to call clear on. */
@@ -168,6 +169,7 @@ public final class Caches {
         }
     }
 
+    /** The Cost attribute. */
     static final class CostAttribute extends DoubleAttribute {
 
         /** serialVersionUID. */
@@ -184,9 +186,7 @@ public final class Caches {
         }
     }
 
-    /**
-     * The empty cache.
-     */
+    /** The empty cache. */
     static class EmptyCache<K, V> extends AbstractMap<K, V> implements Cache<K, V>, Serializable {
 
         /** serialVersionUID. */
@@ -313,7 +313,7 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public CacheCrud<K, V> crud() {
+        public CacheCrud<K, V> withCrud() {
             return new CacheCrud<K, V>(this);
         }
 
@@ -325,8 +325,10 @@ public final class Caches {
             return Collections.EMPTY_LIST.iterator();
         }
     }
+
+    /** A cache selector that always returns the empty cache. */
     @SuppressWarnings("unchecked")
-    static class StaticCacheSelector<K, V> implements CacheSelector<K, V>, Serializable {
+    static class EmptyCacheSelector<K, V> implements CacheSelector<K, V>, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -443,6 +445,8 @@ public final class Caches {
          *            the key represented by this entry
          * @param value
          *            the value represented by this entry
+         * @throws NullPointerException
+         *             if the specified key, value or attribute map is null
          */
         public SimpleImmutableEntry(K key, V value, AttributeMap attributes) {
             if (key == null) {
@@ -467,6 +471,7 @@ public final class Caches {
             return eq(key, e.getKey()) && eq(value, e.getValue())/* && eq(attributes, e.getAttributes()) */;
         }
 
+        /** {@inheritDoc} */
         public AttributeMap getAttributes() {
             return attributes;
         }
@@ -517,6 +522,7 @@ public final class Caches {
         }
     }
 
+    /** The size attribute */
     static final class SizeAttribute extends LongAttribute {
 
         /** serialVersionUID. */
@@ -641,4 +647,5 @@ public final class Caches {
             return CacheEntry.VERSION;
         }
     }
+
 }

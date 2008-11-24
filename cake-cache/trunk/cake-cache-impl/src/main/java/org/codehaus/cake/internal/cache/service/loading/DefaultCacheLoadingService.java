@@ -52,7 +52,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     public DefaultCacheLoadingService(Cache<K, V> cache, CacheLoadingConfiguration<K, V> loadingConf,
             InternalCacheLoadingService<K, V> loader) {
         this.loader = loader;
-        final Predicate<CacheEntry<K, V>> needsReloadFilter = (Predicate) loadingConf.getNeedsReloadFilter();
+        final Predicate<CacheEntry<K, V>> needsReloadFilter = (Predicate) loadingConf.getNeedsReloadCondition();
         this.needsReloadFilter = needsReloadFilter == null ? Predicates.FALSE : needsReloadFilter;
         childServices = Arrays.asList(loadingConf.getLoader(), needsReloadFilter);
         forceLoadAll = new Loading(cache, true);

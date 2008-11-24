@@ -9,20 +9,20 @@ public class Reader extends AbstractCacheTCKTest {
 
     @Test
     public void get() {
-        c.crud().write().put(1, "A");
-        assertEquals("A", c.crud().value().get(1));
-        assertEquals(1, c.crud().entry().get(1).getKey().intValue());
-        assertEquals("A", c.crud().entry().get(1).getValue());
-        assertEquals(0, c.crud().entry().get(1).getAttributes().size());
+        c.withCrud().write().put(1, "A");
+        assertEquals("A", c.withCrud().value().get(1));
+        assertEquals(1, c.withCrud().entry().get(1).getKey().intValue());
+        assertEquals("A", c.withCrud().entry().get(1).getValue());
+        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
     }
 
     @Test
     public void getWithAttributes() {
-        c.crud().write().put(1, "A");
-        assertEquals("A", c.crud().value().get(1, AtrStubs.I_1.singleton(4)));
-        assertEquals(1, c.crud().entry().get(1).getKey().intValue());
-        assertEquals("A", c.crud().entry().get(1).getValue());
-        assertEquals(0, c.crud().entry().get(1).getAttributes().size());
+        c.withCrud().write().put(1, "A");
+        assertEquals("A", c.withCrud().value().get(1, AtrStubs.I_1.singleton(4)));
+        assertEquals(1, c.withCrud().entry().get(1).getKey().intValue());
+        assertEquals("A", c.withCrud().entry().get(1).getValue());
+        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
     }
 
     @Test
@@ -35,22 +35,22 @@ public class Reader extends AbstractCacheTCKTest {
 
     @Test
     public void getAttributesKeepnone() {
-        c.crud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
+        c.withCrud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
         assertEquals(2, loader.get(1).getParameters().size());
         assertEquals(1, loader.get(1).getParameters().get(AtrStubs.I_2));
         assertEquals(4L, loader.get(1).getParameters().get(AtrStubs.L_3));
-        assertEquals(0, c.crud().entry().get(1).getAttributes().size());
+        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
     }
     
     @Test
     public void getAttributesKeepOne() {
         conf.withAttributes().add(AtrStubs.I_2);
         newCache();
-        c.crud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
+        c.withCrud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
         assertEquals(2, loader.get(1).getParameters().size());
         assertEquals(1, loader.get(1).getParameters().get(AtrStubs.I_2));
         assertEquals(4L, loader.get(1).getParameters().get(AtrStubs.L_3));
-        assertEquals(1, c.crud().entry().get(1).getAttributes().size());
-        assertEquals(1, c.crud().attribute(AtrStubs.I_2).get(1).intValue());
+        assertEquals(1, c.withCrud().entry().get(1).getAttributes().size());
+        assertEquals(1, c.withCrud().attribute(AtrStubs.I_2).get(1).intValue());
     }
 }

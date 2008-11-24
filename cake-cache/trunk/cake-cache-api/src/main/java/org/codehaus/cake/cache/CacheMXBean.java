@@ -15,8 +15,6 @@
  */
 package org.codehaus.cake.cache;
 
-import javax.management.MBeanServer;
-
 import org.codehaus.cake.service.common.management.ManagementConfiguration;
 
 /**
@@ -24,19 +22,19 @@ import org.codehaus.cake.service.common.management.ManagementConfiguration;
  * to those defined in this interface. However, all implementations, supporting JMX, must as a minimum support this
  * interface.
  * <p>
- * If no domain is specified using {@link ManagementConfiguration#setDomain(String)} and no {@link MBeanServer} is
- * specified using {@link ManagementConfiguration#setMBeanServer(MBeanServer)}. This MXBean will be registered under
- * <code>org.codehaus.cake.cache:name=$CACHE_NAME$,service=General</code> where <code>$CACHE_NAME$</code> is
- * replaced by the {@link Cache#getName() name} of the cache.
+ * Management via JMX is disabled per default, and must be enabled by calling
+ * <tt>CacheConfiguration.withManagement().setEnabled(true)</tt>
+ * <p>
+ * If no domain is specified using {@link ManagementConfiguration#setDomain(String)}. This managed bean will be registered
+ * under <code>org.codehaus.cake.cache:name=$CACHE_NAME$,service=General</code> where <code>$CACHE_NAME$</code> is
+ * replaced by the named returned from {@link Cache#getName()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheMXBean.java 555 2008-01-09 04:52:48Z kasper $
  */
 public interface CacheMXBean {
 
-    /**
-     * This is the service name this interface will be registered under.
-     */
+    /** This is the service name this interface will be registered under. */
     String MANAGED_SERVICE_NAME = "General";
 
     /**

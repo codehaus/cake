@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
+import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
+import org.codehaus.cake.cache.service.crud.CrudReader;
+import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
@@ -121,8 +124,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the specified value is null
      */
     boolean containsValue(Object value);
-
-    CacheCrud<K, V> crud();
 
     /**
      * Returns a {@link Set} view of the mappings contained in this cache. The set is backed by the cache, so changes to
@@ -557,9 +558,15 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     Collection<V> values();
 
     /**
-     * Returns a {@link CacheServices} instance that can be used for easily acquiring a number of cache services.
+     * Returns a {@link CacheServices} instance that can be used for easily accessing a number of cache services.
      * 
      * @return a CacheServices object
      */
     CacheServices<K, V> with();
+
+    /**
+     * @return a factory that can be used to create various instances of {@link CrudReader}, {@link CrudWriter} and
+     *         {@link CrudBatchWriter}
+     */
+    CacheCrud<K, V> withCrud();
 }

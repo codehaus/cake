@@ -16,29 +16,40 @@
 package org.codehaus.cake.cache.service.attribute;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.cache.CacheEntry;
 
 /**
- * This configurer is used to determind which attributes the cache will keep for each entry. For example, the following
+ * This configurator is used for registering which attributes the cache will attach to each {@link CacheEntry}. The
+ * attributes can be some of the attributes defined in {@link CacheEntry} which are handled specially by the cache. For
+ * example, the {@link CacheEntry#TIME_CREATED} attribute which will make sure the cache records the insertion time of
+ * all entries. The following example, shows how to configure the cache to use this attribute, and how to get a hold of
+ * the creation time of the entry
  * 
- * <p>
- * It is also possible to add custom attributes
+ * <pre>
+ * CacheConfiguration&lt;Integer, String&gt; conf = CacheConfiguration.newConfiguration();
+ * conf.withAttributes().add(CacheEntry.TIME_CREATED);
+ * Cache&lt;Integer, String&gt; cache = SynchronizedCache.from(conf);
+ * // inserting an entry and getting hold of the creatation time
+ * cache.put(1, &quot;hello&quot;);
+ * CacheEntry&lt;Integer, String&gt; e = cache.getEntry(1);
+ * System.out.println(CacheEntry.TIME_CREATED.get(e));
+ * </pre>
+ * 
+ * Or they can be custom-defined attributes that only have a meaning when interpreted by the user of the cache.
+ * 
+ * 
  */
 public class CacheAttributeConfiguration {
 
-    private List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
+    /** The attributes that can be attached to each cache entry. */
+    private LinkedHashSet<Attribute<?>> attributes = new LinkedHashSet<Attribute<?>>();
 
     /**
-     * @return a list of all the attributes that has been added
-     */
-    public List<Attribute<?>> getAllAttributes() {
-        return new ArrayList<Attribute<?>>(attributes);
-    }
-
-    /**
-     * Adds the specified attributes.
+     * Adds the specified attribute(s).
      * 
      * @param a
      *            the attribute(s) to add
@@ -56,6 +67,12 @@ public class CacheAttributeConfiguration {
         return this;
     }
 
+    /** @return a list of all the attributes that has been added through calls to {@link #add(Attribute...)} */
+    public List<Attribute<?>> getAllAttributes() {
+        return new ArrayList<Attribute<?>>(attributes);
+    }
+
+    /** {@inheritDoc} */
     public String toString() {
         return attributes.toString();
     }

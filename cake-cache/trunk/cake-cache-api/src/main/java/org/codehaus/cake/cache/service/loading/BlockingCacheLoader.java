@@ -23,12 +23,13 @@ import org.codehaus.cake.attribute.AttributeMap;
  * to the cache. A cache implementation can use a cache loader for lazily creating values for missing entries making
  * this process transparent for the user. A cache loader is also sometimes referred to as a cache backend.
  * <p>
- * Usage example, a loader that for each key (String) loads the file for that given path.
+ * Usage example, a cache loader that for a given <tt>path</tt> tries to open the corresponding file and return the
+ * content as a byte array:
  * 
  * <pre>
- * class FileLoader implements SimpleCacheLoader&lt;String, byte[]&gt; {
- *     public byte[] load(String s, AttributeMap attributes) throws IOException {
- *         File f = new File(s);
+ * class FileLoader implements BlockingCacheLoader&lt;String, byte[]&gt; {
+ *     public byte[] load(String path, AttributeMap attributes) throws IOException {
+ *         File f = new File(path);
  *         byte[] bytes = new byte[(int) f.length()];
  *         (new RandomAccessFile(f, &quot;r&quot;)).read(bytes);
  *         return bytes;
@@ -36,16 +37,15 @@ import org.codehaus.cake.attribute.AttributeMap;
  * }
  * </pre>
  * 
- * When a user requests a value for a particular key that is not present in the cache. The cache will automatically call
- * the supplied cache loader to fetch the value. The cache will then insert the key-value pair into the cache and return
- * the value to the user. The cache loader might also be used to fetch an updated value when an entry is no longer valid
- * according to some policy.
+ * When a user requests a value for a particular key that is not present in the cache. The cache will normally
+ * automatically call the supplied cache loader to fetch the value. The cache will then automatically insert the
+ * key-value pair into the cache and return the value to the user.
  * <p>
  * Another usage of a cache loader is for lazily creating new values. For example, a cache that caches
  * <code>Patterns</code>.
  * 
  * <pre>
- * class PatternLoader implements SimpleCacheLoader&lt;String, Pattern&gt; {
+ * class PatternLoader implements BlockingCacheLoader&lt;String, Pattern&gt; {
  *     public Pattern load(String s, AttributeMap attributes) throws IOException {
  *         return Pattern.compile(s);
  *     }
@@ -53,12 +53,12 @@ import org.codehaus.cake.attribute.AttributeMap;
  * </pre>
  * 
  * <p>
- * The load method also provides an attribute map. This map can be used to provide meta-data information to the caller
- * of the {@link #load(Object, AttributeMap)} method. For example, the following cache loader, which retrieves an URL as
- * String. Defines the cost of the element as the number of milliseconds it takes to retrieve the value.
+ * The load method also provides an attribute map. This map can be used to provide meta-data information to and from the
+ * caller of the {@link #load(Object, AttributeMap)} method. For example, the following cache loader, which retrieves an
+ * URL as String. Defines the cost of the element as the number of milliseconds it takes to retrieve the value.
  * 
  * <pre>
- * public static class UrlLoader implements SimpleCacheLoader&lt;URL, String&gt; {
+ * public static class UrlLoader implements BlockingCacheLoader&lt;URL, String&gt; {
  *     public String load(URL url, AttributeMap attributes) throws Exception {
  *         long start = System.currentTimeMillis();
  *         BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -74,10 +74,8 @@ import org.codehaus.cake.attribute.AttributeMap;
  * }
  * </pre>
  * 
- * TODO write something about attribute map.
  * <p>
- * Cache loader instances <tt>MUST</tt> be thread-safe. Allowing multiple threads to simultaneous create or load new
- * values.
+ * Cache loader instances <tt>MUST</tt> be thread-safe. Allowing multiple threads to simultaneous load new values.
  * <p>
  * Any <tt>cache</tt> implementation that makes use of cache loaders should, but is not required to, make sure that if
  * two threads are simultaneous requesting a value for the same key. Only one of them do the actual loading.
@@ -92,13 +90,13 @@ import org.codehaus.cake.attribute.AttributeMap;
 public interface BlockingCacheLoader<K, V> {
 
     /**
-     * Loads a single value.
+     * Loads a single value for the specified key.
      * 
      * @param key
      *            the key whose associated value is to be returned.
      * @param attributes
-     *            a map of attributes that can the loader can inspect for attributes needed while loading or it can be
-     *            updated by the cache loader with additional attributes
+     *            a map of attributes that the cache loader can inspect for attributes specified by the user, or/and
+     *            update it with additional attribute that should be picked up by the cache
      * @return the value to which the specified key is mapped, or null if no such mapping exist.
      * @throws Exception
      *             An exception occured while loading or creating the value

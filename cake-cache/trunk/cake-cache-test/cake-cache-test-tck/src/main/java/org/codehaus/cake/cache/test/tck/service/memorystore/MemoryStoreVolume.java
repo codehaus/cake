@@ -115,7 +115,7 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
         conf.withLoading().setLoader(loader);
         conf.withAttributes().add(SIZE);
         init();
-        c.crud().write().put(1, "2", SIZE.singleton(4));
+        c.withCrud().write().put(1, "2", SIZE.singleton(4));
         assertVolume(4);
         shutdownAndAwaitTermination();
         assertVolume(0);

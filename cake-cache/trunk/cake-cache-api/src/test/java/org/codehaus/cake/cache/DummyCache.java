@@ -215,7 +215,7 @@ public class DummyCache<K, V> implements Cache<K, V> {
         return null;
     }
     /** {@inheritDoc} */
-    public CacheCrud<K, V> crud() {
+    public CacheCrud<K, V> withCrud() {
         return new CacheCrud<K, V>(this);
     }
     

@@ -29,16 +29,16 @@ public class CacheLoadingConfigurationTest {
     @Test
     public void filter() {
         CacheLoadingConfiguration<Integer, String> c = new CacheLoadingConfiguration<Integer, String>();
-        assertNull(c.getNeedsReloadFilter());
+        assertNull(c.getNeedsReloadCondition());
         Predicate<CacheEntry<Integer, String>> p = dummy(Predicate.class);
 
-        assertSame(c, c.setNeedsReloadFilter(p));
-        assertSame(p, c.getNeedsReloadFilter());
+        assertSame(c, c.setNeedsReloadCondition(p));
+        assertSame(p, c.getNeedsReloadCondition());
 
         Predicate<Object> p1 = dummy(Predicate.class);
-        c.setNeedsReloadFilter(p1);
+        c.setNeedsReloadCondition(p1);
         Predicate<CacheEntry> p2 = dummy(Predicate.class);
-        c.setNeedsReloadFilter(p2);
+        c.setNeedsReloadCondition(p2);
 
         Predicate<CacheEntry<Object, Object>> p3 = dummy(Predicate.class);
         // c.setNeedsReloadFilter(p3);

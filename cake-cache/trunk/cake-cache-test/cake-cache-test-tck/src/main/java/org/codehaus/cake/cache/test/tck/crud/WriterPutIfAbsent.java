@@ -17,10 +17,10 @@ public class WriterPutIfAbsent extends AbstractCacheTCKTest {
     public void putIfAbsentReturnVoid() {
         fill();
         for (int i = 1; i < 99; i++) {
-            assertNull(c.crud().write().putIfAbsent(i, "" + i));
+            assertNull(c.withCrud().write().putIfAbsent(i, "" + i));
             assertEquals("" + i, c.get(i));
         }
-        assertNull(c.crud().write().putIfAbsent(100, "value"));
+        assertNull(c.withCrud().write().putIfAbsent(100, "value"));
         assertEquals("1", c.get(100));
     }
 
@@ -28,10 +28,10 @@ public class WriterPutIfAbsent extends AbstractCacheTCKTest {
     public void putIfAbsentAttributeReturnVoid() {
         fill();
         for (int i = 1; i < 99; i++) {
-            assertNull(c.crud().write().putIfAbsent(i, "" + i));
+            assertNull(c.withCrud().write().putIfAbsent(i, "" + i));
             assertEquals("" + i, c.get(i));
         }
-        assertNull(c.crud().write().putIfAbsent(100, "value"));
+        assertNull(c.withCrud().write().putIfAbsent(100, "value"));
         assertEquals("1", c.get(100));
     }
 
@@ -40,10 +40,10 @@ public class WriterPutIfAbsent extends AbstractCacheTCKTest {
     public void putIfAbsentLazyReturnVoid() {
         fill();
         for (int i = 1; i < 99; i++) {
-            assertNull(c.crud().write().putIfAbsentLazy(i, new LazyOp(i, "" + i)));
+            assertNull(c.withCrud().write().putIfAbsentLazy(i, new LazyOp(i, "" + i)));
             assertEquals("" + i, c.get(i));
         }
-        assertNull(c.crud().write().putIfAbsentLazy(100, new LazyOp(100, "X")));
+        assertNull(c.withCrud().write().putIfAbsentLazy(100, new LazyOp(100, "X")));
         assertEquals("1", c.get(100));
     }
 

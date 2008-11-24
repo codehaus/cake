@@ -103,7 +103,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
-    public CacheCrud<K, V> crud() {
+    public CacheCrud<K, V> withCrud() {
         if (crud == null) {
             crud = new CacheCrud<K, V>(this);
         }

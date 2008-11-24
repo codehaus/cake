@@ -185,7 +185,7 @@ public class CachesTest {
     @Test(expected=UnsupportedOperationException.class)
     public void emptyCrud() {
         ObjectAttribute<String> oa=new ObjectAttribute<String>(String.class,"foo"){};
-        assertEquals("foo", emptyCache().crud().attribute(oa));
+        assertEquals("foo", emptyCache().withCrud().attribute(oa));
     }
     @Test
     public void emptyCacheSelection() {

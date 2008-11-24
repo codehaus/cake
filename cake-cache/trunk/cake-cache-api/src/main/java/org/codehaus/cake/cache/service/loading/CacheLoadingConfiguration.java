@@ -20,15 +20,16 @@ import java.util.Collection;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
- * This class is used to configure the cache loading service prior to usage.
+ * This class is used for configuring the cache loading service prior to usage.
  * <p>
- * If the specified loader is <code>null</code> no loader will be used for loading new key-value bindings. And the
- * {@link CacheLoadingService} will not be available at runtime. All values must then put into the cache by using
- * {@link Cache#put(Object, Object)}, {@link Cache#putAll(java.util.Map)} or some of the other put operations.
+ * If no loader is specified the {@link CacheLoadingService} will not be available at runtime. All values must then be
+ * put into the cache by using {@link Cache#put(Object, Object)}, {@link Cache#putAll(java.util.Map)} or some of the
+ * methods in {@link CrudWriter}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLoadingConfiguration.java 529 2007-12-27 17:09:26Z kasper $
@@ -40,7 +41,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
 public class CacheLoadingConfiguration<K, V> {
 
     /** The needs reload predicate. */
-    private Predicate<? super CacheEntry<K, V>> needsReloadSelector;
+    private Predicate<? super CacheEntry<K, V>> needsReloadCondition;
 
     /** The cache loader. */
     private Object loader;
@@ -58,10 +59,12 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Sets a loader that should be used for loading new elements into the cache.
+     * Sets the cache loader that should be used for loading elements into the cache.
+     * <p>
+     * Any previously loader that been set will be replaced by the specified loader
      * 
      * @param loader
-     *            the cache loader to set
+     *            the cache loader to use
      * @return this configuration
      */
     public CacheLoadingConfiguration<K, V> setLoader(Op<? super K, ? extends V> loader) {
@@ -70,7 +73,9 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Sets a blocking cache loader that should be used for loading new elements into the cache.
+     * Sets the cache loader that should be used for loading elements into the cache.
+     * <p>
+     * Any previously loader that has been set will be replaced by the specified loader
      * 
      * @param loader
      *            the cache loader to set
@@ -82,49 +87,30 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Returns the configured needs reload filter.
+     * Returns the configured needs reload predicate.
      * 
-     * @return the configured needs reload filter
-     * @see #setNeedsReloadFilter(Predicate)
+     * @return the configured needs reload predicate
+     * @see #setNeedsReloadCondition(Predicate)
      */
-    public Predicate<? super CacheEntry<K, V>> getNeedsReloadFilter() {
-        return needsReloadSelector;
+    public Predicate<? super CacheEntry<K, V>> getNeedsReloadCondition() {
+        return needsReloadCondition;
     }
 
     /**
-     * Sets a filter ({@link Predicate}) that is used for determining if an element needs to be reloaded. The predicate
-     * is checked with the various load methods in {@link CacheLoadingService}.
+     * Sets a ({@link Predicate}) that is used to determind if an element needs to be reloaded. The predicate is
+     * checked when invoking any of the load methods in {@link CacheLoadingService}. If the predicate evaluates to
+     * <code>true</code> for the entry the entry will be reloaded.
      * <p>
-     * Some implementations might also check the predicate on calls to
-     * {@link org.codehaus.cake.cache.Cache#getAll(Collection)}, {@link org.codehaus.cake.cache.Cache#getEntry(Object)},
-     * but this is not required.
+     * Cache implementations might also check the predicate on calls to
+     *{@link Cache#get(Object)} but this is not required.
      * 
-     * @param selector
+     * @param predicate
      *            the needs reload predicate
      * @return this configuration
-     * @see #getNeedsReloadFilter()
+     * @see #getNeedsReloadCondition()
      */
-    public CacheLoadingConfiguration<K, V> setNeedsReloadFilter(Predicate<? super CacheEntry<K, V>> selector) {
-        needsReloadSelector = selector;
+    public CacheLoadingConfiguration<K, V> setNeedsReloadCondition(Predicate<? super CacheEntry<K, V>> predicate) {
+        needsReloadCondition = predicate;
         return this;
-    }
-
-    /**
-     * An Attribute indicating whether or not a loading should be forced.
-     */
-    static final class IsLoadingForcedAttribute extends BooleanAttribute {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -2353351535602223603L;
-
-        /** Creates a new SizeAttribute. */
-        IsLoadingForcedAttribute() {
-            super("LoadingForced");
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheLoadingService.IS_FORCED;
-        }
     }
 }

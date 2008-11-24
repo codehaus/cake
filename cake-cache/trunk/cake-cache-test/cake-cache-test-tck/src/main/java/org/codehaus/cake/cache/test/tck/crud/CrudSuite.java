@@ -23,25 +23,25 @@ public class CrudSuite {
         ATTRIBUTE_INT {
             public Pair<Cache<Integer, String>, CrudReader> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().attribute(AtrStubs.L_1));
+                return new Pair(c, c.withCrud().attribute(AtrStubs.L_1));
             }
         },
         ATTRIBUTE_OBJECT {
             public Pair<Cache<Integer, String>, CrudReader> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().attribute(AtrStubs.O_1));
+                return new Pair(c, c.withCrud().attribute(AtrStubs.O_1));
             }
         },
         ENTRY {
             public Pair<Cache<Integer, String>, CrudReader> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().entry());
+                return new Pair(c, c.withCrud().entry());
             }
         },
         VALUE {
             public Pair<Cache<Integer, String>, CrudReader> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().value());
+                return new Pair(c, c.withCrud().value());
             }
         };
         public abstract Pair<Cache<Integer, String>, CrudReader> both();
@@ -55,19 +55,19 @@ public class CrudSuite {
         VOID {
             public Pair<Cache<Integer, String>, CrudWriter> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().write());
+                return new Pair(c, c.withCrud().write());
             }
         },
         ENTRY {
             public Pair<Cache<Integer, String>, CrudWriter> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().writeReturnPreviousEntry());
+                return new Pair(c, c.withCrud().writeReturnPreviousEntry());
             }
         },
         VALUE {
             public Pair<Cache<Integer, String>, CrudWriter> both() {
                 Cache<Integer, String> c = Generators.CACHE_GENERATOR.op();
-                return new Pair(c, c.crud().writeReturnPreviousValue());
+                return new Pair(c, c.withCrud().writeReturnPreviousValue());
             }
         };
         public abstract Pair<Cache<Integer, String>, CrudWriter> both();

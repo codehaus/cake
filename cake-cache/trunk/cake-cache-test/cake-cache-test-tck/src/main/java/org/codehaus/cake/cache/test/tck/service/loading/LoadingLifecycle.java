@@ -36,7 +36,7 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
     @Test
     public void startedPredicate() {
         TestPredicate loader = new TestPredicate();
-        conf.withLoading().setNeedsReloadFilter(loader);
+        conf.withLoading().setNeedsReloadCondition(loader);
         init().prestart();
         assertEquals(1, loader.count);
     }

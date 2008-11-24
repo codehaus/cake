@@ -50,13 +50,13 @@ import org.codehaus.cake.cache.CacheServices;
 public interface MemoryStoreService<K, V> {
 
     /**
-     * Returns the maximum number of elements that this cache can hold. If the cache has no upper limit
+     * Returns the maximum number of elements that the cache can hold. If the cache has no upper limit
      * {@link Integer#MAX_VALUE} is returned.
      * 
      * @return the maximum number of elements that this cache can hold or {@link Integer#MAX_VALUE} if no such limit
      *         exist
      * @see #setMaximumSize(int)
-     * @see Cache#size()
+     * @see #getSize()
      */
     int getMaximumSize();
 
@@ -64,18 +64,18 @@ public interface MemoryStoreService<K, V> {
      * Returns the maximum allowed volume of the cache or {@link Long#MAX_VALUE} if there is no limit.
      * 
      * @return the maximum allowed volume of the cache or {@link Long#MAX_VALUE} if there is no limit.
-     * @see #setMaximumVolume(long)
      * @see CacheEntry#SIZE
-     * @see MemoryStoreService#getVolume()
-     * @see MemoryStoreService#getMaximumVolume()
+     * @see #setMaximumVolume(long)
+     * @see #getVolume()
      */
     long getMaximumVolume();
 
     /**
-     * Returns the size of the cache. This method is equivalent to calling {@link Cache#size()} but is provided here for
-     * convenience.
+     * Returns the number of elements in the cache. This method is equivalent to calling {@link Cache#size()} but is
+     * provided here for convenience.
      * 
      * @return the current size of the cache
+     * @see Cache#size()
      */
     int getSize();
 
@@ -83,10 +83,19 @@ public interface MemoryStoreService<K, V> {
      * Returns the current volume of this cache. If the current volume of this cache is greater then Long.MAX_VALUE,
      * this method returns Long.MAX_VALUE.
      * <p>
-     * The volume is defined as the sum of all entries {@link CacheEntry#SIZE}.
+     * The volume of a cache is defined as the sum of all entries {@link CacheEntry#SIZE}. This is equivalent to
+     * 
+     * <pre>
+     * Cache&lt;?, ?&gt; cache = some cache;
+     * long volume = 0;
+     * for (CacheEntry&lt;?, ?&gt; e : cache) {
+     *     volume += e.getAttributes().get(CacheEntry.SIZE);
+     * }
+     * </pre>
      * 
      * @return the current volume of this cache
      * @see CacheEntry#SIZE
+     * 
      */
     long getVolume();
 
@@ -102,9 +111,8 @@ public interface MemoryStoreService<K, V> {
      * Sets whether or not caching is disabled. If caching is disabled, the cache will not cache any new items that are
      * added. This can sometimes be useful while testing.
      * <p>
-     * Note: the following applies Note: setting this value to <code>true</code> will not remove elements already
-     * present in the cache. Put will override values, already present. Loading of values will override values already
-     * present?
+     * Note: Setting this value to <code>true</code> will not remove elements already present in the cache. Put will
+     * override values, already present. Loading of values will override values already present?
      * 
      * @param isDisabled
      *            whether or not caching is disabled
@@ -113,16 +121,16 @@ public interface MemoryStoreService<K, V> {
 
     /**
      * Sets that maximum number of elements that the cache is allowed to contain. If the limit is reached the cache must
-     * evict existing elements before adding new elements. Preferable using the replacement policy set using
-     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy)}. But if no policy
-     * is set, the cache is free to choose any other way to determine which elements to remove.
+     * evict existing elements before adding new elements. Using the replacement policy set using
+     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy)}. If no policy is
+     * set, the cache is free to choose to what elements to remove.
      * <p>
      * To indicate that a cache can hold an unlimited number of items, {@link Integer#MAX_VALUE} should be specified.
      * <p>
      * If the specified maximum size is 0, unless otherwise specified will mean unlimited amount
      * 
      * @param maximumSize
-     *            the maximum number of elements the cache can hold or Integer.MAX_VALUE if there is no limit
+     *            the maximum number of elements the cache can hold or Integer.MAX_VALUE if there should be no limit
      * @throws IllegalArgumentException
      *             if the specified maximum size is negative
      * @throws UnsupportedOperationException
@@ -133,14 +141,14 @@ public interface MemoryStoreService<K, V> {
     /**
      * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the individual element
      * sizes (sum of all elements {@link CacheEntry#SIZE}. If the limit is reached the cache must evict existing
-     * elements before adding new elements. Preferable using the replacement policy set using
-     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy)}. But if no policy
-     * is set, the cache is free to choose any other way to determine which elements to remove.
+     * elements before adding new elements. Using the replacement policy set using
+     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy)}. If no policy is
+     * set, the cache is free to choose any other way to determine which elements to remove.
      * <p>
      * To indicate that a cache can have an unlimited volume, {@link Long#MAX_VALUE} should be specified.
      * 
      * @param maximumVolume
-     *            the maximum volume.
+     *            the maximum volume or Long.MAX_VALUE if there should be no limit
      * @throws IllegalArgumentException
      *             if the specified maximum volume is negative
      * @throws UnsupportedOperationException
@@ -156,6 +164,9 @@ public interface MemoryStoreService<K, V> {
      * If the specified size is negative this method will evict the number of entries specified. For example, if -10 is
      * specified then 10 entries will be evicted.
      * <p>
+     * The cache will use the replacement policy set using
+     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy)}. If no policy is
+     * set, the cache is free to choose any other way to determine which elements to remove.
      * 
      * @param size
      *            if positive of 0, the size to the trim the cache down to, otherwise the number of elements to remove
@@ -164,10 +175,21 @@ public interface MemoryStoreService<K, V> {
 
     /**
      * Works analogues to {@link #trimToSize(int)} except that specified comparator will choose the ordering among the
-     * entries.
+     * entries. This is basically equivalent to
+     * 
+     * <pre>
+     * Cache&lt;K, V&gt; cache = some cache;
+     * CacheEntry&lt;K, V&gt;[] entries = c.entrySet().toArray(new CacheEntry[0]);
+     * Arrays.sort(entries, comparator);
+     * for (int i = 0; i &lt; numberOfItemsToRemove; i++)
+     *     c.remove(entries[i].getKey());
+     * </pre>
+     * 
+     * only a lot more efficient. However, all entries in the cache needs to be sorted accordingly to the specified
+     * comparator. So either the size of the cache should be small, or this operation should be invoked infrequently.
      * <p>
-     * For example the following snippet will trim the cache downto 70 % of the current size, removing those entries
-     * that was created earliest.
+     * The following snippet will trim the cache downto 70 % of the current size, removing those entries that was
+     * created earliest.
      * 
      * <pre>
      * Cache&lt;?, ?&gt; c = someCache;
@@ -176,8 +198,7 @@ public interface MemoryStoreService<K, V> {
      * </pre>
      * 
      * @param size
-     *            if positive of 0, the size to the trim the cache down to, otherwise the number of elements to remove
-     * 
+     *            if positive or 0, the size to the trim the cache down to, otherwise the number of elements to remove
      * @param comparator
      *            used to determind order among entries
      */
@@ -190,10 +211,15 @@ public interface MemoryStoreService<K, V> {
      * <p>
      * If the specified volume is negative this method will evict enough entries to make sure the volume of the cache is
      * at least reduced with the specified volume.
+     * <p>
+     * This method does not gurantuee that the volume will be exact size as specified in this method because , only that
+     * it will not be greater. Consider, for example, a cache with two elements each of size 2, totalling a volume of 4.
+     * If the cache is asked to trim the volume to 3, the closest it can to is to remove 1 element reducing the volume
+     * of the cache to 2.
      * 
      * @param volume
-     *            if positive of 0, the volume to the trim the cache down to, otherwise the amount the caches volume
-     *            should be reduced with
+     *            if positive or 0, the maximum volume of the cache after this method returns, otherwise the minimum
+     *            amount that the caches volume should be reduced with
      */
     void trimToVolume(long volume);
 
@@ -213,7 +239,9 @@ public interface MemoryStoreService<K, V> {
      * The example assumes that the cache is configured to use the {@link CacheEntry#COST} attribute.
      * 
      * @param volume
-     *            if positive of 0, the size to the trim the cache down to, otherwise the number of elements to remove
+     *            if positive or 0, the maximum volume of the cache after this method returns, otherwise the minimum
+     *            amount that the caches volume should be reduced with
+     * 
      * 
      * @param comparator
      *            used to determine order among entries

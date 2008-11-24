@@ -31,14 +31,20 @@ import org.codehaus.cake.service.common.management.ManagementConfiguration;
 public interface CacheLoadingMXBean {
 
     /**
-     * Attempts to reload all entries that are currently held in the cache.
+     * Attempts to´forcefully reload all entries that are currently held in the cache. This is equivalent to calling
+     * 
+     * <pre>
+     * cache.with().loadingForced().loadAll();
+     * </pre>
      */
     void forceLoadAll();
 
     /**
-     * Attempts to reload all entries that needs reloading as decided by
-     * {@link CacheLoadingConfiguration#getNeedsReloadFilter()}. If no filter has been set, calls to this method is
-     * ignored.
+     * Attempts to reload all entries that needs reloading is the cache. This is equivalent to calling
+     * 
+     * <pre>
+     * cache.with().loading().loadAll();
+     * </pre>
      */
     void loadAll();
 }
