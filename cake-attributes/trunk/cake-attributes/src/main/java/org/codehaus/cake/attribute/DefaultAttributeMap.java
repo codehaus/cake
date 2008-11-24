@@ -16,7 +16,7 @@
 package org.codehaus.cake.attribute;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -30,10 +30,11 @@ import java.util.Map.Entry;
 public class DefaultAttributeMap implements AttributeMap {
 
     /** The HashMap that is storing the attribute value pairs. */
-    private final HashMap<Attribute, Object> map = new HashMap<Attribute, Object>();
+    private final Map<Attribute, Object> map = new IdentityHashMap<Attribute, Object>();
 
     /** Creates a new empty DefaultAttributeMap. */
-    public DefaultAttributeMap() {}
+    public DefaultAttributeMap() {
+    }
 
     /**
      * Creates a new DefaultAttributeMap copying the existing attributes from the specified map.
@@ -42,8 +43,10 @@ public class DefaultAttributeMap implements AttributeMap {
      *            the attributemap to copy existing attributes from
      */
     public DefaultAttributeMap(AttributeMap copyFrom) {
-        for (Map.Entry<Attribute, Object> e : copyFrom.entrySet()) {
-            put(e.getKey(), e.getValue());
+        if (copyFrom != Attributes.EMPTY_ATTRIBUTE_MAP) {
+            for (Map.Entry<Attribute, Object> e : copyFrom.entrySet()) {
+                put(e.getKey(), e.getValue());
+            }
         }
     }
 

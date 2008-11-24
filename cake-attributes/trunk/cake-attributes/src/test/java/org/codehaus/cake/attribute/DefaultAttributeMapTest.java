@@ -50,6 +50,7 @@ public class DefaultAttributeMapTest extends AtrStubs {
         am.put(a1, 12.23);
         am.put(a2, 12);
         assertEquals(am, new DefaultAttributeMap(am));
+        assertEquals(0, new DefaultAttributeMap(Attributes.EMPTY_ATTRIBUTE_MAP).size());
     }
 
     protected AttributeMap create() {
