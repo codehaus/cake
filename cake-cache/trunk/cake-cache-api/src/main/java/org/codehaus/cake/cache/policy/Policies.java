@@ -24,8 +24,8 @@ import org.codehaus.cake.cache.policy.paging.MRUReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 
 /**
- * Factory methods for different {@link ReplacementPolicy} implementations. This class provides shortcuts for the
- * specific implementations of policies defined in <tt>org.codehaus.cake.cache.policy</tt> and sub packages.
+ * Factory methods for different {@link ReplacementPolicy} implementations. This class provides shortcuts for various
+ * replacement policy implementations.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Policies.java 491 2007-11-30 22:05:50Z kasper $
@@ -33,7 +33,8 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 public final class Policies {
     // /CLOVER:OFF
     /** Cannot instantiate. */
-    private Policies() {}
+    private Policies() {
+    }
 
     // /CLOVER:ON
 

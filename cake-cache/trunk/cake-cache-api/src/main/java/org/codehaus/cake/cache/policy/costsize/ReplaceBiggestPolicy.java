@@ -36,9 +36,7 @@ public class ReplaceBiggestPolicy<K, V> extends AbstractHeapReplacementPolicy<K,
     /** A unique policy name. */
     public static final String NAME = "ReplaceBiggest";
 
-    /**
-     * Creates a new ReplaceCostliestPolicy.
-     */
+    /** Creates a new ReplaceBiggestPolicy. */
     public ReplaceBiggestPolicy() {
         // This is used to make sure that users have registered the SIZE attribute
         // with CacheAttributeConfiguration#add(Attribute...)}

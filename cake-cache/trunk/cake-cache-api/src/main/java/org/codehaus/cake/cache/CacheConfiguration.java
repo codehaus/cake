@@ -23,6 +23,7 @@ import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.util.Clock;
@@ -76,20 +77,15 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
-        super.addToLifecycleAndExport(key, factory);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, S service) {
         super.addToLifecycleAndExport(key, service);
         return this;
     }
 
-    public CacheConfiguration<K, V> runAfterStart(Procedure<Cache<K, V>> runAfterStartProcedure) {
-        super.addToLifecycle(new RunAfterCacheStartProcedure<K, V>(runAfterStartProcedure));
+    /** {@inheritDoc} */
+    @Override
+    public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
+        super.addToLifecycleAndExport(key, factory);
         return this;
     }
 
@@ -106,6 +102,27 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
     @Override
     public Cache<K, V> newInstance() {
         return super.newInstance();
+    }
+
+    /**
+     * Runs the specified procedure after the cache has started. This is basically equivalent to
+     * 
+     * <pre>
+     * CacheConfiguration.addToLifecycle( new Object() {
+     *   &#064;AfterStart
+     *   public void runAfterStart(Cache&lt;K, V&gt; cache) {
+     *     afterStartProcedure.op(cache); //runs the procedure
+     *   }
+     * }};
+     * </pre>
+     * 
+     * @param runAfterStartProcedure
+     *            the procedure to run
+     * @return this configuration
+     */
+    public CacheConfiguration<K, V> runAfterStart(Procedure<Cache<K, V>> runAfterStartProcedure) {
+        super.addToLifecycle(new RunAfterCacheStartProcedure<K, V>(runAfterStartProcedure));
+        return this;
     }
 
     /** {@inheritDoc} */

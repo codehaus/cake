@@ -25,6 +25,17 @@ import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.codehaus.cake.service.annotation.Startable;
 
+/**
+ * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach
+ * attributes to cache entries.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Policies.java 491 2007-11-30 22:05:50Z kasper $
+ * @param <K>
+ *            the type of keys maintained by this cache
+ * @param <V>
+ *            the type of mapped values
+ */
 public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPolicy<K, V> {
 
     /** The attributes that have been registered. */
@@ -114,5 +125,6 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
     /**
      * The default implementation of touch does nothing.
      */
-    public void touch(CacheEntry<K, V> entry) {}
+    public void touch(CacheEntry<K, V> entry) {
+    }
 }

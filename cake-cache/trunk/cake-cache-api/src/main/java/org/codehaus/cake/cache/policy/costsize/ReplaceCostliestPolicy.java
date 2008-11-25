@@ -36,9 +36,7 @@ public class ReplaceCostliestPolicy<K, V> extends AbstractHeapReplacementPolicy<
     /** A unique policy name. */
     public static final String NAME = "ReplaceCostliest";
 
-    /**
-     * Creates a new ReplaceCostliestPolicy.
-     */
+    /** Creates a new ReplaceCostliestPolicy. */
     public ReplaceCostliestPolicy() {
         // This is used to make sure that users have registered the COST attribute
         // with CacheAttributeConfiguration#add(Attribute...)}

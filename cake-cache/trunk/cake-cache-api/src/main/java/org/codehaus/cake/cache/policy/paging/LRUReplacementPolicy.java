@@ -19,7 +19,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
 
 /**
- * A Least Recently Used (LRU) replacement policy that discards the least recently used elements first.
+ * A Least Recently Used (LRU) replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: LRUPolicy.java 536 2007-12-30 00:14:25Z kasper $
@@ -29,6 +29,7 @@ import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
  *            the type of values maintained by the cache
  */
 public class LRUReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementPolicy<K, V> {
+
     /** A unique policy name. */
     public static final String NAME = "LRU";
 

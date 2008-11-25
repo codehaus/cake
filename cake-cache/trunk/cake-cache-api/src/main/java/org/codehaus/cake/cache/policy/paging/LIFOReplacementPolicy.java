@@ -19,7 +19,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
 
 /**
- * A LIFO based replacement policy.
+ * A Last In, First Out (LIFO) based replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: LIFOPolicy.java 536 2007-12-30 00:14:25Z kasper $
@@ -29,6 +29,7 @@ import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
  *            the type of values maintained by the cache
  */
 public class LIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementPolicy<K, V> {
+
     /** A unique policy name. */
     public static final String NAME = "LIFO";
 

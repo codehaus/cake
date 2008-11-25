@@ -65,7 +65,7 @@ public interface CrudReader<K, R> {
      * <code>null</code> Any transformer should be prepared to accept null values
      * 
      * <p>
-     * A transformer should be threadsafe
+     * Transformer instances <tt>MUST</tt> be thread-safe. Allowing multiple threads to simultaneous transform values.
      */
     ObjectAttribute<Op<?, ?>> READ_TRANSFORMER = (ObjectAttribute) new ObjectAttribute<Op>(Op.class,
             CacheDataExtractor.ONLY_VALUE) {};
@@ -80,14 +80,14 @@ public interface CrudReader<K, R> {
      * @param key
      *            key whose associated value is to be returned.
      * @return the value to which this cache maps the specified key, or <tt>null</tt> if the cache contains no mapping
-     *         for this key.
+     *         for the key.
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional).
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
      * @throws ContainerAlreadyShutdownException
      *             if the cache has been shutdown
-     * @return the associated value
+     * @return the value associated with the specified key
      */
     R get(K key);
 
@@ -101,10 +101,9 @@ public interface CrudReader<K, R> {
     R get(K key, AttributeMap attributes);
 
     /**
-     * Attempts to retrieve all of the mappings for the specified collection of keys. The effect of this call is
-     * equivalent to that of calling {@link #get(Object)} on this cache once for each key in the specified collection.
-     * However, in some cases it can be much faster to load several cache items at once, for example, if the cache must
-     * fetch the values from a remote host. This is equivalent to
+     * Attempts to retrieve all of the mappings for all the keys produced by the specified iterable. The effect of this
+     * call is equivalent to that of calling {@link #get(Object)} on this cache once for each key produced by the
+     * specified iterable.
      * 
      * <pre>
      * Map&lt;K, R&gt; result = new HashMap&lt;K, R&gt;();
@@ -114,6 +113,9 @@ public interface CrudReader<K, R> {
      * return result;
      * </pre>
      * 
+     * However, in some cases it can be much faster to load several cache items at once, for example, if the cache must
+     * fetch the values from a remote host.
+     * 
      * <p>
      * Note that if {@link #get(Object)} returns <code>null</code> the map returned will contain a mapping from the
      * given key to <code>null</code>.
@@ -122,14 +124,13 @@ public interface CrudReader<K, R> {
      * progress.
      * 
      * @param keys
-     *            a collection of keys whose associated values are to be returned.
-     * @return a map with mappings from each key to the corresponding value (which can be null)
+     *            a iterable that produces keys whose associated values are to be returned.
+     * @return a map with mappings from each key to the corresponding value
      * @throws ClassCastException
-     *             if any of the keys in the specified collection are of an inappropriate type for this cache
-     *             (optional).
+     *             if the specified iterable produces keys of an inappropriate type for this cache (optional).
      * @throws NullPointerException
-     *             if the specified collection of keys is null or the specified collection contains a null
-     * @throws IllegalStateException
+     *             if the specified iterable is null or the specified iterable produces a null value
+     * @throws ContainerAlreadyShutdownException
      *             if the cache has been shutdown
      */
     Map<K, R> getAll(Iterable<? extends K> keys);

@@ -30,12 +30,14 @@ import org.codehaus.cake.cache.CacheEntry;
  *            the type of mapped values
  */
 public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractReplacementPolicy<K, V> {
-    private final IntAttribute index = new IntAttribute("index", 0) {};
+    private final IntAttribute index = new IntAttribute("index", -1) {};
     private final ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
 
+    /** Creates a new AbstractArrayReplacementPolicy. */
     public AbstractArrayReplacementPolicy() {
         attachToEntry(index);
     }
+
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
         add0(entry);
@@ -48,18 +50,32 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
         list.add(entry);
         return i;
     }
+
     /** {@inheritDoc} */
     public void clear() {
         list.clear();
     }
 
+    /**
+     * @param index
+     *            the index of the attribute
+     * @return
+     */
     protected CacheEntry<K, V> getFromIndex(int index) {
         return list.get(index);
     }
 
+    /**
+     * Returns the index of the specified entry, or -1 if the entry has not been registered
+     * 
+     * @param entry
+     *            the entry to return the index for
+     * @return the index of the specified entry, or -1 if the entry has not been registered
+     */
     protected int getIndexOf(CacheEntry<K, V> entry) {
         return index.get(entry);
     }
+
     /** {@inheritDoc} */
     public void remove(CacheEntry<K, V> entry) {
         remove0(entry);
@@ -82,6 +98,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
         }
         return lastIndex;
     }
+
     /** {@inheritDoc} */
     public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
         replace0(previous, newEntry);
@@ -94,9 +111,13 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractRepla
         list.set(i, newEntry);
     }
 
+    /**
+     * @return the number of entries in the replacement policy
+     */
     protected int size() {
         return list.size();
     }
 
-    protected void swap(int prevIndex, int newIndex) {}
+    protected void swap(int prevIndex, int newIndex) {
+    }
 }

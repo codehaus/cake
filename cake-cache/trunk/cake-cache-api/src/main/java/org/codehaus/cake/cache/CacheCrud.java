@@ -24,22 +24,21 @@ import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.Container;
 
 /**
- * A utility class to help creating, reader, updating and deleting entries in a cache. This class is normally acquired
- * by calling {@link Cache#withCrud()}.
+ * A utility class to help creating readers and writers for a cache. An instance of this class is normally acquired by
+ * calling {@link Cache#withCrud()}.
  */
 @SuppressWarnings("unchecked")
 public class CacheCrud<K, V> {
 
-    protected static AttributeMap READ_VALUE = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.ONLY_VALUE);
-    protected static AttributeMap READ_ENTRY = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.WHOLE_ENTRY);
+    static AttributeMap READ_VALUE = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.ONLY_VALUE);
+    static AttributeMap READ_ENTRY = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.WHOLE_ENTRY);
 
-    // protected static AttributeMap WRITE_VOID = CrudReader.WRITE_TRANSFORMER.singleton(null);
-    protected static AttributeMap WRITE_RETURN_PREVIOUS_VALUE = CrudWriter.WRITE_TRANSFORMER
+    static AttributeMap WRITE_RETURN_PREVIOUS_VALUE = CrudWriter.WRITE_TRANSFORMER
             .singleton(CacheDataExtractor.ONLY_VALUE);
-    protected static AttributeMap WRITE_RETURN_PREVIOUS_ENTRY = CrudWriter.WRITE_TRANSFORMER
+    static AttributeMap WRITE_RETURN_PREVIOUS_ENTRY = CrudWriter.WRITE_TRANSFORMER
             .singleton(CacheDataExtractor.WHOLE_ENTRY);
 
-    /** The service manager to extract cache services from. */
+    /** The contaner to extract cache services from. */
     private final Container serviceManager;
 
     /**
@@ -52,13 +51,13 @@ public class CacheCrud<K, V> {
         this.serviceManager = cache;
     }
 
-//    // TODO Reader default? read Value i Think
-//    public CrudReader<K, V> reader(AttributeMap attributes) {
-//        return serviceManager.getService(CrudReader.class, attributes);
-//    }
+    // // TODO Reader default? read Value i Think
+    // public CrudReader<K, V> reader(AttributeMap attributes) {
+    // return serviceManager.getService(CrudReader.class, attributes);
+    // }
 
     /**
-     * Returns a {@link CrudReader} that map keys to values
+     * Returns a {@link CrudReader} that return values from specified key(s).
      * 
      * <pre>
      * Cache&lt;Integer, String&gt; cache;

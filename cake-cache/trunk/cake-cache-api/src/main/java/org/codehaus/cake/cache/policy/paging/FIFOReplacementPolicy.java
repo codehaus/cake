@@ -19,7 +19,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
 
 /**
- * A FIFO based replacement policy.
+ * A First In, First Out (FIFO) based replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: FIFOPolicy.java 536 2007-12-30 00:14:25Z kasper $

@@ -21,7 +21,9 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.AbstractArrayReplacementPolicy;
 
 /**
- * A replacement policy that picks a random element to evict.
+ * A Random replacement policy. This policy picks a random element to evict.
+ * <p>
+ * At first selecting a random element seems like poor solution, however, it some situations it performs remarkably well
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: RandomPolicy.java 536 2007-12-30 00:14:25Z kasper $
@@ -35,6 +37,7 @@ public class RandomReplacementPolicy<K, V> extends AbstractArrayReplacementPolic
     /** A unique policy name. */
     public static final String NAME = "Random";
 
+    /** Used for selecting which element to evict. */
     private final Random rnd = new Random();
 
     /** {@inheritDoc} */
