@@ -5,6 +5,10 @@ import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 
 class CacheEntryAttributes {
+ //    - Logger ->Log with stacktrace, log with timing information
+    
+ //   - TimeToRefresh, RefreshTime
+ //   - TimeToExpire, ExpirationTime
 
 //    public static long getTimeCreated(CacheEntry<?, ?> entry) {
 //        return CacheEntry.TIME_CREATED.get(entry);
@@ -75,14 +79,6 @@ class CacheEntryAttributes {
     
         /** {@inheritDoc} */
         @Override
-        public void checkValid(long value) {
-            if (value < 0) {
-                throw new IllegalArgumentException("invalid size (size = " + value + ")");
-            }
-        }
-    
-        /** {@inheritDoc} */
-        @Override
         public boolean isValid(long value) {
             return value >= 0;
         }
@@ -90,6 +86,11 @@ class CacheEntryAttributes {
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.SIZE;
+        }
+
+        @Override
+        protected String checkValidFailureMessage(Long value) {
+            return "invalid size (size = " + value + ")";
         }
     }
 

@@ -58,26 +58,42 @@ import org.codehaus.cake.util.Logger;
  */
 public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
-    /** Creates a new CacheConfiguration. */
-    public CacheConfiguration() {
-        addConfiguration(new ExceptionHandlingConfiguration());
-        //addConfiguration(new CacheAttributeConfiguration());
-        addConfiguration(new CacheLoadingConfiguration<K, V>());
-        addConfiguration(new ManagementConfiguration());
-        addConfiguration(new MemoryStoreConfiguration<K, V>());
-        // addConfiguration(new CacheStoreConfiguration());
-    }
     /** The attributes that can be attached to each cache entry. */
     private LinkedHashSet<Attribute<?>> entryAttributes = new LinkedHashSet<Attribute<?>>();
 
+    /** Creates a new CacheConfiguration. */
+    public CacheConfiguration() {
+        addConfiguration(new ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>>());
+        addConfiguration(new CacheLoadingConfiguration<K, V>());
+        addConfiguration(new ManagementConfiguration());
+        addConfiguration(new MemoryStoreConfiguration<K, V>());
+    }
+
     /**
-     * Adds the specified attribute(s).
+     * Register an attribute(s) that should be attach to each {@link CacheEntry}. The attributes can be some of the
+     * attributes defined in {@link CacheEntry} which are handled specially by the cache. For example, the
+     * {@link CacheEntry#TIME_CREATED} attribute which will make sure the cache records the insertion time of all
+     * entries. The following example, shows how to configure the cache to use this attribute, and how to get a hold of
+     * the creation time of the entry
+     * 
+     * <pre>
+     * CacheConfiguration&lt;Integer, String&gt; conf = CacheConfiguration.newConfiguration();
+     * conf.withAttributes().add(CacheEntry.TIME_CREATED);
+     * Cache&lt;Integer, String&gt; cache = SynchronizedCache.from(conf);
+     * // inserting an entry and getting hold of the creatation time
+     * cache.put(1, &quot;hello&quot;);
+     * CacheEntry&lt;Integer, String&gt; e = cache.getEntry(1);
+     * System.out.println(CacheEntry.TIME_CREATED.get(e));
+     * </pre>
+     * 
+     * Or they can be custom-defined attributes that only have a meaning when interpreted by the user of the cache.
+     * 
      * 
      * @param a
      *            the attribute(s) to add
      * @return this configuration
      */
-    public CacheConfiguration<K,V> addEntryAttributes(Attribute<?>... a) {
+    public CacheConfiguration<K, V> addEntryAttributes(Attribute<?>... a) {
         for (Attribute<?> aa : a) {
             if (entryAttributes.contains(aa)) {
                 throw new IllegalArgumentException("Attribute has already been added [Attribute =" + aa + "");
@@ -89,19 +105,15 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         return this;
     }
 
-    /** @return a list of all the attributes that has been added through calls to {@link #add(Attribute...)} */
-    public List<Attribute<?>> getAllEntryAttributes() {
-        return new ArrayList<Attribute<?>>(entryAttributes);
-    }
-    // We override a number of setter methods from ContainerConfiguration to
-    // allow them to return CacheConfiguration<K, V> instead
-
     /** {@inheritDoc} */
     @Override
     public CacheConfiguration<K, V> addToLifecycle(Object o) {
         super.addToLifecycle(o);
         return this;
     }
+
+    // We override a number of setter methods from ContainerConfiguration to
+    // allow them to return CacheConfiguration<K, V> instead
 
     /** {@inheritDoc} */
     @Override
@@ -115,6 +127,11 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
     public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
         super.addToLifecycleAndExport(key, factory);
         return this;
+    }
+
+    /** @return a list of all the attributes that has been added through calls to {@link #add(Attribute...)} */
+    public List<Attribute<?>> getAllEntryAttributes() {
+        return new ArrayList<Attribute<?>>(entryAttributes);
     }
 
     /**
@@ -187,15 +204,6 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         super.setType(type);
         return this;
     }
-
-    /**
-     * Returns a configuration object that can be used to register which attributes the cache keep count of.
-     * 
-     * @return a CacheAttributeConfiguration
-     */
-//    public CacheAttributeConfiguration withAttributes() {
-//        return getConfigurationOfType(CacheAttributeConfiguration.class);
-//    }
 
     /**
      * Returns a configuration object that can be used to control how exceptions are handled within the cache

@@ -31,6 +31,9 @@ import java.util.Iterator;
 
 import junit.framework.AssertionFailedError;
 
+import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.service.ServiceFactory;
@@ -91,6 +94,23 @@ public class CacheConfigurationTest {
         } catch (IllegalArgumentException ok) {
             /** ok */
         }
+    }
+    static final Attribute A1 = new LongAttribute() {};
+    static final Attribute A2 = new BooleanAttribute() {};
+
+    @Test
+    public void addAttribute() {
+        CacheConfiguration c = new CacheConfiguration();
+        assertSame(c, c.addEntryAttributes(A1));
+        assertSame(c, c.addEntryAttributes(A2));
+        assertEquals(2, c.getAllEntryAttributes().size());
+        assertSame(A1, c.getAllEntryAttributes().get(0));
+        assertSame(A2, c.getAllEntryAttributes().get(1));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addSame_IAE() {
+        new CacheConfiguration().addEntryAttributes(A1).addEntryAttributes(A1);
     }
 
     @Test

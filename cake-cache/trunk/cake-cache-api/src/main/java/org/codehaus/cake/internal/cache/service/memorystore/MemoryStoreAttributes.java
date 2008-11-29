@@ -21,6 +21,7 @@ public class MemoryStoreAttributes {
     }
 
     static class MaximumSizeAttribute extends IntAttribute {
+
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
 
@@ -29,10 +30,8 @@ public class MemoryStoreAttributes {
         }
 
         @Override
-        public void checkValid(int value) {
-            if (value <= 0) {
-                throw new IllegalArgumentException("Size must be positive, was " + value);
-            }
+        protected String checkValidFailureMessage(Integer value) {
+            return "Size must be positive, was " + value;
         }
 
         @Override
@@ -54,13 +53,9 @@ public class MemoryStoreAttributes {
             super(Long.MAX_VALUE);
         }
 
-        @Override
-        public void checkValid(long value) {
-            if (value <= 0) {
-                throw new IllegalArgumentException("Volume must be positive, was " + value);
-            }
+        protected String checkValidFailureMessage(Integer value) {
+            return "Volume must be positive, was " + value;
         }
-
         @Override
         public boolean isValid(long value) {
             return value >= 0;
