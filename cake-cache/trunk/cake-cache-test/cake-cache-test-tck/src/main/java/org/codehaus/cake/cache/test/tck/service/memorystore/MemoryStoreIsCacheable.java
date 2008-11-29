@@ -91,7 +91,7 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
     @Test
     public void loadVolume() {
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setIsCacheableFilter(ivalue);
         init();
         assertGet(M1, M2);

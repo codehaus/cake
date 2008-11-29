@@ -31,7 +31,7 @@ public class SelectedCrud extends AbstractCacheTCKTest {
     
     @Test
     public void getAttributes() {
-        conf.withAttributes().add(AtrStubs.I_2);
+        conf.addEntryAttributes(AtrStubs.I_2);
         newCache();
         c.withCrud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
         c.withCrud().value().get(2, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));

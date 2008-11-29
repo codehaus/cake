@@ -16,6 +16,10 @@ public class DefaultAddAllRequest<K, V> implements AddEntriesRequest<K, V> {
     final Collection<AddEntryRequest<K, V>> adds;
 
     public DefaultAddAllRequest(Map<? extends K, ? extends V> map, AttributeMap attributes) {
+        
+        if (attributes==null) {
+            throw new NullPointerException("attributes is null");
+        }
         adds = new ArrayList<AddEntryRequest<K, V>>();
         for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) {
             adds.add(new DefaultCreateUpdateRequest<K, V>(e.getKey(), new DefaultAttributeMap(), e.getValue(), null,

@@ -16,7 +16,7 @@
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
-import static org.codehaus.cake.test.util.CollectionTestUtil.asMap;
+import static org.codehaus.cake.test.util.CollectionTestUtil.asMap_;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asSet;
 
 import java.util.concurrent.BlockingQueue;
@@ -166,7 +166,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         init();
         // the reject2EntriesPolicy is kind of a hack until we are
         // clear what type og object goes into add() for the policy
-        c.putAll(asMap(M1, M2, M3));
+        c.putAll(asMap_(M1, M2, M3));
         assertEquals(2, c.size());
         assertFalse(c.containsKey(2));
     }
@@ -271,7 +271,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
     public void isCacheEntry() throws InterruptedException {
         final BlockingQueue<Object> q = new LinkedBlockingQueue<Object>();
 
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         loader.withLoader(M1).addAttribute(SIZE, 4l);
         conf.withMemoryStore().setPolicy(new LRUReplacementPolicy<Integer, String>() {
             @Override

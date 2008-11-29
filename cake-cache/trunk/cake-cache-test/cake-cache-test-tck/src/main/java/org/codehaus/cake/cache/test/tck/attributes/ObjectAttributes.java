@@ -12,7 +12,7 @@ public class ObjectAttributes extends AbstractCacheTCKTest {
 
     @Test
     public void objectAttribute() {
-        conf.withAttributes().add(O_4);
+        conf.addEntryAttributes(O_4);
         newCache();
         assertNull(c.withCrud().attribute(O_4).get(10));
         c.withCrud().write().put(10, "A", O_4.singleton("foo"));
@@ -23,7 +23,7 @@ public class ObjectAttributes extends AbstractCacheTCKTest {
 
     @Test
     public void objectAttributeDefault() {
-        conf.withAttributes().add(O_1);
+        conf.addEntryAttributes(O_1);
         newCache();
         assertEquals("1.5", c.withCrud().attribute(O_1).get(10));
         c.withCrud().write().put(10, "A", O_1.singleton("foo"));
@@ -32,7 +32,7 @@ public class ObjectAttributes extends AbstractCacheTCKTest {
 
     @Test
     public void objectAttributeDefaultPreExisting() {
-        conf.withAttributes().add(O_1);
+        conf.addEntryAttributes(O_1);
         newCache();
         assertEquals("1.5", c.withCrud().attribute(O_1).get(1));
         c.withCrud().write().put(1, "A", O_1.singleton("foo"));
@@ -42,7 +42,7 @@ public class ObjectAttributes extends AbstractCacheTCKTest {
     @Test
     public void noLoader() {
         newConfigurationClean();
-        conf.withAttributes().add(O_1, O_4);
+        conf.addEntryAttributes(O_1, O_4);
         newCache();
         assertNull(c.select().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
         assertEquals("1.5", c.select().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
@@ -51,7 +51,7 @@ public class ObjectAttributes extends AbstractCacheTCKTest {
     }
     @Test
     public void objectAttributeWithSelector() {
-        conf.withAttributes().add(O_1, O_4);
+        conf.addEntryAttributes(O_1, O_4);
         newCache();
         assertNull(c.select().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
         assertEquals("1.5", c.select().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));

@@ -44,7 +44,7 @@ public class Reader extends AbstractCacheTCKTest {
     
     @Test
     public void getAttributesKeepOne() {
-        conf.withAttributes().add(AtrStubs.I_2);
+        conf.addEntryAttributes(AtrStubs.I_2);
         newCache();
         c.withCrud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
         assertEquals(2, loader.get(1).getParameters().size());

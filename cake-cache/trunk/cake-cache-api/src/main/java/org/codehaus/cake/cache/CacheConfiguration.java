@@ -15,7 +15,11 @@
  */
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
@@ -23,7 +27,6 @@ import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.util.Clock;
@@ -58,13 +61,38 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
     /** Creates a new CacheConfiguration. */
     public CacheConfiguration() {
         addConfiguration(new ExceptionHandlingConfiguration());
-        addConfiguration(new CacheAttributeConfiguration());
+        //addConfiguration(new CacheAttributeConfiguration());
         addConfiguration(new CacheLoadingConfiguration<K, V>());
         addConfiguration(new ManagementConfiguration());
         addConfiguration(new MemoryStoreConfiguration<K, V>());
         // addConfiguration(new CacheStoreConfiguration());
     }
+    /** The attributes that can be attached to each cache entry. */
+    private LinkedHashSet<Attribute<?>> entryAttributes = new LinkedHashSet<Attribute<?>>();
 
+    /**
+     * Adds the specified attribute(s).
+     * 
+     * @param a
+     *            the attribute(s) to add
+     * @return this configuration
+     */
+    public CacheConfiguration<K,V> addEntryAttributes(Attribute<?>... a) {
+        for (Attribute<?> aa : a) {
+            if (entryAttributes.contains(aa)) {
+                throw new IllegalArgumentException("Attribute has already been added [Attribute =" + aa + "");
+            }
+        }
+        for (Attribute<?> aa : a) {
+            entryAttributes.add(aa);
+        }
+        return this;
+    }
+
+    /** @return a list of all the attributes that has been added through calls to {@link #add(Attribute...)} */
+    public List<Attribute<?>> getAllEntryAttributes() {
+        return new ArrayList<Attribute<?>>(entryAttributes);
+    }
     // We override a number of setter methods from ContainerConfiguration to
     // allow them to return CacheConfiguration<K, V> instead
 
@@ -165,9 +193,9 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
      * 
      * @return a CacheAttributeConfiguration
      */
-    public CacheAttributeConfiguration withAttributes() {
-        return getConfigurationOfType(CacheAttributeConfiguration.class);
-    }
+//    public CacheAttributeConfiguration withAttributes() {
+//        return getConfigurationOfType(CacheAttributeConfiguration.class);
+//    }
 
     /**
      * Returns a configuration object that can be used to control how exceptions are handled within the cache

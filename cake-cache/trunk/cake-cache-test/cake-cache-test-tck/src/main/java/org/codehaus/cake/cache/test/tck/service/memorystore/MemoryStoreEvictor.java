@@ -96,7 +96,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
 
     @Test
     public void evictorVolume() {
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
 
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
@@ -145,7 +145,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     public void evictorVolumeComparator() {
         loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setPolicy(Policies.newLRU());
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
             public void op(MemoryStoreService<Integer, String> a) {
@@ -206,7 +206,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
 
     @Test
     public void evictorVolumeAndSize() {
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
             public void op(MemoryStoreService<Integer, String> a) {
                 a.trimToSize(-5);
@@ -237,7 +237,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     public void evictorNoSupportedOperations() {
         final AtomicBoolean hasRun = new AtomicBoolean();
 
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
             public void op(MemoryStoreService<Integer, String> a) {
                 try {

@@ -54,7 +54,7 @@ public class MemoryStoreReplacementPolicyNone extends AbstractCacheTCKTest {
 
     @Test
     public void maximumVolumeDefaultSizes() {
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setMaximumVolume(3);
         init();
         put(M1, M2, M3, M4);
@@ -69,7 +69,7 @@ public class MemoryStoreReplacementPolicyNone extends AbstractCacheTCKTest {
     @Test
     public void maximumVolume() {
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setMaximumVolume(7);
         init();
         assertGet(M1, M2, M3);

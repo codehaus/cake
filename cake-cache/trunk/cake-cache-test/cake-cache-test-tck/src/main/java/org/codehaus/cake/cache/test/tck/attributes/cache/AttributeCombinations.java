@@ -27,7 +27,7 @@ public class AttributeCombinations extends AbstractCacheTCKTest {
      */
     @Test
     public void creationTimeAndModificationEqual() {
-        conf.withAttributes().add(CacheEntry.TIME_CREATED, CacheEntry.TIME_MODIFIED);
+        conf.addEntryAttributes(CacheEntry.TIME_CREATED, CacheEntry.TIME_MODIFIED);
         DeterministicClock dc = new DeterministicClock() {
             public long timeOfDay() {
                 this.incrementTimeOfDay();
@@ -44,7 +44,7 @@ public class AttributeCombinations extends AbstractCacheTCKTest {
 
     @Test
     public void testToString() {
-        conf.withAttributes().add(CacheEntry.TIME_CREATED, CacheEntry.TIME_MODIFIED);
+        conf.addEntryAttributes(CacheEntry.TIME_CREATED, CacheEntry.TIME_MODIFIED);
         clock.setTimeOfDay(1000);
         init();
         put(M1);

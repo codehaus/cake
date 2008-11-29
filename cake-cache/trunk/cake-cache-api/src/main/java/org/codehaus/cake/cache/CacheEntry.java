@@ -21,7 +21,7 @@ import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
 
 /**
  * A <tt>CacheEntry</tt> describes a value-key mapping much like {@link java.util.Map.Entry}. However, this interface
@@ -61,8 +61,6 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
     // double get(DoubleAttribute attribute);
     // int get(IntAttribute attribute);
 
-    /* Entry attributes */
-
     /**
      * The <tt>Cost attribute</tt> is used to indicate the cost of retrieving an entry. The idea is that when memory
      * is sparse the cache can choose to evict entries that are least costly to retrieve again. Currently this attribute
@@ -92,7 +90,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    DoubleAttribute COST = new Caches.CostAttribute();
+    DoubleAttribute COST = new CacheEntryAttributes.CostAttribute();
 
     /**
      * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
@@ -125,12 +123,13 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    LongAttribute HITS = new Caches.HitsAttribute();
+    LongAttribute HITS = new CacheEntryAttributes.HitsAttribute();
 
     /**
-     * The size of the cache entry.
+     * The size of the cache entry. The volume of a cache is defined as the sum of the individual sizes of all entries
+     * in the cache. Also used in, for example, {@link ReplaceBiggestPolicy}
      */
-    LongAttribute SIZE = new Caches.SizeAttribute();
+    LongAttribute SIZE = new CacheEntryAttributes.SizeAttribute();
 
     /**
      * The time between when the entry was last accessed and midnight, January 1, 1970 UTC. This is also the value
@@ -155,7 +154,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    TimeInstanceAttribute TIME_ACCESSED = new Caches.TimeAccessedAttribute();
+    TimeInstanceAttribute TIME_ACCESSED = new CacheEntryAttributes.TimeAccessedAttribute();
 
     /**
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
@@ -189,7 +188,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    TimeInstanceAttribute TIME_CREATED = new Caches.TimeCreatedAttribute();
+    TimeInstanceAttribute TIME_CREATED = new CacheEntryAttributes.TimeCreatedAttribute();
 
     /**
      * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is also the value
@@ -197,7 +196,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * <p>
      * The mapped value must be of a type <tt>long</tt> between 1 and {@link Long#MAX_VALUE}.
      */
-    TimeInstanceAttribute TIME_MODIFIED = new Caches.TimeModificedAttribute();
+    TimeInstanceAttribute TIME_MODIFIED = new CacheEntryAttributes.TimeModificedAttribute();
 
     /**
      * A count of how many times the value of an entry has been modified.
@@ -230,8 +229,10 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, WithAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    LongAttribute VERSION = new Caches.VersionAttribute();
+    LongAttribute VERSION = new CacheEntryAttributes.VersionAttribute();
 
+    /** {@inheritDoc} */
+    V getValue();
     // cost of retrieving the item
     // Logger <-detailed logging about an entry.
 }

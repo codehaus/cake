@@ -142,6 +142,8 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
             if (!needsNotRefreshCache.isShutdown()) {
                 Map<? extends K, ? extends AttributeMap> m = mapWithAttributes;
                 if (!isForced) {
+                    //TODO should have a check whether or not the size of the cache is 0
+                    //in which case we should just reload everything
                     m = new HashMap<K, AttributeMap>(mapWithAttributes);
                     for (Iterator<? extends K> iterator = m.keySet().iterator(); iterator.hasNext();) {
                         K key = iterator.next();

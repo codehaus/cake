@@ -1,7 +1,6 @@
 package org.codehaus.cake.internal.cache.processor.defaults;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.internal.cache.CachePredicates;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;

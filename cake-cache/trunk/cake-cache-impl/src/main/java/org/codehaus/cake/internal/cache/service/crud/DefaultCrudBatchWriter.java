@@ -9,6 +9,7 @@ import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
+import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.ops.Ops.Op;
 
 public class DefaultCrudBatchWriter<K, V, R> implements CrudBatchWriter<K, V, R> {
@@ -42,6 +43,8 @@ public class DefaultCrudBatchWriter<K, V, R> implements CrudBatchWriter<K, V, R>
     }
 
     public R removeAll(Iterable<? extends K> keys) {
+        RemoveEntriesRequest<K, V> r = factory.removeAll(keys);
+        processor.process(r);
         return null;
     }
 

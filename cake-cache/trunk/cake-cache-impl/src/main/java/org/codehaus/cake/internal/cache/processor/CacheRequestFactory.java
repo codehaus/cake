@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.cache.processor;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public interface CacheRequestFactory<K, V> {
     RemoveEntryRequest<K, V> remove(K key, Predicate<? extends CacheEntry<K, V>> removePredicate,
             Op<CacheEntry<K, V>, ?> previousEntryUpdate);
 
-    RemoveEntriesRequest<K, V> removeAll(Collection<? extends K> keys);
+    RemoveEntriesRequest<K, V> removeAll(Iterable<? extends K> keys);
 
     ClearCacheRequest<K, V> createClear();
 }

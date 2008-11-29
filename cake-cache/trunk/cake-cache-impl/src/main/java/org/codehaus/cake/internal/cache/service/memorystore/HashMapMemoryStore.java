@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -29,10 +28,10 @@ import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.forkjoin.collections.ParallelArray;
@@ -47,7 +46,6 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
@@ -80,10 +78,10 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     /** The total sizes of all elements in the cache. */
     private long volume;
 
-    public HashMapMemoryStore(CacheAttributeConfiguration attributeConfiguration,
+    public HashMapMemoryStore(CacheConfiguration cacheConfiguration,
             MemoryStoreConfiguration<K, V> storeConfiguration, InternalAttributeService<K, V> attributeService,
             InternalCacheExceptionService<K, V> ies) {
-        volumeEnabled = attributeConfiguration.getAllAttributes().contains(CacheEntry.SIZE);
+        volumeEnabled = cacheConfiguration.getAllEntryAttributes().contains(CacheEntry.SIZE);
         this.attributeService = attributeService;
         this.ies = ies;
         policy = storeConfiguration.getPolicy();
@@ -497,10 +495,17 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     }
 
     public void trim(Trimable<K, V> trimable) {
-        while (size(null) > maximumSize || (volumeEnabled ? this.volume : this.size) > maximumVolume) {
+//        if (size>maximumSize) {
+//            CacheEntry<K, V> e=evictNext();
+//            trimable.setTrimmed(Collections.singletonList(e));
+//        }
+//        if (true) {
+//            return;
+//        }
+        while (size > maximumSize || (volumeEnabled ? this.volume : size) > maximumVolume) {
             List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
             if (trimmed == null) {
-                trimmed = new ArrayList<CacheEntry<K, V>>();
+                trimmed = new ArrayList<CacheEntry<K, V>>(5);
                 trimable.setTrimmed(trimmed);
             }
             if (evictor == null) {

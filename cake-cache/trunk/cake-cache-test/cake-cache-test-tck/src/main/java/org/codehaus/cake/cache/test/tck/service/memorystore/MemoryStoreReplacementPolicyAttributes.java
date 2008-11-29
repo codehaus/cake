@@ -37,7 +37,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
     @Test
     public void dependHard() {
         conf.withMemoryStore().setPolicy(new HardPolicy()).setMaximumSize(5);
-        conf.withAttributes().add(A1);
+        conf.addEntryAttributes(A1);
         init();
         prestart();
         put(M1);
@@ -59,7 +59,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
     @Test
     public void dependSoftAlreadyRegistered() {
         conf.withMemoryStore().setPolicy(new SoftPolicy()).setMaximumSize(5);
-        conf.withAttributes().add(CacheEntry.HITS);
+        conf.addEntryAttributes(CacheEntry.HITS);
         init();
         prestart();
         put(M1);

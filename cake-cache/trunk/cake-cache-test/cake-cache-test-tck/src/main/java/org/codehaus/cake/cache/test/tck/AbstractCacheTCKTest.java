@@ -365,7 +365,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     }
 
     protected void putAll(Map.Entry<Integer, String>... entries) {
-        c.putAll(CollectionTestUtil.asMap(entries));
+        c.putAll(CollectionTestUtil.asMap_(entries));
     }
 
     public AbstractCacheTCKTest shutdown() {

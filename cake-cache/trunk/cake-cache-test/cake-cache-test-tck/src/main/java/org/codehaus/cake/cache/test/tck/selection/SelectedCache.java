@@ -58,7 +58,7 @@ public class SelectedCache extends AbstractCacheTCKTest {
 
     @Test
     public void test2() {
-        newConfiguration().withAttributes().add(type.getAttribute().toArray(new Attribute[0]));
+        newConfiguration().addEntryAttributes(type.getAttribute().toArray(new Attribute[0]));
         c = (Cache) type.fillAndSelect((Cache) newCache());
         assertSize(3);
         assertNotNull(c.getName());
@@ -70,7 +70,7 @@ public class SelectedCache extends AbstractCacheTCKTest {
 
     @Test
     public void clear_() {
-        newConfiguration().withAttributes().add(type.getAttribute().toArray(new Attribute[0]));
+        newConfiguration().addEntryAttributes(type.getAttribute().toArray(new Attribute[0]));
         Cache orig = newCache();
         c = (Cache) type.fillAndSelect(orig);
         int initSize = orig.size();

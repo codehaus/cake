@@ -31,7 +31,7 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
 
     @Before
     public void before() {
-        conf.withAttributes().add(atr);
+        conf.addEntryAttributes(atr);
         init();
     }
 

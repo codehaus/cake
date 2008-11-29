@@ -18,7 +18,6 @@ package org.codehaus.cake.cache.test.tck.lifecycle;
 import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
@@ -62,13 +61,12 @@ public class LifecycleStart extends AbstractCacheTCKTest {
 
     public class AllConfigurations {
         @Startable
-        public void start(CacheConfiguration configuration, ExceptionHandlingConfiguration a1,
-                CacheAttributeConfiguration a2, CacheLoadingConfiguration a3, ManagementConfiguration a4,
+        public void start(CacheConfiguration configuration, ExceptionHandlingConfiguration a1, CacheLoadingConfiguration a3, ManagementConfiguration a4,
                 MemoryStoreConfiguration a5/* , CacheStoreConfiguration a7 */) {
             latch.countDown();
             assertSame(conf, configuration);
             assertSame(a1, conf.withExceptionHandling());
-            assertSame(a2, conf.withAttributes());
+            //assertSame(a2, conf.withAttributes());
             assertSame(a3, conf.withLoading());
             assertSame(a4, conf.withManagement());
             assertSame(a5, conf.withMemoryStore());

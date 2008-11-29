@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 
 public class DefaultTrimToVolumeRequest<K, V> implements TrimToVolumeRequest<K, V> {

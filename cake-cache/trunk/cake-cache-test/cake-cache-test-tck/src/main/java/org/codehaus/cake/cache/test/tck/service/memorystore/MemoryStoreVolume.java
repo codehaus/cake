@@ -25,7 +25,7 @@ import org.junit.Test;
 public class MemoryStoreVolume extends AbstractCacheTCKTest {
     @Before
     public void before() {
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         init();
     }
@@ -79,7 +79,7 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
     public void defaultSizes() {
         newConfigurationClean();
         conf.withLoading().setLoader(loader);
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         init();
         put(M1);
         assertVolume(1);
@@ -99,7 +99,7 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
     public void replace() {
         newConfigurationClean();
         conf.withLoading().setLoader(loader);
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setMaximumVolume(2);
         init();
         loader.setAttribute(SIZE, LongOps.add(-1));// size=key+1
@@ -113,7 +113,7 @@ public class MemoryStoreVolume extends AbstractCacheTCKTest {
     public void volumeZeroShutdown() {
         newConfigurationClean();
         conf.withLoading().setLoader(loader);
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         init();
         c.withCrud().write().put(1, "2", SIZE.singleton(4));
         assertVolume(4);

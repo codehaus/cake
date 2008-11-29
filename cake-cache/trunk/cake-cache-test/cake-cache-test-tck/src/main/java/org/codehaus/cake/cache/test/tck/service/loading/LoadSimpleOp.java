@@ -67,7 +67,7 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
                 CacheEntry.TIME_CREATED));
 
         newConfiguration();
-        conf.withAttributes().add(CacheEntry.TIME_CREATED);
+        conf.addEntryAttributes(CacheEntry.TIME_CREATED);
         conf.withLoading().setLoader(new SimpleLoader1());
         newCache();
         withLoading().load(200, CacheEntry.TIME_CREATED.singleton(10));
@@ -81,7 +81,7 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
     public void attributesCustom() {
         LongAttribute la = new LongAttribute() {};
         newConfiguration();
-        conf.withAttributes().add(la);
+        conf.addEntryAttributes(la);
         conf.withLoading().setLoader(new SimpleLoader1());
         newCache();
 
@@ -104,7 +104,7 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
     @Ignore
     public void attributesAll() {
         newConfiguration();
-        conf.withAttributes().add(CacheEntry.TIME_CREATED);
+        conf.addEntryAttributes(CacheEntry.TIME_CREATED);
         conf.withLoading().setLoader(new SimpleLoader1());
         newCache();
 

@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.tck.core;
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_NULL;
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN1;
 import static org.codehaus.cake.test.util.CollectionTestUtil.NULL_A;
-import static org.codehaus.cake.test.util.CollectionTestUtil.asMap;
+import static org.codehaus.cake.test.util.CollectionTestUtil.asMap_;
 
 import java.util.Map;
 
@@ -38,15 +38,15 @@ public class PutAll extends AbstractCacheTCKTest {
     @Test
     public void putAll() {
         init();
-        c.putAll(asMap(M1, M5));
+        c.putAll(asMap_(M1, M5));
         assertEquals(2, c.size());
         assertTrue(c.entrySet().contains(M1));
         assertTrue(c.entrySet().contains(M5));
 
-        c.putAll(asMap(M1, M5));
+        c.putAll(asMap_(M1, M5));
         assertEquals(2, c.size());
 
-        c.putAll(asMap(MNAN1, M4));
+        c.putAll(asMap_(MNAN1, M4));
         assertEquals(3, c.size());
         assertFalse(c.entrySet().contains(M1));
 
@@ -59,7 +59,7 @@ public class PutAll extends AbstractCacheTCKTest {
     public void putAllLazyStart() {
         init();
         assertFalse(c.isStarted());
-        c.putAll(asMap(M1, M5));
+        c.putAll(asMap_(M1, M5));
         checkLazystart();
     }
 
@@ -73,7 +73,7 @@ public class PutAll extends AbstractCacheTCKTest {
         c.shutdown();
 
         // should fail
-        c.putAll(asMap(M1, M5));
+        c.putAll(asMap_(M1, M5));
     }
 
     @Test(expected = NullPointerException.class)
@@ -86,13 +86,13 @@ public class PutAll extends AbstractCacheTCKTest {
     @Test(expected = NullPointerException.class)
     public void putAllKeyMappingNPE() {
         init();
-        c.putAll(asMap(M1, NULL_A));
+        c.putAll(asMap_(M1, NULL_A));
     }
 
     @SuppressWarnings("unchecked")
     @Test(expected = NullPointerException.class)
     public void putAllValueMappingNPE() {
         init();
-        c.putAll(asMap(M1, M1_NULL));
+        c.putAll(asMap_(M1, M1_NULL));
     }
 }

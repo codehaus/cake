@@ -21,7 +21,6 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.cache.policy.spi.AbstractReplacementPolicy;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
 
 /**
  * WARNING: This is an internal class. Ordinary users should never need to reference this class.

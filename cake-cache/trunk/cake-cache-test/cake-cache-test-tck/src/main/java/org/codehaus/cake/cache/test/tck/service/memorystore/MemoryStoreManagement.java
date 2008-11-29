@@ -104,7 +104,7 @@ public class MemoryStoreManagement extends AbstractManagementTest {
 
     @Before
     public void setupTest() {
-        conf.withAttributes().add(SIZE);
+        conf.addEntryAttributes(SIZE);
         init();
     }
 

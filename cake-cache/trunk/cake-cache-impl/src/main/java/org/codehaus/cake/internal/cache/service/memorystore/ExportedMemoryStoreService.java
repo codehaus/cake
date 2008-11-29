@@ -2,12 +2,9 @@ package org.codehaus.cake.internal.cache.service.memorystore;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
@@ -17,7 +14,6 @@ import org.codehaus.cake.internal.service.configuration.ConfigurationService;
 import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;
-import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.annotation.ExportAsService;

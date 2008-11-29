@@ -34,7 +34,7 @@ public class CrudWriterFactory<K, V> implements ServiceFactory {
         }
         Op op = CrudWriter.WRITE_TRANSFORMER.get(context);
         if (context.getKey().equals(CrudBatchWriter.class)) {
-            DefaultCrudBatchWriter.returnVoid(factory, processor);
+            return DefaultCrudBatchWriter.returnVoid(factory, processor);
         }
         return DefaultCrudWriter.withPrevious(factory, processor, op);
     }

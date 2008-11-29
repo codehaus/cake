@@ -12,7 +12,7 @@ public class DefaultRemoveEntriesRequest<K, V> implements RemoveEntriesRequest<K
     final Collection<RemoveEntryRequest<K, V>> removes;
 
 
-    public DefaultRemoveEntriesRequest(Collection<? extends K> keys) {
+    public DefaultRemoveEntriesRequest(Iterable<? extends K> keys) {
         removes = new ArrayList<RemoveEntryRequest<K, V>>();
         for (K key : keys) {
             removes.add(new DefaultRemoveRequest<K, V>(key, (Predicate) null));

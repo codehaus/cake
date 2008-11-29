@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.service.attribute.CacheAttributeConfiguration;
+import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
@@ -38,11 +38,11 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     private final Clock clock;
     private final InternalExceptionService<?> ies;
 
-    public MemorySparseAttributeService(CacheAttributeConfiguration configuration, Clock clock,
+    public MemorySparseAttributeService(CacheConfiguration configuration, Clock clock,
             InternalExceptionService<?> ies) {
         this.clock = clock;
         this.ies = ies;
-        for (Object o : configuration.getAllAttributes()) {
+        for (Object o : configuration.getAllEntryAttributes()) {
             Attribute a = (Attribute) o;
             CacheAttributeMapConfiguration sac = CacheAttributeMapConfiguration.getPredefinedConfiguration(a);
             map.put(a, sac);

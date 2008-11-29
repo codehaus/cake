@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.cache.processor;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -78,7 +77,7 @@ public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, 
         return new DefaultRemoveRequest<K, V>(key, removePredicate);
     }
 
-    public RemoveEntriesRequest<K, V> removeAll(Collection<? extends K> keys) {
+    public RemoveEntriesRequest<K, V> removeAll(Iterable<? extends K> keys) {
         if (keys == null) {
             throw new NullPointerException("collection is null");
         }
