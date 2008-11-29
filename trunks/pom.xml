@@ -67,7 +67,7 @@
       </activation>
       <modules>
         <module>cake-attributes</module>
-
+        <module>cake-cache</module>
         <module>cake-management</module>
         <module>cake-ops</module>
         <module>cake-service</module>
