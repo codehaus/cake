@@ -84,7 +84,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws IllegalArgumentException
      *             if another configuration of the same type is already registered
      */
-    public final ContainerConfiguration<T> addConfiguration(Object configuration) {
+    protected final ContainerConfiguration<T> addConfiguration(Object configuration) {
         if (configuration == null) {
             throw new NullPointerException("configuration is null");
         }
@@ -344,6 +344,7 @@ public abstract class ContainerConfiguration<T> {
      * protocol.
      * <p>
      * Setting a custom clock can also be useful for introducing determinism while testing.
+     * <p>
      * 
      * @param clock
      *            the Clock that the container should use
@@ -383,12 +384,12 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Sets the name of the container. The name should be unique among other configured containers. The name must
-     * consists only of alphanumeric characters and '_' or '-'.
+     * Sets the name of the container. The name should, but is not required to, be unique among other configured
+     * containers. The name must consists only of alphanumeric characters and '_' or '-'.
      * <p>
-     * If no name is set in the configuration, any container implementation must generate a name for the container. How
-     * exactly the name is generated is implementation specific. But the recommended way is to use
-     * {@link UUID#randomUUID()} or a similar mechanism to generate a random name.
+     * If no name is set using this method, any container implementation must generate a name an instatiation time.
+     * Exactly how the name is generated is implementation specific. But the recommended way is to use
+     * {@link UUID#randomUUID()} or a similar mechanism to generate it.
      * 
      * @param name
      *            the name of the container

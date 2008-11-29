@@ -16,7 +16,6 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,8 +24,12 @@ import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 
+/**
+ * A Composer is used for constructing {@link Container} instances.
+ */
 @UseInternals
 public class Composer {
 

@@ -2,6 +2,9 @@ package org.codehaus.cake.internal.service.executor;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.UseInternals;
@@ -30,7 +33,11 @@ public class DefaultExecutorService implements ServiceFactory<ExecutorService> {
                 }
                 s = defaultExecutor;
                 if (s == null) {
-                    defaultExecutor = s = Executors.newCachedThreadPool();
+                    ThreadPoolExecutor tpe = new ThreadPoolExecutor(2000, 3000, 60L, TimeUnit.SECONDS,
+                            new LinkedBlockingQueue<Runnable>());
+//                    tpe=new ThreadPoolExecutor(0, 3000, 60L, TimeUnit.SECONDS,
+//                            new SynchronousQueue<Runnable>());
+                    defaultExecutor = s = tpe;
                 }
             }
         }

@@ -30,8 +30,8 @@ import org.codehaus.cake.attribute.AttributeMap;
  * Retrieving services that have been registered using {@link ContainerConfiguration#addToLifecycle(Object)}.
  * 
  * <p>
- * This interface is normally extended by a concrete container type, for example, a
- * {@link org.codehaus.cake.cache.Cache}.
+ * This interface is normally extended by a concrete container type. {@link org.codehaus.cake.cache.Cache}, for
+ * example, inherits from this interface.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
@@ -41,7 +41,7 @@ public interface Container {
     /**
      * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
      * exists. Calling this method is equivalent to calling {@link #getService(Class, AttributeMap)} with an empty
-     * {@link AttributeMap}.
+     * {@link AttributeMap} as parameter.
      * 
      * @param <T>
      *            the type of service to retrieve
@@ -88,14 +88,15 @@ public interface Container {
     boolean hasService(Class<?> serviceType);
 
     /**
-     * Returns a {@link Set} consisting of the types of all registered services.
+     * Returns a {@link Set} consisting of the types of all services available.
      * 
-     * @return a Set consisting of the types of all registered services
+     * @return a Set consisting of the types of all services available
      */
     Set<Class<?>> serviceKeySet();
+
     /**
-     * Returns the name of this container. If no name has been specified while configuring the container. The
-     * implementation must choose a valid name. A valid name contains no other characters then alphanumeric characters
+     * Returns the name of this container. If no name has been specified while configuring the container. The container
+     * chooses a valid name on contruction time. A valid name contains no other characters then alphanumeric characters
      * and '_' or '-'.
      * 
      * @return the name of the container
@@ -104,7 +105,7 @@ public interface Container {
     String getName();
 
     /**
-     * Blocks until all tasks within this container have completed execution after a shutdown request, or the timeout
+     * Blocks until all services within the container have completed execution after a shutdown request, or the timeout
      * occurs, or the current thread is interrupted, whichever happens first.
      * 
      * @param timeout
@@ -133,7 +134,7 @@ public interface Container {
     boolean isStarted();
 
     /**
-     * Returns <tt>true</tt> if all service tasks have completed following shut down. Note that <tt>isTerminated</tt>
+     * Returns <tt>true</tt> if all services have been terminated following shut down. Note that <tt>isTerminated</tt>
      * is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
      * 
      * @return <tt>true</tt> if all tasks have completed following shut down

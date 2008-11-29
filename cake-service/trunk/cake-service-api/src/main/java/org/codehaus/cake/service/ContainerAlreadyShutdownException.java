@@ -1,19 +1,27 @@
 package org.codehaus.cake.service;
 
 /**
- * <code>ContainerShutdownException</code> is the exception thrown by a Container when one of its method has been invoked while the container 
- * afruntime exception thrown by Coconut Cache.
+ * Thrown by a {@link Container} instance or a service registered in the container whenever the container has been
+ * shutdown and the method invoked required a running container. No methods defined in the Container interface actually
+ * throws this exception, however, subclasses of the interface might.
+ * <p>
+ * It is okay for service to have methods that both silently ignore invocations after a cache has been shutdown, and
+ * methods that throw this exception. For example, the {@link org.codehaus.cake.cache.Cache#containsKey(Object)} method return <tt>false</tt>
+ * for any argument whenever a cache has been shutdown. While the {@link org.codehaus.cake.cache.Cache#put(Object, Object)} method throws a
+ * {@link ContainerAlreadyShutdownException} for any argument when the cache has been shutdown.
+ * <p>
+ * A container is normally shutdown by calling using {@link Container#shutdown()} or {@link Container#shutdownNow()}.
+ * However, if a container failed to start up properly the
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheException.java 518 2007-12-20 17:21:32Z kasper $
- * @see org.coconut.cache.service.exceptionhandling.CacheExceptionHandler
  */
 public class ContainerAlreadyShutdownException extends IllegalStateException {
     /** <code>serialVersionUID</code>. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Construc ts a new ContainerShsutdownException with <code>null</code> as its detailed message. The cause is not
+     * Constructs a new ContainerShutdownException with <code>null</code> as its detailed message. The cause is not
      * initialized, and may subsequently be initialized by a call to {@link Throwable#initCause}.
      */
     public ContainerAlreadyShutdownException() {

@@ -19,11 +19,9 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 
 /**
+ * A service factory is used for constructing services of a specific type.
  * 
- * ServiceFactory can be used for additional control.
- * 
- * The following can be used to introduce
- * A service factory can be implemented for
+ * The following can be used to introduce A service factory can be implemented for
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $ *
@@ -32,24 +30,41 @@ import org.codehaus.cake.attribute.WithAttributes;
  */
 public interface ServiceFactory<T> {
 
+    /**
+     * Called by a {@link Container} to lookup a specific service.
+     * 
+     * @param context
+     *            the context the factory should use to decide what service should be returned
+     * @return a service matching the specified context
+     */
+    // TODO return null or Throw an UOE??
     T lookup(ServiceFactoryContext<T> context);
 
+    /**
+     * A ServiceFactoryContext is used as the parameter to the {@link ServiceFactory#lookup(ServiceFactoryContext)}
+     * method.
+     */
     interface ServiceFactoryContext<T> extends WithAttributes {
         /**
-         * @return the key that used for looking of the service, can be useful if a ServiceFactory is used for
-         *         constructing multiple services
+         * Return the key that is used for acquiring the service, as parsed along to {@link Container#getService(Class)}
+         * or {@link Container#getService(Class, AttributeMap)}. This is primaraily used if the ServiceFactory returns
+         * services for multiple service types
+         * 
+         * @return the key that used for looking of the service.
          */
         Class<? extends T> getKey();
 
         /**
-         * @return attributes that was used for looking up the service
-         * @see Container#getService(Class, AttributeMap)
+         * Return the attribute map parsed to {@link Container#getService(Class, AttributeMap)} or an empty attribute
+         * map if {@link Container#getService(Class)} was called.
+         * 
+         * @return attribute map that was used for looking up the service
          */
         AttributeMap getAttributes();
 
         /**
-         * This method should be called if the lookup method cannot construct a service based upon the key and attribute
-         * map
+         * This method can be called to allow other service factories to create a service for specified service type and
+         * map of attributes map.
          * 
          * @return can be used for chaining instances
          */

@@ -15,13 +15,17 @@
  */
 package org.codehaus.cake.internal.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.ServiceFactory;
 
 public abstract class AbstractContainer implements Container {
 
@@ -30,6 +34,8 @@ public abstract class AbstractContainer implements Container {
     private final RunState runState;
 
     private final ServiceManager sm;
+
+    private volatile Map<Class<?>, RegisteredFactory> services = new ConcurrentHashMap<Class<?>, RegisteredFactory>();
 
     protected AbstractContainer(Composer composer) {
         ContainerInfo info = composer.get(ContainerInfo.class);
@@ -63,14 +69,44 @@ public abstract class AbstractContainer implements Container {
 
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
-        lazyStart();
-        return sm.getService(serviceType, attributes);
+        if (serviceType == null) {
+            throw new NullPointerException("serviceType is null");
+        } else if (attributes == null) {
+            throw new NullPointerException("attributes is null");
+        }
+        Map<Class<?>, RegisteredFactory> services = this.services;// volatile read
+
+        RegisteredFactory<T> f = services.get(serviceType);
+        if (f == null && services.size() == 0) {// No services registered, most likely the container hasn't been started
+            lazyStart(); // make sure its started
+            this.services = services = new HashMap<Class<?>, RegisteredFactory>(sm.getAll());
+            f = services.get(serviceType);
+        }
+
+        if (f == null) {
+            throw new UnsupportedOperationException("No service or service factory has been registered for the specified type [type=" + serviceType.getCanonicalName() + "]");
+        }
+        T service = f.lookup(serviceType, attributes);
+        if (service == null) {
+            throw new UnsupportedOperationException("Unknown service [type=" + serviceType.getCanonicalName()
+                    + ", attributes=" + attributes + "]");
+        }
+        return service;
     }
 
     /** {@inheritDoc} */
     public boolean hasService(Class<?> type) {
-        lazyStart();
-        return sm.hasService(type);
+        Map<Class<?>, RegisteredFactory> services = this.services;// volatile read
+        if (services.containsKey(type)) {
+            return true;
+        }
+        // Okay either the container hasn't been started or the container does not have a service of the specified type
+        if (services.size() == 0) { // No services registered, most likely the container hasn't been started
+            lazyStart(); // make sure its started
+            this.services = services = new HashMap<Class<?>, RegisteredFactory>(sm.getAll());
+            return services.containsKey(type);
+        }
+        return false;
     }
 
     /** {@inheritDoc} */
@@ -95,8 +131,13 @@ public abstract class AbstractContainer implements Container {
 
     /** {@inheritDoc} */
     public Set<Class<?>> serviceKeySet() {
-        lazyStart();
-        return sm.serviceKeySet();
+        Map<Class<?>, RegisteredFactory> services = this.services;// volatile read
+        // Okay either the container hasn't been started or the container does not have a service of the specified type
+        if (services.size() == 0) { // No services registered, most likely the container hasn't been started
+            lazyStart(); // make sure its started
+            this.services = services = new HashMap<Class<?>, RegisteredFactory>(sm.getAll());
+        }
+        return services.keySet();
     }
 
     /** {@inheritDoc} */
@@ -107,5 +148,56 @@ public abstract class AbstractContainer implements Container {
     /** {@inheritDoc} */
     public void shutdownNow() {
         runState.shutdown(true);
+    }
+    
+
+    interface RegisteredFactory<T> {
+        T lookup(Class<T> key, AttributeMap attributes);
+    }
+
+    /**
+     * A {@link ServiceFactory} that returns the same service for any attributes.
+     */
+    static class SingleServiceFactory<T> implements RegisteredFactory<T> {
+        private final T service;
+
+        SingleServiceFactory(T service) {
+            this.service = service;
+        }
+
+        public T lookup(Class<T> key, AttributeMap attributes) {
+            return service;
+        }
+    }
+
+    static class LookupNextServiceFactory<T> implements RegisteredFactory<T> {
+        private final ServiceFactory<T> factory;
+        private final RegisteredFactory<T> next;
+
+        LookupNextServiceFactory(ServiceFactory<T> factory, RegisteredFactory<T> next) {
+            this.factory = factory;
+            this.next = next;
+        }
+
+        public T lookup(final Class<T> key, final AttributeMap attributes) {
+            return factory.lookup(new ServiceFactory.ServiceFactoryContext<T>() {
+                public AttributeMap getAttributes() {
+                    return attributes;
+                }
+
+                public Class<? extends T> getKey() {
+                    return key;
+                }
+
+                public T handleNext() {
+                    if (next == null) {
+                        throw new UnsupportedOperationException(
+                                "No other services registered for the specified key, [key=" + key.getCanonicalName()
+                                        + "]");
+                    }
+                    return next.lookup(key, attributes);
+                }
+            });
+        }
     }
 }
