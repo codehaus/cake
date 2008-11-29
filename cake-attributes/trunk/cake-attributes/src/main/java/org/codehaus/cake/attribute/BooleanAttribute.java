@@ -104,7 +104,11 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(boolean value) { }
+    public final void checkValid(boolean value) { 
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
+        }
+    }
     
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
@@ -177,14 +181,8 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
      * @return whether or not the value is valid
      */
     public boolean isValid(boolean value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }    
+        return true;
     }
-
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Boolean value) {
@@ -234,6 +232,7 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     public AttributeMap singleton(boolean value) {
         return super.singleton(value);
     }
+    
     public AttributeMap singletonTrue() {
         return singleton(true);
     }

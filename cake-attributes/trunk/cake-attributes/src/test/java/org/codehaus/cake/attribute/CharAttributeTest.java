@@ -34,10 +34,8 @@ public final class CharAttributeTest extends AtrStubs {
 
     static final CharAttribute NON_NEGATIVE = new CharAttribute("a50", (char) 50) {
         @Override
-        public void checkValid(char value) {
-            if (value < (char) 5) {
-                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
-            }
+        public boolean isValid(char value) {
+            return value >= (char) 5;
         }
     };
 

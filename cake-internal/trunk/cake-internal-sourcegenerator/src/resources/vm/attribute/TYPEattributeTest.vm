@@ -17,10 +17,8 @@ public final class ${this} extends AtrStubs {
 
     static final ${Type}Attribute NON_NEGATIVE = new ${Type}Attribute("a50", $util.val(50)) {
         @Override
-        public void checkValid($type value) {
-            if (value < $util.val(5)) {
-                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
-            }
+        public boolean isValid($type value) {
+            return value >= $util.val(5);
         }
     };
 

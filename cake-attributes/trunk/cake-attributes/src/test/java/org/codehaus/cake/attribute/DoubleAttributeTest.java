@@ -34,10 +34,8 @@ public final class DoubleAttributeTest extends AtrStubs {
 
     static final DoubleAttribute NON_NEGATIVE = new DoubleAttribute("a50", 50D) {
         @Override
-        public void checkValid(double value) {
-            if (value < 5D) {
-                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
-            }
+        public boolean isValid(double value) {
+            return value >= 5D;
         }
     };
 

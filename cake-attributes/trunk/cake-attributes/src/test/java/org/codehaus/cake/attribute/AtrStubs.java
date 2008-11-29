@@ -58,10 +58,8 @@ public class AtrStubs {
     public static final IntAttribute I_POSITIVE = new IntAttribute("I_POSITIVE", 1) {
 
         @Override
-        public void checkValid(int value) {
-            if (value <= 0) {
-                throw new IllegalArgumentException();
-            }
+        public boolean isValid(int value) {
+            return value>0;
         }
     };
 

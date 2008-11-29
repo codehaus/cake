@@ -125,9 +125,11 @@ public abstract class Attribute<T> implements Serializable {
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(T value) {
-    }
+    public abstract void checkValid(T value);
 
+    protected String checkValidFailureMessage(T value) {
+        return "The specified value is not valid for this attribute " + getName() +" [value= " + value +"]";
+    }
     /**
      * Returns the <code>true</code> if and only id the specified object is the same as this, otherwise returns
      * <code>false</code>.
@@ -188,14 +190,7 @@ public abstract class Attribute<T> implements Serializable {
      *            the specified value to check
      * @return <code>true</code> if the specified value is valid for this attribute, otherwise <code>false</code>
      */
-    public boolean isValid(T value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
+    public abstract boolean isValid(T value);
 
     /**
      * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is

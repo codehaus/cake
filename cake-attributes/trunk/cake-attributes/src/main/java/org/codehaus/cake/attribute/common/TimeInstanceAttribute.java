@@ -40,12 +40,10 @@ public abstract class TimeInstanceAttribute extends LongAttribute {
 
     /** {@inheritDoc} */
     @Override
-    public void checkValid(long time) {
-        if (time < 0) {
-            throw new IllegalArgumentException(getName() + " was negative (" + getName() + " = " + time + ")");
-        }
+    protected String checkValidFailureMessage(Long value) {
+        return " was negative (" + getName() + " = " + value + ")";
     }
-
+    
     /** {@inheritDoc} */
     @Override
     public boolean isValid(long time) {

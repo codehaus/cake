@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
 /**
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
@@ -56,29 +57,7 @@ public class AttributeTest {
         ATR_VALIDATE.checkValid("werwer");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void checkValue() {
-        Attribute<String> a = new Attribute(String.class, "default") {
-            @Override
-            public boolean isValid(Object value) {
-                return false;
-            }
-        };
-        a.checkValid("default");
-    }
 
-    @Test
-    public void isValid() {
-        Attribute<String> a = new Attribute(String.class, "defaults") {
-            @Override
-            public void checkValid(Object value) {
-                if (value.equals("default")) {
-                throw new IllegalArgumentException();
-            }
-            }
-        };
-        assertFalse(a.isValid("default"));
-    }
     // @Test
     // public void get() {
     // assertEquals("default", ATR.get(am1));
@@ -170,7 +149,15 @@ public class AttributeTest {
 
     @Test
     public void testConstructor() {
-        Attribute<String> a = new Attribute(String.class, "default") {};
+        Attribute<String> a = new Attribute(String.class, "default") {
+            public void checkValid(Object value) {
+                
+            }
+
+            public boolean isValid(Object value) {
+                return true;
+            }
+        };
         assertEquals(String.class, a.getType());
         assertEquals("default", a.getDefault());
         assertNotNull(a.getName());
@@ -182,8 +169,15 @@ public class AttributeTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorNPE() {
-        new Attribute(null, "default") {};
+        new Attribute(null, "default") {
+            public void checkValid(Object value) {
+                throw new UnsupportedOperationException();
+            }
 
+            public boolean isValid(Object value) {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     //
@@ -268,6 +262,25 @@ public class AttributeTest {
         // public String fromString(String str) {
         // return str;
         // }
+    }
+
+    static class TestAttribute extends Attribute {
+
+        public TestAttribute(Class clazz, Object defaultValue) {
+            super(clazz, defaultValue);
+            // TODO Auto-generated constructor stub
+        }
+
+        @Override
+        public void checkValid(Object value) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean isValid(Object value) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 
     static class ValidateAttribute extends DefaultAttribute {

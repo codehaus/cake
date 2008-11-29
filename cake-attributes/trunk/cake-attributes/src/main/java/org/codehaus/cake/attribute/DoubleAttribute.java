@@ -106,10 +106,9 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(double value) {
-        if (isNaNInfinity(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
-                    + ", type = " + getClass() + ", value = " + value + "]");
+    public final void checkValid(double value) {
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
         }
     }
     
@@ -176,21 +175,16 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive double as
      * parameter.
      * <p>
-     * The default version returns true for all parameters
-     * 
+     * The default version returns true for all parameters, except 
+     * {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY} or {@link Double#NaN}.
+     *
      * @param value
      *            the value to check
      * @return whether or not the value is valid
      */
     public boolean isValid(double value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }    
+        return !isNaNInfinity(value);
     }
-
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Double value) {
@@ -240,6 +234,7 @@ public abstract class DoubleAttribute extends Attribute<Double> implements
     public AttributeMap singleton(double value) {
         return super.singleton(value);
     }
+    
   
     /**
      * Returns <code>true</code> if the specified value is either {@link Double#NEGATIVE_INFINITY},

@@ -103,15 +103,7 @@ public abstract class DurationAttribute extends LongAttribute {
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(long value) {
-        return value > 0;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final void checkValid(long value) {
-        if (value<=0) {
-            throw new IllegalArgumentException("Duration must be greater then 0, was " + value);
-        }
+        return value>0;
     }
     public void set(AttributeMap attributes, Long duration, TimeUnit unit) {
         set(attributes, duration.longValue(), unit);
@@ -132,5 +124,10 @@ public abstract class DurationAttribute extends LongAttribute {
      */
     public AttributeMap singleton(long value, TimeUnit unit) {
         return super.singleton(convertFrom(value, unit));
+    }
+
+    @Override
+    protected String checkValidFailureMessage(Long value) {
+        return "Duration must be greater then 0, was " + value;
     }
 }

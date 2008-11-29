@@ -104,7 +104,11 @@ public abstract class CharAttribute extends Attribute<Character> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(char value) { }
+    public final void checkValid(char value) { 
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
+        }
+    }
     
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
@@ -179,14 +183,8 @@ public abstract class CharAttribute extends Attribute<Character> implements
      * @return whether or not the value is valid
      */
     public boolean isValid(char value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }    
+        return true;
     }
-
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Character value) {
@@ -236,4 +234,5 @@ public abstract class CharAttribute extends Attribute<Character> implements
     public AttributeMap singleton(char value) {
         return super.singleton(value);
     }
+    
 }

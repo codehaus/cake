@@ -104,7 +104,11 @@ public abstract class LongAttribute extends Attribute<Long> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(long value) { }
+    public final void checkValid(long value) { 
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
+        }
+    }
     
     /** {@inheritDoc} */
     public int compare(WithAttributes w1, WithAttributes w2) {
@@ -176,14 +180,8 @@ public abstract class LongAttribute extends Attribute<Long> implements
      * @return whether or not the value is valid
      */
     public boolean isValid(long value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }    
+        return true;
     }
-
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Long value) {
@@ -233,4 +231,5 @@ public abstract class LongAttribute extends Attribute<Long> implements
     public AttributeMap singleton(long value) {
         return super.singleton(value);
     }
+    
 }

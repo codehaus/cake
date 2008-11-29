@@ -106,10 +106,9 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid(float value) {
-        if (isNaNInfinity(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
-                    + ", type = " + getClass() + ", value = " + value + "]");
+    public final void checkValid(float value) {
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
         }
     }
     
@@ -176,21 +175,16 @@ public abstract class FloatAttribute extends Attribute<Float> implements
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive float as
      * parameter.
      * <p>
-     * The default version returns true for all parameters
-     * 
+     * The default version returns true for all parameters, except 
+     * {@link Float#NEGATIVE_INFINITY}, {@link Float#POSITIVE_INFINITY} or {@link Float#NaN}.
+     *
      * @param value
      *            the value to check
      * @return whether or not the value is valid
      */
     public boolean isValid(float value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }    
+        return !isNaNInfinity(value);
     }
-
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(Float value) {
@@ -240,6 +234,7 @@ public abstract class FloatAttribute extends Attribute<Float> implements
     public AttributeMap singleton(float value) {
         return super.singleton(value);
     }
+    
   
     /**
      * Returns <code>true</code> if the specified value is either {@link Float#NEGATIVE_INFINITY},

@@ -86,18 +86,10 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
         super(name, clazz, defaultValue);
     }
 
-    /**
-     * Checks if the specified value is valid for this attribute. If the specified value is not
-     * valid this method will throw an {@link IllegalArgumentException}.
-     * 
-     * @param value
-     *            the value to check
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid
-     */
-    public void checkValid(T value) {
+    /** {@inheritDoc} */
+    public final void checkValid(T value) {
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute " + getName() + ", value = " + value);
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
         }
     }
 
@@ -147,15 +139,7 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
-    /**
-     * Returns whether or not the specified value is valid for this attribute. This method can be
-     * overriden to only accept certain values.
-     * 
-     * @param value
-     *            the specified value to check
-     * @return <code>true</code> if the specified value is valid for this attribute, otherwise
-     *         <code>false</code>
-     */
+    /** {@inheritDoc} */
     public boolean isValid(T value) {
         return true; // all values are accepted by default.
     }

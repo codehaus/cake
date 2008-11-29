@@ -34,10 +34,8 @@ public final class ShortAttributeTest extends AtrStubs {
 
     static final ShortAttribute NON_NEGATIVE = new ShortAttribute("a50", (short) 50) {
         @Override
-        public void checkValid(short value) {
-            if (value < (short) 5) {
-                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
-            }
+        public boolean isValid(short value) {
+            return value >= (short) 5;
         }
     };
 

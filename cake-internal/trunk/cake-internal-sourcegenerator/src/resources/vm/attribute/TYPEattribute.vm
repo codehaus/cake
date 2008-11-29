@@ -88,10 +88,9 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid($type value) {
-        if (isNaNInfinity(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
-                    + ", type = " + getClass() + ", value = " + value + "]");
+    public final void checkValid($type value) {
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
         }
     }
 #else        
@@ -104,7 +103,11 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid($type value) { }
+    public final void checkValid($type value) { 
+        if (!isValid(value)) {
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
+        }
+    }
 #end    
     
     /** {@inheritDoc} */
@@ -178,6 +181,22 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
         return withAttributes.getAttributes().get(this, defaultValue);
     }
 
+#if($isReal)
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive $type as
+     * parameter.
+     * <p>
+     * The default version returns true for all parameters, except 
+     * {@link ${object}#NEGATIVE_INFINITY}, {@link ${object}#POSITIVE_INFINITY} or {@link ${object}#NaN}.
+     *
+     * @param value
+     *            the value to check
+     * @return whether or not the value is valid
+     */
+    public boolean isValid($type value) {
+        return !isNaNInfinity(value);
+    }
+#else 
    /**
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive $type as
      * parameter.
@@ -189,14 +208,9 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      * @return whether or not the value is valid
      */
     public boolean isValid($type value) {
-        try {
-            checkValid(value);
-            return true; // all values are accepted by default.
-        } catch (IllegalArgumentException e) {
-            return false;
-        }    
+        return true;
     }
-
+#end
     /** {@inheritDoc} */
     @Override
     public final boolean isValid($object value) {
@@ -246,6 +260,15 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
     public AttributeMap singleton($type value) {
         return super.singleton(value);
     }
+    
+#if($type=="boolean")
+    public AttributeMap singletonTrue() {
+        return singleton(true);
+    }
+    public AttributeMap singletonFalse() {
+        return singleton(false);
+    }
+#end        
 #if($isReal)    
   
     /**

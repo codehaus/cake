@@ -34,10 +34,8 @@ public final class ByteAttributeTest extends AtrStubs {
 
     static final ByteAttribute NON_NEGATIVE = new ByteAttribute("a50", (byte) 50) {
         @Override
-        public void checkValid(byte value) {
-            if (value < (byte) 5) {
-                throw new IllegalArgumentException("Must be bigger then 5, was " + value);
-            }
+        public boolean isValid(byte value) {
+            return value >= (byte) 5;
         }
     };
 
