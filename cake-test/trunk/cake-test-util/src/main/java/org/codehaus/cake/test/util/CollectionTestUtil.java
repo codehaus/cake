@@ -24,12 +24,13 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
 @SuppressWarnings("unchecked")
 public class CollectionTestUtil {
-    //rename to M1A
+    // rename to M1A
     public static final Map.Entry<Integer, String> M1 = newEntry(1, "A");
 
     public static final Map.Entry<Integer, String> NULL_A = newEntry(null, "A");
@@ -52,16 +53,16 @@ public class CollectionTestUtil {
 
     public static final Map.Entry<Integer, String> M9 = newEntry(9, "I");
 
-    public static final Map<Integer, String> M1_TO_M5_MAP = asMap(M1, M2, M3, M4, M5);
+    public static final Map<Integer, String> M1_TO_M5_MAP = asMap_(M1, M2, M3, M4, M5);
 
-    public static final Set<Map.Entry<Integer, String>> M1_TO_M5_SET = new HashSet<Map.Entry<Integer, String>>(
-            Arrays.asList(M1, M2, M3, M4, M5));
+    public static final Set<Map.Entry<Integer, String>> M1_TO_M5_SET = new HashSet<Map.Entry<Integer, String>>(Arrays
+            .asList(M1, M2, M3, M4, M5));
 
-    public static final Collection<String> M1_TO_M5_VALUES = Arrays.asList(M1.getValue(), M2
-            .getValue(), M3.getValue(), M4.getValue(), M5.getValue());
+    public static final Collection<String> M1_TO_M5_VALUES = Arrays.asList(M1.getValue(), M2.getValue(), M3.getValue(),
+            M4.getValue(), M5.getValue());
 
-    public static final Collection<Integer> M1_TO_M5_KEY_SET = Arrays.asList(M1.getKey(), M2
-            .getKey(), M3.getKey(), M4.getKey(), M5.getKey());
+    public static final Collection<Integer> M1_TO_M5_KEY_SET = Arrays.asList(M1.getKey(), M2.getKey(), M3.getKey(), M4
+            .getKey(), M5.getKey());
 
     static final Integer[] M1_TO_M5_KEY_ARRAY = M1_TO_M5_KEY_SET.toArray(new Integer[0]);
 
@@ -99,7 +100,51 @@ public class CollectionTestUtil {
         return map;
     }
 
-    public static Map<Integer, String> asMap(Map.Entry<Integer, String>... entries) {
+    final static Random rnd = new Random();
+
+    public static Map<Integer, String> mapWithKeyNull() {
+        HashMap<Integer, String> map = new HashMap<Integer, String>();
+        int r1 = rnd.nextInt(20);
+        for (int i = 0; i < r1; i++) {
+            map.put(rnd.nextInt(), "NonNull");
+        }
+        map.put(null, "null");
+        r1 = rnd.nextInt(20);
+        for (int i = 0; i < r1; i++) {
+            map.put(rnd.nextInt(), "NonNull");
+        }
+        return map;
+    }
+
+    public static List<Integer> listWithNull() {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int r1 = rnd.nextInt(20);
+        for (int i = 0; i < r1; i++) {
+            list.add(rnd.nextInt());
+        }
+        list.add(null);
+        r1 = rnd.nextInt(20);
+        for (int i = 0; i < r1; i++) {
+            list.add(rnd.nextInt());
+        }
+        return list;
+    }
+
+    public static Map<Integer, String> mapWithValueNull() {
+        HashMap<Integer, String> map = new HashMap<Integer, String>();
+        int r1 = rnd.nextInt(25);
+        for (int i = 0; i < r1; i++) {
+            map.put(rnd.nextInt(Integer.MAX_VALUE), "NonNull");
+        }
+        map.put(-1, null);
+        r1 = rnd.nextInt(25);
+        for (int i = 0; i < r1; i++) {
+            map.put(rnd.nextInt(Integer.MAX_VALUE), "NonNull");
+        }
+        return map;
+    }
+
+    public static Map<Integer, String> asMap_(Map.Entry<Integer, String>... entries) {
         Map<Integer, String> map = new LinkedHashMap<Integer, String>();
         for (Map.Entry<Integer, String> name : entries) {
             map.put(name.getKey(), name.getValue());
@@ -107,6 +152,17 @@ public class CollectionTestUtil {
         return map;
     }
 
+    public static <K, V> Map<K, V> asMap(K key, V value) {
+        HashMap<K, V> m = new HashMap<K, V>();
+        m.put(key, value);
+        return m;
+    }
+    public static <K, V> Map<K, V> asMap(K key, V value, K key1, V value1) {
+        HashMap<K, V> m = new HashMap<K, V>();
+        m.put(key, value);
+        m.put(key1, value1);
+        return m;
+    }
     public static Set<Integer> asSet(int... data) {
         return new HashSet<Integer>(asList(data));
     }
@@ -121,6 +177,7 @@ public class CollectionTestUtil {
             list.add(i);
         return list;
     }
+
     static final class ImmutableMapEntry<K, V> implements Entry<K, V> {
 
         /** The value for this entry. */
@@ -196,8 +253,7 @@ public class CollectionTestUtil {
          */
         @Override
         public int hashCode() {
-            return (key == null ? 0 : key.hashCode())
-                    ^ (value == null ? 0 : value.hashCode());
+            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
 
         /**

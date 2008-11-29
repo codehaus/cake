@@ -34,6 +34,10 @@ import java.io.Serializable;
  *    }
  * </pre>
  * 
+ * <p>
+ * All subclasses should take care to to ensure that they maintain the Object uniqueness property across serialization
+ * by defining a suitable readResolve method.
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  * @param <T>

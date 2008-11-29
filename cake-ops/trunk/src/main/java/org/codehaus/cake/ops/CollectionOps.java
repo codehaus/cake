@@ -53,7 +53,8 @@ public final class CollectionOps {
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
-    private CollectionOps() {}
+    private CollectionOps() {
+    }
 
     // /CLOVER:ON
     /**
@@ -73,8 +74,15 @@ public final class CollectionOps {
         return new CollectionAdd<E>(collection);
     }
 
-    public static Predicate containedWithin(Collection col) {
-        return new ContainsPredicate(col);
+    /**
+     * Creates a {@link Predicate} that will accept only those elements that are in the specified collection.
+     * 
+     * @param collection
+     *            the collection that is tested against
+     * @return the newly created Predicate
+     */
+    public static Predicate containedWithin(Collection collection) {
+        return new ContainsPredicate(collection);
     }
 
     /**
