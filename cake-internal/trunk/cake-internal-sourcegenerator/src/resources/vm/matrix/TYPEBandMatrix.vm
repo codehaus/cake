@@ -15,7 +15,7 @@ import org.codehaus.cake.forkjoin.*;
  * An implementation of an {@link ${Type}Matrix}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public abstract class $this extends Abstract${Type}Matrix {
 

@@ -33,14 +33,14 @@ public class ScheduledClearManagement {
             sf.cancel(false);
         }
         this.scheduleMs = scheduleMs;
-        sf = ses.schedule(runnable, scheduleMs, TimeUnit.MILLISECONDS);
+        sf = ses.scheduleAtFixedRate(runnable, scheduleMs, scheduleMs, TimeUnit.MILLISECONDS);
     }
 
     @AfterStart
     public synchronized void started(final Cache<?, ?> cache) {
         ses = cache.with().scheduledExecutor();
         runnable = Caches.clearAsRunnable(cache);
-        setClearScheduleMs(60 * 60 * 1000);// default 1 hour
+        setClearScheduleMs(60 * 1000);// default 1 minute
     }
 }
 // END SNIPPET: class

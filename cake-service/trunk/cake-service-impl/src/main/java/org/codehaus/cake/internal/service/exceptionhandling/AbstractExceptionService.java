@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.internal.service.exceptionhandling;
 
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
+import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.util.LazyLogger;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
@@ -33,7 +33,7 @@ public abstract class AbstractExceptionService<T extends Container> implements I
 
     private final Logger infoLogger;// might be null
 
-    public AbstractExceptionService(Container container, ContainerInfo info,
+    public AbstractExceptionService(Container container, Composer composer,
             ContainerConfiguration<?> containerConfiguration, Logger exceptionLogger) {
         this.container = (T) container;
         Logger infoLogger = containerConfiguration.getDefaultLogger();
@@ -44,12 +44,8 @@ public abstract class AbstractExceptionService<T extends Container> implements I
             logger = infoLogger;
         }
         if (logger == null) {
-            String loggerName = info.getContainerType().getPackage().getName() + "." + info.getContainerName();
-            // String infoMsg = CacheInternals.lookup(DefaultCacheExceptionService.class,
-            // "noLogger",
-            // name, loggerName);
-            String infoMsg = "no logger defined";
-            logger = new LazyLogger(loggerName, infoMsg, AbstractExceptionService.class.getName());
+            String loggerName = composer.getContainerType().getPackage().getName() + "." + composer.getContainerName();
+            logger = new LazyLogger(loggerName, "no logger defined", AbstractExceptionService.class.getName());
         }
         this.exceptionLogger = logger;
     }

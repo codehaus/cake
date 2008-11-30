@@ -6,7 +6,7 @@ import org.codehaus.cake.math.matrix.MatrixOps.*;
  * methods that works on primitive ${type}s instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public interface $this extends Matrix {
 

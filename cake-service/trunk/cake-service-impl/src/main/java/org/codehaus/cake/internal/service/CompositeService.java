@@ -13,10 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.service.spi;
+package org.codehaus.cake.internal.service;
 
 import java.util.Collection;
 
+import org.codehaus.cake.internal.UseInternals;
+
+@UseInternals
 public interface CompositeService {
     Collection<?> getChildServices();
 }

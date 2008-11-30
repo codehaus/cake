@@ -28,7 +28,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
-import org.codehaus.cake.internal.service.spi.CompositeService;
+import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.annotation.ManagedObject;
 import org.codehaus.cake.management.annotation.ManagedOperation;

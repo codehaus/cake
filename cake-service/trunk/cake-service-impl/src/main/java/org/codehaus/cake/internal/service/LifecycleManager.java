@@ -25,7 +25,6 @@ import javax.management.JMException;
 
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.internal.util.ArrayUtils;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
@@ -34,7 +33,7 @@ import org.codehaus.cake.util.TimeFormatter;
 public class LifecycleManager {
     private Composer composer;
     private final InternalExceptionService<?> ies;
-    private ContainerInfo info;
+    // private ContainerInfo info;
     private final List<LifecycleObject> list = new ArrayList<LifecycleObject>();
 
     private final AtomicReference<Throwable> startupException = new AtomicReference<Throwable>();
@@ -42,7 +41,6 @@ public class LifecycleManager {
     public LifecycleManager(InternalExceptionService<?> ies, Composer composer) {
         this.ies = ies;
         this.composer = composer;
-        info = composer.get(ContainerInfo.class);
     }
 
     void checkExceptions() {
@@ -100,11 +98,12 @@ public class LifecycleManager {
 
         // debugging information
         if (ies.isDebugEnabled()) {
-            ies.debug("Starting " + info.getContainerTypeName() + " [name=" + info.getContainerName() + ", type="
-                    + composer.get(Container.class).getClass().getSimpleName() + "]");
+            ies.debug("Starting " + composer.getContainerTypeName() + " [name=" + composer.getContainerName()
+                    + ", type=" + composer.get(Container.class).getClass().getSimpleName() + "]");
             if (ies.isTraceEnabled()) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("  ------------" + info.getContainerTypeName() + " was started by this call--------------\n");
+                sb.append("  ------------" + composer.getContainerTypeName()
+                        + " was started by this call--------------\n");
                 StackTraceElement[] trace = Thread.currentThread().getStackTrace();
                 ArrayUtils.reverse(trace);
                 int length = trace.length;
@@ -124,20 +123,22 @@ public class LifecycleManager {
 
         // Run start
         try {
-            doStart(state);
-        } catch (RuntimeException e) {
-            trySetStartupException(e);
-            runShutdown(); // should we run shutdown;??
-            throw e;
-        } catch (Error e) {
-            trySetStartupException(e);
-            throw e;
+            try {
+                doStart(state);
+            } catch (RuntimeException e) {
+                trySetStartupException(e);
+                runShutdown(); // should we run shutdown;??
+                throw e;
+            } catch (Error e) {
+                trySetStartupException(e);
+                throw e;
+            }
+            ies.info(composer.getContainerTypeName() + " started [name = " + composer.getContainerName()
+                    + ", startup time = " + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime) + "]");
         } finally {
             composer = null;
         }
-        ies.info(info.getContainerTypeName() + " started [name = " + info.getContainerName() + ", startup time = "
-                + TimeFormatter.DEFAULT.formatNanos(System.nanoTime() - startTime) + "]");
-        info = null;
+
     }
 
     void trySetStartupException(Throwable cause) {

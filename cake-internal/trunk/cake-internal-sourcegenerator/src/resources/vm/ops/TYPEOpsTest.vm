@@ -15,7 +15,7 @@ import java.math.*;
  * Various tests for {@link ${Type}Ops}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id${this}.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class ${this} {
 

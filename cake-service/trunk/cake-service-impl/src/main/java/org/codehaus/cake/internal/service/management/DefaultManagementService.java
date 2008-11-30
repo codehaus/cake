@@ -24,9 +24,8 @@ import javax.management.JMException;
 import javax.management.MBeanServer;
 
 import org.codehaus.cake.internal.service.Composer;
+import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalDebugService;
-import org.codehaus.cake.internal.service.spi.CompositeService;
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.management.DefaultManagedGroup;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
@@ -37,13 +36,13 @@ import org.codehaus.cake.service.annotation.OnShutdown;
 import org.codehaus.cake.service.common.management.ManagementConfiguration;
 
 /**
- * The default implementation of the {@link MapManagementService} interface. All methods exposed
- * through the DefaultManagementService interface can be invoked in a thread safe manner.
+ * The default implementation of the {@link MapManagementService} interface. All methods exposed through the
+ * DefaultManagementService interface can be invoked in a thread safe manner.
  * <p>
- * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to
- * the compatibility of this class between different releases.
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
  * <p>
- * This is class is thread-safe.
+ * This class is thread-safe.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -57,22 +56,21 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
     private ManagedVisitor<?> registrant;
 
     private final String containerType;
-    
+
     private final InternalDebugService debugService;
 
     /**
-     * Creates a new AbstractManagementService.
+     * Creates a new DefaultManagementService.
      * 
      * @param conf
      *            the configuration of the Management service
      * @param name
      *            the name of the cache
      */
-    public DefaultManagementService(ManagementConfiguration conf, ContainerInfo containerInfo,
-            InternalDebugService debugService) {
-        super(containerInfo.getContainerName(), "This group contains all managed services");
+    public DefaultManagementService(Composer composer, ManagementConfiguration conf, InternalDebugService debugService) {
+        super(composer.getContainerName(), "This group contains all managed services");
         this.debugService = debugService;
-        containerType = containerInfo.getContainerTypeName();
+        containerType = composer.getContainerTypeName();
         /* Set Registrant */
         registrant = conf.getRegistrant();
         if (registrant == null) {
@@ -82,7 +80,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
             }
             String domain = conf.getDomain();
             if (domain == null) {
-                domain = containerInfo.getDefaultJMXDomain();
+                domain = composer.getDefaultJMXDomain();
             }
             registrant = Managements.hierarchicalRegistrant(server, domain, "name", "service", "group");
         }
@@ -120,8 +118,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
     @Override
     protected synchronized void beforeMutableOperation() {
         if (registrant == null) {
-            throw new IllegalStateException("cannot invoke this method, " + containerType
-                    + " has been already been started");
+            throw new IllegalStateException("cannot invoke this method, " + containerType + " has already been started");
         }
     }
 
@@ -140,10 +137,4 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
             isShutdown = true;
         }
     }
-    //
-    // /** {@inheritDoc} */
-    // @Override
-    // public String toString() {
-    // return "Management Service";
-    // }
 }

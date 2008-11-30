@@ -18,12 +18,11 @@ package org.codehaus.cake.internal.service;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
-import org.codehaus.cake.internal.service.spi.CompositeService;
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 
@@ -37,6 +36,9 @@ public class Composer {
 
     private final MutablePicoContainer container;
 
+    private final Class<?> clazz;
+    private final String containerName;
+
     public Composer(Class<?> clazz, ContainerConfiguration<?> configuration) {
         baseContainer = new DefaultPicoContainer();
         baseContainer.registerComponentInstance(configuration);
@@ -46,9 +48,31 @@ public class Composer {
         }
         container = baseContainer.makeChildContainer();
         container.registerComponentInstance(this);
-        container.registerComponentInstance(new ContainerInfo(clazz, configuration));
         container.registerComponentImplementation(LifecycleManager.class);
         container.registerComponentImplementation(ServiceManager.class);
+        this.clazz = clazz;
+        String name = configuration.getName();
+        if (name == null) {
+            containerName = UUID.randomUUID().toString();
+        } else {
+            containerName = name;
+        }
+    }
+
+    public String getContainerName() {
+        return containerName;
+    }
+
+    public Class<?> getContainerType() {
+        return clazz;
+    }
+
+    public String getContainerTypeName() {
+        return getContainerType().getSimpleName();
+    }
+
+    public String getDefaultJMXDomain() {
+        return getContainerType().getPackage().getName();
     }
 
     public void registerImplementation(Class<?> clazz) {

@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceFactory;
 
@@ -38,10 +37,9 @@ public abstract class AbstractContainer implements Container {
     private volatile Map<Class<?>, RegisteredFactory> services = new ConcurrentHashMap<Class<?>, RegisteredFactory>();
 
     protected AbstractContainer(Composer composer) {
-        ContainerInfo info = composer.get(ContainerInfo.class);
-        name = info.getContainerName();
+        name = composer.getContainerName();
         composer.registerInstance(Container.class, this);
-        composer.registerInstance(info.getContainerType(), this);
+        composer.registerInstance(composer.getContainerType(), this);
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
     }

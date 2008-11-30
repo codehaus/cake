@@ -13,10 +13,6 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
-/**
- * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
- */
 public class CacheHTTPExample {
 
     public static void main(String[] args) {

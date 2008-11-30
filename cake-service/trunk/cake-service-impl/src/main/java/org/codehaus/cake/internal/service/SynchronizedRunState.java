@@ -19,7 +19,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.Container;
 
 public final class SynchronizedRunState extends RunState {
@@ -29,8 +28,8 @@ public final class SynchronizedRunState extends RunState {
     /** CountDownLatch used for signaling termination. */
     private final CountDownLatch terminationLatch = new CountDownLatch(1);
 
-    public SynchronizedRunState(Container container, ContainerInfo info, LifecycleManager lifecycleManager) {
-        super(info, lifecycleManager);
+    public SynchronizedRunState(Container container, Composer composer, LifecycleManager lifecycleManager) {
+        super(composer, lifecycleManager);
         mutex = container;
     }
 

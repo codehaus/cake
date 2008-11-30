@@ -17,14 +17,12 @@ package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
-
 public class UnsynchronizedRunState extends RunState {
 
     private int state;
 
-    public UnsynchronizedRunState(ContainerInfo info, LifecycleManager lifecycleManager) {
-        super(info, lifecycleManager);
+    public UnsynchronizedRunState(Composer composer, LifecycleManager lifecycleManager) {
+        super(composer, lifecycleManager);
     }
 
     void tryStart() {

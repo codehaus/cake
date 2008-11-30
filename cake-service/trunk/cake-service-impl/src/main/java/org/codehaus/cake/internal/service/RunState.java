@@ -17,7 +17,6 @@ package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.internal.service.spi.ContainerInfo;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
 public abstract class RunState {
@@ -31,9 +30,9 @@ public abstract class RunState {
     private final String containerName;
     final LifecycleManager lifecycleManager;
 
-    public RunState(ContainerInfo info, LifecycleManager lifecycleManager) {
-        this.containerType = info.getContainerTypeName();
-        this.containerName = info.getContainerName();
+    public RunState(Composer composer, LifecycleManager lifecycleManager) {
+        this.containerType = composer.getContainerTypeName();
+        this.containerName = composer.getContainerName();
         this.lifecycleManager = lifecycleManager;
     }
 
