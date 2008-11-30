@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
- * @version $Id: Logger.java 542 2008-01-02 21:50:05Z kasper $
+ * @version $Id$
  */
 @Target( { ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

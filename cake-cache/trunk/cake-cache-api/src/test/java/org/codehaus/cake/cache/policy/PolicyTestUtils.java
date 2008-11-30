@@ -29,7 +29,7 @@ import org.codehaus.cake.internal.util.CollectionUtils;
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: PolicyTestUtils.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public final class PolicyTestUtils {
     static final DummyEntry[] VALUES;

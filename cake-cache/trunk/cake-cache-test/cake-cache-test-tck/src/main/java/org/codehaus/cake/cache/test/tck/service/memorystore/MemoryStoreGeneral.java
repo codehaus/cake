@@ -23,7 +23,7 @@ import org.junit.Test;
  * Tests EvictionService.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EvictionService.java 559 2008-01-09 16:28:27Z kasper $
+ * @version $Id$
  */
 public class MemoryStoreGeneral extends AbstractCacheTCKTest {
 

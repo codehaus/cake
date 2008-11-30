@@ -26,7 +26,7 @@ import org.junit.Test;
  * elements.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EvictionNoPolicy.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public class MemoryStoreReplacementPolicyNone extends AbstractCacheTCKTest {
 

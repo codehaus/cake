@@ -56,7 +56,7 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  * href="http://today.java.net/today/2004/12/10/refactor.pdf">Null Object Pattern</a> can be used as an alternative.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>

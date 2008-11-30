@@ -32,7 +32,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
  * methods in {@link CrudWriter}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheLoadingConfiguration.java 529 2007-12-27 17:09:26Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

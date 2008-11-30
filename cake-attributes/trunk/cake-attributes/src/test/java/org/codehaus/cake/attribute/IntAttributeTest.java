@@ -25,7 +25,7 @@ import org.junit.Test;
  * Various tests for {@link IntAttribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: IntAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class IntAttributeTest extends AtrStubs {
     static final IntAttribute ATR0 = new IntAttribute("a0",0) {};

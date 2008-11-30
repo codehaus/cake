@@ -25,7 +25,7 @@ import org.junit.Test;
  * Various tests for {@link ShortAttribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ShortAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class ShortAttributeTest extends AtrStubs {
     static final ShortAttribute ATR0 = new ShortAttribute("a0",(short) 0) {};

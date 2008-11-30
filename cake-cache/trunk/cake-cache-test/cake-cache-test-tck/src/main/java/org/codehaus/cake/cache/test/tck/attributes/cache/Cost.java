@@ -25,7 +25,7 @@ import org.junit.Test;
  * Tests {@link CacheEntry#getCost()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cost.java 536 2007-12-30 00:14:25Z kasper $
+ * @version $Id$
  */
 public class Cost extends AbstractAttributeTest {
     public Cost() {

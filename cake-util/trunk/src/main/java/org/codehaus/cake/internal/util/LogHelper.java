@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
  * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: LogHelper.java 525 2007-12-26 18:42:40Z kasper $
+ * @version $Id$
  */
 public final class LogHelper {
 

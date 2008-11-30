@@ -23,7 +23,7 @@ import javax.management.ReflectionException;
  * An AbstractAttribute is a wrapper for a JMX attribute.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AbstractManagedAttribute.java 479 2007-11-27 13:40:08Z kasper $
+ * @version $Id$
  */
 abstract class AbstractManagedAttribute {
     /** The description of the operation. */

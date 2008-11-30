@@ -57,7 +57,7 @@ import org.codehaus.cake.service.Container;
  * </pre>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: SynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>

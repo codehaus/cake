@@ -22,7 +22,7 @@ import org.codehaus.cake.cache.policy.spi.AbstractDoubleLinkedReplacementPolicy;
  * A Least Recently Used (LRU) replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: LRUPolicy.java 536 2007-12-30 00:14:25Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

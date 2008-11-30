@@ -24,7 +24,7 @@ import org.junit.Test;
  * Tests {@link Cache#containsKey}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Get.java 537 2007-12-30 19:21:20Z kasper $
+ * @version $Id$
  */
 public class Get extends AbstractCacheTCKTest {
 

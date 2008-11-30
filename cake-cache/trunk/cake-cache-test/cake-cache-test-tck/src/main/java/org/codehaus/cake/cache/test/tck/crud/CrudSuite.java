@@ -11,9 +11,9 @@ import org.codehaus.cake.cache.service.crud.CrudReader;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.cache.test.tck.core.collectionviews.Generators;
 import org.codehaus.cake.cache.test.util.AtrStubs;
-import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.test.tck.ServiceSuite;
+import org.codehaus.cake.util.Pair;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

@@ -32,7 +32,7 @@ import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: DefaultManagedOperation.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 class DefaultManagedOperation extends AbstractManagedOperation {
     /** The method to invoke when this operation is called. */

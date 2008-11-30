@@ -8,9 +8,9 @@ import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
-import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.Pair;
 
 public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
 

@@ -11,7 +11,7 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ScheduableTrimmerExample.java 559 2008-01-09 16:28:27Z kasper $
+ * @version $Id$
  */
 public class ScheduableTrimmerExample {
     static class TrimToSize implements Runnable {

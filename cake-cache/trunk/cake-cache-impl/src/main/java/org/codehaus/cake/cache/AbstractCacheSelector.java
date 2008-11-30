@@ -24,7 +24,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  * overridden.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: UnsynchronizedCache.java 560 2008-01-09 16:58:56Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys
  * @param <V>

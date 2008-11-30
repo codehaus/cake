@@ -23,7 +23,7 @@ package org.codehaus.cake.internal.service.exceptionhandling;
  * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: InternalCacheExceptionService.java 544 2008-01-05 01:19:03Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

@@ -50,7 +50,7 @@ import org.codehaus.cake.util.Logger;
  * </pre>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheConfiguration.java 559 2008-01-09 16:28:27Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys that should be maintained by the cache
  * @param <V>

@@ -25,7 +25,7 @@ import org.codehaus.cake.cache.policy.spi.AbstractHeapReplacementPolicy;
  * for this policy is that we should attempt to keep entries that have the highest cost to retrieve again.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: FIFOPolicy.java 536 2007-12-30 00:14:25Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

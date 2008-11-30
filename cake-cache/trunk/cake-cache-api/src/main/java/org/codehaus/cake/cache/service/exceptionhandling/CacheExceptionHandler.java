@@ -40,7 +40,7 @@ import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandler;
  * the key for which the load failed, the cache in which the cache occured as well as other relevant information.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheExceptionHandler.java 538 2007-12-31 00:18:13Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

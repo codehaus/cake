@@ -26,7 +26,7 @@ import org.junit.Test;
  * Tests that the creation time attribute of cache entries are working properly.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CreationTime.java 542 2008-01-02 21:50:05Z kasper $
+ * @version $Id$
  */
 public class TimeCreated extends AbstractAttributeTest {
     public TimeCreated() {

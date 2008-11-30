@@ -26,7 +26,7 @@ import java.util.Map.Entry;
  * The default implementation of an {@link AttributeMap}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AttributeMaps.java 472 2007-11-19 09:34:26Z kasper $
+ * @version $Id$
  */
 public class DefaultAttributeMap implements AttributeMap, Serializable {
 

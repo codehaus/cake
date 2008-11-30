@@ -33,7 +33,7 @@ import org.junit.Test;
  * Tests that an instance of a CacheEntry is passed to the specified cache policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheEntryToPolicy.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 

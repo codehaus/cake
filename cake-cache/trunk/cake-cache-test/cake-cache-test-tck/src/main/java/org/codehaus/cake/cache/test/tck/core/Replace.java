@@ -25,7 +25,7 @@ import org.junit.Test;
  * Tests {@link ConcurrentMap#replace(Object, Object)} and {@link ConcurrentMap#replace(Object, Object, Object)}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Replace.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public class Replace extends AbstractCacheTCKTest {
 

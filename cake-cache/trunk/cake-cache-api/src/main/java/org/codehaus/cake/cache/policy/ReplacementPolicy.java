@@ -34,7 +34,7 @@ import org.codehaus.cake.cache.service.crud.CrudReader;
  * implementation using a ReplacementPolicy instance must maintain thread safety.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
- * @version $Id: ReplacementPolicy.java 491 2007-11-30 22:05:50Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys cached
  * @param <V>

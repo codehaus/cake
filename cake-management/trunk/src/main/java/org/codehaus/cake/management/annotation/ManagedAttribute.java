@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * setters.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ManagedAttribute.java 473 2007-11-19 12:58:01Z kasper $
+ * @version $Id$
  */
 @Target(ElementType.METHOD)
 @Inherited

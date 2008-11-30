@@ -26,7 +26,7 @@ import org.junit.Test;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetRetain.java 537 2007-12-30 19:21:20Z kasper $
+ * @version $Id$
  */
 public class EntrySetRetain extends AbstractCacheTCKTest {
 

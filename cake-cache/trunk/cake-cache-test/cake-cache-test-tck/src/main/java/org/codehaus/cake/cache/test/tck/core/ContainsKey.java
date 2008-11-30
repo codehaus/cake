@@ -23,7 +23,7 @@ import org.junit.Test;
  * Tests {@link Cache#containsKey}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ContainsKey.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public class ContainsKey extends AbstractCacheTCKTest {
 

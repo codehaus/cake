@@ -14,7 +14,7 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  * A CrudReader is used for reading data from the cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <R>

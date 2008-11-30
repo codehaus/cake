@@ -26,7 +26,7 @@ import org.codehaus.cake.cache.policy.spi.AbstractArrayReplacementPolicy;
  * At first selecting a random element seems like poor solution, however, it some situations it performs remarkably well
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: RandomPolicy.java 536 2007-12-30 00:14:25Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

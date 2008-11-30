@@ -30,7 +30,7 @@ import org.codehaus.cake.service.annotation.OnStart;
  * attributes to cache entries.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Policies.java 491 2007-11-30 22:05:50Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>

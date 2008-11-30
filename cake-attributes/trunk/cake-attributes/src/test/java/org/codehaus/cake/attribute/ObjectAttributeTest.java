@@ -27,7 +27,7 @@ import org.junit.Test;
  * Various tests for {@link ObjectAttribute}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ByteAttributesTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class ObjectAttributeTest extends AtrStubs {
 

@@ -26,7 +26,7 @@ import javax.management.ObjectName;
  * MBean.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ManagedGroup.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 public interface ManagedGroup {
 

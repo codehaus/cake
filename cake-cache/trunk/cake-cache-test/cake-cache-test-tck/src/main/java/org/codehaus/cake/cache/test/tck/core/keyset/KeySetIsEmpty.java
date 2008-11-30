@@ -25,7 +25,7 @@ import org.junit.Test;
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: KeySetIsEmpty.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public class KeySetIsEmpty extends AbstractCacheTCKTest {
 

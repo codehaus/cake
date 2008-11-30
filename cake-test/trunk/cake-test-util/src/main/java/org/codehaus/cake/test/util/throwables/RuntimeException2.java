@@ -18,7 +18,7 @@ package org.codehaus.cake.test.util.throwables;
  * An RuntimeException class used for testing.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ * @version $Id$
  */
 public class RuntimeException2 extends RuntimeException {
     /** The default instance. */

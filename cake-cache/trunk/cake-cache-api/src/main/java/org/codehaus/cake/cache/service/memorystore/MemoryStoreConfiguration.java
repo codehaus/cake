@@ -28,7 +28,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
  * Used for configuring the eviction service prior to usage.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: MemoryStoreConfiguration.java 559 2008-01-09 16:28:27Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

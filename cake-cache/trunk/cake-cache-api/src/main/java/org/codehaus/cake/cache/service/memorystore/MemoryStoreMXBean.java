@@ -21,7 +21,7 @@ import org.codehaus.cake.cache.CacheMXBean;
  * The management interface for the eviction service.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: MemoryStoreMXBean.java 559 2008-01-09 16:28:27Z kasper $
+ * @version $Id$
  */
 public interface MemoryStoreMXBean {
 

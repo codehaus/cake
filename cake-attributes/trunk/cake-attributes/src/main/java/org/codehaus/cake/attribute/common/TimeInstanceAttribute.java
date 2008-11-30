@@ -22,7 +22,7 @@ import org.codehaus.cake.attribute.LongAttribute;
  * 1, 1970, 00:00:00 GMT. The unit of time is milliseconds.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id$
  */
 public abstract class TimeInstanceAttribute extends LongAttribute {
     /** serialVersionUID. */

@@ -23,7 +23,7 @@ import org.junit.Test;
  * Not sure these methods are to usefull though.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EqualsHashcode.java 560 2008-01-09 16:58:56Z kasper $
+ * @version $Id$
  */
 public class EqualsHashcode extends AbstractCacheTCKTest {
 

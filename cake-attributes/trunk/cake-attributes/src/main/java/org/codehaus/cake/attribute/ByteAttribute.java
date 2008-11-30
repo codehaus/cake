@@ -22,7 +22,7 @@ import java.io.Serializable;
  * methods that works on primitive bytes instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ByteAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id$
  */
 public abstract class ByteAttribute extends Attribute<Byte> implements
          Comparator<WithAttributes>, Serializable {

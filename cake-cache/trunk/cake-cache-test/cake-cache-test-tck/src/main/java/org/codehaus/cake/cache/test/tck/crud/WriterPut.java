@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
-import org.codehaus.cake.internal.util.Pair;
+import org.codehaus.cake.util.Pair;
 import org.junit.runners.Parameterized.Parameters;
 
 public class WriterPut {

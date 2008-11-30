@@ -23,7 +23,7 @@ import org.codehaus.cake.cache.CacheEntry;
  * Tests the size attribute of {@link CacheEntry}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Size.java 555 2008-01-09 04:52:48Z kasper $
+ * @version $Id$
  */
 public class Hits extends AbstractAttributeTest {
     public Hits() {

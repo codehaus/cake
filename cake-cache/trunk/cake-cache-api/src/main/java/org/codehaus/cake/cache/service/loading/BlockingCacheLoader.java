@@ -81,7 +81,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  * two threads are simultaneous requesting a value for the same key. Only one of them do the actual loading.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
- * @version $Id: CacheLoader.java 529 2007-12-27 17:09:26Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys used for loading values
  * @param <V>

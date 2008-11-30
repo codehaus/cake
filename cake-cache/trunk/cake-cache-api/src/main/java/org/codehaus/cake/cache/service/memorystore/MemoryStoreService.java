@@ -41,7 +41,7 @@ import org.codehaus.cake.cache.CacheServices;
  * </pre>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: MemoryStoreService.java 563 2008-01-10 15:20:33Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

@@ -25,7 +25,7 @@ import org.junit.Test;
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetSize.java 430 2007-11-11 14:50:09Z kasper $
+ * @version $Id$
  */
 public class EntrySetSize extends AbstractCacheTCKTest {
 

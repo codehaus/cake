@@ -23,7 +23,7 @@ import org.junit.runners.Suite;
  * Tests the Statistics service.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: StatisticsSuite.java 466 2007-11-16 14:08:17Z kasper $
+ * @version $Id$
  */
 @RunWith(ServiceSuite.class)
 @Suite.SuiteClasses( { ExecutorExecutorService.class,ExecutorForkJoin.class,ExecutorScheduled.class,ExecutorsNoSupport.class,

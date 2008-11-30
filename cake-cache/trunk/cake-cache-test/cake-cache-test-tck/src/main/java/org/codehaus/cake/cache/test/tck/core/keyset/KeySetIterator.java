@@ -29,7 +29,7 @@ import org.junit.Test;
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: KeySetIterator.java 542 2008-01-02 21:50:05Z kasper $
+ * @version $Id$
  */
 public class KeySetIterator extends AbstractCacheTCKTest {
 

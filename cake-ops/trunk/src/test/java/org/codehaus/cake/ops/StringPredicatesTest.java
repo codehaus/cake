@@ -28,7 +28,7 @@ import org.junit.Test;
  * Tests {@link StringPredicates}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: StringPredicatesTest.java 587 2008-02-06 08:21:44Z kasper $
+ * @version $Id$
  */
 public class StringPredicatesTest {
 

@@ -34,7 +34,7 @@ import org.codehaus.cake.internal.attribute.AttributeHelper;
  * Contains various utility methods for a {@link AttributeMap}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AttributeMaps.java 472 2007-11-19 09:34:26Z kasper $
+ * @version $Id$
  */
 public final class Attributes {
     /** The empty attribute map (immutable). This attribute map is serializable. */

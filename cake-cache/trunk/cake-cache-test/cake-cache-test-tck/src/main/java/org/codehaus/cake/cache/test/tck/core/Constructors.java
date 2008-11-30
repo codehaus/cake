@@ -28,7 +28,7 @@ import org.junit.Test;
  * CacheConfiguration.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Constructors.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public class Constructors extends AbstractCacheTCKTest {
 

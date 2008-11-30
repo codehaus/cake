@@ -23,7 +23,7 @@ import org.junit.Test;
  * Tests put operations for a cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: PutIfAbsent.java 554 2008-01-08 23:32:04Z kasper $
+ * @version $Id$
  */
 public class PutIfAbsent extends AbstractCacheTCKTest {
 

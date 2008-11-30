@@ -26,7 +26,7 @@ import org.junit.Test;
  * Test basic functionality of a Cache. This test should be applicable for any cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Lifecycle.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public class LifecycleStatus extends AbstractTCKTest<Container, ContainerConfiguration> {
 

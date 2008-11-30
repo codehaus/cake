@@ -50,7 +50,7 @@ import org.codehaus.cake.service.Container;
  * class. As it cannot allow a background thread to add or update a mapping in the cache once loaded.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: MemoryStoreService.java 563 2008-01-10 15:20:33Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

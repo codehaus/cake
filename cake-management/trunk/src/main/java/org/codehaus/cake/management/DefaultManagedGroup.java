@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * The default implementation of {@link ManagedGroup}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: DefaultManagedGroup.java 510 2007-12-12 08:52:55Z kasper $
+ * @version $Id$
  */
 public class DefaultManagedGroup extends AbstractManagedGroup {
 

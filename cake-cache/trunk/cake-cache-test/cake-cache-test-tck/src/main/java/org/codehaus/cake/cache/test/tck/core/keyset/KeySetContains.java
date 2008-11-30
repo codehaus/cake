@@ -26,7 +26,7 @@ import org.junit.Test;
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: KeySetContains.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 public class KeySetContains extends AbstractCacheTCKTest {
 

@@ -25,7 +25,7 @@ import org.junit.Test;
  * Various tests for {@link CharAttribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CharAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class CharAttributeTest extends AtrStubs {
     static final CharAttribute ATR0 = new CharAttribute("a0",(char) 0) {};

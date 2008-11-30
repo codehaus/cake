@@ -23,13 +23,10 @@ import org.codehaus.cake.internal.util.LogHelper;
 import org.codehaus.cake.internal.util.LogHelper.AbstractLogger;
 
 /**
- * This class is used for creating {@link Logger} wrappers from popular logging frameworks such as <a
- * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Standard JDK logging </a>, <a
- * href="http://logging.apache.org/log4j/"> Log4j </a> or <a href="http://commons.apache.org/logging/"> commons logging
- * </a>.
+ * Utility class for creating {@link Logger} instances.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
- * @version $Id: Loggers.java 542 2008-01-02 21:50:05Z kasper $
+ * @version $Id$
  */
 public final class Loggers {
 
@@ -38,7 +35,8 @@ public final class Loggers {
 
     // /CLOVER:OFF
     /** Cannot instantiate. */
-    private Loggers() {}
+    private Loggers() {
+    }
 
     // /CLOVER:ON
 
@@ -49,7 +47,7 @@ public final class Loggers {
      *            the logger for which the name should be returned
      * @return the name of the specified logger or <code>null</code> if the name could not be determinded
      */
-    public static String getName(Logger logger) {
+    static String getName(Logger logger) {
         return logger instanceof AbstractLogger ? ((AbstractLogger) logger).getName() : null;
     }
 
@@ -94,13 +92,14 @@ public final class Loggers {
     }
 
     /**
-     * Used for Commons Logging conversion.
+     * Used for <a href="http://commons.apache.org/logging/">Commons Logging</a> conversion.
      */
     public static final class Commons {
 
         // /CLOVER:OFF
         /** Cannot instantiate. */
-        private Commons() {}
+        private Commons() {
+        }
 
         // /CLOVER:ON
         /**
@@ -265,12 +264,14 @@ public final class Loggers {
     }
 
     /**
-     * Used for java.util.logger conversion.
+     * Used for <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html">Standard JDK
+     * logging</a> conversion.
      */
     public static final class JDK {
         // /CLOVER:OFF
         /** Cannot instantiate. */
-        private JDK() {}
+        private JDK() {
+        }
 
         // /CLOVER:ON
         /**
@@ -386,7 +387,8 @@ public final class Loggers {
     public static final class Log4j {
         // /CLOVER:OFF
         /** Cannot instantiate. */
-        private Log4j() {}
+        private Log4j() {
+        }
 
         // /CLOVER:ON
         /**
@@ -456,7 +458,7 @@ public final class Loggers {
     }
 
     /**
-     * The wrapper class for a Log4j logger.
+     * The wrapper class for a <a href="http://logging.apache.org/log4j/">Log4j</a> logger.
      */
     static final class Log4JLogger extends AbstractLogger {
 
@@ -538,10 +540,12 @@ public final class Loggers {
 
         /** {@inheritDoc} */
         @Override
-        public void log(Level level, String message) {}
+        public void log(Level level, String message) {
+        }
 
         /** {@inheritDoc} */
-        public void log(Level level, String message, Throwable cause) {}
+        public void log(Level level, String message, Throwable cause) {
+        }
 
         /** @return Preserves singleton property */
         private Object readResolve() {

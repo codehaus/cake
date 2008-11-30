@@ -21,9 +21,9 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.util.CollectionUtils;
-import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.Pair;
 
 public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, V> {
 

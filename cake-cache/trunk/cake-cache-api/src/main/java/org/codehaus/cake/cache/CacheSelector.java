@@ -39,7 +39,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  * to {@link Cache#select()}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>

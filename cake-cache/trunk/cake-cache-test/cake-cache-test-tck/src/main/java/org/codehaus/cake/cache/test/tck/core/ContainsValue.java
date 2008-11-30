@@ -25,7 +25,7 @@ import org.junit.Test;
  * Tests {@link Cache#containsValue}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ContainsValue.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public class ContainsValue extends AbstractCacheTCKTest {
 

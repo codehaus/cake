@@ -32,7 +32,7 @@ import java.math.*;
  * Various tests for {@link IntOps}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: IntOpsTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class IntOpsTest {
 

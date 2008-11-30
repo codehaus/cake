@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  * Tests the {@link CacheServicesOld} class.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheServicesTest.java 560 2008-01-09 16:58:56Z kasper $
+ * @version $Id$
  */
 @SuppressWarnings("unchecked")
 @RunWith(JMock.class)

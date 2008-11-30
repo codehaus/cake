@@ -15,7 +15,7 @@ import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheHTTPExample.java 479 2007-11-27 13:40:08Z kasper $
+ * @version $Id$
  */
 public class CacheHTTPExample {
 

@@ -22,7 +22,7 @@ import org.junit.Test;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetClear.java 538 2007-12-31 00:18:13Z kasper $
+ * @version $Id$
  */
 public class EntrySetClear extends AbstractCacheTCKTest {
 

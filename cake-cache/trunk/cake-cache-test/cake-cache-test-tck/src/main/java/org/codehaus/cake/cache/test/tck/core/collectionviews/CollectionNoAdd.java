@@ -11,7 +11,7 @@ import org.junit.Test;
  * Tests a collection where the {@link Collection#add(Object)} method is not supported.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetAdd.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 public class CollectionNoAdd<T> {
     private final Collection<T> collection;

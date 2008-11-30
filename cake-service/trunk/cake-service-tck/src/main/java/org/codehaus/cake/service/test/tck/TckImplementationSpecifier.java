@@ -26,7 +26,7 @@ import org.codehaus.cake.service.Container;
  * This class is used to indicate the implementing class of a {@link Container}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheTCKImplementationSpecifier.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

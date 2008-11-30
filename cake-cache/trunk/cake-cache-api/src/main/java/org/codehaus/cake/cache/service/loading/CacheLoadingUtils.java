@@ -29,7 +29,7 @@ import org.codehaus.cake.ops.Ops.Procedure;
  * Various Factory and utility methods.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheServices.java 469 2007-11-17 14:32:25Z kasper $
+ * @version $Id$
  */
 public final class CacheLoadingUtils {
     // /CLOVER:OFF

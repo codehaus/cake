@@ -14,7 +14,7 @@ package org.codehaus.cake.service;
  * However, if a container failed to start up properly the
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheException.java 518 2007-12-20 17:21:32Z kasper $
+ * @version $Id$
  */
 public class ContainerAlreadyShutdownException extends IllegalStateException {
     /** <code>serialVersionUID</code>. */

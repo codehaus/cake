@@ -30,7 +30,7 @@ import org.junit.Test;
  * Tests whether or not the cache loading service is available at runtime.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: LoadingService.java 536 2007-12-30 00:14:25Z kasper $
+ * @version $Id$
  */
 @SuppressWarnings("unchecked")
 public class LoadingService extends AbstractCacheTCKTest {

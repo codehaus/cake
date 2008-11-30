@@ -19,7 +19,7 @@ import org.codehaus.cake.management.annotation.ManagedOperation;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AttributedStub2.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public class VariousOperations {
     public int invokeCount;

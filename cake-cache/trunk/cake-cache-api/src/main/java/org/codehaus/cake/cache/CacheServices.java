@@ -32,7 +32,7 @@ import org.codehaus.cake.service.Container;
  * service.trimToSize(10);
  * </pre>
  * 
- * Basically {@link CacheServices} just wraps the call to {@link #getService(Class)}, as the above snippet is
+ * Basically {@link CacheServices} just wraps the call to {@link #getService(Class)}, the above snippet is
  * equivalent to:
  * 
  * <pre>
@@ -42,7 +42,7 @@ import org.codehaus.cake.service.Container;
  * </pre>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheServices.java 469 2007-11-17 14:32:25Z kasper $
+ * @version $Id$
  */
 public class CacheServices<K, V> {
 

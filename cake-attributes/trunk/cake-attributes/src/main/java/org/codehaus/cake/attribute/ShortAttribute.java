@@ -22,7 +22,7 @@ import java.io.Serializable;
  * methods that works on primitive shorts instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ShortAttribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id$
  */
 public abstract class ShortAttribute extends Attribute<Short> implements
          Comparator<WithAttributes>, Serializable {

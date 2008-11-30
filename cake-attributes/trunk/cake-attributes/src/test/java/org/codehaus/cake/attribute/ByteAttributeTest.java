@@ -25,7 +25,7 @@ import org.junit.Test;
  * Various tests for {@link ByteAttribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ByteAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class ByteAttributeTest extends AtrStubs {
     static final ByteAttribute ATR0 = new ByteAttribute("a0",(byte) 0) {};

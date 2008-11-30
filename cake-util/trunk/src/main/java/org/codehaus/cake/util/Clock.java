@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * </ul>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
- * @version $Id: Logger.java 542 2008-01-02 21:50:05Z kasper $
+ * @version $Id$
  */
 public abstract class Clock {
 
@@ -93,7 +93,7 @@ public abstract class Clock {
      * This class is safe for use between multiple threads.
      * 
      * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
-     * @version $Id: Clock.java 542 2008-01-02 21:50:05Z kasper $
+     * @version $Id$
      */
     public static class DeterministicClock extends Clock implements Serializable {
 

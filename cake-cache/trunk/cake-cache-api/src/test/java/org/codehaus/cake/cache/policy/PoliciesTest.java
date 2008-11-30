@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: PoliciesTest.java 491 2007-11-30 22:05:50Z kasper $
+ * @version $Id$
  */
 public class PoliciesTest {
 

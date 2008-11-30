@@ -30,7 +30,7 @@ import org.codehaus.cake.service.common.management.ManagementConfiguration;
  * replaced by the named returned from {@link Cache#getName()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheMXBean.java 555 2008-01-09 04:52:48Z kasper $
+ * @version $Id$
  */
 public interface CacheMXBean {
 

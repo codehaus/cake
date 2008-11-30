@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: KeySetSuite.java 489 2007-11-29 11:35:31Z kasper $
+ * @version $Id$
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { KeySet.class, KeySetAdd.class, KeySetClear.class, KeySetContains.class,

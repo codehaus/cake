@@ -25,7 +25,7 @@ import org.junit.Test;
  * Various tests for {@link FloatAttribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: FloatAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class FloatAttributeTest extends AtrStubs {
     static final FloatAttribute ATR0 = new FloatAttribute("a0",0F) {};

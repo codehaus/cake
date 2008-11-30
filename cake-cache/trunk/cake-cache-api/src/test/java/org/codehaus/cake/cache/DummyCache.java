@@ -30,7 +30,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  * A dummy implementation of a {@link Cache}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: DummyCache.java 555 2008-01-09 04:52:48Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>

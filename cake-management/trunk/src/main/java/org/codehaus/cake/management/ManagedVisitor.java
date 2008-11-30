@@ -22,7 +22,7 @@ import javax.management.JMException;
  * and all instantiated components within a group.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ManagedVisitor.java 538 2007-12-31 00:18:13Z kasper $
+ * @version $Id$
  */
 public interface ManagedVisitor<T> {
 

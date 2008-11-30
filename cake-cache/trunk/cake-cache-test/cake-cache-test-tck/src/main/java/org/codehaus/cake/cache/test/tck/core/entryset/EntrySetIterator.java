@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetIterator.java 554 2008-01-08 23:32:04Z kasper $
+ * @version $Id$
  */
 public class EntrySetIterator extends AbstractCacheTCKTest {
 

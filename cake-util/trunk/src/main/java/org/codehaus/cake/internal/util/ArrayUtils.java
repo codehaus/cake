@@ -24,7 +24,7 @@ import java.lang.reflect.Array;
  * this class between different releases.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CollectionUtils.java 546 2008-01-07 20:47:32Z kasper $
+ * @version $Id$
  */
 public final class ArrayUtils {
 

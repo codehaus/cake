@@ -28,7 +28,7 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
  * replacement policy implementations.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Policies.java 491 2007-11-30 22:05:50Z kasper $
+ * @version $Id$
  */
 public final class Policies {
     // /CLOVER:OFF

@@ -26,7 +26,7 @@ import org.codehaus.cake.ops.Ops.Procedure;
  * This class is normally best used via <tt>import static</tt>.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Procedures.java 587 2008-02-06 08:21:44Z kasper $
+ * @version $Id$
  */
 public final class Procedures {
 

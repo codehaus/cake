@@ -21,7 +21,7 @@ import org.codehaus.cake.util.Logger;
  * This class is used to configure the exception handling service prior to usage.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: containerExceptionHandler.java 538 2007-12-31 00:18:13Z kasper $
+ * @version $Id$
  * 
  * @param <T>
  *            the type ExceptionHandler that is used

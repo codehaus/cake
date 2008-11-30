@@ -26,7 +26,7 @@ import org.codehaus.cake.service.common.management.ManagementConfiguration;
  * {@link ManagementConfiguration#setEnabled(boolean)} has been set to <code>true</code>.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheLoadingMXBean.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public interface CacheLoadingMXBean {
 

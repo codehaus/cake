@@ -23,7 +23,7 @@ import org.junit.Test;
  * Tests {@link Cache#entrySet()} lazy start and shutdown.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySet.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public class EntrySet extends AbstractCacheTCKTest {
 

@@ -13,7 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.util;
+package org.codehaus.cake.util;
+
+import org.codehaus.cake.internal.util.CollectionUtils;
 
 /**
  * A <tt>Pair</tt> consists of two references to two objects.
@@ -68,7 +70,7 @@ public final class Pair<T1, T2> implements java.io.Serializable {
     /** {@inheritDoc} */
     @Override
     public boolean equals(Object other) {
-        return other instanceof Pair && equals((Pair) other);
+        return other instanceof Pair && equals((Pair<?, ?>) other);
     }
 
     /**

@@ -6,16 +6,16 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
-import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
+import org.codehaus.cake.util.Pair;
 
 /**
  * This service can be used to create, update, or delete entries from the cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by this cache
  * @param <V>

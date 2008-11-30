@@ -32,7 +32,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
  * This class is normally best used via <tt>import static</tt>.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Predicates.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class Predicates {
 

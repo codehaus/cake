@@ -27,7 +27,7 @@ import org.codehaus.cake.management.ManagedVisitor;
  * Remote management (JMX) is turned off by default and you need to call {@link #setEnabled(boolean)} to enable it.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheManagementConfiguration.java 525 2007-12-26 18:42:40Z kasper $
+ * @version $Id$
  */
 public class ManagementConfiguration {
 

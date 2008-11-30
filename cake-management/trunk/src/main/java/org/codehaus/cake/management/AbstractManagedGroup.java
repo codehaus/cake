@@ -30,7 +30,7 @@ import javax.management.ObjectName;
  * An abstract implementation of AbstractManagedGroup.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AbstractManagedGroup.java 510 2007-12-12 08:52:55Z kasper $
+ * @version $Id$
  */
 public abstract class AbstractManagedGroup implements ManagedGroup {
     /** The allowed naming pattern of a group. */

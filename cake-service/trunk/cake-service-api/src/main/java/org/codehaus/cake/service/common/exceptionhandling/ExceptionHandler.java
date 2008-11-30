@@ -27,7 +27,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
  * This class is normally extended by an implementation for a specific container type.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: containerExceptionHandler.java 538 2007-12-31 00:18:13Z kasper $
+ * @version $Id$
  * @param <T>
  *            the type of the container
  */

@@ -26,7 +26,7 @@ import org.junit.Test;
  * Tests the add method for {@link Cache#entrySet()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetAdd.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 public class EntrySetAdd extends AbstractCacheTCKTest {
 

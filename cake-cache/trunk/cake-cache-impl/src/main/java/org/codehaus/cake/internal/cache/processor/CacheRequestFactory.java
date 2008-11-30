@@ -12,9 +12,9 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
-import org.codehaus.cake.internal.util.Pair;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.Pair;
 
 public interface CacheRequestFactory<K, V> {
     TrimToSizeRequest<K, V> createTrimToSizeRequest(int trimToSize, Comparator<? extends CacheEntry<K, V>> comparator);

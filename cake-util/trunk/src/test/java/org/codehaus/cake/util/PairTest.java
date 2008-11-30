@@ -13,12 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.util;
+package org.codehaus.cake.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.codehaus.cake.util.Pair;
 import org.junit.Test;
 
 public class PairTest {

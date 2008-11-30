@@ -19,7 +19,7 @@ package org.codehaus.cake.attribute;
  * An mix-in interface for objects that have attributes attached.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id$
  */
 public interface WithAttributes {
     /**

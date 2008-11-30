@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: EntrySetHashCodeEquals.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public class EntrySetHashCodeEquals extends AbstractCacheTCKTest {
 

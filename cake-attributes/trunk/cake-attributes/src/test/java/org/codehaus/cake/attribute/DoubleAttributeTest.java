@@ -25,7 +25,7 @@ import org.junit.Test;
  * Various tests for {@link DoubleAttribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: DoubleAttributeTest.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id$
  */
 public final class DoubleAttributeTest extends AtrStubs {
     static final DoubleAttribute ATR0 = new DoubleAttribute("a0",0D) {};

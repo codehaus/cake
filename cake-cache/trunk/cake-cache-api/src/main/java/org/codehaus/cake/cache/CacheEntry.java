@@ -24,12 +24,13 @@ import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
 
 /**
- * A <tt>CacheEntry</tt> describes a value-key mapping much like {@link java.util.Map.Entry}. However, this interface
- * extends it with a map of attribute->value pairs. Holding information such as creation time, access patterns, size,
- * cost etc.
+ * A <tt>CacheEntry</tt> describes a value-key mapping extending {@link java.util.Map.Entry} with metadata. However,
+ * this interface extends it with a map of attribute->value pairs. Holding information such as creation time, access
+ * patterns, size, cost etc.
  * <p>
  * Per default the cache does not keep track of any attributes. Attributes that should be retained at runtime must first
- * be specified in {@link CacheAttributeConfiguration} before starting the cache.
+ * be added using {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.attribute.Attribute...)} before
+ * starting the cache.
  * 
  * For example, this snippet shows how to configure the cache to keep track of when an entry was created and when it was
  * last modified.
@@ -49,7 +50,7 @@ import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
  * in the entry for performance reasons. For example {@link #TIME_ACCESSED} and {@link #HITS}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheEntry.java 536 2007-12-30 00:14:25Z kasper $
+ * @version $Id$
  * @param <K>
  *            the type of keys maintained by the cache
  * @param <V>

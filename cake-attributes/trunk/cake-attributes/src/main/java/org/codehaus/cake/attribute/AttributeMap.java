@@ -23,7 +23,7 @@ import java.util.Set;
  * A map specifically for the storage of Attribute->Object values.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AttributeMap.java 415 2007-11-09 08:25:23Z kasper $
+ * @version $Id$
  */
 public interface AttributeMap {
 

@@ -45,7 +45,7 @@ import org.codehaus.cake.util.Loggers.Log4j;
  * taking a concrete class extending ContainerConfiguration.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $
+ * @version $Id$
  * @param <T>
  *            The type of container instantiated from this configuration
  */

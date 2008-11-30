@@ -26,7 +26,7 @@ import org.junit.Test;
  * Tests non modifying actions for a caches value set {@link org.codehaus.cake.cache.Cache#keySet()}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ValuesHashCodeEquals.java 526 2007-12-27 01:32:16Z kasper $
+ * @version $Id$
  */
 public class ValuesHashCodeEquals extends AbstractCacheTCKTest {
 

@@ -29,7 +29,7 @@ import org.codehaus.cake.management.annotation.ManagedAttribute;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: DefaultManagedAttribute.java 510 2007-12-12 08:52:55Z kasper $
+ * @version $Id$
  */
 class DefaultManagedAttribute extends AbstractManagedAttribute {
     /** The getter for this attribute or <code>null</code> if it is write-only. */

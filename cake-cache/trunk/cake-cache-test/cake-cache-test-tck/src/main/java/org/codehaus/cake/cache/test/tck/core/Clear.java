@@ -23,7 +23,7 @@ import org.junit.Test;
  * This class tests the {@link Cache#clear()} operation.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Clear.java 538 2007-12-31 00:18:13Z kasper $
+ * @version $Id$
  */
 public class Clear extends AbstractCacheTCKTest {
 

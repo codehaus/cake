@@ -53,7 +53,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  * Various Factory and utility methods.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheServices.java 469 2007-11-17 14:32:25Z kasper $
+ * @version $Id$
  */
 public final class Caches {
 
@@ -380,7 +380,7 @@ public final class Caches {
      * A CacheEntry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>.
      * This class may be convenient in methods that return thread-safe snapshots of key-value mappings.
      */
-    public static class SimpleImmutableEntry<K, V> implements CacheEntry<K, V>, Serializable {
+    static class SimpleImmutableEntry<K, V> implements CacheEntry<K, V>, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;

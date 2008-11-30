@@ -24,7 +24,7 @@ import org.codehaus.cake.attribute.WithAttributes;
  * The following can be used to introduce A service factory can be implemented for
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: ContainerConfiguration.java 559 2008-01-09 16:28:27Z kasper $ *
+ * @version $Id$ *
  * @param <T>
  *            the type of service returned from {@link #lookup(AttributeMap)}
  */

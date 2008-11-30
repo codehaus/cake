@@ -46,7 +46,7 @@ import org.codehaus.cake.service.common.management.ManagementConfiguration;
  * This is class is thread-safe.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: DefaultCacheManagementService.java 537 2007-12-30 19:21:20Z kasper $
+ * @version $Id$
  */
 public class DefaultManagementService extends DefaultManagedGroup implements CompositeService {
 

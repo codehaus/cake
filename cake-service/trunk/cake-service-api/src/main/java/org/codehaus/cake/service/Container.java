@@ -34,7 +34,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  * example, inherits from this interface.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: CacheLifecycle.java 511 2007-12-13 14:37:02Z kasper $
+ * @version $Id$
  */
 public interface Container {
 

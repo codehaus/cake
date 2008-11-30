@@ -33,7 +33,7 @@ import org.jmock.Mockery;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: TestUtil.java 521 2007-12-22 19:15:11Z kasper $
+ * @version $Id$
  */
 public class TestUtil {
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");

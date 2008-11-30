@@ -24,7 +24,7 @@ import javax.management.ReflectionException;
  * An AbstractOperation corresponds to a JMX operation.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: AbstractManagedOperation.java 473 2007-11-19 12:58:01Z kasper $
+ * @version $Id$
  */
 abstract class AbstractManagedOperation {
 

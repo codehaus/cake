@@ -24,7 +24,7 @@ import org.codehaus.cake.service.annotation.ExportAsService;
  * This class must be public to allow for reflection.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id: Cache.java 520 2007-12-21 17:53:31Z kasper $
+ * @version $Id$
  */
 @ManagedObject(defaultValue = "MemoryStore", description = "MemoryStore attributes and operations")
 @ExportAsService(MemoryStoreService.class)
