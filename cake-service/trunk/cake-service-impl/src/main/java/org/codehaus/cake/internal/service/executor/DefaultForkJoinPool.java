@@ -7,7 +7,7 @@ import org.codehaus.cake.forkjoin.ForkJoinPool;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
 
 @UseInternals
 @ExportAsService(ForkJoinExecutor.class)
@@ -41,7 +41,7 @@ public class DefaultForkJoinPool implements ServiceFactory<ForkJoinExecutor> {
         return e;
     }
 
-    @Stoppable
+    @OnShutdown
     public void shutdown() throws InterruptedException {
         // TODO fix async shutdown
         synchronized (poolLock) {

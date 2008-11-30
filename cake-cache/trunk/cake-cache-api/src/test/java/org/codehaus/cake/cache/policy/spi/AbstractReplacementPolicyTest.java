@@ -36,11 +36,6 @@ public class AbstractReplacementPolicyTest {
     private final Mockery context = new JUnit4Mockery();
 
     Attribute A1 = new LongAttribute() {};
-    Attribute A2 = new LongAttribute() {};
-    Attribute A3 = new LongAttribute() {};
-    Attribute A4 = new LongAttribute() {};
-    Attribute A5 = new LongAttribute() {};
-    Attribute A6 = new LongAttribute() {};
     DummyPolicy policy;
 
     @Before

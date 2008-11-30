@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.Startable;
+import org.codehaus.cake.service.annotation.OnStart;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
 //    }
 
     public class Started1 {
-        @Startable
+        @OnStart
         public void start() {
             latch.countDown();
         }

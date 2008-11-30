@@ -79,7 +79,7 @@ public abstract class Attribute<T> implements Serializable {
         if (clazz == null) {
             throw new NullPointerException("clazz is null");
         }
-        this.name = getClass().getSimpleName();// Doesn't work anonymous classes
+        this.name = getClass().getSimpleName();// Doesn't work with anonymous classes
         this.clazz = clazz;
         if (!isValid(defaultValue)) {
             throw new IllegalArgumentException("Default value must be valid, default value was '" + defaultValue + "'");

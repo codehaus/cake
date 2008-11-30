@@ -302,7 +302,7 @@ public class DefaultMapGenerator implements Opcodes {
 
         mv.visitVarInsn(ALOAD, 2);
         mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "size", "()I");
-        mv.visitLdcInsn(new Integer(sizeNonHidden));
+        mv.visitLdcInsn(Integer.valueOf(sizeNonHidden));
         mv.visitJumpInsn(IF_ICMPNE, f);
 
         // compare entries
@@ -492,7 +492,7 @@ public class DefaultMapGenerator implements Opcodes {
                     mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "doubleToLongBits", "(D)J");
                     mv.visitVarInsn(LSTORE, 2);
                     mv.visitVarInsn(ILOAD, 1);
-                    mv.visitLdcInsn(new Integer(i.attribute.hashCode()));
+                    mv.visitLdcInsn(Integer.valueOf(i.attribute.hashCode()));
                     mv.visitVarInsn(LLOAD, 2);
                     mv.visitVarInsn(LLOAD, 2);
                     mv.visitIntInsn(BIPUSH, 32);
@@ -501,7 +501,7 @@ public class DefaultMapGenerator implements Opcodes {
                     mv.visitInsn(L2I);
                 } else {
                     mv.visitVarInsn(ILOAD, 1);
-                    mv.visitLdcInsn(new Integer(i.attribute.hashCode()));
+                    mv.visitLdcInsn(Integer.valueOf(i.attribute.hashCode()));
                     mv.visitVarInsn(ALOAD, 0);
                     i.visitGet(mv);
                     if (i.vType == PrimType.BOOLEAN) {

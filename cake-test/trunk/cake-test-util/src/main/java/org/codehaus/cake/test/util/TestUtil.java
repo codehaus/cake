@@ -70,6 +70,7 @@ public class TestUtil {
         try {
             return (T) readWrite(o);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new AssertionFailedError(o + " not serialiable");
         }
     }

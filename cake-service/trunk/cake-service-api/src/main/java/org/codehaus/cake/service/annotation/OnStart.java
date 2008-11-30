@@ -37,4 +37,4 @@ import org.codehaus.cake.service.Container;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Startable {}
+public @interface OnStart {}

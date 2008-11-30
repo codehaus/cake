@@ -19,9 +19,9 @@ import org.codehaus.cake.internal.util.LogHelper;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.Disposable;
-import org.codehaus.cake.service.annotation.Startable;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
+import org.codehaus.cake.service.annotation.OnStart;
+import org.codehaus.cake.service.annotation.OnTermination;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
@@ -110,21 +110,21 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
             }
         }
 
-        @Disposable
+        @OnTermination
         public void dispose() throws Throwable {
             if (t4 != null) {
                 throw t4;
             }
         }
 
-        @Stoppable
+        @OnShutdown
         public void shutdown() throws Throwable {
             if (t3 != null) {
                 throw t3;
             }
         }
 
-        @Startable
+        @OnStart
         public void start() throws Throwable {
             if (t1 != null) {
                 throw t1;

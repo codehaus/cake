@@ -23,7 +23,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
-import org.codehaus.cake.service.annotation.Startable;
+import org.codehaus.cake.service.annotation.OnStart;
 
 /**
  * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach
@@ -91,7 +91,7 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
      *            the CacheAttributeService
      */
     @UseInternals
-    @Startable
+    @OnStart
     public final void registerAttribute(InternalCacheAttributeService service) {
         synchronized (lock) {
             if (attributes == null) {

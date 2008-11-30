@@ -2,8 +2,10 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.attribute;
 
+import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -16,13 +18,35 @@ import org.junit.Test;
  */
 public class DefaultAttributeMapTest extends AtrStubs {
 
-    ObjectAttribute a1 = new ObjectAttribute("a1", Integer.class, 6) {};
+    final static ObjectAttribute a1 = new A1();
 
-    ObjectAttribute a2 = new ObjectAttribute("a2", Integer.class, 7) {};
+    final static ObjectAttribute a2 = new A2();
 
-    ObjectAttribute a3 = new ObjectAttribute("a3", Integer.class, 8) {};
+    static class A1 extends ObjectAttribute {
 
-    ObjectAttribute a4 = new ObjectAttribute("a3", Boolean.class, true) {};
+        protected A1() {
+            super("a1", Integer.class, 6);
+        }
+
+        private Object readResolve() {
+            return a1;
+        }
+    }
+
+    static class A2 extends ObjectAttribute {
+
+        protected A2() {
+            super("a2", Integer.class, 7);
+        }
+
+        private Object readResolve() {
+            return a2;
+        }
+    }
+
+    static ObjectAttribute a3 = new ObjectAttribute("a3", Integer.class, 8) {};
+
+    static ObjectAttribute a4 = new ObjectAttribute("a3", Boolean.class, true) {};
 
     AttributeMap m;
 
@@ -77,6 +101,20 @@ public class DefaultAttributeMapTest extends AtrStubs {
         m.putAll(put);
         assertEquals("foo", m.get(a1));
         assertEquals(Boolean.TRUE, m.get(a2));
+    }
+
+    @Test
+    public void serializable() {
+        assertEquals(create(), serializeAndUnserialize(create()));
+        AttributeMap m = create();
+        assertSame(a1, serializeAndUnserialize(a1));
+        assertSame(a2, serializeAndUnserialize(a2));
+      //  m.put(a1, "foo");
+        m.put(a2, Boolean.TRUE);
+        AttributeMap sm=serializeAndUnserialize(m);
+        System.out.println(m.equals(sm));
+        System.out.println(sm.equals(m));
+        assertEquals(m, sm);
     }
 
     @Test

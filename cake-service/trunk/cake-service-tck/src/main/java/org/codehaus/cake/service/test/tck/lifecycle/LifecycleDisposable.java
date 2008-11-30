@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.Disposable;
+import org.codehaus.cake.service.annotation.OnTermination;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class LifecycleDisposable extends AbstractTCKTest<Container, ContainerCon
     }
 
     public class Disposable1 {
-        @Disposable
+        @OnTermination
         public void dispose() {
             latch.countDown();
         }

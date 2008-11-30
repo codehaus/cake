@@ -34,7 +34,6 @@ import org.junit.Test;
 public class AbstractHeapReplacementPolicyTest {
 
     static LongAttribute A = new LongAttribute("la") {};
-    private int REP = 100;
     private PriorityQueue matching;
     private Random r = new Random(124324234);
     private TP tp;

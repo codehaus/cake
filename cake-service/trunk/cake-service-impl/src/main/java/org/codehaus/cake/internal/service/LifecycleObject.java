@@ -31,10 +31,10 @@ import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.Disposable;
 import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.Startable;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
+import org.codehaus.cake.service.annotation.OnStart;
+import org.codehaus.cake.service.annotation.OnTermination;
 
 class LifecycleObject {
 
@@ -67,7 +67,7 @@ class LifecycleObject {
     }
 
     boolean isStoppableOrDisposable() {
-        return hasAnnotation(Stoppable.class) || hasAnnotation(Disposable.class);
+        return hasAnnotation(OnShutdown.class) || hasAnnotation(OnTermination.class);
     }
 
     private void matchAndInvoke(Method m, Iterable<?> parameters, boolean start) throws IllegalArgumentException,
@@ -102,12 +102,12 @@ class LifecycleObject {
                     if (Container.class.isAssignableFrom(type)) {
                         e = new IllegalStateException("An instance of " + type.getSimpleName()
                                 + " is not available while running methods annotated with @"
-                                + Startable.class.getSimpleName() + ". The @" + AfterStart.class.getSimpleName()
+                                + OnStart.class.getSimpleName() + ". The @" + AfterStart.class.getSimpleName()
                                 + " annotation can be used instead if a " + type.getSimpleName() + " is needed."
                                 + " [method = " + m + "]");
                     } else {
                         e = new IllegalStateException("An object of type " + type.getName()
-                                + " is not available for methods with @" + Startable.class.getSimpleName()
+                                + " is not available for methods with @" + OnStart.class.getSimpleName()
                                 + " [method = " + m + "]");
                     }
                 } else {
@@ -148,7 +148,7 @@ class LifecycleObject {
         }
         for (Method m : o.getClass().getMethods()) {
             boolean isInternal = m.getAnnotation(UseInternals.class) != null;
-            Annotation a = m.getAnnotation(Startable.class);
+            Annotation a = m.getAnnotation(OnStart.class);
             if (a != null) {
                 if (ies.isDebugEnabled()) {
                     ies.debug("@Startable (Invoking) -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
@@ -219,10 +219,10 @@ class LifecycleObject {
 
     void runStop() {
         for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(Stoppable.class);
+            Annotation a = m.getAnnotation(OnShutdown.class);
             if (a != null) {
                 if (m.getParameterTypes().length > 0) {
-                    ies.error("@" + Stoppable.class.getSimpleName()
+                    ies.error("@" + OnShutdown.class.getSimpleName()
                             + " annotation does not accept arguments, method will not be run [method=" + m + "]");
                 } else {
                     try {
@@ -245,10 +245,10 @@ class LifecycleObject {
 
     void runDispose() {
         for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(Disposable.class);
+            Annotation a = m.getAnnotation(OnTermination.class);
             if (a != null) {
                 if (m.getParameterTypes().length > 0) {
-                    ies.error("@" + Disposable.class.getSimpleName()
+                    ies.error("@" + OnTermination.class.getSimpleName()
                             + " annotation does not accept arguments, method will not be run [method=" + m + "]");
                 } else {
                     try {

@@ -35,8 +35,7 @@ public class AbstractArrayReplacementPolicyTest {
     TestEntry TE4;
     TestEntry TE5;
 
-    private int REP = 100;
-    private Random r = new Random(124324234);
+    
     private TP tp;
 
     @Before
@@ -130,7 +129,6 @@ public class AbstractArrayReplacementPolicyTest {
         // matching.r
         }
 
-        ArrayList<TestEntry> matching = new ArrayList<TestEntry>();
 
         public CacheEntry<Integer, String> evictNext() {
             return null;

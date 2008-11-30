@@ -15,8 +15,9 @@
  */
 package org.codehaus.cake.attribute;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -27,10 +28,10 @@ import java.util.Map.Entry;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: AttributeMaps.java 472 2007-11-19 09:34:26Z kasper $
  */
-public class DefaultAttributeMap implements AttributeMap {
+public class DefaultAttributeMap implements AttributeMap, Serializable {
 
     /** The HashMap that is storing the attribute value pairs. */
-    private final Map<Attribute, Object> map = new IdentityHashMap<Attribute, Object>();
+    private final Map<Attribute, Object> map = new HashMap<Attribute, Object>();
 
     /** Creates a new empty DefaultAttributeMap. */
     public DefaultAttributeMap() {
@@ -258,7 +259,6 @@ public class DefaultAttributeMap implements AttributeMap {
     public boolean put(BooleanAttribute key, boolean value) {
         Object prev = map.put(key, value);
         return prev == null ? key.getDefault() : (Boolean) prev;
-
     }
 
     /** {@inheritDoc} */

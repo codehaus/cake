@@ -37,18 +37,21 @@ public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>
      * If the entry being passed to the transformer is <code>null</code> return {@link Boolean#FALSE} otherwise
      * returns {@link Boolean#TRUE}.
      */
+    @SuppressWarnings("unchecked")
     public static final Op IS_NOT_NULL = InternalDataExtractors.EXTRACT_BOOLEAN;
 
     /**
      * Extracts the key part of an entry by calling {@link CacheEntry#getKey()}. If <code>null</code> is passed to
      * the transformer, <code>null</code> is returned
      */
+    @SuppressWarnings("unchecked")
     public static final Op ONLY_KEY = InternalDataExtractors.EXTRACT_KEY;
 
     /**
      * Extracts the value part of an entry by calling {@link CacheEntry#getValue()}. If <code>null</code> is passed
      * to the transformer, <code>null</code> is returned
      */
+    @SuppressWarnings("unchecked")
     public static final Op ONLY_VALUE = InternalDataExtractors.EXTRACT_VALUE;
 
     /** Returns the entry that is passed to the transformer, or <code>null</code> if <code>null</code> is passed. */

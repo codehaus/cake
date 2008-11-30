@@ -29,9 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @SuppressWarnings("unchecked")
-@RunWith(JMock.class)
 public class ProceduresTest {
-    Mockery context = new JUnit4Mockery();
 
     @Test
     public void noop() {

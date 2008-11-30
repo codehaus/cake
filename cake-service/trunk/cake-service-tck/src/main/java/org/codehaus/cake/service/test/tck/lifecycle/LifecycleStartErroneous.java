@@ -17,7 +17,7 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.Startable;
+import org.codehaus.cake.service.annotation.OnStart;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
@@ -176,50 +176,50 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
     }
 
     public static class StartRuntimeException {
-        @Startable
+        @OnStart
         public void start(ContainerConfiguration conf) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
     public static class StartException {
-        @Startable
+        @OnStart
         public void start(ContainerConfiguration conf) throws Exception {
             throw Exception1.INSTANCE;
         }
     }
 
     public static class StartError {
-        @Startable
+        @OnStart
         public void start(ContainerConfiguration conf) {
             throw Error1.INSTANCE;
         }
     }
 
     public static class StartContainer {
-        @Startable
+        @OnStart
         public void start(Container conf) {}
     }
 
     public static class StartThrowable {
-        @Startable
+        @OnStart
         public void start(ContainerConfiguration conf) throws Throwable {
             throw Throwable1.INSTANCE;
         }
     }
 
     public static class StartObject {
-        @Startable
+        @OnStart
         public void start(Object object) {}
     }
 
     public static class StartUnknown {
-        @Startable
+        @OnStart
         public void start(Integer unknown) {}
     }
 
     public static class StartPackageProtected {
-        @Startable
+        @OnStart
         void start(Integer unknown) {}
     }
 }

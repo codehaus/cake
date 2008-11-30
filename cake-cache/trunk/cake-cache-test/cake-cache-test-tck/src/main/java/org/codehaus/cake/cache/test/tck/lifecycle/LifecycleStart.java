@@ -21,7 +21,7 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.annotation.Startable;
+import org.codehaus.cake.service.annotation.OnStart;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.junit.After;
@@ -60,7 +60,7 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     }
 
     public class AllConfigurations {
-        @Startable
+        @OnStart
         public void start(CacheConfiguration configuration, ExceptionHandlingConfiguration a1, CacheLoadingConfiguration a3, ManagementConfiguration a4,
                 MemoryStoreConfiguration a5/* , CacheStoreConfiguration a7 */) {
             latch.countDown();
@@ -75,7 +75,7 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     }
 
     public class CustomConfiguration {
-        @Startable
+        @OnStart
         public void start(TestFoo registrant) {
             assertNotNull(registrant);
             latch.countDown();

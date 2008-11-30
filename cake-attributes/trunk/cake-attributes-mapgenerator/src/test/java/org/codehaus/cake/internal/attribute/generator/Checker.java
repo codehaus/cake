@@ -20,6 +20,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Constructor;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,6 +41,7 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
+import org.codehaus.cake.internal.attribute.SecurityTools;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator.MyLoader;
 
 public class Checker {
@@ -346,8 +348,14 @@ public class Checker {
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : params.entrySet()) {
             list.add(i.getKey());
         }
+        MyLoader ml = (MyLoader)
+        SecurityTools.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                return new MyLoader();
+            }
+        });
         try {
-            Class<AttributeMap> c = DefaultMapGenerator.generate(new MyLoader(), className, list);
+            Class<AttributeMap> c = DefaultMapGenerator.generate(ml, className, list);
             map = newInstance(params, c, false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -530,8 +538,14 @@ public class Checker {
             list.add(i.getKey());
         }
         AttributeMap map = null;
+        MyLoader ml = (MyLoader)
+        SecurityTools.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                return new MyLoader();
+            }
+        });
         try {
-            Class<AttributeMap> c = DefaultMapGenerator.generate(new MyLoader(), "foo" + System.nanoTime(), list);
+            Class<AttributeMap> c = DefaultMapGenerator.generate(ml, "foo" + System.nanoTime(), list);
             map = newInstance(m, c, false);
         } catch (Exception e) {
             e.printStackTrace();

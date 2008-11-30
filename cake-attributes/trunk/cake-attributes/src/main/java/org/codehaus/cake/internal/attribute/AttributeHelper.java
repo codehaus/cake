@@ -37,7 +37,6 @@ public final class AttributeHelper {
     /** Cannot instantiate. */
     private AttributeHelper() {
     }
-
     // /CLOVER:ON
     /**
      * @param o1

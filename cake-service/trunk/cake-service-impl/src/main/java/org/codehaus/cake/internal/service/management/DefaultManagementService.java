@@ -33,7 +33,7 @@ import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.ManagedVisitor;
 import org.codehaus.cake.management.Managements;
 import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
 import org.codehaus.cake.service.common.management.ManagementConfiguration;
 
 /**
@@ -131,7 +131,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
     }
 
     /** {@inheritDoc} */
-    @Stoppable
+    @OnShutdown
     public synchronized void stop() throws JMException {
         try {
             // TODO we should log any exceptions returned by traverse

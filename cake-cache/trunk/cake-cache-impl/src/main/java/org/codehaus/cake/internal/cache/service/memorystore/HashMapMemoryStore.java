@@ -51,7 +51,7 @@ import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
 
 /**
  * The default Implementaiton of {@link MemoryStore}. Storing entries in an HashMap.
@@ -475,7 +475,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         }
     }
 
-    @Stoppable
+    @OnShutdown
     public final void stop() {
         modCount++;
         size = 0;

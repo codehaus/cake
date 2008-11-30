@@ -32,8 +32,8 @@ import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheE
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.Disposable;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
+import org.codehaus.cake.service.annotation.OnTermination;
 
 public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
@@ -108,12 +108,12 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         }
     }
 
-    @Disposable
+    @OnTermination
     public void dispose() {
         futures.clear();
     }
 
-    @Stoppable
+    @OnShutdown
     public void stop() {
         for (Future<?> f : futures.values()) {
             f.cancel(false);

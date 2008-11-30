@@ -1,16 +1,14 @@
 package org.codehaus.cake.internal.service.executor;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.Stoppable;
+import org.codehaus.cake.service.annotation.OnShutdown;
 
 @UseInternals
 @ExportAsService(ExecutorService.class)
@@ -44,7 +42,7 @@ public class DefaultExecutorService implements ServiceFactory<ExecutorService> {
         return s;
     }
 
-    @Stoppable
+    @OnShutdown
     public void shutdown() throws InterruptedException {
         // TODO fix async shutdown
         synchronized (poolLock) {
