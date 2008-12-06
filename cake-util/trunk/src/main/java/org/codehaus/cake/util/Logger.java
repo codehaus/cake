@@ -16,23 +16,22 @@
 package org.codehaus.cake.util;
 
 /**
- * A simple logging interface abstracting logging APIs. The primary reason for
- * using this is to avoid dependencies on any external logging libraries.
+ * A simple logging interface abstracting logging APIs. The primary reason for using this is to avoid dependencies on
+ * any external logging libraries.
  * <p>
- * Use {@link org.codehaus.cake.util.Loggers}to create wrappers from popular
- * logging frameworks such as <a
- * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html">
- * Standard JDK logging </a>, <a
- * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html">
- * Log4j </a> or <a
- * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html">
- * commons logging </a>.
+ * Use {@link org.codehaus.cake.util.Loggers}to create wrappers from popular logging frameworks such as <a
+ * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Standard JDK logging </a>, <a
+ * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Log4j </a> or <a
+ * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> commons logging </a>.
+ * <p>
+ * This is not an attempt to create a new logging framework. But for some unknown reason, the authors of
+ * java.util.logging made {@link java.util.logging.Logger} a class instead of an interface. Making it impossible to
+ * extend it in any reasonable way, with all the different inter.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
  */
 public interface Logger {
-
     /**
      * Logs the message if the logger is currently enabled for the debug log
      * level.

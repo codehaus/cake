@@ -19,15 +19,16 @@ import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A Clock is used to create time values according to some custom policy. There are number of
- * situations where this is useful.
+ * A Clock instance is factory for creating timestamp. Normally {@link System#currentTimeMillis()} and
+ * {@link System#nanoTime()} is used, however, there are number of situations where its useful to allow different way to
+ * create timestamps.
  * <ul>
- * <li>For simulation, if you have enough CPU/memory, a simulated environment can run much much
- * faster than a real clock</li>
- * <li>For testing, you often want to have some kind of determinism for your time values.</li>
- * <li>Sometimes you want to run with a clock that is offset from your computers clock. This can be
- * particularly helpful in a situation like Planetlab where some nodes have incorrect system clocks
- * due to misconfigured NTP servers. </li>
+ * <li>For simulation, if you have enough CPU/memory, a simulated environment can run much much faster than a real
+ * clock</li>
+ * <li>For testing, you often want to have some kind of determinism when creating time instances.</li>
+ * <li>Sometimes you want to run with a clock that is offset from your computers clock. This can be particularly
+ * helpful in a situation like Planetlab where some nodes have incorrect system clocks due to misconfigured NTP servers.
+ * </li>
  * </ul>
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
@@ -39,13 +40,12 @@ public abstract class Clock {
     public static final Clock DEFAULT_CLOCK = new DefaultClock();
 
     /**
-     * This method can only be used to measure elapsed time and is not related to any other notion
-     * of system or wall-clock time. The value returned represents nanoseconds since some fixed but
-     * arbitrary time (perhaps in the future, so values may be negative). This method provides
-     * nanosecond precision, but not necessarily nanosecond accuracy. No guarantees are made about
-     * how frequently values change. Differences in successive calls that span greater than
-     * approximately 292 years (2<sup>63</sup> nanoseconds) will not accurately compute elapsed
-     * time due to numerical overflow.
+     * This method can only be used to measure elapsed time and is not related to any other notion of system or
+     * wall-clock time. The value returned represents nanoseconds since some fixed but arbitrary time (perhaps in the
+     * future, so values may be negative). This method provides nanosecond precision, but not necessarily nanosecond
+     * accuracy. No guarantees are made about how frequently values change. Differences in successive calls that span
+     * greater than approximately 292 years (2<sup>63</sup> nanoseconds) will not accurately compute elapsed time due
+     * to numerical overflow.
      * <p>
      * 
      * @return The current time value in nanoseconds.
@@ -53,15 +53,13 @@ public abstract class Clock {
     public abstract long nanoTime();
 
     /**
-     * Returns the current time in milliseconds. Note that while the unit of time of the return
-     * value is a millisecond, the granularity of the value depends on the underlying implementation
-     * may be larger.
+     * Returns the current time in milliseconds. Note that while the unit of time of the return value is a millisecond,
+     * the granularity of the value depends on the underlying implementation may be larger.
      * <p>
-     * See the description of the class <code>Date</code> for a discussion of slight discrepancies
-     * that may arise between "computer time" and coordinated universal time (UTC).
+     * See the description of the class <code>Date</code> for a discussion of slight discrepancies that may arise
+     * between "computer time" and coordinated universal time (UTC).
      * 
-     * @return the difference, measured in milliseconds, between the current time and midnight,
-     *         January 1, 1970 UTC.
+     * @return the difference, measured in milliseconds, between the current time and midnight, January 1, 1970 UTC.
      * @see java.util.Date
      */
     public abstract long timeOfDay();
@@ -71,7 +69,7 @@ public abstract class Clock {
      * {@link System#currentTimeMillis()}. {@link Clock#nanoTime()} returns a value obtained from
      * {@link System#nanoTime()}.
      */
-    public static final  class DefaultClock extends Clock implements Serializable {
+    public static final class DefaultClock extends Clock implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -3343971832371995608L;
 
@@ -89,8 +87,8 @@ public abstract class Clock {
     }
 
     /**
-     * DeterministicClock is useful for testing components that rely on precise time interleavings.
-     * This class is safe for use between multiple threads.
+     * DeterministicClock is useful for testing when the user needs to rely on precise time interleavings. This class is safe
+     * for use between multiple threads.
      * 
      * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
      * @version $Id$
@@ -106,7 +104,7 @@ public abstract class Clock {
         /** The current timeOfDay. */
         private final AtomicLong timeOfDay = new AtomicLong();
 
-        /** Increments the current relative time by 1. */
+        /** Increments the current nano time by 1. */
         public void incrementNanoTime() {
             nanoTime.incrementAndGet();
         }
@@ -168,24 +166,24 @@ public abstract class Clock {
             return timeOfDay.get();
         }
     }
-// Utility functions that might be added at a later time
-//  /**
-//  * @return <tt>timeOfDay() + unit.toMillis(timeout)</tt>
-//  */
-// public long getDeadlineFromNow(long timeout, TimeUnit unit) {
-//     return timeOfDay() + unit.toMillis(timeout);
-// }
+    // Utility functions that might be added at a later time
+    // /**
+    // * @return <tt>timeOfDay() + unit.toMillis(timeout)</tt>
+    // */
+    // public long getDeadlineFromNow(long timeout, TimeUnit unit) {
+    // return timeOfDay() + unit.toMillis(timeout);
+    // }
 
-// /**
-//  * @return timeOfDay() >= timeStampToCheck;
-//  */
-// public boolean isPassed(long timestamp) {
-//     return isPassed(timeOfDay(), timestamp);
-// }
-//    /**
-//     * @return <tt>currentTimeStamp >= timeStampToCheck</tt>
-//     */
-//    public static boolean isPassed(long currentTimeStamp, long timeStampToCheck) {
-//        return currentTimeStamp >= timeStampToCheck;
-//    }
+    // /**
+    // * @return timeOfDay() >= timeStampToCheck;
+    // */
+    // public boolean isPassed(long timestamp) {
+    // return isPassed(timeOfDay(), timestamp);
+    // }
+    // /**
+    // * @return <tt>currentTimeStamp >= timeStampToCheck</tt>
+    // */
+    // public static boolean isPassed(long currentTimeStamp, long timeStampToCheck) {
+    // return currentTimeStamp >= timeStampToCheck;
+    // }
 }

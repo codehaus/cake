@@ -25,7 +25,7 @@ import org.codehaus.cake.cache.policy.spi.AbstractReplacementPolicy;
 /**
  * WARNING: This is an internal class. Ordinary users should never need to reference this class.
  * <p>
- * These are various internal methods used by {@link AbstractReplacementPolicy}.
+ * This interface contain various methods used by {@link AbstractReplacementPolicy}.
  */
 public interface InternalCacheAttributeService {
     /**

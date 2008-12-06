@@ -42,7 +42,7 @@ public abstract class DurationAttribute extends LongAttribute {
     protected static final TimeUnit TIME_UNIT = TimeUnit.NANOSECONDS;
 
     /**
-     * Creates a new DurationAttribute.
+     * Creates a new DurationAttribute. The default duration value is {@link Long#MAX_VALUE} indicating forever.
      * 
      * @param name
      *            the name of the attribute
@@ -51,6 +51,17 @@ public abstract class DurationAttribute extends LongAttribute {
         super(name, DEFAULT_DURATION);
     }
 
+    /**
+     * Converts the specified duration from the specified timeunit into nanoseconds. Making sure that if the specified
+     * duration is {@link #FOREVER}, the duration is not converted, but {@link #FOREVER} is returned.
+     * 
+     * @param duration
+     *            the duration
+     * @param unit
+     *            the time unit of the duration
+     * @return the converted value
+     * 
+     */
     long convertFrom(long value, TimeUnit unit) {
         if (value == FOREVER) {
             return FOREVER;
@@ -59,11 +70,21 @@ public abstract class DurationAttribute extends LongAttribute {
         }
     }
 
-    long convertTo(long value, TimeUnit unit) {
-        if (value == FOREVER) {
+    /**
+     * Converts the specified duration from nanoseconds into the specified timeunit. Making sure that if the specified
+     * duration is {@link #FOREVER}, the duration is not converted, but {@link #FOREVER} is returned.
+     * 
+     * @param duration
+     *            the duration
+     * @param unit
+     *            the time unit of the duration
+     * @return the converted value
+     */
+    long convertTo(long duration, TimeUnit unit) {
+        if (duration == FOREVER) {
             return FOREVER;
         } else {
-            return unit.convert(value, TimeUnit.NANOSECONDS);
+            return unit.convert(duration, TimeUnit.NANOSECONDS);
         }
     }
 
@@ -83,7 +104,7 @@ public abstract class DurationAttribute extends LongAttribute {
 
     /**
      * Analogous to {@link LongAttribute#getValue(AttributeMap)} except taking a parameter indicating what time unit the
-     * value should be returned in.
+     * duration should be returned in.
      * 
      * @param attributes
      *            the attribute map to retrieve the value of this attribute from
@@ -103,18 +124,29 @@ public abstract class DurationAttribute extends LongAttribute {
     /** {@inheritDoc} */
     @Override
     public final boolean isValid(long value) {
-        return value>0;
+        return value > 0;
     }
+
     public void set(AttributeMap attributes, Long duration, TimeUnit unit) {
         set(attributes, duration.longValue(), unit);
     }
 
+    /**
+     * Sets this attribute with the specified value in the specified attribute map.
+     * 
+     * @param attributes
+     *            the attribute map to set this attribute in
+     * @param duration
+     *            the duration
+     * @param unit
+     *            the time unit of the specified duration
+     */
     public void set(AttributeMap attributes, long duration, TimeUnit unit) {
         set(attributes, convertFrom(duration, unit));
     }
 
     /**
-     * Returns an immutable AttributeMap containing only this attribute mapping to the specified value.
+     * Returns an immutable AttributeMap containing only this attribute mapping to the specified duration.
      * 
      * @param value
      *            the value to create the singleton from
@@ -126,8 +158,9 @@ public abstract class DurationAttribute extends LongAttribute {
         return super.singleton(convertFrom(value, unit));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String checkValidFailureMessage(Long value) {
-        return "Duration must be greater then 0, was " + value;
+        return " was negative or zero (" + getName() + " = " + value + ")";
     }
 }

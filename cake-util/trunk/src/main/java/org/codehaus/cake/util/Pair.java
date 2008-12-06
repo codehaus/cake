@@ -18,7 +18,7 @@ package org.codehaus.cake.util;
 import org.codehaus.cake.internal.util.CollectionUtils;
 
 /**
- * A <tt>Pair</tt> consists of two references to two objects.
+ * A <tt>Pair</tt> consists of two (final) references to two objects.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$

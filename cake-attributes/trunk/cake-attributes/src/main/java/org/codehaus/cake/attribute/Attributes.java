@@ -26,12 +26,9 @@ import org.codehaus.cake.internal.attribute.AttributeHelper;
 
 /**
  * 
- * This class consists exclusively of static methods that operate on or return collections. It contains polymorphic
- * algorithms that operate on collections, "wrappers", which return a new collection backed by a specified collection,
- * and a few other odds and ends.
- * 
- * 
- * Contains various utility methods for a {@link AttributeMap}.
+ * This class consists exclusively of static methods that operate on or return attribute maps. It contains polymorphic
+ * algorithms that operate on attribute maps, "wrappers", which return a new attribute map backed by a specified
+ * attribute map, and a few other odds and ends.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -44,6 +41,8 @@ public final class Attributes {
     /** Cannot instantiate. */
     private Attributes() {
     }
+
+    // /CLOVER:ON
 
     /**
      * Creates a new AttributeMap from the 2 specified attributes and respective values.
@@ -69,7 +68,6 @@ public final class Attributes {
         return map;
     }
 
-    // /CLOVER:ON
     /**
      * Returns an immutable AttributeMap containing only the specified attribute mapping to the specified value.
      * Attempts to modify the returned attribute map, whether direct or via its collection views, result in an
@@ -109,14 +107,19 @@ public final class Attributes {
     }
 
     /**
+     * Creates a new unmodifiable attribute map with all the attribute->value pairs in the specified attribute map.
+     * If
      * Validates that all entries entries are valid in the specified attribute map according to
      * {@link Attribute#checkValid(Object)}. The method returns a new immutable map with all the entries.
+     * <p>
+     * This method can is primarily used for creatin
      * 
      * @param attributes
-     *            the map to validate
-     * @return a new immutable map with validated entries
+     *            the map of attributes to validate
+     * @return a new immutable attribute map with validated entries
      * @throws IllegalArgumentException
-     *             if the map contains an illegal value for an attribute
+     *             if the map contains an value for an attribute that is not valid accordingly to the attributes
+     *             {@link Attribute#checkValid(Object)} method
      */
     public static AttributeMap validatedAttributeMap(AttributeMap attributes) {
         DefaultAttributeMap result = new DefaultAttributeMap();

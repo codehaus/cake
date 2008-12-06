@@ -21,12 +21,12 @@ import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
 
 /**
- * An attribute that can be used to impose order among the values of said attributes. The values can be ordered
+ * An abstract attribute that can be used to impose order among the values of said attributes. The values can be ordered
  * according to their {@linkplain Comparable natural ordering}, or by a {@link Comparator} provided at attribute
  * construction time, depending on which constructor is used.
  * 
- * An attribute relying on natural ordering does not permit comparison of non-comparable objects (doing so may result in
- * {@code ClassCastException}).
+ * An attribute relying on natural ordering does not support comparison of non-comparable objects (doing so may result
+ * in {@code ClassCastException}).
  * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
@@ -53,7 +53,7 @@ public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> im
      * @param clazz
      *            the type of the attribute
      * @param nullIsLeast
-     *            when comparing whether null is least or greatest
+     *            when comparing, whether null is least or greatest
      */
     protected ComparableObjectAttribute(String name, Class<T> clazz, boolean nullIsLeast) {
         super(name, clazz);
