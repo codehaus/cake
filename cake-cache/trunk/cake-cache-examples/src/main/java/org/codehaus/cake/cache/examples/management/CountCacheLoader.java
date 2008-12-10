@@ -11,8 +11,8 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.management.annotation.ManagedAttribute;
-import org.codehaus.cake.management.annotation.ManagedObject;
+import org.codehaus.cake.management.ManagedAttribute;
+import org.codehaus.cake.management.ManagedObject;
 @ManagedObject(defaultValue = "MyCacheLoader", description = "Cache Loading statistics")
 public class CountCacheLoader implements BlockingCacheLoader<String, String> {
     /** Keeping count of the number of loads. */

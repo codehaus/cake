@@ -37,7 +37,6 @@ import org.codehaus.cake.attribute.FloatAttribute;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
-import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.ops.Ops.BytePredicate;

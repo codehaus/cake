@@ -1,6 +1,6 @@
 package org.codehaus.cake.cache.test.tck.selection;
 
-import static org.codehaus.cake.cache.test.util.AtrStubs.*;
+import static org.codehaus.cake.cache.test.util.AtrStubs.B_3;
 import static org.codehaus.cake.cache.test.util.AtrStubs.B_FALSE;
 import static org.codehaus.cake.cache.test.util.AtrStubs.C_1;
 import static org.codehaus.cake.cache.test.util.AtrStubs.D_2;
@@ -8,6 +8,7 @@ import static org.codehaus.cake.cache.test.util.AtrStubs.F_2;
 import static org.codehaus.cake.cache.test.util.AtrStubs.I_1;
 import static org.codehaus.cake.cache.test.util.AtrStubs.I_3;
 import static org.codehaus.cake.cache.test.util.AtrStubs.L_3;
+import static org.codehaus.cake.cache.test.util.AtrStubs.O_2;
 import static org.codehaus.cake.cache.test.util.AtrStubs.S_2;
 
 import java.util.ArrayList;

@@ -17,9 +17,9 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import java.util.concurrent.CountDownLatch;
 
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addToLifecycle(new Started1());
+        conf.addService(new Started1());
         newContainer();
         prestart();
     }
@@ -43,7 +43,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void twoMethod() {
         latch = new CountDownLatch(2);
-        conf.addToLifecycle(new Started2());
+        conf.addService(new Started2());
         newContainer();
         prestart();
     }
@@ -51,7 +51,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     @Test
     public void twoMethodWithArgs() {
         latch = new CountDownLatch(2);
-        conf.addToLifecycle(new Started3());
+        conf.addService(new Started3());
         newContainer();
         prestart();
     }

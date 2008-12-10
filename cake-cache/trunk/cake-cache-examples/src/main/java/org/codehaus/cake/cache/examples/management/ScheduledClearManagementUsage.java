@@ -7,7 +7,7 @@ import org.codehaus.cake.cache.SynchronizedCache;
 public class ScheduledClearManagementUsage {
     public static void main(String[] args) throws InterruptedException {
         CacheConfiguration<Integer, Integer> conf = CacheConfiguration.newConfiguration("CountCacheUsage");
-        conf.addToLifecycle(new ScheduledClearManagement());
+        conf.addService(new ScheduledClearManagement());
         conf.withManagement().setEnabled(true); // enables JMX management
         Cache<Integer, Integer> cache = SynchronizedCache.from(conf);
         

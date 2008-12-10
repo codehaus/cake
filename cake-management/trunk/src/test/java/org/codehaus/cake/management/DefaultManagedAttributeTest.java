@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.management.MBeanAttributeInfo;
 import javax.management.ReflectionException;
 
-import org.codehaus.cake.management.annotation.ManagedAttribute;
 import org.codehaus.cake.management.stubs.PrivateMethods;
 import org.codehaus.cake.management.stubs.VariousAttributes;
 import org.junit.Before;

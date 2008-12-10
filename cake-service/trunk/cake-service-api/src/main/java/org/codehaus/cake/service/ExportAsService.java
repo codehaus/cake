@@ -1,12 +1,10 @@
-package org.codehaus.cake.service.annotation;
+package org.codehaus.cake.service;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.codehaus.cake.service.Container;
 
 /**
  * This annotation can be used for registering for easily attaching an object to a {@link Container} so that it can

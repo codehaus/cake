@@ -18,9 +18,6 @@ package org.codehaus.cake.cache.policy.spi;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;

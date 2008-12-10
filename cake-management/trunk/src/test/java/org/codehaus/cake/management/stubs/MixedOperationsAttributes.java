@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.management.stubs;
 
-import org.codehaus.cake.management.annotation.ManagedAttribute;
-import org.codehaus.cake.management.annotation.ManagedOperation;
+import org.codehaus.cake.management.ManagedAttribute;
+import org.codehaus.cake.management.ManagedOperation;
 
 public class MixedOperationsAttributes {
     public int invokeCount;

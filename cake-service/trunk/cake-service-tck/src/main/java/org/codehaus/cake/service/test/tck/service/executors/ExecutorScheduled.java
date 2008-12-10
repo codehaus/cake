@@ -43,7 +43,7 @@ public class ExecutorScheduled extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         final ScheduledExecutorService e = dummy(ScheduledExecutorService.class);
-        conf.addToLifecycleAndExport(ScheduledExecutorService.class, e);
+        conf.addService(ScheduledExecutorService.class, e);
 
         assertTrue(c.hasService(ScheduledExecutorService.class));
 

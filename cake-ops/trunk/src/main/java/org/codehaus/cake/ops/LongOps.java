@@ -16,8 +16,11 @@
 package org.codehaus.cake.ops;
 
 import java.io.Serializable;
-import static org.codehaus.cake.ops.Ops.*;
-import java.math.*;
+
+import org.codehaus.cake.ops.Ops.LongComparator;
+import org.codehaus.cake.ops.Ops.LongOp;
+import org.codehaus.cake.ops.Ops.LongPredicate;
+import org.codehaus.cake.ops.Ops.LongReducer;
 /**
  * Various implementations of {@link LongPredicate}.
  * <p>

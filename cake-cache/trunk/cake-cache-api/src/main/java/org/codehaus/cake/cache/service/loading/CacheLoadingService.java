@@ -22,6 +22,7 @@ import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheServices;
+import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.Container;
 
 /**

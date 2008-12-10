@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service.management;
+package org.codehaus.cake.management;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -25,8 +25,6 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 
-import org.codehaus.cake.management.ManagedVisitor;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 

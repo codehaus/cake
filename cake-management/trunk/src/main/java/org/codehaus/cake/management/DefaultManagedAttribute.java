@@ -25,8 +25,6 @@ import javax.management.IntrospectionException;
 import javax.management.MBeanAttributeInfo;
 import javax.management.ReflectionException;
 
-import org.codehaus.cake.management.annotation.ManagedAttribute;
-
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$

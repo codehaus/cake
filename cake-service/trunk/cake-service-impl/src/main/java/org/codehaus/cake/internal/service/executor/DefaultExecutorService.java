@@ -6,9 +6,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.UseInternals;
+import org.codehaus.cake.service.ExportAsService;
+import org.codehaus.cake.service.OnShutdown;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.OnShutdown;
 
 @UseInternals
 @ExportAsService(ExecutorService.class)

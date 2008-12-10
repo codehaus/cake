@@ -9,8 +9,8 @@ import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.annotation.ExportAsService;
 
 @ExportAsService( { CrudReader.class, CrudWriter.class, CrudBatchWriter.class })
 public class CrudWriterFactory<K, V> implements ServiceFactory {

@@ -30,12 +30,12 @@ import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.util.CollectionUtils;
-import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.management.annotation.ManagedOperation;
+import org.codehaus.cake.management.ManagedObject;
+import org.codehaus.cake.management.ManagedOperation;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.annotation.ExportAsService;
 
 @ManagedObject(defaultValue = "Loading", description = "Cache Loading attributes and operations")
 @ExportAsService(CacheLoadingService.class)

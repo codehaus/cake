@@ -23,9 +23,9 @@ import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViewFactory;
 import org.codehaus.cake.internal.service.AbstractContainer;
 import org.codehaus.cake.internal.service.Composer;
-import org.codehaus.cake.management.annotation.ManagedAttribute;
-import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.management.annotation.ManagedOperation;
+import org.codehaus.cake.management.ManagedAttribute;
+import org.codehaus.cake.management.ManagedObject;
+import org.codehaus.cake.management.ManagedOperation;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 

@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import org.codehaus.cake.internal.util.LogHelper;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.OnTermination;
+import org.codehaus.cake.service.OnTermination;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
@@ -44,7 +44,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
      */
     @Test
     public void unknownObject() throws Throwable {
-        conf.addToLifecycle(new DisposeObject());
+        conf.addService(new DisposeObject());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -73,7 +73,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
 
     @Test
     public void shutdownRuntimeException() throws Throwable {
-        conf.addToLifecycle(new DisposeRuntimeException());
+        conf.addService(new DisposeRuntimeException());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -102,7 +102,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
 
     @Test
     public void shutdownException() throws Throwable {
-        conf.addToLifecycle(new DisposeException());
+        conf.addService(new DisposeException());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -131,7 +131,7 @@ public class LifecycleDisposableErroneous extends AbstractTCKTest<Container, Con
 
     @Test(expected = Error1.class)
     public void shutdownError() throws Throwable {
-        conf.addToLifecycle(new DisposeError());
+        conf.addService(new DisposeError());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {

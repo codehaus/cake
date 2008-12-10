@@ -29,15 +29,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import junit.framework.AssertionFailedError;
-
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
@@ -117,9 +114,9 @@ public class CacheConfigurationTest {
     public void addService() {
         assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
         ServiceFactory sf = dummy(ServiceFactory.class);
-        conf.addToLifecycle(5);
-        conf.addToLifecycleAndExport(Integer.class, 10);
-        conf.addToLifecycleAndExport(Long.class, sf);
+        conf.addService(5);
+        conf.addService(Integer.class, 10);
+        conf.addService(Long.class, sf);
         ServiceList sl = (ServiceList) conf.getServices();
         Iterator<Object> iter = sl.getServices().iterator();
         assertEquals(5, iter.next());

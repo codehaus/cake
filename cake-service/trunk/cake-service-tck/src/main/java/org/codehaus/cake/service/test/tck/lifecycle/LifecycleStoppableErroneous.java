@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import org.codehaus.cake.internal.util.LogHelper;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.OnShutdown;
+import org.codehaus.cake.service.OnShutdown;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
@@ -44,7 +44,7 @@ public class LifecycleStoppableErroneous extends AbstractTCKTest<Container, Cont
      */
     @Test
     public void unknownObject() throws Throwable {
-        conf.addToLifecycle(new StopObject());
+        conf.addService(new StopObject());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -72,7 +72,7 @@ public class LifecycleStoppableErroneous extends AbstractTCKTest<Container, Cont
 
     @Test
     public void shutdownRuntimeException() throws Throwable {
-        conf.addToLifecycle(new StopRuntimeException());
+        conf.addService(new StopRuntimeException());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -100,7 +100,7 @@ public class LifecycleStoppableErroneous extends AbstractTCKTest<Container, Cont
 
     @Test
     public void shutdownException() throws Throwable {
-        conf.addToLifecycle(new StopException());
+        conf.addService(new StopException());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -128,7 +128,7 @@ public class LifecycleStoppableErroneous extends AbstractTCKTest<Container, Cont
 
     @Test(expected = Error1.class)
     public void shutdownError() throws Throwable {
-        conf.addToLifecycle(new StopError());
+        conf.addService(new StopError());
         latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {
@@ -156,7 +156,7 @@ public class LifecycleStoppableErroneous extends AbstractTCKTest<Container, Cont
 
     @Test
     public void shutdownPackageProteced() throws Throwable {
-        conf.addToLifecycle(new StopPackageProtected());
+        conf.addService(new StopPackageProtected());
         // latch = new CountDownLatch(1);
 
         conf.setDefaultLogger(new LogHelper.AbstractLogger() {

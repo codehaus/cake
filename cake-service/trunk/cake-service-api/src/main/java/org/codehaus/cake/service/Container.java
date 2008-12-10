@@ -27,7 +27,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 /**
  * A Container is the the in addition providing .
  * 
- * Retrieving services that have been registered using {@link ContainerConfiguration#addToLifecycle(Object)}.
+ * Retrieving services that have been registered using {@link ContainerConfiguration#addService(Object)}.
  * 
  * <p>
  * This interface is normally extended by a concrete container type. {@link org.codehaus.cake.cache.Cache}, for

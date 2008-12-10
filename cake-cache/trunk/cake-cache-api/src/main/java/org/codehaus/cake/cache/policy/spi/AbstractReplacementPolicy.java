@@ -23,7 +23,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
-import org.codehaus.cake.service.annotation.OnStart;
+import org.codehaus.cake.service.OnStart;
 
 /**
  * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach
@@ -127,4 +127,18 @@ public abstract class AbstractReplacementPolicy<K, V> implements ReplacementPoli
      */
     public void touch(CacheEntry<K, V> entry) {
     }
+    
+//    protected void register(AttributeRegistration registration) {
+//        //Bliver kaldt af register attribute
+//        //lav en attribute der trækker feltet direkte ud af attribute mappet.
+//    }
+//    
+//    interface AttributeRegistration {
+//        <T> Pair<Op<AttributeMap, T>, Op<T, AttributeMap>> registerObject();
+//        Pair<ObjectToInt<AttributeMap>, IntToObject<AttributeMap>> registerInt();
+//        Pair<ObjectToLong<AttributeMap>, LongToObject<AttributeMap>> registerLong();
+//        Pair<ObjectToDouble<AttributeMap>, DoubleToObject<AttributeMap>> registerDouble();
+//        Pair<ObjectToFloat<AttributeMap>, FloatToObject<AttributeMap>> registerFloat();
+//        Pair<ObjectToBoolean<AttributeMap>, BooleanToObject<AttributeMap>> registerBoolean();
+//    }
 }

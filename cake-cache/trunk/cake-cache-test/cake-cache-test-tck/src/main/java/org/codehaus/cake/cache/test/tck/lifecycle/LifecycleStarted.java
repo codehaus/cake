@@ -20,8 +20,8 @@ import java.util.concurrent.CountDownLatch;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.annotation.AfterStart;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.util.Logger.Level;
@@ -42,7 +42,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addToLifecycle(new Started1());
+        conf.addService(new Started1());
         init();
         prestart();
     }
@@ -50,7 +50,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void twoMethod() {
         latch = new CountDownLatch(2);
-        conf.addToLifecycle(new Started2());
+        conf.addService(new Started2());
         init();
         prestart();
     }
@@ -58,7 +58,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test
     public void cacheArg() {
         latch = new CountDownLatch(2);
-        conf.addToLifecycle(new Started8());
+        conf.addService(new Started8());
         init();
         prestart();
     }
@@ -66,7 +66,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     @Test @Ignore
     public void cacheAndServiceArg() {
         latch = new CountDownLatch(1);
-        conf.addToLifecycle(new Started4());
+        conf.addService(new Started4());
         init();
         prestart();
     }
@@ -75,7 +75,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     public void noLoader() {
         newConfigurationClean();
         latch = new CountDownLatch(0);
-        conf.addToLifecycle(new Started5());
+        conf.addService(new Started5());
         init();
         prestart();
     }
@@ -85,7 +85,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     public void runtimeExceptionMethod() {
         try {
             latch = new CountDownLatch(0);
-            conf.addToLifecycle(new Started6());
+            conf.addService(new Started6());
             conf.withExceptionHandling().setExceptionHandler(exceptionHandler);
             init();
             prestart();
@@ -99,7 +99,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     public void exceptionMethod() {
         try {
             latch = new CountDownLatch(0);
-            conf.addToLifecycle(new Started7());
+            conf.addService(new Started7());
             conf.withExceptionHandling().setExceptionHandler(exceptionHandler);
             init();
             prestart();

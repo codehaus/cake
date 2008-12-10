@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.service.loading;
 
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
+import org.codehaus.cake.management.ManagementConfiguration;
 
 /**
  * The management interface for the loading service.

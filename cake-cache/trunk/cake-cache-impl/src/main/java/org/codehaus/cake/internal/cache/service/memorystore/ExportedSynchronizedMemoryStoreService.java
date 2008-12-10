@@ -7,9 +7,9 @@ import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.service.configuration.ConfigurationService;
-import org.codehaus.cake.management.annotation.ManagedAttribute;
+import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.service.annotation.ExportAsService;
+import org.codehaus.cake.service.ExportAsService;
 
 @ExportAsService(MemoryStoreService.class)
 public class ExportedSynchronizedMemoryStoreService<K, V> extends ExportedMemoryStoreService<K, V> {

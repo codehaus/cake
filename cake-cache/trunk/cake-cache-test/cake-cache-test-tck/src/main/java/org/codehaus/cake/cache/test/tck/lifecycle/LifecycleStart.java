@@ -21,9 +21,9 @@ import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.annotation.OnStart;
+import org.codehaus.cake.management.ManagementConfiguration;
+import org.codehaus.cake.service.OnStart;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.junit.After;
 import org.junit.Test;
 
@@ -38,14 +38,14 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     @Test
     public void allConfigurations() {
         latch = new CountDownLatch(1);
-        conf.addToLifecycle(new AllConfigurations());
+        conf.addService(new AllConfigurations());
         init();
         prestart();
     }
 
     @Test(expected = IllegalStateException.class)
     public void unknownConfiguration() {
-        conf.addToLifecycle(new CustomConfiguration());
+        conf.addService(new CustomConfiguration());
         init();
         prestart();
     }
@@ -54,7 +54,7 @@ public class LifecycleStart extends AbstractCacheTCKTest {
     public void customConfiguration() {
         latch = new CountDownLatch(1);
         conf = new TestConfiguration();
-        conf.addToLifecycle(new CustomConfiguration());
+        conf.addService(new CustomConfiguration());
         init();
         prestart();
     }

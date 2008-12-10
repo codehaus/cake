@@ -27,14 +27,14 @@ import org.codehaus.cake.internal.picocontainer.defaults.AmbiguousComponentResol
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
 import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.ExportAsService;
+import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.service.OnStart;
+import org.codehaus.cake.service.OnTermination;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.ExportAsService;
-import org.codehaus.cake.service.annotation.OnShutdown;
-import org.codehaus.cake.service.annotation.OnStart;
-import org.codehaus.cake.service.annotation.OnTermination;
 
 class LifecycleObject {
 

@@ -15,9 +15,6 @@
  */
 package org.codehaus.cake.cache.service.loading;
 
-import java.util.Collection;
-
-import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.crud.CrudWriter;

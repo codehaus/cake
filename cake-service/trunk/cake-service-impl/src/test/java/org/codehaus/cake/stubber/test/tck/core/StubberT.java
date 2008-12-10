@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.stubber.test.tck.core;
 
-import org.codehaus.cake.service.annotation.OnStart;
+import org.codehaus.cake.service.OnStart;
 import org.codehaus.cake.stubber.test.tck.AbstraktStubberTCKTst;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class StubberT extends AbstraktStubberTCKTst {
     
     @Test(expected = IllegalStateException.class)
     public void t() {
-        conf.addToLifecycleAndExport(Register.class, new Register());
+        conf.addService(Register.class, new Register());
         newContainer();
         c.getIt(5);
         assertTrue(c.hasService(Integer.class));

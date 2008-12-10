@@ -27,7 +27,7 @@ public class LifecycleRegistration extends AbstractCacheTCKTest {
 
     @Test
     public void registerExisting() {
-        conf.addToLifecycleAndExport(MemoryStoreService.class, mss);
+        conf.addService(MemoryStoreService.class, mss);
         newContainer();
         prestart();
         assertSame(mss, c.with().memoryStore());

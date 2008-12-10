@@ -4,8 +4,6 @@ import static org.codehaus.cake.test.util.TestUtil.params;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;

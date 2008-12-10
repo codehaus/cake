@@ -30,11 +30,11 @@ import junit.framework.AssertionFailedError;
 
 import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.internal.service.ServiceList.Factory;
+import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.service.TstStubs.PrivateConstructorStubber;
 import org.codehaus.cake.service.TstStubs.Stubber;
 import org.codehaus.cake.service.TstStubs.StubberConfiguration;
 import org.codehaus.cake.service.TstStubs.StubberImpl;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
@@ -231,9 +231,9 @@ public class ContainerConfigurationTest {
     public void addService() {
         assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
         ServiceFactory sf = dummy(ServiceFactory.class);
-        conf.addToLifecycle(5);
-        conf.addToLifecycleAndExport(Integer.class, 10);
-        conf.addToLifecycleAndExport(Long.class, sf);
+        conf.addService(5);
+        conf.addService(Integer.class, 10);
+        conf.addService(Long.class, sf);
         ServiceList sl = (ServiceList) conf.getServices();
         Iterator<Object> iter = sl.getServices().iterator();
         assertEquals(5, iter.next());
@@ -249,7 +249,7 @@ public class ContainerConfigurationTest {
     @Test
     public void addGetServices() {
         for (int i = 0; i < 100; i++) {
-            conf.addToLifecycle(i);
+            conf.addService(i);
         }
         ServiceList l = (ServiceList) conf.getServices();
         Iterator<Object> iter = l.getServices().iterator();
@@ -260,33 +260,33 @@ public class ContainerConfigurationTest {
 
     @Test(expected = NullPointerException.class)
     public void addServicesNPE() {
-        conf.addToLifecycle(null);
+        conf.addService(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addServicesSame() {
-        conf.addToLifecycle(1);
-        conf.addToLifecycle(1);
+        conf.addService(1);
+        conf.addService(1);
     }
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE1() {
-        conf.addToLifecycleAndExport(null, new Object());
+        conf.addService(null, new Object());
     }
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE2() {
-        conf.addToLifecycleAndExport(Integer.class, null);
+        conf.addService(Integer.class, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE3() {
-        conf.addToLifecycleAndExport(null, new Object());
+        conf.addService(null, new Object());
     }
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE4() {
-        conf.addToLifecycleAndExport(Integer.class,(ServiceFactory) null);
+        conf.addService(Integer.class,(ServiceFactory) null);
     }
 
     @Test

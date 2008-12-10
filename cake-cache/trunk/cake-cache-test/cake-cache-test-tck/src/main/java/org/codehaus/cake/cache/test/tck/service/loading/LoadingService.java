@@ -18,8 +18,8 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.test.util.TestUtil;

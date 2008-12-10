@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.cache.test.util.AtrStubs;
 import org.codehaus.cake.ops.Predicates;
 import org.junit.Test;
 import org.junit.runner.RunWith;

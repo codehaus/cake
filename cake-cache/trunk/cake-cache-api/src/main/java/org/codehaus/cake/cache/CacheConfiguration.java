@@ -24,11 +24,11 @@ import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;
+import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
 import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 
@@ -107,8 +107,8 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     /** {@inheritDoc} */
     @Override
-    public CacheConfiguration<K, V> addToLifecycle(Object o) {
-        super.addToLifecycle(o);
+    public CacheConfiguration<K, V> addService(Object o) {
+        super.addService(o);
         return this;
     }
 
@@ -117,15 +117,15 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, S service) {
-        super.addToLifecycleAndExport(key, service);
+    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, S service) {
+        super.addService(key, service);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
-        super.addToLifecycleAndExport(key, factory);
+    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, ServiceFactory<S> factory) {
+        super.addService(key, factory);
         return this;
     }
 
@@ -166,7 +166,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
      * @return this configuration
      */
     public CacheConfiguration<K, V> runAfterStart(Procedure<Cache<K, V>> runAfterStartProcedure) {
-        super.addToLifecycle(new RunAfterCacheStartProcedure<K, V>(runAfterStartProcedure));
+        super.addService(new RunAfterCacheStartProcedure<K, V>(runAfterStartProcedure));
         return this;
     }
 

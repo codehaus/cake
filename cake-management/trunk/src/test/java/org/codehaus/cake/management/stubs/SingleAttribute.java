@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.management.stubs;
 
-import org.codehaus.cake.management.annotation.ManagedAttribute;
+import org.codehaus.cake.management.ManagedAttribute;
 
 /**
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>

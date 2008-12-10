@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
@@ -147,7 +146,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         newConfigurationClean();
         if (TckUtil.isThreadSafe()) {
             threadHelper = new ThreadServiceTestHelper();
-            conf.addToLifecycle(threadHelper);
+            conf.addService(threadHelper);
             //conf.addServiceFactory(ExecutorService.class, threadHelper);
         }
         return (T) conf;

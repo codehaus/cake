@@ -16,8 +16,11 @@
 package org.codehaus.cake.ops;
 
 import java.io.Serializable;
-import static org.codehaus.cake.ops.Ops.*;
-import java.math.*;
+
+import org.codehaus.cake.ops.Ops.FloatComparator;
+import org.codehaus.cake.ops.Ops.FloatOp;
+import org.codehaus.cake.ops.Ops.FloatPredicate;
+import org.codehaus.cake.ops.Ops.FloatReducer;
 /**
  * Various implementations of {@link FloatPredicate}.
  * <p>

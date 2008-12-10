@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
@@ -31,7 +30,6 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
-import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator.MyLoader;
 import org.junit.Ignore;
 import org.junit.Test;
 

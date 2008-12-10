@@ -30,10 +30,10 @@ import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.OnShutdown;
-import org.codehaus.cake.service.annotation.OnTermination;
+import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.service.OnTermination;
 
 public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 

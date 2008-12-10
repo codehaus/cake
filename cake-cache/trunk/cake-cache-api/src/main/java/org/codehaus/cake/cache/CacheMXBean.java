@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
+import org.codehaus.cake.management.ManagementConfiguration;
 
 /**
  * The management interface for a {@link Cache}. Some cache implementations might define additional methods in addition

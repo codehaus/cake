@@ -44,7 +44,7 @@ public class ExecutorExecutorService extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         final ExecutorService e = dummy(ExecutorService.class);
-        conf.addToLifecycleAndExport(ExecutorService.class, e);
+        conf.addService(ExecutorService.class, e);
 
         assertTrue(c.hasService(ExecutorService.class));
 

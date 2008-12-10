@@ -22,9 +22,9 @@ import javax.management.MBeanServerFactory;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.ManagedVisitor;
+import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class ManagementServiceRegistrant extends AbstractTCKTest<Container, Cont
     public void registrant() throws Exception {
         MBeanServer mbs = MBeanServerFactory.createMBeanServer();
         int count = mbs.getMBeanCount();
-        conf.addToLifecycle(new Manageable() {
+        conf.addService(new Manageable() {
             public void manage(ManagedGroup parent) {
                 parent.addChild("foo1", "foodesc").addChild("foo2", "foodesc2");
             }

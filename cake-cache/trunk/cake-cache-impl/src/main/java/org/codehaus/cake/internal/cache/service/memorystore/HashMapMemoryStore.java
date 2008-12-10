@@ -51,7 +51,7 @@ import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableServi
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
-import org.codehaus.cake.service.annotation.OnShutdown;
+import org.codehaus.cake.service.OnShutdown;
 
 /**
  * The default Implementaiton of {@link MemoryStore}. Storing entries in an HashMap.

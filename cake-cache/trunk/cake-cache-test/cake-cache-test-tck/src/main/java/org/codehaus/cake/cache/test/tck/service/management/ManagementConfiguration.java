@@ -53,7 +53,7 @@ public class ManagementConfiguration extends AbstractCacheTCKTest {
     public void registrant() throws Exception {
         MBeanServer mbs = MBeanServerFactory.createMBeanServer();
         int count = mbs.getMBeanCount();
-        conf.addToLifecycle(new Manageable() {
+        conf.addService(new Manageable() {
             public void manage(ManagedGroup parent) {
                 parent.addChild("foo1", "foodesc").addChild("foo2", "foodesc2");
             }

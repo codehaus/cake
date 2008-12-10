@@ -28,7 +28,6 @@ import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
-import org.codehaus.cake.management.ManagedGroup;
 import org.codehaus.cake.management.stubs.SingleOperation;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;

@@ -20,7 +20,6 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LoadAll extends AbstractCacheTCKTest {

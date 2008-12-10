@@ -24,13 +24,13 @@ import javax.management.MBeanServerInvocationHandler;
 import javax.management.ObjectName;
 
 import org.codehaus.cake.management.Manageable;
+import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedGroup;
-import org.codehaus.cake.management.annotation.ManagedAttribute;
-import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.management.annotation.ManagedOperation;
+import org.codehaus.cake.management.ManagedObject;
+import org.codehaus.cake.management.ManagedOperation;
+import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.common.management.ManagementConfiguration;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
 
     @Test
     public void manageble() throws Exception {
-        conf.addToLifecycle(new MyService());
+        conf.addService(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true);
         newContainer();
         String pck = getContainerInterface().getPackage().getName();
@@ -59,7 +59,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
 
     @Test
     public void managebleObject() throws Exception {
-        conf.addToLifecycle(new MyServiceObject());
+        conf.addService(new MyServiceObject());
         withConf(ManagementConfiguration.class).setEnabled(true);
         newContainer();
         String pck = getContainerInterface().getPackage().getName();
@@ -79,7 +79,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
     public void customServer() throws Exception {
         MBeanServer mbs = MBeanServerFactory.createMBeanServer();
 
-        conf.addToLifecycle(new MyService());
+        conf.addService(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true).setMBeanServer(mbs);
         newContainer();
         String pck = getContainerInterface().getPackage().getName();
@@ -98,7 +98,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
 
     @Test
     public void customDomain() throws Exception {
-        conf.addToLifecycle(new MyService());
+        conf.addService(new MyService());
         withConf(ManagementConfiguration.class).setEnabled(true).setDomain("org.foo");
         newContainer();
         ObjectName on = new ObjectName("org.foo:name=" + c.getName() + ",service=foofoo");
@@ -116,7 +116,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
     @Test
     public void onlyIfEnabled() throws Exception {
         // withConf(ManagementConfiguration.class).setEnabled(true);
-        conf.addToLifecycle(new Manageable() {
+        conf.addService(new Manageable() {
             public void manage(ManagedGroup parent) {
                 fail("Should not have been called");
             }
@@ -129,7 +129,7 @@ public class ManagementService extends AbstractTCKTest<Container, ContainerConfi
     public void lateRegistering() throws Exception {
         final AtomicReference<ManagedGroup> ar = new AtomicReference<ManagedGroup>();
         withConf(ManagementConfiguration.class).setEnabled(true);
-        conf.addToLifecycle(new Manageable() {
+        conf.addService(new Manageable() {
             public void manage(ManagedGroup parent) {
                 ar.set(parent);
             }

@@ -22,8 +22,6 @@ import java.util.HashSet;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.util.Loggers;
-import org.codehaus.cake.util.Logger.Level;
 import org.junit.Test;
 
 /**

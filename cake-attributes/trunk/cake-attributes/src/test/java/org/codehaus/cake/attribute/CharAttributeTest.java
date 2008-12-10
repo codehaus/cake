@@ -15,11 +15,14 @@
  */
 package org.codehaus.cake.attribute;
 
-import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import java.util.*;
-import org.codehaus.cake.test.util.TestUtil;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.junit.Test;
 /**
  * Various tests for {@link CharAttribute}.

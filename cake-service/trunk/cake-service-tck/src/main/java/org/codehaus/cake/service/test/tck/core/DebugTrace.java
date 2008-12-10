@@ -16,12 +16,12 @@
 package org.codehaus.cake.service.test.tck.core;
 
 import org.codehaus.cake.internal.util.LogHelper;
+import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.AfterStart;
-import org.codehaus.cake.service.annotation.OnShutdown;
-import org.codehaus.cake.service.annotation.OnStart;
-import org.codehaus.cake.service.annotation.OnTermination;
+import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.service.OnStart;
+import org.codehaus.cake.service.OnTermination;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
@@ -56,7 +56,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test
     public void debug() {
         conf.setDefaultLogger(DEBUG);
-        conf.addToLifecycle(new TestIt(null, null, null, null));
+        conf.addService(new TestIt(null, null, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();
@@ -65,7 +65,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test(expected = RuntimeException1.class)
     public void debug1() {
         conf.setDefaultLogger(DEBUG);
-        conf.addToLifecycle(new TestIt(RuntimeException1.INSTANCE, null, null, null));
+        conf.addService(new TestIt(RuntimeException1.INSTANCE, null, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();
@@ -74,7 +74,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test(expected = Error1.class)
     public void debug2() {
         conf.setDefaultLogger(DEBUG);
-        conf.addToLifecycle(new TestIt(null, Error1.INSTANCE, null, null));
+        conf.addService(new TestIt(null, Error1.INSTANCE, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();
@@ -83,7 +83,7 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
     @Test
     public void trace() {
         conf.setDefaultLogger(TRACE);
-        conf.addToLifecycle(new TestIt(null, null, null, null));
+        conf.addService(new TestIt(null, null, null, null));
         newContainer();
         prestart();
         shutdownAndAwaitTermination();

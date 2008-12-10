@@ -17,7 +17,7 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.OnStart;
+import org.codehaus.cake.service.OnStart;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
@@ -34,7 +34,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
      */
     @Test
     public void unknownObject() throws Throwable {
-        conf.addToLifecycle(new StartObject());
+        conf.addService(new StartObject());
         newContainer();
         Throwable cause = null;
         try {
@@ -55,7 +55,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void unknown() throws Throwable {
-        conf.addToLifecycle(new StartUnknown());
+        conf.addService(new StartUnknown());
         newContainer();
         Throwable cause = null;
         try {
@@ -76,7 +76,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void startRuntimeException() throws Throwable {
-        conf.addToLifecycle(new StartRuntimeException());
+        conf.addService(new StartRuntimeException());
         newContainer();
         try {
             prestart();
@@ -96,7 +96,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void startContainer() throws Throwable {
-        conf.addToLifecycle(new StartContainer());
+        conf.addService(new StartContainer());
         newContainer();
         Throwable cause = null;
         try {
@@ -117,7 +117,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void startException() throws Throwable {
-        conf.addToLifecycle(new StartException());
+        conf.addService(new StartException());
         newContainer();
         try {
             prestart();
@@ -137,7 +137,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void startError() throws Throwable {
-        conf.addToLifecycle(new StartError());
+        conf.addService(new StartError());
         newContainer();
         try {
             prestart();
@@ -157,7 +157,7 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
 
     @Test
     public void startThrowable() throws Throwable {
-        conf.addToLifecycle(new StartThrowable());
+        conf.addService(new StartThrowable());
         newContainer();
         try {
             prestart();

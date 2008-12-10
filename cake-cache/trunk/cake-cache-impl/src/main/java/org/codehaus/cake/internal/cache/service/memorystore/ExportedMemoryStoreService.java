@@ -11,12 +11,12 @@ import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.service.configuration.ConfigurationService;
-import org.codehaus.cake.management.annotation.ManagedAttribute;
-import org.codehaus.cake.management.annotation.ManagedObject;
-import org.codehaus.cake.management.annotation.ManagedOperation;
+import org.codehaus.cake.management.ManagedAttribute;
+import org.codehaus.cake.management.ManagedObject;
+import org.codehaus.cake.management.ManagedOperation;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.annotation.ExportAsService;
 
 /**
  * This class wraps CacheEvictionService as a CacheEvictionMXBean.

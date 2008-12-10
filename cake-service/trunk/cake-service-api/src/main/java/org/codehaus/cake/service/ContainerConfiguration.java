@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 import org.codehaus.cake.internal.service.ServiceList;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;
-import org.codehaus.cake.service.annotation.ExportAsService;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Loggers.Commons;
@@ -36,7 +35,7 @@ import org.codehaus.cake.util.Loggers.JDK;
 import org.codehaus.cake.util.Loggers.Log4j;
 
 /**
- * This class is the primary class used for representing the configuration of a container.
+ * This class is the abstract base used for representing the configuration of a container implementation.
  * <p>
  * This class is not meant to be directly instantiated, instead it should be overridden with a configuration object for
  * a concrete container type.
@@ -72,8 +71,8 @@ public abstract class ContainerConfiguration<T> {
     private Class<? extends T> type;
 
     /**
-     * Adds an instantiated configuration object.
-     * 
+     * Adds an instantiated configuration object. Available by calling {@link #getConfigurationOfType(Class)}
+     * where class is {@link Class#getClass()} of the specified configuration object
      * @param <T>
      *            this type of configuration
      * @param configuration
@@ -93,6 +92,25 @@ public abstract class ContainerConfiguration<T> {
                     + " has already been added");
         }
         configurations.put(configuration.getClass(), configuration);
+        return this;
+    }
+
+    /**
+     * @param key
+     *            the key under which the service should be available through calls to
+     *            {@link Container#getService(Class)}
+     * @param service
+     *            the service whose lifecycle should be run, and which should be available to calls to
+     *            {@link Container#getService(Class)}
+     * @return this configuration
+     */
+    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, S service) {
+        serviceList.add(key, service);
+        return this;
+    }
+
+    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, ServiceFactory<S> factory) {
+        serviceList.add(key, factory);
         return this;
     }
 
@@ -130,18 +148,8 @@ public abstract class ContainerConfiguration<T> {
      * @throws IllegalArgumentException
      *             in case of an argument of invalid type or if the object has already been registered.
      */
-    public ContainerConfiguration<T> addToLifecycle(Object o) {
+    public ContainerConfiguration<T> addService(Object o) {
         serviceList.addLifecycle(o);
-        return this;
-    }
-
-    public <S> ContainerConfiguration<T> addToLifecycleAndExport(Class<? extends S> key, S service) {
-        serviceList.add(key, service);
-        return this;
-    }
-
-    public <S> ContainerConfiguration<T> addToLifecycleAndExport(Class<? extends S> key, ServiceFactory<S> factory) {
-        serviceList.add(key, factory);
         return this;
     }
 
@@ -250,8 +258,8 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns the objects that have been registered through {@link #addToLifecycle(Object)}. The service will be
-     * returned in the same order as the they have been added.
+     * Returns the objects that have been registered through {@link #addService(Object)}. The service will be returned
+     * in the same order as the they have been added.
      * 
      * @return the objects that have been registered
      */

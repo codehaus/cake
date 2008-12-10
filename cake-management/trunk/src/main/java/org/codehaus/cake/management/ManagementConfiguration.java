@@ -13,13 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.service.common.management;
+package org.codehaus.cake.management;
 
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-
-import org.codehaus.cake.management.ManagedVisitor;
 
 /**
  * This class is used to configure how a container can be remotely monitored and managed using JMX.
@@ -27,7 +25,7 @@ import org.codehaus.cake.management.ManagedVisitor;
  * Remote management (JMX) is turned off by default and you need to call {@link #setEnabled(boolean)} to enable it.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: ManagementConfiguration.java 225 2008-11-30 20:53:08Z kasper $
  */
 public class ManagementConfiguration {
 

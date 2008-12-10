@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.annotation.OnShutdown;
+import org.codehaus.cake.service.OnShutdown;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConf
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
-        conf.addToLifecycle(new Stoppable1());
+        conf.addService(new Stoppable1());
         newContainer();
         assertFalse(c.isStarted());
         assertFalse(c.isShutdown());

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.management.annotation;
+package org.codehaus.cake.service;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -23,24 +23,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation used to mark methods that should be exposed as operations via JMX.
+ * Method invoked when the container has terminated. This method is invoked as the last method in this lifecycle
+ * interface and is called when the container and all of it services has been succesfully shutdown. This method is also
+ * called if the container failed to initialize or start. But only if the service was succesfully initialized was run
+ * without failing).
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: OnTermination.java 225 2008-11-30 20:53:08Z kasper $
  */
 @Target(ElementType.METHOD)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ManagedOperation {
-
-    /**
-     * The name of the attribute.
-     */
-    String defaultValue() default "";
-
-    /**
-     * The description of the atttribute.
-     */
-    String description() default "";
-}
+public @interface OnTermination{}
