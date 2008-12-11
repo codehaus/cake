@@ -28,7 +28,7 @@ import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ServiceFactory;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
 

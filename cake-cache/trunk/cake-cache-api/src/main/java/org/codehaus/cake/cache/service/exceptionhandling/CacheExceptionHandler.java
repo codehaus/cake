@@ -18,8 +18,8 @@ package org.codehaus.cake.cache.service.exceptionhandling;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandler;
+import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
+import org.codehaus.cake.service.exceptionhandling.ExceptionHandler;
 
 /**
  * The purpose of this class is to have one central place where all exceptions that arise within a cache or one of its

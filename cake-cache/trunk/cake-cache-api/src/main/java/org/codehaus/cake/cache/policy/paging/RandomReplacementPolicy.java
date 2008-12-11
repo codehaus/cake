@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.policy.paging;
 import java.util.Random;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.AbstractArrayReplacementPolicy;
+import org.codehaus.cake.cache.policy.AbstractArrayReplacementPolicy;
 
 /**
  * A Random replacement policy. This policy picks a random element to evict.

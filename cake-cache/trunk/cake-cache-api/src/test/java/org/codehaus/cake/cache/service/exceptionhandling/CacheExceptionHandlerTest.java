@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
+import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;
 import org.junit.Test;

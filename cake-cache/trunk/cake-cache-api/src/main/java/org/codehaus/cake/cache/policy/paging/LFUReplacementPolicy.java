@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.policy.paging;
 import static org.codehaus.cake.cache.CacheEntry.HITS;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.AbstractHeapReplacementPolicy;
+import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
 
 /**
  * A Least Frequently Used (LFU) Replacement policy.

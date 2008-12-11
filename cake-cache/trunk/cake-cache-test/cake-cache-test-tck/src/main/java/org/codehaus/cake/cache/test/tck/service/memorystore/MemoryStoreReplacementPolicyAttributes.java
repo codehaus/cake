@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.AbstractReplacementPolicy;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
@@ -69,7 +69,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         assertTrue(getEntry(M1).getAttributes().attributeSet().contains(CacheEntry.HITS));
     }
 
-    static class HardPolicy extends AbstractReplacementPolicy<Integer, String> {
+    static class HardPolicy extends AbstractCakeReplacementPolicy<Integer, String> {
 
         public HardPolicy() {
             super.dependHard(A1);
@@ -89,7 +89,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
 
     }
 
-    static class SoftPolicy extends AbstractReplacementPolicy<Integer, String> {
+    static class SoftPolicy extends AbstractCakeReplacementPolicy<Integer, String> {
 
         public SoftPolicy() {
             super.dependSoft(CacheEntry.HITS);

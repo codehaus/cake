@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.policy.costsize;
 import static org.codehaus.cake.cache.CacheEntry.COST;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.AbstractHeapReplacementPolicy;
+import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
 
 /**
  * A replacement policy that replaces the entry with the smallest {@link CacheEntry#COST} when evicting. The rational

@@ -18,14 +18,14 @@ package org.codehaus.cake.internal.cache.attribute;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
-import org.codehaus.cake.cache.policy.spi.AbstractReplacementPolicy;
 
 /**
  * WARNING: This is an internal class. Ordinary users should never need to reference this class.
  * <p>
- * This interface contain various methods used by {@link AbstractReplacementPolicy}.
+ * This interface contain various methods used by {@link AbstractCakeReplacementPolicy}.
  */
 public interface InternalCacheAttributeService {
     /**
