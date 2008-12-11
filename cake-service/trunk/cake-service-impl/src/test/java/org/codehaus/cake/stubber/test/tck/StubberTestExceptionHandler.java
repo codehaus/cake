@@ -21,7 +21,7 @@ import static org.junit.Assert.assertSame;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
+import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.stubber.Stubber;
 import org.codehaus.cake.stubber.exceptionhandling.StubberExceptionHandler;
 import org.codehaus.cake.util.Logger.Level;

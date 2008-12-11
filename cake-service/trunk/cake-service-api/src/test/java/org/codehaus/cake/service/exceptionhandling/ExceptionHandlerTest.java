@@ -15,8 +15,6 @@
  */
 package org.codehaus.cake.service.exceptionhandling;
 
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionContext;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandler;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.util.Logger;

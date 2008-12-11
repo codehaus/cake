@@ -19,8 +19,6 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandler;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Logger;
 import org.junit.Before;
 import org.junit.Test;

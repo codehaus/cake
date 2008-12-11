@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.management.ManagementConfiguration;
-import org.codehaus.cake.service.common.exceptionhandling.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 
 public class TstStubs {
     public interface Stubber<T> extends Container {}
