@@ -18,13 +18,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ManagedObject {
-    /**
-     * The name of the object.
-     */
+    /** The name of the object. */
     String defaultValue() default "";
 
-    /**
-     * The description of the object.
-     */
+    /** The description of the object. */
     String description() default "";
 }

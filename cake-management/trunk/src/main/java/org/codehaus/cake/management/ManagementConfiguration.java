@@ -20,7 +20,8 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 /**
- * This class is used to configure how a container can be remotely monitored and managed using JMX.
+ * This class is used to configure the usage of JMX within a framework power users to allow other users used to
+ * configure how a container can be remotely monitored and managed using JMX.
  * <p>
  * Remote management (JMX) is turned off by default and you need to call {@link #setEnabled(boolean)} to enable it.
  * 
@@ -52,7 +53,7 @@ public class ManagementConfiguration {
     }
 
     /**
-     * @return the configured MBeanServer
+     * @return the configured MBeanServer or <code>null</code> if no mbean server has been set
      * @see #setMBeanServer(MBeanServer)
      */
     public MBeanServer getMBeanServer() {
@@ -82,8 +83,8 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets the specific domain that MBeans should register under. If no domain is specified the container will use a
-     * default name. For example, {@link org.codehaus.cake.cache.CacheMXBean} is registered under
+     * Sets the specific domain that MBeans should be registered under. If no domain is specified the container will use
+     * a default name. For example, {@link org.codehaus.cake.cache.CacheMXBean} is registered under
      * {@link org.codehaus.cake.cache.CacheMXBean#DEFAULT_JMX_DOMAIN}.
      * 
      * @param domain
@@ -133,10 +134,10 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Sets a ManagedVisitor that will used to register all managed objects. Normal users will seldom need to use this
-     * method. But if you need some kind of non standard naming of {@link javax.management.ObjectName ObjectNames},
-     * wants to only register a specific service or another hierarchy then the one used by default by the container.
-     * This method can be used specify a special registrant.
+     * Sets a ManagedVisitor that will used to register all managed objects. This is not intended for normal use. But
+     * can be used to allow some kind of non standard naming of {@link javax.management.ObjectName ObjectNames},
+     * preventing certain services for being exposed as MBeans or another hierarchy then the one used by default by the
+     * container. This method can be used specify a special registrant.
      * <p>
      * If no registrant is specified the containers default registrant will be used.
      * 

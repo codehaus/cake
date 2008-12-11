@@ -95,7 +95,7 @@ final class ManagementUtil {
      * @return information about the parameters of the specified method
      */
     static MBeanParameterInfo[] methodSignature(Method method) {
-        Class[] classes = method.getParameterTypes();
+        Class<?>[] classes = method.getParameterTypes();
         MBeanParameterInfo[] params = new MBeanParameterInfo[classes.length];
 
         for (int i = 0; i < classes.length; i++) {

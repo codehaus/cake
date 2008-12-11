@@ -18,8 +18,9 @@ package org.codehaus.cake.management;
 import javax.management.JMException;
 
 /**
- * Interface realizing a visitor pattern for {@link ManagedGroup}. The visitor should visit the group, its children,
- * and all instantiated components within a group.
+ * Interface realizing a visitor pattern for {@link ManagedGroup}. The visitor should visit the group, its children (as
+ * returned by {@link ManagedGroup#getChildren()}, and all registered object within a group (as returned by
+ * {@link ManagedGroup#getObjects()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -34,7 +35,7 @@ public interface ManagedVisitor<T> {
      *            the start node of the traversal.
      * @return a visitor-specific value.
      * @throws IllegalArgumentException
-     *             in case of an argument of invalid type.
+     *             in case of an argument that is not either a ManagedGroup or a Manageable instance
      * @throws JMException
      *             an exception occured while visiting the node
      */
@@ -51,6 +52,8 @@ public interface ManagedVisitor<T> {
     void visitManagedGroup(ManagedGroup mg) throws JMException;
 
     /**
+     * Visits an object that has been registered within a {@link ManagedGroup} using {@link ManagedGroup#add(Object)}.
+     * 
      * @param o
      *            the managed object to visit
      * @throws JMException

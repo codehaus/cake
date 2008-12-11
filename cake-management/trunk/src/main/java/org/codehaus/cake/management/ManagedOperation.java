@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation used to mark methods that should be exposed as operations via JMX.
+ * An annotation used to mark methods that should be exposed as a JMX operations.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ManagedOperation.java 225 2008-11-30 20:53:08Z kasper $
@@ -34,13 +34,9 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ManagedOperation {
 
-    /**
-     * The name of the attribute.
-     */
+    /** The name of the operation. */
     String defaultValue() default "";
 
-    /**
-     * The description of the atttribute.
-     */
+    /** The description of the operation. */
     String description() default "";
 }

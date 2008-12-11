@@ -38,6 +38,11 @@ public final class Managements {
 
     // /CLOVER:ON
 
+    /**
+     * Copies the specified array.
+     * @param original the array to copy
+     * @return a copy of the specified array
+     */
     static <T> T[] copyOf(T[] original) {
         return (T[]) copyOf(original, original.length, original.getClass());
     }

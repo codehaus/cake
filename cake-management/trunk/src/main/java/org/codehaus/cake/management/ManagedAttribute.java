@@ -24,7 +24,15 @@ import java.lang.annotation.Target;
 
 /**
  * An annotation used to mark methods that should be exposed via JMX. Should only be used on JavaBean getters or
- * setters.
+ * setters. If bean has both a setter and a getter for a specific attribute, only the getter or the setter should be
+ * annotated with this annotation, not both.
+ * 
+ * It is possible to expose attributes as both Read-only, Write-only or as Read-Writeable by using these simple rules.
+ * 
+ * Read-Write: If this annotation is used on the setter and the attribute has a valid getter for the attribute
+ * Read-Only: If this annotation is used on the getter, the attribute will be exposed as read only even if a valid
+ * setter is available for the attribute. Write-only, if this annotation is used on the setter, and no valid getter
+ * exists. If a getter exists {@link #isWriteOnly()} must be set to true
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ManagedAttribute.java 225 2008-11-30 20:53:08Z kasper $
@@ -35,18 +43,12 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ManagedAttribute {
 
-    /**
-     * The name of the attribute.
-     */
+    /** The name of the attribute. */
     String defaultValue() default "";
 
-    /**
-     * The description of the atttribute.
-     */
+    /** The description of the atttribute (optionally). */
     String description() default "";
 
-    /**
-     * Whether or not this attribute is write only. Should only be used on a setter.
-     */
+    /** Whether or not this attribute is write only. Should only be used on a setter. */
     boolean isWriteOnly() default false;
 }
