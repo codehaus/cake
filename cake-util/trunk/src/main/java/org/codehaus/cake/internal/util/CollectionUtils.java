@@ -86,9 +86,7 @@ public final class CollectionUtils {
         return o1 == null ? o2 == null : o1.equals(o2);
     }
 
-    /**
-     * An immutable collection.
-     */
+    /** An immutable collection. */
     public static class ImmutableCollection<E> implements Collection<E>, Serializable {
 
         /** serialVersionUID. */

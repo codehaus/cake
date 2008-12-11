@@ -21,10 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used for annotating internal classes, or services that should use internal classes.
- * <p>
- * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
- * this class between different releases.
+ * Used for annotating classes, or services that needs access to internal classes (class defined in the
+ * org.codehaus.cacke.internal package).
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$

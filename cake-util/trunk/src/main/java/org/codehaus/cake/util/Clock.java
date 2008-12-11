@@ -19,13 +19,13 @@ import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A Clock instance is factory for creating timestamp. Normally {@link System#currentTimeMillis()} and
- * {@link System#nanoTime()} is used, however, there are number of situations where its useful to allow different way to
+ * A Clock instance is a factory for creating timestamps. Normally {@link System#currentTimeMillis()} and
+ * {@link System#nanoTime()} is used, however, there are number of situations where its useful to allow different ways to
  * create timestamps.
  * <ul>
  * <li>For simulation, if you have enough CPU/memory, a simulated environment can run much much faster than a real
  * clock</li>
- * <li>For testing, you often want to have some kind of determinism when creating time instances.</li>
+ * <li>For testing, you often want to have some kind of determinism when creating timestamps.</li>
  * <li>Sometimes you want to run with a clock that is offset from your computers clock. This can be particularly
  * helpful in a situation like Planetlab where some nodes have incorrect system clocks due to misconfigured NTP servers.
  * </li>

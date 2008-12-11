@@ -22,8 +22,7 @@ import java.util.logging.Logger;
 import org.codehaus.cake.internal.util.LogHelper.AbstractLogger;
 
 /**
- * Returns the exception logger configured for this cache. Or initializes the default logger if no logger has been
- * defined and the default logger has not already been initialized
+ * A LazyLogger is lazily initialised only whenever an exception is raisde.
  * <p>
  * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
  * this class between different releases.
@@ -39,8 +38,6 @@ public class LazyLogger extends AbstractLogger {
 
     private final String msg;
     private final String lastCaller;
-
-    // private final LazyGenerator<Logger> lazyLoggerGenerator;
 
     public LazyLogger(String jdkLoggerName, String msg, String lastCaller) {
         this.msg = msg;

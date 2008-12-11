@@ -19,22 +19,22 @@ package org.codehaus.cake.util;
  * A simple logging interface abstracting logging APIs. The primary reason for using this is to avoid dependencies on
  * any external logging libraries.
  * <p>
- * Use {@link org.codehaus.cake.util.Loggers}to create wrappers from popular logging frameworks such as <a
+ * You shouldn't need to implement this interface, instead use {@link org.codehaus.cake.util.Loggers}to create wrappers
+ * from popular logging frameworks such as <a
  * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Standard JDK logging </a>, <a
  * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Log4j </a> or <a
  * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> commons logging </a>.
  * <p>
  * This is not an attempt to create a new logging framework. But for some unknown reason, the authors of
- * java.util.logging made {@link java.util.logging.Logger} a class instead of an interface. Making it impossible to
- * extend it in any reasonable way, with all the different inter.
+ * java.util.logging made {@link java.util.logging.Logger} a class instead of an interface. Furthermore all the classes
+ * in java.util.logging is tightly coupled. Making it impossible to extend the Logger class it in any reasonable way.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
  */
 public interface Logger {
     /**
-     * Logs the message if the logger is currently enabled for the debug log
-     * level.
+     * Logs the message if the logger is currently enabled for the debug log level.
      * 
      * @param message
      *            the message to log
@@ -42,8 +42,7 @@ public interface Logger {
     void debug(String message);
 
     /**
-     * Logs the message if the logger is currently enabled for the debug log
-     * level.
+     * Logs the message if the logger is currently enabled for the debug log level.
      * 
      * @param message
      *            the message to log
@@ -53,8 +52,7 @@ public interface Logger {
     void debug(String message, Throwable cause);
 
     /**
-     * Logs the message if the logger is currently enabled for the error log
-     * level.
+     * Logs the message if the logger is currently enabled for the error log level.
      * 
      * @param message
      *            the message to log
@@ -62,8 +60,7 @@ public interface Logger {
     void error(String message);
 
     /**
-     * Logs the message if the logger is currently enabled for the error log
-     * level.
+     * Logs the message if the logger is currently enabled for the error log level.
      * 
      * @param message
      *            the message to log
@@ -73,8 +70,7 @@ public interface Logger {
     void error(String message, Throwable cause);
 
     /**
-     * Logs the message if the logger is currently enabled for the fatal log
-     * level.
+     * Logs the message if the logger is currently enabled for the fatal log level.
      * 
      * @param message
      *            the message to log
@@ -82,8 +78,7 @@ public interface Logger {
     void fatal(String message);
 
     /**
-     * Logs the message if the logger is currently enabled for the fatal log
-     * level.
+     * Logs the message if the logger is currently enabled for the fatal log level.
      * 
      * @param message
      *            the message to log
@@ -93,8 +88,7 @@ public interface Logger {
     void fatal(String message, Throwable cause);
 
     /**
-     * Logs the message if the logger is currently enabled for the info log
-     * level.
+     * Logs the message if the logger is currently enabled for the info log level.
      * 
      * @param message
      *            the message to log
@@ -102,8 +96,7 @@ public interface Logger {
     void info(String message);
 
     /**
-     * Logs the message if the logger is currently enabled for the info log
-     * level.
+     * Logs the message if the logger is currently enabled for the info log level.
      * 
      * @param message
      *            the message to log
@@ -113,8 +106,7 @@ public interface Logger {
     void info(String message, Throwable cause);
 
     /**
-     * Check to see if a message of <tt>debug</tt> level would actually be
-     * logged by this logger.
+     * Check to see if a message of <tt>debug</tt> level would actually be logged by this logger.
      * 
      * @return <code>true</code> if the debug level or higher is enabled
      */
@@ -130,40 +122,35 @@ public interface Logger {
     boolean isEnabled(Level level);
 
     /**
-     * Check to see if a message of <tt>error</tt> level would actually be
-     * logged by this logger.
+     * Check to see if a message of <tt>error</tt> level would actually be logged by this logger.
      * 
      * @return <code>true</code> if the error level or higher is enabled
      */
     boolean isErrorEnabled();
 
     /**
-     * Check to see if a message of <tt>fatal</tt> level would actually be
-     * logged by this logger.
+     * Check to see if a message of <tt>fatal</tt> level would actually be logged by this logger.
      * 
      * @return <code>true</code> if the fatal level or higher is enabled
      */
     boolean isFatalEnabled();
 
     /**
-     * Check to see if a message of <tt>info</tt> level would actually be
-     * logged by this logger.
+     * Check to see if a message of <tt>info</tt> level would actually be logged by this logger.
      * 
      * @return <code>true</code> if the info level or higher is enabled
      */
     boolean isInfoEnabled();
 
     /**
-     * Check to see if a message of <tt>trace</tt> level would actually be
-     * logged by this logger.
+     * Check to see if a message of <tt>trace</tt> level would actually be logged by this logger.
      * 
      * @return <code>true</code> if the trace level or higher is enabled
      */
     boolean isTraceEnabled();
 
     /**
-     * Check to see if a message of <tt>warn</tt> level would actually be
-     * logged by this logger.
+     * Check to see if a message of <tt>warn</tt> level would actually be logged by this logger.
      * 
      * @return <code>true</code> if the warn level or higher is enabled
      */
@@ -192,8 +179,7 @@ public interface Logger {
     void log(Level level, String message, Throwable cause);
 
     /**
-     * Logs the message if the logger is currently enabled for the trace log
-     * level.
+     * Logs the message if the logger is currently enabled for the trace log level.
      * 
      * @param message
      *            the message to log
@@ -201,8 +187,7 @@ public interface Logger {
     void trace(String message);
 
     /**
-     * Logs the message if the logger is currently enabled for the trace log
-     * level.
+     * Logs the message if the logger is currently enabled for the trace log level.
      * 
      * @param message
      *            the message to log
@@ -212,8 +197,7 @@ public interface Logger {
     void trace(String message, Throwable cause);
 
     /**
-     * Logs the message if the logger is currently enabled for the warn log
-     * level.
+     * Logs the message if the logger is currently enabled for the warn log level.
      * 
      * @param message
      *            the message to log
@@ -221,8 +205,7 @@ public interface Logger {
     void warn(String message);
 
     /**
-     * Logs the message if the logger is currently enabled for the warn log
-     * level.
+     * Logs the message if the logger is currently enabled for the warn log level.
      * 
      * @param message
      *            the message to log

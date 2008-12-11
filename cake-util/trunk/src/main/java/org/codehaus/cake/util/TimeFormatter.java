@@ -26,11 +26,10 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class TimeFormatter {
 
+    /** The default time formatter */
     public static final TimeFormatter DEFAULT = new DefaultFormatter();
 
-    /**
-     * A <tt>TimeFormatter</tt> that will format time the same was as the unix 'uptime' command.
-     */
+    /** A <tt>TimeFormatter</tt> that will format time the same was as the unix 'uptime' command. */
     public static final TimeFormatter UPTIME = new UptimeFormatter();
 
     private static final String[] NAME = new String[] { "nanosecond", "microsecond", "millisecond", "second", "minute",
