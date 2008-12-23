@@ -240,7 +240,7 @@ public class Checker {
         // System.out.println(map);
         Attribute a = i.getAttribute();
         assertEquals(i.allowGet(), map.contains(a));
-        assertEquals(i.allowGet(), map.attributeSet().contains(a));
+        assertEquals(i.allowGet(), map.attributes().contains(a));
 
         if (a instanceof BooleanAttribute) {
             check(i, (BooleanAttribute) a, ((Boolean) value).booleanValue());
@@ -372,7 +372,7 @@ public class Checker {
         assertEquals(visible.size(), map.size());
         assertEquals(visible.size(), map.values().size());
         assertEquals(visible.isEmpty(), map.isEmpty());
-        assertEquals(visible.keySet().size(), map.attributeSet().size());
+        assertEquals(visible.keySet().size(), map.attributes().size());
 
         Map tmp = new HashMap();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : visible.entrySet()) {
@@ -383,7 +383,7 @@ public class Checker {
 
         assertTrue(visible.values().containsAll(map.values()));
         assertTrue(map.values().containsAll(visible.values()));
-        assertEquals(visibleAttributes, map.attributeSet());
+        assertEquals(visibleAttributes, map.attributes());
         Map<Attribute, Object> hashCode = new HashMap<Attribute, Object>();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : params.entrySet()) {
             check(i.getKey(), i.getValue());
@@ -392,7 +392,7 @@ public class Checker {
             }
         }
         if (map.size() > 0) {
-            Iterator<?> iter = map.attributeSet().iterator();
+            Iterator<?> iter = map.attributes().iterator();
             iter.next();
             try {
                 iter.remove();

@@ -15,14 +15,11 @@
  */
 package org.codehaus.cake.attribute;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import java.util.*;
+import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 /**
  * Various tests for {@link DoubleAttribute}.
@@ -80,10 +77,10 @@ public final class DoubleAttributeTest extends AtrStubs {
 
     @Test
     public void comparator() {
-        WithAttributes wa1 = withAtr(ATR1.singleton(1D));
-        WithAttributes wa2 = withAtr(ATR1.singleton(2D));
-        WithAttributes wa22 = withAtr(ATR1.singleton(2D));
-        WithAttributes wa3 = withAtr(ATR1.singleton(3D));
+        GetAttributer wa1 = ATR1.singleton(1D);
+        GetAttributer wa2 = ATR1.singleton(2D);
+        GetAttributer wa22 = ATR1.singleton(2D);
+        GetAttributer wa3 = ATR1.singleton(3D);
         assertEquals(0, ATR1.compare(wa2, wa2),0);
         assertEquals(0, ATR1.compare(wa2, wa22),0);
         assertEquals(0, ATR1.compare(wa22, wa2),0);
@@ -93,7 +90,7 @@ public final class DoubleAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
         
-        ArrayList<WithAttributes> al = new ArrayList<WithAttributes>();
+        ArrayList<GetAttributer> al = new ArrayList<GetAttributer>();
         al.add(wa2);
         al.add(wa1);
         Collections.sort(al, ATR1);

@@ -17,8 +17,8 @@ package org.codehaus.cake.attribute.common;
 
 import java.util.Comparator;
 
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.ObjectAttribute;
-import org.codehaus.cake.attribute.WithAttributes;
 
 /**
  * An abstract attribute that can be used to impose order among the values of said attributes. The values can be ordered
@@ -34,7 +34,7 @@ import org.codehaus.cake.attribute.WithAttributes;
  * @param <T>
  *            the datatype of this attribute
  */
-public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<WithAttributes> {
+public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<GetAttributer> {
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
@@ -127,10 +127,10 @@ public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> im
     }
 
     /** {@inheritDoc} */
-    public int compare(WithAttributes o1, WithAttributes o2) {
+    public int compare(GetAttributer o1, GetAttributer o2) {
         if (comparator == null) {
-            Comparable<? super T> thisVal = (Comparable<? super T>) get(o1);
-            T anotherVal = (T) get(o2);
+            Comparable<? super T> thisVal = (Comparable<? super T>) o1.get(this);
+            T anotherVal = o2.get(this);
             if (thisVal == null) {
                 return anotherVal == null ? 0 : nullIsLeast ? -1 : 1;
             } else if (anotherVal == null) {
@@ -138,8 +138,8 @@ public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> im
             }
             return thisVal.compareTo(anotherVal);
         } else {
-            T thisVal = get(o1);
-            T anotherVal = get(o2);
+            T thisVal = o1.get(this);
+            T anotherVal = o2.get(this);
             return comparator.compare(thisVal, anotherVal);
         }
     }

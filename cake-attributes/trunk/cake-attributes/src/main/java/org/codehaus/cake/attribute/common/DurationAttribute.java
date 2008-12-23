@@ -89,7 +89,7 @@ public abstract class DurationAttribute extends LongAttribute {
     }
 
     /**
-     * Analogous to {@link #getValue(AttributeMap)} except taking a parameter indicating what time unit the value should
+     * Analogous to {@link LongAttribute#get(WithAttributes)} except taking a parameter indicating what time unit the value should
      * be returned in.
      * 
      * @param attributes
@@ -103,7 +103,7 @@ public abstract class DurationAttribute extends LongAttribute {
     }
 
     /**
-     * Analogous to {@link LongAttribute#getValue(AttributeMap)} except taking a parameter indicating what time unit the
+     * Analogous to {@link LongAttribute#get(WithAttributes)} except taking a parameter indicating what time unit the
      * duration should be returned in.
      * 
      * @param attributes

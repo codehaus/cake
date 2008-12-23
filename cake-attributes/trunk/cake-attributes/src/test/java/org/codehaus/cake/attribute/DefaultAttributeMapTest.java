@@ -112,8 +112,6 @@ public class DefaultAttributeMapTest extends AtrStubs {
       //  m.put(a1, "foo");
         m.put(a2, Boolean.TRUE);
         AttributeMap sm=serializeAndUnserialize(m);
-        System.out.println(m.equals(sm));
-        System.out.println(sm.equals(m));
         assertEquals(m, sm);
     }
 

@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 /**
  * An implementation of an {@link Attribute} mapping to a byte. This implementation adds a number of
  * methods that works on primitive bytes instead of their object counterpart.
@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @version $Id$
  */
 public abstract class ByteAttribute extends Attribute<Byte> implements
-         Comparator<WithAttributes>, Serializable {
+         Comparator<GetAttributer>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,9 +111,9 @@ public abstract class ByteAttribute extends Attribute<Byte> implements
     }
     
     /** {@inheritDoc} */
-    public int compare(WithAttributes w1, WithAttributes w2) {
-        byte thisVal = get(w1);
-        byte anotherVal = get(w2);
+    public int compare(GetAttributer w1, GetAttributer w2) {
+        byte thisVal = w1.get(this);
+        byte anotherVal = w2.get(this);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
     

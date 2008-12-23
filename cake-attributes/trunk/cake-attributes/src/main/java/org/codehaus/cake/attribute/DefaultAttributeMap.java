@@ -43,7 +43,7 @@ public class DefaultAttributeMap implements AttributeMap, Serializable {
      * @param copyFrom
      *            the attributemap to copy existing attributes from
      */
-    public DefaultAttributeMap(AttributeMap copyFrom) {
+    public DefaultAttributeMap(GetAttributer copyFrom) {
         if (copyFrom != Attributes.EMPTY_ATTRIBUTE_MAP) {
             for (Map.Entry<Attribute, Object> e : copyFrom.entrySet()) {
                 put(e.getKey(), e.getValue());
@@ -52,7 +52,7 @@ public class DefaultAttributeMap implements AttributeMap, Serializable {
     }
 
     /** {@inheritDoc} */
-    public Set<Attribute> attributeSet() {
+    public Set<Attribute> attributes() {
         return (Set) map.keySet();
     }
 

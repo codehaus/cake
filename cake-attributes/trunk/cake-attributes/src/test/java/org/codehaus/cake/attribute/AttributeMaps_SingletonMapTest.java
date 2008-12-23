@@ -119,7 +119,7 @@ public class AttributeMaps_SingletonMapTest extends AbstractAttributeMapTest {
         // assertFalse(singleton.containsValue(OTHER_VALUE));
 
         // assertEquals(1, singleton.entrySet().size());
-        assertEquals(1, map.attributeSet().size());
+        assertEquals(1, map.attributes().size());
         // assertEquals(1, singleton.values().size());
         assertEquals(1, map.size());
         assertFalse(map.isEmpty());

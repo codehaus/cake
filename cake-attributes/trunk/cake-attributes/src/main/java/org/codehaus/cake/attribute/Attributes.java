@@ -139,7 +139,7 @@ public final class Attributes {
         private static final long serialVersionUID = -3037602713439417782L;
 
         /** {@inheritDoc} */
-        public Set<Attribute> attributeSet() {
+        public Set<Attribute> attributes() {
             return Collections.EMPTY_SET;
         }
 
@@ -405,8 +405,8 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public Set<Attribute> attributeSet() {
-            return Collections.unmodifiableSet(map.attributeSet());
+        public Set<Attribute> attributes() {
+            return Collections.unmodifiableSet(map.attributes());
         }
 
         /** {@inheritDoc} */
@@ -673,7 +673,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public Set<Attribute> attributeSet() {
+        public Set<Attribute> attributes() {
             return (Set) Collections.singleton(attribute);
         }
 

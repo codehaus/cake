@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 /**
  * An implementation of an {@link Attribute} mapping to a char. This implementation adds a number of
  * methods that works on primitive chars instead of their object counterpart.
@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @version $Id$
  */
 public abstract class CharAttribute extends Attribute<Character> implements
-         Comparator<WithAttributes>, Serializable {
+         Comparator<GetAttributer>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,9 +111,9 @@ public abstract class CharAttribute extends Attribute<Character> implements
     }
     
     /** {@inheritDoc} */
-    public int compare(WithAttributes w1, WithAttributes w2) {
-        char thisVal = get(w1);
-        char anotherVal = get(w2);
+    public int compare(GetAttributer w1, GetAttributer w2) {
+        char thisVal = w1.get(this);
+        char anotherVal = w2.get(this);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
     

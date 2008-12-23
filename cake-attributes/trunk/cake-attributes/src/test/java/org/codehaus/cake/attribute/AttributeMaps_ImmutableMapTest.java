@@ -64,7 +64,7 @@ public class AttributeMaps_ImmutableMapTest extends AbstractAttributeMapTest {
 
     @Test
     public void unmodifiableAttributeMap() {
-        for (Attribute a : realMap.attributeSet()) {
+        for (Attribute a : realMap.attributes()) {
             assertTrue(map.contains(a));
         }
         assertFalse(map.contains(new ObjectAttribute("no", Integer.class, 6) {}));
@@ -106,7 +106,7 @@ public class AttributeMaps_ImmutableMapTest extends AbstractAttributeMapTest {
         assertEquals(map.hashCode(), realMap.hashCode());
         assertEquals(map.isEmpty(), realMap.isEmpty());
         assertTrue(new Attributes.ImmutableAttributeMap(new DefaultAttributeMap()).isEmpty());
-        assertEquals(map.attributeSet(), realMap.attributeSet());
+        assertEquals(map.attributes(), realMap.attributes());
         assertEquals(map.size(), realMap.size());
         assertTrue(realMap.values().containsAll(map.values()));
         assertTrue(map.values().containsAll(realMap.values()));

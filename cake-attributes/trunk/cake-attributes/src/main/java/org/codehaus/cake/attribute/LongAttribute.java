@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 /**
  * An implementation of an {@link Attribute} mapping to a long. This implementation adds a number of
  * methods that works on primitive longs instead of their object counterpart.
@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @version $Id$
  */
 public abstract class LongAttribute extends Attribute<Long> implements
-         Comparator<WithAttributes>, Serializable {
+         Comparator<GetAttributer>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,9 +111,9 @@ public abstract class LongAttribute extends Attribute<Long> implements
     }
     
     /** {@inheritDoc} */
-    public int compare(WithAttributes w1, WithAttributes w2) {
-        long thisVal = get(w1);
-        long anotherVal = get(w2);
+    public int compare(GetAttributer w1, GetAttributer w2) {
+        long thisVal = w1.get(this);
+        long anotherVal = w2.get(this);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
     

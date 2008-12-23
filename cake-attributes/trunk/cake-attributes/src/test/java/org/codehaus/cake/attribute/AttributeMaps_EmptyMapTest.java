@@ -85,7 +85,7 @@ public class AttributeMaps_EmptyMapTest extends AbstractAttributeMapTest {
         assertEquals(new DefaultAttributeMap().hashCode(), EMPTY_ATTRIBUTE_MAP.hashCode());
         assertEquals(0, EMPTY_ATTRIBUTE_MAP.size());
         assertTrue(EMPTY_ATTRIBUTE_MAP.isEmpty());
-        assertEquals(0, EMPTY_ATTRIBUTE_MAP.attributeSet().size());
+        assertEquals(0, EMPTY_ATTRIBUTE_MAP.attributes().size());
         assertEquals(0, EMPTY_ATTRIBUTE_MAP.values().size());
         assertFalse(EMPTY_ATTRIBUTE_MAP.equals(new HashSet()));
         map = EMPTY_ATTRIBUTE_MAP;

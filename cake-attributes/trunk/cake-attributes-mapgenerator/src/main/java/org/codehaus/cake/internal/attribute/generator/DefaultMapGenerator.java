@@ -566,7 +566,7 @@ public class DefaultMapGenerator implements Opcodes {
     }
 
     private void addKeySet() {
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "attributeSet", "()Ljava/util/Set;", getMethodDescriptor(Type
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "attributes", "()Ljava/util/Set;", getMethodDescriptor(Type
                 .getType(Set.class), new Type[] {}), null);
 
         // MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "keySet", "()Ljava/util/Set;",

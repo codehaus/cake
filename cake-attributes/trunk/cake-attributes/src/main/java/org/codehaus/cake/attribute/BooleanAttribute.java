@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 /**
  * An implementation of an {@link Attribute} mapping to a boolean. This implementation adds a number of
  * methods that works on primitive booleans instead of their object counterpart.
@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @version $Id$
  */
 public abstract class BooleanAttribute extends Attribute<Boolean> implements
-         Comparator<WithAttributes>, Serializable {
+         Comparator<GetAttributer>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,9 +111,9 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     }
     
     /** {@inheritDoc} */
-    public int compare(WithAttributes w1, WithAttributes w2) {
-        boolean thisVal = get(w1);
-        boolean anotherVal = get(w2);
+    public int compare(GetAttributer w1, GetAttributer w2) {
+        boolean thisVal = w1.get(this);
+        boolean anotherVal = w2.get(this);
         //fix this to something smarter
         return (thisVal && !anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
     }
