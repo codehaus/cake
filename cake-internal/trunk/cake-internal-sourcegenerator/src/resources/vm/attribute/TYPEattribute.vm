@@ -6,7 +6,7 @@
  * @version $Id${Type}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public abstract class ${Type}Attribute extends Attribute<$object> implements
-         Comparator<WithAttributes>, Serializable {
+         Comparator<GetAttributer>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,9 +111,9 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
 #end    
     
     /** {@inheritDoc} */
-    public int compare(WithAttributes w1, WithAttributes w2) {
-        ${type} thisVal = get(w1);
-        ${type} anotherVal = get(w2);
+    public int compare(GetAttributer w1, GetAttributer w2) {
+        ${type} thisVal = w1.get(this);
+        ${type} anotherVal = w2.get(this);
 #if($type=="boolean")
         //fix this to something smarter
         return (thisVal && !anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));

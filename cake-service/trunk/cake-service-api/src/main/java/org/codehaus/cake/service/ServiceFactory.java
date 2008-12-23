@@ -44,7 +44,7 @@ public interface ServiceFactory<T> {
      * A ServiceFactoryContext is used as the parameter to the {@link ServiceFactory#lookup(ServiceFactoryContext)}
      * method.
      */
-    interface ServiceFactoryContext<T> extends WithAttributes {
+    interface ServiceFactoryContext<T> {
         /**
          * Return the key that is used for acquiring the service, as parsed along to {@link Container#getService(Class)}
          * or {@link Container#getService(Class, AttributeMap)}. This is primaraily used if the ServiceFactory returns

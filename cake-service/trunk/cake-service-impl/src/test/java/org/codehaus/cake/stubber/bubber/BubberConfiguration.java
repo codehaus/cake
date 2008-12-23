@@ -19,7 +19,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 
-public class BubberConfiguration implements WithAttributes {
+public class BubberConfiguration implements WithAttributes{
 
     private final AttributeMap attributes = new DefaultAttributeMap();
 

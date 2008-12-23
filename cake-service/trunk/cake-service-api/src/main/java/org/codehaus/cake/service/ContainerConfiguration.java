@@ -71,8 +71,9 @@ public abstract class ContainerConfiguration<T> {
     private Class<? extends T> type;
 
     /**
-     * Adds an instantiated configuration object. Available by calling {@link #getConfigurationOfType(Class)}
-     * where class is {@link Class#getClass()} of the specified configuration object
+     * Adds an instantiated configuration object. Available by calling {@link #getConfigurationOfType(Class)} where
+     * class is {@link Class#getClass()} of the specified configuration object
+     * 
      * @param <T>
      *            this type of configuration
      * @param configuration
@@ -109,6 +110,21 @@ public abstract class ContainerConfiguration<T> {
         return this;
     }
 
+    /**
+     * Adds the specified service provider to the container. Any methods on the specified provider that is annotated
+     * with any of the 4 standard lifecycle annotations. will be invoked on the respective time.
+     * 
+     * The provider will be able to provide services using {@link Container#getService(Class)} with the specified key
+     * (class) as parameter.
+     * 
+     * @param <S>
+     *            the type of service
+     * @param key
+     *            the key under which the specified service provider should be registered.
+     * @param factory
+     *            the service provider
+     * @return this configuration
+     */
     public <S> ContainerConfiguration<T> addService(Class<? extends S> key, ServiceFactory<S> factory) {
         serviceList.add(key, factory);
         return this;
@@ -183,7 +199,7 @@ public abstract class ContainerConfiguration<T> {
     }
 
     /**
-     * Returns a collection of all service configuration objects.
+     * Returns a collection of all service configuration objects registered using {@link #addConfiguration(Object)}.
      * 
      * @return a collection of all service configuration objects
      */

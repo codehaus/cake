@@ -75,7 +75,7 @@ public interface ManagedGroup {
      * Returns the child with the specified name.
      * 
      * @param name
-     * @return
+     * @return the child group with the specified name, or null if no child group exists with the specified name
      */
     ManagedGroup getChild(String name);
 

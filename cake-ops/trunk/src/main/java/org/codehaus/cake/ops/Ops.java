@@ -877,11 +877,15 @@ public final class Ops {
     public static interface BytePredicate {
         boolean op(byte a);
     }
-
+    public static interface ByteComparator {
+        int compare(byte a, byte b);
+    }
     public static interface CharPredicate {
         boolean op(char a);
     }
-
+    public static interface CharComparator {
+        int compare(char a, char b);
+    }
     public static interface FloatPredicate {
         boolean op(float a);
     }
@@ -892,5 +896,8 @@ public final class Ops {
 
     public static interface ShortPredicate {
         boolean op(short a);
+    }
+    public static interface ShortComparator {
+        int compare(short a, short b);
     }
 }

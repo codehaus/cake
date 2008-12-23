@@ -18,6 +18,7 @@ package org.codehaus.cake.ops;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.codehaus.cake.ops.Ops.DoubleComparator;
 import org.codehaus.cake.ops.Ops.IntComparator;
@@ -54,7 +55,8 @@ public final class Comparators {
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
-    private Comparators() {}
+    private Comparators() {
+    }
 
     // /CLOVER:ON
 
@@ -148,10 +150,89 @@ public final class Comparators {
         return Collections.reverseOrder(comparator);
     }
 
+    public static <T> Comparator<? super T> stack(List<Comparator<? super T>> comparators) {
+        if (comparators == null) {
+            throw new NullPointerException("comparators is null");
+        } else if (comparators.size() == 0) {
+            throw new IllegalArgumentException("no comparators in list");
+        }
+        for (Object c : comparators) {
+            if (c == null) {
+                throw new NullPointerException("list contains a null comparator");
+            }
+        }
+        Comparator<? super T> first = comparators.get(0);
+        if (comparators.size() == 1) {
+            return first;
+        }
+        Comparator<? super T> second = comparators.get(1);
+        if (comparators.size() == 2) {
+            return new Stacked2Comparator<T>(first, second);
+        }
+
+        Comparator<? super T>[] list = new Comparator[comparators.size() - 2];
+        for (int i = 2; i < comparators.size(); i++) {
+            list[i] = comparators.get(i);
+        }
+        return new StackedComparator<T>(first, second, list);
+    }
+
+    static class Stacked2Comparator<T> implements Comparator<T>, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final Comparator<? super T> first;
+        private final Comparator<? super T> second;
+
+        public Stacked2Comparator(Comparator<? super T> first, Comparator<? super T> second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public int compare(T o1, T o2) {
+            int result = first.compare(o1, o2);
+            if (result == 0) {
+                return second.compare(o1, o2);
+            }
+            return result;
+        }
+    }
+
+    static class StackedComparator<T> implements Comparator<T>, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final Comparator<? super T> first;
+        private final Comparator<? super T> second;
+        private final Comparator<? super T>[] comparators;
+
+        public StackedComparator(Comparator<? super T> first, Comparator<? super T> second, Comparator<? super T>[] comparators) {
+            this.first = first;
+            this.second = second;
+            this.comparators = comparators;
+        }
+
+        public int compare(T o1, T o2) {
+            int result = first.compare(o1, o2);
+            if (result == 0) {
+                result = second.compare(o1, o2);
+                if (result == 0) {
+                    for (int i = 0; i < comparators.length; i++) {
+                        result = comparators[i].compare(o1, o2);
+                        if (result != 0) {
+                            return result;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+    }
+
     /** A Comparator for Comparable.objects. */
     static final class MappedComparator<T, U> implements Comparator<T>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = -5405101414861263699L;
+        private static final long serialVersionUID = 1L;
 
         private final Comparator<? super U> comparator;
 

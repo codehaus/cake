@@ -62,10 +62,10 @@ public final class ${this} extends AtrStubs {
 #end
     @Test
     public void comparator() {
-        WithAttributes wa1 = withAtr(ATR1.singleton($util.val(1)));
-        WithAttributes wa2 = withAtr(ATR1.singleton($util.val(2)));
-        WithAttributes wa22 = withAtr(ATR1.singleton($util.val(2)));
-        WithAttributes wa3 = withAtr(ATR1.singleton($util.val(3)));
+        GetAttributer wa1 = ATR1.singleton($util.val(1));
+        GetAttributer wa2 = ATR1.singleton($util.val(2));
+        GetAttributer wa22 = ATR1.singleton($util.val(2));
+        GetAttributer wa3 = ATR1.singleton($util.val(3));
         assertEquals(0, ATR1.compare(wa2, wa2)${equalTest});
         assertEquals(0, ATR1.compare(wa2, wa22)${equalTest});
         assertEquals(0, ATR1.compare(wa22, wa2)${equalTest});
@@ -75,7 +75,7 @@ public final class ${this} extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
         
-        ArrayList<WithAttributes> al = new ArrayList<WithAttributes>();
+        ArrayList<GetAttributer> al = new ArrayList<GetAttributer>();
         al.add(wa2);
         al.add(wa1);
         Collections.sort(al, ATR1);

@@ -16,6 +16,8 @@
 package org.codehaus.cake.internal.util;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * This class contains various methods for manipulating arrays.
@@ -104,4 +106,61 @@ public final class ArrayUtils {
         }
         return array;
     }
+    
+    public static <T> T[] sort(T[] entries, Comparator<? super T> comparator, int max) {
+        if (max >= entries.length) {
+            Arrays.sort(entries, comparator);
+            return entries;
+        }
+        T[] queue = (T[]) java.lang.reflect.Array.newInstance(entries.getClass().getComponentType(), max);
+        queue[0] = entries[0];
+        // siftUp
+        for (int i = 1; i < max; i++) {
+            T x = entries[i];
+            int k = i;
+            while (k > 0) {
+                int parent = (k - 1) >>> 1;
+                T e = queue[parent];
+                if (comparator.compare(x, e) <= 0)
+                    break;
+                queue[k] = e;
+                k = parent;
+            }
+            queue[k] = x;
+        }
+        // siftDown
+        int size = queue.length;
+        for (int i = max; i < entries.length; i++) {
+            T x = entries[i];
+            if (comparator.compare(queue[0], x) > 0) {
+                siftDownUsingComparator(size, comparator, queue, x);
+            }
+        }
+        //Sort remaining entrie
+        for (int i = size - 1; i >= 0; i--) {
+            T x = queue[i];
+            queue[i] = queue[0];
+            siftDownUsingComparator(i, comparator, queue, x);
+        }
+
+        return queue;
+    }
+
+    private static <T> void siftDownUsingComparator(int size, Comparator<? super T> comparator, T[] queue, T x) {
+        int k = 0;
+        int half = size >>> 1;
+        while (k < half) {
+            int child = (k << 1) + 1;
+            T c = queue[child];
+            int right = child + 1;
+            if (right < size && comparator.compare(c, queue[right]) < 0)
+                c = queue[child = right];
+            if (comparator.compare(x, c) >= 0)
+                break;
+            queue[k] = c;
+            k = child;
+        }
+        queue[k] = x;
+    }
+
 }
