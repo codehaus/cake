@@ -36,11 +36,11 @@ public class CacheMemoryStoreConfigurationTest {
     public void maximumVolume() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertEquals(Long.MAX_VALUE, c.getMaximumVolume());
-        assertEquals(Long.MAX_VALUE, MemoryStoreAttributes.MAX_VOLUME.get(c));
+        assertEquals(Long.MAX_VALUE,c.getAttributes().get(MemoryStoreAttributes.MAX_VOLUME));
 
         assertSame(c, c.setMaximumVolume(1));
         assertEquals(1, c.getMaximumVolume());
-        assertEquals(1, MemoryStoreAttributes.MAX_VOLUME.get(c));
+        assertEquals(1,c.getAttributes().get(MemoryStoreAttributes.MAX_VOLUME));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -52,11 +52,11 @@ public class CacheMemoryStoreConfigurationTest {
     public void maximumSize() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertEquals(Integer.MAX_VALUE, c.getMaximumSize());
-        assertEquals(Integer.MAX_VALUE, MemoryStoreAttributes.MAX_SIZE.get(c));
+        assertEquals(Integer.MAX_VALUE, c.getAttributes().get(MemoryStoreAttributes.MAX_SIZE));
 
         assertSame(c, c.setMaximumSize(1));
         assertEquals(1, c.getMaximumSize());
-        assertEquals(1, MemoryStoreAttributes.MAX_SIZE.get(c));
+        assertEquals(1, c.getAttributes().get(MemoryStoreAttributes.MAX_SIZE));
 
     }
 
@@ -69,10 +69,10 @@ public class CacheMemoryStoreConfigurationTest {
     public void isDisabled() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertFalse(c.isDisabled());
-        assertFalse(MemoryStoreAttributes.IS_DISABLED.get(c));
+        assertFalse(c.getAttributes().get(MemoryStoreAttributes.IS_DISABLED));
         assertSame(c, c.setDisabled(true));
         assertTrue(c.isDisabled());
-        assertTrue(MemoryStoreAttributes.IS_DISABLED.get(c));
+        assertTrue(c.getAttributes().get(MemoryStoreAttributes.IS_DISABLED));
     }
 
     @Test

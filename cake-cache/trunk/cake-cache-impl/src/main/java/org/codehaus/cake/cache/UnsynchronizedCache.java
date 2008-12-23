@@ -52,7 +52,7 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
         super(parent, filter);
     }
     
-    public CacheSelector<K, V> select() {
+    public CacheSelector<K, V> filter() {
         return new AbstractCacheSelector<K, V>() {
             public Cache<K, V> on(Predicate<CacheEntry<K, V>> filter) {
                 if (filter == null) {

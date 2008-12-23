@@ -20,6 +20,7 @@ import org.codehaus.cake.cache.test.tck.attributes.AttributeSuite;
 import org.codehaus.cake.cache.test.tck.core.CoreSuite;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite;
 import org.codehaus.cake.cache.test.tck.lifecycle.LifecycleSuite;
+import org.codehaus.cake.cache.test.tck.query.QuerySuite;
 import org.codehaus.cake.cache.test.tck.selection.SelectionSuite;
 import org.codehaus.cake.cache.test.tck.service.exceptionhandling.ExceptionHandlingSuite;
 import org.codehaus.cake.cache.test.tck.service.loading.LoadingSuite;
@@ -49,5 +50,7 @@ public class CacheTckRunner extends TckRunner {
         // services
         add(new ServiceSuite(SuiteMemoryStore.class));
         add(new ServiceSuite(LoadingSuite.class));
+        
+        add(new ServiceSuite(QuerySuite.class));
     }
 }

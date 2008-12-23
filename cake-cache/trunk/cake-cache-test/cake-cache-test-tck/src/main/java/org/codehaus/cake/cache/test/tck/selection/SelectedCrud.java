@@ -13,11 +13,11 @@ public class SelectedCrud extends AbstractCacheTCKTest {
     public void get() {
         c.withCrud().write().put(1, "A");
         c.withCrud().write().put(2, "B");
-        Cache<Integer, String> s = c.select().onKey(Predicates.equalsToAny(1, 3));
+        Cache<Integer, String> s = c.filter().onKey(Predicates.equalsToAny(1, 3));
         assertEquals("A", s.withCrud().value().get(1));
         assertEquals(1, s.withCrud().entry().get(1).getKey().intValue());
         assertEquals("A", s.withCrud().entry().get(1).getValue());
-        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
+        assertEquals(0, c.withCrud().entry().get(1).size());
         
         assertNotNull(c.withCrud().value().get(2));
         assertNull(s.withCrud().value().get(2));
@@ -35,7 +35,7 @@ public class SelectedCrud extends AbstractCacheTCKTest {
         newCache();
         c.withCrud().value().get(1, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
         c.withCrud().value().get(2, Attributes.from(AtrStubs.I_2, 1, AtrStubs.L_3, 4L));
-        Cache<Integer, String> s = c.select().onValue(Predicates.equalsToAny("A", "C"));
+        Cache<Integer, String> s = c.filter().onValue(Predicates.equalsToAny("A", "C"));
         
         assertNotNull(c.withCrud().value().get(2));
         assertNull(s.withCrud().value().get(2));

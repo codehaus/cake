@@ -1,6 +1,5 @@
 package org.codehaus.cake.cache;
 
-import static org.codehaus.cake.internal.attribute.AttributeHelper.eq;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -23,7 +22,7 @@ public class Caches_newEntryTest {
         CacheEntry<Integer, Integer> me = Caches.newEntry(0, 1);
         assertEquals(0, me.getKey().intValue());
         assertEquals(1, me.getValue().intValue());
-        assertEquals(0, me.getAttributes().size());
+        assertEquals(0, me.size());
         assertTrue(me.toString().contains("0=1"));
     }
 
@@ -32,7 +31,7 @@ public class Caches_newEntryTest {
         CacheEntry<Integer, Integer> me = Caches.newEntry(0, 1, am);
         assertEquals(0, me.getKey().intValue());
         assertEquals(1, me.getValue().intValue());
-        assertSame(am, me.getAttributes());
+        //assertSame(am, me.getAttributes());
         assertEquals("0=1 [A=3]", me.toString());
         AttributeMap map = new DefaultAttributeMap();
         map.put(a, 5);
@@ -80,56 +79,5 @@ public class Caches_newEntryTest {
         Caches.newEntry(0, 1).setValue(2);
     }
 
-    public static class TestEntry<K, V> implements CacheEntry<K, V> {
-        /** The attributes of the entry. */
-        private final AttributeMap attributes;
 
-        /** The key of the entry. */
-        private final K key;
-
-        /** The value of the entry. */
-        private final V value;
-
-        /**
-         * Creates an entry representing a mapping from the specified key to the specified value.
-         * 
-         * @param key
-         *            the key represented by this entry
-         * @param value
-         *            the value represented by this entry
-         */
-        public TestEntry(K key, V value, AttributeMap attributes) {
-            this.key = key;
-            this.value = value;
-            this.attributes = attributes;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof CacheEntry)) {
-                return false;
-            }
-            CacheEntry e = (CacheEntry) o;
-            return eq(key, e.getKey()) && eq(value, e.getValue()) && eq(attributes, e.getAttributes());
-        }
-
-        public AttributeMap getAttributes() {
-            return attributes;
-        }
-
-        /** {@inheritDoc} */
-        public K getKey() {
-            return key;
-        }
-
-        /** {@inheritDoc} */
-        public V getValue() {
-            return value;
-        }
-
-        public V setValue(V value) {
-            return null;
-        }
-    }
 }

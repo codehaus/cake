@@ -27,103 +27,103 @@ public class IllegalSelection extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
     public void selectOnBinaryNPE() {
-        c.select().on((BinaryPredicate) null);
+        c.filter().on((BinaryPredicate) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnPredicateNPE() {
-        c.select().on((Predicate) null);
+        c.filter().on((Predicate) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnAFilterNPE() {
-        c.select().on(null, Predicates.TRUE);
+        c.filter().on(null, Predicates.TRUE);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnObjectFilterNPE() {
-        c.select().on(new ObjectAttribute(String.class) {}, (Predicate) null);
+        c.filter().on(new ObjectAttribute(String.class) {}, (Predicate) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnBoolNPE() {
-        c.select().on(null, false);
+        c.filter().on(null, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnByteNPE() {
-        c.select().on(null, dummy(BytePredicate.class));
+        c.filter().on(null, dummy(BytePredicate.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnByteFilterNPE() {
-        c.select().on(new ByteAttribute() {}, (BytePredicate) null);
+        c.filter().on(new ByteAttribute() {}, (BytePredicate) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnCharNPE() {
-        c.select().on(null, dummy(CharPredicate.class));
+        c.filter().on(null, dummy(CharPredicate.class));
     }
     @Test(expected = NullPointerException.class)
     public void selectOnCharFilterNPE() {
-        c.select().on(new CharAttribute() {}, (CharPredicate) null);
+        c.filter().on(new CharAttribute() {}, (CharPredicate) null);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnDoubleNPE() {
-        c.select().on(null, dummy(DoublePredicate.class));
+        c.filter().on(null, dummy(DoublePredicate.class));
     }
     @Test(expected = NullPointerException.class)
     public void selectOnDoubleFilterNPE() {
-        c.select().on(new DoubleAttribute() {}, (DoublePredicate) null);
+        c.filter().on(new DoubleAttribute() {}, (DoublePredicate) null);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnFloatNPE() {
-        c.select().on(null, dummy(FloatPredicate.class));
+        c.filter().on(null, dummy(FloatPredicate.class));
     }
     @Test(expected = NullPointerException.class)
     public void selectOnFloatFilterNPE() {
-        c.select().on(new FloatAttribute() {}, (FloatPredicate) null);
+        c.filter().on(new FloatAttribute() {}, (FloatPredicate) null);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnIntNPE() {
-        c.select().on(null, dummy(IntPredicate.class));
+        c.filter().on(null, dummy(IntPredicate.class));
     }
     @Test(expected = NullPointerException.class)
     public void selectOnIntFilterNPE() {
-        c.select().on(new IntAttribute() {}, (IntPredicate) null);
+        c.filter().on(new IntAttribute() {}, (IntPredicate) null);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnLongNPE() {
-        c.select().on(null, dummy(LongPredicate.class));
+        c.filter().on(null, dummy(LongPredicate.class));
     }
     @Test(expected = NullPointerException.class)
     public void selectOnLongFilterNPE() {
-        c.select().on(new LongAttribute() {}, (LongPredicate) null);
+        c.filter().on(new LongAttribute() {}, (LongPredicate) null);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnShortNPE() {
-        c.select().on(null, dummy(ShortPredicate.class));
+        c.filter().on(null, dummy(ShortPredicate.class));
     }
     @Test(expected = NullPointerException.class)
     public void selectOnShortFilterNPE() {
-        c.select().on(new ShortAttribute() {}, (ShortPredicate) null);
+        c.filter().on(new ShortAttribute() {}, (ShortPredicate) null);
     }
     @Test(expected = NullPointerException.class)
     public void selectOnKeyNPE() {
-        c.select().onKey(null);
+        c.filter().onKey(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnKeyTypeNPE() {
-        c.select().onKeyType(null);
+        c.filter().onKeyType(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnValueNPE() {
-        c.select().onValue(null);
+        c.filter().onValue(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void selectOnValueTypeNPE() {
-        c.select().onValueType(null);
+        c.filter().onValueType(null);
     }
 }

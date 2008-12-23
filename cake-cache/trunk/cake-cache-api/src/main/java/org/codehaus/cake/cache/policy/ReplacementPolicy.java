@@ -41,7 +41,8 @@ import org.codehaus.cake.cache.service.crud.CrudReader;
  *            the type of values cached
  */
 public interface ReplacementPolicy<K, V> {
-
+    //TODO lav det om til ReplacementPolicy<T extends GetAttributer>
+    
     /**
      * The cache calls this method whenever a new entry is inserted to cache. If an entry already exists for the key of
      * the entry {@link #replace(CacheEntry, CacheEntry)} is called instead. Normally a replacement policy will accept

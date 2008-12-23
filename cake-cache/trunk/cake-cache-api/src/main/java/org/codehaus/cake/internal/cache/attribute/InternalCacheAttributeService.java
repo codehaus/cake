@@ -16,10 +16,9 @@
 package org.codehaus.cake.internal.cache.attribute;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
-import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 
 /**
@@ -27,7 +26,7 @@ import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
  * <p>
  * This interface contain various methods used by {@link AbstractCakeReplacementPolicy}.
  */
-public interface InternalCacheAttributeService {
+public interface InternalCacheAttributeService extends ReadWriterGenerator {
     /**
      * Attaches an attribute to the cache. An {@link AttributeMap} where the attribute can be set or read can later be
      * retrieved by calling {@link CacheEntry#getAttributes()}. <p/> NOTE: The value can only be read or set safely in
@@ -39,7 +38,6 @@ public interface InternalCacheAttributeService {
      * @param attribute
      *            the attribute to attach
      */
-    void attachToPolicy(Attribute<?> attribute);
 
     /**
      * Depends on another attributes. If the user has not registered this attribute with

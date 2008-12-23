@@ -2,6 +2,7 @@ package org.codehaus.cake.internal.cache.service.crud;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.internal.cache.CachePredicates;
@@ -23,7 +24,7 @@ public abstract class AbstractCrudWriter<K, V, R> implements CrudWriter<K, V, R>
     }
 
     /** {@inheritDoc} */
-    public final R put(K key, V value, AttributeMap attributes) {
+    public final R put(K key, V value, GetAttributer attributes) {
         return putIf(Predicates.TRUE, key, value, attributes);
     }
 

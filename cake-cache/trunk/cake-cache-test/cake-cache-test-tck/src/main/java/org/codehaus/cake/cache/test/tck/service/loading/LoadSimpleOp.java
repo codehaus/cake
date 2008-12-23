@@ -63,8 +63,7 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
     public void attributes() {
         withLoading().load(200, CacheEntry.TIME_CREATED.singleton(10));
         awaitFinishedThreads();
-        assertEquals(CacheEntry.TIME_CREATED.getDefaultValue(), c.getEntry(200).getAttributes().get(
-                CacheEntry.TIME_CREATED));
+        assertEquals(CacheEntry.TIME_CREATED.getDefaultValue(), c.getEntry(200).get(CacheEntry.TIME_CREATED));
 
         newConfiguration();
         conf.addEntryAttributes(CacheEntry.TIME_CREATED);
@@ -74,7 +73,7 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
         awaitFinishedThreads();
         assertSize(1);
         assertEquals("200", c.peek(200));
-        assertEquals(10, c.getEntry(200).getAttributes().get(CacheEntry.TIME_CREATED));
+        assertEquals(10, c.getEntry(200).get(CacheEntry.TIME_CREATED));
     }
 
     @Test
@@ -89,15 +88,15 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
         withLoading().load(2);
         withLoading().load(3);
         awaitFinishedThreads();
-        assertTrue(c.getEntry(1).getAttributes().get(la) != 10);
-        assertTrue(c.getEntry(2).getAttributes().get(la) != 10);
-        assertTrue(c.getEntry(3).getAttributes().get(la) != 10);
+        assertTrue(c.getEntry(1).get(la) != 10);
+        assertTrue(c.getEntry(2).get(la) != 10);
+        assertTrue(c.getEntry(3).get(la) != 10);
 
         withLoadingForced().loadAll(la.singleton(10));
         awaitFinishedThreads();
-        assertEquals(10, c.peekEntry(1).getAttributes().get(la));
-        assertEquals(10, c.peekEntry(2).getAttributes().get(la));
-        assertEquals(10, c.peekEntry(3).getAttributes().get(la));
+        assertEquals(10, c.peekEntry(1).get(la));
+        assertEquals(10, c.peekEntry(2).get(la));
+        assertEquals(10, c.peekEntry(3).get(la));
     }
 
     @Test
@@ -112,15 +111,15 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
         withLoading().load(2);
         withLoading().load(3);
         awaitFinishedThreads();
-        assertTrue(c.getEntry(1).getAttributes().get(CacheEntry.TIME_CREATED) != 10);
-        assertTrue(c.getEntry(2).getAttributes().get(CacheEntry.TIME_CREATED) != 10);
-        assertTrue(c.getEntry(3).getAttributes().get(CacheEntry.TIME_CREATED) != 10);
+        assertTrue(c.getEntry(1).get(CacheEntry.TIME_CREATED) != 10);
+        assertTrue(c.getEntry(2).get(CacheEntry.TIME_CREATED) != 10);
+        assertTrue(c.getEntry(3).get(CacheEntry.TIME_CREATED) != 10);
 
         withLoadingForced().loadAll(CacheEntry.TIME_CREATED.singleton(10));
         awaitFinishedThreads();
-        assertEquals(10, c.peekEntry(1).getAttributes().get(CacheEntry.TIME_CREATED));
-        assertEquals(10, c.peekEntry(2).getAttributes().get(CacheEntry.TIME_CREATED));
-        assertEquals(10, c.peekEntry(3).getAttributes().get(CacheEntry.TIME_CREATED));
+        assertEquals(10, c.peekEntry(1).get(CacheEntry.TIME_CREATED));
+        assertEquals(10, c.peekEntry(2).get(CacheEntry.TIME_CREATED));
+        assertEquals(10, c.peekEntry(3).get(CacheEntry.TIME_CREATED));
     }
 
     static class SimpleLoader1 implements Op<Integer, String> {

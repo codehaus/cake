@@ -291,7 +291,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         CacheEntry<Integer, String> ce = (CacheEntry<Integer, String>) o;
         assertSame(M1.getKey(), ce.getKey());
         assertSame(M1.getValue(), ce.getValue());
-        assertEquals(ce.getAttributes(), SIZE.singleton(4));
+        assertEquals(4, ce.get(SIZE));
     }
 
 }

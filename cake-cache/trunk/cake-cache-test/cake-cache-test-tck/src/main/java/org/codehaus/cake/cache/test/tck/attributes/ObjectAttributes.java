@@ -44,25 +44,25 @@ public class ObjectAttributes extends AbstractCacheTCKTest {
         newConfigurationClean();
         conf.addEntryAttributes(O_1, O_4);
         newCache();
-        assertNull(c.select().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
-        assertEquals("1.5", c.select().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
-        assertEquals("1.5", c.select().on(O_1, Predicates.notEqualsTo("1.5")).withCrud().attribute(O_1).get(10));
+        assertNull(c.filter().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
+        assertEquals("1.5", c.filter().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
+        assertEquals("1.5", c.filter().on(O_1, Predicates.notEqualsTo("1.5")).withCrud().attribute(O_1).get(10));
 
     }
     @Test
     public void objectAttributeWithSelector() {
         conf.addEntryAttributes(O_1, O_4);
         newCache();
-        assertNull(c.select().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
-        assertEquals("1.5", c.select().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
-        assertEquals("1.5", c.select().on(O_1, Predicates.notEqualsTo("1.5")).withCrud().attribute(O_1).get(10));
+        assertNull(c.filter().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
+        assertEquals("1.5", c.filter().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
+        assertEquals("1.5", c.filter().on(O_1, Predicates.notEqualsTo("1.5")).withCrud().attribute(O_1).get(10));
 
         c.withCrud().write().put(10, "A", Attributes.from(O_1, "foo", O_4, "foo2"));
-        assertNull(c.select().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
-        assertEquals("1.5", c.select().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
-        assertEquals("foo", c.select().on(Predicates.TRUE).withCrud().attribute(O_1).get(10));
-        assertEquals("foo2", c.select().on(Predicates.TRUE).withCrud().attribute(O_4).get(10));
+        assertNull(c.filter().on(Predicates.FALSE).withCrud().attribute(O_4).get(10));
+        assertEquals("1.5", c.filter().on(Predicates.FALSE).withCrud().attribute(O_1).get(10));
+        assertEquals("foo", c.filter().on(Predicates.TRUE).withCrud().attribute(O_1).get(10));
+        assertEquals("foo2", c.filter().on(Predicates.TRUE).withCrud().attribute(O_4).get(10));
 
-        assertEquals("1.5", c.select().on(O_1, Predicates.notEqualsTo("foo")).withCrud().attribute(O_1).get(10));
+        assertEquals("1.5", c.filter().on(O_1, Predicates.notEqualsTo("foo")).withCrud().attribute(O_1).get(10));
     }
 }

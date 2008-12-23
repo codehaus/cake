@@ -18,11 +18,13 @@ package org.codehaus.cake.cache.policy.costsize;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.cache.CacheEntry.COST;
+import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -33,7 +35,7 @@ import org.junit.runner.RunWith;
 
 @SuppressWarnings("unchecked")
 @RunWith(JMock.class)
-public class ReplaceCostliestPolicyTest {
+public class ReplaceCostliestPolicyTest extends AbstractPolicyTest{
 
     /** The junit mockery. */
     private final Mockery context = new JUnit4Mockery();
@@ -44,7 +46,7 @@ public class ReplaceCostliestPolicyTest {
         final InternalCacheAttributeService s = context.mock(InternalCacheAttributeService.class);
         context.checking(new Expectations() {
             {
-                one(s).attachToPolicy(with(any(Attribute.class)));// heap index
+                one(s).newInt();
                 one(s).dependOnHard(COST);
             }
         });
@@ -53,39 +55,20 @@ public class ReplaceCostliestPolicyTest {
 
     @Test
     public void compare() {
-        ReplaceCostliestPolicy rbp = new ReplaceCostliestPolicy();
+        policy = new ReplaceCostliestPolicy();
+        init();
+        final CacheEntry ce1 = createEntry(COST, 1.5);
+        final CacheEntry ce2 = createEntry(COST, 2.5);
+        final CacheEntry ce3 = createEntry(COST, 3.5);
 
-        final CacheEntry ce1 = context.mock(CacheEntry.class, "1");
-        final AttributeMap am1 = new DefaultAttributeMap();
-
-        final CacheEntry ce2 = context.mock(CacheEntry.class, "2");
-        final AttributeMap am2 = new DefaultAttributeMap();
-
-        final CacheEntry ce3 = context.mock(CacheEntry.class, "3");
-        final AttributeMap am3 = new DefaultAttributeMap();
-
-        context.checking(new Expectations() {
-            {
-                allowing(ce1).getAttributes();
-                will(returnValue(am1));
-                allowing(ce2).getAttributes();
-                will(returnValue(am2));
-                allowing(ce3).getAttributes();
-                will(returnValue(am3));
-            }
-        });
-        COST.set(ce1, 1.5);
-        COST.set(ce2, 2.5);
-        COST.set(ce3, 3.5);
-
-        rbp.add(ce1);
-        rbp.add(ce3);
-        rbp.add(ce2);
-        assertSame(ce3, rbp.evictNext());
-        assertSame(ce2, rbp.evictNext());
-        rbp.add(ce3);
-        assertSame(ce3, rbp.evictNext());
-        assertSame(ce1, rbp.evictNext());
-        assertNull(rbp.evictNext());
+        policy.add(ce1);
+        policy.add(ce3);
+        policy.add(ce2);
+        assertSame(ce3, policy.evictNext());
+        assertSame(ce2, policy.evictNext());
+        policy.add(ce3);
+        assertSame(ce3, policy.evictNext());
+        assertSame(ce1, policy.evictNext());
+        assertNull(policy.evictNext());
     }
 }

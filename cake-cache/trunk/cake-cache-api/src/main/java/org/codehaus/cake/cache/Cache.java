@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
+import org.codehaus.cake.cache.query.CacheQuery;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudReader;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
@@ -145,6 +146,38 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @return a set view of the mappings contained in this map
      */
     Set<Map.Entry<K, V>> entrySet();
+
+    /**
+     * Returns a selector that can be used to create a filtered view of the mappings contained in this cache. Used for
+     * creating a view of the cache. The filtered view is backed by the cache, so changes to the cache are reflected in
+     * the view, and vice-versa.
+     * 
+     * Some cautions should apply, for example the following methods will not work.
+     * {@link Container#awaitTermination(long, java.util.concurrent.TimeUnit)}, {@link Container#shutdown()},{@link Container#shutdownNow()},
+     * insertion??
+     * <p>
+     * When operating on a filtered view some operations will be slower. For example, to calculate the
+     * {@link Cache#size()} of a filtered view, the cache will need to evaluate all elements to see if they match the
+     * specified filter.
+     * <p>
+     * The following snippet will create a new cache view that only contains elements that have {@link Integer} values.
+     * 
+     * <pre>
+     * Cache&lt;String, Number&gt; c = null;
+     * Cache&lt;String, Integer&gt; onlyInts = c.filter().onValueType(Integer.class);
+     * </pre>
+     * 
+     * The next snippet will reload all cache elements that have not been modified doing the last hour.
+     * 
+     * <pre>
+     * long oneHourAgo = new Date().getTime() - 60 * 60 * 1000;
+     * c.filter().on(CacheEntry.TIME_MODIFIED, LongPredicates.lessThen(oneHourAgo)).with().loadingForced().loadAll();
+     * </pre>
+     * 
+     * @throws UnsupportedOperationException
+     *             if the <tt>filter</tt> operation is not supported by this cache
+     */
+    CacheSelector<K, V> filter();
 
     /**
      * Works as {@link #get(Object)} with the following modifications.
@@ -492,39 +525,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      */
     boolean replace(K key, V oldValue, V newValue);
 
-    /**
-     * Returns a selector that can be used to create a filtered view of the mappings contained in this cache. Used for
-     * creating a view of the cache. The filtered view is backed by the cache, so changes to the cache are reflected in
-     * the view, and vice-versa.
-     * 
-     * Some cautions should apply, for example the following methods will not work.
-     * {@link Container#awaitTermination(long, java.util.concurrent.TimeUnit)}, {@link Container#shutdown()},{@link Container#shutdownNow()},
-     * insertion??
-     * <p>
-     * When operating on a filtered view some operations will be slower. For example, to calculate the
-     * {@link Cache#size()} of a filtered view, the cache will need to evaluate all elements to see if they match the
-     * specified filter.
-     * <p>
-     * The following snippet will create a new cache view that only contains elements that have values of type
-     * {@link Integer}.
-     * 
-     * <pre>
-     * Cache&lt;String, Number&gt; c = null;
-     * Cache&lt;String, Integer&gt; onlyInts = c.select().onValueType(Integer.class);
-     * </pre>
-     * 
-     * The next snippet will reload all cache elements that have not been modified doing the last hour.
-     * 
-     * <pre>
-     * long oneHourAgo = new Date().getTime() - 60 * 60 * 1000;
-     * c.select().on(CacheEntry.TIME_MODIFIED, LongPredicates.lessThen(oneHourAgo)).with().loadingForced().loadAll();
-     * </pre>
-     * 
-     * @throws UnsupportedOperationException
-     *             if the <tt>select</tt> operation is not supported by this cache
-     */
-    CacheSelector<K, V> select();
-
+    CacheQuery<K, V> query();
+    
     /**
      * Returns the number of elements in this cache. If the cache contains more than <tt>Integer.MAX_VALUE</tt>
      * elements, returns <tt>Integer.MAX_VALUE</tt>.

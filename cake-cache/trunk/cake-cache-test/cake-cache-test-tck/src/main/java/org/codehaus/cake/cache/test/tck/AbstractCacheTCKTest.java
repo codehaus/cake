@@ -25,7 +25,9 @@ import java.util.Map;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
@@ -100,11 +102,11 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     }
 
     protected <T> T getAttribute(Map.Entry<Integer, String> entry, Attribute<T> atr) {
-        return c.peekEntry(entry.getKey()).getAttributes().get(atr);
+        return c.peekEntry(entry.getKey()).get(atr);
     }
 
     protected <T> T getAttribute(CacheEntry<Integer, String> entry, Attribute<T> atr) {
-        return entry.getAttributes().get(atr);
+        return entry.get(atr);
     }
 
     public void assertLoadCount(int count) {
@@ -356,6 +358,16 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
 
     protected void put(Map.Entry<Integer, String> entry) {
         c.put(entry.getKey(), entry.getValue());
+    }
+
+    public <T, S> void put(Map.Entry<Integer, String> e, Attribute<T> a1, T t) {
+        c.withCrud().write().put(e.getKey(), e.getValue(), a1.singleton(t));
+    }
+
+    public <T, S> void put(Map.Entry<Integer, String> e, Attribute<T> a1, T t, Attribute<S> a2, S s) {
+        GetAttributer ga = Attributes.from(a1, t, a2, s);
+        c.withCrud().write().put(e.getKey(), e.getValue(), ga);
+
     }
 
     protected void put(Map.Entry<Integer, String>... entries) {

@@ -142,7 +142,7 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
         putAll(M1, M2, M3);
         assertSize(1);
         assertGet(M1);
-        exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Fatal);
+        exceptionHandler.eat(RuntimeException1.INSTANCE, Level.Error);
     }
 
     @Test

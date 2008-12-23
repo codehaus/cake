@@ -126,7 +126,7 @@ public final class CacheLoadingUtils {
                     }
                 };
             }
-            cache.select().onKey(p).with().loadingForced().loadAll();
+            cache.filter().onKey(p).with().loadingForced().loadAll();
         }
 
         static int hash(int h) {

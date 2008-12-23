@@ -17,7 +17,6 @@ package org.codehaus.cake.cache.policy;
 
 import java.util.ArrayList;
 
-import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 
 /**
@@ -30,13 +29,9 @@ import org.codehaus.cake.cache.CacheEntry;
  *            the type of mapped values
  */
 public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> {
-    private final IntAttribute index = new IntAttribute("index", -1) {};
     private final ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
 
-    /** Creates a new AbstractArrayReplacementPolicy. */
-    public AbstractArrayReplacementPolicy() {
-        attachToEntry(index);
-    }
+    private Reg<?> idx;
 
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
@@ -46,7 +41,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
 
     protected int add0(CacheEntry<K, V> entry) {
         int i = list.size();
-        index.set(entry, i);
+        setFromIndex(entry, i);
         list.add(entry);
         return i;
     }
@@ -65,6 +60,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
         return list.get(index);
     }
 
+
     /**
      * Returns the index of the specified entry, or -1 if the entry has not been registered
      * 
@@ -73,9 +69,11 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
      * @return the index of the specified entry, or -1 if the entry has not been registered
      */
     protected int getIndexOf(CacheEntry<K, V> entry) {
-        return index.get(entry);
+        return idx.getInt(entry);
     }
-
+    protected void setFromIndex(CacheEntry<K, V> entry, int in) {
+        idx.setInt(entry, in);
+    }
     /** {@inheritDoc} */
     public void remove(CacheEntry<K, V> entry) {
         remove0(entry);
@@ -91,9 +89,9 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
         int lastIndex = list.size() - 1;
         CacheEntry<K, V> last = list.remove(lastIndex);
         if (entry != last) {
-            int i = index.get(entry);
+            int i = getIndexOf(entry);
             list.set(i, last);
-            index.set(last, i);
+            setFromIndex(last, i);
             swap(lastIndex, i);
         }
         return lastIndex;
@@ -106,8 +104,8 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
     }
 
     protected void replace0(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        int i = index.get(previous);
-        index.set(newEntry, i);
+        int i = getIndexOf(previous);
+        setFromIndex(newEntry, i);
         list.set(i, newEntry);
     }
 
@@ -119,5 +117,11 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
     }
 
     protected void swap(int prevIndex, int newIndex) {
+    }
+
+    @Override
+    protected <T> void register(
+            org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator generator) {
+        idx = generator.newInt();
     }
 }

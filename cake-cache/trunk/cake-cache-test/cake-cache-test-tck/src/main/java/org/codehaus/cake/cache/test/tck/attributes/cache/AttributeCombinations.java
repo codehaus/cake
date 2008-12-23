@@ -38,8 +38,8 @@ public class AttributeCombinations extends AbstractCacheTCKTest {
         dc.setTimeOfDay(34);
         init();
         put(M1);
-        assertEquals(35, c.getEntry(M1.getKey()).getAttributes().get(CacheEntry.TIME_CREATED));
-        assertEquals(35, c.getEntry(M1.getKey()).getAttributes().get(CacheEntry.TIME_MODIFIED));
+        assertEquals(35, c.getEntry(M1.getKey()).get(CacheEntry.TIME_CREATED));
+        assertEquals(35, c.getEntry(M1.getKey()).get(CacheEntry.TIME_MODIFIED));
     }
 
     @Test

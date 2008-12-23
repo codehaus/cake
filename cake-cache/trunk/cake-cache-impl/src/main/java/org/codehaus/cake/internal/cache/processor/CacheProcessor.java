@@ -1,5 +1,6 @@
 package org.codehaus.cake.internal.cache.processor;
 
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
@@ -11,6 +12,7 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
+import org.codehaus.cake.internal.cache.query.DefaultQuery;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -20,7 +22,7 @@ public interface CacheProcessor<K, V> {
 
     void process(AddEntryRequest<K, V> r);
 
-    void process(Predicate<CacheEntry<K,V>> filter, ClearCacheRequest<K, V> r);
+    void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r);
 
     void process(RemoveEntriesRequest<K, V> r);
 
@@ -30,10 +32,13 @@ public interface CacheProcessor<K, V> {
 
     void process(TrimToVolumeRequest<K, V> r);
 
-    <T> T get(Predicate<CacheEntry<K,V>> selector, K key, AttributeMap attributes, Op<CacheEntry<K, V>, T> extractor);
+    List<CacheEntry<K, V>> process(Predicate<CacheEntry<K, V>> filter,DefaultQuery<K, V> query);
 
-    <T> Map<K, T> getAll(Predicate<CacheEntry<K,V>> selector, Iterable<? extends K> key, Op<CacheEntry<K, V>, T> extractor);
+    <T> T get(Predicate<CacheEntry<K, V>> selector, K key, AttributeMap attributes, Op<CacheEntry<K, V>, T> extractor);
 
-//    Iterable<K> getKeys(Predicate<CacheEntry<K, V>> predicate);
+    <T> Map<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> key,
+            Op<CacheEntry<K, V>, T> extractor);
+
+    // Iterable<K> getKeys(Predicate<CacheEntry<K, V>> predicate);
 
 }

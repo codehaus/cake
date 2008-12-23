@@ -104,7 +104,7 @@ public class InternalDataExtractors {
             if (a == null) {
                 return attribute.getDefault();
             }
-            return a.getAttributes().get(attribute);
+            return a.get(attribute);
         }
     }
 }

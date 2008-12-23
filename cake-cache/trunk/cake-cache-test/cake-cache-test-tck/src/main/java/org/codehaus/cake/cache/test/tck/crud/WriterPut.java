@@ -34,19 +34,19 @@ public class WriterPut {
         assertEquals(1, c.size());
         assertEquals(1, c.peekEntry(1).getKey().intValue());
         assertEquals("B", c.peekEntry(1).getValue());
-        assertEquals(0, c.peekEntry(1).getAttributes().size());
+        assertEquals(0, c.peekEntry(1).size());
         
         writer.put(1, "C");
         assertEquals(1, c.size());
         assertEquals(1, c.peekEntry(1).getKey().intValue());
         assertEquals("C", c.peekEntry(1).getValue());
-        assertEquals(0, c.peekEntry(1).getAttributes().size());
+        assertEquals(0, c.peekEntry(1).size());
 
         writer.put(2, "C");
         assertEquals(2, c.size());
         assertEquals(2, c.peekEntry(2).getKey().intValue());
         assertEquals("C", c.peekEntry(2).getValue());
-        assertEquals(0, c.peekEntry(2).getAttributes().size());
+        assertEquals(0, c.peekEntry(2).size());
 
     }
 

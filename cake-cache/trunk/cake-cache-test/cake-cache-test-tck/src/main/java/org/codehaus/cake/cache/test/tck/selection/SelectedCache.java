@@ -34,7 +34,7 @@ public class SelectedCache extends AbstractCacheTCKTest {
     public void noLoading() {
         c.put(1, "foo");
         assertEquals("foo", c.get(1));
-        c.select().on(Predicates.FALSE).get(1);
+        c.filter().on(Predicates.FALSE).get(1);
         assertEquals("foo", c.get(1));
     }
 
@@ -46,9 +46,9 @@ public class SelectedCache extends AbstractCacheTCKTest {
         assertEquals("B", c.get(2));
         assertNull(c.peek(10));
 
-        assertNull(c.select().on(Predicates.FALSE).get(1));
-        assertNull(c.select().on(Predicates.FALSE).get(2));
-        assertNull(c.select().on(Predicates.FALSE).get(10));
+        assertNull(c.filter().on(Predicates.FALSE).get(1));
+        assertNull(c.filter().on(Predicates.FALSE).get(2));
+        assertNull(c.filter().on(Predicates.FALSE).get(10));
 
         assertEquals("A", c.get(1));
         assertEquals("B", c.get(2));

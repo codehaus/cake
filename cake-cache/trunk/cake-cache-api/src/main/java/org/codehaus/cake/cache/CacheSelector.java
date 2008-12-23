@@ -36,7 +36,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
 
 /**
  * A CacheSelector is used for creating views of a cache where the ret A CacheSelector is normally acquire through calls
- * to {@link Cache#select()}
+ * to {@link Cache#filter()}
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$

@@ -15,6 +15,7 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +23,17 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheConfiguration;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
+import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.Reg;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
+import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.util.Clock;
 
@@ -37,33 +46,43 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     private final Map<Attribute, CacheAttributeMapConfiguration> map = new HashMap<Attribute, CacheAttributeMapConfiguration>();
     private final Clock clock;
     private final InternalExceptionService<?> ies;
+    private AbstractCakeReplacementPolicy<K, V> policy;
 
-    public MemorySparseAttributeService(CacheConfiguration configuration, Clock clock,
-            InternalExceptionService<?> ies) {
+    public MemorySparseAttributeService(CacheConfiguration configuration, Clock clock, InternalExceptionService<?> ies) {
         this.clock = clock;
         this.ies = ies;
+        ReplacementPolicy<K, V> p = configuration.withMemoryStore().getPolicy();
+        if (p instanceof AbstractCakeReplacementPolicy) {
+            policy = (AbstractCakeReplacementPolicy<K, V>) p;
+        }
         for (Object o : configuration.getAllEntryAttributes()) {
             Attribute a = (Attribute) o;
             CacheAttributeMapConfiguration sac = CacheAttributeMapConfiguration.getPredefinedConfiguration(a);
             map.put(a, sac);
         }
-        updateAttributes();
+        initialize();
     }
 
-    public AttributeMap create(K key, V value, AttributeMap params) {
+    public AttributeMap create(K key, V value, GetAttributer params) {
         return generator.create(key, value, params, null);
     }
 
-    public AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
+    public AttributeMap update(K key, V value, GetAttributer params, GetAttributer previous) {
         return generator.create(key, value, params, previous);
     }
 
-    private void updateAttributes() {
-        String name = "CacheEntryGenerator" + al.getAndIncrement();
-        try {
-            generator = CacheAttributeMapFactoryGenerator.generate(name, new ArrayList(map.values()), clock, ies);
-        } catch (Exception e1) {
-            e1.printStackTrace();
+    private static Class<CacheAttributeMapFactory> noAttributes;
+
+    public void initialize() {
+        if (map.size() == 0) {
+            generator = CacheAttributeMapFactoryGenerator.NO_ATTRIBUTES_FACTORY;
+        } else {
+            String name = "CacheEntryGenerator" + al.getAndIncrement();
+            try {
+                generator = CacheAttributeMapFactoryGenerator.generate(name, new ArrayList(map.values()), clock, ies);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -73,7 +92,7 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         sac.setCreateAction(CreateAction.DEFAULT);
         sac.setModifyAction(ModifyAction.KEEP_EXISTING);
         map.put(attribute, sac);
-        updateAttributes();
+        initialize();
     }
 
     public void dependOnHard(Attribute<?> attribute) {
@@ -89,10 +108,96 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
                     .getPredefinedConfigurationSoft(attribute);
             map.put(attribute, sac);
         }
-        updateAttributes();
+        initialize();
     }
 
-    public void access(AttributeMap map) {
-        generator.access(map);
+    public void access(GetAttributer map) {
+        generator.access((AttributeMap) map);
+    }
+
+    public Reg<?> newBoolean() {
+        return newObject(Boolean.TYPE);
+    }
+
+    public Reg<?> newInt() {
+        return newObject(Integer.TYPE);
+    }
+
+    public <T> Reg<T> newObject(Class<T> type) {
+        if (type.equals(Boolean.TYPE)) {
+            ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
+            attachToPolicy(oa);
+            if (true) {
+                throw new UnsupportedOperationException();
+            }
+            return new ObjectRef<T>(oa);
+        } else {
+            ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
+            attachToPolicy(oa);
+            return new ObjectRef<T>(oa);
+        }
+    }
+
+    class IntegerRef<T> extends AbstractRef<T> {
+        IntAttribute a;
+
+        IntegerRef(IntAttribute a) {
+            this.a = a;
+        }
+
+        @Override
+        public int getInt(GetAttributer entry) {
+            return entry.get(a);
+        }
+
+        @Override
+        public void setInt(GetAttributer entry, int value) {
+            ((HashEntry) entry).getAttributes().put(a, value);
+        }
+    }
+
+    static class ObjectRef<T> extends AbstractRef<T> {
+        ObjectAttribute<T> a;
+
+        ObjectRef(ObjectAttribute<T> a) {
+            this.a = a;
+        }
+
+        @Override
+        public T getObject(GetAttributer entry) {
+            return entry.get(a);
+        }
+
+        @Override
+        public void setObject(GetAttributer entry, T value) {
+            ((HashEntry) entry).getAttributes().put(a, value);
+        }
+
+    }
+
+    static abstract class AbstractRef<T> implements Reg<T> {
+        public boolean getBoolean(GetAttributer entry) {
+            throw new UnsupportedOperationException();
+        }
+
+        public T getObject(GetAttributer entry) {
+            throw new UnsupportedOperationException();
+        }
+
+        public void setBoolean(GetAttributer entry, boolean value) {
+            throw new UnsupportedOperationException();
+        }
+
+        public void setObject(GetAttributer entry, T value) {
+            throw new UnsupportedOperationException();
+        }
+
+        public int getInt(GetAttributer entry) {
+            throw new UnsupportedOperationException();
+        }
+
+        public void setInt(GetAttributer entry, int value) {
+            throw new UnsupportedOperationException();
+        }
     }
 }

@@ -19,10 +19,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.add;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.addToPolicy;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.empty;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.val;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asList;
 import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
 
@@ -31,6 +27,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,13 +36,12 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  */
-public class RandomPolicyTest {
-
-    RandomReplacementPolicy<Integer, String> policy;
+public class RandomPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
         policy = new RandomReplacementPolicy<Integer, String>();
+        init();
     }
 
     /**
@@ -53,15 +49,15 @@ public class RandomPolicyTest {
      */
     @Test
     public void testAdd() {
-        addToPolicy(policy, 0, 9);
-        assertTrue(empty(policy).containsAll(seq(0, 9)));
+        addToPolicy(0, 9);
+        assertTrue(empty().containsAll(seq(0, 9)));
     }
 
     @Test
     public void testIntens2() {
         Set<Integer> s = new TreeSet<Integer>();
         for (int i = 0; i < 20; i++) {
-            add(policy, i);
+            add(i);
         }
         for (int i = 0; i < 40; i++) {
             s.add(i);
@@ -71,7 +67,7 @@ public class RandomPolicyTest {
             CacheEntry<Integer, String> data = policy.evictNext();
             policy.add(data);
             if (i % 20 == 0)
-                policy.add(val(i / 20 + 20));
+                add(i / 20 + 20);
         }
         for (;;) {
             CacheEntry<Integer, String> ce = policy.evictNext();
@@ -90,14 +86,14 @@ public class RandomPolicyTest {
      */
     @Test
     public void testRefresh() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
         policy.touch(val(4));
         policy.touch(val(4));
         policy.touch(val(0));
         policy.touch(val(3));
         policy.touch(val(2));
         policy.touch(val(9));
-        assertTrue(empty(policy).containsAll(seq(0, 9)));
+        assertTrue(empty().containsAll(seq(0, 9)));
     }
 
     /**
@@ -105,16 +101,17 @@ public class RandomPolicyTest {
      */
     @Test
     public void testRemove() {
-        addToPolicy(policy, 0, 9);
-        assertTrue(empty(policy).containsAll(seq(0, 9)));
+        addToPolicy(0, 9);
+        assertTrue(empty().containsAll(seq(0, 9)));
     }
 
     @Test
     public void testRemove2() {
         Set l = new HashSet();
-        policy.add(val(1));
-        policy.add(val(2));
-        policy.add(val(3));
+        
+        add(1);
+        add(2);
+        add(3);
         l.add(val(1));
         l.add(val(2));
         l.add(val(3));
@@ -140,24 +137,25 @@ public class RandomPolicyTest {
      */
     @Test
     public void testRemoveIndex() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
         policy.remove(val(4));
         policy.remove(val(7));
         policy.remove(val(0));
         policy.remove(val(9));
-        assertTrue(empty(policy).containsAll(asList(1, 2, 3, 5, 6, 8)));
+        assertTrue(empty().containsAll(asList(1, 2, 3, 5, 6, 8)));
     }
 
     @Test
     public void testClear() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
         policy.clear();
         assertNull(policy.evictNext());
     }
 
     @Test
     public void testUpdate() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
+        add(15);
         assertSame(val(15), policy.replace(val(4), val(15)));
         CacheEntry<Integer, String> ce = policy.evictNext();
         while (ce != null) {

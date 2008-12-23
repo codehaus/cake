@@ -40,7 +40,7 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
         newConfigurationClean();
         init();
         put(M1);
-        assertFalse(c.getEntry(M1.getKey()).getAttributes().contains(atr));
+        assertFalse(c.getEntry(M1.getKey()).contains(atr));
         assertEquals(atr.getDefault(), getAttribute(M1, atr));
     }
 
@@ -51,7 +51,7 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
         conf.withLoading().setLoader(loader);
         init();
         assertGet(M1);
-        assertFalse(getEntry(M1).getAttributes().contains(atr));
+        assertFalse(getEntry(M1).contains(atr));
         assertEquals(atr.getDefault(), getAttribute(M1, atr));
     }
 
@@ -63,7 +63,7 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
         init();
         assertGet(M1);
         forceLoad(M1);// value updated
-        assertFalse(getEntry(M1).getAttributes().contains(atr));
+        assertFalse(getEntry(M1).contains(atr));
         assertEquals(atr.getDefault(), getAttribute(M1, atr));
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
     }
 
     void assertAttribute(Map.Entry<Integer, String> entry, Object value) {
-        assertTrue(c.getEntry(entry.getKey()).getAttributes().contains(atr));
+        assertTrue(c.getEntry(entry.getKey()).contains(atr));
         assertEquals(value, getAttribute(entry, atr));
 
         assertEquals(value, getAttribute(peekEntry(entry), atr));

@@ -17,6 +17,8 @@ package org.codehaus.cake.cache.policy;
 
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator;
+import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.Reg;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double linked list of
@@ -32,17 +34,9 @@ import org.codehaus.cake.cache.CacheEntry;
 public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> {
     private CacheEntry<K, V> first;
 
-    private final ObjectAttribute<CacheEntry> nextPointer = new ObjectAttribute<CacheEntry>("next", CacheEntry.class) {};
-
-    private final ObjectAttribute<CacheEntry> prevPointer = new ObjectAttribute<CacheEntry>("prev", CacheEntry.class) {};
-
+    private Reg<CacheEntry<K, V>> next;
+    private Reg<CacheEntry<K, V>> prev;
     private CacheEntry<K, V> last;
-
-    /** Creates a new AbstractDoubleLinkedReplacementPolicy. */
-    public AbstractDoubleLinkedReplacementPolicy() {
-        attachToEntry(prevPointer);
-        attachToEntry(nextPointer);
-    }
 
     /**
      * Adds the specified entry to the front of the list.
@@ -95,7 +89,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @return the next node for the specified node, or <code>null</code> if it is the last node
      */
     protected final CacheEntry<K, V> getNext(CacheEntry<K, V> entry) {
-        return nextPointer.get(entry);
+        return next.getObject(entry);
     }
 
     /**
@@ -106,12 +100,18 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @return the previous node for the specified node, or <code>null</code> if it is the first node
      */
     protected final CacheEntry<K, V> getPrevious(CacheEntry<K, V> entry) {
-        return prevPointer.get(entry);
+        return prev.getObject(entry);
     }
 
     /** @return the last entry of the list, or <code>null</code> if it is empty. */
     protected final CacheEntry<K, V> getLast() {
         return last;
+    }
+
+    @Override
+    protected <T> void register(ReadWriterGenerator generator) {
+        next = (Reg) generator.newObject(CacheEntry.class);
+        prev =(Reg) generator.newObject(CacheEntry.class);
     }
 
     /**
@@ -257,7 +257,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      *            the next entry to point to
      */
     private void setNext(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
-        entry.getAttributes().put(nextPointer, next);
+        this.next.setObject(entry, next);
     }
 
     /**
@@ -269,6 +269,6 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      *            the previous entry to point to
      */
     private void setPrev(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
-        entry.getAttributes().put(prevPointer, next);
+        this.prev.setObject(entry, next);
     }
 }

@@ -17,7 +17,6 @@ package org.codehaus.cake.cache.policy;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.util.ArrayUtils;
 
@@ -29,7 +28,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     private final Comparator<? super CacheEntry<K, V>> comparator = this;
 
     /** The attribute that is used to keep track of the index into heap of a given CacheEntry. */
-    private final IntAttribute index = new IntAttribute("index", 0) {};
+    private Reg<?> idx;
 
     /**
      * Priority queue represented as a balanced binary heap: the two children of queue[n] are queue[2*n+1] and
@@ -41,11 +40,13 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     /** The number of elements in the priority queue. */
     private int size;
 
-    /** Creates a new AbstractHeapReplacementPolicy. */
-    public AbstractHeapReplacementPolicy() {
-        attachToEntry(index);
-    }
 
+    @Override
+    protected <T> void register(
+            org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator generator) {
+        idx = generator.newInt();
+    }
+    
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
         int i = size;
@@ -112,7 +113,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     }
 
     private int indexOf(CacheEntry<K, V> entry) {
-        return index.get(entry);
+        return idx.getInt(entry);
     }
 
     /**
@@ -171,7 +172,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     }
 
     private void setIndexOf(CacheEntry<K, V> entry, int index) {
-        entry.getAttributes().put(this.index, index);
+        idx.setInt(entry, index);
     }
 
     protected void siftDown(CacheEntry<K, V> x) {

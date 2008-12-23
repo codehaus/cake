@@ -28,11 +28,11 @@ public class CrudWriterFactory<K, V> implements ServiceFactory {
     public Object lookup(ServiceFactoryContext context) {
         Class key = context.getKey();
         if (key.equals(CrudReader.class)) {
-            Predicate p = InternalCacheAttributes.CACHE_FILTER.get(context);
-            Op op = CrudReader.READ_TRANSFORMER.get(context);
+            Predicate p =context.getAttributes().get(InternalCacheAttributes.CACHE_FILTER);
+            Op op = context.getAttributes().get(CrudReader.READ_TRANSFORMER);
             return new DefaultCrudReader(p, processor, op);
         }
-        Op op = CrudWriter.WRITE_TRANSFORMER.get(context);
+        Op op =context.getAttributes().get(CrudWriter.WRITE_TRANSFORMER);
         if (context.getKey().equals(CrudBatchWriter.class)) {
             return DefaultCrudBatchWriter.returnVoid(factory, processor);
         }

@@ -19,11 +19,15 @@ import static org.codehaus.cake.internal.attribute.AttributeHelper.eq;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.Attribute;
@@ -37,14 +41,20 @@ import org.codehaus.cake.attribute.FloatAttribute;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
+import org.codehaus.cake.cache.query.CacheQuery;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.ops.Ops.BytePredicate;
 import org.codehaus.cake.ops.Ops.CharPredicate;
+import org.codehaus.cake.ops.Ops.DoubleComparator;
 import org.codehaus.cake.ops.Ops.DoublePredicate;
+import org.codehaus.cake.ops.Ops.FloatComparator;
 import org.codehaus.cake.ops.Ops.FloatPredicate;
+import org.codehaus.cake.ops.Ops.IntComparator;
 import org.codehaus.cake.ops.Ops.IntPredicate;
+import org.codehaus.cake.ops.Ops.LongComparator;
 import org.codehaus.cake.ops.Ops.LongPredicate;
+import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.ShortPredicate;
 
@@ -65,6 +75,8 @@ public final class Caches {
 
     /** A CacheSelector that returns the empty cache for all argument. */
     static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
+
+    static final CacheQuery EMPTY_QUERY = new EmptyCacheQuery();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */
@@ -298,13 +310,111 @@ public final class Caches {
             return new CacheCrud<K, V>(this);
         }
 
-        public CacheSelector<K, V> select() {
+        public CacheSelector<K, V> filter() {
             return EMPTY_SELECTOR;
         }
 
         public Iterator<CacheEntry<K, V>> iterator() {
             return Collections.EMPTY_LIST.iterator();
         }
+
+        public CacheQuery<K, V> query() {
+            return EMPTY_QUERY;
+        }
+    }
+
+    static class EmptyCacheQuery<K, V> implements CacheQuery<K, V>, Serializable {
+
+        public List<CacheEntry<K, V>> all() {
+            return Collections.EMPTY_LIST;
+        }
+
+        public Map<K, V> entries() {
+            return Collections.EMPTY_MAP;
+        }
+
+        public <K1, V1> Map<K1, V1> entries(Op<K, K1> keyTransformer, Op<V, V1> valueTransformer) {
+            return Collections.EMPTY_MAP;
+        }
+
+        public List<K> keys() {
+            return Collections.EMPTY_LIST;
+        }
+
+        public CacheQuery<K, V> orderBy(BooleanAttribute attribute, boolean falseHighest) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderBy(DoubleAttribute attribute, DoubleComparator comparator) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderBy(FloatAttribute attribute, FloatComparator comparator) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderBy(IntAttribute attribute, IntComparator comparator) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderBy(LongAttribute attribute, LongComparator comparator) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByKeysMin() {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByKeys(Comparator<K> comparator) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByValuesMin() {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByValues(Comparator<V> comparator) {
+            return this;
+        }
+
+        public void putInto(Cache<K, V> cache) {
+        }
+
+        public <K1, V1> void putInto(Cache<K1, V1> cache, Op<CacheEntry<K, V>, CacheEntry<K1, V1>> transformer) {
+        }
+
+        public CacheQuery<K, V> setLimit(int maxresults) {
+            return this;
+        }
+
+        public List<V> values() {
+            return Collections.EMPTY_LIST;
+        }
+
+        public Iterator<CacheEntry<K, V>> iterator() {
+            return Collections.EMPTY_LIST.iterator();
+        }
+
+        public CacheQuery<K, V> orderByKeysMax() {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByValuesMax() {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByMax(Attribute<?> attribute) {
+            return this;
+        }
+
+        public CacheQuery<K, V> orderByMin(Attribute<?> attribute) {
+            return this;
+        }
+
     }
 
     /** A cache selector that always returns the empty cache. */
@@ -474,6 +584,102 @@ public final class Caches {
                     return sb.append(']').toString();
                 sb.append(", ");
             }
+        }
+
+        public <T> T get(Attribute<T> attribute, T defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public <T> T get(Attribute<T> attribute) {
+            return attributes.get(attribute);
+        }
+
+        public boolean get(BooleanAttribute attribute, boolean defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public boolean get(BooleanAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public byte get(ByteAttribute attribute, byte defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public byte get(ByteAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public char get(CharAttribute attribute, char defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public char get(CharAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public double get(DoubleAttribute attribute, double defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public double get(DoubleAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public float get(FloatAttribute attribute, float defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public float get(FloatAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public int get(IntAttribute attribute, int defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public int get(IntAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public long get(LongAttribute attribute, long defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public long get(LongAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public short get(ShortAttribute attribute, short defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public short get(ShortAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public boolean contains(Attribute<?> attribute) {
+            return attributes.contains(attribute);
+        }
+
+        public int size() {
+            return attributes.size();
+        }
+
+        public Set<Attribute> attributes() {
+            return attributes.attributes();
+        }
+
+        public Set<Entry<Attribute, Object>> entrySet() {
+            return attributes.entrySet();
+        }
+
+        public boolean isEmpty() {
+            return attributes.isEmpty();
+        }
+
+        public Collection<Object> values() {
+            return attributes.values();
         }
     }
 }

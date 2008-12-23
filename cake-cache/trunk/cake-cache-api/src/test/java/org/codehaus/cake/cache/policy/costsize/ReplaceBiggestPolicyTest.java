@@ -23,6 +23,7 @@ import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -33,7 +34,7 @@ import org.junit.runner.RunWith;
 
 @SuppressWarnings("unchecked")
 @RunWith(JMock.class)
-public class ReplaceBiggestPolicyTest {
+public class ReplaceBiggestPolicyTest extends AbstractPolicyTest {
 
     /** The junit mockery. */
     private final Mockery context = new JUnit4Mockery();
@@ -44,7 +45,7 @@ public class ReplaceBiggestPolicyTest {
         final InternalCacheAttributeService s = context.mock(InternalCacheAttributeService.class);
         context.checking(new Expectations() {
             {
-                one(s).attachToPolicy(with(any(Attribute.class)));// heap index
+                one(s).newInt();
                 one(s).dependOnHard(SIZE);
             }
         });
@@ -53,38 +54,21 @@ public class ReplaceBiggestPolicyTest {
 
     @Test
     public void compare() {
-        ReplaceBiggestPolicy rbp = new ReplaceBiggestPolicy();
+        policy = new ReplaceBiggestPolicy();
+        init();
+        final CacheEntry ce1 = createEntry(SIZE, 1L);
+        final CacheEntry ce2 = createEntry(SIZE, 2L);
+        final CacheEntry ce3 = createEntry(SIZE, 3L);
 
-        final CacheEntry ce1 = context.mock(CacheEntry.class, "1");
-        final AttributeMap am1 = new DefaultAttributeMap();
-
-        final CacheEntry ce2 = context.mock(CacheEntry.class, "2");
-        final AttributeMap am2 = new DefaultAttributeMap();
-
-        final CacheEntry ce3 = context.mock(CacheEntry.class, "3");
-        final AttributeMap am3 = new DefaultAttributeMap();
-
-        context.checking(new Expectations() {
-            {
-                allowing(ce1).getAttributes();
-                will(returnValue(am1));
-                allowing(ce2).getAttributes();
-                will(returnValue(am2));
-                allowing(ce3).getAttributes();
-                will(returnValue(am3));
-            }
-        });
-        SIZE.set(ce1, 1);
-        SIZE.set(ce2, 2);
-        SIZE.set(ce3, 3);
-        rbp.add(ce2);
-        rbp.add(ce3);
-        rbp.add(ce1);
-        assertSame(ce3, rbp.evictNext());
-        assertSame(ce2, rbp.evictNext());
-        rbp.add(ce3);
-        assertSame(ce3, rbp.evictNext());
-        assertSame(ce1, rbp.evictNext());
-        assertNull(rbp.evictNext());
+        policy.add(ce2);
+        policy.add(ce3);
+        policy.add(ce1);
+        assertSame(ce3, policy.evictNext());
+        assertSame(ce2, policy.evictNext());
+        policy.add(ce3);
+        assertSame(ce3, policy.evictNext());
+        assertSame(ce1, policy.evictNext());
+        assertNull(policy.evictNext());
     }
+   
 }

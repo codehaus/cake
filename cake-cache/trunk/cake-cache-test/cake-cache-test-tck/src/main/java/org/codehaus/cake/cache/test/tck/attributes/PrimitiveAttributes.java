@@ -10,7 +10,7 @@ public class PrimitiveAttributes  extends AbstractCacheTCKTest {
     public void intAttribute() {
         conf.addEntryAttributes(I_2);
         newCache();
-        System.out.println(c.getEntry(1).getAttributes().get(I_2));
+        System.out.println(c.getEntry(1).get(I_2));
 
     }
 }

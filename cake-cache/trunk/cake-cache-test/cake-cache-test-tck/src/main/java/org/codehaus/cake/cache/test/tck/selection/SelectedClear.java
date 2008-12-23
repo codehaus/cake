@@ -20,7 +20,7 @@ public class SelectedClear extends AbstractCacheTCKTest {
                 keyset.add(i * 100);
             }
         }
-        Cache<Integer, String> selected = c.select().onValue(new Predicate<String>() {
+        Cache<Integer, String> selected = c.filter().onValue(new Predicate<String>() {
             public boolean op(String a) {
                 return (Integer.parseInt(a)) % 3 == 0;
             }

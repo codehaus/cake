@@ -22,28 +22,26 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractDoubleLinkedReplacementPolicyTest {
+public class AbstractDoubleLinkedReplacementPolicyTest extends AbstractPolicyTest {
 
     private int REP = 100;
-    private LinkedList<TestEntry> matching;
+    private LinkedList<CacheEntry<Integer, String>> matching;
     private Random r = new Random(124324234);
     private TP tp;
 
-    TestEntry addFirst() {
-        TestEntry ce = new TestEntry();
+    CacheEntry<Integer, String> addFirst() {
+        CacheEntry<Integer, String> ce = createEntry(1, "");
         tp.addFirst(ce);
         matching.addFirst(ce);
         return ce;
     }
 
-    TestEntry addLast() {
-        TestEntry ce = new TestEntry();
+    CacheEntry<Integer, String> addLast() {
+        CacheEntry<Integer, String> ce = createEntry(1, "");
         tp.addLast(ce);
         matching.addLast(ce);
         return ce;
@@ -52,13 +50,15 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
     @Before
     public void before() {
         tp = new TP();
+        policy = tp;
+        init();
         // r = new Random(1243214);
-        matching = new LinkedList<TestEntry>();
+        matching = new LinkedList<CacheEntry<Integer, String>>();
     }
 
     protected void populate() {
         for (int i = 0; i < REP; i++) {
-            TestEntry te = r.nextBoolean() ? addFirst() : addLast();
+            CacheEntry<Integer, String> te = r.nextBoolean() ? addFirst() : addLast();
             verify();
         }
     }
@@ -84,7 +84,7 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
         populate();
         while (!matching.isEmpty()) {
             int rndIndex = r.nextInt(matching.size());
-            TestEntry te = matching.remove(rndIndex);
+            CacheEntry<Integer, String> te = matching.remove(rndIndex);
             tp.remove(te);
             verify();
         }
@@ -96,7 +96,7 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
         populate();
         for (int i = 0; i < REP; i++) {
             int rndIndex = r.nextInt(matching.size());
-            TestEntry te = matching.remove(rndIndex);
+            CacheEntry<Integer, String> te = matching.remove(rndIndex);
             matching.addFirst(te);
             tp.moveFirst(te);
             verify();
@@ -109,8 +109,8 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
         populate();
         for (int i = 0; i < 3 * REP; i++) {
             int rndIndex = r.nextInt(matching.size());
-            TestEntry newTe = new TestEntry();
-            TestEntry prev = matching.set(rndIndex, newTe);
+            CacheEntry<Integer, String> newTe = createEntry(1, "");
+            CacheEntry<Integer, String> prev = matching.set(rndIndex, newTe);
             tp.replace0(prev, newTe);
             verify();
         }
@@ -122,8 +122,8 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
         populate();
         for (int i = 0; i < REP; i++) {
             int rndIndex = r.nextInt(matching.size());
-            TestEntry newTe = new TestEntry();
-            TestEntry prev = matching.set(rndIndex, newTe);
+            CacheEntry<Integer, String> newTe = createEntry(1, "");
+            CacheEntry<Integer, String> prev = matching.set(rndIndex, newTe);
             assertSame(newTe, tp.replace(prev, newTe));
             verify();
         }
@@ -135,7 +135,7 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
         populate();
         for (int i = 0; i < REP; i++) {
             int rndIndex = r.nextInt(matching.size());
-            TestEntry te = matching.remove(rndIndex);
+            CacheEntry<Integer, String> te = matching.remove(rndIndex);
             matching.addLast(te);
             tp.moveLast(te);
             verify();
@@ -172,12 +172,12 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
             assertNull(tp.getNext(tp.getLast()));
 
             // forward
-            TestEntry current = matching.getFirst();
-            ListIterator<TestEntry> li = matching.listIterator();
+            CacheEntry<Integer, String> current = matching.getFirst();
+            ListIterator<CacheEntry<Integer, String>> li = matching.listIterator();
             while (li.hasNext()) {
-                TestEntry m = li.next();
+                CacheEntry<Integer, String> m = li.next();
                 assertSame(current, m);
-                current = (TestEntry) tp.getNext(current);
+                current = (CacheEntry<Integer, String>) tp.getNext(current);
             }
 
             // backward
@@ -185,33 +185,12 @@ public class AbstractDoubleLinkedReplacementPolicyTest {
             li = matching.listIterator(matching.size());
 
             while (li.hasPrevious()) {
-                TestEntry m = li.previous();
+                CacheEntry<Integer, String> m = li.previous();
                 assertSame(current, m);
-                current = (TestEntry) tp.getPrevious(current);
+                current = (CacheEntry<Integer, String>) tp.getPrevious(current);
             }
         }
         assertSame(matching.isEmpty() ? null : matching.getLast(), tp.getLast());
-    }
-
-    static class TestEntry implements CacheEntry<Integer, String> {
-        private final AttributeMap attributes = new DefaultAttributeMap();
-
-        public AttributeMap getAttributes() {
-            return attributes;
-        }
-
-        public Integer getKey() {
-            return null;
-        }
-
-        public String getValue() {
-            return null;
-        }
-
-        public String setValue(String value) {
-            return null;
-        }
-
     }
 
     static class TP extends AbstractDoubleLinkedReplacementPolicy<Integer, String> {

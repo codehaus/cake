@@ -19,10 +19,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
+import org.codehaus.cake.ops.Ops.BinaryProcedure;
+import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.OnStart;
+import org.codehaus.cake.util.Pair;
 
 /**
  * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach
@@ -37,9 +42,6 @@ import org.codehaus.cake.service.OnStart;
  */
 public abstract class AbstractCakeReplacementPolicy<K, V> implements ReplacementPolicy<K, V> {
 
-    /** The attributes that have been registered. */
-    private Set<Attribute<?>> attributes = new HashSet<Attribute<?>>();
-
     private Set<Attribute<?>> hardDependencies = new HashSet<Attribute<?>>();
 
     /** Lock object. */
@@ -47,25 +49,9 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
 
     private Set<Attribute<?>> softDependencies = new HashSet<Attribute<?>>();
 
-    /**
-     * This method can be used to attach special attributes to each cache entry. registered should only be read inside
-     * methods provided by abstract...
-     * 
-     * @param attribute
-     */
-    protected final void attachToEntry(Attribute<?> attribute) {
-        synchronized (lock) {
-            if (attributes.contains(attribute) || softDependencies.contains(attribute)
-                    || hardDependencies.contains(attribute)) {
-                throw new IllegalArgumentException("attribute has already been attached");
-            }
-            attributes.add(attribute);
-        }
-    }
-
     protected final void dependHard(Attribute<?> attribute) {
         synchronized (lock) {
-            if (attributes.contains(attribute) || softDependencies.contains(attribute)
+            if (softDependencies.contains(attribute)
                     || hardDependencies.contains(attribute)) {
                 throw new IllegalArgumentException("attribute has already been attached");
             }
@@ -75,7 +61,7 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
 
     protected final void dependSoft(Attribute<?> attribute) {
         synchronized (lock) {
-            if (attributes.contains(attribute) || softDependencies.contains(attribute)
+            if (softDependencies.contains(attribute)
                     || hardDependencies.contains(attribute)) {
                 throw new IllegalArgumentException("attribute has already been attached");
             }
@@ -93,13 +79,11 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
     @OnStart
     public final void registerAttribute(InternalCacheAttributeService service) {
         synchronized (lock) {
-            if (attributes == null) {
+            if (softDependencies == null) {
                 throw new IllegalStateException("registerAttribute() has already been called once");
             }
             try {
-                for (Attribute a : attributes) {
-                    service.attachToPolicy(a);
-                }
+                register(service);
                 for (Attribute a : softDependencies) {
                     service.dependOnSoft(a);
                 }
@@ -107,7 +91,6 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
                     service.dependOnHard(a);
                 }
             } finally {
-                attributes = null;
                 softDependencies = null;
                 hardDependencies = null;
             }
@@ -126,18 +109,57 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
      */
     public void touch(CacheEntry<K, V> entry) {
     }
-    
-//    protected void register(AttributeRegistration registration) {
-//        //Bliver kaldt af register attribute
-//        //lav en attribute der trækker feltet direkte ud af attribute mappet.
-//    }
-//    
-//    interface AttributeRegistration {
-//        <T> Pair<Op<AttributeMap, T>, Op<T, AttributeMap>> registerObject();
-//        Pair<ObjectToInt<AttributeMap>, IntToObject<AttributeMap>> registerInt();
-//        Pair<ObjectToLong<AttributeMap>, LongToObject<AttributeMap>> registerLong();
-//        Pair<ObjectToDouble<AttributeMap>, DoubleToObject<AttributeMap>> registerDouble();
-//        Pair<ObjectToFloat<AttributeMap>, FloatToObject<AttributeMap>> registerFloat();
-//        Pair<ObjectToBoolean<AttributeMap>, BooleanToObject<AttributeMap>> registerBoolean();
-//    }
+    protected <T> void register(ReadWriterGenerator generator) {
+        
+    }
+
+    public interface Reg<T> {
+        T getObject(GetAttributer entry);
+        void setObject(GetAttributer entry, T value);
+        boolean getBoolean(GetAttributer entry);
+        int getInt(GetAttributer entry);
+        void setInt(GetAttributer entry, int value);
+        void setBoolean(GetAttributer entry, boolean value);
+    }
+
+    public interface ReadWriterGenerator {
+        public Reg<?> newBoolean();
+        public Reg<?> newInt();
+        
+        public abstract <T> Reg<T> newObject(Class<T> type);
+    }
+
 }
+
+//protected class AbstractHelper<K, V> {
+//  <T> Pair<Op<CacheEntry<K, V>, T>, BinaryProcedure<CacheEntry<K, V>, T>> registerObject(Class<T> type) {
+//      final ObjectAttribute<T> a = new ObjectAttribute<T>(type) {};
+//
+//      BinaryProcedure<CacheEntry<K, V>, T> writer = new BinaryProcedure<CacheEntry<K, V>, T>() {
+//          public void op(CacheEntry<K, V> entry, T value) {
+//              entry.getAttributes().put(a, value);
+//          }
+//      };
+//
+//      Op<CacheEntry<K, V>, T> reader = new Op<CacheEntry<K, V>, T>() {
+//          public T op(CacheEntry<K, V> entry) {
+//              return entry.get(a);
+//          }
+//      };
+//      return Pair.from(reader, writer);
+//  }
+//}
+
+// protected void register(AttributeRegistration registration) {
+// //Bliver kaldt af register attribute
+// //lav en attribute der trækker feltet direkte ud af attribute mappet.
+// }
+//    
+// interface AttributeRegistration {
+// <T> Pair<Op<AttributeMap, T>, Op<T, AttributeMap>> registerObject();
+// Pair<ObjectToInt<AttributeMap>, IntToObject<AttributeMap>> registerInt();
+// Pair<ObjectToLong<AttributeMap>, LongToObject<AttributeMap>> registerLong();
+// Pair<ObjectToDouble<AttributeMap>, DoubleToObject<AttributeMap>> registerDouble();
+// Pair<ObjectToFloat<AttributeMap>, FloatToObject<AttributeMap>> registerFloat();
+// Pair<ObjectToBoolean<AttributeMap>, BooleanToObject<AttributeMap>> registerBoolean();
+// }

@@ -4,15 +4,28 @@ package org.codehaus.cake.internal.cache.service.memorystore;
  * the Apache 2.0 License, see http://coconut.codehaus.org/license.
  */
 
+import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.ByteAttribute;
+import org.codehaus.cake.attribute.CharAttribute;
+import org.codehaus.cake.attribute.DoubleAttribute;
+import org.codehaus.cake.attribute.FloatAttribute;
+import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.ops.Ops.ObjectToLong;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
@@ -316,6 +329,23 @@ public class CacheMap<K, V> {
     }
 
     public int size(final Predicate<CacheEntry<K, V>> filter) {
+        if (false) {
+            ParallelArray<HashEntry<Integer, String>> pa = null;
+            long size = pa.withFilter(Predicates.IS_NOT_NULL).withMapping(
+                    new ObjectToLong<HashEntry<Integer, String>>() {
+                        public long op(HashEntry<Integer, String> a) {
+                            long count = 0;
+                            for (HashEntry<Integer, String> e = a; e != null; e = a.next) {
+                                if (filter.op((CacheEntry<K, V>) e)) {
+                                    count++;
+                                }
+                            }
+                            return count;
+                        }
+                    }).sum();
+            return (int) size;
+        }
+
         if (filter == null || filter == Predicates.TRUE) {
             return size;
         } else {
@@ -331,21 +361,6 @@ public class CacheMap<K, V> {
             }
             return count;
         }
-        // else {
-        // long size = pa.withFilter(Predicates.IS_NOT_NULL).withMapping(
-        // new ObjectToLong<HashEntry<Integer, String>>() {
-        // public long op(HashEntry<Integer, String> a) {
-        // long count = 0;
-        // for (HashEntry<Integer, String> e = a; e != null; e = a.next) {
-        // if (filter.op((CacheEntry) e)) {
-        // count++;
-        // }
-        // }
-        // return count;
-        // }
-        // }).sum();
-        // return (int) size;
-        // }
     }
 
     // ParallelArray<HashEntry<Integer, String>> pa;
@@ -485,6 +500,9 @@ public class CacheMap<K, V> {
         V value;
 
         public HashEntry(K key, int hash, HashEntry<K, V> next, V value, AttributeMap attributes) {
+            if (attributes.getClass().getName().endsWith("leEntry")) {
+                throw new Error();
+            }
             this.key = key;
             this.value = value;
             this.hash = hash;
@@ -516,7 +534,7 @@ public class CacheMap<K, V> {
         }
 
         public int hashCode() {
-            return  key.hashCode() ^ value.hashCode();
+            return key.hashCode() ^ value.hashCode();
         }
 
         public V setValue(V newValue) {
@@ -526,7 +544,7 @@ public class CacheMap<K, V> {
             // return oldValue;
         }
 
-        public  String toString() {
+        public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(key);
             sb.append("=");
@@ -559,15 +577,112 @@ public class CacheMap<K, V> {
         void entryRemoved(CacheMap<K, V> m) {
         }
 
-//        /**
-//         * This method is invoked whenever the value in an entry is overwritten by an invocation of put(k,v) for a key k
-//         * that's already in the HashMap.
-//         */
-//        void entryValueUpdated(CacheMap<K, V> m) {
-//        }
+        // /**
+        // * This method is invoked whenever the value in an entry is overwritten by an invocation of put(k,v) for a key
+        // k
+        // * that's already in the HashMap.
+        // */
+        // void entryValueUpdated(CacheMap<K, V> m) {
+        // }
 
         public AttributeMap getAttributes() {
             return attributes;
+        }
+
+        public <T> T get(Attribute<T> attribute, T defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public <T> T get(Attribute<T> attribute) {
+            return attributes.get(attribute);
+        }
+
+        public boolean get(BooleanAttribute attribute, boolean defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public boolean get(BooleanAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public byte get(ByteAttribute attribute, byte defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public byte get(ByteAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public char get(CharAttribute attribute, char defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public char get(CharAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public double get(DoubleAttribute attribute, double defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public double get(DoubleAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public float get(FloatAttribute attribute, float defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public float get(FloatAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public int get(IntAttribute attribute, int defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public int get(IntAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public long get(LongAttribute attribute, long defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public long get(LongAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public short get(ShortAttribute attribute, short defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public short get(ShortAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public boolean contains(Attribute<?> attribute) {
+            return attributes.contains(attribute);
+        }
+
+        public int size() {
+            return attributes.size();
+        }
+
+        public Set<Attribute> attributes() {
+            return attributes.attributes();
+        }
+
+        public Set<Entry<Attribute, Object>> entrySet() {
+            return attributes.entrySet();
+        }
+
+        public boolean isEmpty() {
+            return attributes.isEmpty();
+        }
+
+        public Collection<Object> values() {
+            return attributes.values();
         }
     }
 

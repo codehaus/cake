@@ -16,14 +16,16 @@
 package org.codehaus.cake.internal.cache.service.attribute;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 
 public interface InternalAttributeService<K, V> extends InternalCacheAttributeService {
 
-    AttributeMap create(K key, V value, AttributeMap params);
+    AttributeMap create(K key, V value, GetAttributer params);
 
-    AttributeMap update(K key, V value, AttributeMap params, AttributeMap previous);
+    AttributeMap update(K key, V value, GetAttributer params, GetAttributer previous);
 
+    void initialize();
     // AttributeMap remove(AttributeMap params);
-    void access(AttributeMap map);
+    void access(GetAttributer map);
 }

@@ -41,7 +41,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         init();
         prestart();
         put(M1);
-        assertTrue(getEntry(M1).getAttributes().attributeSet().contains(A1));
+        assertTrue(getEntry(M1).attributes().contains(A1));
     }
 
     @Test
@@ -52,8 +52,8 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         put(M1);
         get(M1);
         get(M1);
-        assertEquals(3, getEntry(M1).getAttributes().get(CacheEntry.HITS));
-        assertFalse(getEntry(M1).getAttributes().attributeSet().contains(CacheEntry.HITS));
+        assertEquals(3, getEntry(M1).get(CacheEntry.HITS));
+        assertFalse(getEntry(M1).attributes().contains(CacheEntry.HITS));
     }
 
     @Test
@@ -65,8 +65,8 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         put(M1);
         get(M1);
         get(M1);
-        assertEquals(3, getEntry(M1).getAttributes().get(CacheEntry.HITS));
-        assertTrue(getEntry(M1).getAttributes().attributeSet().contains(CacheEntry.HITS));
+        assertEquals(3, getEntry(M1).get(CacheEntry.HITS));
+        assertTrue(getEntry(M1).attributes().contains(CacheEntry.HITS));
     }
 
     static class HardPolicy extends AbstractCakeReplacementPolicy<Integer, String> {

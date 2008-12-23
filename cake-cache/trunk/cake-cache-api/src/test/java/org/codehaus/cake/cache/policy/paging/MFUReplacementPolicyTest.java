@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.PolicyTestUtils;
+import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,20 +31,20 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  */
-public class MFUReplacementPolicyTest {
-    MFUReplacementPolicy<Integer, String> policy;
+public class MFUReplacementPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
         policy = new MFUReplacementPolicy<Integer, String>();
+        init();
     }
 
     @Test
     public void addEvict() {
-        CacheEntry<Integer, String> e2 = PolicyTestUtils.create(1, HITS, 2L);
-        CacheEntry<Integer, String> e3 = PolicyTestUtils.create(1, HITS, 3L);
-        CacheEntry<Integer, String> e4 = PolicyTestUtils.create(1, HITS, 4L);
-        CacheEntry<Integer, String> e5 = PolicyTestUtils.create(1, HITS, 5L);
+        CacheEntry<Integer, String> e2 = createEntry(HITS, 2L);
+        CacheEntry<Integer, String> e3 = createEntry(HITS, 3L);
+        CacheEntry<Integer, String> e4 = createEntry(HITS, 4L);
+        CacheEntry<Integer, String> e5 = createEntry(HITS, 5L);
 
         policy.add(e3);
         policy.add(e4);
@@ -59,19 +59,19 @@ public class MFUReplacementPolicyTest {
 
     @Test
     public void addTouchEvict() {
-        CacheEntry<Integer, String> e2 = PolicyTestUtils.create(1, HITS, 2L);
-        CacheEntry<Integer, String> e3 = PolicyTestUtils.create(1, HITS, 3L);
-        CacheEntry<Integer, String> e4 = PolicyTestUtils.create(1, HITS, 4L);
-        CacheEntry<Integer, String> e5 = PolicyTestUtils.create(1, HITS, 5L);
+        CacheEntry<Integer, String> e2 = createEntry(HITS, 2L);
+        CacheEntry<Integer, String> e3 = createEntry(HITS, 3L);
+        CacheEntry<Integer, String> e4 = createEntry(HITS, 4L);
+        CacheEntry<Integer, String> e5 = createEntry(HITS, 5L);
 
         policy.add(e3);
         policy.add(e4);
         policy.add(e2);
         policy.add(e5);
 
-        HITS.set(e2, 7);
+        set(e2, HITS, 7L);
         policy.touch(e2);
-        HITS.set(e4, 8);
+        set(e4, HITS, 8L);
         policy.touch(e4);
         assertSame(e4, policy.evictNext());
         assertSame(e2, policy.evictNext());

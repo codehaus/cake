@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
@@ -46,6 +47,7 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
+import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
 import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.ops.Predicates;
@@ -78,9 +80,8 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
     /** The total sizes of all elements in the cache. */
     private long volume;
 
-    public HashMapMemoryStore(CacheConfiguration cacheConfiguration,
-            MemoryStoreConfiguration<K, V> storeConfiguration, InternalAttributeService<K, V> attributeService,
-            InternalCacheExceptionService<K, V> ies) {
+    public HashMapMemoryStore(CacheConfiguration cacheConfiguration, MemoryStoreConfiguration<K, V> storeConfiguration,
+            InternalAttributeService<K, V> attributeService, InternalCacheExceptionService<K, V> ies) {
         volumeEnabled = cacheConfiguration.getAllEntryAttributes().contains(CacheEntry.SIZE);
         this.attributeService = attributeService;
         this.ies = ies;
@@ -90,19 +91,19 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         evictor = storeConfiguration.getEvictor();
     }
 
-//    
-//     private void print() {
-//     System.out.println("---- " + size + "---------");
-//     for (int i = 0; i < table.length; i++) {
-//     HashEntry he = table[i];
-//     String s = "";
-//     while (he != null) {
-//     s += he.getKey() + ",";
-//     he = he.next;
-//     }
-//     System.out.println(i + ":" + s);
-//     }
-//     }
+    //    
+    // private void print() {
+    // System.out.println("---- " + size + "---------");
+    // for (int i = 0; i < table.length; i++) {
+    // HashEntry he = table[i];
+    // String s = "";
+    // while (he != null) {
+    // s += he.getKey() + ",";
+    // he = he.next;
+    // }
+    // System.out.println(i + ":" + s);
+    // }
+    // }
 
     private ParallelArray<CacheEntry<K, V>> all() {
         return (ParallelArray) ParallelArray.createUsingHandoff(allAsArray(), ParallelArray.defaultExecutor());
@@ -112,7 +113,6 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         assert size != 0;
         if (policy != null) {
             CacheEntry<K, V> entry = (CacheEntry<K, V>) policy.evictNext();
-            // print();
             if (remove(entry.getKey()) == null) {
                 throw new AssertionError();
             }
@@ -137,7 +137,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         table[clock] = e.next;
         size--;
         if (volumeEnabled) {
-            volume -= SIZE.get(e);
+            volume -= e.get(SIZE);
         }
         this.clock = clock;
         return e;
@@ -165,7 +165,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             for (int i = 0; i < len; i++) {
                 for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
                     if (filter.op(e)) {
-                        count += e.getAttributes().get(CacheEntry.SIZE);
+                        count += e.get(CacheEntry.SIZE);
                     }
                 }
             }
@@ -194,7 +194,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         };
     }
 
-    public void process(AddEntriesRequest<K, V> r) {
+    public void process2(AddEntriesRequest<K, V> r) {
         if (isDisabled) {
             return;
         }
@@ -210,8 +210,8 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             if (previous == null) {
                 atr = attributeService.create(entry.getKey(), entry.getValue(), entry.getAttributes());
             } else {
-                atr = attributeService.update(entry.getKey(), entry.getValue(), entry.getAttributes(), previous
-                        .getAttributes());
+                atr = attributeService.update(entry.getKey(), entry.getValue(), entry.getAttributes(),
+                        ((HashEntry) previous).getAttributes());
             }
 
             final CacheEntry<K, V> newEntry = Caches.newEntry(entry.getKey(), entry.getValue(), atr);
@@ -245,15 +245,24 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             }
             if (keepNew) {
                 if (volumeEnabled) {
-                    volume += SIZE.get(newEntry);
+                    volume += newEntry.get(SIZE);
                 }
-                put(entry.getKey(), newEntry.getValue(), newEntry.getAttributes());
+                put(entry.getKey(), newEntry.getValue(), atr);
             }
             if (keepNew) {
                 entry.setNewEntry(newEntry);
             }
         }
         trim(r);
+    }
+
+    public void process(AddEntriesRequest<K, V> reg) {
+        if (isDisabled) {
+            return;
+        }
+        for (AddEntryRequest<K, V> r : reg.adds()) {
+            process(r);
+        }
     }
 
     public void process(AddEntryRequest<K, V> entry) {
@@ -332,7 +341,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         if (existing != null && !keepExisting) {
             boolean trim = false;
             if (volumeEnabled) {
-                long existingVolume = SIZE.get(existing);
+                long existingVolume = existing.get(SIZE);
                 trim = existingVolume < 0;
                 volume -= existingVolume;
             }
@@ -356,7 +365,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
         }
         if (keepNew) {
             if (volumeEnabled) {
-                volume += SIZE.get(ne);
+                volume += ne.get(SIZE);
             }
             modCount++;
             if (existing == null) {// Insert
@@ -443,7 +452,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             e.entryRemoved(this);
             size--;
             if (volumeEnabled) {
-                long existingVolume = SIZE.get(e);
+                long existingVolume = e.get(SIZE);
                 volume -= existingVolume;
             }
             if (policy != null) {
@@ -468,7 +477,7 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
 
     private void removeEntry(CacheEntry<K, V> entry, boolean isEvicted) {
         if (volumeEnabled) {
-            volume -= SIZE.get(entry);
+            volume -= entry.get(SIZE);
         }
         if (!isEvicted && policy != null) {
             policy.remove(entry);
@@ -488,20 +497,20 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
 
     public void touch(CacheEntry<K, V> entry) {
         // Perhaps we can move .access to outer loop
-        attributeService.access(entry.getAttributes());
+        attributeService.access(((HashEntry) entry).getAttributes());
         if (policy != null) {
             policy.touch(entry);
         }
     }
 
     public void trim(Trimable<K, V> trimable) {
-//        if (size>maximumSize) {
-//            CacheEntry<K, V> e=evictNext();
-//            trimable.setTrimmed(Collections.singletonList(e));
-//        }
-//        if (true) {
-//            return;
-//        }
+        // if (size>maximumSize) {
+        // CacheEntry<K, V> e=evictNext();
+        // trimable.setTrimmed(Collections.singletonList(e));
+        // }
+        // if (true) {
+        // return;
+        // }
         while (size > maximumSize || (volumeEnabled ? this.volume : size) > maximumVolume) {
             List<CacheEntry<K, V>> trimmed = trimable.getTrimmed();
             if (trimmed == null) {
@@ -650,5 +659,39 @@ public class HashMapMemoryStore<K, V> extends CacheMap<K, V> implements MemorySt
             this.newVolume = volume;
             this.comparator = comparator;
         }
+    }
+
+    public CacheEntry<K, V>[] get(Predicate<CacheEntry<K, V>> selector, int limit) {
+        CacheEntry<K, V>[] result = new CacheEntry[0];
+        if (size != 0) {
+            HashEntry<K, V>[] tab = table;
+            int len = tab.length;
+            if (selector==null || selector == Predicates.TRUE) {
+                result = new CacheEntry[Math.min(limit, size)];
+                int count = 0;
+                for (int i = 0; i < len; i++) {
+                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                        result[count++] = e;
+                        if (count >= limit) {
+                            return result;
+                        }
+                    }
+                }
+            } else {
+                ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
+                for (int i = 0; i < len; i++) {
+                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                        if (selector == Predicates.TRUE || selector.op(e)) {
+                            list.add(e);
+                            if (list.size() > limit) {
+                                return list.toArray(new CacheEntry[list.size()]);
+                            }
+                        }
+                    }
+                }
+                result = list.toArray(new CacheEntry[list.size()]);
+            }
+        }
+        return result;
     }
 }

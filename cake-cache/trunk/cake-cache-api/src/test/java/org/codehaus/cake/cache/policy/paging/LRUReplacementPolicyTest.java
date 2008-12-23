@@ -19,13 +19,10 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.addToPolicy;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.empty;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.evict;
-import static org.codehaus.cake.cache.policy.PolicyTestUtils.val;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asList;
 import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
 
+import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,13 +31,12 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  */
-public class LRUReplacementPolicyTest {
-
-    LRUReplacementPolicy<Integer, String> policy;
+public class LRUReplacementPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
         policy = new LRUReplacementPolicy<Integer, String>();
+        init();
     }
 
     /**
@@ -48,8 +44,8 @@ public class LRUReplacementPolicyTest {
      */
     @Test
     public void testAdd() {
-        addToPolicy(policy, 0, 9);
-        assertTrue(empty(policy).containsAll(seq(0, 9)));
+        addToPolicy(0, 9);
+        assertTrue(empty().containsAll(seq(0, 9)));
     }
 
     /**
@@ -57,8 +53,8 @@ public class LRUReplacementPolicyTest {
      */
     @Test
     public void testRemove() {
-        addToPolicy(policy, 0, 9);
-        assertEquals(seq(0, 9), empty(policy));
+        addToPolicy(0, 9);
+        assertEquals(seq(0, 9), empty());
     }
 
     /**
@@ -66,12 +62,12 @@ public class LRUReplacementPolicyTest {
      */
     @Test
     public void testRemoveIndex() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
         policy.remove(val(4));
         policy.remove(val(7));
         policy.remove(val(0));
         policy.remove(val(9));
-        assertEquals(asList(1, 2, 3, 5, 6, 8), empty(policy));
+        assertEquals(asList(1, 2, 3, 5, 6, 8), empty());
     }
 
     /**
@@ -79,7 +75,7 @@ public class LRUReplacementPolicyTest {
      */
     @Test
     public void testRefresh() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
 
         policy.touch(val(4));
         // assertEquals(asList(0, 1, 2, 3, 5, 6, 7, 8, 9, 4), policy.peekAll());
@@ -95,21 +91,22 @@ public class LRUReplacementPolicyTest {
         // ((LRUReplacementPolicy) policy).print();
         // System.out.println(policy.evictNext());
         // ((LRUReplacementPolicy) policy).print();
-        assertEquals(asList(1, 5, 6, 7, 8, 4, 0, 3, 2, 9), empty(policy));
+        assertEquals(asList(1, 5, 6, 7, 8, 4, 0, 3, 2, 9), empty());
     }
 
     @Test
     public void testClear() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
         policy.clear();
         assertNull(policy.evictNext());
     }
 
     @Test
     public void testUpdate() {
-        addToPolicy(policy, 0, 9);
+        addToPolicy(0, 9);
+        createEntry(123, "");
         assertSame(val(123), policy.replace(val(4), val(123)));
-        Integer[] i = evict(policy, 9);
+        Integer[] i = evict(9);
         assertEquals(3, i[3].intValue());
         assertEquals(123, i[4].intValue());
         assertEquals(9, policy.evictNext().getKey().intValue());

@@ -15,7 +15,9 @@
  */
 package org.codehaus.cake.internal.cache.service.memorystore;
 
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
@@ -68,4 +70,6 @@ public interface MemoryStore<K, V> {
     void process(TrimToVolumeRequest<K, V> r);
 
     void updateConfiguration(AttributeMap attributes);
+    
+    CacheEntry<K, V>[] get(Predicate<CacheEntry<K, V>> selector, int limit);
 }

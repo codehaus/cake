@@ -117,7 +117,7 @@ public interface CacheLoadingService<K, V> {
      * Equivalent to that of calling {@link #load(Object)} with the key of each entry in the cache. However, This
      * operation may be more efficient than repeatedly calling {@link #load(Object)}.
      * <p>
-     * This method can be combined with {@link Cache#select()} to reload parts of the cache. For example, the following
+     * This method can be combined with {@link Cache#filter()} to reload parts of the cache. For example, the following
      * example will reload all entries (assuming the {@link CacheEntry#TIME_MODIFIED attribute is enabled} which has not been
      * updated for 1 hour.
      * 

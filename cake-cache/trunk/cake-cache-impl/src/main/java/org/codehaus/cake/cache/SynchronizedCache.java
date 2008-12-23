@@ -40,7 +40,7 @@ import org.codehaus.cake.service.Container;
  * </pre>
  * 
  * Failure to follow this advice may result in non-deterministic behavior. Users must also make sure that when iterating
- * over any of the the collections views through calls to {@link #select()} synchronization must be done on the
+ * over any of the the collections views through calls to {@link #filter()} synchronization must be done on the
  * originally cache.
  * 
  * <pre>
@@ -123,7 +123,7 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
     }
 
     /** {@inheritDoc} */
-    public CacheSelector<K, V> select() {
+    public CacheSelector<K, V> filter() {
         return new AbstractCacheSelector<K, V>() {
             public Cache<K, V> on(Predicate<CacheEntry<K, V>> filter) {
                 if (filter == null) {

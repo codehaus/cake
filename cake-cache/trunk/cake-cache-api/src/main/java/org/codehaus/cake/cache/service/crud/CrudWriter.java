@@ -16,6 +16,7 @@
 package org.codehaus.cake.cache.service.crud;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
@@ -72,7 +73,7 @@ public interface CrudWriter<K, V, R> {
      */
     R put(K key, V value);
 
-    R put(K key, V value, AttributeMap attributes);
+    R put(K key, V value, GetAttributer attributes);
 
     /**
      * Conditionally associates the specified value with the specified key in the cache.
@@ -105,7 +106,7 @@ public interface CrudWriter<K, V, R> {
      * @param attributes
      * @return
      */
-    R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, AttributeMap attributes);
+    R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, GetAttributer attributes);
 
     /**
      * If the specified key is not already associated with a value, associate it with the given value. This is

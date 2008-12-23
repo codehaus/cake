@@ -41,7 +41,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                T t = a.getAttributes().get(attribute);
+                T t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -66,7 +66,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                boolean t = a.getAttributes().get(attribute);
+                boolean t = a.get(attribute);
                 return t == value;
             }
         });
@@ -80,7 +80,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                byte t = a.getAttributes().get(attribute);
+                byte t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -94,7 +94,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                char t = a.getAttributes().get(attribute);
+                char t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -108,7 +108,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                double t = a.getAttributes().get(attribute);
+                double t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -122,7 +122,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                float t = a.getAttributes().get(attribute);
+                float t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -136,7 +136,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                int t = a.getAttributes().get(attribute);
+                int t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -150,7 +150,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                long t = a.getAttributes().get(attribute);
+                long t = a.get(attribute);
                 return filter.op(t);
             }
         });
@@ -164,7 +164,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
         }
         return on(new Predicate<CacheEntry<K, V>>() {
             public boolean op(CacheEntry<K, V> a) {
-                short t = a.getAttributes().get(attribute);
+                short t = a.get(attribute);
                 return filter.op(t);
             }
         });

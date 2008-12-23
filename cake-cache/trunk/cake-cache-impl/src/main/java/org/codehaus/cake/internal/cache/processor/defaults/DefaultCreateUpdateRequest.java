@@ -2,14 +2,14 @@ package org.codehaus.cake.internal.cache.processor.defaults;
 
 import java.util.List;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 public class DefaultCreateUpdateRequest<K, V> implements AddEntryRequest<K, V> {
-    private final AttributeMap attributes;
+    private final GetAttributer attributes;
     private final K key;
     private Object value;
     private CacheEntry<K, V> previousEntry;
@@ -17,7 +17,7 @@ public class DefaultCreateUpdateRequest<K, V> implements AddEntryRequest<K, V> {
 
     private final Predicate<? extends CacheEntry<K, V>> updatePredicate;
 
-    public DefaultCreateUpdateRequest(K key, AttributeMap attributes, Object value,
+    public DefaultCreateUpdateRequest(K key, GetAttributer attributes, Object value,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate) {
         if (key == null) {
@@ -37,7 +37,7 @@ public class DefaultCreateUpdateRequest<K, V> implements AddEntryRequest<K, V> {
         return false;
     }
 
-    public AttributeMap getAttributes() {
+    public GetAttributer getAttributes() {
         return attributes;
     }
 

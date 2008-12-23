@@ -13,7 +13,7 @@ public class Reader extends AbstractCacheTCKTest {
         assertEquals("A", c.withCrud().value().get(1));
         assertEquals(1, c.withCrud().entry().get(1).getKey().intValue());
         assertEquals("A", c.withCrud().entry().get(1).getValue());
-        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
+        assertEquals(0, c.withCrud().entry().get(1).size());
     }
 
     @Test
@@ -22,7 +22,7 @@ public class Reader extends AbstractCacheTCKTest {
         assertEquals("A", c.withCrud().value().get(1, AtrStubs.I_1.singleton(4)));
         assertEquals(1, c.withCrud().entry().get(1).getKey().intValue());
         assertEquals("A", c.withCrud().entry().get(1).getValue());
-        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
+        assertEquals(0, c.withCrud().entry().get(1).size());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class Reader extends AbstractCacheTCKTest {
         assertEquals(2, loader.get(1).getParameters().size());
         assertEquals(1, loader.get(1).getParameters().get(AtrStubs.I_2));
         assertEquals(4L, loader.get(1).getParameters().get(AtrStubs.L_3));
-        assertEquals(0, c.withCrud().entry().get(1).getAttributes().size());
+        assertEquals(0, c.withCrud().entry().get(1).size());
     }
     
     @Test
@@ -50,7 +50,7 @@ public class Reader extends AbstractCacheTCKTest {
         assertEquals(2, loader.get(1).getParameters().size());
         assertEquals(1, loader.get(1).getParameters().get(AtrStubs.I_2));
         assertEquals(4L, loader.get(1).getParameters().get(AtrStubs.L_3));
-        assertEquals(1, c.withCrud().entry().get(1).getAttributes().size());
+        assertEquals(1, c.withCrud().entry().get(1).size());
         assertEquals(1, c.withCrud().attribute(AtrStubs.I_2).get(1).intValue());
     }
 }

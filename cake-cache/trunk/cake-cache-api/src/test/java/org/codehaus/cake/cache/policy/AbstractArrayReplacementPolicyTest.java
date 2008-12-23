@@ -18,33 +18,18 @@ package org.codehaus.cake.cache.policy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractArrayReplacementPolicyTest {
-
-    TestEntry TE1;
-    TestEntry TE2;
-    TestEntry TE3;
-    TestEntry TE4;
-    TestEntry TE5;
-
-    
+public class AbstractArrayReplacementPolicyTest extends AbstractPolicyTest{
     private TP tp;
 
     @Before
     public void before() {
         tp = new TP();
-        // r = new Random(1243214);
-
-        TE1 = new TestEntry();
-        TE2 = new TestEntry();
-        TE3 = new TestEntry();
-        TE4 = new TestEntry();
-        TE5 = new TestEntry();
+        policy = tp;
+        init();
     }
 
     @Test
@@ -98,34 +83,13 @@ public class AbstractArrayReplacementPolicyTest {
 
     }
 
-    static class TestEntry implements CacheEntry<Integer, String> {
-        private final AttributeMap attributes = new DefaultAttributeMap();
-
-        public AttributeMap getAttributes() {
-            return attributes;
-        }
-
-        public Integer getKey() {
-            return null;
-        }
-
-        public String getValue() {
-            return null;
-        }
-
-        public String setValue(String value) {
-            return null;
-        }
-
-    }
 
     static class TP extends AbstractArrayReplacementPolicy<Integer, String> {
         protected void swap(int prevIndex, int newIndex) {
-        // TestEntry te=matching.get(prevIndex);
-        // matching.set(prevIndex, matching.get(newIndex));
-        // matching.r
+            // TestEntry te=matching.get(prevIndex);
+            // matching.set(prevIndex, matching.get(newIndex));
+            // matching.r
         }
-
 
         public CacheEntry<Integer, String> evictNext() {
             return null;

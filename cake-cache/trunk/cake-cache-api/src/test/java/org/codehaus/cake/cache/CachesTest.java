@@ -189,25 +189,25 @@ public class CachesTest {
     }
     @Test
     public void emptyCacheSelection() {
-        assertSame(emptyCache(), emptyCache().select().on(new BinaryPredicate() {
+        assertSame(emptyCache(), emptyCache().filter().on(new BinaryPredicate() {
             public boolean op(Object a, Object b) {
                 return true;
             }
         }));
-        assertSame(emptyCache(),emptyCache().select().on(Predicates.TRUE));
-        assertSame(emptyCache(),emptyCache().select().on(((Attribute) new IntAttribute() {}), Predicates.TRUE));
-        assertSame(emptyCache(),emptyCache().select().on((new BooleanAttribute() {}), true));
-        assertSame(emptyCache(),emptyCache().select().on((new ByteAttribute() {}), dummy(BytePredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().on((new CharAttribute() {}), dummy(CharPredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().on((new DoubleAttribute() {}), dummy(DoublePredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().on((new FloatAttribute() {}), dummy(FloatPredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().on((new IntAttribute() {}), dummy(IntPredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().on((new LongAttribute() {}), dummy(LongPredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().on((new ShortAttribute() {}), dummy(ShortPredicate.class)));
-        assertSame(emptyCache(),emptyCache().select().onKey(Predicates.TRUE));
-        assertSame(emptyCache(),emptyCache().select().onKeyType(Predicates.class));
-        assertSame(emptyCache(),emptyCache().select().onValue(Predicates.TRUE));
-        assertSame(emptyCache(),emptyCache().select().onValueType(Predicates.class));
+        assertSame(emptyCache(),emptyCache().filter().on(Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().filter().on(((Attribute) new IntAttribute() {}), Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().filter().on((new BooleanAttribute() {}), true));
+        assertSame(emptyCache(),emptyCache().filter().on((new ByteAttribute() {}), dummy(BytePredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().on((new CharAttribute() {}), dummy(CharPredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().on((new DoubleAttribute() {}), dummy(DoublePredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().on((new FloatAttribute() {}), dummy(FloatPredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().on((new IntAttribute() {}), dummy(IntPredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().on((new LongAttribute() {}), dummy(LongPredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().on((new ShortAttribute() {}), dummy(ShortPredicate.class)));
+        assertSame(emptyCache(),emptyCache().filter().onKey(Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().filter().onKeyType(Predicates.class));
+        assertSame(emptyCache(),emptyCache().filter().onValue(Predicates.TRUE));
+        assertSame(emptyCache(),emptyCache().filter().onValueType(Predicates.class));
 
     }
 

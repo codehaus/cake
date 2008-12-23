@@ -8,12 +8,14 @@ import java.util.Set;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.cache.query.CacheQuery;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
+import org.codehaus.cake.internal.cache.query.DefaultQuery;
 import org.codehaus.cake.internal.cache.service.crud.CrudWriterFactory;
 import org.codehaus.cake.internal.cache.service.crud.DefaultCrudBatchWriter;
 import org.codehaus.cake.internal.cache.service.crud.DefaultCrudWriter;
@@ -44,14 +46,14 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     private final CacheProcessor<K, V> processor;
 
     private final CacheRequestFactory<K, V> requestFactory;
+
     private final CrudWriter<K, V, Boolean> returnPreviousNotNull;
-
     private final CrudBatchWriter<K, V, Void> returnPreviousNull;
+
     private final CrudWriter<K, V, V> returnPreviousValue;
-
     private CacheServices<K, V> services;
-    private Collection<V> values;
 
+    private Collection<V> values;
     /** A factory for collection views. */
     private final CollectionViewFactory<K, V> views;
 
@@ -103,14 +105,6 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
-    public CacheCrud<K, V> withCrud() {
-        if (crud == null) {
-            crud = new CacheCrud<K, V>(this);
-        }
-        return crud;
-    }
-
-    /** {@inheritDoc} */
     public Set<Entry<K, V>> entrySet() {
         Set<Map.Entry<K, V>> es = entrySet;
         return (es != null) ? es : (entrySet = views.entrySet(this));
@@ -130,7 +124,8 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public CacheEntry<K, V> getEntry(K key) {
-        return (CacheEntry<K, V>) processor.get(filter, key, Attributes.EMPTY_ATTRIBUTE_MAP,CacheDataExtractor.WHOLE_ENTRY);
+        return (CacheEntry<K, V>) processor.get(filter, key, Attributes.EMPTY_ATTRIBUTE_MAP,
+                CacheDataExtractor.WHOLE_ENTRY);
     }
 
     /** {@inheritDoc} */
@@ -207,6 +202,11 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
+    public CacheQuery<K, V> query() {
+        return new DefaultQuery<K, V>(processor, filter);
+    }
+
+    /** {@inheritDoc} */
     public V remove(Object key) {
         return returnPreviousValue.remove((K) key);
     }
@@ -270,6 +270,14 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
             services = new CacheServices<K, V>(this);
         }
         return services;
+    }
+
+    /** {@inheritDoc} */
+    public CacheCrud<K, V> withCrud() {
+        if (crud == null) {
+            crud = new CacheCrud<K, V>(this);
+        }
+        return crud;
     }
 
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
