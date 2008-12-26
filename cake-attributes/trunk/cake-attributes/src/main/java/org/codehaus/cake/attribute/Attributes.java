@@ -18,11 +18,14 @@ package org.codehaus.cake.attribute;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.codehaus.cake.attribute.common.ComparableObjectAttribute;
 import org.codehaus.cake.internal.attribute.AttributeHelper;
+import org.codehaus.cake.ops.Comparators;
 
 /**
  * 
@@ -90,6 +93,62 @@ public final class Attributes {
         return new SingletonAttributeMap(attribute, value);
     }
 
+    public static Comparator<GetAttributer> minComparator(Attribute<?> attribute) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute is null");
+        }
+        if (attribute instanceof BooleanAttribute) {
+            return new BooleanComparatorMin((BooleanAttribute) attribute);
+        } else if (attribute instanceof ByteAttribute) {
+            return new ByteComparatorMin((ByteAttribute) attribute);
+        } else if (attribute instanceof CharAttribute) {
+            return new CharComparatorMin((CharAttribute) attribute);
+        } else if (attribute instanceof DoubleAttribute) {
+            return new DoubleComparatorMin((DoubleAttribute) attribute);
+        } else if (attribute instanceof FloatAttribute) {
+            return new FloatComparatorMin((FloatAttribute) attribute);
+        } else if (attribute instanceof IntAttribute) {
+            return new IntComparatorMin((IntAttribute) attribute);
+        } else if (attribute instanceof LongAttribute) {
+            return new LongComparatorMin((LongAttribute) attribute);
+        } else if (attribute instanceof ComparableObjectAttribute) {
+            return (ComparableObjectAttribute) attribute;
+        } else if (attribute instanceof ShortAttribute) {
+            return new ShortComparatorMin((ShortAttribute) attribute);
+        } else {
+            throw new IllegalArgumentException(
+                    "ObjectAttribute cannot be used for sorting, Attribute must extend ComparableObjectAttribute");
+        }
+    }
+
+    public static Comparator<GetAttributer> maxComparator(Attribute<?> attribute) {
+      if (attribute == null) {
+            throw new NullPointerException("attribute is null");
+        }
+        if (attribute instanceof BooleanAttribute) {
+            return new BooleanComparatorMax((BooleanAttribute) attribute);
+        } else if (attribute instanceof ByteAttribute) {
+            return new ByteComparatorMax((ByteAttribute) attribute);
+        } else if (attribute instanceof CharAttribute) {
+            return new CharComparatorMax((CharAttribute) attribute);
+        } else if (attribute instanceof DoubleAttribute) {
+            return new DoubleComparatorMax((DoubleAttribute) attribute);
+        } else if (attribute instanceof FloatAttribute) {
+            return new FloatComparatorMax((FloatAttribute) attribute);
+        } else if (attribute instanceof IntAttribute) {
+            return new IntComparatorMax((IntAttribute) attribute);
+        } else if (attribute instanceof LongAttribute) {
+            return new LongComparatorMax((LongAttribute) attribute);
+        } else if (attribute instanceof ComparableObjectAttribute) {
+            return Comparators.reverseOrder((ComparableObjectAttribute) attribute);
+        } else if (attribute instanceof ShortAttribute) {
+            return new ShortComparatorMax((ShortAttribute) attribute);
+        } else {
+            throw new IllegalArgumentException(
+                    "ObjectAttribute cannot be used for sorting, Attribute must extend ComparableObjectAttribute");
+        }
+    }
+
     /**
      * Returns an unmodifiable view of the specified attribute map. This method allows modules to provide users with
      * "read-only" access to internal attribute maps. Query operations on the returned attribute map "read through" to
@@ -107,8 +166,7 @@ public final class Attributes {
     }
 
     /**
-     * Creates a new unmodifiable attribute map with all the attribute->value pairs in the specified attribute map.
-     * If
+     * Creates a new unmodifiable attribute map with all the attribute->value pairs in the specified attribute map. If
      * Validates that all entries entries are valid in the specified attribute map according to
      * {@link Attribute#checkValid(Object)}. The method returns a new immutable map with all the entries.
      * <p>
@@ -927,6 +985,310 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Collection<Object> values() {
             return Collections.singleton(value);
+        }
+    }
+
+    /** Compares Boolean */
+    static class BooleanComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final BooleanAttribute attribute;
+
+        /** Creates a new BooleanComparatorMin from the specified attribute. */
+        BooleanComparatorMin(BooleanAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            boolean thisVal = o1.get(attribute);
+            boolean anotherVal = o2.get(attribute);
+            return (anotherVal == thisVal ? 0 : (thisVal ? 1 : -1));
+        }
+    }
+
+    /** Compares Boolean */
+    static class BooleanComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final BooleanAttribute attribute;
+
+        /** Creates a new BooleanComparatorMax from the specified attribute. */
+        BooleanComparatorMax(BooleanAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            boolean thisVal = o1.get(attribute);
+            boolean anotherVal = o2.get(attribute);
+            return (anotherVal == thisVal ? 0 : (anotherVal ? 1 : -1));
+        }
+    }
+
+    /** Compares Byte */
+    static class ByteComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final ByteAttribute attribute;
+
+        /** Creates a new ByteComparatorMin from the specified attribute. */
+        ByteComparatorMin(ByteAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            byte thisVal = o1.get(attribute);
+            byte anotherVal = o2.get(attribute);
+            return thisVal - anotherVal;
+        }
+    }
+
+    /** Compares Byte */
+    static class ByteComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final ByteAttribute attribute;
+
+        /** Creates a new ByteComparatorMax from the specified attribute. */
+        ByteComparatorMax(ByteAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            byte thisVal = o1.get(attribute);
+            byte anotherVal = o2.get(attribute);
+            return anotherVal - thisVal;
+        }
+    }
+
+    /** Compares Char */
+    static class CharComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final CharAttribute attribute;
+
+        /** Creates a new CharComparatorMin from the specified attribute. */
+        CharComparatorMin(CharAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            char thisVal = o1.get(attribute);
+            char anotherVal = o2.get(attribute);
+            return thisVal - anotherVal;
+        }
+    }
+
+    /** Compares Char */
+    static class CharComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final CharAttribute attribute;
+
+        /** Creates a new CharComparatorMax from the specified attribute. */
+        CharComparatorMax(CharAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            char thisVal = o1.get(attribute);
+            char anotherVal = o2.get(attribute);
+            return anotherVal - thisVal;
+        }
+    }
+
+    /** Compares Double */
+    static class DoubleComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final DoubleAttribute attribute;
+
+        /** Creates a new DoubleComparatorMin from the specified attribute. */
+        DoubleComparatorMin(DoubleAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            double thisVal = o1.get(attribute);
+            double anotherVal = o2.get(attribute);
+            return Double.compare(thisVal, anotherVal);
+        }
+    }
+
+    /** Compares Double */
+    static class DoubleComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final DoubleAttribute attribute;
+
+        /** Creates a new DoubleComparatorMax from the specified attribute. */
+        DoubleComparatorMax(DoubleAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            double thisVal = o1.get(attribute);
+            double anotherVal = o2.get(attribute);
+            return Double.compare(anotherVal, thisVal);
+        }
+    }
+
+    /** Compares Float */
+    static class FloatComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final FloatAttribute attribute;
+
+        /** Creates a new FloatComparatorMin from the specified attribute. */
+        FloatComparatorMin(FloatAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            float thisVal = o1.get(attribute);
+            float anotherVal = o2.get(attribute);
+            return Float.compare(thisVal, anotherVal);
+        }
+    }
+
+    /** Compares Float */
+    static class FloatComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final FloatAttribute attribute;
+
+        /** Creates a new FloatComparatorMax from the specified attribute. */
+        FloatComparatorMax(FloatAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            float thisVal = o1.get(attribute);
+            float anotherVal = o2.get(attribute);
+            return Float.compare(anotherVal, thisVal);
+        }
+    }
+
+    /** Compares Int */
+    static class IntComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final IntAttribute attribute;
+
+        /** Creates a new IntComparatorMin from the specified attribute. */
+        IntComparatorMin(IntAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            int thisVal = o1.get(attribute);
+            int anotherVal = o2.get(attribute);
+            return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+        }
+    }
+
+    /** Compares Int */
+    static class IntComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final IntAttribute attribute;
+
+        /** Creates a new IntComparatorMax from the specified attribute. */
+        IntComparatorMax(IntAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            int thisVal = o1.get(attribute);
+            int anotherVal = o2.get(attribute);
+            return (thisVal > anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+        }
+    }
+
+    /** Compares Long */
+    static class LongComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final LongAttribute attribute;
+
+        /** Creates a new LongComparatorMin from the specified attribute. */
+        LongComparatorMin(LongAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            long thisVal = o1.get(attribute);
+            long anotherVal = o2.get(attribute);
+            return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+        }
+    }
+
+    /** Compares Long */
+    static class LongComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final LongAttribute attribute;
+
+        /** Creates a new LongComparatorMax from the specified attribute. */
+        LongComparatorMax(LongAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            long thisVal = o1.get(attribute);
+            long anotherVal = o2.get(attribute);
+            return (thisVal > anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+        }
+    }
+
+    /** Compares Short */
+    static class ShortComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final ShortAttribute attribute;
+
+        /** Creates a new ShortComparatorMin from the specified attribute. */
+        ShortComparatorMin(ShortAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            short thisVal = o1.get(attribute);
+            short anotherVal = o2.get(attribute);
+            return thisVal - anotherVal;
+        }
+    }
+
+    /** Compares Short */
+    static class ShortComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final ShortAttribute attribute;
+
+        /** Creates a new ShortComparatorMax from the specified attribute. */
+        ShortComparatorMax(ShortAttribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            short thisVal = o1.get(attribute);
+            short anotherVal = o2.get(attribute);
+            return anotherVal - thisVal;
         }
     }
 }
