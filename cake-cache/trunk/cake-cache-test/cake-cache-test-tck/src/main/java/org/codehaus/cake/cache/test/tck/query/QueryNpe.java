@@ -18,13 +18,13 @@ import org.junit.Test;
 public class QueryNpe extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
-    public void entries1() {
-        c.query().entries(null, ObjectOps.CONSTANT_OP);
+    public void keyTo() {
+        c.query().keyTo(null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void entries2() {
-        c.query().entries(ObjectOps.CONSTANT_OP, null);
+    public void valueTo() {
+        c.query().valueTo(null);
     }
 
     @Test(expected = NullPointerException.class)
@@ -33,62 +33,52 @@ public class QueryNpe extends AbstractCacheTCKTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void putInto2() {
-        c.query().putInto(null, ObjectOps.CONSTANT_OP);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void putInto3() {
-        c.query().putInto(dummy(Cache.class), null);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void orderBy() {
         c.query().orderBy(null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void orderByBoolean() {
-        c.query().orderBy(null, false);
-    }
+//    @Test(expected = NullPointerException.class)
+//    public void orderByBoolean() {
+//        c.query().orderBy(null, false);
+//    }
 
-    @Test(expected = NullPointerException.class)
-    public void orderByDouble1() {
-        c.query().orderBy(null, DoubleOps.COMPARATOR);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void orderByDouble2() {
-        c.query().orderBy(new DoubleAttribute() {}, null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void orderByFloat1() {
-        c.query().orderBy(null, FloatOps.COMPARATOR);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void orderByFloat2() {
-        c.query().orderBy(new FloatAttribute() {}, null);
-    }
-    @Test(expected = NullPointerException.class)
-    public void orderByInt1() {
-        c.query().orderBy(null, IntOps.COMPARATOR);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void orderByInt2() {
-        c.query().orderBy(new IntAttribute() {}, null);
-    }
-    @Test(expected = NullPointerException.class)
-    public void orderByLong1() {
-        c.query().orderBy(null, LongOps.COMPARATOR);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void orderByLong2() {
-        c.query().orderBy(new LongAttribute() {}, null);
-    }
+//    @Test(expected = NullPointerException.class)
+//    public void orderByDouble1() {
+//        c.query().orderBy(null, DoubleOps.COMPARATOR);
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void orderByDouble2() {
+//        c.query().orderBy(new DoubleAttribute() {}, null);
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void orderByFloat1() {
+//        c.query().orderBy(null, FloatOps.COMPARATOR);
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void orderByFloat2() {
+//        c.query().orderBy(new FloatAttribute() {}, null);
+//    }
+//    @Test(expected = NullPointerException.class)
+//    public void orderByInt1() {
+//        c.query().orderBy(null, IntOps.COMPARATOR);
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void orderByInt2() {
+//        c.query().orderBy(new IntAttribute() {}, null);
+//    }
+//    @Test(expected = NullPointerException.class)
+//    public void orderByLong1() {
+//        c.query().orderBy(null, LongOps.COMPARATOR);
+//    }
+//
+//    @Test(expected = NullPointerException.class)
+//    public void orderByLong2() {
+//        c.query().orderBy(new LongAttribute() {}, null);
+//    }
     @Test(expected = NullPointerException.class)
     public void orderByValues() {
         c.query().orderByValues(null);

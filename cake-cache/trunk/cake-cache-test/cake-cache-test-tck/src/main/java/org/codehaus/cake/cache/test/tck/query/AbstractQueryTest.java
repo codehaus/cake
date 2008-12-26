@@ -16,11 +16,11 @@ public class AbstractQueryTest extends AbstractCacheTCKTest {
 
     public void assertQueryNoOrder(Iterable<CacheEntry<Integer, String>> entries, CacheQuery<Integer, String> query) {
         List<CacheEntry<Integer, String>> l = toList(entries);
-        assertEquals(new HashSet(l), new HashSet(query.all()));
-        assertEquals(from(entries), query.entries());
-        assertEquals(from(entries).keySet(), query.entries().keySet());
-        assertEquals(from(entries).keySet(), new HashSet(query.keys()));
-        assertEquals(new HashSet(from(entries).values()), new HashSet(query.values()));
+        assertEquals(new HashSet(l), new HashSet(query.asList()));
+        assertEquals(from(entries), query.map().asMap());
+        assertEquals(from(entries).keySet(), query.map().asMap().keySet());
+        assertEquals(from(entries).keySet(), new HashSet(query.keys().asList()));
+        assertEquals(new HashSet(from(entries).values()), new HashSet(query.values().asList()));
         assertEquals(new HashSet(l), new HashSet(toList(query)));
         Cache<Integer, String> old = c;
         newCache();
@@ -34,17 +34,17 @@ public class AbstractQueryTest extends AbstractCacheTCKTest {
         Set<CacheEntry<Integer, String>> l = new HashSet<CacheEntry<Integer, String>>(toList(entries));
         Map<Integer, String> m = from(entries);
         if (l.size() > limit) {
-            assertEquals(limit, query.all().size());
-            assertTrue(l.containsAll(query.all()));
+            assertEquals(limit, query.asList().size());
+            assertTrue(l.containsAll(query.asList()));
 
-            assertEquals(limit, query.entries().size());
-            assertTrue(from(entries).entrySet().containsAll(query.entries().entrySet()));
+            assertEquals(limit, query.map().asMap().size());
+            assertTrue(from(entries).entrySet().containsAll(query.map().asMap().entrySet()));
 
-            assertEquals(limit, query.keys().size());
-            assertTrue(from(entries).keySet().containsAll(query.keys()));
+            assertEquals(limit, query.keys().asList().size());
+            assertTrue(from(entries).keySet().containsAll(query.keys().asList()));
             
-            assertEquals(limit, query.values().size());
-            assertTrue(from(entries).values().containsAll(query.values()));
+            assertEquals(limit, query.values().asList().size());
+            assertTrue(from(entries).values().containsAll(query.values().asList()));
 
             assertEquals(limit, new HashSet(toList(query)).size());
             assertTrue(new HashSet(l).containsAll(new HashSet(toList(query))));
@@ -77,11 +77,11 @@ public class AbstractQueryTest extends AbstractCacheTCKTest {
 
     public void assertQueryOrdered(Iterable<CacheEntry<Integer, String>> entries, CacheQuery<Integer, String> query) {
         List<CacheEntry<Integer, String>> l = toList(entries);
-        assertEquals(new HashSet(l), new HashSet(query.all()));
-        assertEquals(from(entries), query.entries());
-        assertEquals(from(entries).keySet(), query.entries().keySet());
-        assertEquals(from(entries).keySet(), query.keys());
-        assertEquals(new HashSet(from(entries).values()), new HashSet(query.values()));
+        assertEquals(new HashSet(l), new HashSet(query.asList()));
+        assertEquals(from(entries), query.map().asMap());
+        assertEquals(from(entries).keySet(), query.map().asMap().keySet());
+        assertEquals(from(entries).keySet(), query.keys().asList());
+        assertEquals(new HashSet(from(entries).values()), new HashSet(query.values().asList()));
         assertEquals(new HashSet(l), new HashSet(toList(query)));
         Cache<Integer, String> old = c;
         newCache();

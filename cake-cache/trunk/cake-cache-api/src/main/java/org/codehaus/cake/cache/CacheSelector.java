@@ -130,6 +130,9 @@ public interface CacheSelector<K, V> {
      */
     Cache<K, V> onValue(Predicate<? super V> filter);
 
+ //   Cache<K, V> onValue(String method, Predicate<?> filter);
+ //   <E> Cache<K, V> onValue(String method, Class<E> resultType, Predicate<? super E> filter);
+    
     /**
      * Returns a filtered view containing only those elements where the elements value is of the specified type. Given a
      * cache full of Strings mapping to a {@link Number} the following will create a cache view that contains only those

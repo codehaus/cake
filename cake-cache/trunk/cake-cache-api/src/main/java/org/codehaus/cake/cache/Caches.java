@@ -38,21 +38,20 @@ import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.FloatAttribute;
+import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.cache.query.CacheQuery;
+import org.codehaus.cake.cache.query.MapQuery;
+import org.codehaus.cake.cache.query.Query;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.ops.Ops.BytePredicate;
 import org.codehaus.cake.ops.Ops.CharPredicate;
-import org.codehaus.cake.ops.Ops.DoubleComparator;
 import org.codehaus.cake.ops.Ops.DoublePredicate;
-import org.codehaus.cake.ops.Ops.FloatComparator;
 import org.codehaus.cake.ops.Ops.FloatPredicate;
-import org.codehaus.cake.ops.Ops.IntComparator;
 import org.codehaus.cake.ops.Ops.IntPredicate;
-import org.codehaus.cake.ops.Ops.LongComparator;
 import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
@@ -76,7 +75,9 @@ public final class Caches {
     /** A CacheSelector that returns the empty cache for all argument. */
     static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
 
-    static final CacheQuery EMPTY_QUERY = new EmptyCacheQuery();
+    static final Query EMPTY_QUERY = new EmptyQuery();
+    static final MapQuery EMPTY_MAP_QUERY = new EmptyMapQuery();
+    static final CacheQuery EMPTY_CACHE_QUERY = new EmptyCacheQuery();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */
@@ -150,7 +151,7 @@ public final class Caches {
      *            the attributes
      * @return a CacheEntry with the specified key and value and attributes
      */
-    public static <K, V> CacheEntry<K, V> newEntry(K key, V value, AttributeMap attributes) {
+    public static <K, V> CacheEntry<K, V> newEntry(K key, V value, GetAttributer attributes) {
         return new SimpleImmutableEntry<K, V>(key, value, attributes);
     }
 
@@ -319,49 +320,120 @@ public final class Caches {
         }
 
         public CacheQuery<K, V> query() {
+            return EMPTY_CACHE_QUERY;
+        }
+    }
+
+    static class EmptyMapQuery<K, V> implements MapQuery<K, V>, Serializable {
+
+        public MapQuery<K, V> setLimit(int maxresults) {
+            return this;
+        }
+
+        public List<Entry<K, V>> asList() {
+            return Collections.EMPTY_LIST;
+        }
+
+        public <E> Query<E> to(Op<Entry<K, V>, E> transformer) {
             return EMPTY_QUERY;
+        }
+
+        public Iterator<Entry<K, V>> iterator() {
+            return Collections.EMPTY_LIST.iterator();
+        }
+
+        public MapQuery<K, V> orderBy(Comparator<? super Entry<K, V>> comparator) {
+            return this;
+        }
+
+        public Map<K, V> asMap() {
+            return Collections.EMPTY_MAP;
+        }
+
+        public <E> MapQuery<E, V> keyTo(Op<K, E> transformer) {
+            return EMPTY_MAP_QUERY;
+        }
+
+        public Query<K> keys() {
+            return EMPTY_QUERY;
+        }
+
+        public MapQuery<K, V> orderByKeys(Comparator<K> comparator) {
+            return this;
+        }
+
+        public MapQuery<K, V> orderByKeysMax() {
+            return this;
+        }
+
+        public MapQuery<K, V> orderByKeysMin() {
+            return this;
+        }
+
+        public MapQuery<K, V> orderByValues(Comparator<V> comparator) {
+            return this;
+        }
+
+        public MapQuery<K, V> orderByValuesMax() {
+            return this;
+        }
+
+        public MapQuery<K, V> orderByValuesMin() {
+            return this;
+        }
+
+        public <E> MapQuery<K, E> valueTo(Op<V, E> transformer) {
+            return EMPTY_MAP_QUERY;
+        }
+
+        public Query<V> values() {
+            return EMPTY_QUERY;
+        }
+
+    }
+
+    static class EmptyQuery<T> implements Query<T>, Serializable {
+
+        public List<T> asList() {
+            return Collections.EMPTY_LIST;
+        }
+
+        public Query<T> orderBy(Comparator<? super T> comparator) {
+            return this;
+        }
+
+        public Query<T> setLimit(int maxresults) {
+            return this;
+        }
+
+        public <E> Query<E> to(Op<T, E> transformer) {
+            return (Query) this;
+        }
+
+        public Iterator<T> iterator() {
+            return Collections.EMPTY_LIST.iterator();
+        }
+
+        public <E> Query<E> to(String method, Class<E> resultType) {
+            return (Query) this;
         }
     }
 
     static class EmptyCacheQuery<K, V> implements CacheQuery<K, V>, Serializable {
 
-        public List<CacheEntry<K, V>> all() {
+        public List<CacheEntry<K, V>> asList() {
             return Collections.EMPTY_LIST;
-        }
-
-        public Map<K, V> entries() {
-            return Collections.EMPTY_MAP;
         }
 
         public <K1, V1> Map<K1, V1> entries(Op<K, K1> keyTransformer, Op<V, V1> valueTransformer) {
             return Collections.EMPTY_MAP;
         }
 
-        public List<K> keys() {
-            return Collections.EMPTY_LIST;
-        }
-
-        public CacheQuery<K, V> orderBy(BooleanAttribute attribute, boolean falseHighest) {
-            return this;
+        public Query<K> keys() {
+            return EMPTY_QUERY;
         }
 
         public CacheQuery<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator) {
-            return this;
-        }
-
-        public CacheQuery<K, V> orderBy(DoubleAttribute attribute, DoubleComparator comparator) {
-            return this;
-        }
-
-        public CacheQuery<K, V> orderBy(FloatAttribute attribute, FloatComparator comparator) {
-            return this;
-        }
-
-        public CacheQuery<K, V> orderBy(IntAttribute attribute, IntComparator comparator) {
-            return this;
-        }
-
-        public CacheQuery<K, V> orderBy(LongAttribute attribute, LongComparator comparator) {
             return this;
         }
 
@@ -391,8 +463,8 @@ public final class Caches {
             return this;
         }
 
-        public List<V> values() {
-            return Collections.EMPTY_LIST;
+        public Query<V> values() {
+            return EMPTY_QUERY;
         }
 
         public Iterator<CacheEntry<K, V>> iterator() {
@@ -413,6 +485,30 @@ public final class Caches {
 
         public CacheQuery<K, V> orderByMin(Attribute<?> attribute) {
             return this;
+        }
+
+        public <E> CacheQuery<E, V> keyTo(Op<K, E> transformer) {
+            return (CacheQuery) this;
+        }
+
+        public <E> CacheQuery<K, E> valueTo(Op<V, E> transformer) {
+            return (CacheQuery) this;
+        }
+
+        public <T> Query<T> attribute(Attribute<T> attribute) {
+            return EMPTY_QUERY;
+        }
+
+        public <E> Query<E> to(Op<CacheEntry<K, V>, E> transformer) {
+            return EMPTY_QUERY;
+        }
+
+        public MapQuery<K, V> map() {
+            return EMPTY_MAP_QUERY;
+        }
+
+        public <T> MapQuery<K, T> map(Attribute<T> attribute) {
+            return EMPTY_MAP_QUERY;
         }
 
     }
@@ -495,7 +591,7 @@ public final class Caches {
         private static final long serialVersionUID = 1L;
 
         /** The attributes of the entry. */
-        private final AttributeMap attributes;
+        private final GetAttributer attributes;
 
         /** The key of the entry. */
         private final K key;
@@ -513,7 +609,7 @@ public final class Caches {
          * @throws NullPointerException
          *             if the specified key, value or attribute map is null
          */
-        public SimpleImmutableEntry(K key, V value, AttributeMap attributes) {
+        public SimpleImmutableEntry(K key, V value, GetAttributer attributes) {
             if (key == null) {
                 throw new NullPointerException("key is null");
             } else if (value == null) {
@@ -534,11 +630,6 @@ public final class Caches {
             }
             Map.Entry e = (Map.Entry) o;
             return eq(key, e.getKey()) && eq(value, e.getValue())/* && eq(attributes, e.getAttributes()) */;
-        }
-
-        /** {@inheritDoc} */
-        public AttributeMap getAttributes() {
-            return attributes;
         }
 
         /** {@inheritDoc} */

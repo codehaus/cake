@@ -3,22 +3,12 @@ package org.codehaus.cake.cache.query;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.common.ComparableObjectAttribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.Ops.DoubleComparator;
-import org.codehaus.cake.ops.Ops.FloatComparator;
-import org.codehaus.cake.ops.Ops.IntComparator;
-import org.codehaus.cake.ops.Ops.LongComparator;
 import org.codehaus.cake.ops.Ops.Op;
 
 /**
@@ -32,29 +22,28 @@ import org.codehaus.cake.ops.Ops.Op;
  * @param <K>
  * @param <V>
  */
-public interface CacheQuery<K, V> extends Iterable<CacheEntry<K, V>> {
+public interface CacheQuery<K, V>  extends Iterable<CacheEntry<K,V>>{
+
     /** @return the query result(s) as a {@link List} */
-    List<CacheEntry<K, V>> all();
+    List<CacheEntry<K, V>> asList();
 
+    <E> Query<E> to(Op<CacheEntry<K, V>, E> transformer);
     /** @return the query result(s) as a {@link Map} */
-    Map<K, V> entries();
+    
+    MapQuery<K, V> map();
+    
+    <T> MapQuery<K, T> map(Attribute<T> attribute);
+    
+    <T> Query<T> attribute(Attribute<T> attribute);
 
-    <K1, V1> Map<K1, V1> entries(Op<K, K1> keyTransformer, Op<V, V1> valueTransformer);
+    <E> CacheQuery<E, V> keyTo(Op<K, E> transformer);
+
+    <E> CacheQuery<K, E> valueTo(Op<V, E> transformer);
 
     /** @return the query result(s) as a {@link List} of keys */
-    List<K> keys();
-
-    CacheQuery<K, V> orderBy(BooleanAttribute attribute, boolean falseHighest);
+    Query<K> keys();
 
     CacheQuery<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator);
-
-    CacheQuery<K, V> orderBy(DoubleAttribute attribute, DoubleComparator comparator);
-
-    CacheQuery<K, V> orderBy(FloatAttribute attribute, FloatComparator comparator);
-
-    CacheQuery<K, V> orderBy(IntAttribute attribute, IntComparator comparator);
-
-    CacheQuery<K, V> orderBy(LongAttribute attribute, LongComparator comparator);
 
     CacheQuery<K, V> orderByKeys(Comparator<K> comparator);
 
@@ -89,7 +78,7 @@ public interface CacheQuery<K, V> extends Iterable<CacheEntry<K, V>> {
 
     void putInto(Cache<K, V> cache);
 
-    <K1, V1> void putInto(Cache<K1, V1> cache, Op<CacheEntry<K, V>, CacheEntry<K1, V1>> transformer);
+    //<K1, V1> void putInto(Cache<K1, V1> cache, Op<CacheEntry<K, V>, CacheEntry<K1, V1>> transformer);
 
     /**
      * Limits the
@@ -104,5 +93,5 @@ public interface CacheQuery<K, V> extends Iterable<CacheEntry<K, V>> {
      * 
      * @return the resulting values
      */
-    List<V> values();
+    Query<V> values();
 }

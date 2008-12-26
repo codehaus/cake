@@ -334,6 +334,6 @@ public class DummyCache<K, V> implements Cache<K, V> {
     }
     
     public CacheQuery<K, V> query() {
-        return Caches.EMPTY_QUERY;
+        return Caches.EMPTY_CACHE_QUERY;
     }
 }

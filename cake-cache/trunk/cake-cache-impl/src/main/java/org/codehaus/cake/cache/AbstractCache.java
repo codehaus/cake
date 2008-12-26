@@ -15,7 +15,7 @@ import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
-import org.codehaus.cake.internal.cache.query.DefaultQuery;
+import org.codehaus.cake.internal.cache.query.DefaultCacheQuery;
 import org.codehaus.cake.internal.cache.service.crud.CrudWriterFactory;
 import org.codehaus.cake.internal.cache.service.crud.DefaultCrudBatchWriter;
 import org.codehaus.cake.internal.cache.service.crud.DefaultCrudWriter;
@@ -203,7 +203,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public CacheQuery<K, V> query() {
-        return new DefaultQuery<K, V>(processor, filter);
+        return new DefaultCacheQuery<K, V, K, V>(processor, filter);
     }
 
     /** {@inheritDoc} */

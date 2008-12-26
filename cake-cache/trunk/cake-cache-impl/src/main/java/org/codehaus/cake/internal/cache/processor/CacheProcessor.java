@@ -1,5 +1,6 @@
 package org.codehaus.cake.internal.cache.processor;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
-import org.codehaus.cake.internal.cache.query.DefaultQuery;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -32,7 +32,8 @@ public interface CacheProcessor<K, V> {
 
     void process(TrimToVolumeRequest<K, V> r);
 
-    List<CacheEntry<K, V>> process(Predicate<CacheEntry<K, V>> filter,DefaultQuery<K, V> query);
+    <T> List<T> process(Predicate<CacheEntry<K, V>> filter, Comparator<CacheEntry<K, V>> comparator,
+            Op<CacheEntry<K, V>, T> mapper, int limit);
 
     <T> T get(Predicate<CacheEntry<K, V>> selector, K key, AttributeMap attributes, Op<CacheEntry<K, V>, T> extractor);
 

@@ -1,33 +1,33 @@
 package org.codehaus.cake.cache.test.tck.query;
 
+import static org.codehaus.cake.cache.test.util.AtrStubs.I_2;
+import static org.codehaus.cake.cache.test.util.AtrStubs.L_2;
+import static org.codehaus.cake.cache.test.util.AtrStubs.L_3;
+
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.query.CacheQuery;
-import org.codehaus.cake.cache.test.util.AtrStubs;
 import org.codehaus.cake.ops.ObjectOps;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.junit.Test;
-import static org.codehaus.cake.cache.test.util.AtrStubs.*;
 
 public class SimpleQuery extends AbstractQueryTest {
 
     @Test
     public void empty() {
         assertNotNull(c.query());
-        assertTrue(c.query().all().isEmpty());
-        assertTrue(c.query().entries().isEmpty());
-        assertTrue(c.query().entries(ObjectOps.CONSTANT_OP, ObjectOps.CONSTANT_OP).isEmpty());
+        assertTrue(c.query().asList().isEmpty());
+        assertTrue(c.query().map().asMap().isEmpty());
         assertFalse(c.query().iterator().hasNext());
 
         Cache<Integer, String> empty = newCache();
         c.query().putInto(empty);
         assertTrue(empty.isEmpty());
 
-        c.query().putInto(empty, ObjectOps.CONSTANT_OP);
         assertTrue(empty.isEmpty());
 
-        assertTrue(c.query().keys().isEmpty());
-        assertTrue(c.query().setLimit(5).all().isEmpty());
-        assertTrue(c.query().values().isEmpty());
+        assertTrue(c.query().keys().asList().isEmpty());
+        assertTrue(c.query().setLimit(5).asList().isEmpty());
+        assertTrue(c.query().values().asList().isEmpty());
     }
 
     @Test

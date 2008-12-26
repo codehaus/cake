@@ -1,6 +1,8 @@
 package org.codehaus.cake.internal.cache.processor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +20,6 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
-import org.codehaus.cake.internal.cache.query.DefaultQuery;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 import org.codehaus.cake.internal.service.RunState;
@@ -148,23 +149,30 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
         }
     }
 
-    public List<CacheEntry<K, V>> process(Predicate<CacheEntry<K, V>> selector, DefaultQuery<K, V> query) {
+    public <T> List<T> process(Predicate<CacheEntry<K, V>> filter, Comparator<CacheEntry<K, V>> comparator,
+            Op<CacheEntry<K, V>, T> mapper, int limit) {
         CacheEntry<K, V>[] entries = new CacheEntry[0];
-        int limit = query.getLimit();
-        Comparator<? super CacheEntry<K, V>> c = query.isOrdered() ? query.getSortComparator() : null;
         synchronized (mutex) {
             runState.isRunningLazyStart(false);
-            entries = memoryStore.get(selector, query.isOrdered() ? Integer.MAX_VALUE : query.getLimit());
+            entries = memoryStore.get(filter, comparator == null ? limit : Integer.MAX_VALUE);
         }
 
-        if (c != null) {
-            List<CacheEntry<K, V>> result = Arrays.asList(ArrayUtils.sort(entries, c, limit));
-            return result;
-        } else if (entries.length > query.getLimit()) {
+        if (comparator != null) {
+            entries=ArrayUtils.sort(entries, comparator, limit);
+        } else if (entries.length > limit) {
             CacheEntry<K, V>[] old = entries;
-            entries = new CacheEntry[query.getLimit()];
-            System.arraycopy(old, 0, entries, 0, query.getLimit());
+            entries = new CacheEntry[limit];
+            System.arraycopy(old, 0, entries, 0, limit);
         }
-        return Arrays.asList(entries);
+        if (mapper == null) {
+            return (List<T>) Arrays.asList(entries);
+        }
+        ArrayList<T> result = new ArrayList<T>(entries.length);
+        for (CacheEntry<K, V> entry : entries) {
+            T mapped = mapper.op(entry);
+            result.add(mapped);
+        }
+        return result;
     }
+
 }
