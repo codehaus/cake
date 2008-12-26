@@ -139,6 +139,7 @@ public class GenerationType {
         context.put("a", type.getSimpleName().startsWith("I") ? "an" : "a");
         context.put("object", fromPrimitive(type).getSimpleName());
         context.put("isReal", type == Double.TYPE || type == Float.TYPE);
+        context.put("is16Or8Bit", type == Character.TYPE || type == Short.TYPE || type==Byte.TYPE);
         context.put("equalTest", type == Double.TYPE || type == Float.TYPE ? ",0" : "");
         context.put("isObject", isObject());
         context.put("isPrimitive", !isObject());

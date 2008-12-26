@@ -1,0 +1,53 @@
+   /** Compares $Type */
+   static class ${Type}ComparatorMin implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final ${Type}Attribute attribute;
+
+        /** Creates a new ${Type}ComparatorMin from the specified attribute. */
+        ${Type}ComparatorMin(${Type}Attribute attribute) {
+            this.attribute = attribute;
+        }
+        
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            $type thisVal = o1.get(attribute);
+            $type anotherVal = o2.get(attribute);
+#if($type=="boolean")
+            return (anotherVal == thisVal ? 0 : (thisVal ? 1 : -1));
+#elseif ($is16Or8Bit)
+            return thisVal - anotherVal;
+#elseif ($isReal)
+            return ${Type}.compare(thisVal, anotherVal);
+#else
+            return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+#end            
+        }
+    }
+
+   /** Compares $Type */
+   static class ${Type}ComparatorMax implements Comparator<GetAttributer>, Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+        private final ${Type}Attribute attribute;
+
+        /** Creates a new ${Type}ComparatorMax from the specified attribute. */
+        ${Type}ComparatorMax(${Type}Attribute attribute) {
+            this.attribute = attribute;
+        }
+        
+        /** {@inheritDoc} */
+        public int compare(GetAttributer o1, GetAttributer o2) {
+            $type thisVal = o1.get(attribute);
+            $type anotherVal = o2.get(attribute);
+#if($type=="boolean")
+            return (anotherVal == thisVal ? 0 : (anotherVal ? 1 : -1));
+#elseif ($is16Or8Bit)
+            return anotherVal - thisVal;
+#elseif ($isReal)
+            return ${Type}.compare(anotherVal, thisVal);
+#else
+            return (thisVal > anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+#end            
+        }
+    }
