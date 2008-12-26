@@ -73,6 +73,15 @@ public final class Comparators {
         return mappedComparator(mapper, NATURAL_COMPARATOR);
     }
 
+    public static <T> Comparator<T> compoundComparator(Comparator<? super T> first, Comparator<? super T> second) {
+        if (first == null) {
+            throw new NullPointerException("first is null");
+        } else if (second == null) {
+            throw new NullPointerException("second is null");
+        }
+        return new CompoundComparator<T>(first, second);
+    }
+
     public static <T, U> Comparator<T> mappedComparator(Op<? super T, U> mapper, Comparator<? super U> comparator) {
         return new MappedComparator<T, U>(comparator, mapper);
     }
@@ -167,7 +176,7 @@ public final class Comparators {
         }
         Comparator<? super T> second = comparators.get(1);
         if (comparators.size() == 2) {
-            return new Stacked2Comparator<T>(first, second);
+            return new CompoundComparator<T>(first, second);
         }
 
         Comparator<? super T>[] list = new Comparator[comparators.size() - 2];
@@ -177,14 +186,14 @@ public final class Comparators {
         return new StackedComparator<T>(first, second, list);
     }
 
-    static class Stacked2Comparator<T> implements Comparator<T>, Serializable {
+    static class CompoundComparator<T> implements Comparator<T>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         private final Comparator<? super T> first;
         private final Comparator<? super T> second;
 
-        public Stacked2Comparator(Comparator<? super T> first, Comparator<? super T> second) {
+        public CompoundComparator(Comparator<? super T> first, Comparator<? super T> second) {
             this.first = first;
             this.second = second;
         }
@@ -206,7 +215,8 @@ public final class Comparators {
         private final Comparator<? super T> second;
         private final Comparator<? super T>[] comparators;
 
-        public StackedComparator(Comparator<? super T> first, Comparator<? super T> second, Comparator<? super T>[] comparators) {
+        public StackedComparator(Comparator<? super T> first, Comparator<? super T> second,
+                Comparator<? super T>[] comparators) {
             this.first = first;
             this.second = second;
             this.comparators = comparators;
