@@ -20,10 +20,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.codehaus.cake.ops.Ops.ByteComparator;
+import org.codehaus.cake.ops.Ops.CharComparator;
 import org.codehaus.cake.ops.Ops.DoubleComparator;
+import org.codehaus.cake.ops.Ops.FloatComparator;
 import org.codehaus.cake.ops.Ops.IntComparator;
 import org.codehaus.cake.ops.Ops.LongComparator;
 import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.ops.Ops.ShortComparator;
 
 /**
  * Various implementations of {@link Comparator}, {@link LongComparator}, {@link DoubleComparator} and
@@ -44,7 +48,7 @@ public final class Comparators {
     /**
      * A comparator that imposes the reverse of the <i>natural ordering</i>. This comparator is Serializable.
      */
-    public static final Comparator NATURAL_REVERSE_COMPARATOR = Collections.reverseOrder();
+    public static final Comparator NATURAL_REVERSE_COMPARATOR = new NaturalReverseComparator();
 
     public static final Comparator NULL_GREATEST_ORDER = new NullGreatestOrderPredicate();
 
@@ -69,10 +73,6 @@ public final class Comparators {
     // throw new UnsupportedOperationException();
     // }
 
-    public static <T, U extends Comparable<? super U>> Comparator<T> mappedComparator(Op<? super T, U> mapper) {
-        return mappedComparator(mapper, NATURAL_COMPARATOR);
-    }
-
     public static <T> Comparator<T> compoundComparator(Comparator<? super T> first, Comparator<? super T> second) {
         if (first == null) {
             throw new NullPointerException("first is null");
@@ -80,6 +80,10 @@ public final class Comparators {
             throw new NullPointerException("second is null");
         }
         return new CompoundComparator<T>(first, second);
+    }
+
+    public static <T, U extends Comparable<? super U>> Comparator<T> mappedComparator(Op<? super T, U> mapper) {
+        return mappedComparator(mapper, NATURAL_COMPARATOR);
     }
 
     public static <T, U> Comparator<T> mappedComparator(Op<? super T, U> mapper, Comparator<? super U> comparator) {
@@ -159,7 +163,7 @@ public final class Comparators {
         return Collections.reverseOrder(comparator);
     }
 
-    public static <T> Comparator<? super T> stack(List<Comparator<? super T>> comparators) {
+    public static <T> Comparator<? super T> stack(List<? extends Comparator<? super T>> comparators) {
         if (comparators == null) {
             throw new NullPointerException("comparators is null");
         } else if (comparators.size() == 0) {
@@ -181,7 +185,7 @@ public final class Comparators {
 
         Comparator<? super T>[] list = new Comparator[comparators.size() - 2];
         for (int i = 2; i < comparators.size(); i++) {
-            list[i] = comparators.get(i);
+            list[i - 2] = comparators.get(i);
         }
         return new StackedComparator<T>(first, second, list);
     }
@@ -202,38 +206,6 @@ public final class Comparators {
             int result = first.compare(o1, o2);
             if (result == 0) {
                 return second.compare(o1, o2);
-            }
-            return result;
-        }
-    }
-
-    static class StackedComparator<T> implements Comparator<T>, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1L;
-
-        private final Comparator<? super T> first;
-        private final Comparator<? super T> second;
-        private final Comparator<? super T>[] comparators;
-
-        public StackedComparator(Comparator<? super T> first, Comparator<? super T> second,
-                Comparator<? super T>[] comparators) {
-            this.first = first;
-            this.second = second;
-            this.comparators = comparators;
-        }
-
-        public int compare(T o1, T o2) {
-            int result = first.compare(o1, o2);
-            if (result == 0) {
-                result = second.compare(o1, o2);
-                if (result == 0) {
-                    for (int i = 0; i < comparators.length; i++) {
-                        result = comparators[i].compare(o1, o2);
-                        if (result != 0) {
-                            return result;
-                        }
-                    }
-                }
             }
             return result;
         }
@@ -267,9 +239,39 @@ public final class Comparators {
     }
 
     /** A Comparator for Comparable.objects. */
-    static final class NaturalComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
+    static final class NaturalComparator<T extends Comparable<? super T>> implements ByteComparator, CharComparator,
+            DoubleComparator, FloatComparator, IntComparator, LongComparator, ShortComparator, Comparator<T>,
+            Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = 949691819933412722L;
+        private static final long serialVersionUID = 1L;
+
+        public int compare(byte a, byte b) {
+            return a - b;
+        }
+
+        public int compare(char a, char b) {
+            return a - b;
+        }
+
+        public int compare(double a, double b) {
+            return Double.compare(a, b);
+        }
+
+        public int compare(float a, float b) {
+            return Float.compare(a, b);
+        }
+
+        public int compare(int a, int b) {
+            return a < b ? -1 : a > b ? 1 : 0;
+        }
+
+        public int compare(long a, long b) {
+            return a < b ? -1 : a > b ? 1 : 0;
+        }
+
+        public int compare(short a, short b) {
+            return a - b;
+        }
 
         /** {@inheritDoc} */
         public int compare(T a, T b) {
@@ -279,6 +281,52 @@ public final class Comparators {
         /** @return Preserves singleton property */
         private Object readResolve() {
             return NATURAL_COMPARATOR;
+        }
+    }
+
+    /** A Comparator for Comparable.objects. */
+    static final class NaturalReverseComparator<T extends Comparable<? super T>> implements ByteComparator,
+            CharComparator, DoubleComparator, FloatComparator, IntComparator, LongComparator, ShortComparator,
+            Comparator<T>, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        public int compare(byte a, byte b) {
+            return b - a;
+        }
+
+        public int compare(char a, char b) {
+            return b - a;
+        }
+
+        public int compare(double a, double b) {
+            return Double.compare(b, a);
+        }
+
+        public int compare(float a, float b) {
+            return Float.compare(b, a);
+        }
+
+        public int compare(int a, int b) {
+            return a < b ? 1 : a > b ? -1 : 0;
+        }
+
+        public int compare(long a, long b) {
+            return a < b ? 1 : a > b ? -1 : 0;
+        }
+
+        public int compare(short a, short b) {
+            return b - a;
+        }
+
+        /** {@inheritDoc} */
+        public int compare(T a, T b) {
+            return b.compareTo(a);
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return NATURAL_REVERSE_COMPARATOR;
         }
     }
 
@@ -348,6 +396,38 @@ public final class Comparators {
         /** @return Preserves singleton property */
         private Object readResolve() {
             return NULL_LEAST_ORDER;
+        }
+    }
+
+    static class StackedComparator<T> implements Comparator<T>, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final Comparator<? super T>[] comparators;
+        private final Comparator<? super T> first;
+        private final Comparator<? super T> second;
+
+        public StackedComparator(Comparator<? super T> first, Comparator<? super T> second,
+                Comparator<? super T>[] comparators) {
+            this.first = first;
+            this.second = second;
+            this.comparators = comparators;
+        }
+
+        public int compare(T o1, T o2) {
+            int result = first.compare(o1, o2);
+            if (result == 0) {
+                result = second.compare(o1, o2);
+                if (result == 0) {
+                    for (int i = 0; i < comparators.length; i++) {
+                        result = comparators[i].compare(o1, o2);
+                        if (result != 0) {
+                            return result;
+                        }
+                    }
+                }
+            }
+            return result;
         }
     }
 }

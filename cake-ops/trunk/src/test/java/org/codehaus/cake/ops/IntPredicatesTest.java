@@ -33,10 +33,9 @@ import org.codehaus.cake.ops.Ops.IntPredicate;
 import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
-
 /**
  * Various tests for {@link IntPredicates}.
- * 
+ *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
@@ -63,8 +62,9 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
-     * invoked with a left side <code>null</code> argument.
+     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a
+     * {@link NullPointerException} when invoked with a left side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
@@ -72,14 +72,15 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
-     * invoked with a right side <code>null</code> argument.
+     * Tests that {@link IntPredicates#and(IntPredicate, IntPredicate)} throws a
+     * {@link NullPointerException} when invoked with a right side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
         IntPredicates.and(TRUE, null);
     }
-
+    
     /* Test greater then */
     @Test
     public void equalsTo() {
@@ -93,7 +94,7 @@ public final class IntPredicatesTest {
 
         TestUtil.assertIsSerializable(f);
     }
-
+    
     /**
      * Tests {@link IntPredicates#FALSE}.
      */
@@ -105,7 +106,7 @@ public final class IntPredicatesTest {
         assertIsSerializable(FALSE);
         assertSame(FALSE, TestUtil.serializeAndUnserialize(FALSE));
     }
-
+   
     /* Test greater then */
     @Test
     public void greaterThen() {
@@ -160,10 +161,11 @@ public final class IntPredicatesTest {
 
         TestUtil.assertIsSerializable(f);
     }
-
-    /**
-     * Tests that {@link IntPredicates#not(IntPredicate)} throws a {@link NullPointerException} when invoked with a
-     * <code>null</code> argument.
+   
+   
+     /**
+     * Tests that {@link IntPredicates#not(IntPredicate)} throws a
+     * {@link NullPointerException} when invoked with a <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
@@ -203,8 +205,9 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
-     * invoked with a left side <code>null</code> argument.
+     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a
+     * {@link NullPointerException} when invoked with a left side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
@@ -212,15 +215,17 @@ public final class IntPredicatesTest {
     }
 
     /**
-     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a {@link NullPointerException} when
-     * invoked with a right side <code>null</code> argument.
+     * Tests that {@link IntPredicates#or(IntPredicate, IntPredicate)} throws a
+     * {@link NullPointerException} when invoked with a right side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {
         IntPredicates.or(TRUE, null);
     }
-
-    /**
+   
+    
+   /**
      * Tests {@link IntPredicates#TRUE}.
      */
     @Test

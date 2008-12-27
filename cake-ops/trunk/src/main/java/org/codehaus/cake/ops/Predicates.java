@@ -23,8 +23,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.codehaus.cake.ops.Ops.BytePredicate;
+import org.codehaus.cake.ops.Ops.CharPredicate;
+import org.codehaus.cake.ops.Ops.DoublePredicate;
+import org.codehaus.cake.ops.Ops.FloatPredicate;
+import org.codehaus.cake.ops.Ops.IntPredicate;
+import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.ops.Ops.ShortPredicate;
 
 /**
  * Various implementations of {@link Predicate}.
@@ -249,6 +256,24 @@ public final class Predicates {
     }
 
     /**
+     * Creates a Predicate that evaluates to <code>true</code> iff the element being evaluated is the same or
+     * {@link Object#equals equal} to the element being specified in this method.
+     * <p>
+     * If the specified object is serializable the returned predicate will also be serializable.
+     * 
+     * @param element
+     *            the element to use for comparison
+     * @return the newly created Predicate
+     * @throws NullPointerException
+     *             if the specified element is <code>null</code>
+     * @param <E>
+     *            the type of elements accepted by the predicate
+     */
+    public static <E> Predicate<E> equalsTo(E element) {
+        return new IsEqualsPredicate<E>(element);
+    }
+
+    /**
      * Creates a Predicate that evaluates to true if any of the specified elements are equal to the element that is
      * being tested. The returned predicate uses short-circuit evaluation (or minimal evaluation). That is, subsequent
      * arguments are only evaluated if the previous arguments does not suffice to determine the truth value.
@@ -292,24 +317,6 @@ public final class Predicates {
             list.add(equalsTo(e));
         }
         return anyTrue(list);
-    }
-
-    /**
-     * Creates a Predicate that evaluates to <code>true</code> iff the element being evaluated is the same or
-     * {@link Object#equals equal} to the element being specified in this method.
-     * <p>
-     * If the specified object is serializable the returned predicate will also be serializable.
-     * 
-     * @param element
-     *            the element to use for comparison
-     * @return the newly created Predicate
-     * @throws NullPointerException
-     *             if the specified element is <code>null</code>
-     * @param <E>
-     *            the type of elements accepted by the predicate
-     */
-    public static <E> Predicate<E> equalsTo(E element) {
-        return new IsEqualsPredicate<E>(element);
     }
 
     /**
@@ -993,10 +1000,35 @@ public final class Predicates {
      * 
      * @see TruePredicate
      */
-    static final class FalsePredicate implements Predicate, Serializable {
+    static final class FalsePredicate implements Predicate<Object>, BytePredicate, CharPredicate, DoublePredicate,
+            FloatPredicate, IntPredicate, LongPredicate, ShortPredicate, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = -3048464662394104180L;
+        private static final long serialVersionUID = 1L;
+
+        public boolean op(byte a) {
+            return false;
+        }
+
+        public boolean op(char a) {
+            return false;
+        }
+
+        public boolean op(double a) {
+            return false;
+        }
+
+        public boolean op(float a) {
+            return false;
+        }
+
+        public boolean op(int a) {
+            return false;
+        }
+
+        public boolean op(long element) {
+            return false;
+        }
 
         /**
          * Returns <tt>false</tt> for any element.
@@ -1006,6 +1038,10 @@ public final class Predicates {
          * @return <tt>false</tt> for any element
          */
         public boolean op(Object element) {
+            return false;
+        }
+
+        public boolean op(short a) {
             return false;
         }
 
@@ -1727,7 +1763,8 @@ public final class Predicates {
      * 
      * @see FalsePredicate
      */
-    static final class TruePredicate implements Predicate, Serializable {
+    static final class TruePredicate implements Predicate<Object>, BytePredicate, CharPredicate, DoublePredicate,
+            FloatPredicate, IntPredicate, LongPredicate, ShortPredicate, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 3258129137502925875L;
@@ -1756,6 +1793,34 @@ public final class Predicates {
         @Override
         public String toString() {
             return Boolean.TRUE.toString();
+        }
+
+        public boolean op(byte a) {
+            return true;
+        }
+
+        public boolean op(char a) {
+            return true;
+        }
+
+        public boolean op(double a) {
+            return true;
+        }
+
+        public boolean op(float a) {
+            return true;
+        }
+
+        public boolean op(int a) {
+            return true;
+        }
+
+        public boolean op(long a) {
+            return true;
+        }
+
+        public boolean op(short a) {
+            return true;
         }
     }
 

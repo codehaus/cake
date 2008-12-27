@@ -59,7 +59,7 @@ public class DefaultCacheQuery<K, V, K1, V1> extends AbstractCacheQuery<K1, V1> 
                         CollectionOps.MAP_ENTRY_TO_KEY_OP), limit);
     }
 
-    public <E> CacheQuery<E, V1> keyTo(Op<K1, E> transformer) {
+    public <E> CacheQuery<E, V1> keyTo(Op<? super K1, ? extends E> transformer) {
         if (transformer == null) {
             throw new NullPointerException("transformer is null");
         }
@@ -120,7 +120,7 @@ public class DefaultCacheQuery<K, V, K1, V1> extends AbstractCacheQuery<K1, V1> 
                         CollectionOps.MAP_ENTRY_TO_VALUE_OP), limit);
     }
 
-    public <E> CacheQuery<K1, E> valueTo(Op<V1, E> transformer) {
+    public <E> CacheQuery<K1, E> valueTo(Op<? super V1, ? extends E> transformer) {
         if (transformer == null) {
             throw new NullPointerException("transformer is null");
         }
@@ -130,9 +130,9 @@ public class DefaultCacheQuery<K, V, K1, V1> extends AbstractCacheQuery<K1, V1> 
     }
 
     static class MapKey<K, V, K1> implements Op<CacheEntry<K, V>, CacheEntry<K1, V>> {
-        private final Op<K, K1> op;
+        private final Op<? super K, ? extends K1> op;
 
-        MapKey(Op<K, K1> op) {
+        MapKey(Op<? super K, ? extends K1> op) {
             this.op = op;
         }
 
@@ -144,9 +144,9 @@ public class DefaultCacheQuery<K, V, K1, V1> extends AbstractCacheQuery<K1, V1> 
     }
 
     static class MapValue<K, V, V1> implements Op<CacheEntry<K, V>, CacheEntry<K, V1>> {
-        private final Op<V, V1> op;
+        private final Op<? super V, ? extends V1> op;
 
-        MapValue(Op<V, V1> op) {
+        MapValue(Op<? super V, ? extends V1> op) {
             this.op = op;
         }
 

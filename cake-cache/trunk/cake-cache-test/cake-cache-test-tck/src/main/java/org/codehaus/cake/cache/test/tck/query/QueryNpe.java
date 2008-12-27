@@ -1,18 +1,6 @@
 package org.codehaus.cake.cache.test.tck.query;
 
-import static org.codehaus.cake.test.util.TestUtil.dummy;
-
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.DoubleOps;
-import org.codehaus.cake.ops.FloatOps;
-import org.codehaus.cake.ops.IntOps;
-import org.codehaus.cake.ops.LongOps;
-import org.codehaus.cake.ops.ObjectOps;
 import org.junit.Test;
 
 public class QueryNpe extends AbstractCacheTCKTest {

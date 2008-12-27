@@ -7,14 +7,14 @@
         assertEquals(Math.sqrt(2), ComplexOps.ABS_OP.op(new Complex(-1, -1)), 0);
         assertEquals(Math.sqrt(2), ComplexOps.ABS_OP.op(new Complex(1, 1)), 0);
 #else
-        assertEquals($util.val(1), ${Type}Ops.ABS_OP.op($util.val(-1))${equalTest});
-        assertEquals($util.val(1), ${Type}Ops.ABS_OP.op($util.val(1))${equalTest});
+        assertEquals($util.val(1), PrimitiveOps.ABS_OP.op($util.val(-1))${equalTest});
+        assertEquals($util.val(1), PrimitiveOps.ABS_OP.op($util.val(1))${equalTest});
 #end
-        assertSame(${Type}Ops.ABS_OP, ${Type}Ops.abs());
+        assertSame(PrimitiveOps.ABS_OP, ${Type}Ops.abs());
 #if($isReal) 
-        assertEquals(${object}.POSITIVE_INFINITY, ${Type}Ops.ABS_OP.op(${object}.POSITIVE_INFINITY)${equalTest});
-        assertEquals(${object}.NaN, ${Type}Ops.ABS_OP.op(${object}.NaN)${equalTest});
+        assertEquals(${object}.POSITIVE_INFINITY, PrimitiveOps.ABS_OP.op(${object}.POSITIVE_INFINITY)${equalTest});
+        assertEquals(${object}.NaN, PrimitiveOps.ABS_OP.op(${object}.NaN)${equalTest});
 #end
-        ${Type}Ops.ABS_OP.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(${Type}Ops.ABS_OP);
+        PrimitiveOps.ABS_OP.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${Type}Ops.abs());
     }

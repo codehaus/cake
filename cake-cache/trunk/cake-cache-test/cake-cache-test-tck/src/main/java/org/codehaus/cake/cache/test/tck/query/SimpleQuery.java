@@ -6,7 +6,6 @@ import static org.codehaus.cake.cache.test.util.AtrStubs.L_3;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.query.CacheQuery;
-import org.codehaus.cake.ops.ObjectOps;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.junit.Test;
 

@@ -20,14 +20,10 @@ import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.GetAttributer;
-import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
-import org.codehaus.cake.ops.Ops.BinaryProcedure;
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.OnStart;
-import org.codehaus.cake.util.Pair;
 
 /**
  * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach

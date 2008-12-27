@@ -25,7 +25,6 @@ import java.util.Map.Entry;
 
 import org.codehaus.cake.attribute.common.ComparableObjectAttribute;
 import org.codehaus.cake.internal.attribute.AttributeHelper;
-import org.codehaus.cake.ops.Comparators;
 
 /**
  * 
@@ -140,7 +139,7 @@ public final class Attributes {
         } else if (attribute instanceof LongAttribute) {
             return new LongComparatorMax((LongAttribute) attribute);
         } else if (attribute instanceof ComparableObjectAttribute) {
-            return Comparators.reverseOrder((ComparableObjectAttribute) attribute);
+            return Collections.reverseOrder((ComparableObjectAttribute) attribute);
         } else if (attribute instanceof ShortAttribute) {
             return new ShortComparatorMax((ShortAttribute) attribute);
         } else {

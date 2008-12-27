@@ -1,13 +1,13 @@
     /**
      * A comparator for ${type}s relying on natural ordering. The comparator is Serializable.
      */
-    public static final ${Type}Comparator COMPARATOR = new Natural${Type}Comparator();
+    public static final ${Type}Comparator COMPARATOR = (${Type}Comparator) Comparators.NATURAL_COMPARATOR;
 
     /**
      * A comparator that imposes the reverse of the <i>natural ordering</i> on ${type}s. The
      * comparator is Serializable.
      */
-    public static final ${Type}Comparator REVERSE_COMPARATOR = new Natural${Type}ReverseComparator();
+    public static final ${Type}Comparator REVERSE_COMPARATOR = (${Type}Comparator) Comparators.NATURAL_REVERSE_COMPARATOR;
 
     /**
      * Creates a comparator that imposes the reverse ordering of the specified comparator.
@@ -20,73 +20,6 @@
      * @return a comparator that imposes the reverse ordering of the specified comparator.
      */
     public static ${Type}Comparator reverseOrder(${Type}Comparator comparator) {
-        return new Reverse${Type}Comparator(comparator);
+        return new PrimitiveOps.Reverse${Type}Comparator(comparator);
     }
     
-            /** A comparator that reserves the result of another DoubleComparator. */
-    static final class Reverse${Type}Comparator implements ${Type}Comparator, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1585665469031127321L;
-
-        /** The comparator to reverse. */
-        private final ${Type}Comparator comparator;
-
-        /**
-         * Creates a new Reverse${Type}Comparator.
-         * 
-         * @param comparator
-         *            the comparator to reverse
-         */
-        Reverse${Type}Comparator(${Type}Comparator comparator) {
-            if (comparator == null) {
-                throw new NullPointerException("comparator is null");
-            }
-            this.comparator = comparator;
-        }
-
-        /** {@inheritDoc} */
-        public int compare($type a, $type b) {
-            return -comparator.compare(a, b);
-        }
-    }
-    
-    /** A comparator for ${type}s relying on natural ordering. */
-    static final class Natural${Type}Comparator implements ${Type}Comparator, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 8763765406476535022L;
-
-        /** {@inheritDoc} */
-        public int compare($type a, $type b) {
-#if($isReal)        
-            return ${Type}.compare(a, b);
-#else
-            return a < b ? -1 : a > b ? 1 : 0;
-#end
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return COMPARATOR;
-        }
-    }
-
-    /** A comparator for ${type}s relying on natural ordering. */
-    static final class Natural${Type}ReverseComparator implements ${Type}Comparator, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -7289505884757339069L;
-
-        /** {@inheritDoc} */
-        public int compare($type a, $type b) {
-#if($isReal)        
-            return -${Type}.compare(a, b);
-#else
-            return a < b ? 1 : a > b ? -1 : 0;
-#end
-
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return REVERSE_COMPARATOR;
-        }
-    }

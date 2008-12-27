@@ -15,15 +15,19 @@
  */
 package org.codehaus.cake.ops;
 
-import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
-import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
+import static org.junit.Assert.*;
+
+import static org.codehaus.cake.test.util.TestUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.ops.Ops.FloatReducer;
+import org.codehaus.cake.ops.Ops.DoubleReducer;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
+import org.codehaus.cake.ops.Ops.*;
+import org.codehaus.cake.test.util.TestUtil;
+import org.junit.Test;
+import java.math.*;
 /**
  * Various tests for {@link FloatOps}.
  *
@@ -37,25 +41,25 @@ public final class FloatOpsTest {
      */
     @Test
     public void abs() {
-        assertEquals(1F, FloatOps.ABS_OP.op(-1F),0);
-        assertEquals(1F, FloatOps.ABS_OP.op(1F),0);
-        assertSame(FloatOps.ABS_OP, FloatOps.abs());
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.ABS_OP.op(Float.POSITIVE_INFINITY),0);
-        assertEquals(Float.NaN, FloatOps.ABS_OP.op(Float.NaN),0);
-        FloatOps.ABS_OP.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(FloatOps.ABS_OP);
+        assertEquals(1F, PrimitiveOps.ABS_OP.op(-1F),0);
+        assertEquals(1F, PrimitiveOps.ABS_OP.op(1F),0);
+        assertSame(PrimitiveOps.ABS_OP, FloatOps.abs());
+        assertEquals(Float.POSITIVE_INFINITY, PrimitiveOps.ABS_OP.op(Float.POSITIVE_INFINITY),0);
+        assertEquals(Float.NaN, PrimitiveOps.ABS_OP.op(Float.NaN),0);
+        PrimitiveOps.ABS_OP.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(FloatOps.abs());
     }   /**
      * Tests {@link FloatOps#ADD_REDUCER} and {@link FloatOps#add()}.
      */
     @Test
     public void add() {
-        assertEquals(3F, FloatOps.ADD_REDUCER.op(1F, 2F),0);
-        assertEquals(3F, FloatOps.ADD_REDUCER.op(2F, 1F),0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.ADD_REDUCER.op(1, Float.POSITIVE_INFINITY),0);
-        assertEquals(Float.NaN, FloatOps.ADD_REDUCER.op(1, Float.NaN),0);
-        assertSame(FloatOps.ADD_REDUCER, FloatOps.add());
-        FloatOps.ADD_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(FloatOps.ADD_REDUCER);
+        assertEquals(3F, PrimitiveOps.ADD_REDUCER.op(1F, 2F),0);
+        assertEquals(3F, PrimitiveOps.ADD_REDUCER.op(2F, 1F),0);
+        assertEquals(Float.POSITIVE_INFINITY, PrimitiveOps.ADD_REDUCER.op(1, Float.POSITIVE_INFINITY),0);
+        assertEquals(Float.NaN, PrimitiveOps.ADD_REDUCER.op(1, Float.NaN),0);
+        assertSame(PrimitiveOps.ADD_REDUCER, FloatOps.add());
+        PrimitiveOps.ADD_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.ADD_REDUCER);
     }
 
     /**
@@ -77,13 +81,13 @@ public final class FloatOpsTest {
      */
     @Test
     public void divide() {
-        assertEquals(4F, FloatOps.DIVIDE_REDUCER.op(16F, 4F),0);
-        assertEquals(-4F, FloatOps.DIVIDE_REDUCER.op(-8F, 2F),0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.DIVIDE_REDUCER.op(Float.POSITIVE_INFINITY,1),0);
-        assertEquals(Float.NaN, FloatOps.DIVIDE_REDUCER.op(1, Float.NaN),0);
-        assertSame(FloatOps.DIVIDE_REDUCER, FloatOps.divide());
-        FloatOps.DIVIDE_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(FloatOps.DIVIDE_REDUCER);
+        assertEquals(4F, PrimitiveOps.DIVIDE_REDUCER.op(16F, 4F),0);
+        assertEquals(-4F, PrimitiveOps.DIVIDE_REDUCER.op(-8F, 2F),0);
+        assertEquals(Float.POSITIVE_INFINITY, PrimitiveOps.DIVIDE_REDUCER.op(Float.POSITIVE_INFINITY,1),0);
+        assertEquals(Float.NaN, PrimitiveOps.DIVIDE_REDUCER.op(1, Float.NaN),0);
+        assertSame(PrimitiveOps.DIVIDE_REDUCER, FloatOps.divide());
+        PrimitiveOps.DIVIDE_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.DIVIDE_REDUCER);
     }
 
     /**
@@ -106,13 +110,13 @@ public final class FloatOpsTest {
      */
     @Test
     public void multiply() {
-        assertEquals(16F, FloatOps.MULTIPLY_REDUCER.op(4F, 4F),0);
-        assertEquals(-8F, FloatOps.MULTIPLY_REDUCER.op(-4F, 2F),0);
-        assertEquals(Float.POSITIVE_INFINITY, FloatOps.MULTIPLY_REDUCER.op(Float.POSITIVE_INFINITY,1),0);
-        assertEquals(Float.NaN, FloatOps.MULTIPLY_REDUCER.op(1, Float.NaN),0);
-        assertSame(FloatOps.MULTIPLY_REDUCER, FloatOps.multiply());
-        FloatOps.MULTIPLY_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(FloatOps.MULTIPLY_REDUCER);
+        assertEquals(16F, PrimitiveOps.MULTIPLY_REDUCER.op(4F, 4F),0);
+        assertEquals(-8F, PrimitiveOps.MULTIPLY_REDUCER.op(-4F, 2F),0);
+        assertEquals(Float.POSITIVE_INFINITY,PrimitiveOps.MULTIPLY_REDUCER.op(Float.POSITIVE_INFINITY,1),0);
+        assertEquals(Float.NaN, PrimitiveOps.MULTIPLY_REDUCER.op(1, Float.NaN),0);
+        assertSame(PrimitiveOps.MULTIPLY_REDUCER, FloatOps.multiply());
+        PrimitiveOps.MULTIPLY_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.MULTIPLY_REDUCER);
     }
 
     /**
@@ -134,13 +138,13 @@ public final class FloatOpsTest {
      */
     @Test
     public void subtract() {
-        assertEquals(-1F, FloatOps.SUBTRACT_REDUCER.op(1F, 2F),0);
-        assertEquals(1F, FloatOps.SUBTRACT_REDUCER.op(2F, 1F),0);
-        assertEquals(Float.NEGATIVE_INFINITY, FloatOps.SUBTRACT_REDUCER.op(1, Float.POSITIVE_INFINITY),0);
-        assertEquals(Float.NaN, FloatOps.SUBTRACT_REDUCER.op(1, Float.NaN),0);
-        assertSame(FloatOps.SUBTRACT_REDUCER, FloatOps.subtract());
-        FloatOps.SUBTRACT_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(FloatOps.SUBTRACT_REDUCER);
+        assertEquals(-1F, PrimitiveOps.SUBTRACT_REDUCER.op(1F, 2F),0);
+        assertEquals(1F, PrimitiveOps.SUBTRACT_REDUCER.op(2F, 1F),0);
+        assertEquals(Float.NEGATIVE_INFINITY, PrimitiveOps.SUBTRACT_REDUCER.op(1, Float.POSITIVE_INFINITY),0);
+        assertEquals(Float.NaN, PrimitiveOps.SUBTRACT_REDUCER.op(1, Float.NaN),0);
+        assertSame(PrimitiveOps.SUBTRACT_REDUCER, FloatOps.subtract());
+        PrimitiveOps.SUBTRACT_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.SUBTRACT_REDUCER);
     }
 
     /**
@@ -213,6 +217,7 @@ public final class FloatOpsTest {
         FloatOps.MIN_REDUCER.toString(); // does not fail
         TestUtil.assertSingletonSerializable(FloatOps.MIN_REDUCER);
     }
+
 
     /**
      * Tests {@link FloatOps#min}.

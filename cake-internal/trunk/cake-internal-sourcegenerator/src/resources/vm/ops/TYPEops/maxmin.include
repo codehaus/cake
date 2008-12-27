@@ -1,16 +1,14 @@
-    
     /**
      * A reducer returning the maximum of two $type elements, using natural comparator.
      * The Reducer is serializable.
      */
-     static final ${Type}Reducer MAX_REDUCER = new Natural${Type}MaxReducer();
+     static final ${Type}Reducer MAX_REDUCER = (${Type}Reducer) ObjectOps.MAX_REDUCER;
 
     /**
      * A reducer returning the minimum of two $type elements, using natural comparator.
      * The Reducer is serializable.
      */
-     static final ${Type}Reducer MIN_REDUCER = new Natural${Type}MinReducer();
-     
+     static final ${Type}Reducer MIN_REDUCER = (${Type}Reducer) ObjectOps.MIN_REDUCER;
     /**
      * A reducer returning the maximum of two $type elements, using the specified
      * comparator.
@@ -20,7 +18,7 @@
      * @return the newly created reducer
      */
     public static $util.op("Reducer") max($util.op("Comparator") comparator) {
-        return new ${Type}MaxReducer(comparator);
+        return new PrimitiveOps.${Type}MaxReducer(comparator);
     }
 
     /**
@@ -32,97 +30,6 @@
      * @return the newly created reducer
      */
     public static $util.op("Reducer") min($util.op("Comparator") comparator) {
-        return new ${Type}MinReducer(comparator);
+        return new PrimitiveOps.${Type}MinReducer(comparator);
     }
-    
-    /**
-     * A reducer returning the maximum of two $type elements, using the given comparator.
-     */
-    static final class ${Type}MaxReducer implements $util.op("Reducer"), Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 2065097741025480432L;
-
-        /** Comparator used when reducing. */
-        private final $util.op("Comparator") comparator;
-
-        /**
-         * Creates a ${Type}MaxReducer.
-         *
-         * @param comparator
-         *            the comparator to use
-         */
-        ${Type}MaxReducer($util.op("Comparator") comparator) {
-            if (comparator == null) {
-                throw new NullPointerException("comparator is null");
-            }
-            this.comparator = comparator;
-        }
-
-        /** {@inheritDoc} */
-        public $type op($type a, $type b) {
-            return comparator.compare(a, b) >= 0 ? a : b;
-        }
-    }
-
-    /**
-     * A reducer returning the minimum of two $type elements, using the given comparator.
-     */
-    static final class ${Type}MinReducer implements $util.op("Reducer"), Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 6109941145562459503L;
-
-        /** Comparator used when reducing. */
-        private final $util.op("Comparator") comparator;
-
-        /**
-         * Creates a ${Type}MinReducer.
-         *
-         * @param comparator
-         *            the comparator to use
-         */
-        ${Type}MinReducer($util.op("Comparator") comparator) {
-            if (comparator == null) {
-                throw new NullPointerException("comparator is null");
-            }
-            this.comparator = comparator;
-        }
-
-        /** {@inheritDoc} */
-        public $type op($type a, $type b) {
-            return comparator.compare(a, b) <= 0 ? a : b;
-        }
-    }
-    
-        /** A reducer returning the maximum of two $type elements, using natural comparator. */
-    static final class Natural${Type}MaxReducer implements $util.op("Reducer"), Serializable {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = -5902864811727900806L;
-
-        /** {@inheritDoc} */
-        public $type op($type a, $type b) {
-            return Math.max(a, b);
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return MAX_REDUCER;
-        }
-    }
-
-    /** A reducer returning the minimum of two $type elements, using natural comparator. */
-    static final class Natural${Type}MinReducer implements $util.op("Reducer"), Serializable {
-
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 9005140841348156699L;
-
-        /** {@inheritDoc} */
-        public $type op($type a, $type b) {
-            return Math.min(a, b);
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return MIN_REDUCER;
-        }
-    }
+ 

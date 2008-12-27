@@ -15,9 +15,6 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A map specifically for the storage of Attribute->Object values.

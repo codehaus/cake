@@ -15,15 +15,19 @@
  */
 package org.codehaus.cake.ops;
 
-import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
-import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
+import static org.junit.Assert.*;
+
+import static org.codehaus.cake.test.util.TestUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.ops.Ops.LongReducer;
+import org.codehaus.cake.ops.Ops.DoubleReducer;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
+import org.codehaus.cake.ops.Ops.*;
+import org.codehaus.cake.test.util.TestUtil;
+import org.junit.Test;
+import java.math.*;
 /**
  * Various tests for {@link LongOps}.
  *
@@ -37,21 +41,21 @@ public final class LongOpsTest {
      */
     @Test
     public void abs() {
-        assertEquals(1L, LongOps.ABS_OP.op(-1L));
-        assertEquals(1L, LongOps.ABS_OP.op(1L));
-        assertSame(LongOps.ABS_OP, LongOps.abs());
-        LongOps.ABS_OP.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(LongOps.ABS_OP);
+        assertEquals(1L, PrimitiveOps.ABS_OP.op(-1L));
+        assertEquals(1L, PrimitiveOps.ABS_OP.op(1L));
+        assertSame(PrimitiveOps.ABS_OP, LongOps.abs());
+        PrimitiveOps.ABS_OP.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(LongOps.abs());
     }   /**
      * Tests {@link LongOps#ADD_REDUCER} and {@link LongOps#add()}.
      */
     @Test
     public void add() {
-        assertEquals(3L, LongOps.ADD_REDUCER.op(1L, 2L));
-        assertEquals(3L, LongOps.ADD_REDUCER.op(2L, 1L));
-        assertSame(LongOps.ADD_REDUCER, LongOps.add());
-        LongOps.ADD_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(LongOps.ADD_REDUCER);
+        assertEquals(3L, PrimitiveOps.ADD_REDUCER.op(1L, 2L));
+        assertEquals(3L, PrimitiveOps.ADD_REDUCER.op(2L, 1L));
+        assertSame(PrimitiveOps.ADD_REDUCER, LongOps.add());
+        PrimitiveOps.ADD_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.ADD_REDUCER);
     }
 
     /**
@@ -71,11 +75,11 @@ public final class LongOpsTest {
      */
     @Test
     public void divide() {
-        assertEquals(4L, LongOps.DIVIDE_REDUCER.op(16L, 4L));
-        assertEquals(-4L, LongOps.DIVIDE_REDUCER.op(-8L, 2L));
-        assertSame(LongOps.DIVIDE_REDUCER, LongOps.divide());
-        LongOps.DIVIDE_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(LongOps.DIVIDE_REDUCER);
+        assertEquals(4L, PrimitiveOps.DIVIDE_REDUCER.op(16L, 4L));
+        assertEquals(-4L, PrimitiveOps.DIVIDE_REDUCER.op(-8L, 2L));
+        assertSame(PrimitiveOps.DIVIDE_REDUCER, LongOps.divide());
+        PrimitiveOps.DIVIDE_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.DIVIDE_REDUCER);
     }
 
     /**
@@ -96,11 +100,11 @@ public final class LongOpsTest {
      */
     @Test
     public void multiply() {
-        assertEquals(16L, LongOps.MULTIPLY_REDUCER.op(4L, 4L));
-        assertEquals(-8L, LongOps.MULTIPLY_REDUCER.op(-4L, 2L));
-        assertSame(LongOps.MULTIPLY_REDUCER, LongOps.multiply());
-        LongOps.MULTIPLY_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(LongOps.MULTIPLY_REDUCER);
+        assertEquals(16L, PrimitiveOps.MULTIPLY_REDUCER.op(4L, 4L));
+        assertEquals(-8L, PrimitiveOps.MULTIPLY_REDUCER.op(-4L, 2L));
+        assertSame(PrimitiveOps.MULTIPLY_REDUCER, LongOps.multiply());
+        PrimitiveOps.MULTIPLY_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.MULTIPLY_REDUCER);
     }
 
     /**
@@ -120,11 +124,11 @@ public final class LongOpsTest {
      */
     @Test
     public void subtract() {
-        assertEquals(-1L, LongOps.SUBTRACT_REDUCER.op(1L, 2L));
-        assertEquals(1L, LongOps.SUBTRACT_REDUCER.op(2L, 1L));
-        assertSame(LongOps.SUBTRACT_REDUCER, LongOps.subtract());
-        LongOps.SUBTRACT_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(LongOps.SUBTRACT_REDUCER);
+        assertEquals(-1L, PrimitiveOps.SUBTRACT_REDUCER.op(1L, 2L));
+        assertEquals(1L, PrimitiveOps.SUBTRACT_REDUCER.op(2L, 1L));
+        assertSame(PrimitiveOps.SUBTRACT_REDUCER, LongOps.subtract());
+        PrimitiveOps.SUBTRACT_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.SUBTRACT_REDUCER);
     }
 
     /**
@@ -190,6 +194,7 @@ public final class LongOpsTest {
         LongOps.MIN_REDUCER.toString(); // does not fail
         TestUtil.assertSingletonSerializable(LongOps.MIN_REDUCER);
     }
+
 
     /**
      * Tests {@link LongOps#min}.

@@ -118,10 +118,6 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
         runState.isRunningLazyStart(false);
         CacheEntry<K, V>[] entries = memoryStore.get(filter, comparator == null ? limit : Integer.MAX_VALUE);
 
-        if (limit < 10) {
-            System.out.println("Lim" + limit);
-
-        }
         if (comparator != null) {
             entries = ArrayUtils.sort(entries, comparator, limit);
         } else if (entries.length > limit) {

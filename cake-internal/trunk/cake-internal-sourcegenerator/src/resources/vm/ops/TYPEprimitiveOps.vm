@@ -1,0 +1,158 @@
+    /** A comparator that reserves the result of another ${Type}Comparator. */
+    static final class Reverse${Type}Comparator implements ${Type}Comparator, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        /** The comparator to reverse. */
+        private final ${Type}Comparator comparator;
+
+        /**
+         * Creates a new Reverse${Type}Comparator.
+         * 
+         * @param comparator
+         *            the comparator to reverse
+         */
+        Reverse${Type}Comparator(${Type}Comparator comparator) {
+            if (comparator == null) {
+                throw new NullPointerException("comparator is null");
+            }
+            this.comparator = comparator;
+        }
+
+        /** {@inheritDoc} */
+        public int compare($type a, $type b) {
+            return -comparator.compare(a, b);
+        }
+    }
+    
+    static final class ${Type}AddOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final $type add;
+
+        public ${Type}AddOp($type add) {
+            this.add = add;
+        }
+
+        public $type op($type a) {
+            return $util.add("a","add");
+        }
+    }
+    
+    static final class ${Type}SubtractOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final $type subtract;
+
+        public ${Type}SubtractOp($type subtract) {
+            this.subtract = subtract;
+        }
+
+        public $type op($type a) {
+            return $util.subtract("a","subtract");
+        }
+    }
+    static final class ${Type}DivideOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final $type divide;
+
+        public ${Type}DivideOp($type divide) {
+            this.divide = divide;
+        }
+
+        public $type op($type a) {
+            return $util.divide("a","divide");
+        }
+    }
+
+    static final class ${Type}MultiplyOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final $type multiply;
+
+        public ${Type}MultiplyOp($type multiply) {
+            this.multiply = multiply;
+        }
+
+        public $type op($type a) {
+            return $util.multiply("a","multiply");
+        }
+    }
+
+    static final class ${Type}ConstantOp implements $util.op("Op"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        private final $type constant;
+
+        public ${Type}ConstantOp($type constant) {
+            this.constant = constant;
+        }
+
+        public $type op($type a) {
+            return constant;
+        }
+    }
+    
+    /**
+     * A reducer returning the maximum of two $type elements, using the given comparator.
+     */
+    static final class ${Type}MaxReducer implements $util.op("Reducer"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        /** Comparator used when reducing. */
+        private final $util.op("Comparator") comparator;
+
+        /**
+         * Creates a ${Type}MaxReducer.
+         *
+         * @param comparator
+         *            the comparator to use
+         */
+        ${Type}MaxReducer($util.op("Comparator") comparator) {
+            if (comparator == null) {
+                throw new NullPointerException("comparator is null");
+            }
+            this.comparator = comparator;
+        }
+
+        /** {@inheritDoc} */
+        public $type op($type a, $type b) {
+            return comparator.compare(a, b) >= 0 ? a : b;
+        }
+    }
+
+    /**
+     * A reducer returning the minimum of two $type elements, using the given comparator.
+     */
+    static final class ${Type}MinReducer implements $util.op("Reducer"), Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+
+        /** Comparator used when reducing. */
+        private final $util.op("Comparator") comparator;
+
+        /**
+         * Creates a ${Type}MinReducer.
+         *
+         * @param comparator
+         *            the comparator to use
+         */
+        ${Type}MinReducer($util.op("Comparator") comparator) {
+            if (comparator == null) {
+                throw new NullPointerException("comparator is null");
+            }
+            this.comparator = comparator;
+        }
+
+        /** {@inheritDoc} */
+        public $type op($type a, $type b) {
+            return comparator.compare(a, b) <= 0 ? a : b;
+        }
+    }

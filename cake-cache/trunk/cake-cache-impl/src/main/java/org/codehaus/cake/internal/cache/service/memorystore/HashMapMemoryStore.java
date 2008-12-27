@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
@@ -47,7 +46,6 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
 import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.ops.Predicates;

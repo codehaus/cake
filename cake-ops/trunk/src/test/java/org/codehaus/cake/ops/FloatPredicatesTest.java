@@ -33,10 +33,9 @@ import org.codehaus.cake.ops.Ops.FloatPredicate;
 import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
-
 /**
  * Various tests for {@link FloatPredicates}.
- * 
+ *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
@@ -63,8 +62,9 @@ public final class FloatPredicatesTest {
     }
 
     /**
-     * Tests that {@link FloatPredicates#and(FloatPredicate, FloatPredicate)} throws a {@link NullPointerException} when
-     * invoked with a left side <code>null</code> argument.
+     * Tests that {@link FloatPredicates#and(FloatPredicate, FloatPredicate)} throws a
+     * {@link NullPointerException} when invoked with a left side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
@@ -72,19 +72,20 @@ public final class FloatPredicatesTest {
     }
 
     /**
-     * Tests that {@link FloatPredicates#and(FloatPredicate, FloatPredicate)} throws a {@link NullPointerException} when
-     * invoked with a right side <code>null</code> argument.
+     * Tests that {@link FloatPredicates#and(FloatPredicate, FloatPredicate)} throws a
+     * {@link NullPointerException} when invoked with a right side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
         FloatPredicates.and(TRUE, null);
     }
-
+    
     /* Test greater then */
     @Test
     public void equalsTo() {
         FloatPredicate f = FloatPredicates.equalsTo(5F);
-        assertEquals(5F, new EqualsToFloatPredicate(5F).getEqualsTo(), 0);
+        assertEquals(5F, new EqualsToFloatPredicate(5F).getEqualsTo(),0);
         assertFalse(f.op(4F));
         assertTrue(f.op(5F));
         assertFalse(f.op(6F));
@@ -93,7 +94,7 @@ public final class FloatPredicatesTest {
 
         TestUtil.assertIsSerializable(f);
     }
-
+    
     /**
      * Tests {@link FloatPredicates#FALSE}.
      */
@@ -105,12 +106,12 @@ public final class FloatPredicatesTest {
         assertIsSerializable(FALSE);
         assertSame(FALSE, TestUtil.serializeAndUnserialize(FALSE));
     }
-
+   
     /* Test greater then */
     @Test
     public void greaterThen() {
         FloatPredicate f = FloatPredicates.greaterThen(5F);
-        assertEquals(5F, new GreaterThenFloatPredicate(5F).getGreaterThen(), 0);
+        assertEquals(5F, new GreaterThenFloatPredicate(5F).getGreaterThen(),0);
         assertFalse(f.op(4F));
         assertFalse(f.op(5F));
         assertTrue(f.op(6F));
@@ -123,7 +124,7 @@ public final class FloatPredicatesTest {
     @Test
     public void greaterThenOrEquals() {
         FloatPredicate f = FloatPredicates.greaterThenOrEquals(5F);
-        assertEquals(5F, new GreaterThenOrEqualsFloatPredicate(5F).getGreaterThenOrEquals(), 0);
+        assertEquals(5F, new GreaterThenOrEqualsFloatPredicate(5F).getGreaterThenOrEquals(),0);
         assertFalse(f.op(4F));
         assertTrue(f.op(5F));
         assertTrue(f.op(6F));
@@ -137,7 +138,7 @@ public final class FloatPredicatesTest {
     @Test
     public void lessThen() {
         FloatPredicate f = FloatPredicates.lessThen(5F);
-        assertEquals(5F, new LessThenFloatPredicate(5F).getLessThen(), 0);
+        assertEquals(5F, new LessThenFloatPredicate(5F).getLessThen(),0);
         assertTrue(f.op(4F));
         assertFalse(f.op(5F));
         assertFalse(f.op(6F));
@@ -151,7 +152,7 @@ public final class FloatPredicatesTest {
     @Test
     public void lessThenOrEquals() {
         FloatPredicate f = FloatPredicates.lessThenOrEquals(5F);
-        assertEquals(5F, new LessThenOrEqualsFloatPredicate(5F).getLessThenOrEquals(), 0);
+        assertEquals(5F, new LessThenOrEqualsFloatPredicate(5F).getLessThenOrEquals(),0);
         assertTrue(f.op(4F));
         assertTrue(f.op(5F));
         assertFalse(f.op(6F));
@@ -160,10 +161,11 @@ public final class FloatPredicatesTest {
 
         TestUtil.assertIsSerializable(f);
     }
-
-    /**
-     * Tests that {@link FloatPredicates#not(FloatPredicate)} throws a {@link NullPointerException} when invoked with a
-     * <code>null</code> argument.
+   
+   
+     /**
+     * Tests that {@link FloatPredicates#not(FloatPredicate)} throws a
+     * {@link NullPointerException} when invoked with a <code>null</code> argument.
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
@@ -203,8 +205,9 @@ public final class FloatPredicatesTest {
     }
 
     /**
-     * Tests that {@link FloatPredicates#or(FloatPredicate, FloatPredicate)} throws a {@link NullPointerException} when
-     * invoked with a left side <code>null</code> argument.
+     * Tests that {@link FloatPredicates#or(FloatPredicate, FloatPredicate)} throws a
+     * {@link NullPointerException} when invoked with a left side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
@@ -212,15 +215,17 @@ public final class FloatPredicatesTest {
     }
 
     /**
-     * Tests that {@link FloatPredicates#or(FloatPredicate, FloatPredicate)} throws a {@link NullPointerException} when
-     * invoked with a right side <code>null</code> argument.
+     * Tests that {@link FloatPredicates#or(FloatPredicate, FloatPredicate)} throws a
+     * {@link NullPointerException} when invoked with a right side <code>null</code>
+     * argument.
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {
         FloatPredicates.or(TRUE, null);
     }
-
-    /**
+   
+    
+   /**
      * Tests {@link FloatPredicates#TRUE}.
      */
     @Test

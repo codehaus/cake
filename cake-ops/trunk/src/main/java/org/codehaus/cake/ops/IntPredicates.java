@@ -18,41 +18,41 @@ package org.codehaus.cake.ops;
 import java.io.Serializable;
 
 import org.codehaus.cake.ops.Ops.IntPredicate;
-
 /**
  * Various implementations of {@link IntPredicate}.
  * <p>
  * This class is normally best used via <tt>import static</tt>.
- * 
+ *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
 public final class IntPredicates {
 
     /** A IntPredicate that always evaluates to <code>false</code>. */
-    public static final IntPredicate FALSE = new FalseIntPredicate();
+    public static final IntPredicate FALSE = (IntPredicate) Predicates.FALSE;
 
     /** A IntPredicate that always evaluates to <code>true</code>. */
-    public static final IntPredicate TRUE = new TrueIntPredicate();
+    public static final IntPredicate TRUE = (IntPredicate) Predicates.TRUE;
 
-    // /CLOVER:OFF
+    ///CLOVER:OFF
     /** Cannot instantiate. */
     private IntPredicates() {}
-
-    // /CLOVER:ON
-
+    ///CLOVER:ON
+    
     /**
-     * Creates a IntPredicate that performs a logical AND on two supplied predicates. The returned predicate uses
-     * short-circuit evaluation (or minimal evaluation). That is, if the specified left side predicate evaluates to
-     * <code>false</code> the right side predicate will not be evaluated. More formally
-     * 
+     * Creates a IntPredicate that performs a logical AND on two supplied predicates. The
+     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is,
+     * if the specified left side predicate evaluates to <code>false</code> the right
+     * side predicate will not be evaluated. More formally
+     *
      * <pre>
      * left.evaluate(element) &amp;&amp; right.evaluate(element);
      * </pre>
-     * 
+     *
      * <p>
-     * If both of the supplied predicates are serializable the returned predicate will also be serializable.
-     * 
+     * If both of the supplied predicates are serializable the returned predicate will
+     * also be serializable.
+     *
      * @param left
      *            the left side IntPredicate
      * @param right
@@ -64,12 +64,12 @@ public final class IntPredicates {
     public static IntPredicate and(IntPredicate left, IntPredicate right) {
         return new AndIntPredicate(left, right);
     }
-
+    
     /**
      * Creates a predicate that accepts any value that is equal to the value specified.
      * <p>
      * The returned predicate is serializable.
-     * 
+     *
      * @param element
      *            the value of the equals predicate
      * @return a predicate that accepts any value that is equal to the value specified
@@ -77,13 +77,13 @@ public final class IntPredicates {
     public static IntPredicate equalsTo(int element) {
         return new EqualsToIntPredicate(element);
     }
-
+    
     /**
-     * Creates a IntPredicate that evaluates to <code>true</code> if the element being tested is greater then the
-     * element being used to construct the predicate.
+     * Creates a IntPredicate that evaluates to <code>true</code> if the element being
+     * tested is greater then the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
-     * 
+     *
      * @param element
      *            the element to compare with
      * @return the newly created IntPredicate
@@ -93,11 +93,12 @@ public final class IntPredicates {
     }
 
     /**
-     * Creates a IntPredicate that evaluates to <code>true</code> if the element being tested is greater then or
-     * equals to the element being used to construct the predicate.
+     * Creates a IntPredicate that evaluates to <code>true</code> if the element being
+     * tested is greater then or equals to the element being used to construct the
+     * predicate.
      * <p>
      * The returned predicate is serializable.
-     * 
+     *
      * @param element
      *            the element to compare with
      * @return the newly created IntPredicate
@@ -107,11 +108,11 @@ public final class IntPredicates {
     }
 
     /**
-     * Creates a IntPredicate that evaluates to <code>true</code> if the element being tested is less then the element
-     * being used to construct the predicate.
+     * Creates a IntPredicate that evaluates to <code>true</code> if the element being
+     * tested is less then the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
-     * 
+     *
      * @param element
      *            the element to compare with
      * @return the newly created IntPredicate
@@ -121,11 +122,11 @@ public final class IntPredicates {
     }
 
     /**
-     * Creates a IntPredicate that evaluates to <code>true</code> if the element being tested is less then or equals
-     * to the element being used to construct the predicate.
+     * Creates a IntPredicate that evaluates to <code>true</code> if the element being
+     * tested is less then or equals to the element being used to construct the predicate.
      * <p>
      * The returned predicate is serializable.
-     * 
+     *
      * @param element
      *            the element to compare with
      * @return the newly created IntPredicate
@@ -133,17 +134,19 @@ public final class IntPredicates {
     public static IntPredicate lessThenOrEquals(int element) {
         return new LessThenOrEqualsIntPredicate(element);
     }
-
+    
     /**
-     * Creates a IntPredicate that performs a logical logical NOT on the supplied IntPredicate. More formally
-     * 
+     * Creates a IntPredicate that performs a logical logical NOT on the supplied
+     * IntPredicate. More formally
+     *
      * <pre>
      * !predicate.evaluate(value);
      * </pre>
-     * 
+     *
      * <p>
-     * If the specified predicate is serializable the returned predicate will also be serializable.
-     * 
+     * If the specified predicate is serializable the returned predicate will also be
+     * serializable.
+     *
      * @param predicate
      *            the predicate to negate
      * @return the newly created IntPredicate
@@ -155,17 +158,19 @@ public final class IntPredicates {
     }
 
     /**
-     * Creates a IntPredicate that performs a logical OR on two supplied predicates. The returned predicate uses
-     * short-circuit evaluation (or minimal evaluation). That is, if the specified left side predicate evaluates to
-     * <code>true</code> the right side predicate will not be evaluated. More formally
-     * 
+     * Creates a IntPredicate that performs a logical OR on two supplied predicates. The
+     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is,
+     * if the specified left side predicate evaluates to <code>true</code> the right
+     * side predicate will not be evaluated. More formally
+     *
      * <pre>
      * left.evaluate(element) || right.evaluate(element);
      * </pre>
-     * 
+     *
      * <p>
-     * If both of the supplied predicates are serializable the returned predicate will also be serializable.
-     * 
+     * If both of the supplied predicates are serializable the returned predicate will
+     * also be serializable.
+     *
      * @param left
      *            the left side IntPredicate
      * @param right
@@ -177,7 +182,7 @@ public final class IntPredicates {
     public static IntPredicate or(IntPredicate left, IntPredicate right) {
         return new OrIntPredicate(left, right);
     }
-
+    
     /**
      * A IntPredicate that performs a logical exclusive AND on two supplied predicates.
      */
@@ -194,7 +199,7 @@ public final class IntPredicates {
 
         /**
          * Creates a new <code>AndIntPredicate</code>.
-         * 
+         *
          * @param left
          *            the left side IntPredicate
          * @param right
@@ -212,9 +217,14 @@ public final class IntPredicates {
             this.right = right;
         }
 
+        /** {@inheritDoc} */
+        public boolean op(int element) {
+            return left.op(element) && right.op(element);
+        }
+
         /**
          * Returns the left side IntPredicate.
-         * 
+         *
          * @return the left side IntPredicate.
          */
         public IntPredicate getLeft() {
@@ -223,16 +233,11 @@ public final class IntPredicates {
 
         /**
          * Returns the right side IntPredicate.
-         * 
+         *
          * @return the right side IntPredicate.
          */
         public IntPredicate getRight() {
             return right;
-        }
-
-        /** {@inheritDoc} */
-        public boolean op(int element) {
-            return left.op(element) && right.op(element);
         }
 
         /** {@inheritDoc} */
@@ -241,7 +246,7 @@ public final class IntPredicates {
             return "(" + left + ") && (" + right + ")";
         }
     }
-
+    
     static class EqualsToIntPredicate implements IntPredicate, Serializable {
 
         /** serialVersionUID. */
@@ -255,57 +260,26 @@ public final class IntPredicates {
         }
 
         /**
+         * Returns <code>true</code> if the specified value is equal to the value that
+         * was used when constructing this predicate, otherwise <code>false</code>.
+         *
+         * @param t
+         *            the value to compare with
+         * @return <code>true</code> if the specified value is equal to the value that
+         *         was used when constructing this predicate, otherwise <code>false</code>.
+         */
+        public boolean op(int t) {
+            return equalsTo == t;
+        }
+
+        /**
          * @return the value we are comparing with
          */
         public int getEqualsTo() {
             return equalsTo;
         }
-
-        /**
-         * Returns <code>true</code> if the specified value is equal to the value that was used when constructing this
-         * predicate, otherwise <code>false</code>.
-         * 
-         * @param t
-         *            the value to compare with
-         * @return <code>true</code> if the specified value is equal to the value that was used when constructing this
-         *         predicate, otherwise <code>false</code>.
-         */
-        public boolean op(int t) {
-            return equalsTo == t;
-        }
     }
-
-    /**
-     * a IntPredicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to get an instance of this
-     * IntPredicate.
-     * 
-     * @see TrueIntPredicate
-     */
-    static final class FalseIntPredicate implements IntPredicate, Serializable {
-
-        /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = -3048464662394104180L;
-
-        /** Creates a new FalseIntPredicate. */
-        FalseIntPredicate() {}
-
-        /** {@inheritDoc} */
-        public boolean op(int value) {
-            return false;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return FALSE;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public String toString() {
-            return Boolean.FALSE.toString();
-        }
-    }
-
+    
     static class GreaterThenIntPredicate implements IntPredicate, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 7198592614364500859L;
@@ -317,16 +291,16 @@ public final class IntPredicates {
             this.greaterThen = greaterThen;
         }
 
-        public int getGreaterThen() {
-            return greaterThen;
-        }
-
         /** {@inheritDoc} */
         public boolean op(int t) {
             return greaterThen < t;
         }
-    }
 
+        public int getGreaterThen() {
+            return greaterThen;
+        }
+    }
+    
     static class GreaterThenOrEqualsIntPredicate implements IntPredicate, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -4681995097900012563L;
@@ -338,16 +312,16 @@ public final class IntPredicates {
             this.greaterThenOrEquals = greaterThenOrEquals;
         }
 
-        public int getGreaterThenOrEquals() {
-            return greaterThenOrEquals;
-        }
-
         /** {@inheritDoc} */
         public boolean op(int t) {
             return greaterThenOrEquals <= t;
         }
-    }
 
+        public int getGreaterThenOrEquals() {
+            return greaterThenOrEquals;
+        }
+    }
+    
     static class LessThenIntPredicate implements IntPredicate, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -9180606923416408020L;
@@ -359,13 +333,13 @@ public final class IntPredicates {
             this.lessThen = lessThen;
         }
 
-        public int getLessThen() {
-            return lessThen;
-        }
-
         /** {@inheritDoc} */
         public boolean op(int t) {
             return lessThen > t;
+        }
+
+        public int getLessThen() {
+            return lessThen;
         }
     }
 
@@ -380,18 +354,18 @@ public final class IntPredicates {
             this.lessThenOrEquals = lessThenOrEquals;
         }
 
-        public int getLessThenOrEquals() {
-            return lessThenOrEquals;
-        }
-
         /** {@inheritDoc} */
         public boolean op(int t) {
             return lessThenOrEquals >= t;
         }
-    }
 
+        public int getLessThenOrEquals() {
+            return lessThenOrEquals;
+        }
+    }
     /**
-     * A IntPredicate that evaluates to true iff the Predicate used for constructing evaluates to <code>false</code>.
+     * A IntPredicate that evaluates to true iff the Predicate used for constructing
+     * evaluates to <code>false</code>.
      */
     static final class NotIntPredicate implements IntPredicate, Serializable {
 
@@ -403,7 +377,7 @@ public final class IntPredicates {
 
         /**
          * Creates a new NotIntPredicate.
-         * 
+         *
          * @param predicate
          *            the predicate to negate.
          * @throws NullPointerException
@@ -417,23 +391,24 @@ public final class IntPredicates {
         }
 
         /**
-         * Returns the predicate that is being negated.
-         * 
-         * @return the predicate that is being negated.
-         */
-        public IntPredicate getPredicate() {
-            return predicate;
-        }
-
-        /**
-         * Returns a boolean representing the logical NOT value of the supplied IntPredicate.
-         * 
+         * Returns a boolean representing the logical NOT value of the supplied
+         * IntPredicate.
+         *
          * @param element
          *            the element to test
          * @return the logical NOT of the supplied IntPredicate
          */
         public boolean op(int element) {
             return !predicate.op(element);
+        }
+
+        /**
+         * Returns the predicate that is being negated.
+         *
+         * @return the predicate that is being negated.
+         */
+        public IntPredicate getPredicate() {
+            return predicate;
         }
 
         /** {@inheritDoc} */
@@ -459,7 +434,7 @@ public final class IntPredicates {
 
         /**
          * Creates a new <code>OrIntPredicate</code>.
-         * 
+         *
          * @param left
          *            the left side IntPredicate
          * @param right
@@ -477,9 +452,14 @@ public final class IntPredicates {
             this.right = right;
         }
 
+        /** {@inheritDoc} */
+        public boolean op(int element) {
+            return left.op(element) || right.op(element);
+        }
+
         /**
          * Returns the left side IntPredicate.
-         * 
+         *
          * @return the left side IntPredicate.
          */
         public IntPredicate getLeft() {
@@ -488,7 +468,7 @@ public final class IntPredicates {
 
         /**
          * Returns the right side IntPredicate.
-         * 
+         *
          * @return the right side IntPredicate.
          */
         public IntPredicate getRight() {
@@ -496,45 +476,9 @@ public final class IntPredicates {
         }
 
         /** {@inheritDoc} */
-        public boolean op(int element) {
-            return left.op(element) || right.op(element);
-        }
-
-        /** {@inheritDoc} */
         @Override
         public String toString() {
             return "(" + left + ") && (" + right + ")";
-        }
-    }
-
-    /**
-     * A IntPredicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get an instance of this
-     * IntPredicate.
-     * 
-     * @see FalseIntPredicate
-     */
-    static final class TrueIntPredicate implements IntPredicate, Serializable {
-
-        /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = 3258129137502925875L;
-
-        /** Creates a new TrueIntPredicate. */
-        TrueIntPredicate() {}
-
-        /** {@inheritDoc} */
-        public boolean op(int value) {
-            return true;
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TRUE;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public String toString() {
-            return Boolean.TRUE.toString();
         }
     }
 }

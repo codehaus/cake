@@ -2,7 +2,6 @@ package org.codehaus.cake.cache.query;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
@@ -22,23 +21,50 @@ import org.codehaus.cake.ops.Ops.Op;
  * @param <K>
  * @param <V>
  */
-public interface CacheQuery<K, V>  extends Iterable<CacheEntry<K,V>>{
+public interface CacheQuery<K, V> extends Iterable<CacheEntry<K, V>> {
 
     /** @return the query result(s) as a {@link List} */
     List<CacheEntry<K, V>> asList();
 
     <E> Query<E> to(Op<CacheEntry<K, V>, E> transformer);
-    /** @return the query result(s) as a {@link Map} */
-    
+
+    /** @return a new MapQuery mapping keys to values, ignoring attributes */
     MapQuery<K, V> map();
-    
+
+    /** @return a new MapQuery mapping keys to values, ignoring attributes */
+    /**
+     * Creates a new MapQuery mapping keys to specified attribute, ignoring other attributes and values.
+     * 
+     * @param <T>
+     *            the type of the attribute
+     * @param attribute
+     *            the attribute to map to
+     * @return the new MapQuery
+     */
     <T> MapQuery<K, T> map(Attribute<T> attribute);
-    
+
+    /**
+     * Creates a new Query returning only the specified attributes value.
+     * 
+     * @param <T>
+     *            the type of the attribute
+     * @param attribute
+     *            the attribute to map to
+     * @return the new query
+     */
     <T> Query<T> attribute(Attribute<T> attribute);
 
-    <E> CacheQuery<E, V> keyTo(Op<K, E> transformer);
+    /**
+     * Creates a new CacheQuery where all keys are mapped according to the specified mapper.
+     * 
+     * @param <E>
+     *            the type of keys the mapper maps to
+     * @param mapper
+     * @return the new query
+     */
+    <E> CacheQuery<E, V> keyTo(Op<? super K, ? extends E> mapper);
 
-    <E> CacheQuery<K, E> valueTo(Op<V, E> transformer);
+    <E> CacheQuery<K, E> valueTo(Op<? super V, ? extends E> transformer);
 
     /** @return the query result(s) as a {@link List} of keys */
     Query<K> keys();
@@ -70,28 +96,58 @@ public interface CacheQuery<K, V>  extends Iterable<CacheEntry<K,V>>{
 
     CacheQuery<K, V> orderByMin(Attribute<?> attribute);
 
+    /**
+     * Creates a new CacheQuery where the result is ordered accordingly to the specified Comparator.
+     * 
+     * @throws ClassCastException
+     *             if any value is not Comparable.
+     * @return a new query
+     */
     CacheQuery<K, V> orderByValues(Comparator<V> comparator);
 
+    /**
+     * Creates a new CacheQuery where the result is ordered according to the values natural ordering, assuming all
+     * values are Comparable.
+     * 
+     * @throws ClassCastException
+     *             if any value is not Comparable.
+     * @return a new query
+     */
     CacheQuery<K, V> orderByValuesMax();
 
+    /**
+     * Creates a new CacheQuery where the result is ordered according to the values natural ordering, assuming all
+     * values are Comparable.
+     * 
+     * @throws ClassCastException
+     *             if any value is not Comparable.
+     * @return a new query
+     */
     CacheQuery<K, V> orderByValuesMin();
 
+    /**
+     * Executes the query and inserts the result into the specified Cache.
+     * 
+     * @param cache
+     *            the cache to insert the result into
+     */
     void putInto(Cache<K, V> cache);
 
-    //<K1, V1> void putInto(Cache<K1, V1> cache, Op<CacheEntry<K, V>, CacheEntry<K1, V1>> transformer);
+    // <K1, V1> void putInto(Cache<K1, V1> cache, Op<CacheEntry<K, V>, CacheEntry<K1, V1>> transformer);
 
     /**
-     * Limits the
+     * Creates a new CacheQuery which limits the number of results returned by this query.
      * 
-     * @param maxresults
-     * @return
+     * @param limit
+     *            the maximum number of results to return
+     * @return a new query
      */
-    CacheQuery<K, V> setLimit(int maxresults);
+    CacheQuery<K, V> setLimit(int limit);
 
     /**
-     * Executes the query and returns the result as a list of values.
+     * Creates a new Query returning only the value part of a CacheEntry.
      * 
-     * @return the resulting values
+     * @return the new query
      */
     Query<V> values();
 }

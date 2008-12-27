@@ -406,7 +406,7 @@ public final class Caches {
             return this;
         }
 
-        public <E> Query<E> to(Op<T, E> transformer) {
+        public <E> Query<E> to(Op<? super T, ? extends E> mapper) {
             return (Query) this;
         }
 
@@ -487,11 +487,11 @@ public final class Caches {
             return this;
         }
 
-        public <E> CacheQuery<E, V> keyTo(Op<K, E> transformer) {
+        public <E> CacheQuery<E, V> keyTo(Op<? super K, ? extends E> transformer) {
             return (CacheQuery) this;
         }
 
-        public <E> CacheQuery<K, E> valueTo(Op<V, E> transformer) {
+        public <E> CacheQuery<K, E> valueTo(Op<? super V, ? extends E> transformer) {
             return (CacheQuery) this;
         }
 

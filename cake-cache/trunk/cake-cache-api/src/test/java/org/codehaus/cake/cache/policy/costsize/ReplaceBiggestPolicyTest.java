@@ -19,9 +19,6 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;

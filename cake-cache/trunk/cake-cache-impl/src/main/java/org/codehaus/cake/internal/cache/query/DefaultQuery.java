@@ -47,14 +47,15 @@ public class DefaultQuery<K, V, T> implements Query<T> {
     }
 
     public Query<T> orderBy(Comparator<? super T> comparator) {
-        return new DefaultQuery<K, V, T>(processor, filter,(Comparator) Comparators.mappedComparator(mapper, comparator), mapper,
-                limit);
+        Comparator mappedComparator = Comparators.mappedComparator(mapper, comparator);
+        return new DefaultQuery<K, V, T>(processor, filter, mappedComparator, mapper, limit);
     }
 
-    public <E> Query<E> to(Op<T, E> transformer) {
-        return new DefaultQuery<K, V, E>(processor, filter, comparator, (Op)  ObjectOps.compoundMapper(mapper, transformer),
-                limit);
+    public <E> Query<E> to(Op<? super T, ? extends E> mapper) {
+        Op op = ObjectOps.compoundMapper(this.mapper, mapper);
+        return new DefaultQuery<K, V, E>(processor, filter, comparator, op, limit);
     }
+
     @SuppressWarnings("unchecked")
     public <E> Query<E> to(String method, Class<E> to) {
         return to(new ReflectionMapper<T, E>(method, to));
@@ -80,9 +81,9 @@ public class DefaultQuery<K, V, T> implements Query<T> {
             }
             final Method m;
             try {
-                m = a.getClass().getMethod(method, null);
+                m = a.getClass().getMethod(method);
             } catch (NoSuchMethodException e) {
-                throw new IllegalStateException("Object of type" + c + " does not have method " + method);
+                throw new IllegalStateException("Cannot find public method '" + method + "()' on  object of type=" + c);
             }
             // Check result type;
             cached = m;
@@ -95,11 +96,18 @@ public class DefaultQuery<K, V, T> implements Query<T> {
                 Object result = m.invoke(target, (Object[]) null);
                 return (R) result;
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
+                Throwable cause = e.getCause();
+                if (cause instanceof Error) {
+                    throw (Error) cause;
+                } else if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                } else {
+                    throw new IllegalStateException(e);
+                }
             }
         }
     }

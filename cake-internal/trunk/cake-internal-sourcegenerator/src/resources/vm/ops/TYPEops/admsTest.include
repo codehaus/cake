@@ -3,15 +3,15 @@
      */
     @Test
     public void add() {
-        assertEquals($util.val(3), ${Type}Ops.ADD_REDUCER.op($util.val(1), $util.val(2))${equalTest});
-        assertEquals($util.val(3), ${Type}Ops.ADD_REDUCER.op($util.val(2), $util.val(1))${equalTest});
+        assertEquals($util.val(3), PrimitiveOps.ADD_REDUCER.op($util.val(1), $util.val(2))${equalTest});
+        assertEquals($util.val(3), PrimitiveOps.ADD_REDUCER.op($util.val(2), $util.val(1))${equalTest});
 #if($isReal) 
-        assertEquals(${object}.POSITIVE_INFINITY, ${Type}Ops.ADD_REDUCER.op(1, ${object}.POSITIVE_INFINITY)${equalTest});
-        assertEquals(${object}.NaN, ${Type}Ops.ADD_REDUCER.op(1, ${object}.NaN)${equalTest});
+        assertEquals(${object}.POSITIVE_INFINITY, PrimitiveOps.ADD_REDUCER.op(1, ${object}.POSITIVE_INFINITY)${equalTest});
+        assertEquals(${object}.NaN, PrimitiveOps.ADD_REDUCER.op(1, ${object}.NaN)${equalTest});
 #end
-        assertSame(${Type}Ops.ADD_REDUCER, ${Type}Ops.add());
-        ${Type}Ops.ADD_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(${Type}Ops.ADD_REDUCER);
+        assertSame(PrimitiveOps.ADD_REDUCER, ${Type}Ops.add());
+        PrimitiveOps.ADD_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.ADD_REDUCER);
     }
 
     /**
@@ -35,15 +35,15 @@
      */
     @Test
     public void divide() {
-        assertEquals($util.val(4), ${Type}Ops.DIVIDE_REDUCER.op($util.val(16), $util.val(4))${equalTest});
-        assertEquals($util.val(-4), ${Type}Ops.DIVIDE_REDUCER.op($util.val(-8), $util.val(2))${equalTest});
+        assertEquals($util.val(4), PrimitiveOps.DIVIDE_REDUCER.op($util.val(16), $util.val(4))${equalTest});
+        assertEquals($util.val(-4), PrimitiveOps.DIVIDE_REDUCER.op($util.val(-8), $util.val(2))${equalTest});
 #if($isReal) 
-        assertEquals(${object}.POSITIVE_INFINITY, ${Type}Ops.DIVIDE_REDUCER.op(${object}.POSITIVE_INFINITY,1)${equalTest});
-        assertEquals(${object}.NaN, ${Type}Ops.DIVIDE_REDUCER.op(1, ${object}.NaN)${equalTest});
+        assertEquals(${object}.POSITIVE_INFINITY, PrimitiveOps.DIVIDE_REDUCER.op(${object}.POSITIVE_INFINITY,1)${equalTest});
+        assertEquals(${object}.NaN, PrimitiveOps.DIVIDE_REDUCER.op(1, ${object}.NaN)${equalTest});
 #end
-        assertSame(${Type}Ops.DIVIDE_REDUCER, ${Type}Ops.divide());
-        ${Type}Ops.DIVIDE_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(${Type}Ops.DIVIDE_REDUCER);
+        assertSame(PrimitiveOps.DIVIDE_REDUCER, ${Type}Ops.divide());
+        PrimitiveOps.DIVIDE_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.DIVIDE_REDUCER);
     }
 
     /**
@@ -68,15 +68,15 @@
      */
     @Test
     public void multiply() {
-        assertEquals($util.val(16), ${Type}Ops.MULTIPLY_REDUCER.op($util.val(4), $util.val(4))${equalTest});
-        assertEquals($util.val(-8), ${Type}Ops.MULTIPLY_REDUCER.op($util.val(-4), $util.val(2))${equalTest});
+        assertEquals($util.val(16), PrimitiveOps.MULTIPLY_REDUCER.op($util.val(4), $util.val(4))${equalTest});
+        assertEquals($util.val(-8), PrimitiveOps.MULTIPLY_REDUCER.op($util.val(-4), $util.val(2))${equalTest});
 #if($isReal) 
-        assertEquals(${object}.POSITIVE_INFINITY, ${Type}Ops.MULTIPLY_REDUCER.op(${object}.POSITIVE_INFINITY,1)${equalTest});
-        assertEquals(${object}.NaN, ${Type}Ops.MULTIPLY_REDUCER.op(1, ${object}.NaN)${equalTest});
+        assertEquals(${object}.POSITIVE_INFINITY,PrimitiveOps.MULTIPLY_REDUCER.op(${object}.POSITIVE_INFINITY,1)${equalTest});
+        assertEquals(${object}.NaN, PrimitiveOps.MULTIPLY_REDUCER.op(1, ${object}.NaN)${equalTest});
 #end
-        assertSame(${Type}Ops.MULTIPLY_REDUCER, ${Type}Ops.multiply());
-        ${Type}Ops.MULTIPLY_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(${Type}Ops.MULTIPLY_REDUCER);
+        assertSame(PrimitiveOps.MULTIPLY_REDUCER, ${Type}Ops.multiply());
+        PrimitiveOps.MULTIPLY_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.MULTIPLY_REDUCER);
     }
 
     /**
@@ -100,15 +100,15 @@
      */
     @Test
     public void subtract() {
-        assertEquals($util.val(-1), ${Type}Ops.SUBTRACT_REDUCER.op($util.val(1), $util.val(2))${equalTest});
-        assertEquals($util.val(1), ${Type}Ops.SUBTRACT_REDUCER.op($util.val(2), $util.val(1))${equalTest});
+        assertEquals($util.val(-1), PrimitiveOps.SUBTRACT_REDUCER.op($util.val(1), $util.val(2))${equalTest});
+        assertEquals($util.val(1), PrimitiveOps.SUBTRACT_REDUCER.op($util.val(2), $util.val(1))${equalTest});
 #if($isReal) 
-        assertEquals(${object}.NEGATIVE_INFINITY, ${Type}Ops.SUBTRACT_REDUCER.op(1, ${object}.POSITIVE_INFINITY)${equalTest});
-        assertEquals(${object}.NaN, ${Type}Ops.SUBTRACT_REDUCER.op(1, ${object}.NaN)${equalTest});
+        assertEquals(${object}.NEGATIVE_INFINITY, PrimitiveOps.SUBTRACT_REDUCER.op(1, ${object}.POSITIVE_INFINITY)${equalTest});
+        assertEquals(${object}.NaN, PrimitiveOps.SUBTRACT_REDUCER.op(1, ${object}.NaN)${equalTest});
 #end
-        assertSame(${Type}Ops.SUBTRACT_REDUCER, ${Type}Ops.subtract());
-        ${Type}Ops.SUBTRACT_REDUCER.toString(); // does not fail
-        TestUtil.assertSingletonSerializable(${Type}Ops.SUBTRACT_REDUCER);
+        assertSame(PrimitiveOps.SUBTRACT_REDUCER, ${Type}Ops.subtract());
+        PrimitiveOps.SUBTRACT_REDUCER.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(PrimitiveOps.SUBTRACT_REDUCER);
     }
 
     /**

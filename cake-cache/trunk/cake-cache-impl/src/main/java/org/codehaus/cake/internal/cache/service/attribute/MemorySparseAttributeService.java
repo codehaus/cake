@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;

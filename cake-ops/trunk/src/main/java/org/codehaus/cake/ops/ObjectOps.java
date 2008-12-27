@@ -18,6 +18,10 @@ package org.codehaus.cake.ops;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.codehaus.cake.ops.Ops.DoubleReducer;
+import org.codehaus.cake.ops.Ops.FloatReducer;
+import org.codehaus.cake.ops.Ops.IntReducer;
+import org.codehaus.cake.ops.Ops.LongReducer;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Reducer;
 
@@ -47,7 +51,8 @@ public final class ObjectOps {
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
-    private ObjectOps() {}
+    private ObjectOps() {
+    }
 
     // /CLOVER:ON
     /**
@@ -167,7 +172,7 @@ public final class ObjectOps {
      */
     static final class MaxReducer<T> implements Reducer<T>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = -5456282180421493663L;
+        private static final long serialVersionUID = 1L;
 
         /** Comparator used when reducing. */
         private final Comparator<? super T> comparator;
@@ -189,6 +194,26 @@ public final class ObjectOps {
         public T op(T a, T b) {
             return a != null && (b == null || comparator.compare(a, b) >= 0) ? a : b;
         }
+
+        /** {@inheritDoc} */
+        public long op(long a, long b) {
+            return Math.max(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public double op(double a, double b) {
+            return Math.max(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public float op(float a, float b) {
+            return Math.max(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public int op(int a, int b) {
+            return Math.max(a, b);
+        }
     }
 
     /**
@@ -197,7 +222,7 @@ public final class ObjectOps {
      */
     static final class MinReducer<T> implements Reducer<T>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = 223676769245813970L;
+        private static final long serialVersionUID = 1L;
 
         /** Comparator used when reducing. */
         private final Comparator<? super T> comparator;
@@ -224,13 +249,34 @@ public final class ObjectOps {
     /**
      * A reducer returning the maximum of two Comparable elements, treating null as less than any non-null element.
      */
-    static final class NaturalMaxReducer<T extends Comparable<? super T>> implements Reducer<T>, Serializable {
+    static final class NaturalMaxReducer<T extends Comparable<? super T>> implements DoubleReducer, FloatReducer,
+            IntReducer, LongReducer, Reducer<T>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 5079675958818175983L;
 
         /** {@inheritDoc} */
         public T op(T a, T b) {
             return a != null && (b == null || a.compareTo(b) >= 0) ? a : b;
+        }
+
+        /** {@inheritDoc} */
+        public long op(long a, long b) {
+            return Math.max(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public double op(double a, double b) {
+            return Math.max(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public float op(float a, float b) {
+            return Math.max(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public int op(int a, int b) {
+            return Math.max(a, b);
         }
 
         /** @return Preserves singleton property */
@@ -242,7 +288,8 @@ public final class ObjectOps {
     /**
      * A reducer returning the minimum of two Comparable elements, treating null as less than any non-null element.
      */
-    static final class NaturalMinReducer<T extends Comparable<? super T>> implements Reducer<T>, Serializable {
+    static final class NaturalMinReducer<T extends Comparable<? super T>> implements Reducer<T>, DoubleReducer,
+            FloatReducer, IntReducer, LongReducer, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -6750364835779757657L;
 
@@ -250,7 +297,25 @@ public final class ObjectOps {
         public T op(T a, T b) {
             return a != null && (b == null || a.compareTo(b) <= 0) ? a : b;
         }
+        /** {@inheritDoc} */
+        public long op(long a, long b) {
+            return Math.min(a, b);
+        }
 
+        /** {@inheritDoc} */
+        public double op(double a, double b) {
+            return Math.min(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public float op(float a, float b) {
+            return Math.min(a, b);
+        }
+
+        /** {@inheritDoc} */
+        public int op(int a, int b) {
+            return Math.min(a, b);
+        }
         /** @return Preserves singleton property */
         private Object readResolve() {
             return MIN_REDUCER;

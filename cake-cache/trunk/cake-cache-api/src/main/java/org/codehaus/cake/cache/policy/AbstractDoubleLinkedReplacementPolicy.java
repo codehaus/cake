@@ -15,10 +15,7 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.Reg;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double linked list of

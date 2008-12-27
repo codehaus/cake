@@ -10,10 +10,10 @@
 public final class ${this} {
 
     /** A ${Type}Predicate that always evaluates to <code>false</code>. */
-    public static final ${Type}Predicate FALSE = new False${Type}Predicate();
+    public static final ${Type}Predicate FALSE = (${Type}Predicate) Predicates.FALSE;
 
     /** A ${Type}Predicate that always evaluates to <code>true</code>. */
-    public static final ${Type}Predicate TRUE = new True${Type}Predicate();
+    public static final ${Type}Predicate TRUE = (${Type}Predicate) Predicates.TRUE;
 
     ///CLOVER:OFF
     /** Cannot instantiate. */
@@ -261,37 +261,6 @@ public final class ${this} {
         }
     }
     
-     /**
-     * $a ${Type}Predicate that always evaluates to <tt>false</tt>. Use {@link #FALSE} to
-     * get an instance of this ${Type}Predicate.
-     *
-     * @see True${Type}Predicate
-     */
-    static final class False${Type}Predicate implements ${Type}Predicate, Serializable {
-
-        /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = -3048464662394104180L;
-
-        /** Creates a new False${Type}Predicate. */
-        False${Type}Predicate() {}
-
-        /** {@inheritDoc} */
-        public boolean op($type value) {
-            return false;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public String toString() {
-            return Boolean.FALSE.toString();
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return FALSE;
-        }
-    }
-    
     static class GreaterThen${Type}Predicate implements ${Type}Predicate, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 7198592614364500859L;
@@ -491,37 +460,6 @@ public final class ${this} {
         @Override
         public String toString() {
             return "(" + left + ") && (" + right + ")";
-        }
-    }
-    
-    /**
-     * A ${Type}Predicate that always evaluates to <tt>true</tt>. Use {@link #TRUE} to get
-     * an instance of this ${Type}Predicate.
-     *
-     * @see False${Type}Predicate
-     */
-    static final class True${Type}Predicate implements ${Type}Predicate, Serializable {
-
-        /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = 3258129137502925875L;
-
-        /** Creates a new True${Type}Predicate. */
-        True${Type}Predicate() {}
-
-        /** {@inheritDoc} */
-        public boolean op($type value) {
-            return true;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public String toString() {
-            return Boolean.TRUE.toString();
-        }
-
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return TRUE;
         }
     }
 }
