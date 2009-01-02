@@ -9,6 +9,7 @@ import org.codehaus.cake.attribute.FloatAttribute;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
+import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.ops.Ops.BytePredicate;
 import org.codehaus.cake.ops.Ops.CharPredicate;
@@ -31,7 +32,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  *            the type of mapped values
  */
 abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
-    
+
     /** {@inheritDoc} */
     public <T> Cache<K, V> on(final Attribute<T> attribute, final Predicate<T> filter) {
         if (attribute == null) {
@@ -46,6 +47,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final BinaryPredicate<? super K, ? super V> filter) {
         if (filter == null) {
@@ -59,6 +61,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final BooleanAttribute attribute, final boolean value) {
         if (attribute == null) {
@@ -71,6 +74,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final ByteAttribute attribute, final BytePredicate filter) {
         if (attribute == null) {
@@ -85,6 +89,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final CharAttribute attribute, final CharPredicate filter) {
         if (attribute == null) {
@@ -99,6 +104,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final DoubleAttribute attribute, final DoublePredicate filter) {
         if (attribute == null) {
@@ -113,6 +119,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final FloatAttribute attribute, final FloatPredicate filter) {
         if (attribute == null) {
@@ -127,6 +134,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final IntAttribute attribute, final IntPredicate filter) {
         if (attribute == null) {
@@ -141,6 +149,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final LongAttribute attribute, final LongPredicate filter) {
         if (attribute == null) {
@@ -155,6 +164,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> on(final ShortAttribute attribute, final ShortPredicate filter) {
         if (attribute == null) {
@@ -169,6 +179,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> onKey(final Predicate<? super K> filter) {
         if (filter == null) {
@@ -181,6 +192,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public <T extends K> Cache<T, V> onKeyType(final Class<T> clazz) {
         if (clazz == null) {
@@ -193,6 +205,7 @@ abstract class AbstractCacheSelector<K, V> implements CacheSelector<K, V> {
             }
         });
     }
+
     /** {@inheritDoc} */
     public Cache<K, V> onValue(final Predicate<? super V> filter) {
         if (filter == null) {
