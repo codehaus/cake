@@ -32,14 +32,13 @@ import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.ops.Ops.LongReducer;
 
 /**
- * Various implementations of {@link LongPredicate}.
+ * Various implementations of primitive ops
  * <p>
- * This class is normally best used via <tt>import static</tt>.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: LongOps.java 229 2008-12-10 19:53:58Z kasper $
  */
-public final class PrimitiveOps {
+final class PrimitiveOps {
     final static PrimitiveAbsOp ABS_OP = new PrimitiveAbsOp();
 
     final static PrimitiveAddReducer ADD_REDUCER = new PrimitiveAddReducer();

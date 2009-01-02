@@ -333,16 +333,8 @@ public final class Ops {
 
     // /CLOVER:ON
 
-    // Thanks to David Biesack for the above html table
-    // You want to read/edit this with a wide editor panel
-
-    public static interface Op<A, R> {
-        R op(A a);
-    }
-
-    public static interface BinaryOp<A, B, R> {
-        R op(A a, B b);
-    }
+   // PREDICATES
+    
 
     public static interface Predicate<A> {
         boolean op(A a);
@@ -351,6 +343,44 @@ public final class Ops {
     public static interface BinaryPredicate<A, B> {
         boolean op(A a, B b);
     }
+
+    public static interface DoublePredicate {
+        boolean op(double a);
+    }
+    
+    public static interface IntPredicate {
+        boolean op(int a);
+    }
+
+    public static interface LongPredicate {
+        boolean op(long a);
+    }
+
+    public static interface BytePredicate {
+        boolean op(byte a);
+    }
+    
+    public static interface CharPredicate {
+        boolean op(char a);
+    }
+    
+    public static interface FloatPredicate {
+        boolean op(float a);
+    }
+
+    public static interface ShortPredicate {
+        boolean op(short a);
+    }
+    
+    
+    public static interface Op<A, R> {
+        R op(A a);
+    }
+
+    public static interface BinaryOp<A, B, R> {
+        R op(A a, B b);
+    }
+
     public static interface BinaryProcedure<A, B> {
         void op(A a, B b);
     }
@@ -370,10 +400,6 @@ public final class Ops {
 
     public static interface BinaryIntOp {
         int op(int a, int b);
-    }
-
-    public static interface IntPredicate {
-        boolean op(int a);
     }
 
     public static interface IntProcedure {
@@ -402,10 +428,6 @@ public final class Ops {
         long op(long a, long b);
     }
 
-    public static interface LongPredicate {
-        boolean op(long a);
-    }
-
     public static interface BinaryLongPredicate {
         boolean op(long a, long b);
     }
@@ -432,9 +454,6 @@ public final class Ops {
         double op(double a, double b);
     }
 
-    public static interface DoublePredicate {
-        boolean op(double a);
-    }
 
     public static interface BinaryDoublePredicate {
         boolean op(double a, double b);
@@ -874,29 +893,18 @@ public final class Ops {
 
     public static interface FloatReducer extends BinaryFloatOp {}
 
-    public static interface BytePredicate {
-        boolean op(byte a);
-    }
     public static interface ByteComparator {
         int compare(byte a, byte b);
     }
-    public static interface CharPredicate {
-        boolean op(char a);
-    }
+
     public static interface CharComparator {
         int compare(char a, char b);
-    }
-    public static interface FloatPredicate {
-        boolean op(float a);
     }
 
     public static interface FloatComparator {
         int compare(float a, float b);
     }
 
-    public static interface ShortPredicate {
-        boolean op(short a);
-    }
     public static interface ShortComparator {
         int compare(short a, short b);
     }
