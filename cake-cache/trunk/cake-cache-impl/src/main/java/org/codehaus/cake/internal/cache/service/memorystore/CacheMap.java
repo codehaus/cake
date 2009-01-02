@@ -23,9 +23,7 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.forkjoin.collections.ParallelArray;
 import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.ObjectToLong;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
@@ -144,7 +142,6 @@ public class CacheMap<K, V> {
         this.loadFactor = loadFactor;
         threshold = (int) (16 * loadFactor);
         table = new HashEntry[16];
-        // pa = (ParallelArray) ParallelArray.createUsingHandoff(table, ParallelArray.defaultExecutor());
     }
 
     /**
@@ -329,23 +326,6 @@ public class CacheMap<K, V> {
     }
 
     public int size(final Predicate<CacheEntry<K, V>> filter) {
-        if (false) {
-            ParallelArray<HashEntry<Integer, String>> pa = null;
-            long size = pa.withFilter(Predicates.IS_NOT_NULL).withMapping(
-                    new ObjectToLong<HashEntry<Integer, String>>() {
-                        public long op(HashEntry<Integer, String> a) {
-                            long count = 0;
-                            for (HashEntry<Integer, String> e = a; e != null; e = a.next) {
-                                if (filter.op((CacheEntry<K, V>) e)) {
-                                    count++;
-                                }
-                            }
-                            return count;
-                        }
-                    }).sum();
-            return (int) size;
-        }
-
         if (filter == null || filter == Predicates.TRUE) {
             return size;
         } else {
@@ -392,11 +372,7 @@ public class CacheMap<K, V> {
             }
         }
         table = newTable;
-        // pa = (ParallelArray) ParallelArray.createUsingHandoff(table, fje);
-
     }
-
-    // ForkJoinExecutor fje = new ForkJoinPool(2);
 
     Iterator<CacheEntry<K, V>> newEntrySetIterator(Predicate<CacheEntry<K, V>> predicate) {
         return new EntrySetIterator<K, V>(this, predicate);

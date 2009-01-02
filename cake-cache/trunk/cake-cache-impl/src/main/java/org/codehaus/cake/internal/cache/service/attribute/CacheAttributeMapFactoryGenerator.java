@@ -438,15 +438,20 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
         mv.visitEnd();
     }
 
+  //  static MyLoader ml;
+
     public static <K, V> CacheAttributeMapFactory<K, V> generate(String className,
             List<? extends CacheAttributeMapConfiguration> infos, Clock clock, InternalExceptionService ies)
             throws Exception {
         String descriptor = className.replace('.', '/');
-        MyLoader ml = (MyLoader) SecurityTools.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                return new MyLoader();
-            }
-        });
+        MyLoader ml=null;
+        if (ml == null) {
+            ml = (MyLoader) SecurityTools.doPrivileged(new PrivilegedAction() {
+                public Object run() {
+                    return new MyLoader();
+                }
+            });
+        }
         Class mapClass = DefaultMapGenerator.generate(ml, className + "Map", infos);
         // System.out.println(mapClass.getConstructors()[0]);
         CacheAttributeMapFactoryGenerator g = new CacheAttributeMapFactoryGenerator(descriptor, infos);
@@ -511,8 +516,9 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
     static class NoAttributes<K, V> implements CacheAttributeMapFactory<K, V> {
         public void access(GetAttributer map) {
         }
+
         public AttributeMap create(K key, V value, GetAttributer params, GetAttributer previous) {
-           return Attributes.EMPTY_ATTRIBUTE_MAP;
+            return Attributes.EMPTY_ATTRIBUTE_MAP;
         }
 
     }

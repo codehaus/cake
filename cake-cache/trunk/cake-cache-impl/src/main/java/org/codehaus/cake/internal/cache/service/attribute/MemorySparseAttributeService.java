@@ -22,13 +22,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.Reg;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
 import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
@@ -113,89 +113,66 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         generator.access((AttributeMap) map);
     }
 
-    public Reg<?> newBoolean() {
-        return newObject(Boolean.TYPE);
-    }
-
-    public Reg<?> newInt() {
-        return newObject(Integer.TYPE);
-    }
-
-    public <T> Reg<T> newObject(Class<T> type) {
-        if (type.equals(Boolean.TYPE)) {
-            ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
-            attachToPolicy(oa);
-            if (true) {
-                throw new UnsupportedOperationException();
+    public BooleanAttachment attachBoolean() {
+        final BooleanAttribute a = new BooleanAttribute() {};
+        
+        return new BooleanAttachment() {
+            public boolean get(Object entry) {
+                return ((GetAttributer) entry).get(a);
             }
-            return new ObjectRef<T>(oa);
-        } else {
-            ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
-            attachToPolicy(oa);
-            return new ObjectRef<T>(oa);
-        }
+
+            public void set(Object entry, boolean value) {
+                ((HashEntry) entry).getAttributes().put(a, value);
+            }
+        };
     }
 
-    class IntegerRef<T> extends AbstractRef<T> {
-        IntAttribute a;
+    public IntAttachment attachInt() {
+        final IntAttribute a = new IntAttribute() {};
+        attachToPolicy(a);
+        return new IntAttachment() {
+            public int get(Object entry) {
+              return  ((GetAttributer) entry).get(a);
+            }
 
-        IntegerRef(IntAttribute a) {
-            this.a = a;
-        }
-
-        @Override
-        public int getInt(GetAttributer entry) {
-            return entry.get(a);
-        }
-
-        @Override
-        public void setInt(GetAttributer entry, int value) {
-            ((HashEntry) entry).getAttributes().put(a, value);
-        }
+            public void set(Object entry, int value) {
+                ((HashEntry) entry).getAttributes().put(a, value);
+            }
+        };
     }
 
-    static class ObjectRef<T> extends AbstractRef<T> {
-        ObjectAttribute<T> a;
+    public <T> ObjectAttachment<T> attachObject(Class<T> type) {
+        final ObjectAttribute<T> a = new ObjectAttribute<T>(type) {};
+        attachToPolicy(a);
+        return new ObjectAttachment<T>() {
+            public T get(Object entry) {
+                return ((GetAttributer) entry).get(a);
+            }
 
-        ObjectRef(ObjectAttribute<T> a) {
-            this.a = a;
-        }
-
-        @Override
-        public T getObject(GetAttributer entry) {
-            return entry.get(a);
-        }
-
-        @Override
-        public void setObject(GetAttributer entry, T value) {
-            ((HashEntry) entry).getAttributes().put(a, value);
-        }
+            public void set(Object entry, T value) {
+                ((HashEntry) entry).getAttributes().put(a, value);
+            }
+        };
 
     }
 
-    static abstract class AbstractRef<T> implements Reg<T> {
-        public boolean getBoolean(GetAttributer entry) {
-            throw new UnsupportedOperationException();
-        }
+  
+    //
+    // public <T> Reg<T> newObject(Class<T> type) {
+    // if (type.equals(Boolean.TYPE)) {
+    // ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
+    // attachToPolicy(oa);
+    // if (true) {
+    // throw new UnsupportedOperationException();
+    // }
+    // return new ObjectRef<T>(oa);
+    // } else {
+    // ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
+    // attachToPolicy(oa);
+    // return new ObjectRef<T>(oa);
+    // }
+    // }
 
-        public T getObject(GetAttributer entry) {
-            throw new UnsupportedOperationException();
-        }
 
-        public void setBoolean(GetAttributer entry, boolean value) {
-            throw new UnsupportedOperationException();
-        }
 
-        public void setObject(GetAttributer entry, T value) {
-            throw new UnsupportedOperationException();
-        }
-
-        public int getInt(GetAttributer entry) {
-            throw new UnsupportedOperationException();
-        }
-
-        public void setInt(GetAttributer entry, int value) {
-            throw new UnsupportedOperationException();
-        }
-    }
 }
