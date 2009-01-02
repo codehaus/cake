@@ -8,13 +8,15 @@ import java.util.Map;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.Reg;
+import org.codehaus.cake.cache.policy.spi.*;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.*;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.junit.Before;
 
@@ -125,91 +127,75 @@ public abstract class AbstractPolicyTest {
         public void dependOnSoft(Attribute<?> attribute) {
         }
 
-        public Reg<?> newBoolean() {
-            return newObject(Boolean.TYPE);
-        }
-
-        public Reg<?> newInt() {
-            return newObject(Integer.TYPE);
-        }
-
-        public <T> Reg<T> newObject(Class<T> type) {
-            if (type.equals(Boolean.TYPE)) {
-                ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
-                if (true) {
-                    throw new UnsupportedOperationException();
+        public BooleanAttachment attachBoolean() {
+            final BooleanAttribute a = new BooleanAttribute() {};
+            return new BooleanAttachment() {
+                public boolean get(Object entry) {
+                    return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
                 }
-                return new ObjectRef<T>(oa);
-            } else if (type.equals(Integer.TYPE)) {
-                IntAttribute a = new IntAttribute() {};
-                return new IntegerRef(a);
-            } else {
-                ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
-                return new ObjectRef<T>(oa);
-            }
+                public void set(Object entry, boolean value) {
+                    AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+                }
+            };
+        }
+
+        public IntAttachment attachInt() {
+            final IntAttribute a = new IntAttribute() {};
+            return new IntAttachment() {
+                public int get(Object entry) {
+                    return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+                }
+                public void set(Object entry, int value) {
+                    AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+                }
+            };
+        }
+
+        public <T> ObjectAttachment<T> attachObject(Class<T> type) {
+            final ObjectAttribute<T> a = new ObjectAttribute<T>(type) {};
+            return new ObjectAttachment<T>() {
+                public T get(Object entry) {
+                    return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+                }
+                public void set(Object entry, T value) {
+                    AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+                }
+            };
 
         }
+
     }
 
-    class ObjectRef<T> extends AbstractRef<T> {
+    class ObjectRef<T> implements ObjectAttachment<T> {
         ObjectAttribute<T> a;
 
         ObjectRef(ObjectAttribute<T> a) {
             this.a = a;
         }
 
-        @Override
-        public T getObject(GetAttributer entry) {
-            return get(entry).get(a);
+        public T get(Object entry) {
+            return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
         }
 
-        @Override
-        public void setObject(GetAttributer entry, T value) {
-            get(entry).put(a, value);
+        public void set(Object entry, T value) {
+            AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
         }
     }
 
-    class IntegerRef<T> extends AbstractRef<T> {
+    class IntegerRef implements IntAttachment {
         IntAttribute a;
 
         IntegerRef(IntAttribute a) {
             this.a = a;
         }
 
-        @Override
-        public int getInt(GetAttributer entry) {
-            return get(entry).get(a);
+        public int get(Object entry) {
+            return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
         }
 
-        @Override
-        public void setInt(GetAttributer entry, int value) {
-            get(entry).put(a, value);
+        public void set(Object entry, int value) {
+            AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
         }
     }
 
-    static abstract class AbstractRef<T> implements Reg<T> {
-        public int getInt(GetAttributer entry) {
-            throw new UnsupportedOperationException();
-        }
-
-        public void setInt(GetAttributer entry, int value) {
-            throw new UnsupportedOperationException();
-        }
-
-        public boolean getBoolean(GetAttributer entry) {
-            throw new UnsupportedOperationException();
-        }
-
-        public T getObject(GetAttributer entry) {
-            throw new UnsupportedOperationException();
-        }
-
-        public void setBoolean(GetAttributer entry, boolean value) {
-            throw new UnsupportedOperationException();
-        }
-
-        public void setObject(GetAttributer entry, T value) {
-            throw new UnsupportedOperationException();
-        }
-    }
 }

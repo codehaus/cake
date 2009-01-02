@@ -42,7 +42,7 @@ public class ReplaceBiggestPolicyTest extends AbstractPolicyTest {
         final InternalCacheAttributeService s = context.mock(InternalCacheAttributeService.class);
         context.checking(new Expectations() {
             {
-                one(s).newInt();
+                one(s).attachInt();
                 one(s).dependOnHard(SIZE);
             }
         });
