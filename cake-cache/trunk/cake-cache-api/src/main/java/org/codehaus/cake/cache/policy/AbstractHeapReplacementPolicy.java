@@ -18,8 +18,9 @@ package org.codehaus.cake.cache.policy;
 import java.util.Comparator;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
 import org.codehaus.cake.internal.util.ArrayUtils;
-
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.IntAttachment;
 // TODO shouldn't implement Comparator, much better just to add a method that
 // should be overriden
 public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> implements
@@ -28,7 +29,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     private final Comparator<? super CacheEntry<K, V>> comparator = this;
 
     /** The attribute that is used to keep track of the index into heap of a given CacheEntry. */
-    private Reg<?> idx;
+    private IntAttachment idx;
 
     /**
      * Priority queue represented as a balanced binary heap: the two children of queue[n] are queue[2*n+1] and
@@ -42,9 +43,8 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
 
 
     @Override
-    protected <T> void register(
-            org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator generator) {
-        idx = generator.newInt();
+    protected <T> void register(PolicyAttachmentFactory generator) {
+        idx = generator.attachInt();
     }
     
     /** {@inheritDoc} */
@@ -113,7 +113,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     }
 
     private int indexOf(CacheEntry<K, V> entry) {
-        return idx.getInt(entry);
+        return idx.get(entry);
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     }
 
     private void setIndexOf(CacheEntry<K, V> entry, int index) {
-        idx.setInt(entry, index);
+        idx.set(entry, index);
     }
 
     protected void siftDown(CacheEntry<K, V> x) {

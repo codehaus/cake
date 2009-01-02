@@ -16,6 +16,8 @@
 package org.codehaus.cake.cache.policy;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.ObjectAttachment;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double linked list of
@@ -31,8 +33,8 @@ import org.codehaus.cake.cache.CacheEntry;
 public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> {
     private CacheEntry<K, V> first;
 
-    private Reg<CacheEntry<K, V>> next;
-    private Reg<CacheEntry<K, V>> prev;
+    private ObjectAttachment<CacheEntry<K, V>> next;
+    private ObjectAttachment<CacheEntry<K, V>> prev;
     private CacheEntry<K, V> last;
 
     /**
@@ -86,7 +88,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @return the next node for the specified node, or <code>null</code> if it is the last node
      */
     protected final CacheEntry<K, V> getNext(CacheEntry<K, V> entry) {
-        return next.getObject(entry);
+        return next.get(entry);
     }
 
     /**
@@ -97,7 +99,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @return the previous node for the specified node, or <code>null</code> if it is the first node
      */
     protected final CacheEntry<K, V> getPrevious(CacheEntry<K, V> entry) {
-        return prev.getObject(entry);
+        return prev.get(entry);
     }
 
     /** @return the last entry of the list, or <code>null</code> if it is empty. */
@@ -106,9 +108,9 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
     }
 
     @Override
-    protected <T> void register(ReadWriterGenerator generator) {
-        next = (Reg) generator.newObject(CacheEntry.class);
-        prev =(Reg) generator.newObject(CacheEntry.class);
+    protected <T> void register(PolicyAttachmentFactory generator) {
+        next = (ObjectAttachment) generator.attachObject(CacheEntry.class);
+        prev =(ObjectAttachment) generator.attachObject(CacheEntry.class);
     }
 
     /**
@@ -254,7 +256,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      *            the next entry to point to
      */
     private void setNext(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
-        this.next.setObject(entry, next);
+        this.next.set(entry, next);
     }
 
     /**
@@ -266,6 +268,6 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      *            the previous entry to point to
      */
     private void setPrev(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
-        this.prev.setObject(entry, next);
+        this.prev.set(entry, next);
     }
 }

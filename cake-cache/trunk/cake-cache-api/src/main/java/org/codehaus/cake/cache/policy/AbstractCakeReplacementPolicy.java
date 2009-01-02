@@ -21,6 +21,7 @@ import java.util.Set;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
 import org.codehaus.cake.service.OnStart;
@@ -47,8 +48,7 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
 
     protected final void dependHard(Attribute<?> attribute) {
         synchronized (lock) {
-            if (softDependencies.contains(attribute)
-                    || hardDependencies.contains(attribute)) {
+            if (softDependencies.contains(attribute) || hardDependencies.contains(attribute)) {
                 throw new IllegalArgumentException("attribute has already been attached");
             }
             hardDependencies.add(attribute);
@@ -57,8 +57,7 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
 
     protected final void dependSoft(Attribute<?> attribute) {
         synchronized (lock) {
-            if (softDependencies.contains(attribute)
-                    || hardDependencies.contains(attribute)) {
+            if (softDependencies.contains(attribute) || hardDependencies.contains(attribute)) {
                 throw new IllegalArgumentException("attribute has already been attached");
             }
             softDependencies.add(attribute);
@@ -105,57 +104,7 @@ public abstract class AbstractCakeReplacementPolicy<K, V> implements Replacement
      */
     public void touch(CacheEntry<K, V> entry) {
     }
-    protected <T> void register(ReadWriterGenerator generator) {
-        
-    }
 
-    public interface Reg<T> {
-        T getObject(GetAttributer entry);
-        void setObject(GetAttributer entry, T value);
-        boolean getBoolean(GetAttributer entry);
-        int getInt(GetAttributer entry);
-        void setInt(GetAttributer entry, int value);
-        void setBoolean(GetAttributer entry, boolean value);
+    protected <T> void register(PolicyAttachmentFactory paf) {
     }
-
-    public interface ReadWriterGenerator {
-        public Reg<?> newBoolean();
-        public Reg<?> newInt();
-        
-        public abstract <T> Reg<T> newObject(Class<T> type);
-    }
-
 }
-
-//protected class AbstractHelper<K, V> {
-//  <T> Pair<Op<CacheEntry<K, V>, T>, BinaryProcedure<CacheEntry<K, V>, T>> registerObject(Class<T> type) {
-//      final ObjectAttribute<T> a = new ObjectAttribute<T>(type) {};
-//
-//      BinaryProcedure<CacheEntry<K, V>, T> writer = new BinaryProcedure<CacheEntry<K, V>, T>() {
-//          public void op(CacheEntry<K, V> entry, T value) {
-//              entry.getAttributes().put(a, value);
-//          }
-//      };
-//
-//      Op<CacheEntry<K, V>, T> reader = new Op<CacheEntry<K, V>, T>() {
-//          public T op(CacheEntry<K, V> entry) {
-//              return entry.get(a);
-//          }
-//      };
-//      return Pair.from(reader, writer);
-//  }
-//}
-
-// protected void register(AttributeRegistration registration) {
-// //Bliver kaldt af register attribute
-// //lav en attribute der trækker feltet direkte ud af attribute mappet.
-// }
-//    
-// interface AttributeRegistration {
-// <T> Pair<Op<AttributeMap, T>, Op<T, AttributeMap>> registerObject();
-// Pair<ObjectToInt<AttributeMap>, IntToObject<AttributeMap>> registerInt();
-// Pair<ObjectToLong<AttributeMap>, LongToObject<AttributeMap>> registerLong();
-// Pair<ObjectToDouble<AttributeMap>, DoubleToObject<AttributeMap>> registerDouble();
-// Pair<ObjectToFloat<AttributeMap>, FloatToObject<AttributeMap>> registerFloat();
-// Pair<ObjectToBoolean<AttributeMap>, BooleanToObject<AttributeMap>> registerBoolean();
-// }

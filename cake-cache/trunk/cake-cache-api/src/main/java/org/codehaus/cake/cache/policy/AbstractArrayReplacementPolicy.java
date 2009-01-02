@@ -18,6 +18,8 @@ package org.codehaus.cake.cache.policy;
 import java.util.ArrayList;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.IntAttachment;
 
 /**
  * 
@@ -31,7 +33,7 @@ import org.codehaus.cake.cache.CacheEntry;
 public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> {
     private final ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
 
-    private Reg<?> idx;
+    private IntAttachment idx;
 
     /** {@inheritDoc} */
     public boolean add(CacheEntry<K, V> entry) {
@@ -60,7 +62,6 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
         return list.get(index);
     }
 
-
     /**
      * Returns the index of the specified entry, or -1 if the entry has not been registered
      * 
@@ -68,12 +69,14 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
      *            the entry to return the index for
      * @return the index of the specified entry, or -1 if the entry has not been registered
      */
-    protected int getIndexOf(CacheEntry<K, V> entry) {
-        return idx.getInt(entry);
+    protected final int getIndexOf(CacheEntry<K, V> entry) {
+        return idx.get(entry);
     }
-    protected void setFromIndex(CacheEntry<K, V> entry, int in) {
-        idx.setInt(entry, in);
+
+    protected final void setFromIndex(CacheEntry<K, V> entry, int in) {
+        idx.set(entry, in);
     }
+
     /** {@inheritDoc} */
     public void remove(CacheEntry<K, V> entry) {
         remove0(entry);
@@ -120,8 +123,7 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
     }
 
     @Override
-    protected <T> void register(
-            org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator generator) {
-        idx = generator.newInt();
+    protected <T> void register(PolicyAttachmentFactory generator) {
+        idx = generator.attachInt();
     }
 }

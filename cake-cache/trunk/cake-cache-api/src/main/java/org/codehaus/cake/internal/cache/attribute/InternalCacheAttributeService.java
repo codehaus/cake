@@ -18,15 +18,15 @@ package org.codehaus.cake.internal.cache.attribute;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy.ReadWriterGenerator;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
 
 /**
  * WARNING: This is an internal class. Ordinary users should never need to reference this class.
  * <p>
  * This interface contain various methods used by {@link AbstractCakeReplacementPolicy}.
  */
-public interface InternalCacheAttributeService extends ReadWriterGenerator {
+public interface InternalCacheAttributeService extends PolicyAttachmentFactory {
     /**
      * Attaches an attribute to the cache. An {@link AttributeMap} where the attribute can be set or read can later be
      * retrieved by calling {@link CacheEntry#getAttributes()}. <p/> NOTE: The value can only be read or set safely in
