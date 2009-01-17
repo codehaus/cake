@@ -218,38 +218,6 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
     }
 
     /**
-     * Sets the specified value in the specified attribute map.
-     * 
-     * @param attributes
-     *            the attribute map to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid($type)}
-     */
-    public void set(AttributeMap attributes, $type value) {
-        if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        checkValid(value);
-        attributes.put(this, value);
-    }
-
-    /**
-     * Sets the specified value in the specified attribute holder (WithAttributes).
-     * 
-     * @param withAttributes
-     *            the the attribute holder to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid($type)}
-     */
-    public void set(WithAttributes withAttributes, $type value) {
-        set(withAttributes.getAttributes(), value);
-    }
-
-    /**
      * Returns an AttributeMap containing only this attribute mapping to the specified value. The
      * returned map is immutable.
      * 
@@ -257,15 +225,15 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      *            the value to create the singleton from
      * @return an AttributeMap containing only this attribute mapping to the specified value
      */
-    public AttributeMap singleton($type value) {
+    public GetAttributer singleton($type value) {
         return super.singleton(value);
     }
     
 #if($type=="boolean")
-    public AttributeMap singletonTrue() {
+    public GetAttributer singletonTrue() {
         return singleton(true);
     }
-    public AttributeMap singletonFalse() {
+    public GetAttributer singletonFalse() {
         return singleton(false);
     }
 #end        
@@ -290,7 +258,7 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      *            the map with attribute
      * @return true if the attribute is mapped to true in specified map
      */
-    public boolean isTrue(AttributeMap attributes) {
+    public boolean isTrue(GetAttributer attributes) {
         return attributes.get(this);
     }
 
@@ -308,7 +276,7 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      *            the map with attribute
      * @return true if the attribute is mapped to false in specified map
      */
-    public boolean isFalse(AttributeMap attributes) {
+    public boolean isFalse(GetAttributer attributes) {
         return !attributes.get(this);
     }
 
