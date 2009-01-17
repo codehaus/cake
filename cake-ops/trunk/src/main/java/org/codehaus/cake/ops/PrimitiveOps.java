@@ -28,8 +28,9 @@ import org.codehaus.cake.ops.Ops.IntOp;
 import org.codehaus.cake.ops.Ops.IntReducer;
 import org.codehaus.cake.ops.Ops.LongComparator;
 import org.codehaus.cake.ops.Ops.LongOp;
-import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.ops.Ops.LongReducer;
+import org.codehaus.cake.ops.Ops.PrimitiveOp;
+import org.codehaus.cake.ops.Ops.PrimitiveReducer;
 
 /**
  * Various implementations of primitive ops
@@ -55,6 +56,17 @@ final class PrimitiveOps {
     }
 
     // /CLOVER:ON
+
+    public static PrimitiveOp abs() {
+        return ABS_OP;
+    }
+
+    public static PrimitiveReducer add() {
+        return ADD_REDUCER;
+    }
+    public static LongOp add(long add) {
+        return null;
+    }
 
     /** A comparator that reserves the result of another DoubleComparator. */
     static final class ReverseDoubleComparator implements DoubleComparator, Serializable {
@@ -82,7 +94,7 @@ final class PrimitiveOps {
             return -comparator.compare(a, b);
         }
     }
-    
+
     static final class DoubleAddOp implements DoubleOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -97,7 +109,7 @@ final class PrimitiveOps {
             return a + add;
         }
     }
-    
+
     static final class DoubleSubtractOp implements DoubleOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -112,6 +124,7 @@ final class PrimitiveOps {
             return a - subtract;
         }
     }
+
     static final class DoubleDivideOp implements DoubleOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -156,7 +169,7 @@ final class PrimitiveOps {
             return constant;
         }
     }
-    
+
     /**
      * A reducer returning the maximum of two double elements, using the given comparator.
      */
@@ -169,7 +182,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a DoubleMaxReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -198,7 +211,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a DoubleMinReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -214,6 +227,7 @@ final class PrimitiveOps {
             return comparator.compare(a, b) <= 0 ? a : b;
         }
     }
+
     /** A comparator that reserves the result of another FloatComparator. */
     static final class ReverseFloatComparator implements FloatComparator, Serializable {
         /** serialVersionUID. */
@@ -240,7 +254,7 @@ final class PrimitiveOps {
             return -comparator.compare(a, b);
         }
     }
-    
+
     static final class FloatAddOp implements FloatOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -255,7 +269,7 @@ final class PrimitiveOps {
             return a + add;
         }
     }
-    
+
     static final class FloatSubtractOp implements FloatOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -270,6 +284,7 @@ final class PrimitiveOps {
             return a - subtract;
         }
     }
+
     static final class FloatDivideOp implements FloatOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -314,7 +329,7 @@ final class PrimitiveOps {
             return constant;
         }
     }
-    
+
     /**
      * A reducer returning the maximum of two float elements, using the given comparator.
      */
@@ -327,7 +342,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a FloatMaxReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -356,7 +371,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a FloatMinReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -372,6 +387,7 @@ final class PrimitiveOps {
             return comparator.compare(a, b) <= 0 ? a : b;
         }
     }
+
     /** A comparator that reserves the result of another IntComparator. */
     static final class ReverseIntComparator implements IntComparator, Serializable {
         /** serialVersionUID. */
@@ -398,7 +414,7 @@ final class PrimitiveOps {
             return -comparator.compare(a, b);
         }
     }
-    
+
     static final class IntAddOp implements IntOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -413,7 +429,7 @@ final class PrimitiveOps {
             return a + add;
         }
     }
-    
+
     static final class IntSubtractOp implements IntOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -428,6 +444,7 @@ final class PrimitiveOps {
             return a - subtract;
         }
     }
+
     static final class IntDivideOp implements IntOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -472,7 +489,7 @@ final class PrimitiveOps {
             return constant;
         }
     }
-    
+
     /**
      * A reducer returning the maximum of two int elements, using the given comparator.
      */
@@ -485,7 +502,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a IntMaxReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -514,7 +531,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a IntMinReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -530,6 +547,7 @@ final class PrimitiveOps {
             return comparator.compare(a, b) <= 0 ? a : b;
         }
     }
+
     /** A comparator that reserves the result of another LongComparator. */
     static final class ReverseLongComparator implements LongComparator, Serializable {
         /** serialVersionUID. */
@@ -556,7 +574,7 @@ final class PrimitiveOps {
             return -comparator.compare(a, b);
         }
     }
-    
+
     static final class LongAddOp implements LongOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -571,7 +589,7 @@ final class PrimitiveOps {
             return a + add;
         }
     }
-    
+
     static final class LongSubtractOp implements LongOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -586,6 +604,7 @@ final class PrimitiveOps {
             return a - subtract;
         }
     }
+
     static final class LongDivideOp implements LongOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
@@ -630,7 +649,7 @@ final class PrimitiveOps {
             return constant;
         }
     }
-    
+
     /**
      * A reducer returning the maximum of two long elements, using the given comparator.
      */
@@ -643,7 +662,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a LongMaxReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -672,7 +691,7 @@ final class PrimitiveOps {
 
         /**
          * Creates a LongMinReducer.
-         *
+         * 
          * @param comparator
          *            the comparator to use
          */
@@ -689,7 +708,7 @@ final class PrimitiveOps {
         }
     }
 
-    static final class PrimitiveAbsOp implements DoubleOp, FloatOp, IntOp, LongOp, Serializable {
+    static final class PrimitiveAbsOp implements PrimitiveOp, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
@@ -715,7 +734,7 @@ final class PrimitiveOps {
         }
     }
 
-    static final class PrimitiveAddReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer, Serializable {
+    static final class PrimitiveAddReducer implements PrimitiveReducer, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
@@ -741,7 +760,8 @@ final class PrimitiveOps {
         }
     }
 
-    static final class PrimitiveDivideReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer, Serializable {
+    static final class PrimitiveDivideReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer,
+            Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 

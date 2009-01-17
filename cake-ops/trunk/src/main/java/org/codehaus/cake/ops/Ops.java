@@ -329,12 +329,18 @@ import java.util.Comparator;
  */
 public final class Ops {
     // /CLOVER:OFF
-    private Ops() {} // disable construction
+    private Ops() {
+    } // disable construction
 
     // /CLOVER:ON
 
-   // PREDICATES
-    
+    public static interface PrimitiveOp extends LongOp, IntOp, DoubleOp, FloatOp {
+
+    }
+    public static interface PrimitiveReducer extends DoubleReducer, FloatReducer, IntReducer, LongReducer {
+
+    }
+    // PREDICATES
 
     public static interface Predicate<A> {
         boolean op(A a);
@@ -347,7 +353,7 @@ public final class Ops {
     public static interface DoublePredicate {
         boolean op(double a);
     }
-    
+
     public static interface IntPredicate {
         boolean op(int a);
     }
@@ -359,11 +365,11 @@ public final class Ops {
     public static interface BytePredicate {
         boolean op(byte a);
     }
-    
+
     public static interface CharPredicate {
         boolean op(char a);
     }
-    
+
     public static interface FloatPredicate {
         boolean op(float a);
     }
@@ -371,8 +377,7 @@ public final class Ops {
     public static interface ShortPredicate {
         boolean op(short a);
     }
-    
-    
+
     public static interface Op<A, R> {
         R op(A a);
     }
@@ -384,6 +389,7 @@ public final class Ops {
     public static interface BinaryProcedure<A, B> {
         void op(A a, B b);
     }
+
     public static interface Procedure<A> {
         void op(A a);
     }
@@ -454,7 +460,6 @@ public final class Ops {
         double op(double a, double b);
     }
 
-
     public static interface BinaryDoublePredicate {
         boolean op(double a, double b);
     }
@@ -521,9 +526,11 @@ public final class Ops {
     public static interface ObjectToLong<A> {
         long op(A a);
     }
+
     public static interface ObjectToFloat<A> {
         float op(A a);
     }
+
     public static interface ObjectToDouble<A> {
         double op(A a);
     }
@@ -883,6 +890,7 @@ public final class Ops {
     public static interface ObjectAndFloatProcedure<A> {
         void op(A a, float b);
     }
+
     public static interface FloatOp {
         float op(float a);
     }
