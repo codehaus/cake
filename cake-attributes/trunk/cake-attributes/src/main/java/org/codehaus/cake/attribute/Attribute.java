@@ -42,7 +42,7 @@ import java.io.Serializable;
  * @version $Id$
  * @param <T>
  *            the type of objects that this attribute maps to
- * @see AttributeMap
+ * @see MutableAttributeMap
  */
 public abstract class Attribute<T> implements Serializable {
 

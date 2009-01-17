@@ -48,9 +48,9 @@ public class DefaultAttributeMapTest extends AtrStubs {
 
     static ObjectAttribute a4 = new ObjectAttribute("a3", Boolean.class, true) {};
 
-    AttributeMap m;
+    MutableAttributeMap m;
 
-    AttributeMap m2;
+    MutableAttributeMap m2;
 
     @Test
     public void clear() {
@@ -70,14 +70,14 @@ public class DefaultAttributeMapTest extends AtrStubs {
 
     @Test
     public void copyConstructor() {
-        AttributeMap am = create();
+        MutableAttributeMap am = create();
         am.put(a1, 12.23);
         am.put(a2, 12);
         assertEquals(am, new DefaultAttributeMap(am));
         assertEquals(0, new DefaultAttributeMap(Attributes.EMPTY_ATTRIBUTE_MAP).size());
     }
 
-    protected AttributeMap create() {
+    protected MutableAttributeMap create() {
         return new DefaultAttributeMap();
     }
 
@@ -95,7 +95,7 @@ public class DefaultAttributeMapTest extends AtrStubs {
 
     @Test
     public void putAll() {
-        AttributeMap put = create();
+        MutableAttributeMap put = create();
         put.put(a1, "foo");
         put.put(a2, true);
         m.putAll(put);
@@ -106,12 +106,12 @@ public class DefaultAttributeMapTest extends AtrStubs {
     @Test
     public void serializable() {
         assertEquals(create(), serializeAndUnserialize(create()));
-        AttributeMap m = create();
+        MutableAttributeMap m = create();
         assertSame(a1, serializeAndUnserialize(a1));
         assertSame(a2, serializeAndUnserialize(a2));
       //  m.put(a1, "foo");
         m.put(a2, Boolean.TRUE);
-        AttributeMap sm=serializeAndUnserialize(m);
+        MutableAttributeMap sm=serializeAndUnserialize(m);
         assertEquals(m, sm);
     }
 
@@ -291,7 +291,7 @@ public class DefaultAttributeMapTest extends AtrStubs {
 
     @Test
     public void remove() {
-        AttributeMap map = new DefaultAttributeMap();
+        MutableAttributeMap map = new DefaultAttributeMap();
         assertEquals(B_TRUE.getDefaultValue(), map.remove(B_TRUE));
         assertEquals(B_1.getDefaultValue(), map.remove(B_1));
         assertEquals(C_1.getDefaultValue(), map.remove(C_1));

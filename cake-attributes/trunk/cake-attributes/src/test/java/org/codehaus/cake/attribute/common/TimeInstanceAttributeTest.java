@@ -18,7 +18,7 @@ package org.codehaus.cake.attribute.common;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.junit.Test;
 /**
@@ -54,7 +54,7 @@ public class TimeInstanceAttributeTest {
         assertTrue(DA.isValid(Long.MAX_VALUE));
     }
 
-    protected AttributeMap newMap() {
+    protected MutableAttributeMap newMap() {
         return new DefaultAttributeMap();
     }
 }

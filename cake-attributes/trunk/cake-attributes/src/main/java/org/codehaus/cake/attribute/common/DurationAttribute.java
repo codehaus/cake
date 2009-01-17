@@ -17,6 +17,7 @@ package org.codehaus.cake.attribute.common;
 
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.WithAttributes;
@@ -127,22 +128,8 @@ public abstract class DurationAttribute extends LongAttribute {
         return value > 0;
     }
 
-    public void set(AttributeMap attributes, Long duration, TimeUnit unit) {
-        set(attributes, duration.longValue(), unit);
-    }
-
-    /**
-     * Sets this attribute with the specified value in the specified attribute map.
-     * 
-     * @param attributes
-     *            the attribute map to set this attribute in
-     * @param duration
-     *            the duration
-     * @param unit
-     *            the time unit of the specified duration
-     */
-    public void set(AttributeMap attributes, long duration, TimeUnit unit) {
-        set(attributes, convertFrom(duration, unit));
+    public void set(MutableAttributeMap attributes, Long duration, TimeUnit unit) {
+        attributes.put(this, convertFrom(duration, unit));
     }
 
     /**

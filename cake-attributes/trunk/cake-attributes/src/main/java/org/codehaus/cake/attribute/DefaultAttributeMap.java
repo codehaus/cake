@@ -23,12 +23,12 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 /**
- * The default implementation of an {@link AttributeMap}.
+ * The default implementation of an {@link MutableAttributeMap}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
-public class DefaultAttributeMap implements AttributeMap, Serializable {
+public class DefaultAttributeMap implements MutableAttributeMap, Serializable {
 
     /** The HashMap that is storing the attribute value pairs. */
     private final Map<Attribute, Object> map = new HashMap<Attribute, Object>();
@@ -43,7 +43,7 @@ public class DefaultAttributeMap implements AttributeMap, Serializable {
      * @param copyFrom
      *            the attributemap to copy existing attributes from
      */
-    public DefaultAttributeMap(GetAttributer copyFrom) {
+    public DefaultAttributeMap(AttributeMap copyFrom) {
         if (copyFrom != Attributes.EMPTY_ATTRIBUTE_MAP) {
             for (Map.Entry<Attribute, Object> e : copyFrom.entrySet()) {
                 put(e.getKey(), e.getValue());

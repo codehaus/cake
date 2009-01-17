@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
  */
 public abstract class AbstractAttributeMapTest extends AtrStubs {
 
-    AttributeMap map;
+    MutableAttributeMap map;
 
     public void assertImmutable() {
         noClear();

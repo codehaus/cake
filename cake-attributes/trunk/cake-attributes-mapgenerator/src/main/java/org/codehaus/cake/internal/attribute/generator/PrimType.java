@@ -27,7 +27,7 @@ import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.internal.asm.Opcodes;
 import org.codehaus.cake.internal.asm.Type;
-
+@Deprecated
 public enum PrimType {
     BOOLEAN(0), BYTE(1), CHAR(2), DOUBLE(3), FLOAT(4), INT(5), LONG(6), OBJECT(7), SHORT(8);
 

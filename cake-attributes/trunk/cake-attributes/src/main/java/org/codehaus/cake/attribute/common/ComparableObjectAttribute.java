@@ -17,7 +17,7 @@ package org.codehaus.cake.attribute.common;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 
 /**
@@ -34,7 +34,7 @@ import org.codehaus.cake.attribute.ObjectAttribute;
  * @param <T>
  *            the datatype of this attribute
  */
-public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<GetAttributer> {
+public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> implements Comparator<AttributeMap> {
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
@@ -127,7 +127,7 @@ public abstract class ComparableObjectAttribute<T> extends ObjectAttribute<T> im
     }
 
     /** {@inheritDoc} */
-    public int compare(GetAttributer o1, GetAttributer o2) {
+    public int compare(AttributeMap o1, AttributeMap o2) {
         if (comparator == null) {
             Comparable<? super T> thisVal = (Comparable<? super T>) o1.get(this);
             T anotherVal = o2.get(this);

@@ -17,6 +17,7 @@ package org.codehaus.cake.internal.attribute.generator;
 
 import org.codehaus.cake.attribute.Attribute;
 
+@Deprecated
 public class DefaultAttributeConfiguration implements AttributeConfiguration {
     private final Attribute a;
 

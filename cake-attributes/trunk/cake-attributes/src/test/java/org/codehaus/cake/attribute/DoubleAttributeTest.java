@@ -15,14 +15,11 @@
  */
 package org.codehaus.cake.attribute;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import java.util.*;
+import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 /**
  * Various tests for {@link DoubleAttribute}.
@@ -80,10 +77,10 @@ public final class DoubleAttributeTest extends AtrStubs {
 
     @Test
     public void comparator() {
-        GetAttributer wa1 = ATR1.singleton(1D);
-        GetAttributer wa2 = ATR1.singleton(2D);
-        GetAttributer wa22 = ATR1.singleton(2D);
-        GetAttributer wa3 = ATR1.singleton(3D);
+        AttributeMap wa1 = ATR1.singleton(1D);
+        AttributeMap wa2 = ATR1.singleton(2D);
+        AttributeMap wa22 = ATR1.singleton(2D);
+        AttributeMap wa3 = ATR1.singleton(3D);
         assertEquals(0, ATR1.compare(wa2, wa2),0);
         assertEquals(0, ATR1.compare(wa2, wa22),0);
         assertEquals(0, ATR1.compare(wa22, wa2),0);
@@ -93,7 +90,7 @@ public final class DoubleAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
         
-        ArrayList<GetAttributer> al = new ArrayList<GetAttributer>();
+        ArrayList<AttributeMap> al = new ArrayList<AttributeMap>();
         al.add(wa2);
         al.add(wa1);
         Collections.sort(al, ATR1);
@@ -110,7 +107,7 @@ public final class DoubleAttributeTest extends AtrStubs {
 
     @Test
     public void get() {
-        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
         AttributeMap am1 = Attributes.singleton(ATR100, -1D);
         AttributeMap am111 = Attributes.singleton(ATR100, 111D);
         AttributeMap ammax = Attributes.singleton(ATR100, Double.MAX_VALUE);
@@ -143,32 +140,6 @@ public final class DoubleAttributeTest extends AtrStubs {
 
         assertTrue(NON_NEGATIVE.isValid(5D));
         assertFalse(NON_NEGATIVE.isValid(4D));
-    }
-
-    @Test
-    public void set() {
-        AttributeMap am = new DefaultAttributeMap();
-        ATR100.set(am, 10D);
-        assertEquals(10D, am.get(ATR100),0);
-        
-        ATR100.set(withAtr(am), -111D);
-        assertEquals(-111D, am.get(ATR100),0);
-        
-        ATR100.set(am, Double.valueOf(111D));
-        assertEquals(111D, am.get(ATR100),0);
-        
-        ATR100.set(am, Double.MAX_VALUE);
-        assertEquals(Double.MAX_VALUE, am.get(ATR100),0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void setIAE() {
-        NON_NEGATIVE.set(new DefaultAttributeMap(), 2D);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void setNPE() {
-        ATR100.set((AttributeMap) null, 1D);
     }
 
     @Test

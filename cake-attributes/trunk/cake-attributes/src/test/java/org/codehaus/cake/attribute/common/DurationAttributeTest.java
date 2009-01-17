@@ -22,9 +22,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AtrStubs;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.junit.Test;
 /**
  * 
@@ -52,7 +53,7 @@ public class DurationAttributeTest extends AtrStubs {
 
     @Test
     public void get() {
-        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
         AttributeMap am1 = Attributes.singleton(DA, 1L);
         AttributeMap am10000 = Attributes.singleton(DA, 10000L);
         AttributeMap ammax = Attributes.singleton(DA, Long.MAX_VALUE);
@@ -90,13 +91,13 @@ public class DurationAttributeTest extends AtrStubs {
         assertTrue(DA.isValid(Long.MAX_VALUE));
     }
 
-    protected AttributeMap newMap() {
+    protected MutableAttributeMap newMap() {
         return new DefaultAttributeMap();
     }
 
     @Test
     public void set() {
-        AttributeMap am = newMap();
+        MutableAttributeMap am = newMap();
         DA.set(am, 10l, TimeUnit.NANOSECONDS);
         assertEquals(10l, am.get(DA));
 

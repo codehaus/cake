@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 /**
  * An implementation of an {@link Attribute} mapping to a char. This implementation adds a number of
  * methods that works on primitive chars instead of their object counterpart.
@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @version $Id$
  */
 public abstract class CharAttribute extends Attribute<Character> implements
-         Comparator<GetAttributer>, Serializable {
+         Comparator<AttributeMap>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,7 +111,7 @@ public abstract class CharAttribute extends Attribute<Character> implements
     }
     
     /** {@inheritDoc} */
-    public int compare(GetAttributer w1, GetAttributer w2) {
+    public int compare(AttributeMap w1, AttributeMap w2) {
         char thisVal = w1.get(this);
         char anotherVal = w2.get(this);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -189,38 +189,6 @@ public abstract class CharAttribute extends Attribute<Character> implements
     @Override
     public final boolean isValid(Character value) {
         return isValid(value.charValue());
-    }
-
-    /**
-     * Sets the specified value in the specified attribute map.
-     * 
-     * @param attributes
-     *            the attribute map to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(char)}
-     */
-    public void set(AttributeMap attributes, char value) {
-        if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        checkValid(value);
-        attributes.put(this, value);
-    }
-
-    /**
-     * Sets the specified value in the specified attribute holder (WithAttributes).
-     * 
-     * @param withAttributes
-     *            the the attribute holder to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(char)}
-     */
-    public void set(WithAttributes withAttributes, char value) {
-        set(withAttributes.getAttributes(), value);
     }
 
     /**

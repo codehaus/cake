@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.internal.asm.ClassVisitor;
 import org.codehaus.cake.internal.asm.ClassWriter;
@@ -32,9 +32,9 @@ import org.codehaus.cake.internal.asm.MethodVisitor;
 import org.codehaus.cake.internal.asm.Opcodes;
 import org.codehaus.cake.internal.asm.Type;
 import org.codehaus.cake.internal.attribute.AttributeHelper.SimpleImmutableEntry;
-
+@Deprecated
 public class DefaultMapGenerator implements Opcodes {
-    private static final String ATTRIBUTE_MAP_INTERFACE_DESCRIPTOR = "org/codehaus/cake/attribute/AttributeMap";
+    private static final String ATTRIBUTE_MAP_INTERFACE_DESCRIPTOR = "org/codehaus/cake/attribute/MutableAttributeMap";
     static final WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
     private static final String KEYSET_NAME = "ATTRIBUTES";
     private static final Object lock = new Object();
@@ -842,7 +842,7 @@ public class DefaultMapGenerator implements Opcodes {
         cw.visitEnd();
     }
 
-    public static Class<AttributeMap> generate(MyLoader loader, String className,
+    public static Class<MutableAttributeMap> generate(MyLoader loader, String className,
             List<? extends AttributeConfiguration> infos) throws Exception {
         String descriptor = className.replace('.', '/');
 

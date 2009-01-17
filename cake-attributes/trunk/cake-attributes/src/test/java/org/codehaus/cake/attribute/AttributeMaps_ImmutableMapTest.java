@@ -27,22 +27,18 @@ import org.junit.Test;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
-public class AttributeMaps_ImmutableMapTest extends AbstractAttributeMapTest {
+public class AttributeMaps_ImmutableMapTest extends AtrStubs {
 
     private static final ObjectAttribute KEY = new ObjectAttribute("key", Integer.class, 5) {};
 
     private static final Object VALUE = "10";
 
-    private AttributeMap realMap;
-
-    protected AttributeMap create() {
+    private MutableAttributeMap realMap;
+    private AttributeMap map;
+    protected MutableAttributeMap create() {
         return new DefaultAttributeMap();
     }
 
-    @Test
-    public void noPutClearRemove() {
-        super.assertImmutable();
-    }
 
     /**
      * Tests that ImmutableAttributeMap map is serializable

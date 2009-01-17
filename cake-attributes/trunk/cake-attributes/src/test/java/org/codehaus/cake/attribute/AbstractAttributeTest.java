@@ -79,22 +79,22 @@ public abstract class AbstractAttributeTest {
     public void get() throws Exception {
         Method getMethod = null;
         try {
-            getMethod = a.getClass().getMethod("get", AttributeMap.class);
+            getMethod = a.getClass().getMethod("get", MutableAttributeMap.class);
         } catch (NoSuchMethodException e) {
-            getMethod = a.getClass().getMethod("get" + capitalize(a.getName()), AttributeMap.class);
+            getMethod = a.getClass().getMethod("get" + capitalize(a.getName()), MutableAttributeMap.class);
         }
 
         assertTrue(getMethod.getReturnType().equals(c));
 
         assertEquals(defaultValue, getMethod.invoke(null, Attributes.EMPTY_ATTRIBUTE_MAP));
         for (Object l : valid) {
-            AttributeMap am = newMap();
+            MutableAttributeMap am = newMap();
             am.put(a, l);
             assertEquals(l, getMethod.invoke(null, am));
         }
         // no validation for invalid attributes
         for (Object l : invalid) {
-            AttributeMap am = newMap();
+            MutableAttributeMap am = newMap();
             am.put(a, l);
             assertEquals(l, getMethod.invoke(null, am));
         }
@@ -135,7 +135,7 @@ public abstract class AbstractAttributeTest {
         assertEquals(name, a.getName());
     }
 
-    protected AttributeMap newMap() {
+    protected MutableAttributeMap newMap() {
         return new DefaultAttributeMap();
     }
 

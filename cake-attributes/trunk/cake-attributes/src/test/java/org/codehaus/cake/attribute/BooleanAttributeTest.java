@@ -72,9 +72,9 @@ public final class BooleanAttributeTest extends AtrStubs {
 
     @Test
     public void comparator() {
-        GetAttributer wa1 = ATR1.singleton(false);
-        GetAttributer wa2 = ATR1.singleton(true);
-        GetAttributer wa22 = ATR1.singleton(true);
+        AttributeMap wa1 = ATR1.singleton(false);
+        AttributeMap wa2 = ATR1.singleton(true);
+        AttributeMap wa22 = ATR1.singleton(true);
         assertEquals(0, ATR1.compare(wa2, wa2));
         assertEquals(0, ATR1.compare(wa2, wa22));
         assertEquals(0, ATR1.compare(wa22, wa2));
@@ -90,7 +90,7 @@ public final class BooleanAttributeTest extends AtrStubs {
 
     @Test
     public void get() {
-        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
         AttributeMap am1 = Attributes.singleton(ATR1, false);
         AttributeMap am2 = Attributes.singleton(ATR1, true);
 
@@ -119,26 +119,6 @@ public final class BooleanAttributeTest extends AtrStubs {
 
         assertTrue(NON_NEGATIVE.isValid(true));
         assertFalse(NON_NEGATIVE.isValid(false));
-    }
-
-    @Test
-    public void set() {
-        AttributeMap am = new DefaultAttributeMap();
-        ATR1.set(am, true);
-        assertTrue(am.get(ATR1));
-
-        ATR1.set(withAtr(am), false);
-        assertFalse(am.get(ATR1));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void setIAE() {
-        NON_NEGATIVE.set(new DefaultAttributeMap(), false);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void setNPE() {
-        ATR1.set((AttributeMap) null, false);
     }
 
     @Test

@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.io.Serializable;
 import java.util.Comparator;
+import java.io.Serializable;
 /**
  * An implementation of an {@link Attribute} mapping to a int. This implementation adds a number of
  * methods that works on primitive ints instead of their object counterpart.
@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @version $Id$
  */
 public abstract class IntAttribute extends Attribute<Integer> implements
-         Comparator<GetAttributer>, Serializable {
+         Comparator<AttributeMap>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -111,7 +111,7 @@ public abstract class IntAttribute extends Attribute<Integer> implements
     }
     
     /** {@inheritDoc} */
-    public int compare(GetAttributer w1, GetAttributer w2) {
+    public int compare(AttributeMap w1, AttributeMap w2) {
         int thisVal = w1.get(this);
         int anotherVal = w2.get(this);
         return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -186,38 +186,6 @@ public abstract class IntAttribute extends Attribute<Integer> implements
     @Override
     public final boolean isValid(Integer value) {
         return isValid(value.intValue());
-    }
-
-    /**
-     * Sets the specified value in the specified attribute map.
-     * 
-     * @param attributes
-     *            the attribute map to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(int)}
-     */
-    public void set(AttributeMap attributes, int value) {
-        if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        checkValid(value);
-        attributes.put(this, value);
-    }
-
-    /**
-     * Sets the specified value in the specified attribute holder (WithAttributes).
-     * 
-     * @param withAttributes
-     *            the the attribute holder to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(int)}
-     */
-    public void set(WithAttributes withAttributes, int value) {
-        set(withAttributes.getAttributes(), value);
     }
 
     /**

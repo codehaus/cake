@@ -33,7 +33,7 @@ public class AttributeTest {
     static final Attribute<String> ATR_VALIDATE = new ValidateAttribute("fooignore");
 
     // ValidateAttribute
-    AttributeMap am1 = new DefaultAttributeMap();
+    MutableAttributeMap am1 = new DefaultAttributeMap();
 
     AttributeMap am2 = Attributes.singleton(ATR, "value");
 
@@ -85,7 +85,7 @@ public class AttributeTest {
     }
 
     //
-    protected AttributeMap newMap() {
+    protected MutableAttributeMap newMap() {
         return new DefaultAttributeMap();
     }
 

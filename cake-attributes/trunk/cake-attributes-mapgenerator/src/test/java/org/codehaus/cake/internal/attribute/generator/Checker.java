@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
@@ -45,12 +45,12 @@ import org.codehaus.cake.internal.attribute.SecurityTools;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator.MyLoader;
 
 public class Checker {
-    private AttributeMap map;
+    private MutableAttributeMap map;
     private final LinkedHashMap<DefaultAttributeConfiguration, Object> params;
     private final Map<DefaultAttributeConfiguration, Object> visible;
     private final Set<Attribute<?>> visibleAttributes = new HashSet<Attribute<?>>();
 
-    Checker(AttributeMap map, LinkedHashMap<DefaultAttributeConfiguration, Object> m) {
+    Checker(MutableAttributeMap map, LinkedHashMap<DefaultAttributeConfiguration, Object> m) {
         this.map = map;
         visible = new HashMap<DefaultAttributeConfiguration, Object>();
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : m.entrySet()) {
@@ -355,7 +355,7 @@ public class Checker {
             }
         });
         try {
-            Class<AttributeMap> c = DefaultMapGenerator.generate(ml, className, list);
+            Class<MutableAttributeMap> c = DefaultMapGenerator.generate(ml, className, list);
             map = newInstance(params, c, false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -402,7 +402,7 @@ public class Checker {
         assertEquals(hashCode.hashCode(), map.hashCode());
         assertEquals(map, map);
         // no clone arguments
-        AttributeMap m = newInstance(params, map.getClass(), false);
+        MutableAttributeMap m = newInstance(params, map.getClass(), false);
         assertEquals(m, map);
         assertEquals(map, m);
         initMap();
@@ -420,7 +420,7 @@ public class Checker {
         assertFalse(map.contains(new ObjectAttribute("dd", Object.class) {}));
     }
 
-    static AttributeMap newInstance(LinkedHashMap<DefaultAttributeConfiguration, Object> params, Class c,
+    static MutableAttributeMap newInstance(LinkedHashMap<DefaultAttributeConfiguration, Object> params, Class c,
             boolean tryClone) {
         Class<?>[] types = new Class[params.size()];
         Object[] args = new Object[params.size()];
@@ -473,7 +473,7 @@ public class Checker {
             // System.err.println(params.size() + "," + Arrays.asList(types));
         }
         try {
-            Constructor<AttributeMap> con = c.getConstructor(types);
+            Constructor<MutableAttributeMap> con = c.getConstructor(types);
             // System.err.println(Arrays.asList(args));
             // System.err.println("---------");
             // System.out.println(types.length);
@@ -537,7 +537,7 @@ public class Checker {
         for (Map.Entry<DefaultAttributeConfiguration, Object> i : m.entrySet()) {
             list.add(i.getKey());
         }
-        AttributeMap map = null;
+        MutableAttributeMap map = null;
         MyLoader ml = (MyLoader)
         SecurityTools.doPrivileged(new PrivilegedAction() {
             public Object run() {
@@ -545,7 +545,7 @@ public class Checker {
             }
         });
         try {
-            Class<AttributeMap> c = DefaultMapGenerator.generate(ml, "foo" + System.nanoTime(), list);
+            Class<MutableAttributeMap> c = DefaultMapGenerator.generate(ml, "foo" + System.nanoTime(), list);
             map = newInstance(m, c, false);
         } catch (Exception e) {
             e.printStackTrace();

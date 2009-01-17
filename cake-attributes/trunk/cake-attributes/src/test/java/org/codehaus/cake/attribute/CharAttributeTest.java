@@ -15,14 +15,11 @@
  */
 package org.codehaus.cake.attribute;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import java.util.*;
+import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 /**
  * Various tests for {@link CharAttribute}.
@@ -75,10 +72,10 @@ public final class CharAttributeTest extends AtrStubs {
     
     @Test
     public void comparator() {
-        GetAttributer wa1 = ATR1.singleton((char) 1);
-        GetAttributer wa2 = ATR1.singleton((char) 2);
-        GetAttributer wa22 = ATR1.singleton((char) 2);
-        GetAttributer wa3 = ATR1.singleton((char) 3);
+        AttributeMap wa1 = ATR1.singleton((char) 1);
+        AttributeMap wa2 = ATR1.singleton((char) 2);
+        AttributeMap wa22 = ATR1.singleton((char) 2);
+        AttributeMap wa3 = ATR1.singleton((char) 3);
         assertEquals(0, ATR1.compare(wa2, wa2));
         assertEquals(0, ATR1.compare(wa2, wa22));
         assertEquals(0, ATR1.compare(wa22, wa2));
@@ -88,7 +85,7 @@ public final class CharAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
         
-        ArrayList<GetAttributer> al = new ArrayList<GetAttributer>();
+        ArrayList<AttributeMap> al = new ArrayList<AttributeMap>();
         al.add(wa2);
         al.add(wa1);
         Collections.sort(al, ATR1);
@@ -109,7 +106,7 @@ public final class CharAttributeTest extends AtrStubs {
 
     @Test
     public void get() {
-        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
         AttributeMap am1 = Attributes.singleton(ATR100, (char) -1);
         AttributeMap am111 = Attributes.singleton(ATR100, (char) 111);
         AttributeMap ammax = Attributes.singleton(ATR100, Character.MAX_VALUE);
@@ -142,32 +139,6 @@ public final class CharAttributeTest extends AtrStubs {
 
         assertTrue(NON_NEGATIVE.isValid((char) 5));
         assertFalse(NON_NEGATIVE.isValid((char) 4));
-    }
-
-    @Test
-    public void set() {
-        AttributeMap am = new DefaultAttributeMap();
-        ATR100.set(am, (char) 10);
-        assertEquals((char) 10, am.get(ATR100));
-        
-        ATR100.set(withAtr(am), (char) -111);
-        assertEquals((char) -111, am.get(ATR100));
-        
-        ATR100.set(am, Character.valueOf((char) 111));
-        assertEquals((char) 111, am.get(ATR100));
-        
-        ATR100.set(am, Character.MAX_VALUE);
-        assertEquals(Character.MAX_VALUE, am.get(ATR100));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void setIAE() {
-        NON_NEGATIVE.set(new DefaultAttributeMap(), (char) 2);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void setNPE() {
-        ATR100.set((AttributeMap) null, (char) 1);
     }
 
     @Test

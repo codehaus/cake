@@ -15,14 +15,11 @@
  */
 package org.codehaus.cake.attribute;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import java.util.*;
+import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 /**
  * Various tests for {@link LongAttribute}.
@@ -75,10 +72,10 @@ public final class LongAttributeTest extends AtrStubs {
     
     @Test
     public void comparator() {
-        GetAttributer wa1 = ATR1.singleton(1L);
-        GetAttributer wa2 = ATR1.singleton(2L);
-        GetAttributer wa22 = ATR1.singleton(2L);
-        GetAttributer wa3 = ATR1.singleton(3L);
+        AttributeMap wa1 = ATR1.singleton(1L);
+        AttributeMap wa2 = ATR1.singleton(2L);
+        AttributeMap wa22 = ATR1.singleton(2L);
+        AttributeMap wa3 = ATR1.singleton(3L);
         assertEquals(0, ATR1.compare(wa2, wa2));
         assertEquals(0, ATR1.compare(wa2, wa22));
         assertEquals(0, ATR1.compare(wa22, wa2));
@@ -88,7 +85,7 @@ public final class LongAttributeTest extends AtrStubs {
         assertTrue(ATR1.compare(wa3, wa2) > 0);
         assertTrue(ATR1.compare(wa2, wa3) < 0);
         
-        ArrayList<GetAttributer> al = new ArrayList<GetAttributer>();
+        ArrayList<AttributeMap> al = new ArrayList<AttributeMap>();
         al.add(wa2);
         al.add(wa1);
         Collections.sort(al, ATR1);
@@ -105,7 +102,7 @@ public final class LongAttributeTest extends AtrStubs {
 
     @Test
     public void get() {
-        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
         AttributeMap am1 = Attributes.singleton(ATR100, -1L);
         AttributeMap am111 = Attributes.singleton(ATR100, 111L);
         AttributeMap ammax = Attributes.singleton(ATR100, Long.MAX_VALUE);
@@ -138,32 +135,6 @@ public final class LongAttributeTest extends AtrStubs {
 
         assertTrue(NON_NEGATIVE.isValid(5L));
         assertFalse(NON_NEGATIVE.isValid(4L));
-    }
-
-    @Test
-    public void set() {
-        AttributeMap am = new DefaultAttributeMap();
-        ATR100.set(am, 10L);
-        assertEquals(10L, am.get(ATR100));
-        
-        ATR100.set(withAtr(am), -111L);
-        assertEquals(-111L, am.get(ATR100));
-        
-        ATR100.set(am, Long.valueOf(111L));
-        assertEquals(111L, am.get(ATR100));
-        
-        ATR100.set(am, Long.MAX_VALUE);
-        assertEquals(Long.MAX_VALUE, am.get(ATR100));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void setIAE() {
-        NON_NEGATIVE.set(new DefaultAttributeMap(), 2L);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void setNPE() {
-        ATR100.set((AttributeMap) null, 1L);
     }
 
     @Test

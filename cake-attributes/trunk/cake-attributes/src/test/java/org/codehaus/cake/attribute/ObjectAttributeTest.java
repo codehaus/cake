@@ -88,7 +88,7 @@ public final class ObjectAttributeTest extends AtrStubs {
 
     @Test
     public void get() {
-        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
         AttributeMap am1 = Attributes.singleton(NON_NULL, false);
         AttributeMap am2 = Attributes.singleton(NON_NULL, true);
 
@@ -114,11 +114,9 @@ public final class ObjectAttributeTest extends AtrStubs {
 
     @Test
     public void set() {
-        AttributeMap am = new DefaultAttributeMap();
+        MutableAttributeMap am = new DefaultAttributeMap();
         NON_NULL.set(am, true);
         assertTrue((Boolean) am.get(NON_NULL));
-        NON_NULL.set(withAtr(am), false);
-        assertFalse((Boolean) am.get(NON_NULL));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -128,7 +126,7 @@ public final class ObjectAttributeTest extends AtrStubs {
 
     @Test(expected = NullPointerException.class)
     public void setNPE() {
-        NON_NULL.set((AttributeMap) null, false);
+        NON_NULL.set((MutableAttributeMap) null, false);
     }
 
     @Test

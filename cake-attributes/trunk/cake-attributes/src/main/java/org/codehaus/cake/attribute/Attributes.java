@@ -37,7 +37,7 @@ import org.codehaus.cake.internal.attribute.AttributeHelper;
  */
 public final class Attributes {
     /** The empty attribute map (immutable). This attribute map is serializable. */
-    public static final AttributeMap EMPTY_ATTRIBUTE_MAP = new EmptyAttributeMap();
+    public static final MutableAttributeMap EMPTY_ATTRIBUTE_MAP = new EmptyAttributeMap();
 
     // /CLOVER:OFF
     /** Cannot instantiate. */
@@ -92,7 +92,7 @@ public final class Attributes {
         return new SingletonAttributeMap(attribute, value);
     }
 
-    public static Comparator<GetAttributer> minComparator(Attribute<?> attribute) {
+    public static Comparator<AttributeMap> minComparator(Attribute<?> attribute) {
         if (attribute == null) {
             throw new NullPointerException("attribute is null");
         }
@@ -120,7 +120,7 @@ public final class Attributes {
         }
     }
 
-    public static Comparator<GetAttributer> maxComparator(Attribute<?> attribute) {
+    public static Comparator<AttributeMap> maxComparator(Attribute<?> attribute) {
       if (attribute == null) {
             throw new NullPointerException("attribute is null");
         }
@@ -189,8 +189,8 @@ public final class Attributes {
         return unmodifiableAttributeMap(result);
     }
 
-    /** The default implementation of an immutable empty {@link AttributeMap}. */
-    static final class EmptyAttributeMap implements AttributeMap, Serializable {
+    /** The default implementation of an immutable empty {@link MutableAttributeMap}. */
+    static final class EmptyAttributeMap implements MutableAttributeMap, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -3037602713439417782L;
@@ -217,7 +217,7 @@ public final class Attributes {
         /** {@inheritDoc} */
         @Override
         public boolean equals(Object o) {
-            return o instanceof AttributeMap && ((AttributeMap) o).size() == 0;
+            return o instanceof MutableAttributeMap && ((MutableAttributeMap) o).size() == 0;
         }
 
         /** {@inheritDoc} */
@@ -467,11 +467,6 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public void clear() {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
         public boolean contains(Attribute<?> attribute) {
             return map.contains(attribute);
         }
@@ -590,100 +585,6 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public <T> T put(Attribute<T> key, T value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public boolean put(BooleanAttribute key, boolean value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public byte put(ByteAttribute key, byte value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public char put(CharAttribute key, char value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public double put(DoubleAttribute key, double value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public float put(FloatAttribute key, float value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public int put(IntAttribute key, int value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public long put(LongAttribute key, long value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public short put(ShortAttribute key, short value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        public void putAll(AttributeMap attributes) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public <T> T remove(Attribute<T> key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public boolean remove(BooleanAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public byte remove(ByteAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public char remove(CharAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public double remove(DoubleAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public float remove(FloatAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public int remove(IntAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public long remove(LongAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public short remove(ShortAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
         public int size() {
             return map.size();
         }
@@ -732,11 +633,6 @@ public final class Attributes {
         /** {@inheritDoc} */
         public Set<Attribute> attributes() {
             return (Set) Collections.singleton(attribute);
-        }
-
-        /** {@inheritDoc} */
-        public void clear() {
-            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
@@ -871,100 +767,6 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public <T> T put(Attribute<T> key, T value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public boolean put(BooleanAttribute key, boolean value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public byte put(ByteAttribute key, byte value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public char put(CharAttribute key, char value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public double put(DoubleAttribute key, double value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public float put(FloatAttribute key, float value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public int put(IntAttribute key, int value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public long put(LongAttribute key, long value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public short put(ShortAttribute key, short value) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        public void putAll(AttributeMap attributes) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public <T> T remove(Attribute<T> key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public boolean remove(BooleanAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public byte remove(ByteAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public char remove(CharAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public double remove(DoubleAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public float remove(FloatAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public int remove(IntAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public long remove(LongAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
-        public short remove(ShortAttribute key) {
-            throw new UnsupportedOperationException("map is immutable");
-        }
-
-        /** {@inheritDoc} */
         public int size() {
             return 1;
         }
@@ -988,7 +790,7 @@ public final class Attributes {
     }
 
     /** Compares Boolean */
-    static class BooleanComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class BooleanComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final BooleanAttribute attribute;
@@ -999,7 +801,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             boolean thisVal = o1.get(attribute);
             boolean anotherVal = o2.get(attribute);
             return (anotherVal == thisVal ? 0 : (thisVal ? 1 : -1));
@@ -1007,7 +809,7 @@ public final class Attributes {
     }
 
     /** Compares Boolean */
-    static class BooleanComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class BooleanComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final BooleanAttribute attribute;
@@ -1018,7 +820,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             boolean thisVal = o1.get(attribute);
             boolean anotherVal = o2.get(attribute);
             return (anotherVal == thisVal ? 0 : (anotherVal ? 1 : -1));
@@ -1026,7 +828,7 @@ public final class Attributes {
     }
 
     /** Compares Byte */
-    static class ByteComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class ByteComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final ByteAttribute attribute;
@@ -1037,7 +839,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             byte thisVal = o1.get(attribute);
             byte anotherVal = o2.get(attribute);
             return thisVal - anotherVal;
@@ -1045,7 +847,7 @@ public final class Attributes {
     }
 
     /** Compares Byte */
-    static class ByteComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class ByteComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final ByteAttribute attribute;
@@ -1056,7 +858,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             byte thisVal = o1.get(attribute);
             byte anotherVal = o2.get(attribute);
             return anotherVal - thisVal;
@@ -1064,7 +866,7 @@ public final class Attributes {
     }
 
     /** Compares Char */
-    static class CharComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class CharComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final CharAttribute attribute;
@@ -1075,7 +877,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             char thisVal = o1.get(attribute);
             char anotherVal = o2.get(attribute);
             return thisVal - anotherVal;
@@ -1083,7 +885,7 @@ public final class Attributes {
     }
 
     /** Compares Char */
-    static class CharComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class CharComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final CharAttribute attribute;
@@ -1094,7 +896,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             char thisVal = o1.get(attribute);
             char anotherVal = o2.get(attribute);
             return anotherVal - thisVal;
@@ -1102,7 +904,7 @@ public final class Attributes {
     }
 
     /** Compares Double */
-    static class DoubleComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class DoubleComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final DoubleAttribute attribute;
@@ -1113,7 +915,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             double thisVal = o1.get(attribute);
             double anotherVal = o2.get(attribute);
             return Double.compare(thisVal, anotherVal);
@@ -1121,7 +923,7 @@ public final class Attributes {
     }
 
     /** Compares Double */
-    static class DoubleComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class DoubleComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final DoubleAttribute attribute;
@@ -1132,7 +934,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             double thisVal = o1.get(attribute);
             double anotherVal = o2.get(attribute);
             return Double.compare(anotherVal, thisVal);
@@ -1140,7 +942,7 @@ public final class Attributes {
     }
 
     /** Compares Float */
-    static class FloatComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class FloatComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final FloatAttribute attribute;
@@ -1151,7 +953,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             float thisVal = o1.get(attribute);
             float anotherVal = o2.get(attribute);
             return Float.compare(thisVal, anotherVal);
@@ -1159,7 +961,7 @@ public final class Attributes {
     }
 
     /** Compares Float */
-    static class FloatComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class FloatComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final FloatAttribute attribute;
@@ -1170,7 +972,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             float thisVal = o1.get(attribute);
             float anotherVal = o2.get(attribute);
             return Float.compare(anotherVal, thisVal);
@@ -1178,7 +980,7 @@ public final class Attributes {
     }
 
     /** Compares Int */
-    static class IntComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class IntComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final IntAttribute attribute;
@@ -1189,7 +991,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             int thisVal = o1.get(attribute);
             int anotherVal = o2.get(attribute);
             return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -1197,7 +999,7 @@ public final class Attributes {
     }
 
     /** Compares Int */
-    static class IntComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class IntComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final IntAttribute attribute;
@@ -1208,7 +1010,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             int thisVal = o1.get(attribute);
             int anotherVal = o2.get(attribute);
             return (thisVal > anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -1216,7 +1018,7 @@ public final class Attributes {
     }
 
     /** Compares Long */
-    static class LongComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class LongComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final LongAttribute attribute;
@@ -1227,7 +1029,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             long thisVal = o1.get(attribute);
             long anotherVal = o2.get(attribute);
             return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -1235,7 +1037,7 @@ public final class Attributes {
     }
 
     /** Compares Long */
-    static class LongComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class LongComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final LongAttribute attribute;
@@ -1246,7 +1048,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             long thisVal = o1.get(attribute);
             long anotherVal = o2.get(attribute);
             return (thisVal > anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -1254,7 +1056,7 @@ public final class Attributes {
     }
 
     /** Compares Short */
-    static class ShortComparatorMin implements Comparator<GetAttributer>, Serializable {
+    static class ShortComparatorMin implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final ShortAttribute attribute;
@@ -1265,7 +1067,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             short thisVal = o1.get(attribute);
             short anotherVal = o2.get(attribute);
             return thisVal - anotherVal;
@@ -1273,7 +1075,7 @@ public final class Attributes {
     }
 
     /** Compares Short */
-    static class ShortComparatorMax implements Comparator<GetAttributer>, Serializable {
+    static class ShortComparatorMax implements Comparator<AttributeMap>, Serializable {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
         private final ShortAttribute attribute;
@@ -1284,7 +1086,7 @@ public final class Attributes {
         }
 
         /** {@inheritDoc} */
-        public int compare(GetAttributer o1, GetAttributer o2) {
+        public int compare(AttributeMap o1, AttributeMap o2) {
             short thisVal = o1.get(attribute);
             short anotherVal = o2.get(attribute);
             return anotherVal - thisVal;

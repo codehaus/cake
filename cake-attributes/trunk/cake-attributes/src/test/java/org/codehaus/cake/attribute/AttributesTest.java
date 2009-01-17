@@ -18,27 +18,18 @@ public class AttributesTest {
 
     @Test
     public void testValidateOk() {
-        AttributeMap map = new DefaultAttributeMap();
+        MutableAttributeMap map = new DefaultAttributeMap();
         map.put(AtrStubs.B_TRUE, true);
         map.put(AtrStubs.I_POSITIVE, 1);
         AttributeMap other = Attributes.validatedAttributeMap(map);
         assertNotSame(map, other);
         assertEquals(map, other);
-        try {
-            other.put(AtrStubs.I_3, 4);
-            fail();
-        } catch (UnsupportedOperationException ok) {
-        }
-        try {
-            other.remove(AtrStubs.I_2);
-            fail();
-        } catch (UnsupportedOperationException ok) {
-        }
+
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testValidateFail() {
-        AttributeMap map = new DefaultAttributeMap();
+        MutableAttributeMap map = new DefaultAttributeMap();
         map.put(AtrStubs.B_TRUE, true);
         map.put(AtrStubs.I_POSITIVE, 0);
         Attributes.validatedAttributeMap(map);

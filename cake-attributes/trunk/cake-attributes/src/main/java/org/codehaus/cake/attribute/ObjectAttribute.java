@@ -154,27 +154,12 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
      * @throws IllegalArgumentException
      *             if the specified value is not valid accordingly to {@link #checkValid(Object)}
      */
-    public void set(AttributeMap attributes, T value) {
+    public void set(MutableAttributeMap attributes, T value) {
         if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
         checkValid(value);
         attributes.put(this, value);
-    }
-
-    /**
-     * Sets the specified value in the specified attribute holder (WithAttributes).
-     * 
-     * @param withAttributes
-     *            the the attribute holder to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid(Object)}
-     */
-    public void set(WithAttributes withAttributes, T value) {
-        // <S extends WithAttributes> S set(S withAttribute, T value)
-        set(withAttributes.getAttributes(), value);
     }
 
     /**

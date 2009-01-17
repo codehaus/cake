@@ -22,8 +22,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Comparator;
 
 import org.codehaus.cake.attribute.AtrStubs;
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.test.util.ComparatorTestUtil.Dummy;
 import org.codehaus.cake.test.util.ComparatorTestUtil.DummyComparator;
 import org.junit.Test;

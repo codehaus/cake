@@ -33,10 +33,10 @@ import org.junit.Test;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
-public class AttributeMaps_SingletonMapTest extends AbstractAttributeMapTest {
+public class AttributeMaps_SingletonMapTest extends AtrStubs {
 
     private static final Attribute KEY = new ObjectAttribute("key", Integer.class, 5) {};
-
+    private AttributeMap map;
     private static final Attribute OTHER_KEY = new ObjectAttribute("key", Integer.class, 6) {};
 
     private static final Object OTHER_VALUE = 10;
@@ -88,7 +88,7 @@ public class AttributeMaps_SingletonMapTest extends AbstractAttributeMapTest {
     }
 
     @Test
-    public void charts() {
+    public void chars() {
         AttributeMap b1 = Attributes.singleton(C_1, (char) 5);
         assertEquals((char) 5, b1.get(C_1));
         assertEquals((char) 2, b1.get(C_2));
@@ -179,7 +179,7 @@ public class AttributeMaps_SingletonMapTest extends AbstractAttributeMapTest {
         assertFalse(map.equals(m));
 
         // differen sizes
-        AttributeMap am = new DefaultAttributeMap();
+        MutableAttributeMap am = new DefaultAttributeMap();
         am.put(KEY, VALUE);
         am.put(OTHER_KEY, VALUE);
         assertFalse(map.equals(am));
@@ -334,8 +334,4 @@ public class AttributeMaps_SingletonMapTest extends AbstractAttributeMapTest {
         assertEquals("{key=10}", map.toString());
     }
 
-    @Test
-    public void various() {
-        super.assertImmutable();
-    }
 }
