@@ -5,7 +5,7 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.codehaus.cake.forkjoin.ForkJoinExecutor;
+import org.codehaus.cake.concurrent.ForkJoinPool;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.codehaus.cake.service.test.util.AssertableForkJoinTask;
 import org.junit.Before;
@@ -28,11 +28,11 @@ public class ExecutorForkJoin extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
 
-        assertTrue(c.hasService(ForkJoinExecutor.class));
-        assertTrue(c.serviceKeySet().contains(ForkJoinExecutor.class));
-        assertNotNull(c.getService(ForkJoinExecutor.class));
-        c.getService(ForkJoinExecutor.class).execute(ar);
-        c.getService(ForkJoinExecutor.class).execute(ar1);
+        assertTrue(c.hasService(ForkJoinPool.class));
+        assertTrue(c.serviceKeySet().contains(ForkJoinPool.class));
+        assertNotNull(c.getService(ForkJoinPool.class));
+        c.getService(ForkJoinPool.class).execute(ar);
+        c.getService(ForkJoinPool.class).execute(ar1);
         ar.awaitAndAssertDone();
         ar.awaitAndAssertDone();
 
@@ -43,12 +43,12 @@ public class ExecutorForkJoin extends AbstractExecutorsTckTest {
     public void replaceDefault() {
         newConfigurationClean();
         newContainer();
-        final ForkJoinExecutor e = dummy(ForkJoinExecutor.class);
-        conf.addService(ForkJoinExecutor.class, e);
+        final ForkJoinPool e = new ForkJoinPool();
+        conf.addService(ForkJoinPool.class, e);
 
-        assertTrue(c.hasService(ForkJoinExecutor.class));
+        assertTrue(c.hasService(ForkJoinPool.class));
 
-        ForkJoinExecutor fje = getService(ForkJoinExecutor.class);
+        ForkJoinPool fje = getService(ForkJoinPool.class);
         assertSame(e, fje);
 
     }
@@ -59,7 +59,7 @@ public class ExecutorForkJoin extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
 
-        ForkJoinExecutor e = getService(ForkJoinExecutor.class);
+        ForkJoinPool e = getService(ForkJoinPool.class);
         shutdownAndAwaitTermination();
         e.execute(ar);
     }
@@ -70,6 +70,6 @@ public class ExecutorForkJoin extends AbstractExecutorsTckTest {
         newConfigurationClean();
         newContainer();
         shutdownAndAwaitTermination();
-        getService(ForkJoinExecutor.class);
+        getService(ForkJoinPool.class);
     }
 }

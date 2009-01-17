@@ -15,13 +15,14 @@
  */
 package org.codehaus.cake.stubber.bubber;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 
-public class BubberConfiguration implements WithAttributes{
+public class BubberConfiguration implements WithAttributes {
 
-    private final AttributeMap attributes = new DefaultAttributeMap();
+    private final MutableAttributeMap attributes = new DefaultAttributeMap();
 
     public AttributeMap getAttributes() {
         return attributes;

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.forkjoin.RecursiveAction;
+import org.codehaus.cake.concurrent.RecursiveAction;
 
 public class AssertableForkJoinTask extends RecursiveAction {
     private final CountDownLatch cdl;

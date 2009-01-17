@@ -22,6 +22,7 @@ import java.lang.annotation.Target;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 
 /**
@@ -40,8 +41,8 @@ public interface Container {
 
     /**
      * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
-     * exists. Calling this method is equivalent to calling {@link #getService(Class, AttributeMap)} with an empty
-     * {@link AttributeMap} as parameter.
+     * exists. Calling this method is equivalent to calling {@link #getService(Class, MutableAttributeMap)} with an empty
+     * {@link MutableAttributeMap} as parameter.
      * 
      * @param <T>
      *            the type of service to retrieve

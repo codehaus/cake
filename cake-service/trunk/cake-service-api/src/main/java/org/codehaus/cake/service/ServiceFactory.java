@@ -15,6 +15,7 @@
  */
 package org.codehaus.cake.service;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 
 /**
@@ -25,7 +26,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$ *
  * @param <T>
- *            the type of service returned from {@link #lookup(AttributeMap)}
+ *            the type of service returned from {@link #lookup(MutableAttributeMap)}
  */
 public interface ServiceFactory<T> {
 
@@ -46,7 +47,7 @@ public interface ServiceFactory<T> {
     interface ServiceFactoryContext<T> {
         /**
          * Return the key that is used for acquiring the service, as parsed along to {@link Container#getService(Class)}
-         * or {@link Container#getService(Class, AttributeMap)}. This is primaraily used if the ServiceFactory returns
+         * or {@link Container#getService(Class, MutableAttributeMap)}. This is primaraily used if the ServiceFactory returns
          * services for multiple service types
          * 
          * @return the key that used for looking of the service.
@@ -54,7 +55,7 @@ public interface ServiceFactory<T> {
         Class<? extends T> getKey();
 
         /**
-         * Return the attribute map parsed to {@link Container#getService(Class, AttributeMap)} or an empty attribute
+         * Return the attribute map parsed to {@link Container#getService(Class, MutableAttributeMap)} or an empty attribute
          * map if {@link Container#getService(Class)} was called.
          * 
          * @return attribute map that was used for looking up the service

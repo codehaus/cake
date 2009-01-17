@@ -2,7 +2,6 @@ package org.codehaus.cake.internal.service.configuration;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
 
 /**
  * Settings, options, configurations
@@ -15,7 +14,7 @@ public interface ConfigurationService /*WithAttribute*/ {
 
     void updateAll(AttributeMap attributes);
 
-    GetAttributer getAttributes();
+    AttributeMap getAttributes();
     // Compare and Set update
     //<T> void update(Attribute<T> attribute, T value, T previousValue);
 

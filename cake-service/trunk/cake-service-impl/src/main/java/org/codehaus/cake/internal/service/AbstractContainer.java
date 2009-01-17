@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceFactory;
 

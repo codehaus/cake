@@ -3,15 +3,16 @@ package org.codehaus.cake.internal.service.configuration;
 import java.util.Collection;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.service.ContainerConfiguration;
 
 public class SynchronizedConfigurationService implements ConfigurationService {
-    private volatile AttributeMap defaults = new DefaultAttributeMap();
+    private volatile MutableAttributeMap defaults = new DefaultAttributeMap();
     private final Collection<RuntimeConfigurableService> services;
 
     public SynchronizedConfigurationService(ContainerConfiguration<?> configurations, Composer composer) {
@@ -32,7 +33,7 @@ public class SynchronizedConfigurationService implements ConfigurationService {
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getAttributes() {
+    public MutableAttributeMap getAttributes() {
         return defaults;
     }
 
@@ -48,7 +49,7 @@ public class SynchronizedConfigurationService implements ConfigurationService {
 
     private void update(AttributeMap attributes) {
         AttributeMap validated = Attributes.validatedAttributeMap(attributes);
-        AttributeMap map = new DefaultAttributeMap(defaults);
+        MutableAttributeMap map = new DefaultAttributeMap(defaults);
         map.putAll(validated);
         defaults = map;
     }
