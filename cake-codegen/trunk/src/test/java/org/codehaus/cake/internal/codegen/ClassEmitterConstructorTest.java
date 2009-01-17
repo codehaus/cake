@@ -14,7 +14,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void defaultConstructor() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
             }
         };
@@ -43,7 +43,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void delegatingConstructorPartly() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Date.class).create(anyName());
                 withConstructor().setPublic().create(Long.TYPE, String.class).loadAndInvokeSuperWithArgs(1);
             }
@@ -70,7 +70,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void constructorAndAssignIntField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Object.class).create(anyName());
                 withFieldPublic("foo").createInt();
                 withConstructor().setPublic().create(Integer.TYPE).invokeEmptySuper().putFieldArg("foo", 0);
@@ -98,7 +98,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void constructorAndAssignStringField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Object.class).create(anyName());
                 withFieldPublic("foo").create(String.class);
                 withConstructor().setPublic().create(String.class).invokeEmptySuper().putFieldArg("foo", 0);
@@ -126,7 +126,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void constructorAndAssignCastedNumberField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Object.class).create(anyName());
                 withFieldPublic("foo").create(Number.class);
                 withConstructor().setPublic().create(Integer.class).invokeEmptySuper().putFieldArg("foo", 0);
@@ -154,7 +154,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void constructorAndAssignBoxed() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Object.class).create(anyName());
                 withFieldPublic("foo").create(Integer.class);
                 withConstructor().setPublic().create(Integer.TYPE).invokeEmptySuper().putFieldArg("foo", 0);
@@ -184,7 +184,7 @@ public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {
     @Test
     public void constructorDelegateAndAssignCastedNumberField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Object.class).create(anyName());
                 withFieldPublic("foo").create(Number.class);
                 withConstructor().setPublic().create(Integer.class).invokeEmptySuper().putFieldArg("foo", 0);

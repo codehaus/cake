@@ -2,7 +2,7 @@ package org.codehaus.cake.internal.codegen;
 
 import static org.junit.Assert.assertSame;
 
-public class TestHelper {
+public abstract class TestHelper {
 
     public static int[] getInts() {
         return new int[] { 9, 10, 11 };

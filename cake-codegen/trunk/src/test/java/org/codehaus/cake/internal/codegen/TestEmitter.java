@@ -5,7 +5,7 @@ import org.codehaus.cake.internal.codegen.ClassEmitter;
 public abstract class TestEmitter extends ClassEmitter {
 
     public TestEmitter(Class<?>... types) {
-        ClassFactory f = withClass().setPublic();
+        ClassHeader f = withClass().setPublic();
         if (types.length > 0) {
             f.setSuper(types[0]);
         }
@@ -16,7 +16,7 @@ public abstract class TestEmitter extends ClassEmitter {
     }
 
     @Override
-    public void defineHeader() {
+    public void define() {
 
     }
 

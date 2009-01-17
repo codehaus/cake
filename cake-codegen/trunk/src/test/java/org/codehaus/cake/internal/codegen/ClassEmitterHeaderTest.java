@@ -14,7 +14,7 @@ public class ClassEmitterHeaderTest extends AbstractClassEmitterTest {
     @Test
     public void simpel() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
             }
         };
@@ -26,7 +26,7 @@ public class ClassEmitterHeaderTest extends AbstractClassEmitterTest {
     @Test
     public void superClass() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(Object.class).create(anyName());
             }
         };
@@ -36,7 +36,7 @@ public class ClassEmitterHeaderTest extends AbstractClassEmitterTest {
     @Test
     public void superClassDate() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().setSuper(type(Date.class)).create(anyName());
             }
         };
@@ -46,7 +46,7 @@ public class ClassEmitterHeaderTest extends AbstractClassEmitterTest {
     @Test
     public void interfaces() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().addInterfaces(Serializable.class).create(anyName());
             }
         };

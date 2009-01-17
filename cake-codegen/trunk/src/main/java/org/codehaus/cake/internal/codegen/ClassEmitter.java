@@ -1,6 +1,7 @@
 package org.codehaus.cake.internal.codegen;
 
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,16 +10,15 @@ import org.codehaus.cake.internal.asm.ClassVisitor;
 import org.codehaus.cake.internal.asm.ClassWriter;
 import org.codehaus.cake.internal.asm.Opcodes;
 import org.codehaus.cake.internal.asm.Type;
-import org.codehaus.cake.internal.asm.util.TraceClassVisitor;
 
 public abstract class ClassEmitter {
     private static final int version = Opcodes.V1_5;
 
-    ClassFactory c = new ClassFactory();
+    ClassHeader c = new ClassHeader();
 
     AbstractMethod<?> current;
-    protected final ClassVisitor cw;
-    final Map<String, FieldFactory> fields = new LinkedHashMap<String, FieldFactory>();
+    protected ClassVisitor cw;
+    final Map<String, FieldHeader> fields = new LinkedHashMap<String, FieldHeader>();
     boolean initialValueSet;
     byte[] generated;
 
@@ -32,10 +32,27 @@ public abstract class ClassEmitter {
 
     public ClassEmitter() {
         writer = new ClassWriter(1);
-        cw = new TraceClassVisitor(writer, new PrintWriter(System.out));
+        try {
+            Class c = Class.forName("org.codehaus.cake.internal.asm.util.TraceClassVisitor");
+            java.lang.reflect.Constructor<ClassVisitor> con = c.getConstructor(ClassVisitor.class, PrintWriter.class);
+            cw= con.newInstance(writer,  new PrintWriter(System.out));
+           // cw = new TraceClassVisitor(writer, new PrintWriter(System.out));
+
+        } catch (ClassNotFoundException e) {
+            cw=writer;
+        } catch (NoSuchMethodException e) {
+            throw new Error(e);
+        } catch (InstantiationException e) {
+            throw new Error(e);
+        } catch (IllegalAccessException e) {
+            throw new Error(e);
+        } catch (InvocationTargetException e) {
+            throw new Error(e);
+        }
     }
 
-    public abstract void defineHeader();
+    /** Defines the header */
+    public abstract void define();
 
     void finish() {
         if (current != null) {
@@ -43,16 +60,21 @@ public abstract class ClassEmitter {
         }
     }
 
+    protected boolean isPrimitive(Type t) {
+        return t == Type.BOOLEAN_TYPE || t == Type.BYTE_TYPE || t == Type.CHAR_TYPE || t == Type.DOUBLE_TYPE
+                || t == Type.FLOAT_TYPE || t == Type.INT_TYPE || t == Type.LONG_TYPE || t == Type.SHORT_TYPE;
+    }
+
     public final byte[] generate() {
         if (generated != null) {
             return generated;
         }
-        defineHeader();
+        define();
         if (type == null) {
             throw new IllegalStateException("Class header has not been filled out");
         }
         // Define fields
-        for (FieldFactory f : fields.values()) {
+        for (FieldHeader f : fields.values()) {
             cw.visitField(f.access, f.name, f.descriptor, f.signature, f.initialValue).visitEnd();
         }
         if (!state.constructorInvoked) {
@@ -74,38 +96,38 @@ public abstract class ClassEmitter {
         return type;
     }
 
-    public ClassFactory withClass() {
+    public ClassHeader withClass() {
         return c;
     }
 
-    public ConstructorFactory withConstructor() {
+    public ConstructorHeader withConstructor() {
         finish();
-        return new ConstructorFactory();
+        return new ConstructorHeader();
     }
 
-    public FieldFactory withField(String name) {
+    public FieldHeader withField(String name) {
         return withField(name, 0);
     }
 
-    FieldFactory withField(String name, int access) {
+    FieldHeader withField(String name, int access) {
         getType();
         if (fields.containsKey(name)) {
             throw new IllegalArgumentException("Field '" + name + "' already defined");
         }
-        return new FieldFactory(name, access);
+        return new FieldHeader(name, access);
     }
 
-    public FieldFactory withFieldPublic(String name) {
+    public FieldHeader withFieldPublic(String name) {
         return withField(name, Opcodes.ACC_PUBLIC);
     }
 
-    MethodFactory withMethod(String name, int access) {
+    MethodHeader withMethod(String name, int access) {
         getType();
         finish();
-        return new MethodFactory(name, access);
+        return new MethodHeader(name, access);
     }
 
-    public MethodFactory withMethodPublic(String name) {
+    public MethodHeader withMethodPublic(String name) {
         return withMethod(name, Opcodes.ACC_PUBLIC);
     }
 
@@ -151,8 +173,8 @@ public abstract class ClassEmitter {
         return Type.getType(String.class);
     }
 
-    public class AbstractMemberFactory<T extends AbstractMemberFactory<?>> {
-        int access = 0;
+    public class AbstractMemberHeader<T extends AbstractMemberHeader<?>> {
+        int access;
         String name;
 
         void checkState() {
@@ -166,11 +188,11 @@ public abstract class ClassEmitter {
 
     }
 
-    public class ClassFactory extends AbstractMemberFactory<ClassFactory> {
+    public class ClassHeader extends AbstractMemberHeader<ClassHeader> {
         final ArrayList<String> interfaces = new ArrayList<String>();
         String superType = "java/lang/Object";
 
-        public ClassFactory addInterfaces(Class<?>... interfaces) {
+        public ClassHeader addInterfaces(Class<?>... interfaces) {
             checkType();
             for (Class<?> c : interfaces) {
                 this.interfaces.add(Type.getInternalName(c));
@@ -178,7 +200,7 @@ public abstract class ClassEmitter {
             return this;
         }
 
-        public ClassFactory addInterfaces(Type... interfaces) {
+        public ClassHeader addInterfaces(Type... interfaces) {
             checkType();
             for (Type t : interfaces) {
                 this.interfaces.add(t.getInternalName());
@@ -201,30 +223,28 @@ public abstract class ClassEmitter {
                     .toArray(new String[0]));
         }
 
-        public final ClassFactory setPublic() {
+        public final ClassHeader setPublic() {
             checkState();
             access += Opcodes.ACC_PUBLIC;
             return this;
         }
 
-        public ClassFactory setSuper(Class<?> type) {
-            checkType();
+        public ClassHeader setSuper(Class<?> type) {
             return setSuper(Type.getType(type));
         }
 
-        public ClassFactory setSuper(String type) {
+        public ClassHeader setSuper(String type) {
             checkType();
             superType = type;
             return this;
         }
 
-        public ClassFactory setSuper(Type type) {
-            checkType();
+        public ClassHeader setSuper(Type type) {
             return setSuper(type.getInternalName());
         }
     }
 
-    public class ConstructorFactory extends AbstractMemberFactory<ConstructorFactory> {
+    public class ConstructorHeader extends AbstractMemberHeader<ConstructorHeader> {
 
         public Constructor create(Class<?>... arguments) {
             return create(toTypes(arguments));
@@ -241,31 +261,44 @@ public abstract class ClassEmitter {
             createDelegating(new Type[0]);
         }
 
-        public void createDelegating(Class<?>... arguments) {
-            createDelegating(toTypes(arguments));
+        public Constructor createDelegating(Class<?>... arguments) {
+            return createDelegating(toTypes(arguments));
         }
 
-        public void createDelegating(Type... arguments) {
+        public Constructor createDelegating(int count, Class<?>... arguments) {
+            return createDelegating(toTypes(arguments));
+        }
+
+        public Constructor createDelegating(int count, Type... arguments) {
+            Constructor con = create(arguments);
+            con.loadThis();
+            con.adaptor.loadArgs(0, count);
+            con.invokeSuper(arguments);
+            return con;
+        }
+
+        public Constructor createDelegating(Type... arguments) {
             Constructor con = create(arguments);
             con.loadThis();
             con.adaptor.loadArgs();
             con.invokeSuper(arguments);
+            return con;
         }
 
-        public final ConstructorFactory setPublic() {
+        public final ConstructorHeader setPublic() {
             checkState();
             access += Opcodes.ACC_PUBLIC;
             return this;
         }
     }
 
-    public class FieldFactory extends AbstractMemberFactory<FieldFactory> {
+    public class FieldHeader extends AbstractMemberHeader<FieldHeader> {
         String descriptor;
         Object initialValue;
         String signature;
         Type type;
 
-        FieldFactory(String name, int access) {
+        FieldHeader(String name, int access) {
             this.name = name;
             this.access = access;
         }
@@ -333,51 +366,70 @@ public abstract class ClassEmitter {
             create(Type.getType(String.class), initialValue);
         }
 
-        public FieldFactory setFinal() {
+        public FieldHeader setFinal() {
+            return setFinal(true);
+        }
+
+        public FieldHeader setFinal(boolean isFinal) {
             checkState();
-            access += Opcodes.ACC_FINAL;
+            access = isFinal ? access |= Opcodes.ACC_FINAL : access & ~Opcodes.ACC_FINAL;
             return this;
         }
 
-        public FieldFactory setInitialValue(Object value) {
+        public FieldHeader setInitialValue(Object value) {
             checkState();
             // Check type
             initialValue = value;
             return this;
         }
 
-        public FieldFactory setPrivate() {
+        public FieldHeader setPrivate() {
             checkState();
             access += Opcodes.ACC_PUBLIC;
             return this;
         }
 
-        public FieldFactory setSignature(String signature) {
+        boolean isStatic() {
+            return (access & Opcodes.ACC_STATIC) != 0;
+        }
+
+        public FieldHeader setSignature(String signature) {
             checkState();
             this.signature = signature;
             return this;
         }
 
-        public FieldFactory setStatic() {
+        public FieldHeader setStatic() {
+            return setStatic(true);
+        }
+
+        public FieldHeader setStatic(boolean isStatic) {
             checkState();
-            access += Opcodes.ACC_STATIC;
+            access = isStatic ? access |= Opcodes.ACC_STATIC : access & ~Opcodes.ACC_STATIC;
             return this;
         }
 
-        public FieldFactory setVolatile() {
+        public FieldHeader setVolatile() {
             checkState();
             access += Opcodes.ACC_VOLATILE;
             return this;
         }
     }
 
-    public class MethodFactory extends AbstractMemberFactory<FieldFactory> {
+    public static void main(String[] args) {
+        int access = 17;
+        System.out.println(access & ~8);
+        System.out.println(13 | Opcodes.ACC_STATIC);
+        System.out.println(Opcodes.ACC_STATIC);
+    }
+
+    public class MethodHeader extends AbstractMemberHeader<FieldHeader> {
         String descriptor;
         Object initialValue;
         Type returnType = Type.VOID_TYPE;
         String signature;
 
-        MethodFactory(String name, int access) {
+        MethodHeader(String name, int access) {
             this.name = name;
             this.access = access;
         }
@@ -400,11 +452,11 @@ public abstract class ClassEmitter {
             return m;
         }
 
-        public MethodFactory setReturnType(Class<?> type) {
+        public MethodHeader setReturnType(Class<?> type) {
             return setReturnType(type(type));
         }
 
-        public MethodFactory setReturnType(Type type) {
+        public MethodHeader setReturnType(Type type) {
             returnType = type;
             return this;
         }

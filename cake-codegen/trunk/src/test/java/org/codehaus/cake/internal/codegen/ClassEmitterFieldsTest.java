@@ -15,7 +15,7 @@ public class ClassEmitterFieldsTest extends AbstractClassEmitterTest {
     @Test
     public void simpelPublic() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
                 withFieldPublic("foo1").createInt();
             }
@@ -29,7 +29,7 @@ public class ClassEmitterFieldsTest extends AbstractClassEmitterTest {
     @Test
     public void staticField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
                 withFieldPublic("foo1").createInt();
                 withFieldPublic("foo2").setStatic().createInt();
@@ -43,7 +43,7 @@ public class ClassEmitterFieldsTest extends AbstractClassEmitterTest {
     @Test
     public void finalField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
                 withFieldPublic("foo1").createInt();
                 withFieldPublic("foo2").setFinal().createInt();
@@ -57,7 +57,7 @@ public class ClassEmitterFieldsTest extends AbstractClassEmitterTest {
     @Test
     public void volatileField() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
                 withFieldPublic("foo1").createInt();
                 withFieldPublic("foo2").setVolatile().createInt();
@@ -71,7 +71,7 @@ public class ClassEmitterFieldsTest extends AbstractClassEmitterTest {
     @Test
     public void typeOf() throws Exception {
         emitter = new ClassEmitter() {
-            public void defineHeader() {
+            public void define() {
                 withClass().setPublic().create(anyName());
                 withFieldPublic("foo1").createBoolean();
                 withFieldPublic("foo2").createByte();

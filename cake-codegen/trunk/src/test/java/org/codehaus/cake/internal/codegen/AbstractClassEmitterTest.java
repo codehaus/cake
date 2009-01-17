@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 
 import org.codehaus.cake.internal.codegen.ClassEmitter;
 
-public class AbstractClassEmitterTest {
+public abstract class AbstractClassEmitterTest {
 
     protected ClassEmitter emitter;
 
