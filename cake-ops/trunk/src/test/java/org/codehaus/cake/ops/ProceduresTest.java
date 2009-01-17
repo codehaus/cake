@@ -20,6 +20,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.ops.Ops.Procedure;
+import org.codehaus.cake.test.util.SystemErrCatcher;
 import org.codehaus.cake.test.util.SystemOutCatcher;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
@@ -69,4 +70,34 @@ public class ProceduresTest {
                 .serializeAndUnserialize(Procedures.systemOutPrintln()));
     }
 
+    @Test
+    public void systemErrPrint() {
+        SystemErrCatcher str = SystemErrCatcher.get();
+        try {
+            Procedure eh = Procedures.systemErrPrint();
+            eh.op(234);
+            assertTrue(str.toString().equals("234"));
+        } finally {
+            str.terminate();
+        }
+        assertIsSerializable(Procedures.SYS_ERR_PRINT_PROCEDURE);
+        assertSame(Procedures.SYS_ERR_PRINT_PROCEDURE, Procedures.systemErrPrint());
+        assertSame(Procedures.SYS_ERR_PRINT_PROCEDURE, TestUtil.serializeAndUnserialize(Procedures.systemErrPrint()));
+    }
+
+    @Test
+    public void systemErrPrintln() {
+        SystemErrCatcher str = SystemErrCatcher.get();
+        try {
+            Procedure eh = Procedures.systemErrPrintln();
+            eh.op(234);
+            assertTrue(str.toString().equals("234" + TestUtil.LINE_SEPARATOR));
+        } finally {
+            str.terminate();
+        }
+        assertIsSerializable(Procedures.SYS_ERR_PRINTLN_PROCEDURE);
+        assertSame(Procedures.SYS_ERR_PRINTLN_PROCEDURE, Procedures.systemErrPrintln());
+        assertSame(Procedures.SYS_ERR_PRINTLN_PROCEDURE, TestUtil
+                .serializeAndUnserialize(Procedures.systemErrPrintln()));
+    }
 }

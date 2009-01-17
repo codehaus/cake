@@ -19,9 +19,11 @@ import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 
 /**
@@ -30,7 +32,7 @@ import org.junit.Test;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
-public class StringPredicatesTest {
+public class StringOpsTest {
 
     @Test
     public void contains() {
@@ -104,5 +106,17 @@ public class StringPredicatesTest {
     @Test(expected = NullPointerException.class)
     public void startsWithNPE() {
         StringOps.startsWith(null);
+    }
+    
+    @Test
+    public void toStringOp() {
+        assertNotNull(StringOps.toStringOp());
+        assertEquals("null", StringOps.toStringOp().op(null));
+        assertEquals("null", StringOps.toStringOp().op("null"));
+        assertEquals("1", StringOps.toStringOp().op(1));
+        assertIsSerializable(StringOps.toStringOp());
+        assertSame(StringOps.TO_STRING_OP, StringOps.toStringOp());
+        assertSame(StringOps.TO_STRING_OP, TestUtil.serializeAndUnserialize(StringOps.toStringOp()));
+
     }
 }

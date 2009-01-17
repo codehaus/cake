@@ -30,29 +30,44 @@ import org.codehaus.cake.ops.Ops.Procedure;
  */
 public final class Procedures {
 
-    /**
-     * A Procedure that does nothing.
-     */
+    /** A Procedure that does nothing. */
     public static final Procedure IGNORE_PROCEDURE = new NoopProcedure();
 
     /**
-     * A Procedure that prints the argument object to {@link System#out} using its
-     * {@link Object#toString()} and {@link PrintStream#print(String)}.
+     * A Procedure that prints the argument object to {@link System#out} using its {@link Object#toString()} and
+     * {@link PrintStream#print(String)}.
+     */
+    public static final Procedure SYS_ERR_PRINT_PROCEDURE = new SystemErrPrintProcedure();
+
+    /**
+     * A Procedure that prints the argument object to {@link System#err} using its {@link Object#toString()} and
+     * {@link PrintStream#println(String)} .
+     */
+    public static final Procedure SYS_ERR_PRINTLN_PROCEDURE = new SystemErrPrintlnProcedure();
+
+    /**
+     * A Procedure that prints the argument object to {@link System#out} using its {@link Object#toString()} and
+     * {@link PrintStream#print(String)}.
      */
     public static final Procedure SYS_OUT_PRINT_PROCEDURE = new SystemOutPrintProcedure();
 
     /**
-     * A Procedure that prints the argument object to {@link System#out} using its
-     * {@link Object#toString()} and {@link PrintStream#println(String)} .
+     * A Procedure that prints the argument object to {@link System#out} using its {@link Object#toString()} and
+     * {@link PrintStream#println(String)} .
      */
     public static final Procedure SYS_OUT_PRINTLN_PROCEDURE = new SystemOutPrintlnProcedure();
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
-    private Procedures() {}
+    private Procedures() {
+    }
+
     // /CLOVER:ON
     /**
      * Returns a Procedure that does nothing.
+     * <p>
+     * Using this method is likely to have comparable cost to using the like-named field. (Unlike this method, the field
+     * does not provide type safety.
      * 
      * @return a Procedure that does nothing.
      * @param <T>
@@ -61,14 +76,40 @@ public final class Procedures {
     public static <T> Procedure<T> ignore() {
         return IGNORE_PROCEDURE;
     }
-//
-//    public static <F, T> Procedure<F> mapAndApply(final Op<F, T> mapper,
-//            Procedure<? super T> procedure) {
-//        return new MapAndApplyPredicate<F, T>(mapper, procedure);
-//    }
+
+    /**
+     * Returns a Procedure that calls {@link PrintStream#print(boolean)} on {@link System#err}.
+     * <p>
+     * Using this method is likely to have comparable cost to using the like-named field. (Unlike this method, the field
+     * does not provide type safety.
+     * 
+     * @return a procedure that prints all processed elements to {@link System#err}
+     * @param <E>
+     *            the types of elements accepted by the procedure
+     */
+    public static <E> Procedure<E> systemErrPrint() {
+        return SYS_ERR_PRINT_PROCEDURE;
+    }
+
+    /**
+     * Returns a Procedure that calls {@link PrintStream#println(boolean)} on {@link System#err}.
+     * <p>
+     * Using this method is likely to have comparable cost to using the like-named field. (Unlike this method, the field
+     * does not provide type safety.
+     * 
+     * @return a procedure that prints all processed elements to {@link System#err}
+     * @param <E>
+     *            the types of elements accepted by the procedure
+     */
+    public static <E> Procedure<E> systemErrPrintln() {
+        return SYS_ERR_PRINTLN_PROCEDURE;
+    }
 
     /**
      * Returns a Procedure that calls {@link PrintStream#print(boolean)} on {@link System#out}.
+     * <p>
+     * Using this method is likely to have comparable cost to using the like-named field. (Unlike this method, the field
+     * does not provide type safety.
      * 
      * @return a procedure that prints all processed elements to {@link System#out}
      * @param <E>
@@ -80,6 +121,9 @@ public final class Procedures {
 
     /**
      * Returns a Procedure that calls {@link PrintStream#println(boolean)} on {@link System#out}.
+     * <p>
+     * Using this method is likely to have comparable cost to using the like-named field. (Unlike this method, the field
+     * does not provide type safety.
      * 
      * @return a procedure that prints all processed elements to {@link System#out}
      * @param <E>
@@ -89,75 +133,15 @@ public final class Procedures {
         return SYS_OUT_PRINTLN_PROCEDURE;
     }
 
-//    /**
-//     * A Predicate that first applies the specified mapper to the argument before evaluating the
-//     * specified predicate.
-//     */
-//    static final class MapAndApplyPredicate<F, T> implements Procedure<F>, Serializable {
-//
-//        /** serialVersionUID. */
-//        private static final long serialVersionUID = -6292758840373110577L;
-//
-//        /** The mapper used to map the element. */
-//        private final Op<F, T> mapper;
-//
-//        /** The procedure to to apply the mapped value on. */
-//        private final Procedure<? super T> procedure;
-//
-//        /**
-//         * Creates a new MapAndEvaluatePredicate.
-//         * 
-//         * @param mapper
-//         *            the mapper used to first map the argument
-//         * @param procedure
-//         *            the predicate used to evaluate the mapped argument
-//         */
-//        public MapAndApplyPredicate(Op<F, T> mapper, Procedure<? super T> procedure) {
-//            if (mapper == null) {
-//                throw new NullPointerException("mapper is null");
-//            } else if (procedure == null) {
-//                throw new NullPointerException("procedure is null");
-//            }
-//            this.procedure = procedure;
-//            this.mapper = mapper;
-//        }
-//
-//        /**
-//         * Returns the mapper that will map the object before applying the predicate on it.
-//         * 
-//         * @return the mapper that will map the object before applying the predicate on it
-//         */
-//        public Op<F, T> getMapper() {
-//            return mapper;
-//        }
-//
-//        /**
-//         * Returns the Procedure we are testing against.
-//         * 
-//         * @return the Procedure we are testing against.
-//         */
-//        public Procedure<? super T> getProcedure() {
-//            return procedure;
-//        }
-//
-//        public void op(F element) {
-//            procedure.op(mapper.op(element));
-//        }
-//    }
-
-    /**
-     * A Procedure that does nothing.
-     */
+    /** A Procedure that does nothing. */
     static final class NoopProcedure implements Procedure, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = 3258129137502925875L;
-
-        /** Creates a new NoopProcedure. */
-        NoopProcedure() {}
+        private static final long serialVersionUID = 1L;
 
         /** {@inheritDoc} */
-        public void op(Object t) {}
+        public void op(Object t) {
+        }
 
         /** @return Preserves singleton property */
         private Object readResolve() {
@@ -165,16 +149,45 @@ public final class Procedures {
         }
     }
 
-    /**
-     * A Procedure that calls {@link PrintStream#println(boolean)} on {@link System#out}.
-     */
+    /** A Procedure that calls {@link PrintStream#println(boolean)} on {@link System#err}. */
+    static final class SystemErrPrintlnProcedure implements Procedure, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = 1L;
+
+        /** {@inheritDoc} */
+        public void op(Object t) {
+            System.err.println(t);
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return SYS_ERR_PRINTLN_PROCEDURE;
+        }
+    }
+
+    /** A Procedure that calls {@link PrintStream#print(boolean)} on {@link System#err}. */
+    static final class SystemErrPrintProcedure implements Procedure, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = 1L;
+
+        /** {@inheritDoc} */
+        public void op(Object t) {
+            System.err.print(t);
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return SYS_ERR_PRINT_PROCEDURE;
+        }
+    }
+
+    /** A Procedure that calls {@link PrintStream#println(boolean)} on {@link System#out}. */
     static final class SystemOutPrintlnProcedure implements Procedure, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = 2524986731849709296L;
-
-        /** Creates a new NoopProcedure. */
-        SystemOutPrintlnProcedure() {}
+        private static final long serialVersionUID = 1L;
 
         /** {@inheritDoc} */
         public void op(Object t) {
@@ -187,16 +200,11 @@ public final class Procedures {
         }
     }
 
-    /**
-     * A Procedure that calls {@link PrintStream#print(boolean)} on {@link System#out}.
-     */
+    /** A Procedure that calls {@link PrintStream#print(boolean)} on {@link System#out}. */
     static final class SystemOutPrintProcedure implements Procedure, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = 5504109727345743170L;
-
-        /** Creates a new NoopProcedure. */
-        SystemOutPrintProcedure() {}
+        private static final long serialVersionUID = 1L;
 
         /** {@inheritDoc} */
         public void op(Object t) {

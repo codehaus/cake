@@ -17,6 +17,7 @@ package org.codehaus.cake.ops;
 
 import java.io.Serializable;
 
+import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 /**
@@ -29,9 +30,12 @@ import org.codehaus.cake.ops.Ops.Predicate;
  */
 public final class StringOps {
 
+    final static Op TO_STRING_OP = new ToStringOp();
+
     /** Cannot instantiate. */
     // /CLOVER:OFF
-    private StringOps() {}
+    private StringOps() {
+    }
 
     // /CLOVER:ON
     /**
@@ -92,6 +96,17 @@ public final class StringOps {
      */
     public static Predicate<String> startsWith(String startsWith) {
         return new StartsWithPredicate(startsWith);
+    }
+
+    /**
+     * Returns a {@link Op mapper} that return the result of calling {@link Object#toString} on the supplied argument to
+     * the mapper.
+     * 
+     * @param <T>
+     * @return the mapper
+     */
+    public static <T> Op<T, String> toStringOp() {
+        return TO_STRING_OP;
     }
 
     /**
@@ -295,6 +310,30 @@ public final class StringOps {
         @Override
         public String toString() {
             return "String starts with '" + startsWith + "'";
+        }
+    }
+
+    static final class ToString implements Op {
+
+        public Object op(Object a) {
+            return a == null ? "null" : a.toString();
+        }
+    }
+
+    /** An Op that calls Object#toString. */
+    static final class ToStringOp implements Op, Serializable {
+
+        /** Default <code>serialVersionUID</code>. */
+        private static final long serialVersionUID = 1L;
+
+        /** {@inheritDoc} */
+        public Object op(Object t) {
+            return t == null ? "null" : t.toString();
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return TO_STRING_OP;
         }
     }
 }
