@@ -163,14 +163,23 @@ public class CollectionTestUtil {
         m.put(key1, value1);
         return m;
     }
-    public static Set<Integer> asSet(int... data) {
+    public static Set<Integer> asKeySet(int... data) {
         return new HashSet<Integer>(asList(data));
+    }
+    public static Set<String> asValueSet(int... data) {
+        return new HashSet<String>(asStringList(data));
     }
 
     public static String getValue(int key) {
         return "" + (char) (key + 64);
     }
 
+    public static List<String> asStringList(int... data) {
+        ArrayList<String> list = new ArrayList<String>(data.length);
+        for (int i : data)
+            list.add(getValue(i));
+        return list;
+    }
     public static Collection<Integer> asList(int... data) {
         ArrayList<Integer> list = new ArrayList<Integer>(data.length);
         for (int i : data)
