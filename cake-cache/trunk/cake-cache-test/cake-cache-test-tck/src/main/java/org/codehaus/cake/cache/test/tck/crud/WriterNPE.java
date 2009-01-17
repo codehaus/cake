@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite.LazyOp;
@@ -223,7 +223,7 @@ public class WriterNPE {
     @Test(expected = NullPointerException.class)
     public void replaceaAttributesNPE() {
         writer.put(1, "A");
-        writer.replace(1, "A", (AttributeMap) null);
+        writer.replace(1, "A", (MutableAttributeMap) null);
     }
 
     @Test(expected = NullPointerException.class)

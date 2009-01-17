@@ -16,10 +16,11 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
+import static org.codehaus.cake.attribute.Attributes.from;
 
 public class LoadForced extends AbstractCacheTCKTest {
 
@@ -34,7 +35,7 @@ public class LoadForced extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
     public void withKeyNPE1() {
-        withLoadingForced().load(null, asDummy(AttributeMap.class));
+        withLoadingForced().load(null, asDummy(MutableAttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
@@ -70,10 +71,10 @@ public class LoadForced extends AbstractCacheTCKTest {
 
     @Test
     public void loadForceAttributesTwice() {
-        forceLoad(M1, asAtrMap(ATR1, "A", ATR2, "B"));
+        forceLoad(M1, from(ATR1, "A", ATR2, "B"));
         loader.withLoader(M1).setValue(M3.getValue());
         // already here, but force load
-        forceLoad(entry(M1, M3.getValue()), asAtrMap(ATR1, "A", ATR3, "C"));
+        forceLoad(entry(M1, M3.getValue()), from(ATR1, "A", ATR3, "C"));
         assertLoads(2);
     }
 
@@ -81,8 +82,8 @@ public class LoadForced extends AbstractCacheTCKTest {
     public void loadForceAttributesIgnoredAfterShutdown() {
         prestart();
         shutdown();
-        withLoadingForced().load(M1.getKey(), asAtrMap(ATR1, "A", ATR2, "B"));
+        withLoadingForced().load(M1.getKey(), from(ATR1, "A", ATR2, "B"));
         awaitTermination();
-        withLoadingForced().load(M2.getKey(), asAtrMap(ATR1, "A", ATR2, "B"));
+        withLoadingForced().load(M2.getKey(), from(ATR1, "A", ATR2, "B"));
     }
 }

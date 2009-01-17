@@ -17,13 +17,15 @@ package org.codehaus.cake.cache.service.loading;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheServices;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.Container;
+import org.omg.CORBA.Object;
 
 /**
  * The cache loading service is used for prefetching entries into the cache. When an entry is actually needed, the data
@@ -60,7 +62,7 @@ import org.codehaus.cake.service.Container;
 public interface CacheLoadingService<K, V> {
 
     /**
-     * An attribute that can be used as parameter to {@link Container#getService(Class, AttributeMap)} to acquire an
+     * An attribute that can be used as parameter to {@link Container#getService(Class, MutableAttributeMap)} to acquire an
      * instance of this interface that will force loading of entries even if they are already in the cache. The default
      * value of this attribute is <code>false</code> = not-forced.
      * <p>
@@ -97,7 +99,7 @@ public interface CacheLoadingService<K, V> {
     /**
      * This method works analogous to the {@link #load(Object)} method. Except that all the attributes in the specified
      * attribute map will be copied into the attribute map parsed to the
-     * {@link BlockingCacheLoader#load(Object, AttributeMap)} method.
+     * {@link BlockingCacheLoader#load(Object, MutableAttributeMap)} method.
      * <p>
      * If the cache has been shutdown any calls to this method will be ignored.
      * 
@@ -127,9 +129,9 @@ public interface CacheLoadingService<K, V> {
     void loadAll();
 
     /**
-     * Equivalent to that of calling {@link #load(Object, AttributeMap)} with the key of each entry in the cache and the
+     * Equivalent to that of calling {@link #load(Object, MutableAttributeMap)} with the key of each entry in the cache and the
      * specified attribute map. However, This operation may be more efficient than repeatedly calling
-     * {@link #load(Object, AttributeMap)}.
+     * {@link #load(Object, MutableAttributeMap)}.
      * <p>
      * If the cache has been shutdown any calls to this method will be ignored.
      * 
@@ -162,9 +164,9 @@ public interface CacheLoadingService<K, V> {
     void loadAll(Iterable<? extends K> keys);
 
     /**
-     * Equivalent to that of calling {@link #load(Object, AttributeMap)} for each key in the specified collection and
+     * Equivalent to that of calling {@link #load(Object, MutableAttributeMap)} for each key in the specified collection and
      * with the specified attribute map as a parameter. However, This operation may be more efficient than repeatedly
-     * calling {@link #load(Object, AttributeMap)} for each key.
+     * calling {@link #load(Object, MutableAttributeMap)} for each key.
      * <p>
      * The behavior of this operation is unspecified if the specified collection or attribute map is modified while the
      * operation is in progress.
@@ -185,7 +187,7 @@ public interface CacheLoadingService<K, V> {
     void loadAll(Iterable<? extends K> keys, AttributeMap attributes);
 
     /**
-     * Equivalent to calling {@link #load(Object, AttributeMap)} for each entry in the map.
+     * Equivalent to calling {@link #load(Object, MutableAttributeMap)} for each entry in the map.
      * <p>
      * The behavior of this operation is unspecified if the specified map or any of the attributemaps are modified while
      * the operation is in progress.

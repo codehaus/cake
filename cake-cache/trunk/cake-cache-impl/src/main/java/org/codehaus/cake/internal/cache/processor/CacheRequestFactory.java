@@ -3,8 +3,8 @@ package org.codehaus.cake.internal.cache.processor;
 import java.util.Comparator;
 import java.util.Map;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -24,12 +24,12 @@ public interface CacheRequestFactory<K, V> {
 
     AddEntryRequest<K, V> loaded(K key, V value, AttributeMap attributes);
 
-    AddEntryRequest<K, V> createUpdate(K key, GetAttributer attributes, Object value,
+    AddEntryRequest<K, V> createUpdate(K key, AttributeMap attributes, Object value,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate);
 
     AddEntryRequest<K, V> createUpdate(K key, Predicate<? extends CacheEntry<K, V>> updatePredicate,
-            Op<? extends K, Pair<V,AttributeMap>> factory, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
+            Op<? extends K, Pair<V, AttributeMap>> factory, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate);
 
     AddEntriesRequest<K, V> createEntries(Map<? extends K, ? extends V> t, AttributeMap attributes);

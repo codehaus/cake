@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
@@ -32,9 +32,9 @@ public class TestLoader implements BlockingCacheLoader<Integer, String> {
     private final ConcurrentHashMap<Integer, SingleLoader> map = new ConcurrentHashMap<Integer, SingleLoader>();
 
     private volatile Integer latestKey;
-    private volatile AttributeMap latestAttributeMap;
+    private volatile MutableAttributeMap latestAttributeMap;
 
-    public String load(Integer key, AttributeMap attributes) throws Exception {
+    public String load(Integer key, MutableAttributeMap attributes) throws Exception {
         latestKey = key;
         latestAttributeMap = attributes;
         // System.out.println("load " + key);
@@ -49,7 +49,7 @@ public class TestLoader implements BlockingCacheLoader<Integer, String> {
         return latestKey;
     }
 
-    public AttributeMap getLatestAttributeMap() {
+    public MutableAttributeMap getLatestAttributeMap() {
         return latestAttributeMap;
     }
 
@@ -121,7 +121,7 @@ public class TestLoader implements BlockingCacheLoader<Integer, String> {
         return this;
     }
 
-    public TestLoader add(Integer key, String value, AttributeMap attributes) {
+    public TestLoader add(Integer key, String value, MutableAttributeMap attributes) {
         map.put(key, SingleLoader.from(key, value, attributes));
         return this;
     }
@@ -132,14 +132,14 @@ public class TestLoader implements BlockingCacheLoader<Integer, String> {
 
     public <T, S> TestLoader add(Map.Entry<Integer, String> entry, Attribute<T> attribute, T avalue,
             Attribute<S> attributes, S svalue) {
-        AttributeMap ma = new DefaultAttributeMap();
+        MutableAttributeMap ma = new DefaultAttributeMap();
         ma.put(attribute, avalue);
         ma.put(attributes, svalue);
         return add(entry.getKey(), entry.getValue(), ma);
     }
 
     public <T> TestLoader add(Integer key, String value, Attribute<T> attribute, T avalue) {
-        map.put(key, SingleLoader.from(key, value, Attributes.singleton(attribute, avalue)));
+        map.put(key, SingleLoader.from(key, value, new DefaultAttributeMap(Attributes.singleton(attribute, avalue))));
         return this;
     }
 

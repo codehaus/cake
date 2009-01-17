@@ -17,7 +17,7 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asMap_;
-import static org.codehaus.cake.test.util.CollectionTestUtil.asSet;
+import static org.codehaus.cake.test.util.CollectionTestUtil.asKeySet;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -58,17 +58,17 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         for (int i = 0; i < 5; i++) {
             c.put(i, Integer.toString(i));
         }
-        assertEquals(asSet(0, 1, 2, 3, 4), c.keySet());
+        assertEquals(asKeySet(0, 1, 2, 3, 4), c.keySet());
         c.put(5, "");
-        assertEquals(asSet(1, 2, 3, 4, 5), c.keySet());
+        assertEquals(asKeySet(1, 2, 3, 4, 5), c.keySet());
         c.put(6, "");
-        assertEquals(asSet(2, 3, 4, 5, 6), c.keySet());
+        assertEquals(asKeySet(2, 3, 4, 5, 6), c.keySet());
 
         c.put(7, "");
-        assertEquals(asSet(3, 4, 5, 6, 7), c.keySet());
+        assertEquals(asKeySet(3, 4, 5, 6, 7), c.keySet());
 
         c.put(8, "");
-        assertEquals(asSet(4, 5, 6, 7, 8), c.keySet());
+        assertEquals(asKeySet(4, 5, 6, 7, 8), c.keySet());
     }
 
     @Test
@@ -106,11 +106,11 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         }
         peek(0);
         peek(M2);
-        assertEquals(asSet(0, 1, 2, 3, 4), c.keySet());
+        assertEquals(asKeySet(0, 1, 2, 3, 4), c.keySet());
         c.put(5, "");
-        assertEquals(asSet(1, 2, 3, 4, 5), c.keySet());
+        assertEquals(asKeySet(1, 2, 3, 4, 5), c.keySet());
         c.put(6, "");
-        assertEquals(asSet(2, 3, 4, 5, 6), c.keySet());
+        assertEquals(asKeySet(2, 3, 4, 5, 6), c.keySet());
     }
 
     void replaceAndCheck(Integer newKey, Integer oldKey) {

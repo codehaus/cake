@@ -2,8 +2,9 @@ package org.codehaus.cake.cache.test.tck.crud;
 
 import static org.junit.Assert.assertEquals;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;

@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache.service.crud;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
@@ -33,7 +33,7 @@ public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
         return previous == null ? null : previous.op(r.getPreviousAsEntry());
     }
 
-    public R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, GetAttributer attributes) {
+    public R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, AttributeMap attributes) {
         if (condition == null) {
             throw new NullPointerException("condition is null");
         }

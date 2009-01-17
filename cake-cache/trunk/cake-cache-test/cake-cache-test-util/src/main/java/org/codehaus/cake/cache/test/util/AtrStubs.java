@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.test.util;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
@@ -93,9 +93,9 @@ public class AtrStubs {
     public static final ShortAttribute S_MAX_VALUE = new ShortAttribute("S_MAX_VALUE", Short.MAX_VALUE) {};
     public static final ShortAttribute S_MIN_VALUE = new ShortAttribute("S_MIN_VALUE", Short.MIN_VALUE) {};
 
-    public static WithAttributes withAtr(final AttributeMap map) {
+    public static WithAttributes withAtr(final MutableAttributeMap map) {
         return new WithAttributes() {
-            public AttributeMap getAttributes() {
+            public MutableAttributeMap getAttributes() {
                 return map;
             }
         };

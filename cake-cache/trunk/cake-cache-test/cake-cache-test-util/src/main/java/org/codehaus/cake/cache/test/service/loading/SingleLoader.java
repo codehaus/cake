@@ -19,15 +19,16 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 public class SingleLoader implements BlockingCacheLoader<Integer, String> {
 
-    private AttributeMap initialParameters;
+    private MutableAttributeMap initialParameters;
 
-    private AttributeMap attributes;
+    private MutableAttributeMap attributes;
 
     private Throwable cause;
 
@@ -53,11 +54,11 @@ public class SingleLoader implements BlockingCacheLoader<Integer, String> {
         return value;
     }
 
-    public AttributeMap getParameters() {
+    public MutableAttributeMap getParameters() {
         return initialParameters;
     }
 
-    public String load(Integer key, AttributeMap attributes) throws Exception {
+    public String load(Integer key, MutableAttributeMap attributes) throws Exception {
         if (key.equals(this.key)) {
             initialParameters = attributes;
             count.incrementAndGet();
@@ -87,7 +88,7 @@ public class SingleLoader implements BlockingCacheLoader<Integer, String> {
         return sl;
     }
 
-    public static SingleLoader from(Integer key, String value, AttributeMap attributes) {
+    public static SingleLoader from(Integer key, String value, MutableAttributeMap attributes) {
         SingleLoader sl = from(key, value);
         sl.setAttributes(attributes);
         return sl;
@@ -107,7 +108,7 @@ public class SingleLoader implements BlockingCacheLoader<Integer, String> {
         return sl;
     }
 
-    public void setAttributes(AttributeMap attributes) {
+    public void setAttributes(MutableAttributeMap attributes) {
         this.attributes = attributes;
     }
 

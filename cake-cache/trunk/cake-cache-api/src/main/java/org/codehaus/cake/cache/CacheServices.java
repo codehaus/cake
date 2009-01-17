@@ -17,6 +17,7 @@ package org.codehaus.cake.cache;
 
 import java.util.concurrent.ScheduledExecutorService;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;

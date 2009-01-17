@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.internal.cache.service.exceptionhandling;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 
@@ -33,5 +33,5 @@ import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionSer
  *            the type of mapped values
  */
 public interface InternalCacheExceptionService<K, V> extends InternalExceptionService<Cache<K, V>> {
-    V loadFailed(Throwable cause, K key, AttributeMap map);
+    V loadFailed(Throwable cause, K key, MutableAttributeMap map);
 }

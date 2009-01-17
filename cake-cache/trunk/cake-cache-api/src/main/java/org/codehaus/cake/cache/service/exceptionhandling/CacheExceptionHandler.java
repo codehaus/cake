@@ -15,11 +15,13 @@
  */
 package org.codehaus.cake.cache.service.exceptionhandling;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandler;
+import org.omg.CORBA.Object;
 
 /**
  * The purpose of this class is to have one central place where all exceptions that arise within a cache or one of its
@@ -29,13 +31,13 @@ import org.codehaus.cake.service.exceptionhandling.ExceptionHandler;
  * abstract class instead of an interface.
  * <p>
  * Currently this class only defines one specialized method,
- * {@link #loadingOfValueFailed(ExceptionContext, Object, AttributeMap)} which is invoked 
+ * {@link #loadingOfValueFailed(ExceptionContext, Object, MutableAttributeMap)} which is invoked 
  * 
  *  
  * In addition to this general {@link #handle(ExceptionContext)} methods there are also a number of <tt>specialized</tt>
  * methods that handle a particular type of failure. The idea is that all common exception points has a corresponding
  * method in CacheExceptionHandler. For example, whenever an exception occurs while loading an element in a cache loader
- * the {@link #loadingLoadValueFailed(CacheExceptionContext, CacheLoader, Object, AttributeMap)} method is called. In
+ * the {@link #loadingLoadValueFailed(CacheExceptionContext, CacheLoader, Object, MutableAttributeMap)} method is called. In
  * addition to the exception that was raised a number of additional information is provided to this method. For example,
  * the key for which the load failed, the cache in which the cache occured as well as other relevant information.
  * 

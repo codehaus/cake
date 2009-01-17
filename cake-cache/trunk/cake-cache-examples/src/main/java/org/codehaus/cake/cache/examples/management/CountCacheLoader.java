@@ -6,7 +6,7 @@ package org.codehaus.cake.cache.examples.management;
 // START SNIPPET: class
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
@@ -23,7 +23,7 @@ public class CountCacheLoader implements BlockingCacheLoader<String, String> {
         return numberOfLoads.get();
     }
 
-    public String load(String key, AttributeMap attributes) {
+    public String load(String key, MutableAttributeMap attributes) {
         numberOfLoads.incrementAndGet();
         return key.toLowerCase();
     }

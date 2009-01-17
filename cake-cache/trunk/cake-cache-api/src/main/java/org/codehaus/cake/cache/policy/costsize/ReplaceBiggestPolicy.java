@@ -45,6 +45,6 @@ public class ReplaceBiggestPolicy<K, V> extends AbstractHeapReplacementPolicy<K,
 
     /** {@inheritDoc} */
     protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
-        return -SIZE.compare(o1, o2);
+        return SIZE.compare(o2, o1);
     }
 }

@@ -17,6 +17,7 @@ package org.codehaus.cake.internal.cache.service.loading;
 
 import java.util.Map;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
@@ -31,7 +32,7 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingS
         this.exceptionHandler = exceptionHandler;
     }
 
-    public V doLoad(BlockingCacheLoader<K, V> loader, K key, AttributeMap attributes) {
+    public V doLoad(BlockingCacheLoader<K, V> loader, K key, MutableAttributeMap attributes) {
         try {
             return loader.load(key, attributes);
         } catch (Throwable e) {
@@ -57,7 +58,7 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingS
             this.op = op;
         }
 
-        public V load(K key, AttributeMap attributes) throws Exception {
+        public V load(K key, MutableAttributeMap attributes) throws Exception {
             return op.op(key);
         }
     }

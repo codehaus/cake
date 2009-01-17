@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.service.memorystore;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.cache.CacheEntry;
@@ -36,8 +36,8 @@ import org.codehaus.cake.ops.Ops.Predicate;
  */
 public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
-    private final AttributeMap attributes = new DefaultAttributeMap();
-    
+    private final MutableAttributeMap attributes = new DefaultAttributeMap();
+
     private Ops.Procedure<MemoryStoreService<K, V>> evictor;
 
     /** A filter used for filtering what items should be cached. */
@@ -122,7 +122,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * the new entry.
      * <p>
      * The following example shows a Procedure that trims the cache downto 80 % of if its maximum size whenever the
-     * maximum
+     * maximum size is reached
      * 
      * <pre>
      * public class TrimTo80Pct implements Procedure&lt;MemoryStoreService&gt; {
@@ -132,6 +132,10 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      *     }
      * }
      * </pre>
+     * 
+     * <p>
+     * The behavior of using the MemoryStoreService parsed along to the procedure anywhere but within the procedure is
+     * undefined.
      * 
      * @param evictor
      * @return this configuration
@@ -159,10 +163,9 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * holds 10 elements. Then, if a user tries to add a new element the cache must choose one of the 10 elements to
      * remove from the cache before it inserts the new element. As an alternative the cache might choose to keep the 10
      * existing elements and not add the new element. For example, if it estimates that the likelihood of requesting
-     * anyone of the 10 elements in the near future are higher then the likelihood of new element being requested.
-     * <p
-     * To indicate that a cache can hold an unlimited number of elements, specify {@link Integer#MAX_VALUE}. This is
-     * also the default value.
+     * anyone of the 10 elements in the near future are higher then the likelihood of new element being requested. <p To
+     * indicate that a cache can hold an unlimited number of elements, specify {@link Integer#MAX_VALUE}. This is also
+     * the default value.
      * <p>
      * If the specified maximum size is 0, the cache will never store any elements internally.
      * 
@@ -183,8 +186,8 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
     /**
      * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the individual element
-     * sizes (sum of {@link CacheEntry#SIZE}. If the limit is reached the cache must evict existing
-     * elements before adding new elements.
+     * sizes (sum of {@link CacheEntry#SIZE}. If the limit is reached the cache must evict existing elements before
+     * adding new elements.
      * <p>
      * To indicate that a cache can have an unlimited volume, used {@link Long#MAX_VALUE}.
      * 
@@ -206,7 +209,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
         return this;
     }
 
-    public AttributeMap getAttributes() {
+    public MutableAttributeMap getAttributes() {
         return attributes;
     }
 }

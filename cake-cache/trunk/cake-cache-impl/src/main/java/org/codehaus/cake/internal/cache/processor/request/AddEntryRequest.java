@@ -1,12 +1,12 @@
 package org.codehaus.cake.internal.cache.processor.request;
 
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 public interface AddEntryRequest<K, V> extends Trimable<K, V> {
-    GetAttributer getAttributes();
+    AttributeMap getAttributes();
 
     K getKey();
 

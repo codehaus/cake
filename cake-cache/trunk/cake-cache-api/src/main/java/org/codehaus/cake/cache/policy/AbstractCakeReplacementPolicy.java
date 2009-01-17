@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
 import org.codehaus.cake.internal.UseInternals;

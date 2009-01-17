@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.cache.service.crud;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
@@ -73,7 +73,7 @@ public interface CrudWriter<K, V, R> {
      */
     R put(K key, V value);
 
-    R put(K key, V value, GetAttributer attributes);
+    R put(K key, V value, AttributeMap attributes);
 
     /**
      * Conditionally associates the specified value with the specified key in the cache.
@@ -106,7 +106,7 @@ public interface CrudWriter<K, V, R> {
      * @param attributes
      * @return
      */
-    R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, GetAttributer attributes);
+    R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value, AttributeMap attributes);
 
     /**
      * If the specified key is not already associated with a value, associate it with the given value. This is
@@ -146,7 +146,7 @@ public interface CrudWriter<K, V, R> {
     R putIfAbsent(K key, V value);
 
     /**
-     * Analogoues to the {@link #putIfAbsent(Object, Object, AttributeMap)} except that this method also takes a map of
+     * Analogoues to the {@link #putIfAbsent(Object, Object, MutableAttributeMap)} except that this method also takes a map of
      * attributes.
      * 
      * @param key
@@ -196,7 +196,7 @@ public interface CrudWriter<K, V, R> {
      *            a lazily created factory
      * @return
      * @see {@link Caches#newEntry(Object, Object)}
-     * @see Caches#newEntry(Object, Object, AttributeMap)
+     * @see Caches#newEntry(Object, Object, MutableAttributeMap)
      */
     R putIfAbsentLazy(K key, Op<? extends K, Pair<V, AttributeMap>> factory);
 

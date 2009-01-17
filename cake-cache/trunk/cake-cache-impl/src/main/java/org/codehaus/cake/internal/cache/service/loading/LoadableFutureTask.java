@@ -19,12 +19,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 
 class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
 
-    LoadableFutureTask(ThreadSafeCacheLoader<K, V> loaderService, K key, AttributeMap attributes) {
+    LoadableFutureTask(ThreadSafeCacheLoader<K, V> loaderService, K key, MutableAttributeMap attributes) {
         super(createLoadCallable(loaderService, key, attributes));
     }
 
@@ -59,7 +59,7 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
      *            the type of mapped values
      */
     static <K, V> Callable<CacheEntry<K, V>> createLoadCallable(ThreadSafeCacheLoader<K, V> loaderService, K key,
-            AttributeMap attributes) {
+            MutableAttributeMap attributes) {
         return new LoadValueCallable<K, V>(loaderService, key, attributes);
     }
 
@@ -69,7 +69,7 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
     static class LoadValueCallable<K, V> implements Callable<CacheEntry<K, V>> {
 
         /** The attribute map that should be passed to the cache loader. */
-        private final AttributeMap attributes;
+        private final MutableAttributeMap attributes;
 
         /** The key to load. */
         private final K key;
@@ -89,7 +89,7 @@ class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
          * @throws NullPointerException
          *             if the specified loading service, key or attribute map is <code>null</code>
          */
-        LoadValueCallable(ThreadSafeCacheLoader<K, V> loadingService, K key, AttributeMap attributes) {
+        LoadValueCallable(ThreadSafeCacheLoader<K, V> loadingService, K key, MutableAttributeMap attributes) {
             // if (loadingService == null) {
             // throw new NullPointerException("loadingService is null");
             // } else if (key == null) {

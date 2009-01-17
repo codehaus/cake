@@ -20,10 +20,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.cake.cache.query.CacheQuery;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudReader;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.cache.view.CacheView;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
@@ -524,8 +524,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if some property of a specified key or value prevents it from being stored in this cache
      */
     boolean replace(K key, V oldValue, V newValue);
-
-    CacheQuery<K, V> query();
     
     /**
      * Returns the number of elements in this cache. If the cache contains more than <tt>Integer.MAX_VALUE</tt>
@@ -571,4 +569,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *         {@link CrudBatchWriter}
      */
     CacheCrud<K, V> withCrud();
+    
+    CacheView<K, V> view();
 }

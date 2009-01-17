@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.query.CacheQuery;
+import org.codehaus.cake.cache.view.CacheView;
 
 /**
  * A dummy implementation of a {@link Cache}.
@@ -330,10 +330,11 @@ public class DummyCache<K, V> implements Cache<K, V> {
     }
 
     public CacheSelector<K, V> filter() {
-        return Caches.EMPTY_SELECTOR;
+        return Caches.EMPTY_CACHE.filter();
     }
-    
-    public CacheQuery<K, V> query() {
-        return Caches.EMPTY_CACHE_QUERY;
+
+
+    public CacheView<K, V> view() {
+        return Caches.EMPTY_CACHE.view();
     }
 }

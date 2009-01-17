@@ -5,24 +5,26 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.cache.query.CacheQuery;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.cache.view.CacheView;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
-import org.codehaus.cake.internal.cache.query.DefaultCacheQuery;
 import org.codehaus.cake.internal.cache.service.crud.CrudWriterFactory;
 import org.codehaus.cake.internal.cache.service.crud.DefaultCrudBatchWriter;
 import org.codehaus.cake.internal.cache.service.crud.DefaultCrudWriter;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.DefaultCacheExceptionService;
-import org.codehaus.cake.internal.cache.service.memorystore.HashMapMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
+import org.codehaus.cake.internal.cache.service.memorystore.OpenAdressingMemoryStore;
 import org.codehaus.cake.internal.cache.service.memorystore.views.CollectionViewFactory;
+import org.codehaus.cake.internal.cache.view.DefaultCacheView;
+import org.codehaus.cake.internal.codegen.ClassDefiner;
 import org.codehaus.cake.internal.service.AbstractContainer;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.management.ManagedAttribute;
@@ -39,11 +41,11 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     private final Predicate<CacheEntry<K, V>> filter;
 
+    private final CacheProcessor<K, V> processor;
+    
     private Set<K> keySet;
 
     private final MemoryStore<K, V> memoryCache;
-
-    private final CacheProcessor<K, V> processor;
 
     private final CacheRequestFactory<K, V> requestFactory;
 
@@ -136,7 +138,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
-        AttributeMap map = new DefaultAttributeMap(attributes);
+        MutableAttributeMap map = new DefaultAttributeMap(attributes);
         map.put(InternalCacheAttributes.CONTAINER, this);
         if (filter != null) {
             map.put(InternalCacheAttributes.CACHE_FILTER, filter);
@@ -201,11 +203,12 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         return returnPreviousValue.putIfAbsent(key, value);
     }
 
+    
     /** {@inheritDoc} */
-    public CacheQuery<K, V> query() {
-        return new DefaultCacheQuery<K, V, K, V>(processor, filter);
+    public CacheView<K, V> view() {
+        return new DefaultCacheView<K, V>(processor, filter);
     }
-
+    
     /** {@inheritDoc} */
     public V remove(Object key) {
         return returnPreviousValue.remove((K) key);
@@ -282,7 +285,9 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = new Composer(Cache.class, configuration);
-        composer.registerImplementation(HashMapMemoryStore.class);
+        //composer.registerImplementation(HashMapMemoryStore.class);
+        composer.registerImplementation(ClassDefiner.class);
+        composer.registerImplementation(OpenAdressingMemoryStore.class);
         composer.registerInstance(CacheConfiguration.class, configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);
         composer.registerImplementation(CrudWriterFactory.class);

@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheConfiguration;
@@ -31,7 +31,7 @@ import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
-import org.codehaus.cake.internal.cache.service.memorystore.CacheMap.HashEntry;
+import org.codehaus.cake.internal.cache.service.memorystore.TmpOpenAdressingEntry;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.util.Clock;
 
@@ -61,11 +61,11 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         initialize();
     }
 
-    public AttributeMap create(K key, V value, GetAttributer params) {
+    public MutableAttributeMap create(K key, V value, AttributeMap params) {
         return generator.create(key, value, params, null);
     }
 
-    public AttributeMap update(K key, V value, GetAttributer params, GetAttributer previous) {
+    public MutableAttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
         return generator.create(key, value, params, previous);
     }
 
@@ -109,8 +109,8 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         initialize();
     }
 
-    public void access(GetAttributer map) {
-        generator.access((AttributeMap) map);
+    public void access(AttributeMap map) {
+        generator.access((MutableAttributeMap) map);
     }
 
     public BooleanAttachment attachBoolean() {
@@ -118,11 +118,11 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         
         return new BooleanAttachment() {
             public boolean get(Object entry) {
-                return ((GetAttributer) entry).get(a);
+                return ((AttributeMap) entry).get(a);
             }
 
             public void set(Object entry, boolean value) {
-                ((HashEntry) entry).getAttributes().put(a, value);
+                ((TmpOpenAdressingEntry) entry).getAttributes().put(a, value);
             }
         };
     }
@@ -132,11 +132,11 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         attachToPolicy(a);
         return new IntAttachment() {
             public int get(Object entry) {
-              return  ((GetAttributer) entry).get(a);
+              return  ((AttributeMap) entry).get(a);
             }
 
             public void set(Object entry, int value) {
-                ((HashEntry) entry).getAttributes().put(a, value);
+                ((TmpOpenAdressingEntry) entry).getAttributes().put(a, value);
             }
         };
     }
@@ -146,33 +146,13 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         attachToPolicy(a);
         return new ObjectAttachment<T>() {
             public T get(Object entry) {
-                return ((GetAttributer) entry).get(a);
+                return ((AttributeMap) entry).get(a);
             }
 
             public void set(Object entry, T value) {
-                ((HashEntry) entry).getAttributes().put(a, value);
+                ((TmpOpenAdressingEntry) entry).getAttributes().put(a, value);
             }
         };
 
     }
-
-  
-    //
-    // public <T> Reg<T> newObject(Class<T> type) {
-    // if (type.equals(Boolean.TYPE)) {
-    // ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
-    // attachToPolicy(oa);
-    // if (true) {
-    // throw new UnsupportedOperationException();
-    // }
-    // return new ObjectRef<T>(oa);
-    // } else {
-    // ObjectAttribute<T> oa = new ObjectAttribute<T>(type) {};
-    // attachToPolicy(oa);
-    // return new ObjectRef<T>(oa);
-    // }
-    // }
-
-
-
 }

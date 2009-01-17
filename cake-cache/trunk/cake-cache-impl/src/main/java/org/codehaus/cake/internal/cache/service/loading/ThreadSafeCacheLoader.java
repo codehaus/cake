@@ -20,8 +20,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
@@ -65,7 +66,7 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         if (future == null) {
             // no load in progress, create new Future for load of key
 
-            AttributeMap map = new DefaultAttributeMap(attributes);
+            MutableAttributeMap map = new DefaultAttributeMap(attributes);
             LoadableFutureTask<K, V> newFuture = new LoadableFutureTask<K, V>(this, key, map);
             // TODO mentally check scenarios
             future = futures.putIfAbsent(key, newFuture);
@@ -91,7 +92,7 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         loadExecutor.execute(createFuture(key, attributes));
     }
 
-    CacheEntry<K, V> loadFromFuture(K key, AttributeMap map) {
+    CacheEntry<K, V> loadFromFuture(K key, MutableAttributeMap map) {
         try {
             V value = doLoad(loader, key, map);
             // TODO cache = weak reference?, for ill behaving loaders?

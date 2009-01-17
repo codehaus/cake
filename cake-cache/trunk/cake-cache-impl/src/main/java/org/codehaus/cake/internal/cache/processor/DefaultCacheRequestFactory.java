@@ -3,8 +3,8 @@ package org.codehaus.cake.internal.cache.processor;
 import java.util.Comparator;
 import java.util.Map;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultAddAllRequest;
 import org.codehaus.cake.internal.cache.processor.defaults.DefaultCreateUpdateRequest;
@@ -55,7 +55,7 @@ public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, 
         return new DefaultTrimToVolumeRequest<K, V>(volume, comparator);
     }
 
-    public AddEntryRequest<K, V> createUpdate(K key, GetAttributer attributes, Object value,
+    public AddEntryRequest<K, V> createUpdate(K key, AttributeMap attributes, Object value,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,
             Op<CacheEntry<K, V>, ?> nextEntryUpdate) {
         return new DefaultCreateUpdateRequest<K, V>(key, attributes, value, updatePredicate, previousEntryUpdate,

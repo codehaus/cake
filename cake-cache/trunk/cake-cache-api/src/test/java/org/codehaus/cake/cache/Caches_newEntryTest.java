@@ -5,8 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class Caches_newEntryTest {
         assertEquals(1, me.getValue().intValue());
         //assertSame(am, me.getAttributes());
         assertEquals("0=1 [A=3]", me.toString());
-        AttributeMap map = new DefaultAttributeMap();
+        MutableAttributeMap map = new DefaultAttributeMap();
         map.put(a, 5);
         map.put(a1, 6);
         me = Caches.newEntry(0, 1, map);

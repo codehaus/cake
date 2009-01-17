@@ -15,8 +15,9 @@
  */
 package org.codehaus.cake.internal.cache.service.loading;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
@@ -41,10 +42,10 @@ public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
     }
 
     public CacheEntry<K, V> load(K key, AttributeMap map) {
-        map = new DefaultAttributeMap(map);
-        V value = doLoad(loader, key, map);
+        MutableAttributeMap m = new DefaultAttributeMap(map);
+        V value = doLoad(loader, key, m);
         if (value != null) {
-            AddEntryRequest<K, V> loaded = requestFactory.loaded(key, value, map);
+            AddEntryRequest<K, V> loaded = requestFactory.loaded(key, value, m);
             store.process(loaded);
             return loaded.getNewEntry();
         }

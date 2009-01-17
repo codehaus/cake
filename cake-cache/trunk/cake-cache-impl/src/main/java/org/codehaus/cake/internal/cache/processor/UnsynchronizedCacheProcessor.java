@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -20,6 +20,10 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
+import org.codehaus.cake.internal.cache.service.memorystore.OpenAdressingEntry;
+import org.codehaus.cake.internal.cache.view.AbstractView;
+import org.codehaus.cake.internal.cache.view.query.HashEntryArrayProcessor;
+import org.codehaus.cake.internal.cache.view.util.QueryStack;
 import org.codehaus.cake.internal.service.RunState;
 import org.codehaus.cake.internal.util.ArrayUtils;
 import org.codehaus.cake.ops.Ops.Op;
@@ -134,5 +138,13 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
             result.add(mapped);
         }
         return result;
+    }
+
+    public Object executeView(Predicate<CacheEntry<K, V>> filter, AbstractView view, QueryStack stack) {
+        runState.isRunningLazyStart(false);
+        CacheEntry<K, V>[] entries = memoryStore.get(filter, Integer.MAX_VALUE);
+        HashEntryArrayProcessor p = new HashEntryArrayProcessor<K, V>((OpenAdressingEntry<K, V>[]) entries,
+                (Predicate) filter);
+        return p.execute(stack);
     }
 }

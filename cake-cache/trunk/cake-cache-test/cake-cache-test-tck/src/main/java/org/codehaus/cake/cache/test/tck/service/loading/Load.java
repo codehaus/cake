@@ -16,10 +16,11 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
+import static org.codehaus.cake.attribute.Attributes.from;
 
 public class Load extends AbstractCacheTCKTest {
 
@@ -34,7 +35,7 @@ public class Load extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
     public void withKeyNPE1() {
-        withLoading().load(null, asDummy(AttributeMap.class));
+        withLoading().load(null, asDummy(MutableAttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
@@ -54,7 +55,7 @@ public class Load extends AbstractCacheTCKTest {
     @Test
     public void loadAttributes() {
         assertPeek(entry(M1, null));
-        load(M1, asAtrMap(ATR1, "A", ATR2, "B"));
+        load(M1, from(ATR1, "A", ATR2, "B"));
         assertPeek(M1);
         assertGet(M1);
         assertLoads(1);
@@ -64,17 +65,17 @@ public class Load extends AbstractCacheTCKTest {
     public void loadAttributesIgnoredAfterShutdown() {
         prestart();
         shutdown();
-        withLoading().load(M3.getKey(), asAtrMap(ATR1, "A", ATR2, "B"));
+        withLoading().load(M3.getKey(), from(ATR1, "A", ATR2, "B"));
         awaitTermination();
-        withLoading().load(M4.getKey(), asAtrMap(ATR1, "A", ATR2, "B"));
+        withLoading().load(M4.getKey(), from(ATR1, "A", ATR2, "B"));
         awaitFinishedThreads();
         assertSize(0);
     }
 
     @Test
     public void loadAttributesTwice() {
-        load(M1, asAtrMap(ATR1, "A", ATR2, "B"));
-        load(entry(M1, null), asAtrMap(ATR1, "A", ATR2, "B"));// already here
+        load(M1, from(ATR1, "A", ATR2, "B"));
+        load(entry(M1, null), from(ATR1, "A", ATR2, "B"));// already here
         assertLoads(1);
     }
 

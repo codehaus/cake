@@ -31,6 +31,11 @@
       <artifactId>cake-cache-api</artifactId>
       <version>${pom.version}</version>
     </dependency>
+        <dependency>
+      <groupId>org.codehaus.cake.codegen</groupId>
+      <artifactId>cake-codegen</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.cake.attributes</groupId>
       <artifactId>cake-attributes-mapgenerator</artifactId>
@@ -42,8 +47,8 @@
       <version>0.2-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.cake.forkjoin</groupId>
-      <artifactId>cake-forkjoin-collections</artifactId>
+      <groupId>org.codehaus.cake.concurrent</groupId>
+      <artifactId>cake-concurrent</artifactId>
       <version>0.2-SNAPSHOT</version>
     </dependency>
     <dependency>

@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
+import static org.codehaus.cake.attribute.Attributes.from;
+
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.Cache;
@@ -51,24 +53,24 @@ public class ExplicitLoadKeys extends AbstractCacheTCKTest {
 
     @Test
     public void withLoadAllAttributes() {
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M2, M3);
+        loadAll(from(ATR1, "A", ATR2, "B"), M1, M2, M3);
         assertGet(M1, M2, M3);
         assertLoads(3);
     }
 
     @Test
     public void withLoadAttributesTwice() {
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M2, M3);
+        loadAll(from(ATR1, "A", ATR2, "B"), M1, M2, M3);
         // already here
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), entry(M1, null), entry(M2, null), entry(M3, null));
+        loadAll(from(ATR1, "A", ATR2, "B"), entry(M1, null), entry(M2, null), entry(M3, null));
         assertLoads(3);
     }
 
     @Test
     public void withLoadAttributesTwiceDiff() {
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M3, M4);
+        loadAll(from(ATR1, "A", ATR2, "B"), M1, M3, M4);
         // already here
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), entry(M1, null), M2, entry(M3, null), M5);
+        loadAll(from(ATR1, "A", ATR2, "B"), entry(M1, null), M2, entry(M3, null), M5);
         assertLoads(5);
     }
 
@@ -102,11 +104,11 @@ public class ExplicitLoadKeys extends AbstractCacheTCKTest {
 
     @Test
     public void withLoadForceAttributesTwice() {
-        forceLoadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M3);
+        forceLoadAll(from(ATR1, "A", ATR2, "B"), M1, M3);
         loader.withLoader(M1).setValue(M2.getValue());
         loader.withLoader(M3).setValue(M5.getValue());
         // already here, but force load
-        forceLoadAll(asAtrMap(ATR1, "A", ATR2, "B"), entry(M1, M2.getValue()), entry(M3, M5.getValue()));
+        forceLoadAll(from(ATR1, "A", ATR2, "B"), entry(M1, M2.getValue()), entry(M3, M5.getValue()));
         assertLoads(4);
     }
 }

@@ -18,10 +18,11 @@ package org.codehaus.cake.cache.test.tck.service.loading;
 import java.util.Arrays;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
+import static org.codehaus.cake.attribute.Attributes.from;
 
 public class LoadAllIterableForced extends AbstractCacheTCKTest {
     public static final Attribute ATR1 = new ObjectAttribute("ATR1", String.class, "0") {};
@@ -50,11 +51,11 @@ public class LoadAllIterableForced extends AbstractCacheTCKTest {
 
     @Test
     public void withLoadForceAttributesTwice() {
-        forceLoadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M3);
+        forceLoadAll(from(ATR1, "A", ATR2, "B"), M1, M3);
         loader.withLoader(M1).setValue(M2.getValue());
         loader.withLoader(M3).setValue(M5.getValue());
         // already here, but force load
-        forceLoadAll(asAtrMap(ATR1, "A", ATR2, "B"), entry(M1, M2.getValue()), entry(M3, M5.getValue()));
+        forceLoadAll(from(ATR1, "A", ATR2, "B"), entry(M1, M2.getValue()), entry(M3, M5.getValue()));
         assertLoads(4);
     }
 
@@ -81,12 +82,12 @@ public class LoadAllIterableForced extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE3() {
-        withLoadingForced().loadAll((Iterable) null, asDummy(AttributeMap.class));
+        withLoadingForced().loadAll((Iterable) null, asDummy(MutableAttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE4() {
-        withLoadingForced().loadAll(asList(1, null, 3), asDummy(AttributeMap.class));
+        withLoadingForced().loadAll(asList(1, null, 3), asDummy(MutableAttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)

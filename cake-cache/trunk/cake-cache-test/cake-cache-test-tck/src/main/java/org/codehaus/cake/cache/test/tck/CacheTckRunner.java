@@ -20,12 +20,12 @@ import org.codehaus.cake.cache.test.tck.attributes.AttributeSuite;
 import org.codehaus.cake.cache.test.tck.core.CoreSuite;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite;
 import org.codehaus.cake.cache.test.tck.lifecycle.LifecycleSuite;
-import org.codehaus.cake.cache.test.tck.query.QuerySuite;
 import org.codehaus.cake.cache.test.tck.selection.SelectionSuite;
 import org.codehaus.cake.cache.test.tck.service.exceptionhandling.ExceptionHandlingSuite;
 import org.codehaus.cake.cache.test.tck.service.loading.LoadingSuite;
 import org.codehaus.cake.cache.test.tck.service.management.ManagementSuite;
 import org.codehaus.cake.cache.test.tck.service.memorystore.SuiteMemoryStore;
+import org.codehaus.cake.cache.test.tck.view.ViewSuite;
 import org.codehaus.cake.service.test.tck.ServiceSuite;
 import org.codehaus.cake.service.test.tck.TckRunner;
 import org.junit.internal.runners.InitializationError;
@@ -51,6 +51,6 @@ public class CacheTckRunner extends TckRunner {
         add(new ServiceSuite(SuiteMemoryStore.class));
         add(new ServiceSuite(LoadingSuite.class));
         
-        add(new ServiceSuite(QuerySuite.class));
+        add(new ServiceSuite(ViewSuite.class));
     }
 }

@@ -18,7 +18,7 @@ package org.codehaus.cake.cache;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
@@ -58,7 +58,7 @@ import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
  * @param <V>
  *            the type of mapped values
  */
-public interface CacheEntry<K, V> extends Map.Entry<K, V>, GetAttributer {
+public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
 
     /**
      * The <tt>Cost attribute</tt> is used to indicate the cost of retrieving an entry. The idea is that when memory

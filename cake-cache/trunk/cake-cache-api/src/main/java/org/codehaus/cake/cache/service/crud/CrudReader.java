@@ -17,8 +17,8 @@ package org.codehaus.cake.cache.service.crud;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;

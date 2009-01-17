@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.internal.cache.service.exceptionhandling;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.internal.service.Composer;
@@ -58,7 +58,7 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
         exceptionHandler.handle(context);
     }
     /** {@inheritDoc} */
-    public V loadFailed(Throwable cause, K key, AttributeMap map) {
+    public V loadFailed(Throwable cause, K key, MutableAttributeMap map) {
         String message = "Loading failed [key = " + key + "]";
         return exceptionHandler.loadingOfValueFailed(createContext(cause, message, Logger.Level.Error), key, map);
     }

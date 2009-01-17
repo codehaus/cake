@@ -16,11 +16,12 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
+import static org.codehaus.cake.attribute.Attributes.from;
 
 public class LoadAll extends AbstractCacheTCKTest {
 
@@ -30,17 +31,17 @@ public class LoadAll extends AbstractCacheTCKTest {
 
     @Test 
     public void withLoadAttributesTwice() {
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M2, M3);
+        loadAll(from(ATR1, "A", ATR2, "B"), M1, M2, M3);
         // already here
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), entry(M1, null), entry(M2, null), entry(M3, null));
+        loadAll(from(ATR1, "A", ATR2, "B"), entry(M1, null), entry(M2, null), entry(M3, null));
         assertLoads(3);
     }
 
     @Test 
     public void withLoadAttributesTwiceDiff() {
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M3, M4);
+        loadAll(from(ATR1, "A", ATR2, "B"), M1, M3, M4);
         // already here
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), entry(M1, null), M2, entry(M3, null), M5);
+        loadAll(from(ATR1, "A", ATR2, "B"), entry(M1, null), M2, entry(M3, null), M5);
         assertLoads(5);
     }
 
@@ -79,11 +80,11 @@ public class LoadAll extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE1() {
-        withLoading().loadAll((AttributeMap) null);
+        withLoading().loadAll((MutableAttributeMap) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE2() {
-        withLoadingForced().loadAll((AttributeMap) null);
+        withLoadingForced().loadAll((MutableAttributeMap) null);
     }
 }

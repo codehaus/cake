@@ -15,10 +15,10 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
 
 public interface CacheAttributeMapFactory<K, V> {
-    AttributeMap create(K key, V value, GetAttributer params, GetAttributer previous);
-    void access(GetAttributer map);
+    MutableAttributeMap create(K key, V value, AttributeMap params, AttributeMap previous);
+    void access(AttributeMap map);
 }

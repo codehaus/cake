@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
@@ -28,7 +28,7 @@ public abstract class AbstractPolicyTest {
     protected CacheEntry<Integer, String> TE4;
     protected CacheEntry<Integer, String> TE5;
 
-    private IdentityHashMap<GetAttributer, AttributeMap> a;
+    private IdentityHashMap<AttributeMap, MutableAttributeMap> a;
 
     protected AbstractCakeReplacementPolicy<Integer, String> policy;
 
@@ -36,7 +36,7 @@ public abstract class AbstractPolicyTest {
 
     @Before
     public void cleanup() {
-        a = new IdentityHashMap<GetAttributer, AttributeMap>();
+        a = new IdentityHashMap<AttributeMap, MutableAttributeMap>();
         values = new HashMap<Integer, CacheEntry<Integer, String>>();
         TE1 = createEntry();
         TE2 = createEntry();
@@ -112,7 +112,7 @@ public abstract class AbstractPolicyTest {
         get(entry).put(a, value);
     }
 
-    public AttributeMap get(GetAttributer ce) {
+    public MutableAttributeMap get(AttributeMap ce) {
         return a.get(ce);
     }
 
@@ -131,10 +131,10 @@ public abstract class AbstractPolicyTest {
             final BooleanAttribute a = new BooleanAttribute() {};
             return new BooleanAttachment() {
                 public boolean get(Object entry) {
-                    return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+                    return AbstractPolicyTest.this.get((AttributeMap) entry).get(a);
                 }
                 public void set(Object entry, boolean value) {
-                    AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+                    AbstractPolicyTest.this.get((AttributeMap) entry).put(a, value);
                 }
             };
         }
@@ -143,10 +143,10 @@ public abstract class AbstractPolicyTest {
             final IntAttribute a = new IntAttribute() {};
             return new IntAttachment() {
                 public int get(Object entry) {
-                    return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+                    return AbstractPolicyTest.this.get((AttributeMap) entry).get(a);
                 }
                 public void set(Object entry, int value) {
-                    AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+                    AbstractPolicyTest.this.get((AttributeMap) entry).put(a, value);
                 }
             };
         }
@@ -155,10 +155,10 @@ public abstract class AbstractPolicyTest {
             final ObjectAttribute<T> a = new ObjectAttribute<T>(type) {};
             return new ObjectAttachment<T>() {
                 public T get(Object entry) {
-                    return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+                    return AbstractPolicyTest.this.get((AttributeMap) entry).get(a);
                 }
                 public void set(Object entry, T value) {
-                    AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+                    AbstractPolicyTest.this.get((AttributeMap) entry).put(a, value);
                 }
             };
 
@@ -174,11 +174,11 @@ public abstract class AbstractPolicyTest {
         }
 
         public T get(Object entry) {
-            return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+            return AbstractPolicyTest.this.get((AttributeMap) entry).get(a);
         }
 
         public void set(Object entry, T value) {
-            AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+            AbstractPolicyTest.this.get((AttributeMap) entry).put(a, value);
         }
     }
 
@@ -190,11 +190,11 @@ public abstract class AbstractPolicyTest {
         }
 
         public int get(Object entry) {
-            return AbstractPolicyTest.this.get((GetAttributer) entry).get(a);
+            return AbstractPolicyTest.this.get((AttributeMap) entry).get(a);
         }
 
         public void set(Object entry, int value) {
-            AbstractPolicyTest.this.get((GetAttributer) entry).put(a, value);
+            AbstractPolicyTest.this.get((AttributeMap) entry).put(a, value);
         }
     }
 

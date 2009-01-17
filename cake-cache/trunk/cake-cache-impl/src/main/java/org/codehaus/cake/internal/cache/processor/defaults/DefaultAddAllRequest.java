@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -16,8 +16,7 @@ public class DefaultAddAllRequest<K, V> implements AddEntriesRequest<K, V> {
     final Collection<AddEntryRequest<K, V>> adds;
 
     public DefaultAddAllRequest(Map<? extends K, ? extends V> map, AttributeMap attributes) {
-        
-        if (attributes==null) {
+        if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
         adds = new ArrayList<AddEntryRequest<K, V>>();

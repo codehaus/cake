@@ -46,6 +46,6 @@ public class ReplaceCostliestPolicy<K, V> extends AbstractHeapReplacementPolicy<
 
     /** {@inheritDoc} */
     protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
-        return -COST.compare(o1, o2);
+        return COST.compare(o2, o1);
     }
 }

@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
@@ -146,18 +146,6 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
 
     public static <T> List<T> asList(T... a) {
         return Arrays.asList(a);
-    }
-
-    public static AttributeMap asAtrMap(Attribute k1, Object v1) {
-        DefaultAttributeMap atr = new DefaultAttributeMap();
-        atr.put(k1, v1);
-        return atr;
-    }
-
-    public static AttributeMap asAtrMap(Attribute k1, Object v1, Attribute k2, Object v2) {
-        AttributeMap atr = asAtrMap(k1, v1);
-        atr.put(k2, v2);
-        return atr;
     }
 
     public static <K, V> Map<K, V> asAnyMap(K k1, V v1) {
@@ -365,7 +353,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     }
 
     public <T, S> void put(Map.Entry<Integer, String> e, Attribute<T> a1, T t, Attribute<S> a2, S s) {
-        GetAttributer ga = Attributes.from(a1, t, a2, s);
+        AttributeMap ga = Attributes.from(a1, t, a2, s);
         c.withCrud().write().put(e.getKey(), e.getValue(), ga);
 
     }

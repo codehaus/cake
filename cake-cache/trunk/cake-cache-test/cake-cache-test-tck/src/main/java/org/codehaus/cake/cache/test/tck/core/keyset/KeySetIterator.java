@@ -69,8 +69,9 @@ public class KeySetIterator extends AbstractCacheTCKTest {
         iter.next();
     }
 
-    @Test(expected = ConcurrentModificationException.class)
+    @Test
     public void iteratorCME() {
+        try {
         c = newCache(1);
         Iterator<Integer> iter = c.keySet().iterator();
         Iterator<Integer> iter2 = c.keySet().iterator();
@@ -80,6 +81,9 @@ public class KeySetIterator extends AbstractCacheTCKTest {
         //An CME but all implementations does it for now.
         //Let us keep it in
         iter2.next();
+        } catch (ConcurrentModificationException ok) {
+            
+        }
     }
 
     @Test

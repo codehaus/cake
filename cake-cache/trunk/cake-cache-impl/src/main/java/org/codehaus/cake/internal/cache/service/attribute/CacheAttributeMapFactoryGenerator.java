@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.GetAttributer;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.internal.asm.ClassVisitor;
 import org.codehaus.cake.internal.asm.ClassWriter;
 import org.codehaus.cake.internal.asm.Label;
@@ -44,8 +44,8 @@ import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionSer
 import org.codehaus.cake.util.Clock;
 
 public class CacheAttributeMapFactoryGenerator implements Opcodes {
-    private static final String ATTRIBUTEMAP_DESCRIPTOR = Type.getType(AttributeMap.class).getDescriptor();
-    private static final String GET_ATTRIBUTER_DESCRIPTOR = Type.getType(GetAttributer.class).getDescriptor();
+    private static final String ATTRIBUTEMAP_DESCRIPTOR = Type.getType(MutableAttributeMap.class).getDescriptor();
+    private static final String GET_ATTRIBUTER_DESCRIPTOR = Type.getType(AttributeMap.class).getDescriptor();
     private static final String ATTRIBUTE_DESCRIPTOR = Type.getType(Attribute.class).getDescriptor();
     private static final String CLOCK_DESCRIPTOR = Type.getType(Clock.class).getDescriptor();
     private static final String IES_DESCRIPTOR = Type.getType(InternalExceptionService.class).getDescriptor();
@@ -133,7 +133,7 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
                     && ((isCreate && info.impl.isReadMapOnCreate()) || (!isCreate && info.impl.isReadMapOnModify()))) {
                 mv.visitVarInsn(ALOAD, 3);
                 info.visitStaticGet(mv);
-                mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/GetAttributer", "contains",
+                mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "contains",
                         "(Lorg/codehaus/cake/attribute/Attribute;)Z");
                 Label lN = new Label();
                 mv.visitJumpInsn(IFEQ, lN);
@@ -141,11 +141,11 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
                 mv.visitVarInsn(ALOAD, 3);
                 info.visitStaticGet(mv);
                 if (info.vType == PrimType.OBJECT) {
-                    mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/GetAttributer", "get",
+                    mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get",
                             "(Lorg/codehaus/cake/attribute/Attribute;)Ljava/lang/Object;");
                     mv.visitTypeInsn(CHECKCAST, info.type.getInternalName());
                 } else {
-                    mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/GetAttributer", "get", "("
+                    mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "get", "("
                             + info.attributeDescriptor + ")" + info.descriptor);
                 }
                 mv.visitVarInsn(info.vType.storeCode(), index);
@@ -264,7 +264,7 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
         Label l0 = new Label();
         mv.visitJumpInsn(IFNONNULL, l0);
         mv.visitVarInsn(ALOAD, 3);
-        mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/GetAttributer", "isEmpty", "()Z");
+        mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "isEmpty", "()Z");
         Label l1 = new Label();
         mv.visitJumpInsn(IFEQ, l1);
         mv.visitVarInsn(ALOAD, 0);
@@ -283,7 +283,7 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
         mv.visitInsn(ARETURN);
         mv.visitLabel(l0);
         mv.visitVarInsn(ALOAD, 3);
-        mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/GetAttributer", "isEmpty", "()Z");
+        mv.visitMethodInsn(INVOKEINTERFACE, "org/codehaus/cake/attribute/AttributeMap", "isEmpty", "()Z");
         Label l2 = new Label();
         mv.visitJumpInsn(IFEQ, l2);
         mv.visitVarInsn(ALOAD, 0);
@@ -409,7 +409,7 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
     }
 
     private void addAccess() {
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "access", "(Lorg/codehaus/cake/attribute/GetAttributer;)V", null,
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "access", "(Lorg/codehaus/cake/attribute/AttributeMap;)V", null,
                 null);
         mv.visitCode();
         if (checkAccess()) {
@@ -514,10 +514,10 @@ public class CacheAttributeMapFactoryGenerator implements Opcodes {
     }
 
     static class NoAttributes<K, V> implements CacheAttributeMapFactory<K, V> {
-        public void access(GetAttributer map) {
+        public void access(AttributeMap map) {
         }
 
-        public AttributeMap create(K key, V value, GetAttributer params, GetAttributer previous) {
+        public MutableAttributeMap create(K key, V value, AttributeMap params, AttributeMap previous) {
             return Attributes.EMPTY_ATTRIBUTE_MAP;
         }
 

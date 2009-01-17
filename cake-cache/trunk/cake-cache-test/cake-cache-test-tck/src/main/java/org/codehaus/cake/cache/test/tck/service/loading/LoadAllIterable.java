@@ -18,10 +18,11 @@ package org.codehaus.cake.cache.test.tck.service.loading;
 import java.util.Arrays;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
+import static org.codehaus.cake.attribute.Attributes.from;
 
 public class LoadAllIterable extends AbstractCacheTCKTest {
     public static final Attribute ATR1 = new ObjectAttribute("ATR1", String.class, "0") {};
@@ -40,12 +41,12 @@ public class LoadAllIterable extends AbstractCacheTCKTest {
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE3() {
-        withLoading().loadAll((Iterable) null, asDummy(AttributeMap.class));
+        withLoading().loadAll((Iterable) null, asDummy(MutableAttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void withKeysNPE4() {
-        withLoading().loadAll(asList(1, null, 3), asDummy(AttributeMap.class));
+        withLoading().loadAll(asList(1, null, 3), asDummy(MutableAttributeMap.class));
     }
 
     @Test(expected = NullPointerException.class)
@@ -63,7 +64,7 @@ public class LoadAllIterable extends AbstractCacheTCKTest {
 
     @Test
     public void withLoadAllAttributes() {
-        loadAll(asAtrMap(ATR1, "A", ATR2, "B"), M1, M2, M3);
+        loadAll(from(ATR1, "A", ATR2, "B"), M1, M2, M3);
         assertGet(M1, M2, M3);
         assertLoads(3);
     }

@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.service.loading;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 
 /**
  * A <code>cache loader</code> is used for transparent loading or creation of values by a cache. Instead of the user
@@ -54,7 +54,7 @@ import org.codehaus.cake.attribute.AttributeMap;
  * 
  * <p>
  * The load method also provides an attribute map. This map can be used to provide meta-data information to and from the
- * caller of the {@link #load(Object, AttributeMap)} method. For example, the following cache loader, which retrieves an
+ * caller of the {@link #load(Object, MutableAttributeMap)} method. For example, the following cache loader, which retrieves an
  * URL as String. Defines the cost of the element as the number of milliseconds it takes to retrieve the value.
  * 
  * <pre>
@@ -101,5 +101,5 @@ public interface BlockingCacheLoader<K, V> {
      * @throws Exception
      *             An exception occured while loading or creating the value
      */
-    V load(K key, AttributeMap attributes) throws Exception;
+    V load(K key, MutableAttributeMap attributes) throws Exception;
 }

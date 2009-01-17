@@ -46,7 +46,7 @@ public class Remove extends AbstractCacheTCKTest {
         for (int i = 0; i < step; i++) {
             c.put(i, "" + i);
         }
-     
+        
         for (int i = 0; i < step; i++) {
             assertSize(step - i);
             assertEquals("" + i, c.remove(i));
