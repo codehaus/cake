@@ -17,8 +17,9 @@ package org.codehaus.cake.cache.policy.paging;
 
 import static org.codehaus.cake.cache.CacheEntry.HITS;
 
-import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * A Least Frequently Used (LFU) Replacement policy.
@@ -32,27 +33,28 @@ import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
  * @param <V>
  *            the type of values maintained by the cache
  */
-public class LFUReplacementPolicy<K, V> extends AbstractHeapReplacementPolicy<K, V> {
+public class LFUReplacementPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
     /** A unique policy name. */
     public static final String NAME = "LFU";
 
     /** Creates a new LFUReplacementPolicy */
-    public LFUReplacementPolicy() {
+    public LFUReplacementPolicy(PolicyContext<T> context) {
+        super(context);
         // This is used to make sure that the cache will lazy register the HITS attribute
         // if the user has not already done so by using CacheAttributeConfiguration#add(Attribute...)}
-        dependSoft(HITS);
+        context.dependSoft(HITS);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
+    protected int compareEntry(T o1, T o2) {
         return HITS.compare(o1, o2);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void touch(CacheEntry<K, V> entry) {
+    public void touch(T entry) {
         siftDown(entry);// hits has been incremented
     }
 }

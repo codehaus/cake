@@ -16,63 +16,54 @@
 package org.codehaus.cake.cache.policy;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractArrayReplacementPolicyTest extends AbstractPolicyTest{
+public class AbstractArrayReplacementPolicyTest extends AbstractPolicyTest {
     private TP tp;
 
     @Before
     public void before() {
-        tp = new TP();
+        tp = Policies.create(TP.class);
         policy = tp;
-        init();
     }
 
     @Test
     public void addSize() {
         assertEquals(0, tp.size());
-        assertTrue(tp.add(TE1));
+        tp.add(1);
         assertEquals(1, tp.size());
-        assertTrue(tp.add(TE2));
+        tp.add(2);
         assertEquals(2, tp.size());
-        assertTrue(tp.add(TE3));
+        tp.add(3);
         assertEquals(3, tp.size());
     }
 
     @Test
     public void addWithIndex() {
-        assertEquals(0, tp.add0(TE1));
-        assertEquals(1, tp.add0(TE2));
-        assertEquals(2, tp.add0(TE3));
+        assertEquals(0, tp.addLast(1));
+        assertEquals(1, tp.addLast(2));
+        assertEquals(2, tp.addLast(3));
         tp.clear();
-        assertEquals(0, tp.add0(TE4));
+        assertEquals(0, tp.addLast(4));
     }
 
     @Test
     public void getFromIndex() {
-        assertEquals(TE1, tp.getFromIndex(tp.add0(TE1)));
-        assertEquals(TE2, tp.getFromIndex(tp.add0(TE2)));
-        assertEquals(TE3, tp.getFromIndex(tp.add0(TE3)));
-    }
-
-    @Test
-    public void getIndexOf() {
-        assertEquals(tp.add0(TE1), tp.getIndexOf(TE1));
-        assertEquals(tp.add0(TE2), tp.getIndexOf(TE2));
-        assertEquals(tp.add0(TE3), tp.getIndexOf(TE3));
+        assertEquals(1, tp.getFromIndex(tp.addLast(1)).intValue());
+        assertEquals(2, tp.getFromIndex(tp.addLast(2)).intValue());
+        assertEquals(3, tp.getFromIndex(tp.addLast(3)).intValue());
     }
 
     @Test
     public void clear() {
         tp.clear();
         assertEquals(0, tp.size());
-        assertTrue(tp.add(TE1));
-        assertTrue(tp.add(TE2));
-        assertTrue(tp.add(TE3));
+        tp.add(1);
+        tp.add(2);
+        tp.add(3);
         assertEquals(3, tp.size());
         tp.clear();
         assertEquals(0, tp.size());
@@ -83,15 +74,18 @@ public class AbstractArrayReplacementPolicyTest extends AbstractPolicyTest{
 
     }
 
+    public static class TP extends AbstractArrayReplacementPolicy<Integer> {
+        public TP(PolicyContext<Integer> context) {
+            super(context);
+        }
 
-    static class TP extends AbstractArrayReplacementPolicy<Integer, String> {
         protected void swap(int prevIndex, int newIndex) {
             // TestEntry te=matching.get(prevIndex);
             // matching.set(prevIndex, matching.get(newIndex));
             // matching.r
         }
 
-        public CacheEntry<Integer, String> evictNext() {
+        public Integer evictNext() {
             return null;
         }
 

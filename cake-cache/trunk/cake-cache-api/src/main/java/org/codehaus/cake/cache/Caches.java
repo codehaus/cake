@@ -392,6 +392,10 @@ public final class Caches {
         public View<T> setLimit(long limit) {
             return this;
         }
+
+        public boolean isEmpty() {
+           return true;
+        }
     }
 
     static class EmptyMapView<K, V> implements MapView<K, V>, Serializable {

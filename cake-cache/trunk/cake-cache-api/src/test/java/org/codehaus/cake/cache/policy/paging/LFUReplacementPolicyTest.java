@@ -19,8 +19,11 @@ import static org.codehaus.cake.cache.CacheEntry.HITS;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
+import org.codehaus.cake.cache.policy.Policies;
+import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,18 +36,19 @@ import org.junit.Test;
  */
 public class LFUReplacementPolicyTest extends AbstractPolicyTest {
 
+    protected ReplacementPolicy<AttributeMap> policy;
+
     @Before
     public void setUp() {
-        policy = new LFUReplacementPolicy<Integer, String>();
-        init();
+        policy = Policies.create(LFUReplacementPolicy.class);
     }
 
     @Test
     public void addEvict() {
-        CacheEntry<Integer, String> e2 = createEntry(HITS, 2L);
-        CacheEntry<Integer, String> e3 = createEntry(HITS, 3L);
-        CacheEntry<Integer, String> e4 = createEntry(HITS, 4L);
-        CacheEntry<Integer, String> e5 = createEntry(HITS, 5L);
+        AttributeMap e2 = createEntry(HITS, 2L);
+        AttributeMap e3 = createEntry(HITS, 3L);
+        AttributeMap e4 = createEntry(HITS, 4L);
+        AttributeMap e5 = createEntry(HITS, 5L);
 
         policy.add(e3);
         policy.add(e4);
@@ -59,10 +63,10 @@ public class LFUReplacementPolicyTest extends AbstractPolicyTest {
 
     @Test
     public void addTouchEvict() {
-        CacheEntry<Integer, String> e2 = createEntry(HITS, 2L);
-        CacheEntry<Integer, String> e3 = createEntry(HITS, 3L);
-        CacheEntry<Integer, String> e4 = createEntry(HITS, 4L);
-        CacheEntry<Integer, String> e5 = createEntry(HITS, 5L);
+        AttributeMap e2 = createEntry(HITS, 2L);
+        AttributeMap e3 = createEntry(HITS, 3L);
+        AttributeMap e4 = createEntry(HITS, 4L);
+        AttributeMap e5 = createEntry(HITS, 5L);
 
         policy.add(e3);
         policy.add(e4);

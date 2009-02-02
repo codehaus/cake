@@ -38,7 +38,7 @@ import org.codehaus.cake.ops.Ops.Reducer;
  * A collection of static factory methods providing commonly useful
  * implementations of operations.
  */
-public class CommonOps {
+class CommonOps {
     private CommonOps() {} // disable construction
 
     /**

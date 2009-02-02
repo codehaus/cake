@@ -19,9 +19,12 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.cache.CacheEntry.COST;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
-import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
+import org.codehaus.cake.cache.policy.Policies;
+import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -33,29 +36,31 @@ import org.junit.runner.RunWith;
 @RunWith(JMock.class)
 public class ReplaceCostliestPolicyTest extends AbstractPolicyTest{
 
+    protected ReplacementPolicy<AttributeMap> policy;
+
     /** The junit mockery. */
     private final Mockery context = new JUnit4Mockery();
 
     @Test
     public void register() {
-        ReplaceCostliestPolicy rbp = new ReplaceCostliestPolicy();
-        final InternalCacheAttributeService s = context.mock(InternalCacheAttributeService.class);
+        final PolicyContext<AttributeMap> pc = context.mock(PolicyContext.class);
         context.checking(new Expectations() {
             {
-                one(s).attachInt();
-                one(s).dependOnHard(COST);
+                one(pc).newArray(0);
+                one(pc).attachInt();
+                one(pc).dependHard(COST);
             }
         });
-        rbp.registerAttribute(s);
+        ReplaceCostliestPolicy rbp = new ReplaceCostliestPolicy(pc);
+
     }
 
     @Test
     public void compare() {
-        policy = new ReplaceCostliestPolicy();
-        init();
-        final CacheEntry ce1 = createEntry(COST, 1.5);
-        final CacheEntry ce2 = createEntry(COST, 2.5);
-        final CacheEntry ce3 = createEntry(COST, 3.5);
+        policy = Policies.create(ReplaceCostliestPolicy.class);
+        final AttributeMap ce1 = createEntry(COST, 1.5);
+        final AttributeMap ce2 = createEntry(COST, 2.5);
+        final AttributeMap ce3 = createEntry(COST, 3.5);
 
         policy.add(ce1);
         policy.add(ce3);

@@ -19,6 +19,7 @@ import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
@@ -29,14 +30,14 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
 
     @Test(expected = IllegalStateException.class)
     public void dependHardISE() {
-        conf.withMemoryStore().setPolicy(new HardPolicy()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(HardPolicy.class).setMaximumSize(5);
         init();
         prestart();
     }
 
     @Test
     public void dependHard() {
-        conf.withMemoryStore().setPolicy(new HardPolicy()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(HardPolicy.class).setMaximumSize(5);
         conf.addEntryAttributes(A1);
         init();
         prestart();
@@ -46,7 +47,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
 
     @Test
     public void dependSoft() {
-        conf.withMemoryStore().setPolicy(new SoftPolicy()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(SoftPolicy.class).setMaximumSize(5);
         init();
         prestart();
         put(M1);
@@ -58,7 +59,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
 
     @Test
     public void dependSoftAlreadyRegistered() {
-        conf.withMemoryStore().setPolicy(new SoftPolicy()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(SoftPolicy.class).setMaximumSize(5);
         conf.addEntryAttributes(CacheEntry.HITS);
         init();
         prestart();
@@ -69,14 +70,13 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         assertTrue(getEntry(M1).attributes().contains(CacheEntry.HITS));
     }
 
-    static class HardPolicy extends AbstractCakeReplacementPolicy<Integer, String> {
+    public static class HardPolicy extends AbstractCakeReplacementPolicy<CacheEntry<Integer, String>> {
 
-        public HardPolicy() {
-            super.dependHard(A1);
+        public HardPolicy(PolicyContext<?> context) {
+            context.dependHard(A1);
         }
 
-        public boolean add(CacheEntry<Integer, String> entry) {
-            return true;
+        public void add(CacheEntry<Integer, String> entry) {
         }
 
         public void clear() {}
@@ -89,14 +89,13 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
 
     }
 
-    static class SoftPolicy extends AbstractCakeReplacementPolicy<Integer, String> {
+    public static class SoftPolicy extends AbstractCakeReplacementPolicy<CacheEntry<Integer, String>> {
 
-        public SoftPolicy() {
-            super.dependSoft(CacheEntry.HITS);
+        public SoftPolicy(PolicyContext<?> context) {
+            context.dependSoft(CacheEntry.HITS);
         }
 
-        public boolean add(CacheEntry<Integer, String> entry) {
-            return true;
+        public void add(CacheEntry<Integer, String> entry) {
         }
 
         public void clear() {}

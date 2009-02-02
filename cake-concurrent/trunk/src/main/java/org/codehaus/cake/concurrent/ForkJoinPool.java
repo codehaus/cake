@@ -5,14 +5,25 @@
  */
 
 package org.codehaus.cake.concurrent;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.locks.*;
-import java.util.concurrent.atomic.*;
-import sun.misc.Unsafe;
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.AbstractExecutorService;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 
-import org.codehaus.cake.internal.util.ArrayUtils;
+import sun.misc.Unsafe;
 
 /**
  * Host for a group of ForkJoinWorkerThreads.  A ForkJoinPool provides
@@ -426,7 +437,7 @@ public class ForkJoinPool extends AbstractExecutorService
         if (ws == null)
             return workers = new ForkJoinWorkerThread[arraySizeFor(newLength)];
         else if (newLength > ws.length)
-            return workers = ArrayUtils.copyOf(ws, arraySizeFor(newLength));
+            return workers = copyOf(ws, arraySizeFor(newLength));
         else
             return ws;
     }
@@ -442,7 +453,7 @@ public class ForkJoinPool extends AbstractExecutorService
             --last;
         int newLength = arraySizeFor(last+1);
         if (newLength < len)
-            workers = ArrayUtils.copyOf(ws, newLength);
+            workers = copyOf(ws, newLength);
     }
 
     /**
@@ -611,13 +622,13 @@ public class ForkJoinPool extends AbstractExecutorService
         return job;
     }
 
-    protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
-        return new AdaptedRunnable(runnable, value);
-    }
-
-    protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
-        return new AdaptedCallable(callable);
-    }
+//    protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
+//        return new AdaptedRunnable(runnable, value);
+//    }
+//
+//    protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+//        return new AdaptedCallable(callable);
+//    }
 
     /**
      * Adaptor for Runnables. This implements RunnableFuture
@@ -671,14 +682,14 @@ public class ForkJoinPool extends AbstractExecutorService
         public void run() { invoke(); }
     }
 
-    public <T> List<Future<T>> invokeAll(Collection tasks_) {
+    public List invokeAll(Collection tasks_) {
         Collection<Callable> tasks= tasks_;
-        ArrayList<ForkJoinTask<T>> ts =
-            new ArrayList<ForkJoinTask<T>>(tasks.size());
-        for (Callable<T> c : tasks)
-            ts.add(new AdaptedCallable<T>(c));
-        invoke(new InvokeAll<T>(ts));
-        return (List<Future<T>>)(List)ts;
+        ArrayList<ForkJoinTask> ts =
+            new ArrayList<ForkJoinTask>(tasks.size());
+        for (Callable c : tasks)
+            ts.add(new AdaptedCallable(c));
+        invoke(new InvokeAll(ts));
+        return (List)(List)ts;
     }
 
     static final class InvokeAll<T> extends RecursiveAction {
@@ -1740,5 +1751,34 @@ public class ForkJoinPool extends AbstractExecutorService
     }
     private boolean casBarrierStack(WaitQueueNode cmp, WaitQueueNode val) {
         return _unsafe.compareAndSwapObject(this, barrierStackOffset, cmp, val);
+    }
+    
+    @SuppressWarnings("unchecked")
+    static <T> T[] copyOf(T[] original, int newLength) {
+        return (T[]) copyOf(original, newLength, original.getClass());
+    }
+
+    /**
+     * Copies the specified array, truncating or padding with nulls (if necessary) so the copy has the specified length.
+     * For all indices that are
+     * 
+     * @param original
+     *            the array to be copied
+     * @param newLength
+     *            the length of the copy to be returned
+     * @param newType
+     *            the class of the copy to be returned
+     * @param <U>
+     *            the type of the specified array
+     * @param <T>
+     *            the type of the resulting array
+     * @return a copy of the original array, truncated or padded with nulls to obtain the specified length
+     */
+    @SuppressWarnings("cast")
+    static <T, U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
+        T[] copy = (Object) newType == (Object) Object[].class ? (T[]) new Object[newLength] : (T[]) Array.newInstance(
+                newType.getComponentType(), newLength);
+        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+        return copy;
     }
 }

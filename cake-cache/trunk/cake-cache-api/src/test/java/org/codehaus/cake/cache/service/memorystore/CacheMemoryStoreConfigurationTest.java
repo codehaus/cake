@@ -91,28 +91,21 @@ public class CacheMemoryStoreConfigurationTest {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertNull(c.getPolicy());
 
-        ReplacementPolicy<Integer, String> p = dummy(ReplacementPolicy.class);
-
-        assertSame(c, c.setPolicy(p));
-        assertSame(p, c.getPolicy());
+        assertSame(c, c.setPolicy(ReplacementPolicy.class));
+        assertSame(ReplacementPolicy.class, c.getPolicy());
     }
 
     @Test
     public void filter() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertNull(c.getIsCacheableFilter());
-        Predicate<CacheEntry<Integer, String>> p = dummy(Predicate.class);
+        IsCacheablePredicate<Integer, String> p = dummy(IsCacheablePredicate.class);
 
         assertSame(c, c.setIsCacheableFilter(p));
         assertSame(p, c.getIsCacheableFilter());
 
-        Predicate<Object> p1 = dummy(Predicate.class);
+        IsCacheablePredicate<Object, Object> p1 = dummy(IsCacheablePredicate.class);
         c.setIsCacheableFilter(p1);
-        Predicate<CacheEntry> p2 = dummy(Predicate.class);
-        c.setIsCacheableFilter(p2);
-
-        Predicate<CacheEntry<Object, Object>> p3 = dummy(Predicate.class);
-        // c.setNeedsReloadFilter(p3);
 
     }
 

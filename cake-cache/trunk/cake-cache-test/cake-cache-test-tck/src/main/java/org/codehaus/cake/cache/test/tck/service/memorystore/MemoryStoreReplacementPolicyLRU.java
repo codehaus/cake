@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
+import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class MemoryStoreReplacementPolicyLRU extends AbstractCacheTCKTest {
 
     @Before
     public void setup() {
-        conf.withMemoryStore().setPolicy(new LRUReplacementPolicy<Integer, String>());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         conf.withMemoryStore().setMaximumSize(5);
         init();
     }

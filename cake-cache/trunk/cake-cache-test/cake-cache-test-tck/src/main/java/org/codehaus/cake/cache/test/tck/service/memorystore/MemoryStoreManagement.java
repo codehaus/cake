@@ -131,7 +131,7 @@ public class MemoryStoreManagement extends AbstractManagementTest {
     @Test
     public void trimToVolume() {
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
         c.get(1);
         assertVolume(2);

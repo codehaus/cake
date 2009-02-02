@@ -15,11 +15,8 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import java.util.ArrayList;
-
-import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.IntAttachment;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.cache.policy.spi.PolicyContext.IntAttachment;
 
 /**
  * 
@@ -30,36 +27,76 @@ import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.IntAttachment;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> {
-    private final ArrayList<CacheEntry<K, V>> list = new ArrayList<CacheEntry<K, V>>();
+public abstract class AbstractArrayReplacementPolicy<T> extends AbstractCakeReplacementPolicy<T> {
+    /**
+     * The array buffer into which the elements of this policy is stored. The capacity of the ArrayList is the length of
+     * this array buffer.
+     */
+    private T[] elementData;
 
-    private IntAttachment idx;
+    private final IntAttachment idx;
 
-    /** {@inheritDoc} */
-    public boolean add(CacheEntry<K, V> entry) {
-        add0(entry);
-        return true;
+    /** The size of the ArrayList (the number of elements it contains). */
+    private int size;
+
+    public AbstractArrayReplacementPolicy(PolicyContext<T> context) {
+        idx = context.attachInt();
+        elementData = context.newArray(16);
     }
 
-    protected int add0(CacheEntry<K, V> entry) {
-        int i = list.size();
+    /** {@inheritDoc} */
+    public void add(T entry) {
+        addLast(entry);
+    }
+
+    /**
+     * Appends the specified element to the end of this array.
+     * 
+     * @param entry
+     *            the entry to add
+     * @return the index of the added entry
+     */
+    protected int addLast(T entry) {
+        int i = size;
+        ensureCapacity(size + 1);
         setFromIndex(entry, i);
-        list.add(entry);
+        elementData[size++] = entry;
         return i;
     }
 
     /** {@inheritDoc} */
     public void clear() {
-        list.clear();
+        for (int i = 0; i < size; i++) {
+            elementData[i] = null;
+        }
+        size = 0;
+    }
+
+    private void ensureCapacity(int minCapacity) {
+        int oldCapacity = elementData.length;
+        if (minCapacity > oldCapacity) {
+            Object oldData[] = elementData;
+            int newCapacity = (oldCapacity * 3) / 2 + 1;
+            if (newCapacity < minCapacity)
+                newCapacity = minCapacity;
+            elementData = (T[]) new Object[newCapacity];
+            System.arraycopy(oldData, 0, elementData, 0, size);
+        }
     }
 
     /**
+     * Return the element for the specified index
+     * 
      * @param index
-     *            the index of the attribute
-     * @return
+     *            the index of the entry
+     * @throws IndexOutOfBoundsException
+     *             if index is out of range <tt>(index
+     *        &lt; 0 || index &gt;= size())</tt>.
+     * @return the element at the specified position in this array
      */
-    protected CacheEntry<K, V> getFromIndex(int index) {
-        return list.get(index);
+    protected final T getFromIndex(int index) {
+        rangeCheck(index);
+        return elementData[index];
     }
 
     /**
@@ -69,61 +106,62 @@ public abstract class AbstractArrayReplacementPolicy<K, V> extends AbstractCakeR
      *            the entry to return the index for
      * @return the index of the specified entry, or -1 if the entry has not been registered
      */
-    protected final int getIndexOf(CacheEntry<K, V> entry) {
-        return idx.get(entry);
+    protected final int getIndexOf(T entry) {
+        return idx.get(entry, -1);
     }
 
-    protected final void setFromIndex(CacheEntry<K, V> entry, int in) {
-        idx.set(entry, in);
+    private void rangeCheck(int index) {
+        if (index >= size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
     }
 
     /** {@inheritDoc} */
-    public void remove(CacheEntry<K, V> entry) {
-        remove0(entry);
+    public void remove(T entry) {
+        removeEntry(entry);
     }
 
-    protected CacheEntry<K, V> removeByIndex(int index) {
-        CacheEntry<K, V> entry = list.get(index);
-        remove0(entry);
+    protected T removeByIndex(int index) {
+        T entry = getFromIndex(index);
+        int lastIndex = --size;
+        T last = elementData[lastIndex];
+        elementData[lastIndex] = null;
+        if (entry != last) {
+            elementData[index] = last;
+            setFromIndex(last, index);
+            removed(entry, lastIndex, last, index);
+        }
         return entry;
     }
 
-    protected int remove0(CacheEntry<K, V> entry) {
-        int lastIndex = list.size() - 1;
-        CacheEntry<K, V> last = list.remove(lastIndex);
+    protected void removed(T entry, int prevIndex, T replacedWith, int newIndex) {
+    }
+
+    protected int removeEntry(T entry) {
+        int lastIndex = --size;
+        T last = elementData[lastIndex];
+        elementData[lastIndex] = null;
         if (entry != last) {
             int i = getIndexOf(entry);
-            list.set(i, last);
+            elementData[i] = last;
             setFromIndex(last, i);
-            swap(lastIndex, i);
+            removed(entry, lastIndex, last, i);
         }
         return lastIndex;
     }
 
     /** {@inheritDoc} */
-    public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        replace0(previous, newEntry);
-        return newEntry;
-    }
-
-    protected void replace0(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
+    public void replace(T previous, T newEntry) {
         int i = getIndexOf(previous);
         setFromIndex(newEntry, i);
-        list.set(i, newEntry);
+        elementData[i] = newEntry;
     }
 
-    /**
-     * @return the number of entries in the replacement policy
-     */
-    protected int size() {
-        return list.size();
+    protected final void setFromIndex(T entry, int in) {
+        idx.set(entry, in);
     }
 
-    protected void swap(int prevIndex, int newIndex) {
-    }
-
-    @Override
-    protected <T> void register(PolicyAttachmentFactory generator) {
-        idx = generator.attachInt();
+    /** @return the number of entries in the replacement policy */
+    public final int size() {
+        return size;
     }
 }

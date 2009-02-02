@@ -17,12 +17,12 @@ package org.codehaus.cake.cache.policy.paging;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asList;
 import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
 
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
+import org.codehaus.cake.cache.policy.Policies;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,8 +35,7 @@ public class LRUReplacementPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
-        policy = new LRUReplacementPolicy<Integer, String>();
-        init();
+        policy = Policies.create(LRUReplacementPolicy.class);
     }
 
     /**
@@ -63,10 +62,10 @@ public class LRUReplacementPolicyTest extends AbstractPolicyTest {
     @Test
     public void testRemoveIndex() {
         addToPolicy(0, 9);
-        policy.remove(val(4));
-        policy.remove(val(7));
-        policy.remove(val(0));
-        policy.remove(val(9));
+        policy.remove(4);
+        policy.remove(7);
+        policy.remove(0);
+        policy.remove(9);
         assertEquals(asList(1, 2, 3, 5, 6, 8), empty());
     }
 
@@ -77,17 +76,17 @@ public class LRUReplacementPolicyTest extends AbstractPolicyTest {
     public void testRefresh() {
         addToPolicy(0, 9);
 
-        policy.touch(val(4));
+        policy.touch(4);
         // assertEquals(asList(0, 1, 2, 3, 5, 6, 7, 8, 9, 4), policy.peekAll());
-        policy.touch(val(4));
+        policy.touch(4);
         // assertEquals(asList(0, 1, 2, 3, 5, 6, 7, 8, 9, 4), policy.peekAll());
         // ((LRUReplacementPolicy) policy).print();
-        policy.touch(val(0));
+        policy.touch(0);
         // ((LRUReplacementPolicy) policy).print();
         // assertEquals(asList(1, 2, 3, 5, 6, 7, 8, 9, 4, 0), policy.peekAll());
-        policy.touch(val(3));
-        policy.touch(val(2));
-        policy.touch(val(9));
+        policy.touch(3);
+        policy.touch(2);
+        policy.touch(9);
         // ((LRUReplacementPolicy) policy).print();
         // System.out.println(policy.evictNext());
         // ((LRUReplacementPolicy) policy).print();
@@ -104,11 +103,10 @@ public class LRUReplacementPolicyTest extends AbstractPolicyTest {
     @Test
     public void testUpdate() {
         addToPolicy(0, 9);
-        createEntry(123, "");
-        assertSame(val(123), policy.replace(val(4), val(123)));
+        policy.replace(4, 123);
         Integer[] i = evict(9);
         assertEquals(3, i[3].intValue());
         assertEquals(123, i[4].intValue());
-        assertEquals(9, policy.evictNext().getKey().intValue());
+        assertEquals(9, policy.evictNext().intValue());
     }
 }

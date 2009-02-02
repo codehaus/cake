@@ -2,12 +2,12 @@ package org.codehaus.cake.cache;
 
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.internal.cache.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.UnsynchronizedCacheProcessor;
 import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
-import org.codehaus.cake.internal.cache.service.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViewFactory;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;

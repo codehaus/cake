@@ -101,32 +101,6 @@ public final class ShortAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, (short) -1);
-        AttributeMap am111 = Attributes.singleton(ATR100, (short) 111);
-        AttributeMap ammax = Attributes.singleton(ATR100, Short.MAX_VALUE);
-
-        assertEquals((short) 100, ATR100.get(withAtr(am)));
-        assertEquals((short) -1, ATR100.get(withAtr(am1)));
-        assertEquals((short) 111, ATR100.get(withAtr(am111)));
-        assertEquals(Short.MAX_VALUE, ATR100.get(withAtr(ammax)));
-
-        assertEquals((short) 10, ATR100.get(withAtr(am), (short) 10));
-        assertEquals((short) -1, ATR100.get(withAtr(am1), (short) 10));
-        assertEquals((short) 111, ATR100.get(withAtr(am111), (short) 10));
-        assertEquals(Short.MAX_VALUE, ATR100.get(withAtr(ammax), (short) 10));
-
-        assertEquals((short) -1, NON_NEGATIVE.get(withAtr(am), (short) -1));
-
-        assertEquals((short) 100, ATR100.get(withAtr(am)));
-        assertEquals((short) -1, ATR100.get(withAtr(am1)));
-        assertEquals((short) 10, ATR100.get(withAtr(am), (short) 10));
-        assertEquals((short) -1, ATR100.get(withAtr(am1), (short) 10));
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Short.MIN_VALUE));
         assertTrue(ATR100.isValid(Short.MAX_VALUE));

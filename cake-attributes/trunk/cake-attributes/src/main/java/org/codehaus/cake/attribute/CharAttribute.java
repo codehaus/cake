@@ -143,34 +143,6 @@ public abstract class CharAttribute extends Attribute<Character> implements
     public char getDefaultValue() {
         return defaultValue;
     }
-    
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefaultValue()} will be returned instead.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
-     *         {@link #getDefaultValue()}
-     */
-    public char get(WithAttributes withAttributes) {
-        return withAttributes.getAttributes().get(this);
-    }
-
-    /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>char</tt>.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @param defaultValue
-     *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the
-     *         specified default value
-     */
-    public char get(WithAttributes withAttributes, char defaultValue) {
-        return withAttributes.getAttributes().get(this, defaultValue);
-    }
 
    /**
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive char as

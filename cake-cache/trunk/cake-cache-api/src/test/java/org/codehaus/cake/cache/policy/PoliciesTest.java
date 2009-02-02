@@ -15,13 +15,16 @@
  */
 package org.codehaus.cake.cache.policy;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.cache.policy.paging.FIFOReplacementPolicy;
+import org.codehaus.cake.cache.policy.paging.LFUReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.LIFOReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
+import org.codehaus.cake.cache.policy.paging.MFUReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.MRUReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 import org.junit.Test;
@@ -34,12 +37,12 @@ public class PoliciesTest {
 
     @Test
     public void assertInstances() {
-        assertTrue(Policies.newFIFO() instanceof FIFOReplacementPolicy);
-        assertTrue(Policies.newLIFO() instanceof LIFOReplacementPolicy);
-        assertTrue(Policies.newLRU() instanceof LRUReplacementPolicy);
-        assertTrue(Policies.newMRU() instanceof MRUReplacementPolicy);
-        assertTrue(Policies.newRandom() instanceof RandomReplacementPolicy);
-        assertTrue(Policies.newReplaceBiggest() instanceof ReplaceBiggestPolicy);
-        assertTrue(Policies.newReplaceCostliest() instanceof ReplaceCostliestPolicy);
+        assertSame(Policies.FIFO, FIFOReplacementPolicy.class);
+        assertSame(Policies.LFU, LFUReplacementPolicy.class);
+        assertSame(Policies.LIFO, LIFOReplacementPolicy.class);
+        assertSame(Policies.LRU, LRUReplacementPolicy.class);
+        assertSame(Policies.MFU, MFUReplacementPolicy.class);
+        assertSame(Policies.MRU, MRUReplacementPolicy.class);
+        assertSame(Policies.RANDOM, RandomReplacementPolicy.class);
     }
 }

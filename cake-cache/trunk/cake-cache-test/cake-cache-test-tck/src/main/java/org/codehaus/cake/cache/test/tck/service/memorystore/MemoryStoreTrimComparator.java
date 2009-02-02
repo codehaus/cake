@@ -73,7 +73,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
         loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         conf.addEntryAttributes(SIZE);
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
         assertGet(M1, M2, M3, M4, M5, M6, M7, M8, M9);
         assertSize(9);

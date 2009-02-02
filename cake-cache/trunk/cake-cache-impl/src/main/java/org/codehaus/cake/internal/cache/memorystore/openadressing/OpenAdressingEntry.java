@@ -1,4 +1,4 @@
-package org.codehaus.cake.internal.cache.service.memorystore;
+package org.codehaus.cake.internal.cache.memorystore.openadressing;
 
 import java.util.Collection;
 import java.util.Collections;

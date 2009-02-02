@@ -34,21 +34,6 @@ public final class ArrayUtils {
     /** Cannot instantiate. */
     private ArrayUtils() {}
 
-    // /CLOVER:ON
-    /**
-     * Copies the specified array.
-     * 
-     * @param <T>
-     *            the type of the specified array
-     * @param original
-     *            the array to be copied
-     * @return a copy of the original array
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T[] copyOf(T[] original) {
-        return (T[]) copyOf(original, original.length, original.getClass());
-    }
-
     /**
      * Copies the specified array, truncating or padding with nulls (if necessary) so the copy has the specified length.
      * 
@@ -161,6 +146,21 @@ public final class ArrayUtils {
             k = child;
         }
         queue[k] = x;
+    }
+
+    // /CLOVER:ON
+    /**
+     * Copies the specified array.
+     * 
+     * @param <T>
+     *            the type of the specified array
+     * @param original
+     *            the array to be copied
+     * @return a copy of the original array
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] copyOf(T[] original) {
+        return (T[]) copyOf(original, original.length, original.getClass());
     }
 
 }

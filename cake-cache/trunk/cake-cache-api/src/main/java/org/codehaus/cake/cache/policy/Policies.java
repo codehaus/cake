@@ -15,13 +15,14 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
-import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
-import org.codehaus.cake.cache.policy.paging.FIFOReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.LIFOReplacementPolicy;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.IdentityHashMap;
+
+import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.MRUReplacementPolicy;
 import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * Factory methods for different {@link ReplacementPolicy} implementations. This class provides shortcuts for various
@@ -30,7 +31,24 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
+@SuppressWarnings("unchecked")
 public final class Policies {
+
+    /** A First In First Out replacement policy. */
+    public final static Class<? extends ReplacementPolicy> FIFO = LRUReplacementPolicy.class;
+    /** A Least Frequenty Used policy. */
+    public final static Class<? extends ReplacementPolicy> LFU = LRUReplacementPolicy.class;
+    /** A Last In First Out replacement policy. */
+    public final static Class<? extends ReplacementPolicy> LIFO = LRUReplacementPolicy.class;
+    /** A Least Recently Used replacement policy. */
+    public final static Class<? extends ReplacementPolicy> LRU = LRUReplacementPolicy.class;
+    /** A Most Frequently Used replacement policy. */
+    public final static Class<? extends ReplacementPolicy> MFU = LRUReplacementPolicy.class;
+    /** A Most Recently Used replacement policy. */
+    public final static Class<? extends ReplacementPolicy> MRU = LRUReplacementPolicy.class;
+    /** A Random replacement policy. */
+    public final static Class<? extends ReplacementPolicy> RANDOM = RandomReplacementPolicy.class;
+
     // /CLOVER:OFF
     /** Cannot instantiate. */
     private Policies() {
@@ -39,95 +57,161 @@ public final class Policies {
     // /CLOVER:ON
 
     /**
-     * Returns a new {@link FIFOReplacementPolicy FIFO Replacement Policy}.
+     * Creates a new ReplacementPolicy of the specified type.
      * 
-     * @return a new FIFO policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
+     * If the specified replacement type requires a {@link PolicyContext}
+     * 
+     * @param <T>
+     *            the type of replacement policy
+     * @param clazz
+     *            the type of replacement policy
+     * @return the newly created policy
      */
-    public static <K, V> ReplacementPolicy<K, V> newFIFO() {
-        return new FIFOReplacementPolicy<K, V>();
+    public static <T extends ReplacementPolicy> T create(Class<T> clazz) {
+        return create(clazz, new FakePolicyContext(Object.class));
     }
 
     /**
-     * Returns a new {@link LIFOReplacementPolicy LIFO Replacement Policy}.
+     * Creates a new ReplacementPolicy of the specified type
      * 
-     * @return a new LIFO policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
+     * @param <T>
+     *            the type of replacement policy
+     * @param clazz
+     *            the type of replacement policy
+     * @param context
+     *            the context to used when creating the policy
+     * @throws NullPointerException
+     *             if the specified clazz or context is null
+     * @throws IllegalArgumentException
+     *             if an instance of the specified replacement policy type could not be created
+     * @return the newly created policy
      */
-    public static <K, V> ReplacementPolicy<K, V> newLIFO() {
-        return new LIFOReplacementPolicy<K, V>();
+    public static <T extends ReplacementPolicy> T create(Class<T> clazz, PolicyContext context) {
+        if (clazz == null) {
+            throw new NullPointerException("clazz is null");
+        } else if (context == null) {
+            throw new NullPointerException("context is null");
+        }
+        try {
+            return create(clazz.getConstructor(PolicyContext.class), context);
+        } catch (NoSuchMethodException e) {
+            try {
+                return create(clazz.getConstructor(), null);
+            } catch (NoSuchMethodException e1) {
+                throw new IllegalArgumentException(
+                        "No public empty constructor, or public constructor taking a single PolicyContext argument");
+            }
+        }
     }
 
-    /**
-     * Returns a new {@link LRUReplacementPolicy LRU Replacement Policy}.
-     * 
-     * @return a new LRU policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
-     */
-    public static <K, V> ReplacementPolicy<K, V> newLRU() {
-        return new LRUReplacementPolicy<K, V>();
+    private static <T extends ReplacementPolicy> T create(Constructor<T> constructor, PolicyContext context) {
+        try {
+            if (context != null) {
+                return constructor.newInstance(context);
+            }
+            return constructor.newInstance();
+        } catch (InstantiationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException(e);
+        } catch (InvocationTargetException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
-    /**
-     * Returns a new {@link MRUReplacementPolicy MRU Replacement Policy}.
-     * 
-     * @return a new MRU policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
-     */
-    public static <K, V> ReplacementPolicy<K, V> newMRU() {
-        return new MRUReplacementPolicy<K, V>();
+    static class FakePolicyContext<T> implements PolicyContext<T> {
+
+        private final Class<T> type;
+
+        public FakePolicyContext(Class<T> type) {
+            if (type == null) {
+                throw new NullPointerException("type is null");
+            }
+            this.type = type;
+        }
+
+        public BooleanAttachment attachBoolean() {
+            return new BA();
+        }
+
+        public IntAttachment attachInt() {
+            return new IA();
+        }
+
+        public <U> ObjectAttachment<U> attachObject(Class<U> type) {
+            return new OA();
+        }
+
+        public ObjectAttachment<T> attachSelfReference() {
+            return (ObjectAttachment) attachObject(Object.class);
+        }
+
+        public void dependHard(Attribute<?> attribute) {
+        }
+
+        public void dependSoft(Attribute<?> attribute) {
+        }
+
+        public Class getElementType() {
+            return Object.class;
+        }
+
+        public T[] newArray(int size) {
+            return (T[]) new Object[size];
+        }
+
+        static class BA implements BooleanAttachment {
+            final IdentityHashMap<Object, Boolean> map = new IdentityHashMap<Object, Boolean>();
+
+            public boolean get(Object entry) {
+                Boolean b = map.get(entry);
+                if (b == null) {
+                    throw new IllegalArgumentException("The value of this attachment has not been set previously");
+                }
+                return b.booleanValue();
+            }
+
+            public void set(Object entry, boolean value) {
+                map.put(entry, Boolean.valueOf(value));
+            }
+        }
+
+        static class IA implements IntAttachment {
+            final IdentityHashMap<Object, Integer> map = new IdentityHashMap<Object, Integer>();
+
+            public int get(Object entry) {
+                Integer i = map.get(entry);
+                if (i == null) {
+                    throw new IllegalArgumentException("The value of this attachment has not been set previously");
+                }
+                return i.intValue();
+            }
+
+            public int get(Object entry, int defaultValue) {
+                Integer i = map.get(entry);
+                if (i == null) {
+                    return defaultValue;
+                }
+                return i.intValue();
+            }
+
+            public void set(Object entry, int value) {
+                map.put(entry, Integer.valueOf(value));
+            }
+        }
+
+        static class OA implements ObjectAttachment {
+            final IdentityHashMap<Object, Object> map = new IdentityHashMap<Object, Object>();
+
+            public Object get(Object entry) {
+                return map.get(entry);
+            }
+
+            public void set(Object entry, Object value) {
+                map.put(entry, value);
+            }
+
+        }
     }
 
-    /**
-     * Returns a new {@link RandomReplacementPolicy Random Replacement Policy}.
-     * 
-     * @return a new Random policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
-     * 
-     */
-    public static <K, V> ReplacementPolicy<K, V> newRandom() {
-        return new RandomReplacementPolicy<K, V>();
-    }
-
-    /**
-     * Returns a new {@link ReplaceBiggestPolicy Replacement Biggest Policy}.
-     * 
-     * @return a new replace biggest policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
-     */
-    public static <K, V> ReplacementPolicy<K, V> newReplaceBiggest() {
-        return new ReplaceBiggestPolicy<K, V>();
-    }
-
-    /**
-     * Returns a new {@link ReplaceCostliestPolicy Replacement Costliest Policy}.
-     * 
-     * @return a new replace costliest policy
-     * @param <K>
-     *            the type of keys maintained by the cache
-     * @param <V>
-     *            the type of values maintained by the cache
-     * 
-     */
-    public static <K, V> ReplacementPolicy<K, V> newReplaceCostliest() {
-        return new ReplaceCostliestPolicy<K, V>();
-    }
 }

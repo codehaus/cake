@@ -16,7 +16,6 @@
 package org.codehaus.cake.cache.policy;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.crud.CrudReader;
 
 /**
@@ -24,8 +23,16 @@ import org.codehaus.cake.cache.service.crud.CrudReader;
  * space is insufficient for accommodating a new item to be cached. Normally users should not need to implement this
  * interface, only if they want to implement a custom replacement polices.
  * <p>
- * A replacement policy does not control when or how many entries should be evicted only which entry should be evicted
- * the next time.
+ * A replacement policy does not control when or how many elements should be evicted only which element should be
+ * evicted the next time, based on insert and access patterns.
+ * <p>
+ * All general-purpose replacement policy implementation classes should provide atleast one of the two following
+ * constructors: a void (no arguments) constructor, and a constructor with a single argument of type
+ * <tt>PolicyContext</tt>, this context can be used to attach data each element. This will, for most cases, have
+ * better performance then to keep this information in a list or map that needs to looked up each time.
+ * <p>
+ * Normally instances of this interface are used together with a {@link Cache}, but most of the implementations in this
+ * package are generally purpose replacement policies that can easily be used within another context.
  * <p>
  * This library comes with a number of predefined replacement policies, see
  * {@link org.codehaus.cake.cache.policy.Policies} for the most commonly used policies.
@@ -35,99 +42,68 @@ import org.codehaus.cake.cache.service.crud.CrudReader;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
- * @param <K>
- *            the type of keys cached
- * @param <V>
- *            the type of values cached
+ * @param <T>
+ *            the type of elements being cached
  */
-public interface ReplacementPolicy<K, V> {
-    //TODO lav det om til ReplacementPolicy<T extends GetAttributer>
-    
-    /**
-     * The cache calls this method whenever a new entry is inserted to cache. If an entry already exists for the key of
-     * the entry {@link #replace(CacheEntry, CacheEntry)} is called instead. Normally a replacement policy will accept
-     * all entries in which case <code>true</code> should be returned from this method. However, some policies might
-     * want to tell the cache to not cache a specific entry. Consider a simple scenario where Web pages are being
-     * cached. The type of keys are <tt>Strings</tt> and the type of values are <tt>byte[]</tt>. If we do not want
-     * to cache pages that are requested through the <tt>https</tt> protocol, but only pages that are requested
-     * through the <tt>http</tt> protocol. In which case we would write an add method similar to this:
-     * 
-     * <pre>
-     * public boolean add(CacheEntry&lt;String, byte[]&gt; entry) {
-     *     if (entry.getKey().startsWith(&quot;https://&quot;)) {
-     *         return false; //tell the cache to *not* add the entry.
-     *     }
-     *     //cache the entry in the policy
-     *     return true; //tell the cache to add the entry.
-     * }
-     * </pre>
-     * 
-     * IMPORTANT: entries that are rejected by this method should also be rejected by the
-     * {@link #replace(CacheEntry, CacheEntry)} method.
-     * 
-     * @param entry
-     *            the entry to add to the replacement policy
-     * @return <code>true</code> if the entry was accepted by the replacement policy otherwise false.
-     */
-    boolean add(CacheEntry<K, V> entry);
+public interface ReplacementPolicy<T> {
 
     /**
-     * The cache calls this method whenever it removes references to all entries that are cached. Calling this method
-     * should have the same effect as calling {@link #remove(CacheEntry)} for each individual entry currently cached.
-     * However, most implementations will most likely be able to do it faster.
+     * A cache calls this method whenever a new element is first inserted to a cache.
+     * <p>
+     * If this replacement policy is used within a {@link Cache}. This method is normally used when entries are added
+     * to the cache, for example, using {@link Cache#put(Object, Object)}.
+     * 
+     * @param element
+     *            the element to add to the replacement policy
+     */
+    void add(T element);
+
+    /**
+     * A cache calls this method whenever it removes references to all elements that are cached. Calling this method
+     * should have the same effect as calling {@link #remove(Object)} for each individual element currently cached.
+     * However, removing all elements in one operation is most likely faster.
      */
     void clear();
 
     /**
-     * Called by the cache when insufficient space is available for a new entry to be added to the cache. This method
-     * should return the entry that should be evicted next accordingly to the replacement policy that is implemented.
-     * Furthermore should all references to this entry be removed from the replacement policy to avoid memory leaks.
+     * Called by the cache when insufficient space is available for a new element to be added to the cache. This method
+     * should return the element that should be evicted next accordingly to the replacement policy that is implemented.
+     * Furthermore should all references to this element be removed from the replacement policy to avoid memory leaks.
      * 
-     * @return the entry that should be evicted from the cache or <code>null</code> if the policy does not contain any
-     *         entries
+     * @return the element that should be evicted from the cache or <code>null</code> if the policy does not contain
+     *         any elements
      */
-    CacheEntry<K, V> evictNext();
+    T evictNext();
 
     /**
-     * Called whenever an entry is removed by an external action in the cache. For example, the user has removed the
-     * entry by calling {@link Cache#remove(Object)}. If the policy contains any references to the entry it should
+     * Called whenever an element is removed by an external action in the cache. For example, if the user chooses to
+     * explicitly remove the element from the cache. If the policy contains any references to the element it should
      * remove them in order to avoid memory leaks.
      * 
-     * @param entry
-     *            the entry that was removed
+     * @param element
+     *            the element that was removed
      */
-    void remove(CacheEntry<K, V> entry);
+    void remove(T element);
 
     /**
-     * The specified <tt>previous</tt>entry was updated with a new value, for example, through a call to
-     * {@link Cache#replace(Object, Object). The implementation of this policy must now choose between  
-     * <ul>
-     * <li> Accepting the new entry, and removing the old entry (normal behaviour). In which case it should return the
-     * new entry to indicate to the cache that it should remove the old entry and keep the entry.</li>
-     * <li> Rejecting the new entry and keeping the old entry. In which case it should return the previous.</li>
-     * <li> Reject the new entry and removing the old entry. In which case <code>null</code> should be returned.</li>
-     * </ul>
-     * IMPORTANT: new entries that are rejected by this method should also be rejected by the {@link #add(CacheEntry)}
-     * method.
+     * The specified <tt>previous</tt>element was updated with a new value, for example, through a call to
+     * {@link Cache#replace(Object, Object).
      * 
-     * @param previous
-     *            the previous entry
-     * @param newEntry
-     *            the new entry
-     * @return <tt>newEntry</tt> if the policy accepted the new entry, <tt>previous</tt> if the policy wants to keep
-     *         the previous entry, <code>null</code> if neither entries should be keept in the cache.
-     * @see #add(CacheEntry)
+     * @see #add(Object)
      */
-    CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry);
+    void replace(T oldElement, T newElement);
 
     /**
-     * Called by the cache whenever an entry is accessed. An entry is accessed whenever {@link Cache#get(Object)},
+     * Called by the cache whenever an element is accessed.
+     * <p>
+     * If this replacement policy is used from a {@link Cache}. An entry is accessed whenever {@link Cache#get(Object)},
      * {@link Cache#getEntry(Object)}, {@link Cache#getAll(java.util.Collection)} or any of the get methods in
      * {@link CrudReader} are called. Accessing an entry while using an iterator returned by {@link Cache#entrySet()},
-     * {@link Cache#keySet()} or {@link Cache#values()} will not result in this method being invoked.
+     * {@link Cache#keySet()} or {@link Cache#values()} will not result in this method being invoked. Neither will
+     * entries accessed via any of the views defined in org.codehaus.cake.cache.view.
      * 
-     * @param entry
-     *            the entry that was accessed
+     * @param element
+     *            the element that was accessed
      */
-    void touch(CacheEntry<K, V> entry);
+    void touch(T element);
 }

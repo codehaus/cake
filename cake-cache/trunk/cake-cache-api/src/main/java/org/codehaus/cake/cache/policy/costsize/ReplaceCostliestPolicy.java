@@ -17,8 +17,10 @@ package org.codehaus.cake.cache.policy.costsize;
 
 import static org.codehaus.cake.cache.CacheEntry.COST;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * A replacement policy that replaces the entry with the smallest {@link CacheEntry#COST} when evicting. The rational
@@ -31,21 +33,22 @@ import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
  * @param <V>
  *            the type of values maintained by the cache
  */
-public class ReplaceCostliestPolicy<K, V> extends AbstractHeapReplacementPolicy<K, V> {
+public class ReplaceCostliestPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
     /** A unique policy name. */
     public static final String NAME = "ReplaceCostliest";
 
     /** Creates a new ReplaceCostliestPolicy. */
-    public ReplaceCostliestPolicy() {
+    public ReplaceCostliestPolicy(PolicyContext<T> context) {
+        super(context);
         // This is used to make sure that users have registered the COST attribute
         // with CacheAttributeConfiguration#add(Attribute...)}
         // it would not make sense using this policy if entries didn't have a COST attached
-        dependHard(COST);
+        context.dependHard(COST);
     }
 
     /** {@inheritDoc} */
-    protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
+    protected int compareEntry(T o1, T o2) {
         return COST.compare(o2, o1);
     }
 }

@@ -8,7 +8,7 @@ import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.ops.Ops.Reducer;
 
 /**
- * A view of objects.
+ * A view of elements.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java 239 2008-12-23 20:29:21Z kasper $
@@ -18,46 +18,28 @@ import org.codehaus.cake.ops.Ops.Reducer;
 public interface View<T> {
 
     /**
-     * Creates a new CacheQuery which limits the number of results returned by this query.
+     * Returns any element matching filter constraints and mappings, or <code>null</code> if none.
      * 
-     * @param limit
-     *            the maximum number of results to return
-     * @return a new query
+     * @return an element, or null if none
      */
-    View<T> setLimit(long limit);
+    T any();
 
     /**
-     * Creates a new view where all elements are ordered accordingly to the specified comparator.
+     * Applies the specified procedure to the elements in this view.
      * 
-     * @param comparator
-     *            the comparator used for ordering
-     * @throws NullPointerException
-     *             if the specified comparator is null
-     * @return the new view
+     * @param procedure
+     *            the procedure to apply
      */
-    View<T> orderBy(Comparator<? super T> comparator);
+    void apply(Procedure<? super T> procedure);
 
-    /**
-     * Assuming all elements are Comparable, creates a new View where all values are ordered accordingly to their
-     * natural order. This ordering does not guarantee that elements with equal keys maintain their relative position. *
-     * 
-     * @return the new view
-     */
-    View<T> orderByMax();
-
-    /**
-     * Assuming all elements are Comparable, creates a new View where all values are ordered accordingly to their
-     * natural order. This ordering does not guarantee that elements with equal keys maintain their relative position.
-     * 
-     * @return the new view
-     */
-    View<T> orderByMin();
+    /** @return whether or not this view contains any elements */
+    boolean isEmpty();
 
     /**
      * Returns a new view where all elements of this view is mapped using the specified mapper.
      * <p>
-     * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code creates a new virtual
-     * view that contains the upper case version for each element.
+     * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code creates a new view
+     * that contains the upper case version for each element.
      * 
      * <pre>
      * View&lt;String&gt; x = v.map(new Op&lt;String, String&gt;() {
@@ -74,21 +56,6 @@ public interface View<T> {
      *             if the specified mapper is <tt>null</tt>
      */
     <E> View<E> map(Op<? super T, ? extends E> mapper);
-
-    /**
-     * Returns any element matching filter constraints, or <code>null</code> if none.
-     * 
-     * @return an element, or null if none
-     */
-    T any();
-
-    /**
-     * Applies the specified procedure to the elements in this view.
-     * 
-     * @param procedure
-     *            the procedure to apply
-     */
-    void apply(Procedure<? super T> procedure);
 
     /**
      * Returns the maximum element, or null if empty, assuming that all elements are Comparables
@@ -131,6 +98,33 @@ public interface View<T> {
     T min(Comparator<? super T> comparator);
 
     /**
+     * Creates a new view where all elements are ordered accordingly to the specified comparator.
+     * 
+     * @param comparator
+     *            the comparator used for ordering
+     * @throws NullPointerException
+     *             if the specified comparator is null
+     * @return the new view
+     */
+    View<T> orderBy(Comparator<? super T> comparator);
+
+    /**
+     * Assuming all elements are Comparable, creates a new view where all values are ordered accordingly to their
+     * natural order. This ordering does not guarantee that elements with equal keys maintain their relative position.
+     * 
+     * @return the new view
+     */
+    View<T> orderByMax();
+
+    /**
+     * Assuming all elements are Comparable, creates a new View where all values are ordered accordingly to their
+     * natural order. This ordering does not guarantee that elements with equal keys maintain their relative position.
+     * 
+     * @return the new view
+     */
+    View<T> orderByMin();
+
+    /**
      * Returns reduction of elements.
      * 
      * @param reducer
@@ -141,16 +135,36 @@ public interface View<T> {
      */
     T reduce(Reducer<T> reducer, T base);
 
+    /**
+     * Creates a new View which limits the number of elements in this view. If the element in this view are ordered, for
+     * example, by calls to {@link #orderBy(Comparator)}, {@link #orderByMax()} or {@link #orderByMin()}. The elements
+     * in the returned view will keep this ordering.
+     * <p>
+     * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
+     * 
+     * <pre>
+     * View&lt;Integer&gt; v=...
+     * List&lt;Integer&gt; list = v.max().setLimit(10).toList();
+     * </pre>
+     * 
+     * @param limit
+     *            the maximum number of elements in the new view
+     * @throws IllegalArgumentException
+     *             if the limit is less then <tt>1</tt>
+     * @return a new view
+     */
+    View<T> setLimit(long limit);
+
     /** @return the number of elements in this view */
     long size();
 
     /**
-     * Returns an array containing all of the elements in this view. If the view makes any guarantees as to what order
-     * its elements are returned by its iterator, this method must return the elements in the same order.
+     * Returns an array containing all of the elements in this view. If this view is ordered, this method must return
+     * the elements in the same order.
      * <p>
      * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
-     * method must allocate a new array even if this view is backed by an array). The caller is thus free to modify the
-     * returned array.
+     * method must allocate a new array even if this view is backed in any way by an array). The caller is thus free to
+     * modify the returned array.
      * 
      * @return an array containing all of the elements in this view
      */
@@ -166,8 +180,7 @@ public interface View<T> {
      * useful in determining the length of this view <i>only</i> if the caller knows that this view does not contain
      * any <tt>null</tt> elements.)
      * <p>
-     * If this view makes any guarantees as to what order its elements are returned by its iterator, this method must
-     * return the elements in the same order.
+     * If this view is ordered , this method must return the elements in the same order.
      * <p>
      * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code can be used to dump
      * the view into a newly allocated array of <tt>String</tt>:

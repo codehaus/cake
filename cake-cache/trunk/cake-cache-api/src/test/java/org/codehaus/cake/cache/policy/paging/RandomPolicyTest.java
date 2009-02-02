@@ -28,6 +28,7 @@ import java.util.TreeSet;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
+import org.codehaus.cake.cache.policy.Policies;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,8 +41,7 @@ public class RandomPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
-        policy = new RandomReplacementPolicy<Integer, String>();
-        init();
+        policy = Policies.create(RandomReplacementPolicy.class);
     }
 
     /**
@@ -57,22 +57,22 @@ public class RandomPolicyTest extends AbstractPolicyTest {
     public void testIntens2() {
         Set<Integer> s = new TreeSet<Integer>();
         for (int i = 0; i < 20; i++) {
-            add(i);
+            policy.add(i);
         }
         for (int i = 0; i < 40; i++) {
             s.add(i);
         }
         // list.print();
         for (int i = 0; i < 400; i++) {
-            CacheEntry<Integer, String> data = policy.evictNext();
+            Integer data = policy.evictNext();
             policy.add(data);
             if (i % 20 == 0)
-                add(i / 20 + 20);
+                policy.add(i / 20 + 20);
         }
         for (;;) {
-            CacheEntry<Integer, String> ce = policy.evictNext();
+            Integer ce = policy.evictNext();
             if (ce != null)
-                s.remove(ce.getKey());
+                s.remove(ce);
             else
                 break;
         }
@@ -87,12 +87,12 @@ public class RandomPolicyTest extends AbstractPolicyTest {
     @Test
     public void testRefresh() {
         addToPolicy(0, 9);
-        policy.touch(val(4));
-        policy.touch(val(4));
-        policy.touch(val(0));
-        policy.touch(val(3));
-        policy.touch(val(2));
-        policy.touch(val(9));
+        policy.touch(4);
+        policy.touch(4);
+        policy.touch(0);
+        policy.touch(3);
+        policy.touch(2);
+        policy.touch(9);
         assertTrue(empty().containsAll(seq(0, 9)));
     }
 
@@ -107,14 +107,14 @@ public class RandomPolicyTest extends AbstractPolicyTest {
 
     @Test
     public void testRemove2() {
-        Set l = new HashSet();
+        Set<Integer> l = new HashSet<Integer>();
         
-        add(1);
-        add(2);
-        add(3);
-        l.add(val(1));
-        l.add(val(2));
-        l.add(val(3));
+        policy.add(1);
+        policy.add(2);
+        policy.add(3);
+        l.add(1);
+        l.add(2);
+        l.add(3);
 
         l.remove(policy.evictNext());
         assertEquals(2, l.size());
@@ -138,10 +138,11 @@ public class RandomPolicyTest extends AbstractPolicyTest {
     @Test
     public void testRemoveIndex() {
         addToPolicy(0, 9);
-        policy.remove(val(4));
-        policy.remove(val(7));
-        policy.remove(val(0));
-        policy.remove(val(9));
+
+        policy.remove(4);
+        policy.remove(7);
+        policy.remove(0);
+        policy.remove(9);
         assertTrue(empty().containsAll(asList(1, 2, 3, 5, 6, 8)));
     }
 
@@ -155,12 +156,12 @@ public class RandomPolicyTest extends AbstractPolicyTest {
     @Test
     public void testUpdate() {
         addToPolicy(0, 9);
-        add(15);
-        assertSame(val(15), policy.replace(val(4), val(15)));
-        CacheEntry<Integer, String> ce = policy.evictNext();
+        policy.add(15);
+        policy.replace(4, 15);
+        Integer ce = policy.evictNext();
         while (ce != null) {
             // System.out.println(ce);
-            if (ce.getKey() == 15) {
+            if (ce.equals(15)) {
                 return;
             }
             ce = policy.evictNext();

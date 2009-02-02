@@ -29,7 +29,7 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
      */
     @Test
     public void trimToSize() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
         put(5);
         assertSize(5);
@@ -70,7 +70,7 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
      */
     @Test
     public void trimToSizeNegative() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
         put(5);
         assertSize(5);
@@ -88,7 +88,7 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
     public void trimToVolume() {
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         conf.addEntryAttributes(SIZE);
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
         c.get(1);
         assertVolume(2);
@@ -125,7 +125,7 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
     public void trimToVolumeNegative() {
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         conf.addEntryAttributes(SIZE);
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
         c.get(1);
         assertVolume(2);

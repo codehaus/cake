@@ -77,13 +77,7 @@ public class AttributeTest {
         new ValidateAttribute("erer");
     }
 
-    //
-    @Test
-    public void isSet() {
-        assertFalse(ATR.isSet(withAtr(am1)));
-        assertTrue(ATR.isSet(withAtr(am2)));
-    }
-
+ 
     //
     protected MutableAttributeMap newMap() {
         return new DefaultAttributeMap();
@@ -246,13 +240,6 @@ public class AttributeTest {
     // assertFalse(filter.op(withAtr(Attributes.singleton(ATR, "adf"))));
     // }
 
-    static WithAttributes withAtr(final AttributeMap map) {
-        return new WithAttributes() {
-            public AttributeMap getAttributes() {
-                return map;
-            }
-        };
-    }
 
     static class DefaultAttribute extends ObjectAttribute<String> {
         public DefaultAttribute(String name, Class<String> clazz, String defaultValue) {

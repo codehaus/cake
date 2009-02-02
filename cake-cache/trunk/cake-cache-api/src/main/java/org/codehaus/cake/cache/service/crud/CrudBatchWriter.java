@@ -65,7 +65,7 @@ public interface CrudBatchWriter<K, V, R> {
 
     /**
      * Attempts to remove all of the mappings for the specified collection of keys. The effect of this call is
-     * equivalent to that of calling {@link org.codehaus.cake.cache.Cache#removeByIndex(Object)} on the cache once for
+     * equivalent to that of calling {@link org.codehaus.cake.cache.Cache#remove(Object)} on the cache once for
      * each key in the specified collection. However, in some cases it can be much faster to remove several cache items
      * at once, for example, if some of the values must also be removed on a remote host.
      * 

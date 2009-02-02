@@ -89,28 +89,6 @@ public final class BooleanAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR1, false);
-        AttributeMap am2 = Attributes.singleton(ATR1, true);
-
-        assertTrue(ATR1.get(withAtr(am)));
-        assertFalse(ATR1.get(withAtr(am1)));
-        assertTrue(ATR1.get(withAtr(am2)));
-        assertTrue(ATR1.get(withAtr(am), true));
-        assertFalse(ATR1.get(withAtr(am1), false));
-        assertTrue(ATR1.get(withAtr(am2), false));
-        assertFalse(ATR1.get(withAtr(am), false));
-        assertFalse(ATR1.get(withAtr(am1), true));
-        assertTrue(ATR1.get(withAtr(am2), true));
-        assertTrue(ATR1.isTrue(am2));
-        assertTrue(ATR1.isTrue(withAtr(am2)));
-        assertFalse(ATR1.isFalse(am2));
-        assertFalse(ATR1.isFalse(withAtr(am2)));
-        assertFalse(ATR1.isFalse(withAtr(am2)));
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR1.isValid(false));
         assertTrue(ATR1.isValid(true));

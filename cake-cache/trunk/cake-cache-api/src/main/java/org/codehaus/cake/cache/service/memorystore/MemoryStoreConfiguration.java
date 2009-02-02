@@ -15,8 +15,9 @@
  */
 package org.codehaus.cake.cache.service.memorystore;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
@@ -41,7 +42,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
     private Ops.Procedure<MemoryStoreService<K, V>> evictor;
 
     /** A filter used for filtering what items should be cached. */
-    private Predicate<? super CacheEntry<K, V>> isCacheableFilter;
+    private IsCacheablePredicate<? super K,? super  V> isCacheableFilter;
 
     /** Whether or not caching is disabled. */
     private boolean isDisabled;
@@ -52,7 +53,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
     /** The maximum volume of the cache. */
     private long maximumVolume = Long.MAX_VALUE;
 
-    private ReplacementPolicy<K, V> replacementPolicy;
+    private Class<? extends ReplacementPolicy> replacementPolicy;
 
     public Ops.Procedure<MemoryStoreService<K, V>> getEvictor() {
         return evictor;
@@ -64,7 +65,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * @return the IsCacheable predicate configured or <code>null</code> if no predicate has been set
      * @see #setIsCacheableFilter(Predicate)
      */
-    public Predicate<? super CacheEntry<K, V>> getIsCacheableFilter() {
+    public IsCacheablePredicate<? super K,? super  V> getIsCacheableFilter() {
         return isCacheableFilter;
     }
 
@@ -88,7 +89,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
         return maximumVolume;
     }
 
-    public ReplacementPolicy<K, V> getPolicy() {
+    public Class<? extends ReplacementPolicy> getPolicy() {
         return replacementPolicy;
     }
 
@@ -152,7 +153,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      *            the predicate that decides if a given key, value combination can be added to the cache
      * @return this configuration
      */
-    public MemoryStoreConfiguration<K, V> setIsCacheableFilter(Predicate<? super CacheEntry<K, V>> predicate) {
+    public MemoryStoreConfiguration<K, V> setIsCacheableFilter(IsCacheablePredicate<? super K,? super  V> predicate) {
         this.isCacheableFilter = predicate;
         return this;
     }
@@ -204,12 +205,11 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
         return this;
     }
 
-    public MemoryStoreConfiguration<K, V> setPolicy(ReplacementPolicy replacementPolicy) {
+    public MemoryStoreConfiguration<K, V> setPolicy(Class<? extends ReplacementPolicy> replacementPolicy) {
         this.replacementPolicy = replacementPolicy;
         return this;
     }
-
-    public MutableAttributeMap getAttributes() {
+    public AttributeMap getAttributes() {
         return attributes;
     }
 }

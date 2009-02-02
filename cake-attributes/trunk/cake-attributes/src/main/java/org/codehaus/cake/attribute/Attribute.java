@@ -171,18 +171,6 @@ public abstract class Attribute<T> implements Serializable {
     }
 
     /**
-     * Returns whether or not this attribute is set in the specified attribute map. This method is useful for
-     * distinguishing those case where an attribute maps to the default value of the attribute.
-     * 
-     * @param attributes
-     *            the attribute map to check if this attribute is set
-     * @return <code>true</code> if this attribute is set in the specified attribute map, otherwise false
-     */
-    public boolean isSet(WithAttributes attributes) {
-        return attributes.getAttributes().contains(this);
-    }
-
-    /**
      * Returns whether or not the specified value is valid for this attribute. This method can be overridden to only
      * accept certain values.
      * 

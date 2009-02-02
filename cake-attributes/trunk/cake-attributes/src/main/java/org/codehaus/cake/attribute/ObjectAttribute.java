@@ -108,37 +108,6 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link Attribute#getDefault()} will be returned instead.
-     * 
-     * @param withAttributes
-     *            the object containing an attribute map for which to retrieve the value of this
-     *            attribute
-     * @return the value of this attribute
-     */
-    public final T get(WithAttributes withAttributes) {
-        return withAttributes.getAttributes().get(this);
-    }
-
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the specified default
-     * value will be returned.
-     * 
-     * @param withAttributes
-     *            the object containing an attribute map for which to retrieve the value of this
-     *            attribute
-     * @param defaultValue
-     *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute
-     */
-
-    public final T get(WithAttributes withAttributes, T defaultValue) {
-        return withAttributes.getAttributes().get(this, defaultValue);
-    }
-
     /** {@inheritDoc} */
     public boolean isValid(T value) {
         return true; // all values are accepted by default.

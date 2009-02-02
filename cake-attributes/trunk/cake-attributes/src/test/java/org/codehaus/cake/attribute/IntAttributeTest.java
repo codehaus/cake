@@ -101,32 +101,6 @@ public final class IntAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, -1);
-        AttributeMap am111 = Attributes.singleton(ATR100, 111);
-        AttributeMap ammax = Attributes.singleton(ATR100, Integer.MAX_VALUE);
-
-        assertEquals(100, ATR100.get(withAtr(am)));
-        assertEquals(-1, ATR100.get(withAtr(am1)));
-        assertEquals(111, ATR100.get(withAtr(am111)));
-        assertEquals(Integer.MAX_VALUE, ATR100.get(withAtr(ammax)));
-
-        assertEquals(10, ATR100.get(withAtr(am), 10));
-        assertEquals(-1, ATR100.get(withAtr(am1), 10));
-        assertEquals(111, ATR100.get(withAtr(am111), 10));
-        assertEquals(Integer.MAX_VALUE, ATR100.get(withAtr(ammax), 10));
-
-        assertEquals(-1, NON_NEGATIVE.get(withAtr(am), -1));
-
-        assertEquals(100, ATR100.get(withAtr(am)));
-        assertEquals(-1, ATR100.get(withAtr(am1)));
-        assertEquals(10, ATR100.get(withAtr(am), 10));
-        assertEquals(-1, ATR100.get(withAtr(am1), 10));
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Integer.MIN_VALUE));
         assertTrue(ATR100.isValid(Integer.MAX_VALUE));

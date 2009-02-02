@@ -17,6 +17,7 @@ package org.codehaus.cake.cache.policy.paging;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * A First In, First Out (FIFO) based replacement policy.
@@ -28,19 +29,22 @@ import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
  * @param <V>
  *            the type of values maintained by the cache
  */
-public class FIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementPolicy<K, V> {
+public class FIFOReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
+
+    public FIFOReplacementPolicy(PolicyContext<T> context) {
+        super(context);
+    }
 
     /** A unique policy name. */
     public static final String NAME = "FIFO";
 
     /** {@inheritDoc} */
-    public boolean add(CacheEntry<K, V> entry) {
+    public void add(T entry) {
         addFirst(entry);
-        return true;
     }
 
     /** {@inheritDoc} */
-    public CacheEntry<K, V> evictNext() {
+    public T evictNext() {
         return removeFirst();
     }
 }

@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
+import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 
     @Test
     public void testSimpleSize() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(5);
         init();
         for (int i = 0; i < 5; i++) {
             put(entry(i, Integer.toString(i)));
@@ -53,7 +54,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 
     @Test
     public void testEviction() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(5);
         init();
         for (int i = 0; i < 5; i++) {
             c.put(i, Integer.toString(i));
@@ -73,7 +74,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 
     @Test
     public void testTouch() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(10);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(10);
         init();
         for (int i = 0; i < 10; i++) {
             c.put(i, Integer.toString(i));
@@ -99,7 +100,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 
     @Test
     public void testPeek() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(5);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(5);
         init();
         for (int i = 0; i < 5; i++) {
             c.put(i, Integer.toString(i));
@@ -118,60 +119,6 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         assertFalse(c.containsKey(oldKey));
     }
 
-    @Test
-    public void testRejectEntry() {
-        RejectEntriesPolicy rep = new RejectEntriesPolicy();
-        conf.withMemoryStore().setPolicy(rep).setMaximumSize(5);
-        init();
-        c.put(1, "A");
-        rep.rejectAdd = true;
-        c.put(2, "B");
-        rep.rejectAdd = false;
-        c.put(3, "C");
-        assertEquals(2, c.size());
-        assertFalse(c.containsKey(2));
-    }
-
-    @Test
-    public void testRejectReplaceEntry() {
-        RejectEntriesPolicy rep = new RejectEntriesPolicy();
-        conf.withMemoryStore().setPolicy(rep).setMaximumSize(5);
-        init();
-
-        c.put(1, "A");
-        c.put(2, "B");
-        assertEquals(2, c.size());
-        c.put(2, "C");
-        assertEquals(1, c.size());
-        rep.rejectUpdate = false;
-        c.put(2, "B");
-        c.put(3, "C");
-        assertGet(entry(M3, "C"));
-        c.put(3, "D");
-        assertGet(entry(M3, "D"));
-        assertEquals(3, c.size());
-        rep.rejectUpdate = true;
-        c.put(2, "E");
-        assertGet(entry(M2, "B"));
-        c.put(3, "F");
-        assertGet(entry(M3, "D"));
-        assertEquals(3, c.size());
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testRejectEntryPutAll() {
-        Reject2EntriesPolicy rep = new Reject2EntriesPolicy();
-        conf.withMemoryStore().setPolicy(rep).setMaximumSize(5);
-        init();
-        // the reject2EntriesPolicy is kind of a hack until we are
-        // clear what type og object goes into add() for the policy
-        c.putAll(asMap_(M1, M2, M3));
-        assertEquals(2, c.size());
-        assertFalse(c.containsKey(2));
-    }
-
-    // put of elements
 
     //
     /**
@@ -179,7 +126,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
      */
     @Test
     public void testPutOverridesPreviousValue() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(2);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(2);
         init();
         c.put(M1.getKey(), M1.getValue());
         c.put(M2.getKey(), M2.getValue());
@@ -192,7 +139,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 
     @Test
     public void testPutAllOverridesPreviousValue() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(3);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(3);
         init();
         put(M1);
         put(M2);
@@ -216,7 +163,7 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
 
     @Test
     public void testRemoveEntry() {
-        conf.withMemoryStore().setPolicy(Policies.newLRU()).setMaximumSize(2);
+        conf.withMemoryStore().setPolicy(Policies.LRU).setMaximumSize(2);
         init();
         c.put(M1.getKey(), M1.getValue());
         c.put(M2.getKey(), M2.getValue());
@@ -225,73 +172,34 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         c.put(M3.getKey(), M3.getValue());
     }
 
-    @SuppressWarnings( { "serial" })
-    static class RejectEntriesPolicy<K, V> extends LRUReplacementPolicy<K, V> {
-        @Override
-        public boolean add(CacheEntry<K, V> entry) {
-            if (!rejectAdd) {
-                return super.add(entry);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-            if (rejectUpdate == null) {
-                super.remove(previous);
-                return null;
-            } else if (rejectUpdate) {
-                return previous;
-            } else {
-                return super.replace(previous, newEntry);
-            }
-        }
-
-        volatile boolean rejectAdd;
-
-        volatile Boolean rejectUpdate;
-
-    }
-
-    @SuppressWarnings( { "unchecked", "serial" })
-    static class Reject2EntriesPolicy<K, V> extends LRUReplacementPolicy<K, V> {
-        @Override
-        public boolean add(CacheEntry<K, V> entry) {
-            if (entry.getKey().equals(2)) {
-                return false;
-            } else {
-                return super.add(entry);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void isCacheEntry() throws InterruptedException {
-        final BlockingQueue<Object> q = new LinkedBlockingQueue<Object>();
-
-        conf.addEntryAttributes(SIZE);
-        loader.withLoader(M1).addAttribute(SIZE, 4l);
-        conf.withMemoryStore().setPolicy(new LRUReplacementPolicy<Integer, String>() {
-            @Override
-            public boolean add(CacheEntry<Integer, String> entry) {
-                q.add(entry);
-                return super.add(entry);
-            }
-        });
-        conf.withMemoryStore().setMaximumSize(5);
-        init();
-
-        assertGet(M1);
-
-        Object o = q.poll(1, TimeUnit.SECONDS);
-        assertNotNull("No object was handed off to the queue from PolicyMock", o);
-        assertTrue(o instanceof CacheEntry);
-        CacheEntry<Integer, String> ce = (CacheEntry<Integer, String>) o;
-        assertSame(M1.getKey(), ce.getKey());
-        assertSame(M1.getValue(), ce.getValue());
-        assertEquals(4, ce.get(SIZE));
-    }
+   
+//    @SuppressWarnings("unchecked")
+//    @Test
+//    public void isCacheEntry() throws InterruptedException {
+//        final BlockingQueue<Object> q = new LinkedBlockingQueue<Object>();
+//
+//        conf.addEntryAttributes(SIZE);
+//        loader.withLoader(M1).addAttribute(SIZE, 4l);
+//        conf.withMemoryStore().setIsCacheableFilter(predicate)
+//        conf.withMemoryStore().setPolicy(new LRUReplacementPolicy<CacheEntry<Integer, String>>() {
+//            @Override
+//            public void add(CacheEntry<Integer, String> entry) {
+//                q.add(entry);
+//                return super.add(entry);
+//            }
+//        });
+//        conf.withMemoryStore().setMaximumSize(5);
+//        init();
+//
+//        assertGet(M1);
+//
+//        Object o = q.poll(1, TimeUnit.SECONDS);
+//        assertNotNull("No object was handed off to the queue from PolicyMock", o);
+//        assertTrue(o instanceof CacheEntry);
+//        CacheEntry<Integer, String> ce = (CacheEntry<Integer, String>) o;
+//        assertSame(M1.getKey(), ce.getKey());
+//        assertSame(M1.getValue(), ce.getValue());
+//        assertEquals(4, ce.get(SIZE));
+//    }
 
 }

@@ -79,11 +79,5 @@ public class AtrStubs {
     public static final ShortAttribute S_MAX_VALUE = new ShortAttribute("S_MAX_VALUE", Short.MAX_VALUE) {};
     public static final ShortAttribute S_MIN_VALUE = new ShortAttribute("S_MIN_VALUE", Short.MIN_VALUE) {};
 
-    public static WithAttributes withAtr(final AttributeMap map) {
-        return new WithAttributes() {
-            public AttributeMap getAttributes() {
-                return map;
-            }
-        };
-    }
+
 }

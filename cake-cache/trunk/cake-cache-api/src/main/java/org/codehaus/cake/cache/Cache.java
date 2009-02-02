@@ -69,16 +69,11 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * Removes all entries from this cache. This method will not attempt to remove entries that are stored externally,
      * for example, on disk. The cache will be empty after this call returns.
      * <p>
-     * A {@link org.codehaus.cake.cache.service.event.CacheEntryEvent.ItemDeleted} event will be raised for each mapping
-     * that is removed when the cache is cleared. When all entries have been removed from the cache a single
-     * {@link org.codehaus.cake.cache.service.event.CacheEvent.CacheCleared} will be raised. This event is only raised
-     * if the state of the cache changed (cache was non-empty).
+     * If this method is used for getting rid of stale data. And alternative, if the cache has a cache loader defined,
+     * might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will forcefully reload all
+     * elements in the cache.
      * <p>
-     * If the reason for clearing the cache is to get rid of stale data another alternative, if the cache has a cache
-     * loader defined, might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will reload
-     * all elements that are in the cache.
-     * <p>
-     * If the cache has been shutdown calls to this method is ignored
+     * If the cache has been shutdown calls to this method are ignored.
      * 
      * @throws UnsupportedOperationException
      *             if the <tt>clear</tt> operation is not supported by this cache
@@ -90,14 +85,11 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * <tt>true</tt> if and only if this cache contains a mapping for a key <tt>k</tt> such that
      * <tt>(key==null ? k==null : key.equals(k))</tt>. (There can be at most one such mapping.)
      * <p>
-     * This method does not check the expiration status of an element and will return if a expired element is present in
-     * the cache for the specified key.
-     * <p>
      * If this cache has been shutdown this method returns <tt>false</tt>.
      * 
      * @param key
      *            key whose presence in this cache is to be tested
-     * @return <tt>true</tt> if this cache contains a mapping for the specified key, otherwise <tt>false</Tt>
+     * @return <tt>true</tt> if this cache contains a mapping for the specified key, otherwise <tt>false</tt>
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional)
      * @throws NullPointerException
@@ -108,11 +100,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     /**
      * Returns <tt>true</tt> if this cache maps one or more keys to the specified value. More formally, returns
      * <tt>true</tt> if and only if this cache contains at least one mapping to a value <tt>v</tt> such that
-     * <tt>(value==null ? v==null : value.equals(v))</tt>. This operation will probably require time linear in the
-     * cache size for most implementations of the <tt>Cache</tt> interface.
-     * <p>
-     * This method does not check the expiration status of an element and will return if a expired element is present in
-     * the cache for the specified value.
+     * <tt>(value==null ? v==null : value.equals(v))</tt>. This operation will require time linear in the cache size
+     * for most implementations.
      * <p>
      * If this cache has been shutdown this method returns <tt>false</tt>.
      * 
@@ -135,39 +124,36 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * <tt>Set.remove</tt>, <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operations. It does not
      * support the <tt>add</tt> or <tt>addAll</tt> operations.
      * <p>
-     * Unlike {@link Cache#get(Object)} no methods on the view checks if an element has expired. For example, iterating
-     * though values the view might return an expired element.
-     * <p>
      * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operation will throw an IllegalStateException.
-     * <p>
-     * If this cache has been shutdown this method returns an empty set.
+     * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
      * 
      * @return a set view of the mappings contained in this map
      */
     Set<Map.Entry<K, V>> entrySet();
 
     /**
-     * Returns a selector that can be used to create a filtered view of the mappings contained in this cache. Used for
-     * creating a view of the cache. The filtered view is backed by the cache, so changes to the cache are reflected in
-     * the view, and vice-versa.
+     * Returns a selector that can be used to create a filtered view of the mappings contained in this cache. The
+     * filtered view is backed by the cache, so changes to the cache are reflected in the view, and vice-versa.
      * 
      * Some cautions should apply, for example the following methods will not work.
      * {@link Container#awaitTermination(long, java.util.concurrent.TimeUnit)}, {@link Container#shutdown()},{@link Container#shutdownNow()},
      * insertion??
      * <p>
-     * When operating on a filtered view some operations will be slower. For example, to calculate the
+     * When operating on a filtered view some operations might be slower. For example, to calculate the
      * {@link Cache#size()} of a filtered view, the cache will need to evaluate all elements to see if they match the
      * specified filter.
      * <p>
-     * The following snippet will create a new cache view that only contains elements that have {@link Integer} values.
+     * Usage: The following snippet will create a new cache view that only contains elements that have {@link Integer}
+     * values.
      * 
      * <pre>
      * Cache&lt;String, Number&gt; c = null;
      * Cache&lt;String, Integer&gt; onlyInts = c.filter().onValueType(Integer.class);
      * </pre>
      * 
-     * The next snippet will reload all cache elements that have not been modified doing the last hour.
+     * The next snippet will reload all cache elements that have not been modified doing the last hour (Assuming the
+     * cache has been configured to keep modication timestamp using
+     * {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.attribute.Attribute...)}.
      * 
      * <pre>
      * long oneHourAgo = new Date().getTime() - 60 * 60 * 1000;
@@ -180,16 +166,13 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     CacheSelector<K, V> filter();
 
     /**
-     * Works as {@link #get(Object)} with the following modifications.
+     * Works as {@link Map#get(Object)} with the following modifications.
      * <p>
-     * If the cache has a configured CacheLoader. And no mapping exists for the specified key or the specific mapping
-     * has expired. The cache will transparently attempt to load a value for the specified key through the cache loader.
+     * If the cache has a configured CacheLoader. And no mapping exists for the specified key. The cache will
+     * transparently attempt to load a value for the specified key through the cache loader.
      * <p>
      * The number of cache hits will increase by 1 if a valid mapping is present. Otherwise the number of cache misses
      * will be increased by 1.
-     * <p>
-     * If the <tt><A HREF="service/event/package-summary.html"><CODE>event</CODE></A></tt> service is enabled the
-     * following events may be raised.
      * 
      * @param key
      *            key whose associated value is to be returned.
@@ -198,8 +181,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the key is of an inappropriate type for this cache (optional).
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
-     * @throws IllegalArgumentException
-     *             if the cache has already been shutdown
      * @throws IllegalStateException
      *             if the cache has been shutdown
      * @see Map#get(Object)
@@ -235,10 +216,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     Map<K, V> getAll(Iterable<? extends K> keys);
 
     /**
+     * Works as {@link #get(Object)} with the following modification except that it returns an immutable
+     * {@link CacheEntry}.
      * <p>
-     * Works as {@link #get(Object)} with the following modification.
-     * <p>
-     * An immutable cache entry is returned.
      * 
      * @param key
      *            whose associated cache entry is to be returned.
@@ -250,19 +230,16 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the specified key is <tt>null</tt>
      * @throws IllegalStateException
      *             if the cache has been shutdown
-     * @throws IllegalArgumentException
-     *             if the cache has already been shutdown
      */
     CacheEntry<K, V> getEntry(K key);
 
     /**
-     * Returns <tt>true</tt> if this cache contains no elements.
+     * Returns <tt>true</tt> if this cache contains no elements or the cache has been shutdown, otherwise
+     * <tt>false</tt>.
      * <p>
      * If this cache has not been started a call to this method will automatically start it.
-     * <p>
-     * If this cache has been shutdown this method returns <tt>true</tt>.
      * 
-     * @return <tt>true</tt> if this cache contains no elements
+     * @return <tt>true</tt> if this cache contains no elements or has been shutdown, otherwise <tt>false</tt>
      */
     boolean isEmpty();
 
@@ -287,12 +264,13 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     /**
      * This method works analogues to the {@link #get(Object)} method with the following modifications.
      * <p>
-     * It will not try to fetch missing items, it will only return a value if it actually exists in the cache.
-     * Furthermore, it will not effect the statistics gathered by the cache.
+     * It will not try to fetch missing items, through the use of cache loaders. It will only return a value if it
+     * actually exists in the cache. Furthermore, it will not effect any of the statistics gathered by the cache.
      * <p>
      * All implementations of this method should take care to assure that a call to peek does not have any observable
-     * side effects. For example, it should not modify some state in addition to returning a value or not returning a
-     * value.
+     * side effects. For example, it should not modify some state in addition to returning a value.
+     * <p>
+     * If this cache has been shutdown this method returns <tt>null</tt>.
      * 
      * @param key
      *            key whose associated value is to be returned.
@@ -303,16 +281,12 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
      */
-    // Finally, even if the item is expired it will still be returned.
     V peek(K key);
 
     /**
-     * This method works analogues to the {@link #peek(Object)} method. However, it will return a cache entry instead of
-     * just the value.
+     * This method works analogues to the {@link #peek(Object)} method, returning a {@link CacheEntry} instead.
      * <p>
-     * All implementations of this method should take care to assure that a call to peek does not have any observable
-     * side effects. For example, it should not modify some state in addition to returning a value or not returning a
-     * value.
+     * If this cache has been shutdown this method returns <tt>null</tt>.
      * 
      * @param key
      *            key whose associated cache entry is to be returned.
@@ -328,8 +302,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     /**
      * Associates the specified value with the specified key in this cache (optional operation). If the cache previously
      * contained a mapping for this key, the old value is replaced by the specified value. (A cache <tt>c</tt> is said
-     * to contain a mapping for a key <tt>k</tt> if and only if
-     * {@link org.codehaus.cake.cache.Cache#containsKey(Object) c.containsKey(k)} would return <tt>true</tt>.))
+     * to contain a mapping for a key <tt>k</tt> if and only if {@link #containsKey(Object) c.containsKey(k)} would
+     * return <tt>true</tt>.))
      * <p>
      * It is often more effective to specify a {@link org.codehaus.cake.cache.service.loading.CacheLoader} that
      * implicitly loads values then to explicitly add them to cache using the various <tt>put</tt> and <tt>putAll</tt>
@@ -524,7 +498,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if some property of a specified key or value prevents it from being stored in this cache
      */
     boolean replace(K key, V oldValue, V newValue);
-    
+
     /**
      * Returns the number of elements in this cache. If the cache contains more than <tt>Integer.MAX_VALUE</tt>
      * elements, returns <tt>Integer.MAX_VALUE</tt>.
@@ -545,12 +519,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * <tt>retainAll</tt> and <tt>clear</tt> operations. It does not support the <tt>add</tt> or <tt>addAll</tt>
      * operations.
      * <p>
-     * Unlike {@link Cache#get(Object)} no methods on the view checks if an element has expired. For example, iterating
-     * though values the view might return an expired element.
-     * <p>
-     * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
-     * <p>
      * If this cache has been shutdown this method returns an empty collection.
      * 
      * @return a collection view of the values contained in this cache
@@ -569,6 +537,13 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *         {@link CrudBatchWriter}
      */
     CacheCrud<K, V> withCrud();
-    
+
+    /**
+     * Returns a new cache view for all the entries in this cache, respecting any predicates that have been set using
+     * {@link #filter()}. This view can be used for extracting entries from the cache and performing calculations with
+     * on data in the cache.
+     * 
+     * @return the view
+     */
     CacheView<K, V> view();
 }

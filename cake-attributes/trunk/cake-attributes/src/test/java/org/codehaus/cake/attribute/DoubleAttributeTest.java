@@ -106,32 +106,6 @@ public final class DoubleAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, -1D);
-        AttributeMap am111 = Attributes.singleton(ATR100, 111D);
-        AttributeMap ammax = Attributes.singleton(ATR100, Double.MAX_VALUE);
-
-        assertEquals(100D, ATR100.get(withAtr(am)),0);
-        assertEquals(-1D, ATR100.get(withAtr(am1)),0);
-        assertEquals(111D, ATR100.get(withAtr(am111)),0);
-        assertEquals(Double.MAX_VALUE, ATR100.get(withAtr(ammax)),0);
-
-        assertEquals(10D, ATR100.get(withAtr(am), 10D),0);
-        assertEquals(-1D, ATR100.get(withAtr(am1), 10D),0);
-        assertEquals(111D, ATR100.get(withAtr(am111), 10D),0);
-        assertEquals(Double.MAX_VALUE, ATR100.get(withAtr(ammax), 10D),0);
-
-        assertEquals(-1D, NON_NEGATIVE.get(withAtr(am), -1D),0);
-
-        assertEquals(100D, ATR100.get(withAtr(am)),0);
-        assertEquals(-1D, ATR100.get(withAtr(am1)),0);
-        assertEquals(10D, ATR100.get(withAtr(am), 10D),0);
-        assertEquals(-1D, ATR100.get(withAtr(am1), 10D),0);
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Double.MIN_VALUE));
         assertTrue(ATR100.isValid(Double.MAX_VALUE));

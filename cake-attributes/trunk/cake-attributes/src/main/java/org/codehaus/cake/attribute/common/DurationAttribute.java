@@ -90,8 +90,7 @@ public abstract class DurationAttribute extends LongAttribute {
     }
 
     /**
-     * Analogous to {@link LongAttribute#get(WithAttributes)} except taking a parameter indicating what time unit the value should
-     * be returned in.
+     * Returns the value of this attribute from the specified attribute map in the specified timeunit.
      * 
      * @param attributes
      *            the attribute map to retrieve the value of this attribute from
@@ -99,22 +98,23 @@ public abstract class DurationAttribute extends LongAttribute {
      *            the time unit to return the value in
      * @return the value of this attribute
      */
-    public long getValue(WithAttributes attributes, TimeUnit unit) {
-        return convertTo(attributes.getAttributes().get(this), unit);
+    public long getValue(AttributeMap attributes, TimeUnit unit) {
+        return convertTo(attributes.get(this), unit);
     }
 
     /**
-     * Analogous to {@link LongAttribute#get(WithAttributes)} except taking a parameter indicating what time unit the
-     * duration should be returned in.
+     * Returns the value of this attribute from the specified attribute map in the specified timeunit.
      * 
      * @param attributes
      *            the attribute map to retrieve the value of this attribute from
      * @param unit
      *            the time unit to return the value in
+     * @param defaultValue
+     *            the default value to return if this attribute is not set in the AttributeMap
      * @return the value of this attribute
      */
-    public long getValue(WithAttributes attributes, TimeUnit unit, long defaultValue) {
-        long val = attributes.getAttributes().get(this, 0);
+    public long getValue(AttributeMap attributes, TimeUnit unit, long defaultValue) {
+        long val = attributes.get(this, 0);
         if (val == 0) {
             return defaultValue;
         } else {

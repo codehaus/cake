@@ -1,4 +1,4 @@
-package org.codehaus.cake.internal.cache.service.memorystore;
+package org.codehaus.cake.internal.cache.memorystore;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;

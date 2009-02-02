@@ -111,9 +111,11 @@ public interface CacheSelector<K, V> {
     <T extends K> Cache<T, V> onKeyType(Class<T> c);
 
     /**
-     * Returns a filtered view containing only those elements value that accepted by the specified filter. Given a cache
-     * full of integers mapping to strings the following example will create a cache view that contains only those
-     * mappings where the length of the string value is greater then 5.
+     * Returns a filtered view containing only those entries there the entrys value are accepted by the specified
+     * filter.
+     * <p>
+     * Given a cache with {@link String} to {@link Number} mappings, the following example will create a new view that
+     * contains only those mappings where the length of the String is greater then 5.
      * 
      * <pre>
      * Cache&lt;Integer, String&gt; cache = somecache;
@@ -126,27 +128,32 @@ public interface CacheSelector<K, V> {
      * 
      * @param filter
      *            the filter used to evaluate whether a value should be included in the view
+     * @throws NullPointerException
+     *             if the specified predicate is null
      * @return a cache view where all values are accepted by the specified filter
      */
     Cache<K, V> onValue(Predicate<? super V> filter);
 
- //   Cache<K, V> onValue(String method, Predicate<?> filter);
- //   <E> Cache<K, V> onValue(String method, Class<E> resultType, Predicate<? super E> filter);
-    
+    // Cache<K, V> onValue(String method, Predicate<?> filter);
+    // <E> Cache<K, V> onValue(String method, Class<E> resultType, Predicate<? super E> filter);
+
     /**
-     * Returns a filtered view containing only those elements where the elements value is of the specified type. Given a
-     * cache full of Strings mapping to a {@link Number} the following will create a cache view that contains only those
-     * mappings where the value is of type {@link Integer}.
+     * Returns a filtered view containing only those entries where the entrys value is of the specified type.
+     * <p>
+     * Given a cache with {@link String} to {@link Number} mappings, the following will create a new view that contains
+     * only those mappings where the value is of type {@link Integer}.
      * 
      * <pre>
      * Cache&lt;String, Number&gt; cache = somecache;
-     * Cache&lt;String, Integer&gt; onlyIntegers = cache.select().onValueType(Integer.class);
+     * Cache&lt;String, Integer&gt; allInts = cache.select().onValueType(Integer.class);
      * </pre>
      * 
      * @param <T>
      *            the type of values that are accepted
      * @param clazz
      *            the type of values that are accepted
+     * @throws NullPointerException
+     *             if the specified class is null
      * @return a cache view with only the specific type of values
      */
     <T extends V> Cache<K, T> onValueType(Class<T> clazz);

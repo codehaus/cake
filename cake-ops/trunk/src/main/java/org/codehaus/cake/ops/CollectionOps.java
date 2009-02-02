@@ -141,6 +141,26 @@ public final class CollectionOps {
         return m;
     }
 
+    public static <K, K1 extends K, V, V1 extends V> Map<K1, V1> filterMapOnTypes(Map<? extends K, ? extends V> map, Class<K1> keyTypes,
+            Class<V1> valueTypes) {
+        if (map == null) {
+            throw new NullPointerException("map is null");
+        } else if (keyTypes == null) {
+            throw new NullPointerException("keyTypes is null");
+        } else if (valueTypes == null) {
+            throw new NullPointerException("valueTypes is null");
+        }
+        Map<K1, V1> m = new HashMap<K1, V1>();
+        for (Map.Entry<? extends K,? extends V> entry : map.entrySet()) {
+            K key = entry.getKey();
+            V value = entry.getValue();
+            if (key != null && keyTypes.isAssignableFrom(key.getClass()) && value != null
+                    && valueTypes.isAssignableFrom(value.getClass()))
+                m.put((K1) key, (V1) value);
+        }
+        return m;
+    }
+
     public static <K, V> Map<K, V> filterMapKeys(Map<K, V> map, Predicate<? super K> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");

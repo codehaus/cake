@@ -21,17 +21,14 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.ObjectAttribute;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
+import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
-import org.codehaus.cake.internal.cache.service.memorystore.TmpOpenAdressingEntry;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.util.Clock;
 
@@ -39,19 +36,21 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     private static final AtomicLong al = new AtomicLong();
     // private Constructor<AttributeMap> constructor;
 
-    private CacheAttributeMapFactory<K, V> generator;
+    private static Class<CacheAttributeMapFactory> noAttributes;
 
-    private final Map<Attribute, CacheAttributeMapConfiguration> map = new HashMap<Attribute, CacheAttributeMapConfiguration>();
     private final Clock clock;
+    private CacheAttributeMapFactory<K, V> generator;
     private final InternalExceptionService<?> ies;
-    private AbstractCakeReplacementPolicy<K, V> policy;
+    private final Map<Attribute, CacheAttributeMapConfiguration> map = new HashMap<Attribute, CacheAttributeMapConfiguration>();
+
+    private ReplacementPolicy<CacheEntry<K, V>> policy;
 
     public MemorySparseAttributeService(CacheConfiguration configuration, Clock clock, InternalExceptionService<?> ies) {
         this.clock = clock;
         this.ies = ies;
-        ReplacementPolicy<K, V> p = configuration.withMemoryStore().getPolicy();
-        if (p instanceof AbstractCakeReplacementPolicy) {
-            policy = (AbstractCakeReplacementPolicy<K, V>) p;
+        Class<? extends ReplacementPolicy> pol = configuration.withMemoryStore().getPolicy();
+        if (pol != null) {
+            policy = Policies.create(pol);
         }
         for (Object o : configuration.getAllEntryAttributes()) {
             Attribute a = (Attribute) o;
@@ -61,27 +60,8 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         initialize();
     }
 
-    public MutableAttributeMap create(K key, V value, AttributeMap params) {
-        return generator.create(key, value, params, null);
-    }
-
-    public MutableAttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
-        return generator.create(key, value, params, previous);
-    }
-
-    private static Class<CacheAttributeMapFactory> noAttributes;
-
-    public void initialize() {
-        if (map.size() == 0) {
-            generator = CacheAttributeMapFactoryGenerator.NO_ATTRIBUTES_FACTORY;
-        } else {
-            String name = "CacheEntryGenerator" + al.getAndIncrement();
-            try {
-                generator = CacheAttributeMapFactoryGenerator.generate(name, new ArrayList(map.values()), clock, ies);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        }
+    public void access(AttributeMap map) {
+        generator.access((MutableAttributeMap) map);
     }
 
     public void attachToPolicy(Attribute<?> attribute) {
@@ -91,6 +71,10 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         sac.setModifyAction(ModifyAction.KEEP_EXISTING);
         map.put(attribute, sac);
         initialize();
+    }
+
+    public MutableAttributeMap create(K key, V value, AttributeMap params) {
+        return generator.create(key, value, params, null);
     }
 
     public void dependOnHard(Attribute<?> attribute) {
@@ -109,50 +93,20 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
         initialize();
     }
 
-    public void access(AttributeMap map) {
-        generator.access((MutableAttributeMap) map);
+    public void initialize() {
+        if (map.size() == 0) {
+            generator = CacheAttributeMapFactoryGenerator.NO_ATTRIBUTES_FACTORY;
+        } else {
+            String name = "CacheEntryGenerator" + al.getAndIncrement();
+            try {
+                generator = CacheAttributeMapFactoryGenerator.generate(name, new ArrayList(map.values()), clock, ies);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
-    public BooleanAttachment attachBoolean() {
-        final BooleanAttribute a = new BooleanAttribute() {};
-        
-        return new BooleanAttachment() {
-            public boolean get(Object entry) {
-                return ((AttributeMap) entry).get(a);
-            }
-
-            public void set(Object entry, boolean value) {
-                ((TmpOpenAdressingEntry) entry).getAttributes().put(a, value);
-            }
-        };
-    }
-
-    public IntAttachment attachInt() {
-        final IntAttribute a = new IntAttribute() {};
-        attachToPolicy(a);
-        return new IntAttachment() {
-            public int get(Object entry) {
-              return  ((AttributeMap) entry).get(a);
-            }
-
-            public void set(Object entry, int value) {
-                ((TmpOpenAdressingEntry) entry).getAttributes().put(a, value);
-            }
-        };
-    }
-
-    public <T> ObjectAttachment<T> attachObject(Class<T> type) {
-        final ObjectAttribute<T> a = new ObjectAttribute<T>(type) {};
-        attachToPolicy(a);
-        return new ObjectAttachment<T>() {
-            public T get(Object entry) {
-                return ((AttributeMap) entry).get(a);
-            }
-
-            public void set(Object entry, T value) {
-                ((TmpOpenAdressingEntry) entry).getAttributes().put(a, value);
-            }
-        };
-
+    public MutableAttributeMap update(K key, V value, AttributeMap params, AttributeMap previous) {
+        return generator.create(key, value, params, previous);
     }
 }

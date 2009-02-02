@@ -108,7 +108,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
                 a.trimToVolume(10);
             }
         });
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         conf.withMemoryStore().setMaximumVolume(10);
         init();
 
@@ -146,7 +146,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
         loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
         conf.addEntryAttributes(SIZE);
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
             public void op(MemoryStoreService<Integer, String> a) {
                 assertEquals(Integer.MAX_VALUE, a.getMaximumSize());
@@ -213,7 +213,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
                 a.trimToVolume(-50);
             }
         });
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         conf.withMemoryStore().setMaximumVolume(200);
         conf.withMemoryStore().setMaximumSize(20);
         init();
@@ -256,7 +256,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
                 hasRun.set(true);
             }
         });
-        conf.withMemoryStore().setPolicy(Policies.newLRU());
+        conf.withMemoryStore().setPolicy(Policies.LRU);
         conf.withMemoryStore().setMaximumSize(2);
         init();
         withLoadingForced().load(M1.getKey());

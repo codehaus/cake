@@ -141,34 +141,6 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     public boolean getDefaultValue() {
         return defaultValue;
     }
-    
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefaultValue()} will be returned instead.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
-     *         {@link #getDefaultValue()}
-     */
-    public boolean get(WithAttributes withAttributes) {
-        return withAttributes.getAttributes().get(this);
-    }
-
-    /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>boolean</tt>.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @param defaultValue
-     *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the
-     *         specified default value
-     */
-    public boolean get(WithAttributes withAttributes, boolean defaultValue) {
-        return withAttributes.getAttributes().get(this, defaultValue);
-    }
 
    /**
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive boolean as
@@ -206,41 +178,5 @@ public abstract class BooleanAttribute extends Attribute<Boolean> implements
     }
     public AttributeMap singletonFalse() {
         return singleton(false);
-    }
-
-    /**
-     * @param attributes
-     *            the map with attribute
-     * @return true if the attribute is mapped to true in specified map
-     */
-    public boolean isTrue(AttributeMap attributes) {
-        return attributes.get(this);
-    }
-
-    /**
-     * @param withAttributes
-     *            the object containing the attributes
-     * @return true if the attribute is mapped to true, otherwise false
-     */
-    public boolean isTrue(WithAttributes withAttributes) {
-        return isTrue(withAttributes.getAttributes());
-    }
-
-    /**
-     * @param attributes
-     *            the map with attribute
-     * @return true if the attribute is mapped to false in specified map
-     */
-    public boolean isFalse(AttributeMap attributes) {
-        return !attributes.get(this);
-    }
-
-    /**
-     * @param withAttributes
-     *            the object containing the attributes
-     * @return true if the attribute is mapped to false, otherwise false
-     */
-    public boolean isFalse(WithAttributes withAttributes) {
-        return isFalse(withAttributes.getAttributes());
     }
 }

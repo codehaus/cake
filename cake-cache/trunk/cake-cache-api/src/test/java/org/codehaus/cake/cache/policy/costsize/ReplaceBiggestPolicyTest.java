@@ -19,9 +19,11 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
-import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
-import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
+import org.codehaus.cake.cache.policy.Policies;
+import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -33,29 +35,30 @@ import org.junit.runner.RunWith;
 @RunWith(JMock.class)
 public class ReplaceBiggestPolicyTest extends AbstractPolicyTest {
 
+    protected ReplacementPolicy<AttributeMap> policy;
+
     /** The junit mockery. */
     private final Mockery context = new JUnit4Mockery();
 
     @Test
     public void register() {
-        ReplaceBiggestPolicy rbp = new ReplaceBiggestPolicy();
-        final InternalCacheAttributeService s = context.mock(InternalCacheAttributeService.class);
+        final PolicyContext<AttributeMap> pc = context.mock(PolicyContext.class);
         context.checking(new Expectations() {
             {
-                one(s).attachInt();
-                one(s).dependOnHard(SIZE);
+                one(pc).newArray(0);
+                one(pc).attachInt();
+                one(pc).dependHard(SIZE);
             }
         });
-        rbp.registerAttribute(s);
+        ReplaceBiggestPolicy rbp = new ReplaceBiggestPolicy(pc);
     }
 
     @Test
     public void compare() {
-        policy = new ReplaceBiggestPolicy();
-        init();
-        final CacheEntry ce1 = createEntry(SIZE, 1L);
-        final CacheEntry ce2 = createEntry(SIZE, 2L);
-        final CacheEntry ce3 = createEntry(SIZE, 3L);
+        policy = Policies.create(ReplaceBiggestPolicy.class);
+        AttributeMap ce1 = createEntry(SIZE, 1L);
+        AttributeMap ce2 = createEntry(SIZE, 2L);
+        AttributeMap ce3 = createEntry(SIZE, 3L);
 
         policy.add(ce2);
         policy.add(ce3);

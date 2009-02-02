@@ -59,28 +59,28 @@ public class DurationAttributeTest extends AtrStubs {
         AttributeMap ammax = Attributes.singleton(DA, Long.MAX_VALUE);
 
         // No default
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(am), TimeUnit.NANOSECONDS));
-        assertEquals(1l, DA.getValue(withAtr(am1), TimeUnit.NANOSECONDS));
-        assertEquals(10000l, DA.getValue(withAtr(am10000), TimeUnit.NANOSECONDS));
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(ammax), TimeUnit.NANOSECONDS));
+        assertEquals(Long.MAX_VALUE, DA.getValue(am, TimeUnit.NANOSECONDS));
+        assertEquals(1l, DA.getValue(am1, TimeUnit.NANOSECONDS));
+        assertEquals(10000l, DA.getValue(am10000, TimeUnit.NANOSECONDS));
+        assertEquals(Long.MAX_VALUE, DA.getValue(ammax, TimeUnit.NANOSECONDS));
 
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(am), TimeUnit.MICROSECONDS));
-        assertEquals(0l, DA.getValue(withAtr(am1), TimeUnit.MICROSECONDS));
-        assertEquals(10l, DA.getValue(withAtr(am10000), TimeUnit.MICROSECONDS));
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(ammax), TimeUnit.MICROSECONDS));
+        assertEquals(Long.MAX_VALUE, DA.getValue(am, TimeUnit.MICROSECONDS));
+        assertEquals(0l, DA.getValue(am1, TimeUnit.MICROSECONDS));
+        assertEquals(10l, DA.getValue(am10000, TimeUnit.MICROSECONDS));
+        assertEquals(Long.MAX_VALUE, DA.getValue(ammax, TimeUnit.MICROSECONDS));
 
         // With default
-        assertEquals(1l, DA.getValue(withAtr(am), TimeUnit.NANOSECONDS, 1l));
-        assertEquals(-1l, DA.getValue(withAtr(am), TimeUnit.NANOSECONDS, -1l));
-        assertEquals(1l, DA.getValue(withAtr(am), TimeUnit.MICROSECONDS, 1l));
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(am), TimeUnit.MICROSECONDS, Long.MAX_VALUE));
+        assertEquals(1l, DA.getValue(am, TimeUnit.NANOSECONDS, 1l));
+        assertEquals(-1l, DA.getValue(am, TimeUnit.NANOSECONDS, -1l));
+        assertEquals(1l, DA.getValue(am, TimeUnit.MICROSECONDS, 1l));
+        assertEquals(Long.MAX_VALUE, DA.getValue(am, TimeUnit.MICROSECONDS, Long.MAX_VALUE));
 
-        assertEquals(1l, DA.getValue(withAtr(am1), TimeUnit.NANOSECONDS, 2));
-        assertEquals(10000l, DA.getValue(withAtr(am10000), TimeUnit.NANOSECONDS, 2));
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(ammax), TimeUnit.NANOSECONDS, 2));
-        assertEquals(0l, DA.getValue(withAtr(am1), TimeUnit.MICROSECONDS, 2));
-        assertEquals(10l, DA.getValue(withAtr(am10000), TimeUnit.MICROSECONDS, 2));
-        assertEquals(Long.MAX_VALUE, DA.getValue(withAtr(ammax), TimeUnit.MICROSECONDS, 2));
+        assertEquals(1l, DA.getValue(am1, TimeUnit.NANOSECONDS, 2));
+        assertEquals(10000l, DA.getValue(am10000, TimeUnit.NANOSECONDS, 2));
+        assertEquals(Long.MAX_VALUE, DA.getValue(ammax, TimeUnit.NANOSECONDS, 2));
+        assertEquals(0l, DA.getValue(am1, TimeUnit.MICROSECONDS, 2));
+        assertEquals(10l, DA.getValue(am10000, TimeUnit.MICROSECONDS, 2));
+        assertEquals(Long.MAX_VALUE, DA.getValue(ammax, TimeUnit.MICROSECONDS, 2));
     }
 
     @Test

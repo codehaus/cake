@@ -105,32 +105,6 @@ public final class CharAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, (char) -1);
-        AttributeMap am111 = Attributes.singleton(ATR100, (char) 111);
-        AttributeMap ammax = Attributes.singleton(ATR100, Character.MAX_VALUE);
-
-        assertEquals((char) 100, ATR100.get(withAtr(am)));
-        assertEquals((char) -1, ATR100.get(withAtr(am1)));
-        assertEquals((char) 111, ATR100.get(withAtr(am111)));
-        assertEquals(Character.MAX_VALUE, ATR100.get(withAtr(ammax)));
-
-        assertEquals((char) 10, ATR100.get(withAtr(am), (char) 10));
-        assertEquals((char) -1, ATR100.get(withAtr(am1), (char) 10));
-        assertEquals((char) 111, ATR100.get(withAtr(am111), (char) 10));
-        assertEquals(Character.MAX_VALUE, ATR100.get(withAtr(ammax), (char) 10));
-
-        assertEquals((char) -1, NON_NEGATIVE.get(withAtr(am), (char) -1));
-
-        assertEquals((char) 100, ATR100.get(withAtr(am)));
-        assertEquals((char) -1, ATR100.get(withAtr(am1)));
-        assertEquals((char) 10, ATR100.get(withAtr(am), (char) 10));
-        assertEquals((char) -1, ATR100.get(withAtr(am1), (char) 10));
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Character.MIN_VALUE));
         assertTrue(ATR100.isValid(Character.MAX_VALUE));

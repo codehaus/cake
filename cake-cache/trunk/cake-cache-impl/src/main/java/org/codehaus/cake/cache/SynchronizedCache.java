@@ -4,12 +4,12 @@ import java.util.concurrent.ExecutorService;
 
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.internal.cache.memorystore.ExportedSynchronizedMemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.SynchronizedCacheProcessor;
 import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
-import org.codehaus.cake.internal.cache.service.memorystore.ExportedSynchronizedMemoryStoreService;
 import org.codehaus.cake.internal.cache.service.memorystore.views.SynchronizedCollectionViewFactory;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;

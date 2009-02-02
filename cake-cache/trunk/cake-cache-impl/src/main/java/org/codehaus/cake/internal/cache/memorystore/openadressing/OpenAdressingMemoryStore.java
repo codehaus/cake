@@ -1,4 +1,4 @@
-package org.codehaus.cake.internal.cache.service.memorystore;
+package org.codehaus.cake.internal.cache.memorystore.openadressing;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
@@ -17,11 +17,14 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.concurrent.collection.ParallelArray;
 import org.codehaus.cake.internal.cache.CachePredicates;
+import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
@@ -32,6 +35,7 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
+import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.ops.Predicates;
@@ -61,7 +65,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
 
     private final Procedure<MemoryStoreService<K, V>> evictor;
     private final InternalCacheExceptionService<K, V> ies;
-    private final Predicate<CacheEntry<K, V>> isCacheable;
+    private final IsCacheablePredicate<? super K, ? super V> isCacheable;
 
     /** Whether or not the cache is disabled. */
     private boolean isDisabled;
@@ -71,7 +75,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
     private long maximumVolume;
 
     /** The replacement policy used in the cache, null is allowed. */
-    private final ReplacementPolicy<K, V> policy;
+    private final ReplacementPolicy<CacheEntry<K, V>> policy;
     /** Current number of entries in the cache. */
     private int size;
     /** Array holding all cached entries. */
@@ -87,8 +91,9 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         volumeEnabled = cacheConfiguration.getAllEntryAttributes().contains(CacheEntry.SIZE);
         this.attributeService = attributeService;
         this.ies = ies;
-        policy = storeConfiguration.getPolicy();
-        isCacheable = (Predicate) storeConfiguration.getIsCacheableFilter();
+        Class<? extends ReplacementPolicy> policy = storeConfiguration.getPolicy();
+        this.policy = policy == null ? null : Policies.create(policy);
+        isCacheable = storeConfiguration.getIsCacheableFilter();
         updateConfiguration(storeConfiguration.getAttributes());
         evictor = storeConfiguration.getEvictor();
         table = newElementArray(16);
@@ -144,64 +149,62 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
                     ((TmpOpenAdressingEntry<K, V>) existing).getAttributes());
             ne = newEntry(key, hash, value, atr);
         }
-
-        // Check to see if the entry can be cached
-        boolean keepNew = true;
-        if (isCacheable != null) {
-            try {
-                keepNew = isCacheable.op(ne);
-            } catch (RuntimeException e) {
-                ies.error("IsCacheable predicate failed to validate, entry was not cached", e);
-                keepNew = false;
-            }
-        }
-
-        boolean keepExisting = false;
         boolean evicted = false;
-        if (keepNew && policy != null) {
-            evicted = true;
-            if (existing == null) {
-                keepNew = policy.add(ne);
-            } else {
-                CacheEntry<K, V> e = policy.replace(existing, ne);
-                keepExisting = e == existing;
-                keepNew = e == ne;
-            }
-        }
-
-        if (existing != null && !keepExisting) {
-            boolean trim = false;
-            if (volumeEnabled) {
-                long existingVolume = existing.get(SIZE);
-                trim = existingVolume < 0;
-                volume -= existingVolume;
-            }
-            if (!evicted && policy != null) {
-                policy.remove(existing);
-            }
-            if (!keepNew) { // Remove in table
-                size--;
-                // if (trim) {// In the rare cases where we have nagative volume
-                // trim(request);
-                // }
-                return null;
-            }
-        }
-        if (keepNew) {
-            if (volumeEnabled) {
-                volume += ne.get(SIZE);
-            }
-            if (existing == null) {// Insert
+        if (existing == null) {
+            boolean doCache = isCacheable == null ? true : isCacheable.add((CacheEntry) ne);
+            if (doCache) {
+                if (policy != null) {
+                    policy.add(ne);
+                }
+                if (volumeEnabled) {
+                    volume += ne.get(SIZE);
+                }
                 size++;
+                request.setNewEntry(ne);
+                return ne;
             }
-            request.setPreviousEntry(existing);
-            request.setNewEntry(ne);
-            return ne;
-        }
-        if (keepExisting) {
-            return existing;
+        } else {
+            CacheEntry<K, V> replacing = isCacheable == null ? ne : (CacheEntry) isCacheable.replace(
+                    (CacheEntry) existing, (CacheEntry) ne);
+            if (replacing == null) {
+                size--;
+                if (policy != null) {
+                    policy.remove(existing);
+                }
+                if (volumeEnabled) {
+                    long existingVolume = existing.get(SIZE);
+                    volume -= existingVolume;
+                }
+                return null;
+            } else if (replacing == ne) { // Insert new entry
+                if (volumeEnabled) {
+                    long existingVolume = existing.get(SIZE);
+                    volume -= existingVolume;
+                    volume += ne.get(SIZE);
+                }
+                if (policy != null) {
+                    policy.replace(existing, ne);
+                }
+
+                request.setPreviousEntry(existing);
+                request.setNewEntry(ne);
+                return ne;
+            } else if (replacing == existing) {
+                return existing;
+            }
         }
         return null;
+        // Check to see if the entry can be cached
+
+        // if (isCacheable != null) {
+        // try {
+        // keepNew = isCacheable.op(ne);
+        // } catch (RuntimeException e) {
+        // ies.error("IsCacheable predicate failed to validate, entry was not cached", e);
+        // keepNew = false;
+        // }
+        // }
+
     }
 
     public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {

@@ -69,6 +69,11 @@ public final class Attributes {
         map.put(attribute2, value2);
         return map;
     }
+    public static <T> AttributeMap from(AttributeMap attributes, Attribute<T> attribute, T value) {
+        DefaultAttributeMap map = new DefaultAttributeMap(attributes);
+        map.put(attribute, value);
+        return map;
+    }
 
     /**
      * Returns an immutable AttributeMap containing only the specified attribute mapping to the specified value.

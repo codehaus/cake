@@ -16,8 +16,8 @@
 package org.codehaus.cake.cache.policy;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.ObjectAttachment;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.cache.policy.spi.PolicyContext.ObjectAttachment;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double linked list of
@@ -30,12 +30,17 @@ import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.ObjectAttachme
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> {
-    private CacheEntry<K, V> first;
+public abstract class AbstractDoubleLinkedReplacementPolicy<T> extends AbstractCakeReplacementPolicy<T> {
+    private T first;
 
-    private ObjectAttachment<CacheEntry<K, V>> next;
-    private ObjectAttachment<CacheEntry<K, V>> prev;
-    private CacheEntry<K, V> last;
+    private T last;
+    private final ObjectAttachment<T> next;
+    private final ObjectAttachment<T> prev;
+
+    public AbstractDoubleLinkedReplacementPolicy(PolicyContext<T> context) {
+        next = context.attachSelfReference();
+        prev = context.attachSelfReference();
+    }
 
     /**
      * Adds the specified entry to the front of the list.
@@ -43,7 +48,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to add to the front of the list
      */
-    protected final void addFirst(CacheEntry<K, V> entry) {
+    protected final void addFirst(T entry) {
         if (last == null) {
             last = entry;
         } else {
@@ -59,7 +64,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to add to the end of the list
      */
-    protected final void addLast(CacheEntry<K, V> entry) {
+    protected final void addLast(T entry) {
         if (first == null) {
             first = entry;
         } else {
@@ -76,8 +81,13 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
     }
 
     /** @return the first node in the list, or <code>null</code> if it is empty. */
-    protected final CacheEntry<K, V> getFirst() {
+    protected final T getFirst() {
         return first;
+    }
+
+    /** @return the last entry of the list, or <code>null</code> if it is empty. */
+    protected final T getLast() {
+        return last;
     }
 
     /**
@@ -87,7 +97,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      *            the node to return the next node for
      * @return the next node for the specified node, or <code>null</code> if it is the last node
      */
-    protected final CacheEntry<K, V> getNext(CacheEntry<K, V> entry) {
+    protected final T getNext(T entry) {
         return next.get(entry);
     }
 
@@ -98,19 +108,8 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      *            the node to return the previous node for
      * @return the previous node for the specified node, or <code>null</code> if it is the first node
      */
-    protected final CacheEntry<K, V> getPrevious(CacheEntry<K, V> entry) {
+    protected final T getPrevious(T entry) {
         return prev.get(entry);
-    }
-
-    /** @return the last entry of the list, or <code>null</code> if it is empty. */
-    protected final CacheEntry<K, V> getLast() {
-        return last;
-    }
-
-    @Override
-    protected <T> void register(PolicyAttachmentFactory generator) {
-        next = (ObjectAttachment) generator.attachObject(CacheEntry.class);
-        prev =(ObjectAttachment) generator.attachObject(CacheEntry.class);
     }
 
     /**
@@ -119,9 +118,9 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to move to the head of the list
      */
-    protected final void moveFirst(CacheEntry<K, V> entry) {
-        CacheEntry<K, V> prev = getPrevious(entry);
-        CacheEntry<K, V> next = getNext(entry);
+    protected final void moveFirst(T entry) {
+        T prev = getPrevious(entry);
+        T next = getNext(entry);
         if (prev != null) {// check if already first
             if (next == null) {
                 last = prev;
@@ -143,9 +142,9 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param entry
      *            the entry to move to the tail of the list
      */
-    protected final void moveLast(CacheEntry<K, V> entry) {
-        CacheEntry<K, V> prev = getPrevious(entry);
-        CacheEntry<K, V> next = getNext(entry);
+    protected final void moveLast(T entry) {
+        T prev = getPrevious(entry);
+        T next = getNext(entry);
 
         if (next != null) {// check if already last
             if (prev == null) {
@@ -165,7 +164,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
     // * Used for debugging.
     // */
     // public void print() {
-    // CacheEntry<K, V> e = first;
+    // T e = first;
     // int count = 0;
     // System.out.println("first: " + getKey(first));
     // while (e != null) {
@@ -179,9 +178,9 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
     // }
 
     /** Removes the specified entry from the linked list. */
-    public void remove(CacheEntry<K, V> t) {
-        CacheEntry<K, V> prev = getPrevious(t);
-        CacheEntry<K, V> next = getNext(t);
+    public void remove(T t) {
+        T prev = getPrevious(t);
+        T next = getNext(t);
         if (prev == null) {
             first = next;
         } else {
@@ -199,8 +198,8 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * 
      * @return the first entry of the linked list or <code>null</code> if the list is empty
      */
-    protected final CacheEntry<K, V> removeFirst() {
-        CacheEntry<K, V> entry = first;
+    protected final T removeFirst() {
+        T entry = first;
         if (first != null) {
             remove(first);
         }
@@ -212,17 +211,21 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * 
      * @return the last element of the linked list or <code>null</code> if the list is empty
      */
-    protected final CacheEntry<K, V> removeLast() {
-        CacheEntry<K, V> entry = last;
+    protected final T removeLast() {
+        T entry = last;
         if (last != null) {
             remove(last);
         }
         return entry;
     }
 
-    protected void replace0(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        CacheEntry<K, V> prev = getPrevious(previous);
-        CacheEntry<K, V> next = getNext(previous);
+    /**
+     * Removes the specified previous entry from the linked list. Next add is called with the specified newEntry,
+     * Finally, the specified newEntry is returned.
+     */
+    public void replace(T previous, T newEntry) {
+        T prev = getPrevious(previous);
+        T next = getNext(previous);
         setPrev(newEntry, prev);
         setNext(newEntry, next);
 
@@ -239,15 +242,6 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
     }
 
     /**
-     * Removes the specified previous entry from the linked list. Next add is called with the specified newEntry,
-     * Finally, the specified newEntry is returned.
-     */
-    public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        replace0(previous, newEntry);
-        return newEntry;
-    }
-
-    /**
      * Sets the next entry for the specified entry.
      * 
      * @param entry
@@ -255,7 +249,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param next
      *            the next entry to point to
      */
-    private void setNext(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
+    private void setNext(T entry, T next) {
         this.next.set(entry, next);
     }
 
@@ -267,7 +261,7 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<K, V> extends Abstra
      * @param next
      *            the previous entry to point to
      */
-    private void setPrev(CacheEntry<K, V> entry, CacheEntry<K, V> next) {
+    private void setPrev(T entry, T next) {
         this.prev.set(entry, next);
     }
 }

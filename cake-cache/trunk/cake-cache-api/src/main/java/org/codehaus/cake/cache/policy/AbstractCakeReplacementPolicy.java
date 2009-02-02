@@ -15,16 +15,6 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
-import org.codehaus.cake.internal.UseInternals;
-import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
-import org.codehaus.cake.service.OnStart;
 
 /**
  * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach
@@ -37,74 +27,19 @@ import org.codehaus.cake.service.OnStart;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractCakeReplacementPolicy<K, V> implements ReplacementPolicy<K, V> {
+public abstract class AbstractCakeReplacementPolicy<T> implements ReplacementPolicy<T> {
 
-    private Set<Attribute<?>> hardDependencies = new HashSet<Attribute<?>>();
-
-    /** Lock object. */
-    private final Object lock = new Object();
-
-    private Set<Attribute<?>> softDependencies = new HashSet<Attribute<?>>();
-
-    protected final void dependHard(Attribute<?> attribute) {
-        synchronized (lock) {
-            if (softDependencies.contains(attribute) || hardDependencies.contains(attribute)) {
-                throw new IllegalArgumentException("attribute has already been attached");
-            }
-            hardDependencies.add(attribute);
-        }
+    public void clear() {
+        while (evictNext() != null)
+            ;
     }
 
-    protected final void dependSoft(Attribute<?> attribute) {
-        synchronized (lock) {
-            if (softDependencies.contains(attribute) || hardDependencies.contains(attribute)) {
-                throw new IllegalArgumentException("attribute has already been attached");
-            }
-            softDependencies.add(attribute);
-        }
+    public void replace(T oldObject, T newObject) {
+        remove(oldObject);
+        add(newObject);
     }
 
-    /**
-     * Registers the necessary hooks into the cache for this replacement policy.
-     * 
-     * @param service
-     *            the CacheAttributeService
-     */
-    @UseInternals
-    @OnStart
-    public final void registerAttribute(InternalCacheAttributeService service) {
-        synchronized (lock) {
-            if (softDependencies == null) {
-                throw new IllegalStateException("registerAttribute() has already been called once");
-            }
-            try {
-                register(service);
-                for (Attribute a : softDependencies) {
-                    service.dependOnSoft(a);
-                }
-                for (Attribute a : hardDependencies) {
-                    service.dependOnHard(a);
-                }
-            } finally {
-                softDependencies = null;
-                hardDependencies = null;
-            }
-        }
-    }
+    public void touch(T entry) {
 
-    /**
-     * Default implementation just selects the new entry.
-     */
-    public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
-        return newEntry;
-    }
-
-    /**
-     * The default implementation of touch does nothing.
-     */
-    public void touch(CacheEntry<K, V> entry) {
-    }
-
-    protected <T> void register(PolicyAttachmentFactory paf) {
     }
 }

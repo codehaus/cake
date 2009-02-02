@@ -155,7 +155,31 @@ public final class ${this} extends AtrStubs {
     public void setNPE() {
         ATR100.set((AttributeMap) null, $util.val(1));
     }
+    @Test
+    public void get() {
+        AttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
+        GetAttributer am1 = Attributes.singleton(ATR100, $util.val(-1));
+        GetAttributer am111 = Attributes.singleton(ATR100, $util.val(111));
+        GetAttributer ammax = Attributes.singleton(ATR100, ${object}.MAX_VALUE);
 
+        assertEquals($util.val(100), ATR100.get(withAtr(am))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1))${equalTest});
+        assertEquals($util.val(111), ATR100.get(withAtr(am111))${equalTest});
+        assertEquals(${object}.MAX_VALUE, ATR100.get(withAtr(ammax))${equalTest});
+
+        assertEquals($util.val(10), ATR100.get(withAtr(am), $util.val(10))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1), $util.val(10))${equalTest});
+        assertEquals($util.val(111), ATR100.get(withAtr(am111), $util.val(10))${equalTest});
+        assertEquals(${object}.MAX_VALUE, ATR100.get(withAtr(ammax), $util.val(10))${equalTest});
+
+        assertEquals($util.val(-1), NON_NEGATIVE.get(withAtr(am), $util.val(-1))${equalTest});
+
+        assertEquals($util.val(100), ATR100.get(withAtr(am))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1))${equalTest});
+        assertEquals($util.val(10), ATR100.get(withAtr(am), $util.val(10))${equalTest});
+        assertEquals($util.val(-1), ATR100.get(withAtr(am1), $util.val(10))${equalTest});
+
+    }
     @Test
     public void toSingleton() {
         assertEquals($util.val(-10), ATR100.singleton($util.val(-10)).get(ATR100)${equalTest});

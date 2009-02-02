@@ -101,32 +101,6 @@ public final class ByteAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, (byte) -1);
-        AttributeMap am111 = Attributes.singleton(ATR100, (byte) 111);
-        AttributeMap ammax = Attributes.singleton(ATR100, Byte.MAX_VALUE);
-
-        assertEquals((byte) 100, ATR100.get(withAtr(am)));
-        assertEquals((byte) -1, ATR100.get(withAtr(am1)));
-        assertEquals((byte) 111, ATR100.get(withAtr(am111)));
-        assertEquals(Byte.MAX_VALUE, ATR100.get(withAtr(ammax)));
-
-        assertEquals((byte) 10, ATR100.get(withAtr(am), (byte) 10));
-        assertEquals((byte) -1, ATR100.get(withAtr(am1), (byte) 10));
-        assertEquals((byte) 111, ATR100.get(withAtr(am111), (byte) 10));
-        assertEquals(Byte.MAX_VALUE, ATR100.get(withAtr(ammax), (byte) 10));
-
-        assertEquals((byte) -1, NON_NEGATIVE.get(withAtr(am), (byte) -1));
-
-        assertEquals((byte) 100, ATR100.get(withAtr(am)));
-        assertEquals((byte) -1, ATR100.get(withAtr(am1)));
-        assertEquals((byte) 10, ATR100.get(withAtr(am), (byte) 10));
-        assertEquals((byte) -1, ATR100.get(withAtr(am1), (byte) 10));
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Byte.MIN_VALUE));
         assertTrue(ATR100.isValid(Byte.MAX_VALUE));

@@ -140,34 +140,6 @@ public abstract class ShortAttribute extends Attribute<Short> implements
     public short getDefaultValue() {
         return defaultValue;
     }
-    
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefaultValue()} will be returned instead.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
-     *         {@link #getDefaultValue()}
-     */
-    public short get(WithAttributes withAttributes) {
-        return withAttributes.getAttributes().get(this);
-    }
-
-    /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>short</tt>.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @param defaultValue
-     *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the
-     *         specified default value
-     */
-    public short get(WithAttributes withAttributes, short defaultValue) {
-        return withAttributes.getAttributes().get(this, defaultValue);
-    }
 
    /**
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive short as

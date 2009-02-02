@@ -26,22 +26,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
 
-    static IntAttribute A = new IntAttribute("A") {};
-    private PriorityQueue matching;
+    private PriorityQueue<AtomicInteger> matching;
     private Random r = new Random(124324234);
     private TP tp;
 
     @Before
     public void before() {
-        tp = new TP();
-        policy = tp;
-        init();
-        matching = new PriorityQueue(1, A);
+        tp = Policies.create(TP.class);
+        matching = new PriorityQueue(1);
     }
 
     @Test
@@ -49,12 +47,12 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
         for (int i = 0; i < 33; i++) {
             before();
             for (int j = 0; j < i; j++) {
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));
+               AtomicInteger te = new AtomicInteger(r.nextInt(Math.max(3, i - 3)));
                 tp.add(te);
                 matching.add(te);
             }
             while (!matching.isEmpty()) {
-                CacheEntry<Integer, String> te = (CacheEntry<Integer, String>) tp.peek();
+                AtomicInteger te = (AtomicInteger) tp.peek();
                 assertSame(matching.poll(), te);
                 assertSame(te, tp.evictNext());
             }
@@ -68,7 +66,7 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
         for (int i = 0; i < 129; i++) {
             before();
             for (int j = 0; j < i; j++) {
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));
+                AtomicInteger te = new AtomicInteger(r.nextInt(Math.max(3, i - 3)));
                 tp.add(te);
                 matching.add(te);
             }
@@ -76,10 +74,10 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
                 Object[] take = matching.toArray();
                 Object o = take[r.nextInt(take.length)];
                 removeFromMatching(o);
-                tp.remove((CacheEntry<Integer, String>) o);
+                tp.remove((AtomicInteger) o);
             }
             while (!matching.isEmpty()) {
-                CacheEntry<Integer, String> te = (CacheEntry<Integer, String>) tp.peek();
+                AtomicInteger te = (AtomicInteger) tp.peek();
                 assertSame(matching.poll(), te);
                 assertSame(te, tp.evictNext());
             }
@@ -94,15 +92,15 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
         for (int i = 3; i < 129; i++) {
             before();
             for (int j = 0; j < i; j++) {
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));// newEntry(r.nextInt(Math.max(3,
-                                                                                                // i - 3)));
+                AtomicInteger te = new AtomicInteger(r.nextInt(Math.max(3, i - 3)));// newEntry(r.nextInt(Math.max(3,
+                // i - 3)));
                 tp.add(te);
                 matching.add(te);
             }
             Object[] take = matching.toArray();
-            CacheEntry<Integer, String> te = (CacheEntry<Integer, String>) take[r.nextInt(take.length)];
+            AtomicInteger te = (AtomicInteger) take[r.nextInt(take.length)];
             removeFromMatching(te);
-            set(te, A, te.get(A) - r.nextInt(10));
+            te.addAndGet(-r.nextInt(10));
             matching.add(te);
             tp.siftUp(te);
             emptyEquals();
@@ -114,14 +112,14 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
         for (int i = 3; i < 31; i++) {
             before();
             for (int j = 0; j < i; j++) {
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));
+                AtomicInteger te = new AtomicInteger(r.nextInt(Math.max(3, i - 3)));
                 tp.add(te);
                 matching.add(te);
             }
             Object[] take = matching.toArray();
-            CacheEntry<Integer, String> te = (CacheEntry<Integer, String>) take[r.nextInt(take.length)];
+            AtomicInteger te = (AtomicInteger) take[r.nextInt(take.length)];
             removeFromMatching(te);
-            set(te, A, te.get(A) + r.nextInt(10));
+            te.addAndGet(r.nextInt(10));
             matching.add(te);
             tp.siftDown(te);
             emptyEquals();
@@ -133,7 +131,7 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
         for (int i = 0; i < 127; i++) {
             before();
             for (int j = 0; j < i; j++) {
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));
+                AtomicInteger te = new AtomicInteger(r.nextInt(Math.max(3, i - 3)));
                 tp.add(te);
                 matching.add(te);
             }
@@ -147,9 +145,8 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
                 Object[] take = matching.toArray();
                 Object o = take[r.nextInt(take.length)];
                 removeFromMatching(o);
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));
+                AtomicInteger te = new AtomicInteger (r.nextInt(Math.max(3, i - 3)));
                 matching.add(te);
-                assertSame(te, tp.replace((CacheEntry<Integer, String>) o, te));
             }
             // if (i == 4) {
             // for (int q = 0; q < tp.queue.length; q++) {
@@ -174,11 +171,11 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
 
     private void emptyEquals() {
         while (!matching.isEmpty()) {
-            CacheEntry<Integer, String> peek = (CacheEntry<Integer, String>) tp.peek();
-            CacheEntry<Integer, String> m = (CacheEntry<Integer, String>) matching.poll();
-            CacheEntry<Integer, String> evict = (CacheEntry<Integer, String>) tp.evictNext();
+            AtomicInteger peek =  tp.peek();
+            AtomicInteger m =  matching.poll();
+            AtomicInteger evict =  tp.evictNext();
             assertSame(peek, evict);
-            assertEquals(evict.get(A), m.get(A));
+            assertEquals(evict.intValue(), m.intValue());
         }
         assertNull(tp.evictNext());
         assertNull(tp.peek());
@@ -189,8 +186,8 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
         for (int i = 0; i < 33; i++) {
             before();
             for (int j = 0; j < i; j++) {
-                CacheEntry<Integer, String> te = createEntry(A, r.nextInt(Math.max(3, i - 3)));
-                tp.add(te);
+                AtomicInteger ai = new AtomicInteger(r.nextInt(Math.max(3, i - 3)));
+                tp.add(ai);
             }
             tp.clear();
             assertNull(tp.peek());
@@ -200,11 +197,15 @@ public class AbstractHeapReplacementPolicyTest extends AbstractPolicyTest {
 
     static final AtomicInteger count = new AtomicInteger();
 
-    static class TP extends AbstractHeapReplacementPolicy<Integer, String> {
+    public static class TP extends AbstractHeapReplacementPolicy<AtomicInteger> {
 
-        protected int compareEntry(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
-            int thisVal = o1.get(A);
-            int anotherVal = o2.get(A);
+        public TP(PolicyContext<AtomicInteger> context) {
+            super(context);
+        }
+
+        protected int compareEntry(AtomicInteger o1, AtomicInteger o2) {
+            int thisVal = o1.intValue();
+            int anotherVal = o2.intValue();
             return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
             //
             // return A.compare(o1, o2);

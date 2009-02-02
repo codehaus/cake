@@ -15,11 +15,10 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.internal.cache.attribute.InternalCacheAttributeService;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 
-public interface InternalAttributeService<K, V> extends InternalCacheAttributeService {
+public interface InternalAttributeService<K, V> {
 
     MutableAttributeMap create(K key, V value, AttributeMap params);
 

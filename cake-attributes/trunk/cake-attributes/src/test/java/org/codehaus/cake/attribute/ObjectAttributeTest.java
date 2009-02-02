@@ -87,23 +87,6 @@ public final class ObjectAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(NON_NULL, false);
-        AttributeMap am2 = Attributes.singleton(NON_NULL, true);
-
-        assertTrue((Boolean) NON_NULL.get(withAtr(am)));
-        assertFalse((Boolean) NON_NULL.get(withAtr(am1)));
-        assertTrue((Boolean) NON_NULL.get(withAtr(am2)));
-        assertTrue((Boolean) NON_NULL.get(withAtr(am), true));
-        assertFalse((Boolean) NON_NULL.get(withAtr(am1), false));
-        assertTrue((Boolean) NON_NULL.get(withAtr(am2), false));
-        assertFalse((Boolean) NON_NULL.get(withAtr(am), false));
-        assertFalse((Boolean) NON_NULL.get(withAtr(am1), true));
-        assertTrue((Boolean) NON_NULL.get(withAtr(am2), true));
-    }
-
-    @Test
     public void isValid() {
         assertTrue(NULL.isValid(null));
         assertTrue(NON_NULL.isValid(true));

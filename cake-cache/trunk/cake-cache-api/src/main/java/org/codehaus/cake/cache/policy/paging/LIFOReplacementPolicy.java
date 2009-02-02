@@ -17,6 +17,7 @@ package org.codehaus.cake.cache.policy.paging;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * A Last In, First Out (LIFO) based replacement policy.
@@ -28,19 +29,22 @@ import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
  * @param <V>
  *            the type of values maintained by the cache
  */
-public class LIFOReplacementPolicy<K, V> extends AbstractDoubleLinkedReplacementPolicy<K, V> {
+public class LIFOReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
+
+    public LIFOReplacementPolicy(PolicyContext<T> context) {
+        super(context);
+    }
 
     /** A unique policy name. */
     public static final String NAME = "LIFO";
 
     /** {@inheritDoc} */
-    public boolean add(CacheEntry<K, V> entry) {
+    public void add(T entry) {
         addLast(entry);
-        return true;
     }
 
     /** {@inheritDoc} */
-    public CacheEntry<K, V> evictNext() {
+    public T evictNext() {
         return removeFirst();
     }
 }

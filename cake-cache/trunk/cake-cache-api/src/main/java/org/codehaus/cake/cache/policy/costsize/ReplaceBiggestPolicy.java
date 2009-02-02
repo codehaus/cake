@@ -17,8 +17,10 @@ package org.codehaus.cake.cache.policy.costsize;
 
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * A replacement policy that replaces the entry with the biggest {@link CacheEntry#SIZE} when evicting. The rational for
@@ -31,20 +33,21 @@ import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
  * @param <V>
  *            the type of values maintained by the cache
  */
-public class ReplaceBiggestPolicy<K, V> extends AbstractHeapReplacementPolicy<K, V> {
+public class ReplaceBiggestPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
     /** A unique policy name. */
     public static final String NAME = "ReplaceBiggest";
 
     /** Creates a new ReplaceBiggestPolicy. */
-    public ReplaceBiggestPolicy() {
+    public ReplaceBiggestPolicy(PolicyContext<T> context) {
+        super(context);
         // This is used to make sure that users have registered the SIZE attribute
         // with CacheAttributeConfiguration#add(Attribute...)}
-        dependHard(SIZE);
+        context.dependHard(SIZE);
     }
 
     /** {@inheritDoc} */
-    protected int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
+    protected int compareEntry(T o1, T o2) {
         return SIZE.compare(o2, o1);
     }
 }

@@ -1,4 +1,4 @@
-package org.codehaus.cake.internal.cache.service.memorystore;
+package org.codehaus.cake.internal.cache.memorystore;
 
 import java.util.Comparator;
 
@@ -10,6 +10,7 @@ import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
+import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.internal.service.configuration.ConfigurationService;
 import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedObject;
@@ -24,7 +25,7 @@ import org.codehaus.cake.service.ServiceFactory;
  * This class must be public to allow for reflection.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: ExportedMemoryStoreService.java 229 2008-12-10 19:53:58Z kasper $
  */
 @ManagedObject(defaultValue = "MemoryStore", description = "MemoryStore attributes and operations")
 @ExportAsService(MemoryStoreService.class)

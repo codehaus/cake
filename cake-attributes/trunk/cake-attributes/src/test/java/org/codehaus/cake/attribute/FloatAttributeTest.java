@@ -106,32 +106,6 @@ public final class FloatAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, -1F);
-        AttributeMap am111 = Attributes.singleton(ATR100, 111F);
-        AttributeMap ammax = Attributes.singleton(ATR100, Float.MAX_VALUE);
-
-        assertEquals(100F, ATR100.get(withAtr(am)),0);
-        assertEquals(-1F, ATR100.get(withAtr(am1)),0);
-        assertEquals(111F, ATR100.get(withAtr(am111)),0);
-        assertEquals(Float.MAX_VALUE, ATR100.get(withAtr(ammax)),0);
-
-        assertEquals(10F, ATR100.get(withAtr(am), 10F),0);
-        assertEquals(-1F, ATR100.get(withAtr(am1), 10F),0);
-        assertEquals(111F, ATR100.get(withAtr(am111), 10F),0);
-        assertEquals(Float.MAX_VALUE, ATR100.get(withAtr(ammax), 10F),0);
-
-        assertEquals(-1F, NON_NEGATIVE.get(withAtr(am), -1F),0);
-
-        assertEquals(100F, ATR100.get(withAtr(am)),0);
-        assertEquals(-1F, ATR100.get(withAtr(am1)),0);
-        assertEquals(10F, ATR100.get(withAtr(am), 10F),0);
-        assertEquals(-1F, ATR100.get(withAtr(am1), 10F),0);
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Float.MIN_VALUE));
         assertTrue(ATR100.isValid(Float.MAX_VALUE));

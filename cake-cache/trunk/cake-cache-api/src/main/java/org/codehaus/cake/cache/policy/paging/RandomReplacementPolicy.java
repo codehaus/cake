@@ -17,8 +17,8 @@ package org.codehaus.cake.cache.policy.paging;
 
 import java.util.Random;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractArrayReplacementPolicy;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
  * A Random replacement policy. This policy picks a random element to evict.
@@ -32,7 +32,7 @@ import org.codehaus.cake.cache.policy.AbstractArrayReplacementPolicy;
  * @param <V>
  *            the type of values maintained by the cache
  */
-public class RandomReplacementPolicy<K, V> extends AbstractArrayReplacementPolicy<K, V> {
+public class RandomReplacementPolicy<T> extends AbstractArrayReplacementPolicy<T> {
 
     /** A unique policy name. */
     public static final String NAME = "Random";
@@ -40,8 +40,12 @@ public class RandomReplacementPolicy<K, V> extends AbstractArrayReplacementPolic
     /** Used for selecting which element to evict. */
     private final Random rnd = new Random();
 
+    public RandomReplacementPolicy(PolicyContext context) {
+        super(context);
+    }
+
     /** {@inheritDoc} */
-    public CacheEntry<K, V> evictNext() {
+    public T evictNext() {
         int size = size();
         return size == 0 ? null : removeByIndex(rnd.nextInt(size));
     }

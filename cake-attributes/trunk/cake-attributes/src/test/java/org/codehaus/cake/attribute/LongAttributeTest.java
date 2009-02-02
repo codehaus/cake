@@ -101,32 +101,6 @@ public final class LongAttributeTest extends AtrStubs {
     }
 
     @Test
-    public void get() {
-        MutableAttributeMap am = Attributes.EMPTY_ATTRIBUTE_MAP;
-        AttributeMap am1 = Attributes.singleton(ATR100, -1L);
-        AttributeMap am111 = Attributes.singleton(ATR100, 111L);
-        AttributeMap ammax = Attributes.singleton(ATR100, Long.MAX_VALUE);
-
-        assertEquals(100L, ATR100.get(withAtr(am)));
-        assertEquals(-1L, ATR100.get(withAtr(am1)));
-        assertEquals(111L, ATR100.get(withAtr(am111)));
-        assertEquals(Long.MAX_VALUE, ATR100.get(withAtr(ammax)));
-
-        assertEquals(10L, ATR100.get(withAtr(am), 10L));
-        assertEquals(-1L, ATR100.get(withAtr(am1), 10L));
-        assertEquals(111L, ATR100.get(withAtr(am111), 10L));
-        assertEquals(Long.MAX_VALUE, ATR100.get(withAtr(ammax), 10L));
-
-        assertEquals(-1L, NON_NEGATIVE.get(withAtr(am), -1L));
-
-        assertEquals(100L, ATR100.get(withAtr(am)));
-        assertEquals(-1L, ATR100.get(withAtr(am1)));
-        assertEquals(10L, ATR100.get(withAtr(am), 10L));
-        assertEquals(-1L, ATR100.get(withAtr(am1), 10L));
-
-    }
-
-    @Test
     public void isValid() {
         assertTrue(ATR100.isValid(Long.MIN_VALUE));
         assertTrue(ATR100.isValid(Long.MAX_VALUE));

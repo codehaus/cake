@@ -116,4 +116,8 @@ public class DefaultView<T> extends AbstractView implements View<T> {
     public List<T> toList() {
         return (List) execute(List.class);
     }
+
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 }

@@ -15,16 +15,16 @@
  */
 package org.codehaus.cake.internal.cache.service.loading;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.internal.cache.service.memorystore.MemoryStore;
 
 public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 

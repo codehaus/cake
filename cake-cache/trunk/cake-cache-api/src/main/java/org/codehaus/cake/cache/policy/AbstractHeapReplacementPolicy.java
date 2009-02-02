@@ -17,38 +17,37 @@ package org.codehaus.cake.cache.policy;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory;
+import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.cache.policy.spi.PolicyContext.IntAttachment;
 import org.codehaus.cake.internal.util.ArrayUtils;
-import org.codehaus.cake.cache.policy.spi.PolicyAttachmentFactory.IntAttachment;
+
 // TODO shouldn't implement Comparator, much better just to add a method that
 // should be overriden
-public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeReplacementPolicy<K, V> implements
-        Comparator<CacheEntry<K, V>> {
+public abstract class AbstractHeapReplacementPolicy<T> extends AbstractCakeReplacementPolicy<T> implements
+        Comparator<T> {
 
-    private final Comparator<? super CacheEntry<K, V>> comparator = this;
+    private final Comparator<? super T> comparator = this;
 
     /** The attribute that is used to keep track of the index into heap of a given CacheEntry. */
-    private IntAttachment idx;
+    private final IntAttachment idx;
 
     /**
      * Priority queue represented as a balanced binary heap: the two children of queue[n] are queue[2*n+1] and
      * queue[2*(n+1)]. The priority queue is ordered by comparator For each node n in the heap and each descendant d of
      * n, n <= d. The element with the lowest value is in queue[0], assuming the queue is nonempty.
      */
-    CacheEntry[] queue = new CacheEntry[0];
+    T[] queue;
 
     /** The number of elements in the priority queue. */
     private int size;
 
-
-    @Override
-    protected <T> void register(PolicyAttachmentFactory generator) {
-        idx = generator.attachInt();
+    public AbstractHeapReplacementPolicy(PolicyContext<T> context) {
+        queue = context.newArray(0);
+        idx = context.attachInt();
     }
-    
+
     /** {@inheritDoc} */
-    public boolean add(CacheEntry<K, V> entry) {
+    public void add(T entry) {
         int i = size;
         if (i >= queue.length)
             grow(i + 1);
@@ -59,7 +58,6 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
         } else {
             siftUp(i, entry);
         }
-        return true;
     }
 
     /** {@inheritDoc} */
@@ -70,19 +68,19 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
         size = 0;
     }
 
-    public final int compare(CacheEntry<K, V> o1, CacheEntry<K, V> o2) {
+    public final int compare(T o1, T o2) {
         return compareEntry(o1, o2);
     }
 
-    protected abstract int compareEntry(CacheEntry<K, V> o1, CacheEntry<K, V> o2);
+    protected abstract int compareEntry(T o1, T o2);
 
     /** {@inheritDoc} */
-    public CacheEntry<K, V> evictNext() {
+    public T evictNext() {
         if (size == 0)
             return null;
         int s = --size;
-        CacheEntry<K, V> result = (CacheEntry<K, V>) queue[0];
-        CacheEntry<K, V> x = (CacheEntry<K, V>) queue[s];
+        T result = (T) queue[0];
+        T x = (T) queue[s];
         queue[s] = null;
         if (s != 0)
             siftDown(0, x);
@@ -112,21 +110,21 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
         queue = ArrayUtils.copyOf(queue, newCapacity);
     }
 
-    private int indexOf(CacheEntry<K, V> entry) {
+    private int indexOf(T entry) {
         return idx.get(entry);
     }
 
     /**
      * @return the element that will be evicted the next time, or <code>null</code> if the heap is empty
      */
-    protected CacheEntry<K, V> peek() {
+    protected T peek() {
         if (size == 0)
             return null;
-        return (CacheEntry<K, V>) queue[0];
+        return (T) queue[0];
     }
 
     /** {@inheritDoc} */
-    public void remove(CacheEntry<K, V> entry) {
+    public void remove(T entry) {
         removeAt(indexOf(entry));
     }
 
@@ -139,13 +137,13 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
      * end of the list and is now at some position before i. This fact is used by iterator.remove so as to avoid missing
      * traversing elements.
      */
-    private CacheEntry<K, V> removeAt(int i) {
+    private T removeAt(int i) {
         // assert i >= 0 && i < size;
         int s = --size;
         if (s == i) // removed last element
             queue[i] = null;
         else {
-            CacheEntry<K, V> moved = queue[s];
+            T moved = queue[s];
             queue[s] = null;
             siftDown(i, moved);
             if (queue[i] == moved) {
@@ -158,7 +156,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
     }
 
     /** {@inheritDoc} */
-    public CacheEntry<K, V> replace(CacheEntry<K, V> previous, CacheEntry<K, V> newEntry) {
+    public void replace(T previous, T newEntry) {
         int i = comparator.compare(previous, newEntry);
         int index = indexOf(previous);
         setIndexOf(newEntry, index);
@@ -168,14 +166,13 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
         } else if (i < 0) {
             siftDown(index, newEntry);
         }
-        return newEntry;
     }
 
-    private void setIndexOf(CacheEntry<K, V> entry, int index) {
+    private void setIndexOf(T entry, int index) {
         idx.set(entry, index);
     }
 
-    protected void siftDown(CacheEntry<K, V> x) {
+    protected void siftDown(T x) {
         siftDown(indexOf(x), x);
     }
 
@@ -188,16 +185,16 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
      * @param x
      *            the item to insert
      */
-    private void siftDown(int k, CacheEntry<K, V> x) {
+    private void siftDown(int k, T x) {
         int half = size >>> 1;
         while (k < half) {
             int child = (k << 1) + 1;
-            CacheEntry<K, V> c = queue[child];
+            T c = queue[child];
             int right = child + 1;
-            if (right < size && comparator.compare((CacheEntry<K, V>) c, (CacheEntry<K, V>) queue[right]) > 0) {
+            if (right < size && comparator.compare((T) c, (T) queue[right]) > 0) {
                 c = queue[child = right];
             }
-            if (comparator.compare(x, (CacheEntry<K, V>) c) <= 0) {
+            if (comparator.compare(x, (T) c) <= 0) {
                 break;
             }
             queue[k] = c;
@@ -208,7 +205,7 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
         setIndexOf(x, k);
     }
 
-    protected void siftUp(CacheEntry<K, V> x) {
+    protected void siftUp(T x) {
         siftUp(indexOf(x), x);
     }
 
@@ -224,11 +221,11 @@ public abstract class AbstractHeapReplacementPolicy<K, V> extends AbstractCakeRe
      * @param x
      *            the item to insert
      */
-    private void siftUp(int k, CacheEntry<K, V> x) {
+    private void siftUp(int k, T x) {
         while (k > 0) {
             int parent = (k - 1) >>> 1;
-            CacheEntry<K, V> e = queue[parent];
-            if (comparator.compare(x, (CacheEntry<K, V>) e) >= 0)
+            T e = queue[parent];
+            if (comparator.compare(x, (T) e) >= 0)
                 break;
             queue[k] = e;
             setIndexOf(e, k);
