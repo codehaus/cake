@@ -2,8 +2,8 @@ package org.codehaus.cake.internal.cache.service.crud;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.crud.CrudReader;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;

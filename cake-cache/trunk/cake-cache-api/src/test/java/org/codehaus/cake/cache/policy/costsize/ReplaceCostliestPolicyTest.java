@@ -20,7 +20,6 @@ import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.cache.CacheEntry.COST;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;

@@ -17,7 +17,6 @@ package org.codehaus.cake.cache.policy.paging;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asList;
 import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
@@ -26,7 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.cache.policy.Policies;
 import org.junit.Before;

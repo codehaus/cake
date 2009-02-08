@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.cache.service.crud;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.Caches;
@@ -146,8 +146,8 @@ public interface CrudWriter<K, V, R> {
     R putIfAbsent(K key, V value);
 
     /**
-     * Analogoues to the {@link #putIfAbsent(Object, Object, MutableAttributeMap)} except that this method also takes a map of
-     * attributes.
+     * Analogoues to the {@link #putIfAbsent(Object, Object, MutableAttributeMap)} except that this method also takes a
+     * map of attributes.
      * 
      * @param key
      *            key with which the specified value is to be associated
@@ -229,6 +229,34 @@ public interface CrudWriter<K, V, R> {
     R remove(K key);
 
     /**
+     * Removes the entry for a key only if currently mapped to a given value. This is equivalent to
+     * 
+     * <pre>
+     * if (cache.containsKey(key) &amp;&amp; cache.get(key).equals(value)) {
+     *     return cache.remove(key); //Previous
+     * } else
+     *     return null; //Previous
+     * </pre>
+     * 
+     * except that the action is performed atomically.
+     * 
+     * @param key
+     *            key with which the specified value is associated
+     * @param value
+     *            value expected to be associated with the specified key
+     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
+     * @throws UnsupportedOperationException
+     *             if the <tt>remove</tt> operation is not supported
+     * @throws ContainerAlreadyShutdownException
+     *             if the cache has been shutdown
+     * @throws ClassCastException
+     *             if the key or value is of an inappropriate type for this cache (optional)
+     * @throws NullPointerException
+     *             if the specified key or value is null
+     */
+    R remove(K key, V value);
+
+    /**
      * Conditionally removes the mapping for a key from this cache if it is present (optional operation). This is
      * equivalent to
      * 
@@ -257,34 +285,6 @@ public interface CrudWriter<K, V, R> {
      *             if the specified condition or key is null
      */
     R removeIf(Predicate<CacheEntry<K, V>> condition, K key);
-
-    /**
-     * Removes the entry for a key only if currently mapped to a given value. This is equivalent to
-     * 
-     * <pre>
-     * if (cache.containsKey(key) &amp;&amp; cache.get(key).equals(value)) {
-     *     return cache.remove(key); //Previous
-     * } else
-     *     return null; //Previous
-     * </pre>
-     * 
-     * except that the action is performed atomically.
-     * 
-     * @param key
-     *            key with which the specified value is associated
-     * @param value
-     *            value expected to be associated with the specified key
-     * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
-     * @throws UnsupportedOperationException
-     *             if the <tt>remove</tt> operation is not supported
-     * @throws ContainerAlreadyShutdownException
-     *             if the cache has been shutdown
-     * @throws ClassCastException
-     *             if the key or value is of an inappropriate type for this cache (optional)
-     * @throws NullPointerException
-     *             if the specified key or value is null
-     */
-    R remove(K key, V value);
 
     /**
      * Replace the entry for the specified key only if it is currently mapped to some value. Acts as
@@ -400,7 +400,7 @@ public interface CrudWriter<K, V, R> {
      * @throws ClassCastException
      *             if the key or any of the values are of an inappropriate type for this cache (optional)
      * @throws NullPointerException
-     *             if the specified key, any of the values or the  attribute map is <tt>null</tt>
+     *             if the specified key, any of the values or the attribute map is <tt>null</tt>
      */
     R replace(K key, V oldValue, V newValue, AttributeMap attributes);
 }

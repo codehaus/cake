@@ -29,7 +29,7 @@ import org.codehaus.cake.internal.util.ArrayUtils;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
-public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
+public class UnsynchronizedCacheProcessor<K, V> extends AbstractCacheProcessor implements CacheProcessor<K, V> {
     private final MemoryStore<K, V> memoryStore;
     private final RunState runState;
     private final InternalCacheLoadingService<K, V> loading;
@@ -94,7 +94,7 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
 
     public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {
         runState.isRunningLazyStart(false);
-        memoryStore.process(filter, r);
+        memoryStore.clear(filter);
     }
 
     public void process(RemoveEntriesRequest<K, V> r) {
@@ -147,4 +147,6 @@ public class UnsynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> 
                 (Predicate) filter);
         return p.execute(stack);
     }
+
+
 }

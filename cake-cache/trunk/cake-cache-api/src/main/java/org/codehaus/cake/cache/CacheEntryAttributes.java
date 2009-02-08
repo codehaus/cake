@@ -21,38 +21,38 @@ import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 
 /**
  * @author knielsen22
- *
+ * 
  */
 class CacheEntryAttributes {
- //    - Logger ->Log with stacktrace, log with timing information
-    
- //   - TimeToRefresh, RefreshTime
- //   - TimeToExpire, ExpirationTime
+    // - Logger ->Log with stacktrace, log with timing information
 
-//    public static long getTimeCreated(CacheEntry<?, ?> entry) {
-//        return CacheEntry.TIME_CREATED.get(entry);
-//    }
-//
-//    public static void main(String[] args) {
-//        CacheConfiguration<Integer, String> conf = new CacheConfiguration<Integer, String>();
-//        conf.addEntryAttributes(CacheEntry.TIME_CREATED);
-//        Cache<Integer, String> cache = new UnsynchronizedCache<Integer, String>(conf);
-//        cache.put(4, "5");
-//        System.out.println(getTimeCreated(cache.getEntry(4)));
-//        System.out.println(CacheEntry.TIME_CREATED.get(cache.getEntry(4)));
-//    }
+    // - TimeToRefresh, RefreshTime
+    // - TimeToExpire, ExpirationTime
+
+    // public static long getTimeCreated(CacheEntry<?, ?> entry) {
+    // return CacheEntry.TIME_CREATED.get(entry);
+    // }
+    //
+    // public static void main(String[] args) {
+    // CacheConfiguration<Integer, String> conf = new CacheConfiguration<Integer, String>();
+    // conf.addEntryAttributes(CacheEntry.TIME_CREATED);
+    // Cache<Integer, String> cache = new UnsynchronizedCache<Integer, String>(conf);
+    // cache.put(4, "5");
+    // System.out.println(getTimeCreated(cache.getEntry(4)));
+    // System.out.println(CacheEntry.TIME_CREATED.get(cache.getEntry(4)));
+    // }
 
     /** The Cost attribute. */
     static final class CostAttribute extends DoubleAttribute {
-    
+
         /** serialVersionUID. */
         private static final long serialVersionUID = -2353351535602223603L;
-    
+
         /** Creates a new CostAttribute. */
         CostAttribute() {
             super("Cost", 1.0);
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.COST;
@@ -64,21 +64,21 @@ class CacheEntryAttributes {
      * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
      */
     static final class HitsAttribute extends LongAttribute {
-    
+
         /** serialVersionUID. */
         private static final long serialVersionUID = -2353351535602223603L;
-    
+
         /** Creates a new SizeAttribute. */
         HitsAttribute() {
             super("Hits");
         }
-    
+
         /** {@inheritDoc} */
         @Override
         public boolean isValid(long hits) {
             return hits >= 0;
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.HITS;
@@ -87,41 +87,41 @@ class CacheEntryAttributes {
 
     /** The size attribute */
     static final class SizeAttribute extends LongAttribute {
-    
+
         /** serialVersionUID. */
         private static final long serialVersionUID = -2353351535602223603L;
-    
+
         /** Creates a new SizeAttribute. */
         SizeAttribute() {
             super("Size", 1);
-        }
-    
-        /** {@inheritDoc} */
-        @Override
-        public boolean isValid(long value) {
-            return value >= 0;
-        }
-    
-        /** @return Preserves singleton property */
-        private Object readResolve() {
-            return CacheEntry.SIZE;
         }
 
         @Override
         protected String checkValidFailureMessage(Long value) {
             return "invalid size (size = " + value + ")";
         }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean isValid(long value) {
+            return value >= 0;
+        }
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return CacheEntry.SIZE;
+        }
     }
 
     static final class TimeAccessedAttribute extends TimeInstanceAttribute {
         /** serialVersionUID. */
         private static final long serialVersionUID = -2353351535602223603L;
-    
+
         /** Creates a new DateCreatedAttribute. */
         TimeAccessedAttribute() {
             super("AccessTime");
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.TIME_ACCESSED;
@@ -131,12 +131,12 @@ class CacheEntryAttributes {
     static final class TimeCreatedAttribute extends TimeInstanceAttribute {
         /** serialVersionUID. */
         private static final long serialVersionUID = -2353351535602223603L;
-    
+
         /** Creates a new DateCreatedAttribute. */
         TimeCreatedAttribute() {
             super("CreationTime");
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.TIME_CREATED;
@@ -146,12 +146,12 @@ class CacheEntryAttributes {
     static final class TimeModificedAttribute extends TimeInstanceAttribute {
         /** serialVersionUID. */
         private static final long serialVersionUID = -2353351535602223603L;
-    
+
         /** Creates a new DateCreatedAttribute. */
         TimeModificedAttribute() {
             super("ModificationTime");
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.TIME_MODIFIED;
@@ -187,21 +187,21 @@ class CacheEntryAttributes {
      * type <tt>long</tt> between 0 and {@link Long#MAX_VALUE}.
      */
     static final class VersionAttribute extends LongAttribute {
-    
+
         /** serialVersionUID. */
         private static final long serialVersionUID = -235335135602223603L;
-    
+
         /** Creates a new SizeAttribute. */
         VersionAttribute() {
             super("Version", 1);
         }
-    
+
         /** {@inheritDoc} */
         @Override
         public boolean isValid(long hits) {
             return hits > 0;
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return CacheEntry.VERSION;

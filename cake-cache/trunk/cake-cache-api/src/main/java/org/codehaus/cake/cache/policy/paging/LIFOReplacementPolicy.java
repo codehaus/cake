@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.cache.policy.paging;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
@@ -24,19 +23,25 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @param <T>
+ *            the type of elements being cached
  */
 public class LIFOReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
 
+    /** The name of the policy. */
+    public static final String NAME = "LIFO";
+
+    /**
+     * Creates a new LIFOReplacementPolicy.
+     * 
+     * @param context
+     *            a policy context instance
+     * @throws NullPointerException
+     *             if the specified context is null
+     */
     public LIFOReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
-
-    /** A unique policy name. */
-    public static final String NAME = "LIFO";
 
     /** {@inheritDoc} */
     public void add(T entry) {

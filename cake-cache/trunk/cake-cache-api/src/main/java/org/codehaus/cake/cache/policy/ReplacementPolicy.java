@@ -37,8 +37,8 @@ import org.codehaus.cake.cache.service.crud.CrudReader;
  * This library comes with a number of predefined replacement policies, see
  * {@link org.codehaus.cake.cache.policy.Policies} for the most commonly used policies.
  * <p>
- * For performance reasons instances of ReplacementPolicy are not expected to be thread-safe. Instead, any cache
- * implementation using a ReplacementPolicy instance must maintain thread safety.
+ * For performance reasons instances of ReplacementPolicy are not expected to be thread-safe. Instead, the cache using
+ * the ReplacementPolicy instance must maintain thread safety.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  * @version $Id$
@@ -49,18 +49,15 @@ public interface ReplacementPolicy<T> {
 
     /**
      * A cache calls this method whenever a new element is first inserted to a cache.
-     * <p>
-     * If this replacement policy is used within a {@link Cache}. This method is normally used when entries are added
-     * to the cache, for example, using {@link Cache#put(Object, Object)}.
      * 
      * @param element
-     *            the element to add to the replacement policy
+     *            the element to add to this policy
      */
     void add(T element);
 
     /**
      * A cache calls this method whenever it removes references to all elements that are cached. Calling this method
-     * should have the same effect as calling {@link #remove(Object)} for each individual element currently cached.
+     * should have the same effect as calling {@link #remove(Object)} for each individual element added to the policy.
      * However, removing all elements in one operation is most likely faster.
      */
     void clear();
@@ -68,7 +65,9 @@ public interface ReplacementPolicy<T> {
     /**
      * Called by the cache when insufficient space is available for a new element to be added to the cache. This method
      * should return the element that should be evicted next accordingly to the replacement policy that is implemented.
-     * Furthermore should all references to this element be removed from the replacement policy to avoid memory leaks.
+     * <p>
+     * Ir order to avoid memory leaks it is important that all references to the returned element is removed from the
+     * policy.
      * 
      * @return the element that should be evicted from the cache or <code>null</code> if the policy does not contain
      *         any elements
@@ -77,8 +76,10 @@ public interface ReplacementPolicy<T> {
 
     /**
      * Called whenever an element is removed by an external action in the cache. For example, if the user chooses to
-     * explicitly remove the element from the cache. If the policy contains any references to the element it should
-     * remove them in order to avoid memory leaks.
+     * explicitly remove the element from the cache.
+     * <p>
+     * Ir order to avoid memory leaks it is important that all references to the returned element is removed from the
+     * policy.
      * 
      * @param element
      *            the element that was removed
@@ -88,6 +89,9 @@ public interface ReplacementPolicy<T> {
     /**
      * The specified <tt>previous</tt>element was updated with a new value, for example, through a call to
      * {@link Cache#replace(Object, Object).
+     * <p>
+     * Ir order to avoid memory leaks it is important that all references to the previous element is removed from the
+     * policy.
      * 
      * @see #add(Object)
      */

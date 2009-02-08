@@ -19,6 +19,7 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.codehaus.cake.cache.policy.spi.PolicyContext.IntAttachment;
 
 /**
+ * An abstract implementation of a replacement policy that uses a list for ordering entries.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: AbstractArrayReplacementPolicy.java 225 2008-11-30 20:53:08Z kasper $
@@ -39,8 +40,14 @@ public abstract class AbstractArrayReplacementPolicy<T> extends AbstractCakeRepl
     /** The size of the ArrayList (the number of elements it contains). */
     private int size;
 
+    /**
+     * Creates a new AbstractArrayReplacementPolicy.
+     * 
+     * @param context
+     *            the context needed for constructing the policy
+     */
     public AbstractArrayReplacementPolicy(PolicyContext<T> context) {
-        idx = context.attachInt();
+        idx = context.attachInt(-1);
         elementData = context.newArray(16);
     }
 
@@ -107,7 +114,7 @@ public abstract class AbstractArrayReplacementPolicy<T> extends AbstractCakeRepl
      * @return the index of the specified entry, or -1 if the entry has not been registered
      */
     protected final int getIndexOf(T entry) {
-        return idx.get(entry, -1);
+        return idx.get(entry);
     }
 
     private void rangeCheck(int index) {

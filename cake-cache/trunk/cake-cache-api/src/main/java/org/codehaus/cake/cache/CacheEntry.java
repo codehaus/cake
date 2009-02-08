@@ -17,8 +17,8 @@ package org.codehaus.cake.cache;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
@@ -26,8 +26,8 @@ import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 
 /**
  * A <tt>CacheEntry</tt> describes a value-key mapping extending {@link java.util.Map.Entry} with metadata. However,
- * this interface extends it with attribute->value pairs. Holding information such as creation time, access
- * patterns, size, cost etc.
+ * this interface extends it with attribute->value pairs. Holding information such as creation time, access patterns,
+ * size, cost etc.
  * <p>
  * Per default the cache does not keep track of any attributes. Attributes that should be retained at runtime must first
  * be added using {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.attribute.Attribute...)} before
@@ -66,8 +66,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * is used only by the {@link ReplaceCostliestPolicy}.
      * <p>
      * A frequent used unit for this attribute is time. For example, how many milliseconds does it take to retrieve the
-     * entry. However, any unit can be used. Because any policy should only use the relative cost difference between entries to
-     * determine what entries to evict.
+     * entry. However, any unit can be used. Because any policy should only use the relative cost difference between
+     * entries to determine what entries to evict.
      * <p>
      * <blockquote> <table border>
      * <tr>
@@ -97,7 +97,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * 
      * <p/> The following list describes how this attribute is obtained.
      * <ul>
-     * <li> If an entry is being put or loaded and the <tt>HITS</tt> attribute has been set the cache will use this value.</li>
+     * <li> If an entry is being put or loaded and the <tt>HITS</tt> attribute has been set the cache will use this
+     * value.</li>
      * <li> Else if this entry is replacing an existing entry the hit count from the existing entry will be used. </li>
      * <li> Else if this entry is accessed through <tt>get</tt>, <tt>getEntry</tt> or <tt>getAll</tt> the hit
      * count is incremented by 1</li>
@@ -126,13 +127,14 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
 
     /**
      * The size of the cache entry. The volume of a cache is defined as the sum of the individual sizes of all entries
-     * in the cache. This attribute is also used for deciding which entries to evict first in {@link ReplaceBiggestPolicy}
+     * in the cache. This attribute is also used for deciding which entries to evict first in
+     * {@link ReplaceBiggestPolicy}
      */
     LongAttribute SIZE = new CacheEntryAttributes.SizeAttribute();
 
     /**
-     * The time between when the entry was last accessed (through calls to {@link Cache#get(Object)} and midnight, January 1, 1970 UTC. This is also the value
-     * returned by {@link System#currentTimeMillis()}.
+     * The time between when the entry was last accessed (through calls to {@link Cache#get(Object)} and midnight,
+     * January 1, 1970 UTC. This is also the value returned by {@link System#currentTimeMillis()}.
      * <p>
      * <blockquote> <table border>
      * <tr>
@@ -159,8 +161,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
      * {@link System#currentTimeMillis()}. <p/> The following list describes how this attribute is obtained.
      * <ul>
-     * <li> If the entry is being put or loaded and the <tt>TIME_CREATED</tt> attribute has been set the cache will use this
-     * value.</li>
+     * <li> If the entry is being put or loaded and the <tt>TIME_CREATED</tt> attribute has been set the cache will
+     * use this value.</li>
      * <li> Else if this entry is replacing an existing entry the creation time from the existing entry will be used.
      * </li>
      * <li> Else if a clock is set through {@link CacheConfiguration#setClock(org.codehaus.cake.util.Clock)} a timestamp

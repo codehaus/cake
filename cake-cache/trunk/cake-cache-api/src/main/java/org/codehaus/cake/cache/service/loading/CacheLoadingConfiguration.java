@@ -37,11 +37,11 @@ import org.codehaus.cake.ops.Ops.Predicate;
  */
 public class CacheLoadingConfiguration<K, V> {
 
-    /** The needs reload predicate. */
-    private Predicate<? super CacheEntry<K, V>> needsReloadCondition;
-
     /** The cache loader. */
     private Object loader;
+
+    /** The needs reload predicate. */
+    private Predicate<? super CacheEntry<K, V>> needsReloadCondition;
 
     /**
      * Returns the cache loader that has been set using either {@link #setLoader(Op)} or
@@ -56,17 +56,13 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Sets the cache loader that should be used for loading elements into the cache.
-     * <p>
-     * Any previously loader that been set will be replaced by the specified loader
+     * Returns the configured needs reload predicate.
      * 
-     * @param loader
-     *            the cache loader to use
-     * @return this configuration
+     * @return the configured needs reload predicate
+     * @see #setNeedsReloadCondition(Predicate)
      */
-    public CacheLoadingConfiguration<K, V> setLoader(Op<? super K, ? extends V> loader) {
-        this.loader = loader;
-        return this;
+    public Predicate<? super CacheEntry<K, V>> getNeedsReloadCondition() {
+        return needsReloadCondition;
     }
 
     /**
@@ -84,13 +80,17 @@ public class CacheLoadingConfiguration<K, V> {
     }
 
     /**
-     * Returns the configured needs reload predicate.
+     * Sets the cache loader that should be used for loading elements into the cache.
+     * <p>
+     * Any previously loader that been set will be replaced by the specified loader
      * 
-     * @return the configured needs reload predicate
-     * @see #setNeedsReloadCondition(Predicate)
+     * @param loader
+     *            the cache loader to use
+     * @return this configuration
      */
-    public Predicate<? super CacheEntry<K, V>> getNeedsReloadCondition() {
-        return needsReloadCondition;
+    public CacheLoadingConfiguration<K, V> setLoader(Op<? super K, ? extends V> loader) {
+        this.loader = loader;
+        return this;
     }
 
     /**

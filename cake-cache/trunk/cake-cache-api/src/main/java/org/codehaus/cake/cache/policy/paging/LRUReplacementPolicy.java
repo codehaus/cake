@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.cache.policy.paging;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
@@ -24,19 +23,25 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @param <T>
+ *            the type of elements being cached
  */
 public class LRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
 
+    /** The name of the policy. */
+    public static final String NAME = "LRU";
+
+    /**
+     * Creates a new LRUReplacementPolicy.
+     * 
+     * @param context
+     *            a policy context instance
+     * @throws NullPointerException
+     *             if the specified context is null
+     */
     public LRUReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
-
-    /** A unique policy name. */
-    public static final String NAME = "LRU";
 
     /** {@inheritDoc} */
     public void add(T entry) {
@@ -44,13 +49,13 @@ public class LRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPoli
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void touch(T entry) {
-        moveFirst(entry);
+    public T evictNext() {
+        return removeLast();
     }
 
     /** {@inheritDoc} */
-    public T evictNext() {
-        return removeLast();
+    @Override
+    public void touch(T entry) {
+        moveFirst(entry);
     }
 }

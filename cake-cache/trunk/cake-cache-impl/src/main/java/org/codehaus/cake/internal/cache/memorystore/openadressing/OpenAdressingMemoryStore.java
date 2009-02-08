@@ -27,7 +27,6 @@ import org.codehaus.cake.internal.cache.CachePredicates;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
-import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
@@ -207,7 +206,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
 
     }
 
-    public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {
+    public void clear(Predicate<CacheEntry<K, V>> filter) {
         if (size != 0) {
             if (filter == null) {
                 clear();
@@ -217,7 +216,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
                 for (int i = 0; i < len; i++) {
                     OpenAdressingEntry<K, V> e = table[i];
                     if (e != null && e != TOMBSTONE && filter.op(e)) {
-                        table[i] = null;
+                        table[i] = TOMBSTONE;
                         size--;
                         removeEntry(e, false);
                     }

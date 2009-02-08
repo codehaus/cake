@@ -16,16 +16,36 @@ import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
  */
 public interface PolicyContext<T> {
 
-    /** @return the type of data maintained by cache */
-    Class getElementType();
+    /**
+     * Creates a new boolean attachement. That can be used to attach a boolean to the data maintained by the cache.
+     * 
+     * @return the boolean attachment
+     */
+    BooleanAttachment attachBoolean();
 
     /**
-     * Creates a new array of the specified
+     * Creates a new int attachement.
      * 
-     * @param size
-     * @return
+     * @return the int attachment
      */
-    T[] newArray(int size);
+    IntAttachment attachInt();
+
+    IntAttachment attachInt(int defaultValue);
+
+    <U> ObjectAttachment<U> attachObject(Class<U> type);
+
+    ObjectAttachment<T> attachSelfReference();
+
+    /**
+     * Depends on another attributes. If the user has not registered this attribute with
+     * {@link CacheAttributeConfiguration#add(Attribute...)} the cache will fail to startup. For example, it does not
+     * make sense to use {@link ReplaceCostliestPolicy} if the user does not supply entries a {@link CacheEntry#COST}
+     * attached.
+     * 
+     * @param attribute
+     *            the attribute to attach
+     */
+    void dependHard(Attribute<?> attribute);
 
     /**
      * Depends on another attributes. If the user has not registered this attribute with
@@ -40,54 +60,44 @@ public interface PolicyContext<T> {
      */
     void dependSoft(Attribute<?> attribute);
 
-    /**
-     * Depends on another attributes. If the user has not registered this attribute with
-     * {@link CacheAttributeConfiguration#add(Attribute...)} the cache will fail to startup. For example, it does not
-     * make sense to use {@link ReplaceCostliestPolicy} if the user does not supply entries a {@link CacheEntry#COST}
-     * attached.
-     * 
-     * @param attribute
-     *            the attribute to attach
-     */
-    void dependHard(Attribute<?> attribute);
-
-    ObjectAttachment<T> attachSelfReference();
-
-    <U> ObjectAttachment<U> attachObject(Class<U> type);
+    /** @return the type of data maintained by cache */
+    Class<T> getElementType();
 
     /**
-     * Creates a new int attachement.
+     * Creates a new array of the type of data maintained by the cache.
      * 
-     * @return the int attachment
+     * @param size
+     *            the size of the array
+     * @return the new array of the specified size
      */
-    IntAttachment attachInt();
+    T[] newArray(int size);
 
-    /**
-     * Creates a new boolean attachement.
-     * 
-     * @return the boolean attachment
-     */
-    BooleanAttachment attachBoolean();
+    /** A boolean attachment. */
+    interface BooleanAttachment {
+        boolean get(Object element);
 
-    /** An Object attachement */
-    interface ObjectAttachment<T> {
-        T get(Object entry);
-
-        void set(Object entry, T value);
+        void set(Object element, boolean value);
     }
 
     /** An int attachment. */
     interface IntAttachment {
-        int get(Object entry);
 
-        int get(Object entry, int defaultValue);
+        /**
+         * Returns the integer attachment for the specified element, or the specified default value if no information
+         * has been attached.
+         * 
+         * @param entry
+         * @return
+         */
+        int get(Object element);
 
-        void set(Object entry, int value);
+        void set(Object element, int value);
     }
-    /** A boolean attachment. */
-    interface BooleanAttachment {
-        boolean get(Object entry);
 
-        void set(Object entry, boolean value);
+    /** An Object attachement */
+    interface ObjectAttachment<T> {
+        T get(Object element);
+
+        void set(Object element, T value);
     }
 }

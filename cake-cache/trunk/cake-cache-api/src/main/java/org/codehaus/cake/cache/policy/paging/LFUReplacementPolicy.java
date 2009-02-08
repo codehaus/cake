@@ -28,17 +28,24 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
  * little attention to recent history, and does not adapt well to changing access patterns since it accumulates stale
  * pages with high frequency counts that may no longer be useful.
  * 
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id$
+ * @param <T>
+ *            the type of elements being cached
  */
 public class LFUReplacementPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
-    /** A unique policy name. */
+    /** The name of the policy. */
     public static final String NAME = "LFU";
 
-    /** Creates a new LFUReplacementPolicy */
+    /**
+     * Creates a new LFUReplacementPolicy.
+     * 
+     * @param context
+     *            a policy context instance
+     * @throws NullPointerException
+     *             if the specified context is null
+     */
     public LFUReplacementPolicy(PolicyContext<T> context) {
         super(context);
         // This is used to make sure that the cache will lazy register the HITS attribute

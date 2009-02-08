@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.cache.test.util;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
@@ -25,7 +24,6 @@ import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
-import org.codehaus.cake.attribute.WithAttributes;
 
 /**
  * 

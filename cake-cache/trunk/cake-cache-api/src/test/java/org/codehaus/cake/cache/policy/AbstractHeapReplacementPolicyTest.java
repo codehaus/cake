@@ -24,8 +24,6 @@ import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.junit.Before;
 import org.junit.Test;

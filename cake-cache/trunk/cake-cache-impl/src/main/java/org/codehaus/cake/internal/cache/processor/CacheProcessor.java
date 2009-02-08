@@ -20,6 +20,8 @@ import org.codehaus.cake.ops.Ops.Predicate;
 
 public interface CacheProcessor<K, V> {
 
+    public static final long SIZE = 123123871263L;
+
     void process(AddEntriesRequest<K, V> r);
 
     void process(AddEntryRequest<K, V> r);

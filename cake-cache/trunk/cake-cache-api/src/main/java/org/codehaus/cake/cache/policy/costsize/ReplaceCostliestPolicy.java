@@ -28,14 +28,12 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @param <T>
+ *            the type of elements being cached
  */
 public class ReplaceCostliestPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
-    /** A unique policy name. */
+    /** The name of the policy. */
     public static final String NAME = "ReplaceCostliest";
 
     /** Creates a new ReplaceCostliestPolicy. */

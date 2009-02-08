@@ -42,11 +42,54 @@ import org.codehaus.cake.cache.CacheEntry;
  */
 public interface CacheView<K, V> {
 
-    CacheView<K, V> setLimit(long limit);
+    /**
+     * Creates a new view with all entries in this view. Is primarily used for extracting data from the view. The
+     * following example extract all entries in this view as a {@link List}:
+     * 
+     * <pre>
+     * List&lt;CacheEntry&lt;K, V&gt;&gt; list = cacheview.entries().toList();
+     * </pre>
+     * 
+     * @return the new view
+     */
+    View<CacheEntry<K, V>> entries();
 
-    CacheEntry<K, V>[] toArray();
+    /**
+     * Creates a new view with the key for each entry {@link CacheEntry#getKey()}. The following example extract all
+     * keys in this view as a {@link List}:
+     * 
+     * <pre>
+     * List&lt;K&gt; list = cacheview.keys().toList();
+     * </pre>
+     * 
+     * @return the new view
+     */
+    View<K> keys();
 
     
+    /**
+     * Creates a new map view with the keys and values of this view. The following example extract all key value
+     * mappings as a {@link Map}:
+     * 
+     * <pre>
+     * Map&lt;K, V&gt; list = cacheview.keysValues().toMap();
+     * </pre>
+     * 
+     * @return the new view
+     */
+    MapView<K, V> keysValues();
+
+    /**
+     * Creates a new view where all elements are ordered accordingly to the specified comparator.
+     * 
+     * @param comparator
+     *            the comparator
+     * @throws NullPointerException
+     *             if the specified comparator is null
+     * @return the new view
+     */
+    CacheView<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator);
+
     /**
      * Creates a new view where all elements are ordered accordingly to the specified attribute and comparator.
      * 
@@ -57,7 +100,7 @@ public interface CacheView<K, V> {
      * @return the new view
      */
     <T> CacheView<K, V> orderByAttribute(Attribute<T> attribute, Comparator<? extends T> comparator);
-
+    
     /**
      * Creates a new view where all elements are ordered accordingly to the natural order.
      * 
@@ -76,65 +119,6 @@ public interface CacheView<K, V> {
      * @return the new view
      */
     CacheView<K, V> orderByAttributeMin(Attribute<?> attribute);
-    
-    /**
-     * Creates a new view where all elements are ordered accordingly to the specified comparator.
-     * 
-     * @param comparator
-     *            the comparator
-     * @throws NullPointerException
-     *             if the specified comparator is null
-     * @return the new view
-     */
-    CacheView<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator);
-
-    /**
-     * Creates a new view with all entries in this view. Is primarily used for extracting data from the view. The
-     * following example extract all entries in this view as a {@link List}:
-     * 
-     * <pre>
-     * List&lt;CacheEntry&lt;K, V&gt;&gt; list = cacheview.entries().toList();
-     * </pre>
-     * 
-     * @return the new view
-     */
-    View<CacheEntry<K, V>> entries();
-
-    /**
-     * Creates a new view with the value for each entry {@link CacheEntry#getValue()}. The following example extract
-     * all values in this view as a {@link List}:
-     * 
-     * <pre>
-     * List&lt;V&gt; list = cacheview.values().toList();
-     * </pre>
-     * 
-     * @return the new view
-     */
-    View<V> values();
-
-    /**
-     * Creates a new view with the key for each entry {@link CacheEntry#getKey()}. The following example extract all
-     * keys in this view as a {@link List}:
-     * 
-     * <pre>
-     * List&lt;K&gt; list = cacheview.keys().toList();
-     * </pre>
-     * 
-     * @return the new view
-     */
-    View<K> keys();
-
-    /**
-     * Creates a new map view with the keys and values of this view. The following example extract all key value
-     * mappings as a {@link Map}:
-     * 
-     * <pre>
-     * Map&lt;K, V&gt; list = cacheview.keysValues().toMap();
-     * </pre>
-     * 
-     * @return the new view
-     */
-    MapView<K, V> keysValues();
 
     CacheView<K, V> orderByKeys(Comparator<K> comparator);
 
@@ -178,5 +162,21 @@ public interface CacheView<K, V> {
      * @return the new view
      */
     CacheView<K, V> orderByValuesMin();
+
+    CacheView<K, V> setLimit(long limit);
+
+    CacheEntry<K, V>[] toArray();
+
+    /**
+     * Creates a new view with the value for each entry {@link CacheEntry#getValue()}. The following example extract
+     * all values in this view as a {@link List}:
+     * 
+     * <pre>
+     * List&lt;V&gt; list = cacheview.values().toList();
+     * </pre>
+     * 
+     * @return the new view
+     */
+    View<V> values();
 
 }

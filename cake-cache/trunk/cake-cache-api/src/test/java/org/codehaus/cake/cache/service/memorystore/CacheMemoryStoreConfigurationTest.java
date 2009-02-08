@@ -22,11 +22,9 @@ import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.ops.Ops;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.junit.Test;
 

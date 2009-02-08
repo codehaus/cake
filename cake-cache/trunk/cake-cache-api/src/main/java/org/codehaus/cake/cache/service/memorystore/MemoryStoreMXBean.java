@@ -25,23 +25,9 @@ import org.codehaus.cake.cache.CacheMXBean;
  */
 public interface MemoryStoreMXBean {
 
-    /**
-     * Keeps evicting entries until the size of the cache is equal to the specified size. If the specified size is
-     * greater then the current size of the cache no action is taken.
-     * 
-     * @param size
-     *            the number of elements to trim the cache down to
-     */
-    void trimToSize(int size);
+    int getMaximumSize();
 
-    /**
-     * Keeps evicting entries until the volume of the cache is equal to or less then the specified volume. If the
-     * specified volume is greater then the current volume no action is taken.
-     * 
-     * @param volume
-     *            the volume to trim the cache down to
-     */
-    void trimToVolume(long volume);
+    long getMaximumVolume();
 
     /**
      * Returns the current size of the cache. This is the same value returned by {@link CacheMXBean#getSize()}, but is
@@ -59,11 +45,25 @@ public interface MemoryStoreMXBean {
      */
     long getVolume();
 
-    long getMaximumVolume();
-
-    int getMaximumSize();
+    void setMaximumSize(int maximumSize);
 
     void setMaximumVolume(long maximumVolume);
 
-    void setMaximumSize(int maximumSize);
+    /**
+     * Keeps evicting entries until the size of the cache is equal to the specified size. If the specified size is
+     * greater then the current size of the cache no action is taken.
+     * 
+     * @param size
+     *            the number of elements to trim the cache down to
+     */
+    void trimToSize(int size);
+
+    /**
+     * Keeps evicting entries until the volume of the cache is equal to or less then the specified volume. If the
+     * specified volume is greater then the current volume no action is taken.
+     * 
+     * @param volume
+     *            the volume to trim the cache down to
+     */
+    void trimToVolume(long volume);
 }

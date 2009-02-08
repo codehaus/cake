@@ -23,10 +23,10 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.ops.Ops;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.ops.Ops.Procedure;
 
 /**
- * Used for configuring the eviction service prior to usage.
+ * Used for configuring the memory store of a cache prior to usage.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -42,7 +42,7 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
     private Ops.Procedure<MemoryStoreService<K, V>> evictor;
 
     /** A filter used for filtering what items should be cached. */
-    private IsCacheablePredicate<? super K,? super  V> isCacheableFilter;
+    private IsCacheablePredicate<? super K, ? super V> isCacheableFilter;
 
     /** Whether or not caching is disabled. */
     private boolean isDisabled;
@@ -55,17 +55,21 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
     private Class<? extends ReplacementPolicy> replacementPolicy;
 
+    public AttributeMap getAttributes() {
+        return attributes;
+    }
+
     public Ops.Procedure<MemoryStoreService<K, V>> getEvictor() {
         return evictor;
     }
 
     /**
-     * Returns the Predicate that determinds if a given key and value should be cached.
+     * Returns a {@link IsCacheablePredicate} that determinds if a given key and value should be cached.
      * 
-     * @return the IsCacheable predicate configured or <code>null</code> if no predicate has been set
-     * @see #setIsCacheableFilter(Predicate)
+     * @return the iscacheable predicate if it has been set, otherwise <code>null</code>
+     * @see #setIsCacheableFilter(IsCacheablePredicate)
      */
-    public IsCacheablePredicate<? super K,? super  V> getIsCacheableFilter() {
+    public IsCacheablePredicate<? super K, ? super V> getIsCacheableFilter() {
         return isCacheableFilter;
     }
 
@@ -89,6 +93,12 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
         return maximumVolume;
     }
 
+    /**
+     * Returns the type of replacement policy that the cache should use for choosing elements to evict when needed.
+     * 
+     * @return the type of replacement policy
+     * @see #setPolicy(Class)
+     */
     public Class<? extends ReplacementPolicy> getPolicy() {
         return replacementPolicy;
     }
@@ -97,6 +107,8 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * Returns whether or not caching is disabled.
      * 
      * @return <code>true</code> if caching is disabled, otherwise <code>false</code>
+     * @see #setDisabled(boolean)
+     * @see MemoryStoreService#isDisabled()
      */
     public boolean isDisabled() {
         return isDisabled;
@@ -109,6 +121,8 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * @param isDisabled
      *            whether or not caching is disabled
      * @return this configuration
+     * @see #isDisabled()
+     * @see MemoryStoreService#setDisabled(boolean)
      */
     public MemoryStoreConfiguration<K, V> setDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
@@ -117,6 +131,9 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
     }
 
     /**
+     * Normally cache instances will only evict the minimum number of elements needed in order to maximum size and
+     * volume.
+     * 
      * Controls how many entries are evicted whenever the maximum volume or size is reached.
      * <p>
      * If no evictor is specified the cache will normally evict the minimum number of entries possible to make room for
@@ -135,25 +152,28 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * </pre>
      * 
      * <p>
-     * The behavior of using the MemoryStoreService parsed along to the procedure anywhere but within the procedure is
-     * undefined.
+     * The behavior of using the MemoryStoreService parsed along to the procedures {@link Procedure#op(Object)} method
+     * anywhere but within that method is undefined.
      * 
      * @param evictor
+     *            the evictor to use
      * @return this configuration
+     * @see #getEvictor()
      */
-    public MemoryStoreConfiguration<K, V> setEvictor(Ops.Procedure<MemoryStoreService<K, V>> evictor) {
+    public MemoryStoreConfiguration<K, V> setEvictor(Procedure<MemoryStoreService<K, V>> evictor) {
         this.evictor = evictor;
         return this;
     }
 
     /**
-     * Sets a Predicate that the cache will use to determind if a cache entry can be cached. For example,
+     * Sets a IsCacheablePredicate that the cache will use to determind if a cache entry should be cached. For example,
      * 
      * @param predicate
-     *            the predicate that decides if a given key, value combination can be added to the cache
+     *            the predicate that decides if a given cache entry should be cached
      * @return this configuration
+     * @see #getIsCacheableFilter()
      */
-    public MemoryStoreConfiguration<K, V> setIsCacheableFilter(IsCacheablePredicate<? super K,? super  V> predicate) {
+    public MemoryStoreConfiguration<K, V> setIsCacheableFilter(IsCacheablePredicate<? super K, ? super V> predicate) {
         this.isCacheableFilter = predicate;
         return this;
     }
@@ -164,16 +184,17 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
      * holds 10 elements. Then, if a user tries to add a new element the cache must choose one of the 10 elements to
      * remove from the cache before it inserts the new element. As an alternative the cache might choose to keep the 10
      * existing elements and not add the new element. For example, if it estimates that the likelihood of requesting
-     * anyone of the 10 elements in the near future are higher then the likelihood of new element being requested. <p To
-     * indicate that a cache can hold an unlimited number of elements, specify {@link Integer#MAX_VALUE}. This is also
-     * the default value.
+     * anyone of the 10 elements in the near future are higher then the likelihood of the new element being requested.
+     * <p>
+     * To indicate that a cache can hold an unlimited number of elements, specify {@link Integer#MAX_VALUE} which is
+     * also the default value.
      * <p>
      * If the specified maximum size is 0, the cache will never store any elements internally.
      * 
      * @param maximumSize
      *            the maximum number of elements the cache can hold or Integer.MAX_VALUE if there is no limit
      * @throws IllegalArgumentException
-     *             if the specified integer is negative
+     *             if the specified maximum size is negative
      * @return this configuration
      */
     public final MemoryStoreConfiguration<K, V> setMaximumSize(int maximumSize) {
@@ -187,15 +208,16 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
 
     /**
      * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the individual element
-     * sizes (sum of {@link CacheEntry#SIZE}. If the limit is reached the cache must evict existing elements before
+     * sizes (sum of {@link CacheEntry#SIZE}). If the limit is reached the cache must evict existing elements before
      * adding new elements.
      * <p>
-     * To indicate that a cache can have an unlimited volume, used {@link Long#MAX_VALUE}.
+     * To indicate that a cache can have an unlimited volume, specify {@link Long#MAX_VALUE} which is also the default
+     * value.
      * 
      * @param maximumVolume
      *            the maximum volume.
      * @throws IllegalArgumentException
-     *             if the specified integer is negative
+     *             if the specified m aximum volume is negative
      * @return this configuration
      */
     public MemoryStoreConfiguration<K, V> setMaximumVolume(long maximumVolume) {
@@ -205,11 +227,19 @@ public class MemoryStoreConfiguration<K, V> implements WithAttributes {
         return this;
     }
 
+    /**
+     * Sets the type of replacement policy that the cache should use to choose which elements to evict when the cache is
+     * full and new elements are being added.
+     * <p>
+     * If no replacement policy is specified and the cache needs to evict elements, it may choose the elements to evict
+     * in any possible way.
+     * 
+     * @param replacementPolicy
+     *            the replacement policy
+     * @return this configuration
+     */
     public MemoryStoreConfiguration<K, V> setPolicy(Class<? extends ReplacementPolicy> replacementPolicy) {
         this.replacementPolicy = replacementPolicy;
         return this;
-    }
-    public AttributeMap getAttributes() {
-        return attributes;
     }
 }

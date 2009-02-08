@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.policy.AbstractCakeReplacementPolicy;
+import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
@@ -70,7 +70,7 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         assertTrue(getEntry(M1).attributes().contains(CacheEntry.HITS));
     }
 
-    public static class HardPolicy extends AbstractCakeReplacementPolicy<CacheEntry<Integer, String>> {
+    public static class HardPolicy implements ReplacementPolicy<CacheEntry<Integer, String>> {
 
         public HardPolicy(PolicyContext<?> context) {
             context.dependHard(A1);
@@ -79,17 +79,25 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         public void add(CacheEntry<Integer, String> entry) {
         }
 
-        public void clear() {}
+        public void clear() {
+        }
 
         public CacheEntry<Integer, String> evictNext() {
             return null;
         }
 
-        public void remove(CacheEntry<Integer, String> entry) {}
+        public void remove(CacheEntry<Integer, String> entry) {
+        }
+
+        public void replace(CacheEntry<Integer, String> oldElement, CacheEntry<Integer, String> newElement) {
+        }
+
+        public void touch(CacheEntry<Integer, String> element) {
+        }
 
     }
 
-    public static class SoftPolicy extends AbstractCakeReplacementPolicy<CacheEntry<Integer, String>> {
+    public static class SoftPolicy implements ReplacementPolicy<CacheEntry<Integer, String>> {
 
         public SoftPolicy(PolicyContext<?> context) {
             context.dependSoft(CacheEntry.HITS);
@@ -98,13 +106,21 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         public void add(CacheEntry<Integer, String> entry) {
         }
 
-        public void clear() {}
+        public void clear() {
+        }
 
         public CacheEntry<Integer, String> evictNext() {
             return null;
         }
 
-        public void remove(CacheEntry<Integer, String> entry) {}
+        public void remove(CacheEntry<Integer, String> entry) {
+        }
+
+        public void replace(CacheEntry<Integer, String> oldElement, CacheEntry<Integer, String> newElement) {
+        }
+
+        public void touch(CacheEntry<Integer, String> element) {
+        }
 
     }
 

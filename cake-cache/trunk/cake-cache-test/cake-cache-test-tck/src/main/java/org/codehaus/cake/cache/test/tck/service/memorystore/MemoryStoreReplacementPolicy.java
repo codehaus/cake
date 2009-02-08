@@ -15,18 +15,9 @@
  */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import static org.codehaus.cake.cache.CacheEntry.SIZE;
-import static org.codehaus.cake.test.util.CollectionTestUtil.asMap_;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asKeySet;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
-import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
-import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

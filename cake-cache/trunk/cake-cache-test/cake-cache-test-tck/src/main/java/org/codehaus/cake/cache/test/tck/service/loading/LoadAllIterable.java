@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
+import static org.codehaus.cake.attribute.Attributes.from;
+
 import java.util.Arrays;
 
 import org.codehaus.cake.attribute.Attribute;
@@ -22,7 +24,6 @@ import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
-import static org.codehaus.cake.attribute.Attributes.from;
 
 public class LoadAllIterable extends AbstractCacheTCKTest {
     public static final Attribute ATR1 = new ObjectAttribute("ATR1", String.class, "0") {};

@@ -27,17 +27,24 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
  * This policy is seldom used. However, it can be used in some situations. See, for example,
  * http://citeseer.ist.psu.edu/mekhiel95multilevel.html
  * 
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id$
+ * @param <T>
+ *            the type of elements being cached
  */
 public class MFUReplacementPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
-    /** A unique policy name. */
+    /** The name of the policy. */
     public static final String NAME = "MFU";
 
-    /** Creates a new MFUReplacementPolicy. */
+    /**
+     * Creates a new MFUReplacementPolicy.
+     * 
+     * @param context
+     *            a policy context instance
+     * @throws NullPointerException
+     *             if the specified context is null
+     */
     public MFUReplacementPolicy(PolicyContext<T> context) {
         super(context);
         // This is used to make sure that the cache will lazy register the HITS attribute

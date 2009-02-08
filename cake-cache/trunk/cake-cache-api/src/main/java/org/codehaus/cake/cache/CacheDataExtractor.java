@@ -23,7 +23,7 @@ import org.codehaus.cake.ops.Ops.Op;
 /**
  * A utility class that can ve used for creating transformers that extract data from {@link CacheEntry CacheEntries}.
  * 
- * 
+ * TODO put in cache.util
  */
 public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>, T> {
     // // /CLOVER:OFF

@@ -17,7 +17,6 @@ package org.codehaus.cake.cache;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.service.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
@@ -33,8 +32,8 @@ import org.codehaus.cake.service.Container;
  * service.trimToSize(10);
  * </pre>
  * 
- * Basically {@link CacheServices} just wraps the call to {@link #getService(Class)}, the above snippet is
- * equivalent to:
+ * Basically {@link CacheServices} just wraps the call to {@link #getService(Class)}, the above snippet is equivalent
+ * to:
  * 
  * <pre>
  * Cache&lt;?, ?&gt; c = someCache;

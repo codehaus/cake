@@ -25,8 +25,8 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
- * Factory methods for different {@link ReplacementPolicy} implementations. This class provides shortcuts for various
- * replacement policy implementations.
+ * Provides the type of all common replacement policies available in cake. In addition to this, provides a number of
+ * method that useful for creating {@link PolicyContext} instances that can be used while testing.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -36,16 +36,22 @@ public final class Policies {
 
     /** A First In First Out replacement policy. */
     public final static Class<? extends ReplacementPolicy> FIFO = LRUReplacementPolicy.class;
+
     /** A Least Frequenty Used policy. */
     public final static Class<? extends ReplacementPolicy> LFU = LRUReplacementPolicy.class;
+
     /** A Last In First Out replacement policy. */
     public final static Class<? extends ReplacementPolicy> LIFO = LRUReplacementPolicy.class;
+
     /** A Least Recently Used replacement policy. */
     public final static Class<? extends ReplacementPolicy> LRU = LRUReplacementPolicy.class;
+
     /** A Most Frequently Used replacement policy. */
     public final static Class<? extends ReplacementPolicy> MFU = LRUReplacementPolicy.class;
+
     /** A Most Recently Used replacement policy. */
     public final static Class<? extends ReplacementPolicy> MRU = LRUReplacementPolicy.class;
+
     /** A Random replacement policy. */
     public final static Class<? extends ReplacementPolicy> RANDOM = RandomReplacementPolicy.class;
 
@@ -59,12 +65,17 @@ public final class Policies {
     /**
      * Creates a new ReplacementPolicy of the specified type.
      * 
-     * If the specified replacement type requires a {@link PolicyContext}
+     * If the specified replacement type has a constructor taking a {@link PolicyContext}, this method will create a
+     * context that can be used. This is especially usefull while testing replacement policies that needs a
+     * {@link PolicyContext} instance.
      * 
      * @param <T>
      *            the type of replacement policy
      * @param clazz
      *            the type of replacement policy
+     * @throws IllegalArgumentException
+     *             if the specified class does not a public empty constructor or a public constructor taking a single
+     *             PolicyContext argument
      * @return the newly created policy
      */
     public static <T extends ReplacementPolicy> T create(Class<T> clazz) {
@@ -72,7 +83,7 @@ public final class Policies {
     }
 
     /**
-     * Creates a new ReplacementPolicy of the specified type
+     * Creates a new ReplacementPolicy of the specified type.
      * 
      * @param <T>
      *            the type of replacement policy
@@ -83,7 +94,8 @@ public final class Policies {
      * @throws NullPointerException
      *             if the specified clazz or context is null
      * @throws IllegalArgumentException
-     *             if an instance of the specified replacement policy type could not be created
+     *             if the specified class does not a public empty constructor or a public constructor taking a single
+     *             PolicyContext argument
      * @return the newly created policy
      */
     public static <T extends ReplacementPolicy> T create(Class<T> clazz, PolicyContext context) {
@@ -135,7 +147,11 @@ public final class Policies {
         }
 
         public IntAttachment attachInt() {
-            return new IA();
+            return attachInt(0);
+        }
+
+        public IntAttachment attachInt(int defaultValue) {
+            return new IA(defaultValue);
         }
 
         public <U> ObjectAttachment<U> attachObject(Class<U> type) {
@@ -153,11 +169,11 @@ public final class Policies {
         }
 
         public Class getElementType() {
-            return Object.class;
+            return type;
         }
 
         public T[] newArray(int size) {
-            return (T[]) new Object[size];
+            return (T[]) java.lang.reflect.Array.newInstance(type, size);
         }
 
         static class BA implements BooleanAttachment {
@@ -177,17 +193,14 @@ public final class Policies {
         }
 
         static class IA implements IntAttachment {
+            int defaultValue;
             final IdentityHashMap<Object, Integer> map = new IdentityHashMap<Object, Integer>();
 
-            public int get(Object entry) {
-                Integer i = map.get(entry);
-                if (i == null) {
-                    throw new IllegalArgumentException("The value of this attachment has not been set previously");
-                }
-                return i.intValue();
+            IA(int defaultValue) {
+                this.defaultValue = defaultValue;
             }
 
-            public int get(Object entry, int defaultValue) {
+            public int get(Object entry) {
                 Integer i = map.get(entry);
                 if (i == null) {
                     return defaultValue;
@@ -210,7 +223,6 @@ public final class Policies {
             public void set(Object entry, Object value) {
                 map.put(entry, value);
             }
-
         }
     }
 

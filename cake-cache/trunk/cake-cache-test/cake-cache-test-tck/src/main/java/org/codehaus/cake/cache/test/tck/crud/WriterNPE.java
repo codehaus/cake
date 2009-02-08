@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite.LazyOp;
 import org.codehaus.cake.ops.Predicates;

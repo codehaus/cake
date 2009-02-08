@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.codehaus.cake.cache.policy.spi.PolicyContext.ObjectAttachment;
 

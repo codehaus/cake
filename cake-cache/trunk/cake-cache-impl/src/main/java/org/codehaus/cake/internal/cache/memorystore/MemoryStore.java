@@ -21,7 +21,6 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
-import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
@@ -57,7 +56,7 @@ public interface MemoryStore<K, V> {
 
     void process(AddEntryRequest<K, V> r);
 
-    void process(Predicate<CacheEntry<K,V>> filter, ClearCacheRequest<K, V> r);
+    void clear(Predicate<CacheEntry<K,V>> filter);
 
     void process(RemoveEntriesRequest<K, V> r);
 

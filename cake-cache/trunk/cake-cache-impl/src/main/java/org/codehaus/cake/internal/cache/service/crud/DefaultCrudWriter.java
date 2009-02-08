@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.cache.service.crud;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;

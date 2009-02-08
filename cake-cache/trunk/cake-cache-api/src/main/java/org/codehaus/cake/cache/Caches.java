@@ -31,14 +31,13 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
 import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
@@ -75,20 +74,22 @@ public final class Caches {
      */
     public static final Cache EMPTY_CACHE = new EmptyCache();
 
-    /** A CacheSelector that returns the empty cache for all argument. */
-    static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
-
-    static final View EMPTY_VIEW = new EmptyView();
-    static final MapView EMPTY_MAP_VIEW = new EmptyMapView();
-    static final CacheView EMPTY_CACHE_VIEW = new EmptyCacheView();
+    /** An empty array of cache entries. */
     static final CacheEntry[] EMPTY_CACHE_ENTRY_ARRAY = new CacheEntry[0];
 
-    // /CLOVER:OFF
+    static final CacheView EMPTY_CACHE_VIEW = new EmptyCacheView();
+    static final MapView EMPTY_MAP_VIEW = new EmptyMapView();
+    /** A CacheSelector that returns the empty cache for all argument. */
+    static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
+    static final View EMPTY_VIEW = new EmptyView();
+
+    // /CLOVER:ON
     /** Cannot instantiate. */
     private Caches() {
     }
 
-    // /CLOVER:ON
+    // /CLOVER:OFF
+
     /**
      * Returns a {@link Runnable} that when executed will call the {@link Cache#clear()} method on the specified cache.
      * <p>
@@ -202,6 +203,10 @@ public final class Caches {
             return Collections.EMPTY_MAP.entrySet();
         }
 
+        public CacheSelector<K, V> filter() {
+            return EMPTY_SELECTOR;
+        }
+
         /** {@inheritDoc} */
         public Map<K, V> getAll(Iterable<? extends K> keys) {
             CollectionUtils.checkCollectionForNulls(keys);
@@ -257,6 +262,10 @@ public final class Caches {
             return false;
         }
 
+        public Iterator<CacheEntry<K, V>> iterator() {
+            return Collections.EMPTY_LIST.iterator();
+        }
+
         /** {@inheritDoc} */
         public V peek(K key) {
             return null;
@@ -305,6 +314,10 @@ public final class Caches {
         public void shutdownNow() {
         }
 
+        public CacheView<K, V> view() {
+            return EMPTY_CACHE_VIEW;
+        }
+
         /** {@inheritDoc} */
         public CacheServices<K, V> with() {
             return new CacheServices<K, V>(this);
@@ -314,181 +327,6 @@ public final class Caches {
         public CacheCrud<K, V> withCrud() {
             return new CacheCrud<K, V>(this);
         }
-
-        public CacheSelector<K, V> filter() {
-            return EMPTY_SELECTOR;
-        }
-
-        public Iterator<CacheEntry<K, V>> iterator() {
-            return Collections.EMPTY_LIST.iterator();
-        }
-
-        public CacheView<K, V> view() {
-            return EMPTY_CACHE_VIEW;
-        }
-    }
-
-    static class EmptyView<T> implements View<T>, Serializable {
-        public List<T> toList() {
-            return Collections.EMPTY_LIST;
-        }
-
-        public T max() {
-            return null;
-        }
-
-        public T min() {
-            return null;
-        }
-
-        public T reduce(Reducer<T> reducer, T base) {
-            return base;
-        }
-
-        public T any() {
-            return null;
-        }
-
-        public void apply(Procedure<? super T> procedure) {
-
-        }
-
-        public long size() {
-            return 0;
-        }
-
-        public Object[] toArray() {
-            return Collections.EMPTY_LIST.toArray();
-        }
-
-        public <E> E[] toArray(E[] a) {
-            return (E[]) Collections.EMPTY_LIST.toArray(a);
-        }
-
-        public T max(Comparator<? super T> comparator) {
-            return null;
-        }
-
-        public T min(Comparator<? super T> comparator) {
-            return null;
-        }
-
-        public <E> View<E> map(Op<? super T, ? extends E> mapper) {
-            return (View) this;
-        }
-
-        public View<T> orderBy(Comparator<? super T> comparator) {
-            return this;
-        }
-
-        public View<T> orderByMax() {
-            return this;
-        }
-
-        public View<T> orderByMin() {
-            return this;
-        }
-
-        public View<T> setLimit(long limit) {
-            return this;
-        }
-
-        public boolean isEmpty() {
-           return true;
-        }
-    }
-
-    static class EmptyMapView<K, V> implements MapView<K, V>, Serializable {
-
-        public Map<K, V> toMap() {
-            return Collections.EMPTY_MAP;
-        }
-
-        public View<Entry<K, V>> entries() {
-            return EMPTY_VIEW;
-        }
-
-        public View<K> keys() {
-            return EMPTY_VIEW;
-        }
-
-        public View<V> values() {
-            return EMPTY_VIEW;
-        }
-
-        public long size() {
-            return 0;
-        }
-
-        public void apply(BinaryProcedure<? super K, ? super V> procedure) {
-        }
-    }
-
-    static class EmptyCacheView<K, V> implements CacheView<K, V>, Serializable {
-
-        public View<CacheEntry<K, V>> entries() {
-            return EMPTY_VIEW;
-        }
-
-        public View<K> keys() {
-            return EMPTY_VIEW;
-        }
-
-        public MapView<K, V> keysValues() {
-            return EMPTY_MAP_VIEW;
-        }
-
-        public CacheView<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator) {
-            return this;
-        }
-
-        public View<V> values() {
-            return EMPTY_VIEW;
-        }
-
-        public CacheView<K, V> orderByKeys(Comparator<K> comparator) {
-            return this;
-        }
-
-        public CacheView<K, V> orderByKeysMax() {
-            return this;
-        }
-
-        public CacheView<K, V> orderByKeysMin() {
-            return this;
-        }
-
-        public CacheView<K, V> orderByValues(Comparator<V> comparator) {
-            return this;
-        }
-
-        public CacheView<K, V> orderByValuesMax() {
-            return this;
-        }
-
-        public CacheView<K, V> orderByValuesMin() {
-            return this;
-        }
-
-        public <T> CacheView<K, V> orderByAttribute(Attribute<T> attribute, Comparator<? extends T> comparator) {
-            return this;
-        }
-
-        public CacheView<K, V> orderByAttributeMax(Attribute<?> attribute) {
-            return this;
-        }
-
-        public CacheView<K, V> orderByAttributeMin(Attribute<?> attribute) {
-            return this;
-        }
-
-        public CacheView<K, V> setLimit(long limit) {
-            return this;
-        }
-
-        public CacheEntry<K, V>[] toArray() {
-            return EMPTY_CACHE_ENTRY_ARRAY;
-        }
     }
 
     /** A cache selector that always returns the empty cache. */
@@ -497,6 +335,10 @@ public final class Caches {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        public <T> Cache<K, V> on(Attribute<T> a, Predicate<T> p) {
+            return EMPTY_CACHE;
+        }
 
         public Cache<K, V> on(BinaryPredicate<? super K, ? super V> selector) {
             return EMPTY_CACHE;
@@ -530,10 +372,6 @@ public final class Caches {
             return EMPTY_CACHE;
         }
 
-        public <T> Cache<K, V> on(Attribute<T> a, Predicate<T> p) {
-            return EMPTY_CACHE;
-        }
-
         public Cache<K, V> on(Predicate<CacheEntry<K, V>> p) {
             return EMPTY_CACHE;
         }
@@ -556,6 +394,169 @@ public final class Caches {
 
         public <T extends V> Cache<K, T> onValueType(Class<T> clazz) {
             return EMPTY_CACHE;
+        }
+    }
+
+    static class EmptyCacheView<K, V> implements CacheView<K, V>, Serializable {
+
+        public View<CacheEntry<K, V>> entries() {
+            return EMPTY_VIEW;
+        }
+
+        public View<K> keys() {
+            return EMPTY_VIEW;
+        }
+
+        public MapView<K, V> keysValues() {
+            return EMPTY_MAP_VIEW;
+        }
+
+        public CacheView<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator) {
+            return this;
+        }
+
+        public <T> CacheView<K, V> orderByAttribute(Attribute<T> attribute, Comparator<? extends T> comparator) {
+            return this;
+        }
+
+        public CacheView<K, V> orderByAttributeMax(Attribute<?> attribute) {
+            return this;
+        }
+
+        public CacheView<K, V> orderByAttributeMin(Attribute<?> attribute) {
+            return this;
+        }
+
+        public CacheView<K, V> orderByKeys(Comparator<K> comparator) {
+            return this;
+        }
+
+        public CacheView<K, V> orderByKeysMax() {
+            return this;
+        }
+
+        public CacheView<K, V> orderByKeysMin() {
+            return this;
+        }
+
+        public CacheView<K, V> orderByValues(Comparator<V> comparator) {
+            return this;
+        }
+
+        public CacheView<K, V> orderByValuesMax() {
+            return this;
+        }
+
+        public CacheView<K, V> orderByValuesMin() {
+            return this;
+        }
+
+        public CacheView<K, V> setLimit(long limit) {
+            return this;
+        }
+
+        public CacheEntry<K, V>[] toArray() {
+            return EMPTY_CACHE_ENTRY_ARRAY;
+        }
+
+        public View<V> values() {
+            return EMPTY_VIEW;
+        }
+    }
+
+    static class EmptyMapView<K, V> implements MapView<K, V>, Serializable {
+
+        public void apply(BinaryProcedure<? super K, ? super V> procedure) {
+        }
+
+        public View<Entry<K, V>> entries() {
+            return EMPTY_VIEW;
+        }
+
+        public View<K> keys() {
+            return EMPTY_VIEW;
+        }
+
+        public long size() {
+            return 0;
+        }
+
+        public Map<K, V> toMap() {
+            return Collections.EMPTY_MAP;
+        }
+
+        public View<V> values() {
+            return EMPTY_VIEW;
+        }
+    }
+
+    static class EmptyView<T> implements View<T>, Serializable {
+        public T any() {
+            return null;
+        }
+
+        public void apply(Procedure<? super T> procedure) {
+
+        }
+
+        public boolean isEmpty() {
+            return true;
+        }
+
+        public <E> View<E> map(Op<? super T, ? extends E> mapper) {
+            return (View) this;
+        }
+
+        public T max() {
+            return null;
+        }
+
+        public T max(Comparator<? super T> comparator) {
+            return null;
+        }
+
+        public T min() {
+            return null;
+        }
+
+        public T min(Comparator<? super T> comparator) {
+            return null;
+        }
+
+        public View<T> orderBy(Comparator<? super T> comparator) {
+            return this;
+        }
+
+        public View<T> orderByMax() {
+            return this;
+        }
+
+        public View<T> orderByMin() {
+            return this;
+        }
+
+        public T reduce(Reducer<T> reducer, T base) {
+            return base;
+        }
+
+        public View<T> setLimit(long limit) {
+            return this;
+        }
+
+        public long size() {
+            return 0;
+        }
+
+        public Object[] toArray() {
+            return Collections.EMPTY_LIST.toArray();
+        }
+
+        public <E> E[] toArray(E[] a) {
+            return (E[]) Collections.EMPTY_LIST.toArray(a);
+        }
+
+        public List<T> toList() {
+            return Collections.EMPTY_LIST;
         }
     }
 
@@ -600,6 +601,18 @@ public final class Caches {
             this.attributes = attributes;
         }
 
+        public Set<Attribute> attributes() {
+            return attributes.attributes();
+        }
+
+        public boolean contains(Attribute<?> attribute) {
+            return attributes.contains(attribute);
+        }
+
+        public Set<Entry<Attribute, Object>> entrySet() {
+            return attributes.entrySet();
+        }
+
         /** {@inheritDoc} */
         @Override
         public boolean equals(Object o) {
@@ -608,6 +621,78 @@ public final class Caches {
             }
             Map.Entry e = (Map.Entry) o;
             return eq(key, e.getKey()) && eq(value, e.getValue())/* && eq(attributes, e.getAttributes()) */;
+        }
+
+        public <T> T get(Attribute<T> attribute) {
+            return attributes.get(attribute);
+        }
+
+        public <T> T get(Attribute<T> attribute, T defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public boolean get(BooleanAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public boolean get(BooleanAttribute attribute, boolean defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public byte get(ByteAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public byte get(ByteAttribute attribute, byte defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public char get(CharAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public char get(CharAttribute attribute, char defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public double get(DoubleAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public double get(DoubleAttribute attribute, double defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public float get(FloatAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public float get(FloatAttribute attribute, float defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public int get(IntAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public int get(IntAttribute attribute, int defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public long get(LongAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public long get(LongAttribute attribute, long defaultValue) {
+            return attributes.get(attribute, defaultValue);
+        }
+
+        public short get(ShortAttribute attribute) {
+            return attributes.get(attribute);
+        }
+
+        public short get(ShortAttribute attribute, short defaultValue) {
+            return attributes.get(attribute, defaultValue);
         }
 
         /** {@inheritDoc} */
@@ -626,9 +711,17 @@ public final class Caches {
             return key.hashCode() ^ value.hashCode();
         }
 
+        public boolean isEmpty() {
+            return attributes.isEmpty();
+        }
+
         /** {@inheritDoc} */
         public V setValue(V value) {
             throw new UnsupportedOperationException();
+        }
+
+        public int size() {
+            return attributes.size();
         }
 
         /** {@inheritDoc} */
@@ -653,98 +746,6 @@ public final class Caches {
                     return sb.append(']').toString();
                 sb.append(", ");
             }
-        }
-
-        public <T> T get(Attribute<T> attribute, T defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public <T> T get(Attribute<T> attribute) {
-            return attributes.get(attribute);
-        }
-
-        public boolean get(BooleanAttribute attribute, boolean defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public boolean get(BooleanAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public byte get(ByteAttribute attribute, byte defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public byte get(ByteAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public char get(CharAttribute attribute, char defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public char get(CharAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public double get(DoubleAttribute attribute, double defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public double get(DoubleAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public float get(FloatAttribute attribute, float defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public float get(FloatAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public int get(IntAttribute attribute, int defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public int get(IntAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public long get(LongAttribute attribute, long defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public long get(LongAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public short get(ShortAttribute attribute, short defaultValue) {
-            return attributes.get(attribute, defaultValue);
-        }
-
-        public short get(ShortAttribute attribute) {
-            return attributes.get(attribute);
-        }
-
-        public boolean contains(Attribute<?> attribute) {
-            return attributes.contains(attribute);
-        }
-
-        public int size() {
-            return attributes.size();
-        }
-
-        public Set<Attribute> attributes() {
-            return attributes.attributes();
-        }
-
-        public Set<Entry<Attribute, Object>> entrySet() {
-            return attributes.entrySet();
-        }
-
-        public boolean isEmpty() {
-            return attributes.isEmpty();
         }
 
         public Collection<Object> values() {

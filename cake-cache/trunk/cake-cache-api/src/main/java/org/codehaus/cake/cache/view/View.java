@@ -18,14 +18,18 @@ import org.codehaus.cake.ops.Ops.Reducer;
 public interface View<T> {
 
     /**
-     * Returns any element matching filter constraints and mappings, or <code>null</code> if none.
+     * Returns any element matching filter constraints and mappings, or <code>null</code> if this view is empty.
+     * <p>
+     * The element returned is not guaranteed to be a random selection of the elements in this view. Most likely it will
+     * be the first element matching filter constraints and mappings.
      * 
-     * @return an element, or null if none
+     * @return an element, or null if this view is empty
      */
     T any();
 
     /**
-     * Applies the specified procedure to the elements in this view.
+     * Applies the specified procedure to the elements in this view. The specified procedure must be safe for usage by
+     * multiple threads.
      * 
      * @param procedure
      *            the procedure to apply
@@ -101,7 +105,7 @@ public interface View<T> {
      * Creates a new view where all elements are ordered accordingly to the specified comparator.
      * 
      * @param comparator
-     *            the comparator used for ordering
+     *            the comparator used for ordering elements
      * @throws NullPointerException
      *             if the specified comparator is null
      * @return the new view
@@ -137,14 +141,14 @@ public interface View<T> {
 
     /**
      * Creates a new View which limits the number of elements in this view. If the element in this view are ordered, for
-     * example, by calls to {@link #orderBy(Comparator)}, {@link #orderByMax()} or {@link #orderByMin()}. The elements
+     * example, by calling {@link #orderBy(Comparator)}, {@link #orderByMax()} or {@link #orderByMin()}. The elements
      * in the returned view will keep this ordering.
      * <p>
      * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
      * 
      * <pre>
      * View&lt;Integer&gt; v=...
-     * List&lt;Integer&gt; list = v.max().setLimit(10).toList();
+     * List&lt;Integer&gt; list = v.orderByMax().setLimit(10).toList();
      * </pre>
      * 
      * @param limit

@@ -10,14 +10,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.codehaus.cake.cache.view.View;
 import org.codehaus.cake.ops.CollectionOps;
-import org.codehaus.cake.ops.ObjectOps;
 import org.codehaus.cake.ops.StringOps;
 
 public class ViewAsserts {

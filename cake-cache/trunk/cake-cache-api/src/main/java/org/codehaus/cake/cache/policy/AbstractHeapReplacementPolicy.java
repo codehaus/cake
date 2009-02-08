@@ -172,10 +172,6 @@ public abstract class AbstractHeapReplacementPolicy<T> extends AbstractCakeRepla
         idx.set(entry, index);
     }
 
-    protected void siftDown(T x) {
-        siftDown(indexOf(x), x);
-    }
-
     /**
      * Inserts item x at position k, maintaining heap invariant by demoting x down the tree repeatedly until it is less
      * than or equal to its children or is a leaf.
@@ -205,8 +201,8 @@ public abstract class AbstractHeapReplacementPolicy<T> extends AbstractCakeRepla
         setIndexOf(x, k);
     }
 
-    protected void siftUp(T x) {
-        siftUp(indexOf(x), x);
+    protected void siftDown(T x) {
+        siftDown(indexOf(x), x);
     }
 
     /**
@@ -233,5 +229,9 @@ public abstract class AbstractHeapReplacementPolicy<T> extends AbstractCakeRepla
         }
         queue[k] = x;
         setIndexOf(x, k);
+    }
+
+    protected void siftUp(T x) {
+        siftUp(indexOf(x), x);
     }
 }

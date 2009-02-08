@@ -54,8 +54,9 @@ import org.codehaus.cake.attribute.MutableAttributeMap;
  * 
  * <p>
  * The load method also provides an attribute map. This map can be used to provide meta-data information to and from the
- * caller of the {@link #load(Object, MutableAttributeMap)} method. For example, the following cache loader, which retrieves an
- * URL as String. Defines the cost of the element as the number of milliseconds it takes to retrieve the value.
+ * caller of the {@link #load(Object, MutableAttributeMap)} method. For example, the following cache loader, which
+ * retrieves an URL as String. Defines the cost of the element as the number of milliseconds it takes to retrieve the
+ * value.
  * 
  * <pre>
  * public static class UrlLoader implements BlockingCacheLoader&lt;URL, String&gt; {

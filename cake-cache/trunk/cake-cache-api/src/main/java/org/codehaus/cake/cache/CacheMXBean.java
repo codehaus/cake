@@ -25,9 +25,9 @@ import org.codehaus.cake.management.ManagementConfiguration;
  * Management via JMX is disabled per default, and must be enabled by calling
  * <tt>CacheConfiguration.withManagement().setEnabled(true)</tt>
  * <p>
- * If no domain is specified using {@link ManagementConfiguration#setDomain(String)}. This managed bean will be registered
- * under <code>org.codehaus.cake.cache:name=$CACHE_NAME$,service=General</code> where <code>$CACHE_NAME$</code> is
- * replaced by the named returned from {@link Cache#getName()}.
+ * If no domain is specified using {@link ManagementConfiguration#setDomain(String)}. This managed bean will be
+ * registered under <code>org.codehaus.cake.cache:name=$CACHE_NAME$,service=General</code> where
+ * <code>$CACHE_NAME$</code> is replaced by the named returned from {@link Cache#getName()}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -38,13 +38,11 @@ public interface CacheMXBean {
     String MANAGED_SERVICE_NAME = "General";
 
     /**
-     * Returns the current number of elements in the cache.
+     * Clears and removes any element in the cache.
      * <p>
-     * The returned value is equivalent to the value returned by {@link Cache#size()}.
-     * 
-     * @return the number of elements in the cache
+     * Calling this method is effectively equivalent to calling {@link Cache#clear()}.
      */
-    int getSize();
+    void clear();
 
     /**
      * Returns the name of the cache.
@@ -56,9 +54,11 @@ public interface CacheMXBean {
     String getName();
 
     /**
-     * Clears and removes any element in the cache.
+     * Returns the current number of elements in the cache.
      * <p>
-     * Calling this method is effectively equivalent to calling {@link Cache#clear()}.
+     * The returned value is equivalent to the value returned by {@link Cache#size()}.
+     * 
+     * @return the number of elements in the cache
      */
-    void clear();
+    int getSize();
 }

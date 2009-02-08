@@ -19,16 +19,11 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Arrays;
 
-import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
 import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicates;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.CollectionOps;
 import org.codehaus.cake.ops.LongOps;
 import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.test.util.throwables.RuntimeException1;
-import org.codehaus.cake.util.Logger.Level;
 import org.junit.Test;
 
 public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {

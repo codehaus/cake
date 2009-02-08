@@ -71,6 +71,7 @@ public class MemoryStoreAttributes {
         protected String checkValidFailureMessage(Integer value) {
             return "Volume must be positive, was " + value;
         }
+
         @Override
         public boolean isValid(long value) {
             return value >= 0;

@@ -23,24 +23,31 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
 /**
  * A Random replacement policy. This policy picks a random element to evict.
  * <p>
- * At first selecting a random element seems like poor solution, however, it some situations it performs remarkably well
+ * At first selecting a random element might seem like a suboptimal solution, however, it some situations it performs
+ * remarkably well. For example, if 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @param <T>
+ *            the type of elements being cached
  */
 public class RandomReplacementPolicy<T> extends AbstractArrayReplacementPolicy<T> {
 
-    /** A unique policy name. */
+    /** The name of the policy. */
     public static final String NAME = "Random";
 
     /** Used for selecting which element to evict. */
     private final Random rnd = new Random();
 
-    public RandomReplacementPolicy(PolicyContext context) {
+    /**
+     * Creates a new RandomReplacementPolicy.
+     * 
+     * @param context
+     *            a policy context instance
+     * @throws NullPointerException
+     *             if the specified context is null
+     */
+    public RandomReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
 

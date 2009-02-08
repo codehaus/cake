@@ -15,12 +15,13 @@
  */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
+import static org.codehaus.cake.attribute.Attributes.from;
+
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
-import static org.codehaus.cake.attribute.Attributes.from;
 
 public class Load extends AbstractCacheTCKTest {
 

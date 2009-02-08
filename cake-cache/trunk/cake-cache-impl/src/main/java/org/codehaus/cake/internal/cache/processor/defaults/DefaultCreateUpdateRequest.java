@@ -9,13 +9,14 @@ import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
 public class DefaultCreateUpdateRequest<K, V> implements AddEntryRequest<K, V> {
-    private final AttributeMap attributes;
     private final K key;
     private Object value;
+    private final AttributeMap attributes;
+    private final Predicate<? extends CacheEntry<K, V>> updatePredicate;
+
     private CacheEntry<K, V> previousEntry;
     private CacheEntry<K, V> newEntry;
 
-    private final Predicate<? extends CacheEntry<K, V>> updatePredicate;
 
     public DefaultCreateUpdateRequest(K key, AttributeMap attributes, Object value,
             Predicate<? extends CacheEntry<K, V>> updatePredicate, Op<CacheEntry<K, V>, ?> previousEntryUpdate,

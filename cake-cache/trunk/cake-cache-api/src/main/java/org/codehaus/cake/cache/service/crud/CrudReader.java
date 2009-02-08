@@ -17,8 +17,8 @@ package org.codehaus.cake.cache.service.crud;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;
@@ -36,15 +36,6 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  *            the type data returned by the reader
  */
 public interface CrudReader<K, R> {
-
-    /**
-     * An attribute used to indicate that a CrudReader should only look in the in-memory store. It will not try to fetch
-     * missing items, it will only return a value if it actually exists in the cache. Furthermore, it will not effect
-     * any statistics gathered by the cache.
-     */
-    BooleanAttribute PEEK = new BooleanAttribute() {};
-
-    BooleanAttribute READ_THROUGH = new BooleanAttribute() {};
 
     /**
      * This attribute can be used for asserting that a mapping exists for the specified key(s) when calling any of the
@@ -65,9 +56,14 @@ public interface CrudReader<K, R> {
      */
     BooleanAttribute ASSERT_GET = new BooleanAttribute() {};
 
-    public enum ReadType {
-        PEEK, NORMAL, READ_THROUGH, READ_THROUGH_NO_CACHE
-    }
+    /**
+     * An attribute used to indicate that a CrudReader should only look in the in-memory store. It will not try to fetch
+     * missing items, it will only return a value if it actually exists in the cache. Furthermore, it will not effect
+     * any statistics gathered by the cache.
+     */
+    BooleanAttribute PEEK = new BooleanAttribute() {};
+
+    BooleanAttribute READ_THROUGH = new BooleanAttribute() {};
 
     /**
      * This attributes is used for specifying what type of data the {@link CrudReader} should return.
@@ -149,4 +145,8 @@ public interface CrudReader<K, R> {
      *             if the cache has been shutdown
      */
     Map<K, R> getAll(Iterable<? extends K> keys);
+
+    public enum ReadType {
+        NORMAL, PEEK, READ_THROUGH, READ_THROUGH_NO_CACHE
+    }
 }

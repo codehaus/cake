@@ -23,33 +23,48 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.ops.Ops.Op;
 
 public class InternalDataExtractors {
-    public static final Op EXTRACT_VALUE = new InternalExtractValueOp();
-    public static final Op EXTRACT_KEY  = new InternalExtractKeyOp();
     public static final Op EXTRACT_BOOLEAN = new InternalExtractIsNotNullOp();
+    public static final Op EXTRACT_KEY = new InternalExtractKeyOp();
+    public static final Op EXTRACT_VALUE = new InternalExtractValueOp();
 
-    static class InternalExtractValueOp<K, V> implements Op<CacheEntry<K, V>, V>,Serializable {
+    public static class ExtractAttribute<K, V, T> extends CacheDataExtractor<K, V, T> implements Serializable {
+        private final Attribute<T> attribute;
+
+        public ExtractAttribute(Attribute<T> attribute) {
+            if (attribute == null) {
+                throw new NullPointerException("attribute is null");
+            }
+            this.attribute = attribute;
+        }
+
+        public T op(CacheEntry<K, V> a) {
+            if (a == null) {
+                return attribute.getDefault();
+            }
+            return a.get(attribute);
+        }
+    }
+
+    static class InternalExtractIsNotNullOp<K, V> implements Op<CacheEntry<K, V>, Boolean>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /** Creates a new SizeAttribute. */
-        InternalExtractValueOp() {
+        InternalExtractIsNotNullOp() {
         }
 
         /** {@inheritDoc} */
-        public V op(CacheEntry<K, V> a) {
-            if (a == null) {
-                return null;
-            }
-            return a.getValue();
+        public Boolean op(CacheEntry<K, V> a) {
+            return a == null ? Boolean.FALSE : Boolean.TRUE;
         }
 
         /** @return Preserves singleton property */
         private Object readResolve() {
-            return EXTRACT_VALUE;
+            return EXTRACT_BOOLEAN;
         }
     }
 
-    static class InternalExtractKeyOp<K, V> implements Op<CacheEntry<K, V>, K>,Serializable {
+    static class InternalExtractKeyOp<K, V> implements Op<CacheEntry<K, V>, K>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
@@ -71,40 +86,25 @@ public class InternalDataExtractors {
         }
     }
 
-    static class InternalExtractIsNotNullOp<K, V> implements Op<CacheEntry<K, V>, Boolean>,Serializable {
+    static class InternalExtractValueOp<K, V> implements Op<CacheEntry<K, V>, V>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /** Creates a new SizeAttribute. */
-        InternalExtractIsNotNullOp() {
+        InternalExtractValueOp() {
         }
 
         /** {@inheritDoc} */
-        public Boolean op(CacheEntry<K, V> a) {
-            return a == null ? Boolean.FALSE : Boolean.TRUE;
+        public V op(CacheEntry<K, V> a) {
+            if (a == null) {
+                return null;
+            }
+            return a.getValue();
         }
 
         /** @return Preserves singleton property */
         private Object readResolve() {
-            return EXTRACT_BOOLEAN;
-        }
-    }
-    
-    public static class ExtractAttribute<K, V, T> extends CacheDataExtractor<K, V, T> implements Serializable {
-        private final Attribute<T> attribute;
-
-        public ExtractAttribute(Attribute<T> attribute) {
-            if (attribute == null) {
-                throw new NullPointerException("attribute is null");
-            }
-            this.attribute = attribute;
-        }
-
-        public T op(CacheEntry<K, V> a) {
-            if (a == null) {
-                return attribute.getDefault();
-            }
-            return a.get(attribute);
+            return EXTRACT_VALUE;
         }
     }
 }

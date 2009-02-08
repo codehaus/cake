@@ -526,6 +526,15 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     Collection<V> values();
 
     /**
+     * Returns a new cache view for all the entries in this cache, respecting any predicates that have been set using
+     * {@link #filter()}. This view can be used for extracting entries from the cache and performing calculations with
+     * on data in the cache.
+     * 
+     * @return the view
+     */
+    CacheView<K, V> view();
+
+    /**
      * Returns a {@link CacheServices} instance that can be used for easily accessing a number of cache services.
      * 
      * @return a CacheServices object
@@ -537,13 +546,4 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *         {@link CrudBatchWriter}
      */
     CacheCrud<K, V> withCrud();
-
-    /**
-     * Returns a new cache view for all the entries in this cache, respecting any predicates that have been set using
-     * {@link #filter()}. This view can be used for extracting entries from the cache and performing calculations with
-     * on data in the cache.
-     * 
-     * @return the view
-     */
-    CacheView<K, V> view();
 }

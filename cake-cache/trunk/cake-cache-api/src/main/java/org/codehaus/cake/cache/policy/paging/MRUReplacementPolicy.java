@@ -23,16 +23,22 @@ import org.codehaus.cake.cache.policy.spi.PolicyContext;
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
- * @param <K>
- *            the type of keys maintained by the cache
- * @param <V>
- *            the type of values maintained by the cache
+ * @param <T>
+ *            the type of elements being cached
  */
 public class MRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
 
-    /** A unique policy name. */
+    /** The name of the policy. */
     public static final String NAME = "MRU";
 
+    /**
+     * Creates a new MRUReplacementPolicy.
+     * 
+     * @param context
+     *            a policy context instance
+     * @throws NullPointerException
+     *             if the specified context is null
+     */
     public MRUReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
@@ -52,6 +58,5 @@ public class MRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPoli
     public void touch(T entry) {
         moveFirst(entry);
     }
-
 
 }

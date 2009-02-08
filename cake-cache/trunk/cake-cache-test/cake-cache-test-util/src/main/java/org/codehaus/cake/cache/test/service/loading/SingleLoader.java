@@ -19,9 +19,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 
 public class SingleLoader implements BlockingCacheLoader<Integer, String> {

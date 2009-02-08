@@ -30,13 +30,13 @@ import org.codehaus.cake.service.Container;
 @SuppressWarnings("unchecked")
 public class CacheCrud<K, V> {
 
-    static AttributeMap READ_VALUE = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.ONLY_VALUE);
     static AttributeMap READ_ENTRY = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.WHOLE_ENTRY);
+    static AttributeMap READ_VALUE = CrudReader.READ_TRANSFORMER.singleton(CacheDataExtractor.ONLY_VALUE);
 
-    static AttributeMap WRITE_RETURN_PREVIOUS_VALUE = CrudWriter.WRITE_TRANSFORMER
-            .singleton(CacheDataExtractor.ONLY_VALUE);
     static AttributeMap WRITE_RETURN_PREVIOUS_ENTRY = CrudWriter.WRITE_TRANSFORMER
             .singleton(CacheDataExtractor.WHOLE_ENTRY);
+    static AttributeMap WRITE_RETURN_PREVIOUS_VALUE = CrudWriter.WRITE_TRANSFORMER
+            .singleton(CacheDataExtractor.ONLY_VALUE);
 
     /** The contaner to extract cache services from. */
     private final Container serviceManager;
@@ -55,40 +55,6 @@ public class CacheCrud<K, V> {
     // public CrudReader<K, V> reader(AttributeMap attributes) {
     // return serviceManager.getService(CrudReader.class, attributes);
     // }
-
-    /**
-     * Returns a {@link CrudReader} that return values from specified key(s).
-     * 
-     * <pre>
-     * Cache&lt;Integer, String&gt; cache;
-     * //getting a single value (equivalent to cache.get(5)
-     * String v = cache.crud().value().get(5);
-     * //getting the values for 1,2,3
-     * Map&lt;Integer, String&gt; alot = cache.crud().value().getAll(Collections.asList(1,2,3);
-     * </pre>
-     * 
-     * @return a {@link CrudReader} that map keys to values
-     */
-    public CrudReader<K, V> value() {
-        return serviceManager.getService(CrudReader.class, READ_VALUE);
-    }
-
-    /**
-     * Returns a {@link CrudReader} that map keys to cache entries
-     * 
-     * <pre>
-     * Cache&lt;Integer, String&gt; cache;
-     * //getting a single entry (equivalent to cache.getEntry(5)
-     * CacheEntry&lt;Integer,String&gt; e = cache.crud().entry().get(5);
-     * //getting the entries for 1,2,3
-     * Map&lt;Integer, CacheEntry&lt;Integer,String&gt;&gt; alot = cache.crud().entry().getAll(Collections.asList(1,2,3);
-     * </pre>
-     * 
-     * @return a {@link CrudReader} that map keys to values
-     */
-    public CrudReader<K, CacheEntry<K, V>> entry() {
-        return serviceManager.getService(CrudReader.class, READ_ENTRY);
-    }
 
     /**
      * Returns a {@link CrudReader} that map keys to an attribute
@@ -112,12 +78,55 @@ public class CacheCrud<K, V> {
     }
 
     /**
+     * Returns a {@link CrudReader} that map keys to cache entries
+     * 
+     * <pre>
+     * Cache&lt;Integer, String&gt; cache;
+     * //getting a single entry (equivalent to cache.getEntry(5)
+     * CacheEntry&lt;Integer,String&gt; e = cache.crud().entry().get(5);
+     * //getting the entries for 1,2,3
+     * Map&lt;Integer, CacheEntry&lt;Integer,String&gt;&gt; alot = cache.crud().entry().getAll(Collections.asList(1,2,3);
+     * </pre>
+     * 
+     * @return a {@link CrudReader} that map keys to values
+     */
+    public CrudReader<K, CacheEntry<K, V>> entry() {
+        return serviceManager.getService(CrudReader.class, READ_ENTRY);
+    }
+
+    /**
+     * Returns a {@link CrudReader} that return values from specified key(s).
+     * 
+     * <pre>
+     * Cache&lt;Integer, String&gt; cache;
+     * //getting a single value (equivalent to cache.get(5)
+     * String v = cache.crud().value().get(5);
+     * //getting the values for 1,2,3
+     * Map&lt;Integer, String&gt; alot = cache.crud().value().getAll(Collections.asList(1,2,3);
+     * </pre>
+     * 
+     * @return a {@link CrudReader} that map keys to values
+     */
+    public CrudReader<K, V> value() {
+        return serviceManager.getService(CrudReader.class, READ_VALUE);
+    }
+
+    /**
      * Returns a writer that can be used for creating, updating or deleting a single entry.
      * 
      * @return a writer that can be used for creating, updating or deleting a single entry
      */
     public CrudWriter<K, V, Void> write() {
         return serviceManager.getService(CrudWriter.class);
+    }
+
+    /**
+     * Returns a writer that can be used for creating, updating or deleting multiple items at a time.
+     * 
+     * @return a writer that can be used for creating, updating or deleting multiple items at a time
+     */
+    public CrudBatchWriter<K, V, Void> writeBatch() {
+        return serviceManager.getService(CrudBatchWriter.class);
     }
 
     /**
@@ -138,15 +147,6 @@ public class CacheCrud<K, V> {
      */
     public CrudWriter<K, V, V> writeReturnPreviousValue() {
         return serviceManager.getService(CrudWriter.class, WRITE_RETURN_PREVIOUS_VALUE);
-    }
-
-    /**
-     * Returns a writer that can be used for creating, updating or deleting multiple items at a time.
-     * 
-     * @return a writer that can be used for creating, updating or deleting multiple items at a time
-     */
-    public CrudBatchWriter<K, V, Void> writeBatch() {
-        return serviceManager.getService(CrudBatchWriter.class);
     }
 
     // Async read

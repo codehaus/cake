@@ -120,7 +120,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
     public void process(Predicate<CacheEntry<K, V>> filter, ClearCacheRequest<K, V> r) {
         synchronized (mutex) {
             runState.isRunningLazyStart(false);
-            memoryStore.process(filter, r);
+            memoryStore.clear(filter);
         }
     }
 

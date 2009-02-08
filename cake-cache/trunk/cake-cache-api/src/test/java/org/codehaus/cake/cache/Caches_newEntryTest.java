@@ -5,10 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.junit.Test;
 
 public class Caches_newEntryTest {

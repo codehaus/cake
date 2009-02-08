@@ -107,8 +107,8 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     /** {@inheritDoc} */
     @Override
-    public CacheConfiguration<K, V> addService(Object o) {
-        super.addService(o);
+    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, S service) {
+        super.addService(key, service);
         return this;
     }
 
@@ -117,15 +117,15 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, S service) {
-        super.addService(key, service);
+    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, ServiceFactory<S> factory) {
+        super.addService(key, factory);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, ServiceFactory<S> factory) {
-        super.addService(key, factory);
+    public CacheConfiguration<K, V> addService(Object o) {
+        super.addService(o);
         return this;
     }
 

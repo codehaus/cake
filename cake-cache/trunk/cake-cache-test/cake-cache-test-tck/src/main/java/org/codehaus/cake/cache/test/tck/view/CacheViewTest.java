@@ -3,7 +3,6 @@ package org.codehaus.cake.cache.test.tck.view;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;

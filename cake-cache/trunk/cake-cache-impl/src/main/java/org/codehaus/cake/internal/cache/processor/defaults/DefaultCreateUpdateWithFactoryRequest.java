@@ -2,7 +2,6 @@ package org.codehaus.cake.internal.cache.processor.defaults;
 
 import java.util.List;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -11,10 +10,10 @@ import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.util.Pair;
 
 public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequest<K, V> {
-    private MutableAttributeMap attributes;
+    private AttributeMap attributes;
     private final K key;
     private Object value;
-    private Op<K, Pair<V, MutableAttributeMap>> factory;
+    private Op<K, Pair<V, AttributeMap>> factory;
     private CacheEntry<K, V> previousEntry;
     private CacheEntry<K, V> newEntry;
 
@@ -35,7 +34,7 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
         return false;
     }
 
-    public MutableAttributeMap getAttributes() {
+    public AttributeMap getAttributes() {
         lazyCreate();
         return attributes;
     }
@@ -74,7 +73,7 @@ public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequ
 
     private void lazyCreate() {
         if (factory != null) {
-            Pair<V, MutableAttributeMap> entry = factory.op(key);
+            Pair<V, AttributeMap> entry = factory.op(key);
             if (entry == null) {
                 throw new NullPointerException("A null pair was returned");
             }
