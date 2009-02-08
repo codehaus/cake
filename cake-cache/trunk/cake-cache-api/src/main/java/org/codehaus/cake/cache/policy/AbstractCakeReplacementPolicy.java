@@ -15,10 +15,8 @@
  */
 package org.codehaus.cake.cache.policy;
 
-
 /**
- * An abstract implementation of a {@link ReplacementPolicy} that is intended for policies that need to attach
- * attributes to cache entries.
+ * An abstract implementation of a {@link ReplacementPolicy}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: AbstractReplacementPolicy.java 229 2008-12-10 19:53:58Z kasper $
