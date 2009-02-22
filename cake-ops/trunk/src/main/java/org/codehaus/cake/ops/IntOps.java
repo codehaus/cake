@@ -15,9 +15,10 @@
  */
 package org.codehaus.cake.ops;
 
-import java.io.Serializable;
-import static org.codehaus.cake.ops.Ops.*;
-import java.math.*;
+import org.codehaus.cake.ops.Ops.IntComparator;
+import org.codehaus.cake.ops.Ops.IntOp;
+import org.codehaus.cake.ops.Ops.IntPredicate;
+import org.codehaus.cake.ops.Ops.IntReducer;
 /**
  * Various implementations of {@link IntPredicate}.
  * <p>

@@ -15,9 +15,10 @@
  */
 package org.codehaus.cake.ops;
 
-import java.io.Serializable;
-import static org.codehaus.cake.ops.Ops.*;
-import java.math.*;
+import org.codehaus.cake.ops.Ops.DoubleComparator;
+import org.codehaus.cake.ops.Ops.DoubleOp;
+import org.codehaus.cake.ops.Ops.DoublePredicate;
+import org.codehaus.cake.ops.Ops.DoubleReducer;
 /**
  * Various implementations of {@link DoublePredicate}.
  * <p>

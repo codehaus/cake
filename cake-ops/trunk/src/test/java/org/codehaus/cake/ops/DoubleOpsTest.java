@@ -15,19 +15,15 @@
  */
 package org.codehaus.cake.ops;
 
-import static org.junit.Assert.*;
-
-import static org.codehaus.cake.test.util.TestUtil.*;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.codehaus.cake.ops.Ops.DoubleReducer;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
-import org.codehaus.cake.ops.Ops.*;
-import org.codehaus.cake.test.util.TestUtil;
-import org.junit.Test;
-import java.math.*;
 /**
  * Various tests for {@link DoubleOps}.
  *

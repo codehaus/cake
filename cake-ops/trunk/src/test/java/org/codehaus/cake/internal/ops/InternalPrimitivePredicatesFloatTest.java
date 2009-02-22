@@ -13,52 +13,44 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.ops;
+/*  This class is automatically generated */ 
+package org.codehaus.cake.internal.ops;
 
-import static org.codehaus.cake.ops.FloatPredicates.FALSE;
-import static org.codehaus.cake.ops.FloatPredicates.TRUE;
+import org.codehaus.cake.ops.PrimitivePredicates;
+import static org.codehaus.cake.ops.PrimitivePredicates.*;
+import static org.codehaus.cake.internal.ops.InternalPrimitivePredicates.*;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import org.codehaus.cake.ops.FloatPredicates.EqualsToFloatPredicate;
-import org.codehaus.cake.ops.FloatPredicates.GreaterThenFloatPredicate;
-import org.codehaus.cake.ops.FloatPredicates.GreaterThenOrEqualsFloatPredicate;
-import org.codehaus.cake.ops.FloatPredicates.LessThenFloatPredicate;
-import org.codehaus.cake.ops.FloatPredicates.LessThenOrEqualsFloatPredicate;
-import org.codehaus.cake.ops.FloatPredicates.NotFloatPredicate;
-import org.codehaus.cake.ops.Ops.FloatPredicate;
-import org.codehaus.cake.ops.Ops.LongPredicate;
+import org.codehaus.cake.ops.Ops.*;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 /**
  * Various tests for {@link FloatPredicates}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: TYPEpredicatesTest.vm 227 2008-11-30 22:13:02Z kasper InternalPrimitivePredicatesFloatTest.java 590 2008-03-14 08:16:12Z kasper $
  */
-public final class FloatPredicatesTest {
+public final class InternalPrimitivePredicatesFloatTest {
 
     /**
      * Tests {@link LongPredicates#and(LongPredicate, LongPredicate)}.
      */
     @Test
     public void and() {
-        assertTrue(FloatPredicates.and(TRUE, TRUE).op(1F));
-        assertFalse(FloatPredicates.and(TRUE, FALSE).op(1F));
-        assertFalse(FloatPredicates.and(FALSE, TRUE).op(1F));
-        assertFalse(FloatPredicates.and(FALSE, FALSE).op(1F));
+        assertTrue(PrimitivePredicates.and(FLOAT_TRUE, FLOAT_TRUE).op(1F));
+        assertFalse(PrimitivePredicates.and(FLOAT_TRUE, FLOAT_FALSE).op(1F));
+        assertFalse(PrimitivePredicates.and(FLOAT_FALSE, FLOAT_TRUE).op(1F));
+        assertFalse(PrimitivePredicates.and(FLOAT_FALSE, FLOAT_FALSE).op(1F));
 
-        FloatPredicates.AndFloatPredicate p = new FloatPredicates.AndFloatPredicate(FALSE, TRUE);
-        assertSame(p.getLeft(), FALSE);
-        assertSame(p.getRight(), TRUE);
+        AndFloatPredicate p = new AndFloatPredicate(FLOAT_FALSE, FLOAT_TRUE);
+        assertSame(p.getLeft(), FLOAT_FALSE);
+        assertSame(p.getRight(), FLOAT_TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
 
         // shortcircuted evaluation
-        FloatPredicates.and(FALSE, TestUtil.dummy(FloatPredicate.class)).op(1F);
+        PrimitivePredicates.and(FLOAT_FALSE, TestUtil.dummy(FloatPredicate.class)).op(1F);
     }
 
     /**
@@ -68,7 +60,7 @@ public final class FloatPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
-        FloatPredicates.and(null, TRUE);
+        PrimitivePredicates.and(null, FLOAT_TRUE);
     }
 
     /**
@@ -78,13 +70,13 @@ public final class FloatPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
-        FloatPredicates.and(TRUE, null);
+        PrimitivePredicates.and(FLOAT_TRUE, null);
     }
     
     /* Test greater then */
     @Test
     public void equalsTo() {
-        FloatPredicate f = FloatPredicates.equalsTo(5F);
+        FloatPredicate f = PrimitivePredicates.equalsTo(5F);
         assertEquals(5F, new EqualsToFloatPredicate(5F).getEqualsTo(),0);
         assertFalse(f.op(4F));
         assertTrue(f.op(5F));
@@ -100,17 +92,17 @@ public final class FloatPredicatesTest {
      */
     @Test
     public void falsePredicate() {
-        assertFalse(FALSE.op(2F));
-        assertFalse(FALSE.op(Float.MIN_VALUE));
-        FALSE.toString(); // does not fail
-        assertIsSerializable(FALSE);
-        assertSame(FALSE, TestUtil.serializeAndUnserialize(FALSE));
+        assertFalse(FLOAT_FALSE.op(2F));
+        assertFalse(FLOAT_FALSE.op(Float.MIN_VALUE));
+        FLOAT_FALSE.toString(); // does not fail
+        assertIsSerializable(FLOAT_FALSE);
+        assertSame(FLOAT_FALSE, TestUtil.serializeAndUnserialize(FLOAT_FALSE));
     }
    
     /* Test greater then */
     @Test
     public void greaterThen() {
-        FloatPredicate f = FloatPredicates.greaterThen(5F);
+        FloatPredicate f = PrimitivePredicates.greaterThen(5F);
         assertEquals(5F, new GreaterThenFloatPredicate(5F).getGreaterThen(),0);
         assertFalse(f.op(4F));
         assertFalse(f.op(5F));
@@ -123,7 +115,7 @@ public final class FloatPredicatesTest {
 
     @Test
     public void greaterThenOrEquals() {
-        FloatPredicate f = FloatPredicates.greaterThenOrEquals(5F);
+        FloatPredicate f = PrimitivePredicates.greaterThenOrEquals(5F);
         assertEquals(5F, new GreaterThenOrEqualsFloatPredicate(5F).getGreaterThenOrEquals(),0);
         assertFalse(f.op(4F));
         assertTrue(f.op(5F));
@@ -137,7 +129,7 @@ public final class FloatPredicatesTest {
     /* Test greater then */
     @Test
     public void lessThen() {
-        FloatPredicate f = FloatPredicates.lessThen(5F);
+        FloatPredicate f = PrimitivePredicates.lessThen(5F);
         assertEquals(5F, new LessThenFloatPredicate(5F).getLessThen(),0);
         assertTrue(f.op(4F));
         assertFalse(f.op(5F));
@@ -151,7 +143,7 @@ public final class FloatPredicatesTest {
     /* Test greater then */
     @Test
     public void lessThenOrEquals() {
-        FloatPredicate f = FloatPredicates.lessThenOrEquals(5F);
+        FloatPredicate f = PrimitivePredicates.lessThenOrEquals(5F);
         assertEquals(5F, new LessThenOrEqualsFloatPredicate(5F).getLessThenOrEquals(),0);
         assertTrue(f.op(4F));
         assertTrue(f.op(5F));
@@ -169,7 +161,7 @@ public final class FloatPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
-        FloatPredicates.not(null);
+        PrimitivePredicates.not((FloatPredicate) null);
     }
 
     /**
@@ -177,11 +169,11 @@ public final class FloatPredicatesTest {
      */
     @Test
     public void notPredicate() {
-        assertFalse(FloatPredicates.not(TRUE).op(2F));
-        assertTrue(FloatPredicates.not(FALSE).op(2F));
-        FloatPredicates.not(TRUE).toString(); // does not fail
-        assertIsSerializable(FloatPredicates.not(TRUE));
-        assertSame(TRUE, ((NotFloatPredicate) FloatPredicates.not(TRUE)).getPredicate());
+        assertFalse(PrimitivePredicates.not(FLOAT_TRUE).op(2F));
+        assertTrue(PrimitivePredicates.not(FLOAT_FALSE).op(2F));
+        PrimitivePredicates.not(FLOAT_TRUE).toString(); // does not fail
+        assertIsSerializable(PrimitivePredicates.not(FLOAT_TRUE));
+        assertSame(FLOAT_TRUE, ((NotFloatPredicate) PrimitivePredicates.not(FLOAT_TRUE)).getPredicate());
     }
 
     /**
@@ -189,19 +181,19 @@ public final class FloatPredicatesTest {
      */
     @Test
     public void or() {
-        assertTrue(FloatPredicates.or(TRUE, TRUE).op(1F));
-        assertTrue(FloatPredicates.or(TRUE, FALSE).op(1F));
-        assertTrue(FloatPredicates.or(FALSE, TRUE).op(1F));
-        assertFalse(FloatPredicates.or(FALSE, FALSE).op(1F));
+        assertTrue(PrimitivePredicates.or(FLOAT_TRUE, FLOAT_TRUE).op(1F));
+        assertTrue(PrimitivePredicates.or(FLOAT_TRUE, FLOAT_FALSE).op(1F));
+        assertTrue(PrimitivePredicates.or(FLOAT_FALSE, FLOAT_TRUE).op(1F));
+        assertFalse(PrimitivePredicates.or(FLOAT_FALSE, FLOAT_FALSE).op(1F));
 
-        FloatPredicates.OrFloatPredicate p = new FloatPredicates.OrFloatPredicate(FALSE, TRUE);
-        assertSame(p.getLeft(), FALSE);
-        assertSame(p.getRight(), TRUE);
+        OrFloatPredicate p = new OrFloatPredicate(FLOAT_FALSE, FLOAT_TRUE);
+        assertSame(p.getLeft(), FLOAT_FALSE);
+        assertSame(p.getRight(), FLOAT_TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
 
         // shortcircuted evaluation
-        FloatPredicates.or(TRUE, TestUtil.dummy(FloatPredicate.class)).op(1F);
+        PrimitivePredicates.or(FLOAT_TRUE, TestUtil.dummy(FloatPredicate.class)).op(1F);
     }
 
     /**
@@ -211,7 +203,7 @@ public final class FloatPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
-        FloatPredicates.or(null, TRUE);
+        PrimitivePredicates.or(null, FLOAT_TRUE);
     }
 
     /**
@@ -221,7 +213,7 @@ public final class FloatPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {
-        FloatPredicates.or(TRUE, null);
+        PrimitivePredicates.or(FLOAT_TRUE, null);
     }
    
     
@@ -230,10 +222,10 @@ public final class FloatPredicatesTest {
      */
     @Test
     public void truePredicate() {
-        assertTrue(TRUE.op(2F));
-        assertTrue(TRUE.op(Float.MIN_VALUE));
-        TRUE.toString(); // does not fail
-        assertIsSerializable(TRUE);
-        assertSame(TRUE, TestUtil.serializeAndUnserialize(TRUE));
+        assertTrue(FLOAT_TRUE.op(2F));
+        assertTrue(FLOAT_TRUE.op(Float.MIN_VALUE));
+        FLOAT_TRUE.toString(); // does not fail
+        assertIsSerializable(FLOAT_TRUE);
+        assertSame(FLOAT_TRUE, TestUtil.serializeAndUnserialize(FLOAT_TRUE));
     }
 }

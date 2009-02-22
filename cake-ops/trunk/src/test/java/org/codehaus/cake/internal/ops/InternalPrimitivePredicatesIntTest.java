@@ -13,52 +13,44 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.ops;
+/*  This class is automatically generated */ 
+package org.codehaus.cake.internal.ops;
 
-import static org.codehaus.cake.ops.IntPredicates.FALSE;
-import static org.codehaus.cake.ops.IntPredicates.TRUE;
+import org.codehaus.cake.ops.PrimitivePredicates;
+import static org.codehaus.cake.ops.PrimitivePredicates.*;
+import static org.codehaus.cake.internal.ops.InternalPrimitivePredicates.*;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import org.codehaus.cake.ops.IntPredicates.EqualsToIntPredicate;
-import org.codehaus.cake.ops.IntPredicates.GreaterThenIntPredicate;
-import org.codehaus.cake.ops.IntPredicates.GreaterThenOrEqualsIntPredicate;
-import org.codehaus.cake.ops.IntPredicates.LessThenIntPredicate;
-import org.codehaus.cake.ops.IntPredicates.LessThenOrEqualsIntPredicate;
-import org.codehaus.cake.ops.IntPredicates.NotIntPredicate;
-import org.codehaus.cake.ops.Ops.IntPredicate;
-import org.codehaus.cake.ops.Ops.LongPredicate;
+import org.codehaus.cake.ops.Ops.*;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
 /**
  * Various tests for {@link IntPredicates}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: TYPEpredicatesTest.vm 227 2008-11-30 22:13:02Z kasper InternalPrimitivePredicatesIntTest.java 590 2008-03-14 08:16:12Z kasper $
  */
-public final class IntPredicatesTest {
+public final class InternalPrimitivePredicatesIntTest {
 
     /**
      * Tests {@link LongPredicates#and(LongPredicate, LongPredicate)}.
      */
     @Test
     public void and() {
-        assertTrue(IntPredicates.and(TRUE, TRUE).op(1));
-        assertFalse(IntPredicates.and(TRUE, FALSE).op(1));
-        assertFalse(IntPredicates.and(FALSE, TRUE).op(1));
-        assertFalse(IntPredicates.and(FALSE, FALSE).op(1));
+        assertTrue(PrimitivePredicates.and(INT_TRUE, INT_TRUE).op(1));
+        assertFalse(PrimitivePredicates.and(INT_TRUE, INT_FALSE).op(1));
+        assertFalse(PrimitivePredicates.and(INT_FALSE, INT_TRUE).op(1));
+        assertFalse(PrimitivePredicates.and(INT_FALSE, INT_FALSE).op(1));
 
-        IntPredicates.AndIntPredicate p = new IntPredicates.AndIntPredicate(FALSE, TRUE);
-        assertSame(p.getLeft(), FALSE);
-        assertSame(p.getRight(), TRUE);
+        AndIntPredicate p = new AndIntPredicate(INT_FALSE, INT_TRUE);
+        assertSame(p.getLeft(), INT_FALSE);
+        assertSame(p.getRight(), INT_TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
 
         // shortcircuted evaluation
-        IntPredicates.and(FALSE, TestUtil.dummy(IntPredicate.class)).op(1);
+        PrimitivePredicates.and(INT_FALSE, TestUtil.dummy(IntPredicate.class)).op(1);
     }
 
     /**
@@ -68,7 +60,7 @@ public final class IntPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
-        IntPredicates.and(null, TRUE);
+        PrimitivePredicates.and(null, INT_TRUE);
     }
 
     /**
@@ -78,13 +70,13 @@ public final class IntPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
-        IntPredicates.and(TRUE, null);
+        PrimitivePredicates.and(INT_TRUE, null);
     }
     
     /* Test greater then */
     @Test
     public void equalsTo() {
-        IntPredicate f = IntPredicates.equalsTo(5);
+        IntPredicate f = PrimitivePredicates.equalsTo(5);
         assertEquals(5, new EqualsToIntPredicate(5).getEqualsTo());
         assertFalse(f.op(4));
         assertTrue(f.op(5));
@@ -100,17 +92,17 @@ public final class IntPredicatesTest {
      */
     @Test
     public void falsePredicate() {
-        assertFalse(FALSE.op(2));
-        assertFalse(FALSE.op(Integer.MIN_VALUE));
-        FALSE.toString(); // does not fail
-        assertIsSerializable(FALSE);
-        assertSame(FALSE, TestUtil.serializeAndUnserialize(FALSE));
+        assertFalse(INT_FALSE.op(2));
+        assertFalse(INT_FALSE.op(Integer.MIN_VALUE));
+        INT_FALSE.toString(); // does not fail
+        assertIsSerializable(INT_FALSE);
+        assertSame(INT_FALSE, TestUtil.serializeAndUnserialize(INT_FALSE));
     }
    
     /* Test greater then */
     @Test
     public void greaterThen() {
-        IntPredicate f = IntPredicates.greaterThen(5);
+        IntPredicate f = PrimitivePredicates.greaterThen(5);
         assertEquals(5, new GreaterThenIntPredicate(5).getGreaterThen());
         assertFalse(f.op(4));
         assertFalse(f.op(5));
@@ -123,7 +115,7 @@ public final class IntPredicatesTest {
 
     @Test
     public void greaterThenOrEquals() {
-        IntPredicate f = IntPredicates.greaterThenOrEquals(5);
+        IntPredicate f = PrimitivePredicates.greaterThenOrEquals(5);
         assertEquals(5, new GreaterThenOrEqualsIntPredicate(5).getGreaterThenOrEquals());
         assertFalse(f.op(4));
         assertTrue(f.op(5));
@@ -137,7 +129,7 @@ public final class IntPredicatesTest {
     /* Test greater then */
     @Test
     public void lessThen() {
-        IntPredicate f = IntPredicates.lessThen(5);
+        IntPredicate f = PrimitivePredicates.lessThen(5);
         assertEquals(5, new LessThenIntPredicate(5).getLessThen());
         assertTrue(f.op(4));
         assertFalse(f.op(5));
@@ -151,7 +143,7 @@ public final class IntPredicatesTest {
     /* Test greater then */
     @Test
     public void lessThenOrEquals() {
-        IntPredicate f = IntPredicates.lessThenOrEquals(5);
+        IntPredicate f = PrimitivePredicates.lessThenOrEquals(5);
         assertEquals(5, new LessThenOrEqualsIntPredicate(5).getLessThenOrEquals());
         assertTrue(f.op(4));
         assertTrue(f.op(5));
@@ -169,7 +161,7 @@ public final class IntPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
-        IntPredicates.not(null);
+        PrimitivePredicates.not((IntPredicate) null);
     }
 
     /**
@@ -177,11 +169,11 @@ public final class IntPredicatesTest {
      */
     @Test
     public void notPredicate() {
-        assertFalse(IntPredicates.not(TRUE).op(2));
-        assertTrue(IntPredicates.not(FALSE).op(2));
-        IntPredicates.not(TRUE).toString(); // does not fail
-        assertIsSerializable(IntPredicates.not(TRUE));
-        assertSame(TRUE, ((NotIntPredicate) IntPredicates.not(TRUE)).getPredicate());
+        assertFalse(PrimitivePredicates.not(INT_TRUE).op(2));
+        assertTrue(PrimitivePredicates.not(INT_FALSE).op(2));
+        PrimitivePredicates.not(INT_TRUE).toString(); // does not fail
+        assertIsSerializable(PrimitivePredicates.not(INT_TRUE));
+        assertSame(INT_TRUE, ((NotIntPredicate) PrimitivePredicates.not(INT_TRUE)).getPredicate());
     }
 
     /**
@@ -189,19 +181,19 @@ public final class IntPredicatesTest {
      */
     @Test
     public void or() {
-        assertTrue(IntPredicates.or(TRUE, TRUE).op(1));
-        assertTrue(IntPredicates.or(TRUE, FALSE).op(1));
-        assertTrue(IntPredicates.or(FALSE, TRUE).op(1));
-        assertFalse(IntPredicates.or(FALSE, FALSE).op(1));
+        assertTrue(PrimitivePredicates.or(INT_TRUE, INT_TRUE).op(1));
+        assertTrue(PrimitivePredicates.or(INT_TRUE, INT_FALSE).op(1));
+        assertTrue(PrimitivePredicates.or(INT_FALSE, INT_TRUE).op(1));
+        assertFalse(PrimitivePredicates.or(INT_FALSE, INT_FALSE).op(1));
 
-        IntPredicates.OrIntPredicate p = new IntPredicates.OrIntPredicate(FALSE, TRUE);
-        assertSame(p.getLeft(), FALSE);
-        assertSame(p.getRight(), TRUE);
+        OrIntPredicate p = new OrIntPredicate(INT_FALSE, INT_TRUE);
+        assertSame(p.getLeft(), INT_FALSE);
+        assertSame(p.getRight(), INT_TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
 
         // shortcircuted evaluation
-        IntPredicates.or(TRUE, TestUtil.dummy(IntPredicate.class)).op(1);
+        PrimitivePredicates.or(INT_TRUE, TestUtil.dummy(IntPredicate.class)).op(1);
     }
 
     /**
@@ -211,7 +203,7 @@ public final class IntPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
-        IntPredicates.or(null, TRUE);
+        PrimitivePredicates.or(null, INT_TRUE);
     }
 
     /**
@@ -221,7 +213,7 @@ public final class IntPredicatesTest {
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {
-        IntPredicates.or(TRUE, null);
+        PrimitivePredicates.or(INT_TRUE, null);
     }
    
     
@@ -230,10 +222,10 @@ public final class IntPredicatesTest {
      */
     @Test
     public void truePredicate() {
-        assertTrue(TRUE.op(2));
-        assertTrue(TRUE.op(Integer.MIN_VALUE));
-        TRUE.toString(); // does not fail
-        assertIsSerializable(TRUE);
-        assertSame(TRUE, TestUtil.serializeAndUnserialize(TRUE));
+        assertTrue(INT_TRUE.op(2));
+        assertTrue(INT_TRUE.op(Integer.MIN_VALUE));
+        INT_TRUE.toString(); // does not fail
+        assertIsSerializable(INT_TRUE);
+        assertSame(INT_TRUE, TestUtil.serializeAndUnserialize(INT_TRUE));
     }
 }
