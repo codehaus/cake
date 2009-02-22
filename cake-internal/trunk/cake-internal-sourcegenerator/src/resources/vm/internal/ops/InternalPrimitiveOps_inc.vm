@@ -1,0 +1,138 @@
+    public final static PrimitiveAbsOp ABS_OP = new PrimitiveAbsOp();
+    public final static PrimitiveAddReducer ADD_REDUCER = new PrimitiveAddReducer();
+    public final static PrimitiveDivideReducer DIVIDE_REDUCER = new PrimitiveDivideReducer();
+    public final static PrimitiveMultiplyReducer MULTIPLY_REDUCER = new PrimitiveMultiplyReducer();
+    public final static PrimitiveSubtractReducer SUBTRACT_REDUCER = new PrimitiveSubtractReducer();
+
+    public static final class PrimitiveAbsOp implements LongOp, IntOp, DoubleOp, FloatOp, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+    	PrimitiveAbsOp() {}
+        public double op(double a) {
+            return Math.abs(a);
+        }
+    
+        public float op(float a) {
+            return Math.abs(a);
+        }
+    
+        public int op(int a) {
+            return Math.abs(a);
+        }
+    
+        public long op(long a) {
+            return Math.abs(a);
+        }
+    
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return ABS_OP;
+        }
+    }
+
+    public static final class PrimitiveAddReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer, Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+    PrimitiveAddReducer() {}
+        public double op(double a, double b) {
+            return a + b;
+        }
+    
+        public float op(float a, float b) {
+            return a + b;
+        }
+    
+        public int op(int a, int b) {
+            return a + b;
+        }
+    
+        public long op(long a, long b) {
+            return a + b;
+        }
+    
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return ADD_REDUCER;
+        }
+    }
+
+    static final class PrimitiveDivideReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer,
+            Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+    PrimitiveDivideReducer() {}
+        public double op(double a, double b) {
+            return a / b;
+        }
+    
+        public float op(float a, float b) {
+            return a / b;
+        }
+    
+        public int op(int a, int b) {
+            return a / b;
+        }
+    
+        public long op(long a, long b) {
+            return a / b;
+        }
+    
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return DIVIDE_REDUCER;
+        }
+    }
+
+    static final class PrimitiveMultiplyReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer,
+            Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+    PrimitiveMultiplyReducer() {}
+        public double op(double a, double b) {
+            return a * b;
+        }
+    
+        public float op(float a, float b) {
+            return a * b;
+        }
+    
+        public int op(int a, int b) {
+            return a * b;
+        }
+    
+        public long op(long a, long b) {
+            return a * b;
+        }
+    
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return MULTIPLY_REDUCER;
+        }
+    }
+
+    static final class PrimitiveSubtractReducer implements DoubleReducer, FloatReducer, IntReducer, LongReducer,
+            Serializable {
+        /** serialVersionUID. */
+        private static final long serialVersionUID = 1L;
+    PrimitiveSubtractReducer() {}
+        public double op(double a, double b) {
+            return a - b;
+        }
+    
+        public float op(float a, float b) {
+            return a - b;
+        }
+    
+        public int op(int a, int b) {
+            return a - b;
+        }
+    
+        public long op(long a, long b) {
+            return a - b;
+        }
+    
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return SUBTRACT_REDUCER;
+        }
+    }

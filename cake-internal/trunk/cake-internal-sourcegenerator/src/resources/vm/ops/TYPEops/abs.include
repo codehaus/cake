@@ -1,3 +1,0 @@
-    public static $util.op("Op") abs() {
-        return PrimitiveOps.ABS_OP;
-    }

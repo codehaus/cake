@@ -1,0 +1,17 @@
+/**
+ * Various implementations of primitive ops.
+ * <p>
+ * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
+ * this class between different releases.
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: PrimitivePredicates.vm 245 2008-12-27 16:17:02Z kasper ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ */
+public final class ${this} {
+    ///CLOVER:OFF
+    /** Cannot instantiate. */
+    private ${this}() {}
+    ///CLOVER:ON
+
+	#include("internal/ops/InternalPrimitiveOps_inc.vm")
+	$body
+}    

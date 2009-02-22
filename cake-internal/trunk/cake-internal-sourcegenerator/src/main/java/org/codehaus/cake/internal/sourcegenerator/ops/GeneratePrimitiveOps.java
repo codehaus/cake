@@ -15,28 +15,38 @@
  */
 package org.codehaus.cake.internal.sourcegenerator.ops;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.io.Serializable;
 
+import org.codehaus.cake.internal.sourcegenerator.AbstractFileGenerator;
 import org.codehaus.cake.internal.sourcegenerator.GenerationType;
-import org.codehaus.cake.internal.sourcegenerator.GeneratorBuilder;
+import org.codehaus.cake.internal.sourcegenerator.SingleFileGenerator;
+import org.junit.Test;
 
-public class GeneratePrimitiveOps extends GeneratorBuilder {
+public class GeneratePrimitiveOps{
 
-    public static void main(String[] args) throws Exception {
-        new GeneratePrimitiveOps().generate();
-        System.out.println("done");
+    @Test
+    public void generatePublicMethods() throws Exception {
+        SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_JAVA, "ops.PrimitiveOps");
+        g.addImport("static org.codehaus.cake.ops.Ops.*");
+        g.addImport("static org.codehaus.cake.internal.ops.InternalPrimitiveOps.*");
+        g.generateWithBody(GenerationType.BIG_4);
     }
 
-    public void generate() throws Exception {
-        GeneratorBuilder gb = new GeneratorBuilder();
-        gb.setPackage("org.codehaus.cake.ops");
-        gb.addImport(Comparator.class);
-        gb.setClassName("PrimitiveOps.tmp");
-        // gb.generateMany("attribute/attributemap.vm", "cake-attributes/trunk/cake-attributes/src/main/java/",
-        // GenerationType.ALL);
-        List l = Arrays.asList(GenerationType.DOUBLE, GenerationType.FLOAT, GenerationType.INT, GenerationType.LONG);
-        gb.generateMany("ops/TYPEprimitiveOps.vm", "cake-ops/src/main/java/", l);
+    @Test
+    public void generateTest() throws Exception {
+        for (GenerationType cl : GenerationType.BIG_4) {
+            SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_TEST,
+                    "internal.ops.InternalPrimitiveOpsTYPETest", cl);
+            g.generate();
+        }
+    }
+
+    @Test
+    public void generateInternal() throws Exception {
+        SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_JAVA,
+                "internal.ops.InternalPrimitiveOps");
+        g.addImport(Serializable.class);
+        g.addImport("static org.codehaus.cake.ops.Ops.*");
+        g.generateWithBody(GenerationType.BIG_4);
     }
 }

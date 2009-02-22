@@ -1,0 +1,70 @@
+    /**
+     * A reducer returning the maximum of two $type elements, using natural comparator.
+     * The Reducer is serializable.
+     */
+     public static final ${Type}Reducer ${upper}_MAX_REDUCER = (${Type}Reducer) ObjectOps.MAX_REDUCER;
+
+    /**
+     * A reducer returning the minimum of two $type elements, using natural comparator.
+     * The Reducer is serializable.
+     */
+     public static final ${Type}Reducer ${upper}_MIN_REDUCER = (${Type}Reducer) ObjectOps.MIN_REDUCER;
+
+    /** An op returning the absolute value. The Reducer is serializable. */
+     public static final ${Type}Op ${upper}_ABS_OP = ABS_OP;
+     
+    /** A reducer returning the sum of two $type elements. The Reducer is serializable. */
+     public static final ${Type}Reducer ${upper}_ADD_REDUCER = ADD_REDUCER;
+
+    /** A reducer returning the sum of two $type elements. The Reducer is serializable. */
+     public static final ${Type}Reducer ${upper}_MULTIPLY_REDUCER = MULTIPLY_REDUCER;
+
+    /** A reducer returning the sum of two $type elements. The Reducer is serializable. */
+     public static final ${Type}Reducer ${upper}_SUBTRACT_REDUCER = SUBTRACT_REDUCER;
+
+    /** A reducer returning the sum of two $type elements. The Reducer is serializable. */
+     public static final ${Type}Reducer ${upper}_DIVISION_REDUCER = DIVIDE_REDUCER;
+     
+    /**
+     * A reducer returning the maximum of two $type elements, using the specified
+     * comparator.
+     *
+     * @param comparator
+     *            the comparator to use when comparing elements
+     * @return the newly created reducer
+     */
+    public static $util.op("Reducer") ${type}Max($util.op("Comparator") comparator) {
+        return new ${Type}MaxReducer(comparator);
+    }
+
+    /**
+     * A reducer returning the minimum of two $type elements, using the specified
+     * comparator.
+     *
+     * @param comparator
+     *            the comparator to use when comparing elements
+     * @return the newly created reducer
+     */
+    public static $util.op("Reducer") ${type}Min($util.op("Comparator") comparator) {
+        return new ${Type}MinReducer(comparator);
+    }
+    
+    public static $util.op("Op") ${type}Add($type add) {
+        return new ${Type}AddOp(add);
+    }
+    
+    public static $util.op("Op") ${type}Divide($type divide) {
+        return new ${Type}DivideOp(divide);
+    }
+    
+    public static $util.op("Op") ${type}Multiply($type multiply) {
+        return new ${Type}MultiplyOp(multiply);
+    }
+    
+    public static $util.op("Op") ${type}Subtract($type substract) {
+        return new ${Type}SubtractOp(substract);
+    }
+        
+    public static $util.op("Op") ${type}Constant($type constant) {
+        return new ${Type}ConstantOp(constant);
+    }
