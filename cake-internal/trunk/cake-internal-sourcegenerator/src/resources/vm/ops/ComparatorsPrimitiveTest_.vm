@@ -1,0 +1,50 @@
+   /**
+     * Tests {@link ${Type}Ops#COMPARATOR}.
+     */
+    @Test
+    public void ${type}Comparator() {
+        assertEquals(0, ${upper}_NATURAL_COMPARATOR.compare($util.val(1), $util.val(1)));
+#if($isReal) 
+        assertEquals(0, ${upper}_NATURAL_COMPARATOR.compare(${object}.NaN, ${object}.NaN));
+#end
+        assertTrue(${upper}_NATURAL_COMPARATOR.compare($util.val(2), $util.val(1)) > 0);
+        assertTrue(${upper}_NATURAL_COMPARATOR.compare($util.val(1), $util.val(2)) < 0);
+        ${upper}_NATURAL_COMPARATOR.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${upper}_NATURAL_COMPARATOR);
+    }
+    
+   /**
+     * Tests {@link ${Type}Ops#REVERSE_COMPARATOR}.
+     */
+    @Test
+    public void ${type}ComparatorReverse() {
+        assertEquals(0, ${upper}_NATURAL_REVERSE_COMPARATOR.compare($util.val(1), $util.val(1)));
+#if($isReal)
+        assertEquals(0, ${upper}_NATURAL_REVERSE_COMPARATOR.compare(${object}.NaN, ${object}.NaN));
+#end
+        assertTrue(${upper}_NATURAL_REVERSE_COMPARATOR.compare($util.val(2), $util.val(1)) < 0);
+        assertTrue(${upper}_NATURAL_REVERSE_COMPARATOR.compare($util.val(1), $util.val(2)) > 0);
+        ${upper}_NATURAL_REVERSE_COMPARATOR.toString(); // does not fail
+        TestUtil.assertSingletonSerializable(${upper}_NATURAL_REVERSE_COMPARATOR);
+    }
+    
+    /**
+     * Tests {@link ${Type}Ops#reverseOrder}.
+     */
+    @Test
+    public void ${type}ReverseOrder() {
+        assertEquals(0, Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR).compare($util.val(1), $util.val(1)));
+#if($isReal)
+        assertEquals(0, Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR).compare(${object}.NaN, ${object}.NaN));
+#end
+        assertTrue(Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR).compare($util.val(2), $util.val(1)) < 0);
+        assertTrue(Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR).compare($util.val(1), $util.val(2)) > 0);
+        Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR).toString(); // does not fail
+        assertIsSerializable(Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR));
+        assertTrue(serializeAndUnserialize(Comparators.reverseOrder(${upper}_NATURAL_COMPARATOR)).compare($util.val(2), $util.val(1)) < 0);
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void ${type}ReverseOrder_NPE() {
+        Comparators.reverseOrder((${Type}Comparator) null);
+    }

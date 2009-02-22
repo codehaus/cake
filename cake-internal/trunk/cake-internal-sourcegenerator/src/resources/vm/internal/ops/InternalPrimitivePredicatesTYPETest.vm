@@ -1,6 +1,6 @@
 import org.codehaus.cake.ops.PrimitivePredicates;
 import static org.codehaus.cake.ops.PrimitivePredicates.*;
-import static org.codehaus.cake.internal.ops.InternalPrimitivePredicateDefinition.*;
+import static org.codehaus.cake.internal.ops.InternalPrimitivePredicates.*;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.junit.Assert.*;
 

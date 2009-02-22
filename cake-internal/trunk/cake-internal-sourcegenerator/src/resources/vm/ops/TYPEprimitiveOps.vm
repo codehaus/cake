@@ -1,30 +1,4 @@
-    /** A comparator that reserves the result of another ${Type}Comparator. */
-    static final class Reverse${Type}Comparator implements ${Type}Comparator, Serializable {
-        /** serialVersionUID. */
-        private static final long serialVersionUID = 1L;
-
-        /** The comparator to reverse. */
-        private final ${Type}Comparator comparator;
-
-        /**
-         * Creates a new Reverse${Type}Comparator.
-         * 
-         * @param comparator
-         *            the comparator to reverse
-         */
-        Reverse${Type}Comparator(${Type}Comparator comparator) {
-            if (comparator == null) {
-                throw new NullPointerException("comparator is null");
-            }
-            this.comparator = comparator;
-        }
-
-        /** {@inheritDoc} */
-        public int compare($type a, $type b) {
-            return -comparator.compare(a, b);
-        }
-    }
-    
+   
     static final class ${Type}AddOp implements $util.op("Op"), Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;

@@ -1,0 +1,20 @@
+import static org.junit.Assert.*;
+import static org.codehaus.cake.test.util.TestUtil.*;
+import org.junit.Test;
+import org.codehaus.cake.test.util.TestUtil;
+/**
+ * Various implementations of primitive comparators.
+ * <p>
+ * This class is normally best used via <tt>import static</tt>.
+ *
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: PrimitiveComparators.vm 245 2008-12-27 16:17:02Z kasper ${this}.java 590 2008-03-14 08:16:12Z kasper $
+ */
+public final class ${this} {
+    ///CLOVER:OFF
+    /** Cannot instantiate. */
+    private ${this}() {}
+    ///CLOVER:ON
+    
+    $body    
+}
