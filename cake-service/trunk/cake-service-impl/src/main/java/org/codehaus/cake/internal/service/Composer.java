@@ -23,6 +23,7 @@ import java.util.UUID;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
+import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 
@@ -39,7 +40,7 @@ public class Composer {
     private final Class<?> clazz;
     private final String containerName;
 
-    public Composer(Class<?> clazz, ContainerConfiguration<?> configuration) {
+    public Composer(Class<?> clazz, ContainerConfiguration configuration) {
         baseContainer = new DefaultPicoContainer();
         baseContainer.registerComponentInstance(configuration);
         baseContainer.registerComponentInstance(configuration.getClock());
@@ -59,6 +60,14 @@ public class Composer {
         }
     }
 
+    public static Composer from(Class<?> containerType, ContainerConfiguration configuration) {
+        return null;
+    }
+
+    public static Composer from(Container parent, Class<?> containerType, ContainerConfiguration configuration) {
+        return null;
+    }
+    
     public String getContainerName() {
         return containerName;
     }
@@ -103,7 +112,7 @@ public class Composer {
     }
 
     Set<?> initializeComponents() {
-        ContainerConfiguration<?> conf = get(ContainerConfiguration.class);
+        ContainerConfiguration conf = get(ContainerConfiguration.class);
         Set<Object> result = new LinkedHashSet<Object>(container.getComponentInstances());
         for (Object object : new ArrayList<Object>(result)) {
             if (object instanceof CompositeService) {

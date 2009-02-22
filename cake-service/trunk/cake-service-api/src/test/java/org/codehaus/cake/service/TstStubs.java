@@ -27,7 +27,7 @@ import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguratio
 public class TstStubs {
     public interface Stubber<T> extends Container {}
 
-    public static class StubberConfiguration extends ContainerConfiguration<Stubber> {
+    public static class StubberConfiguration extends ContainerConfiguration {
         public StubberConfiguration() {
             addConfiguration(new ExceptionHandlingConfiguration());
             addConfiguration(new ManagementConfiguration());

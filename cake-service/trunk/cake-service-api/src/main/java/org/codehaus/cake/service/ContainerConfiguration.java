@@ -48,7 +48,7 @@ import org.codehaus.cake.util.Loggers.Log4j;
  * @param <T>
  *            The type of container instantiated from this configuration
  */
-public abstract class ContainerConfiguration<T> {
+public class ContainerConfiguration {
     /** A Map of additional properties. */
     private final Map<String, String> additionalProperties = new HashMap<String, String>();
 
@@ -67,8 +67,8 @@ public abstract class ContainerConfiguration<T> {
     /** Additional configuration objects. */
     private final ServiceList serviceList = new ServiceList();
 
-    /** The type of container that should be created. */
-    private Class<? extends T> type;
+//    /** The type of container that should be created. */
+//    private Class<? extends T> type;
 
     /**
      * Adds an instantiated configuration object. Available by calling {@link #getConfigurationOfType(Class)} where
@@ -84,7 +84,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws IllegalArgumentException
      *             if another configuration of the same type is already registered
      */
-    protected final ContainerConfiguration<T> addConfiguration(Object configuration) {
+    protected final ContainerConfiguration addConfiguration(Object configuration) {
         if (configuration == null) {
             throw new NullPointerException("configuration is null");
         }
@@ -105,7 +105,7 @@ public abstract class ContainerConfiguration<T> {
      *            {@link Container#getService(Class)}
      * @return this configuration
      */
-    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, S service) {
+    public <S> ContainerConfiguration addService(Class<? extends S> key, S service) {
         serviceList.add(key, service);
         return this;
     }
@@ -125,7 +125,7 @@ public abstract class ContainerConfiguration<T> {
      *            the service provider
      * @return this configuration
      */
-    public <S> ContainerConfiguration<T> addService(Class<? extends S> key, ServiceFactory<S> factory) {
+    public <S> ContainerConfiguration addService(Class<? extends S> key, ServiceFactory<S> factory) {
         serviceList.add(key, factory);
         return this;
     }
@@ -164,7 +164,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws IllegalArgumentException
      *             in case of an argument of invalid type or if the object has already been registered.
      */
-    public ContainerConfiguration<T> addService(Object o) {
+    public ContainerConfiguration addService(Object o) {
         serviceList.addLifecycle(o);
         return this;
     }
@@ -283,31 +283,6 @@ public abstract class ContainerConfiguration<T> {
         return serviceList;
     }
 
-    /**
-     * Returns the type of container set by {@link #setContainerType(Class)}.
-     * 
-     * @return the type of container set by {@link #setType(Class)} or <code>null</code> if no type has been set
-     */
-    public Class<? extends T> getType() {
-        return type;
-    }
-
-    /**
-     * Creates a new Container of the type set using {@link #setType(Class)} from this configuration.
-     * 
-     * @return the newly created Container
-     * @throws IllegalArgumentException
-     *             if a container of the specified type could not be created
-     * @throws IllegalStateException
-     *             if no container type has been set using {@link #setType(Class)}
-     */
-    public T newInstance() {
-        Class<? extends T> typeToInstantiate = getType();
-        if (typeToInstantiate == null) {
-            throw new IllegalStateException("no type has been set, using setType(Class)");
-        }
-        return newInstance(typeToInstantiate);
-    }
 
     /**
      * Creates a new container instance of the specified type using this configuration.
@@ -324,15 +299,15 @@ public abstract class ContainerConfiguration<T> {
      * @param <S>
      *            the type of container to create
      */
-    public <S extends T> S newInstance(Class<S> type) {
+    public <S> S newInstance(Class<S> type) {
         if (type == null) {
             throw new NullPointerException("type is null");
         }
-        Constructor<T> c = null;
+        Constructor c = null;
         Class clazz = getClass();
         while (!clazz.equals(ContainerConfiguration.class)) {
             try {
-                c = (Constructor<T>) type.getDeclaredConstructor(clazz);
+                c = (Constructor) type.getDeclaredConstructor(clazz);
             } catch (NoSuchMethodException e) {/* Should never happen */
             }
             clazz = clazz.getSuperclass();
@@ -342,7 +317,7 @@ public abstract class ContainerConfiguration<T> {
                     + "taking a single ContainerConfiguration instance for the specified class [class = " + type + "]");
         }
         try {
-            c = (Constructor<T>) type.getDeclaredConstructor(getClass());
+            c = (Constructor) type.getDeclaredConstructor(getClass());
         } catch (NoSuchMethodException e) {/* Should never happen */
         }
         try {
@@ -376,7 +351,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws NullPointerException
      *             if the specified clock is <tt>null</tt>
      */
-    public ContainerConfiguration<T> setClock(Clock clock) {
+    public ContainerConfiguration setClock(Clock clock) {
         if (clock == null) {
             throw new NullPointerException("clock is null");
         }
@@ -402,7 +377,7 @@ public abstract class ContainerConfiguration<T> {
      * @see Commons
      * @see Log4j
      */
-    public ContainerConfiguration<T> setDefaultLogger(Logger logger) {
+    public ContainerConfiguration setDefaultLogger(Logger logger) {
         this.defaultLogger = logger;
         return this;
     }
@@ -424,7 +399,7 @@ public abstract class ContainerConfiguration<T> {
      * @see #getName()
      * @see Container#getName()
      */
-    public ContainerConfiguration<T> setName(String name) {
+    public ContainerConfiguration setName(String name) {
         if ("".equals(name)) {
             throw new IllegalArgumentException("cannot set the empty string as name");
         } else if (name != null) {
@@ -452,7 +427,7 @@ public abstract class ContainerConfiguration<T> {
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
      */
-    public ContainerConfiguration<T> setProperty(String key, String value) {
+    public ContainerConfiguration setProperty(String key, String value) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }
@@ -460,15 +435,41 @@ public abstract class ContainerConfiguration<T> {
         return this;
     }
 
-    /**
-     * Sets the type of container that should be created when calling {@link #newInstance()}.
-     * 
-     * @param type
-     *            the type of container
-     * @return this configuration
-     */
-    public ContainerConfiguration<T> setType(Class<? extends T> type) {
-        this.type = type;
-        return this;
-    }
+
+//    /**
+//     * Returns the type of container set by {@link #setContainerType(Class)}.
+//     * 
+//     * @return the type of container set by {@link #setType(Class)} or <code>null</code> if no type has been set
+//     */
+//    public Class<? extends T> getType() {
+//        return type;
+//    }
+//
+//    /**
+//     * Creates a new Container of the type set using {@link #setType(Class)} from this configuration.
+//     * 
+//     * @return the newly created Container
+//     * @throws IllegalArgumentException
+//     *             if a container of the specified type could not be created
+//     * @throws IllegalStateException
+//     *             if no container type has been set using {@link #setType(Class)}
+//     */
+//    public T newInstance() {
+//        Class<? extends T> typeToInstantiate = getType();
+//        if (typeToInstantiate == null) {
+//            throw new IllegalStateException("no type has been set, using setType(Class)");
+//        }
+//        return newInstance(typeToInstantiate);
+//    }
+//    /**
+//     * Sets the type of container that should be created when calling {@link #newInstance()}.
+//     * 
+//     * @param type
+//     *            the type of container
+//     * @return this configuration
+//     */
+//    public ContainerConfiguration setType(Class<? extends T> type) {
+//        this.type = type;
+//        return this;
+//    }
 }

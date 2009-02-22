@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.service;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 
 /**
  * A service factory is used for constructing services of a specific type.

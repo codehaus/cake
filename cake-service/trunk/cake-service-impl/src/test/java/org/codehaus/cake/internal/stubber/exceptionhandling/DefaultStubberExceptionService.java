@@ -29,7 +29,7 @@ public class DefaultStubberExceptionService<T> extends AbstractExceptionService<
     private StubberExceptionHandler<T> exceptionHandler;
 
     public DefaultStubberExceptionService(Container container, Composer composer,
-            ContainerConfiguration<Stubber<T>> containerConfiguration,
+            ContainerConfiguration containerConfiguration,
             ExceptionHandlingConfiguration<StubberExceptionHandler<T>> configuration) {
         super(container, composer, containerConfiguration, configuration.getExceptionLogger());
         StubberExceptionHandler<T> exceptionHandler = configuration.getExceptionHandler();

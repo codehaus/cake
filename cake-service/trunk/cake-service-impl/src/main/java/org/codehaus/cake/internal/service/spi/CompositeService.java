@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.internal.service;
+package org.codehaus.cake.internal.service.spi;
 
 import java.util.Collection;
 

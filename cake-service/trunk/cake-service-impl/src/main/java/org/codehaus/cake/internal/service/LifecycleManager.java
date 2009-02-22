@@ -33,7 +33,6 @@ import org.codehaus.cake.util.TimeFormatter;
 public class LifecycleManager {
     private Composer composer;
     private final InternalExceptionService<?> ies;
-    // private ContainerInfo info;
     private final List<LifecycleObject> list = new ArrayList<LifecycleObject>();
 
     private final AtomicReference<Throwable> startupException = new AtomicReference<Throwable>();
@@ -54,12 +53,12 @@ public class LifecycleManager {
         Set<?> allServices = composer.initializeComponents();
         for (Object o : allServices) {
             if (o != null) {
-                list.add(new LifecycleObject(this, ies, o));
+                list.add(new LifecycleObject(this, o));
             }
         }
         ServiceManager dsr = composer.get(ServiceManager.class);
         for (LifecycleObject lo : list) {
-            lo.runStart(allServices, composer.get(ContainerConfiguration.class), dsr);
+            lo.runStart(allServices, composer.get(ContainerConfiguration.class), dsr,ies);
         }
 
         if (composer.hasService(DefaultManagementService.class)) {
@@ -74,7 +73,7 @@ public class LifecycleManager {
         /* AfterStart */
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.runAfterStart(composer.get(ContainerConfiguration.class), composer.get(Container.class));
+            lo.runAfterStart(ies, composer.get(ContainerConfiguration.class), composer.get(Container.class));
             if (!lo.isStoppableOrDisposable()) {
                 iterator.remove();
             }
@@ -84,11 +83,11 @@ public class LifecycleManager {
     void runShutdown() {
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.runStop();
+            lo.runStop(ies);
         }
         for (Iterator<LifecycleObject> iterator = list.iterator(); iterator.hasNext();) {
             LifecycleObject lo = iterator.next();
-            lo.runDispose();
+            lo.runDispose(ies);
         }
         ies.terminated();
     }

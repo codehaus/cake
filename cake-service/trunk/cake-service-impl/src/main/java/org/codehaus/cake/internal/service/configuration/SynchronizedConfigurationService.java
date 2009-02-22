@@ -3,10 +3,10 @@ package org.codehaus.cake.internal.service.configuration;
 import java.util.Collection;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.service.ContainerConfiguration;
@@ -15,7 +15,7 @@ public class SynchronizedConfigurationService implements ConfigurationService {
     private volatile MutableAttributeMap defaults = new DefaultAttributeMap();
     private final Collection<RuntimeConfigurableService> services;
 
-    public SynchronizedConfigurationService(ContainerConfiguration<?> configurations, Composer composer) {
+    public SynchronizedConfigurationService(ContainerConfiguration configurations, Composer composer) {
         for (Object o : configurations.getConfigurations()) {
             if (o instanceof WithAttributes) {
                 WithAttributes c = (WithAttributes) o;

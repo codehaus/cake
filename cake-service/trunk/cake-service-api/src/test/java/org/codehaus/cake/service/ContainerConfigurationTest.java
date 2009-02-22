@@ -163,16 +163,16 @@ public class ContainerConfigurationTest {
     public void propertiesSetNPE() {
         conf.setProperty(null, "A");
     }
-
-    /**
-     * Tests {@link ContainerConfiguration#setType(Class)} and {@link ContainerConfiguration#getType()}.
-     */
-    @Test
-    public void type() {
-        assertNull(conf.getType());
-        assertSame(conf, conf.setType(StubberImpl.class));
-        assertEquals(StubberImpl.class, conf.getType());
-    }
+//
+//    /**
+//     * Tests {@link ContainerConfiguration#setType(Class)} and {@link ContainerConfiguration#getType()}.
+//     */
+//    @Test
+//    public void type() {
+//        assertNull(conf.getType());
+//        assertSame(conf, conf.setType(StubberImpl.class));
+//        assertEquals(StubberImpl.class, conf.getType());
+//    }
 
     /**
      * Tests that a configuration service added through
@@ -288,17 +288,17 @@ public class ContainerConfigurationTest {
     public void addToLifecycleAndExportNPE4() {
         conf.addService(Integer.class,(ServiceFactory) null);
     }
-
-    @Test
-    public void newInstance() {
-        conf.setType(StubberImpl.class);
-        assertTrue(conf.newInstance() instanceof StubberImpl);
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void newInstanceISE() {
-        conf.newInstance();
-    }
+//
+//    @Test
+//    public void newInstance() {
+//        conf.setType(StubberImpl.class);
+//        assertTrue(conf.newInstance() instanceof StubberImpl);
+//    }
+//
+//    @Test(expected = IllegalStateException.class)
+//    public void newInstanceISE() {
+//        conf.newInstance();
+//    }
 
     /**
      * Tests that {@link ContainerConfiguration#newCacheInstance(Class)} throws a {@link NullPointerException} when
@@ -404,7 +404,7 @@ public class ContainerConfigurationTest {
     /**
      * An extension of ContainerConfiguration that exposes {@link #getConfiguration(Class)} as a public method.
      */
-    public static class ExtendConfiguration extends ContainerConfiguration<Integer> {
+    public static class ExtendConfiguration extends ContainerConfiguration {
 
         /** Create a new ExtendConfiguration. */
         public ExtendConfiguration() {

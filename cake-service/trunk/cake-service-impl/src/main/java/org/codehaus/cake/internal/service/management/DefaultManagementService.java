@@ -24,8 +24,8 @@ import javax.management.JMException;
 import javax.management.MBeanServer;
 
 import org.codehaus.cake.internal.service.Composer;
-import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalDebugService;
+import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.management.DefaultManagedGroup;
 import org.codehaus.cake.management.Manageable;
 import org.codehaus.cake.management.ManagedGroup;

@@ -38,13 +38,11 @@ import org.codehaus.cake.service.ServiceFactory;
 
 class LifecycleObject {
 
-    private final InternalExceptionService<?> ies;
     private final Object o;
     private final LifecycleManager parent;
     private final Class<?> serviceFactoryKey;
 
-    LifecycleObject(LifecycleManager parent, InternalExceptionService<?> ies, Object service) {
-        this.ies = ies;
+    LifecycleObject(LifecycleManager parent, Object service) {
         if (service instanceof ServiceList.Factory) {
             ServiceList.Factory sf = (Factory) service;
             o = sf.getFactory();
@@ -122,7 +120,7 @@ class LifecycleObject {
         m.invoke(o, obs);
     }
 
-    void runStart(Set<?> all, ContainerConfiguration<?> configuration, ServiceManager registrant) {
+    void runStart(Set<?> all, ContainerConfiguration configuration, ServiceManager registrant, InternalExceptionService<?> ies) {
         ArrayList<Object> al = new ArrayList<Object>();
         al.add(configuration);
         al.add(registrant);
@@ -180,7 +178,7 @@ class LifecycleObject {
         }
     }
 
-    void runAfterStart(ContainerConfiguration<?> configuration, Container container) {
+    void runAfterStart(InternalExceptionService<?> ies, ContainerConfiguration configuration, Container container) {
         ArrayList<Object> objectsAvailable = new ArrayList<Object>();
         objectsAvailable.add(container); // add container
         objectsAvailable.add(configuration); // add Base configuration
@@ -217,7 +215,7 @@ class LifecycleObject {
         }
     }
 
-    void runStop() {
+    void runStop(InternalExceptionService<?> ies) {
         for (Method m : o.getClass().getMethods()) {
             Annotation a = m.getAnnotation(OnShutdown.class);
             if (a != null) {
@@ -243,7 +241,7 @@ class LifecycleObject {
         }
     }
 
-    void runDispose() {
+    void runDispose(InternalExceptionService<?> ies) {
         for (Method m : o.getClass().getMethods()) {
             Annotation a = m.getAnnotation(OnTermination.class);
             if (a != null) {

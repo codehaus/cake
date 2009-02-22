@@ -16,13 +16,15 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.Attributes;
+import org.codehaus.cake.internal.service.spi.ExportedService;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceFactory;
 
@@ -34,7 +36,11 @@ public abstract class AbstractContainer implements Container {
 
     private final ServiceManager sm;
 
-    private volatile Map<Class<?>, RegisteredFactory> services = new ConcurrentHashMap<Class<?>, RegisteredFactory>();
+    private volatile Map<Class<?>, ExportedService> services = new ConcurrentHashMap<Class<?>, ExportedService>();
+
+    private final AbstractContainer parent;
+
+    private final List<AbstractContainer> children = null;
 
     protected AbstractContainer(Composer composer) {
         name = composer.getContainerName();
@@ -42,12 +48,23 @@ public abstract class AbstractContainer implements Container {
         composer.registerInstance(composer.getContainerType(), this);
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
+        parent = null;
     }
 
     protected AbstractContainer(AbstractContainer parent) {
         this.runState = parent.runState;
         this.sm = parent.sm;
         this.name = parent.name;
+        this.parent = parent.parent;
+    }
+
+    protected AbstractContainer(Composer composer, AbstractContainer parent) {
+        name = composer.getContainerName();
+        composer.registerInstance(Container.class, this);
+        composer.registerInstance(composer.getContainerType(), this);
+        sm = composer.get(ServiceManager.class);
+        runState = composer.get(RunState.class);
+        this.parent = parent;
     }
 
     /** {@inheritDoc} */
@@ -72,17 +89,19 @@ public abstract class AbstractContainer implements Container {
         } else if (attributes == null) {
             throw new NullPointerException("attributes is null");
         }
-        Map<Class<?>, RegisteredFactory> services = this.services;// volatile read
+        Map<Class<?>, ExportedService> services = this.services;// volatile read
 
-        RegisteredFactory<T> f = services.get(serviceType);
+        ExportedService<T> f = services.get(serviceType);
         if (f == null && services.size() == 0) {// No services registered, most likely the container hasn't been started
             lazyStart(); // make sure its started
-            this.services = services = new HashMap<Class<?>, RegisteredFactory>(sm.getAll());
+            this.services = services = new HashMap<Class<?>, ExportedService>(sm.getAll());
             f = services.get(serviceType);
         }
 
         if (f == null) {
-            throw new UnsupportedOperationException("No service or service factory has been registered for the specified type [type=" + serviceType.getCanonicalName() + "]");
+            throw new UnsupportedOperationException(
+                    "No service or service factory has been registered for the specified type [type="
+                            + serviceType.getCanonicalName() + "]");
         }
         T service = f.lookup(serviceType, attributes);
         if (service == null) {
@@ -94,14 +113,14 @@ public abstract class AbstractContainer implements Container {
 
     /** {@inheritDoc} */
     public boolean hasService(Class<?> type) {
-        Map<Class<?>, RegisteredFactory> services = this.services;// volatile read
+        Map<Class<?>, ExportedService> services = this.services;// volatile read
         if (services.containsKey(type)) {
             return true;
         }
         // Okay either the container hasn't been started or the container does not have a service of the specified type
         if (services.size() == 0) { // No services registered, most likely the container hasn't been started
             lazyStart(); // make sure its started
-            this.services = services = new HashMap<Class<?>, RegisteredFactory>(sm.getAll());
+            this.services = services = new HashMap<Class<?>, ExportedService>(sm.getAll());
             return services.containsKey(type);
         }
         return false;
@@ -129,11 +148,11 @@ public abstract class AbstractContainer implements Container {
 
     /** {@inheritDoc} */
     public Set<Class<?>> serviceKeySet() {
-        Map<Class<?>, RegisteredFactory> services = this.services;// volatile read
+        Map<Class<?>, ExportedService> services = this.services;// volatile read
         // Okay either the container hasn't been started or the container does not have a service of the specified type
         if (services.size() == 0) { // No services registered, most likely the container hasn't been started
             lazyStart(); // make sure its started
-            this.services = services = new HashMap<Class<?>, RegisteredFactory>(sm.getAll());
+            this.services = services = new HashMap<Class<?>, ExportedService>(sm.getAll());
         }
         return services.keySet();
     }
@@ -147,16 +166,11 @@ public abstract class AbstractContainer implements Container {
     public void shutdownNow() {
         runState.shutdown(true);
     }
-    
-
-    interface RegisteredFactory<T> {
-        T lookup(Class<T> key, AttributeMap attributes);
-    }
 
     /**
      * A {@link ServiceFactory} that returns the same service for any attributes.
      */
-    static class SingleServiceFactory<T> implements RegisteredFactory<T> {
+    static class SingleServiceFactory<T> implements ExportedService<T> {
         private final T service;
 
         SingleServiceFactory(T service) {
@@ -166,13 +180,17 @@ public abstract class AbstractContainer implements Container {
         public T lookup(Class<T> key, AttributeMap attributes) {
             return service;
         }
+
+        public boolean exportTo(Container container) {
+            return true;
+        }
     }
 
-    static class LookupNextServiceFactory<T> implements RegisteredFactory<T> {
+    static class LookupNextServiceFactory<T> implements ExportedService<T> {
         private final ServiceFactory<T> factory;
-        private final RegisteredFactory<T> next;
+        private final ExportedService<T> next;
 
-        LookupNextServiceFactory(ServiceFactory<T> factory, RegisteredFactory<T> next) {
+        LookupNextServiceFactory(ServiceFactory<T> factory, ExportedService<T> next) {
             this.factory = factory;
             this.next = next;
         }
@@ -196,6 +214,10 @@ public abstract class AbstractContainer implements Container {
                     return next.lookup(key, attributes);
                 }
             });
+        }
+
+        public boolean exportTo(Container container) {
+            return true;
         }
     }
 }

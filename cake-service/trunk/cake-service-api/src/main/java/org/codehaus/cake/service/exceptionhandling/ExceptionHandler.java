@@ -42,7 +42,7 @@ public abstract class ExceptionHandler<T> {
      * @param configuration
      *            the configuration of the container
      */
-    public void initialize(ContainerConfiguration<T> configuration) {}
+    public void initialize(ContainerConfiguration configuration) {}
 
     /**
      * The default exception handler. Logs all exceptions and rethrows any errors.

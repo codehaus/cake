@@ -24,7 +24,7 @@ import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
 
-public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConfiguration<?>> {
+public class LifecycleStoppable extends AbstractTCKTest<Container, ContainerConfiguration> {
     private CountDownLatch latch = new CountDownLatch(0);
 
     @After

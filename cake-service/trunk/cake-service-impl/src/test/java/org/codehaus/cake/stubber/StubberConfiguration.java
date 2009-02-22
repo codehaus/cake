@@ -21,7 +21,7 @@ import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguratio
 import org.codehaus.cake.stubber.bubber.BubberConfiguration;
 import org.codehaus.cake.stubber.exceptionhandling.StubberExceptionHandler;
 
-public class StubberConfiguration<T> extends ContainerConfiguration<Stubber> {
+public class StubberConfiguration<T> extends ContainerConfiguration {
     public static <T> StubberConfiguration<T> newConfiguration() {
         return new StubberConfiguration<T>();
     }

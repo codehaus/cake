@@ -34,7 +34,7 @@ public abstract class AbstractExceptionService<T extends Container> implements I
     private final Logger infoLogger;// might be null
 
     public AbstractExceptionService(Container container, Composer composer,
-            ContainerConfiguration<?> containerConfiguration, Logger exceptionLogger) {
+            ContainerConfiguration containerConfiguration, Logger exceptionLogger) {
         this.container = (T) container;
         Logger infoLogger = containerConfiguration.getDefaultLogger();
         this.infoLogger = infoLogger == null ? Loggers.NULL_LOGGER : infoLogger;

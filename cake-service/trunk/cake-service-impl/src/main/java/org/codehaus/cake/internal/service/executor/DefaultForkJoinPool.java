@@ -14,18 +14,19 @@ public class DefaultForkJoinPool implements ServiceFactory<ForkJoinPool> {
 
     /** Default executor service. */
     private volatile ForkJoinPool defaultExecutor;
+
     /** Whether or not this service has been shutdown. */
     private boolean isShutdown;
+
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
 
-    public ForkJoinPool lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ForkJoinPool> context) {
+    public ForkJoinPool lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ForkJoinPool> context) {
         ForkJoinPool e = defaultExecutor;
         if (e == null) {
             synchronized (poolLock) {
                 if (isShutdown) {
-                    throw new IllegalStateException("This service has been shutdown");
+                    throw new IllegalStateException("This service has been shutdown, cannot acquire executor");
                 }
                 e = defaultExecutor;
                 if (e == null) {
