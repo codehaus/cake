@@ -18,7 +18,6 @@ package org.codehaus.cake.internal.ops;
 
 import java.io.Serializable;
 import static org.codehaus.cake.ops.Ops.*;
-import static org.codehaus.cake.ops.Comparators.*;
 /**
  * Various implementations of primitive predicates.
  * <p>

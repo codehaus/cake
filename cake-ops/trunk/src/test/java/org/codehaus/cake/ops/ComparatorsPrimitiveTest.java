@@ -32,10 +32,7 @@ import org.codehaus.cake.test.util.TestUtil;
  * @version $Id: PrimitiveComparators.vm 245 2008-12-27 16:17:02Z kasper ComparatorsPrimitiveTest.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class ComparatorsPrimitiveTest {
-    ///CLOVER:OFF
-    /** Cannot instantiate. */
-    private ComparatorsPrimitiveTest() {}
-    ///CLOVER:ON
+
     
        /**
      * Tests {@link DoubleOps#COMPARATOR}.

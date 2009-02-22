@@ -40,6 +40,17 @@ import org.codehaus.cake.ops.Ops.ShortComparator;
  */
 public final class Comparators {
 
+    /** A Comparator for Comparable.objects using their <i>natural ordering</i>. The comparator is Serializable. */
+    public static final Comparator NATURAL_COMPARATOR = new NaturalComparator();
+
+    /** A comparator that imposes the reverse of the <i>natural ordering</i>. This comparator is Serializable. */
+    public static final Comparator NATURAL_REVERSE_COMPARATOR = new NaturalReverseComparator();
+
+    public static final Comparator NULL_GREATEST_ORDER = new NullGreatestOrderPredicate();
+
+    /** A Comparator for Comparable.objects. The comparator is Serializable. */
+    public static final Comparator NULL_LEAST_ORDER = new NullLeastOrderPredicate();
+    
     /** A comparator for doubles relying on natural ordering. The comparator is Serializable. */
     public static final DoubleComparator DOUBLE_NATURAL_COMPARATOR = (DoubleComparator) Comparators.NATURAL_COMPARATOR;
 
@@ -62,16 +73,7 @@ public final class Comparators {
 
     /** A comparator that imposes the reverse of the <i>natural ordering</i> on longs. The comparator is Serializable. */
     public static final LongComparator LONG_NATURAL_REVERSE_COMPARATOR = (LongComparator) Comparators.NATURAL_REVERSE_COMPARATOR;
-    /** A Comparator for Comparable.objects using their <i>natural ordering</i>. The comparator is Serializable. */
-    public static final Comparator NATURAL_COMPARATOR = new NaturalComparator();
 
-    /** A comparator that imposes the reverse of the <i>natural ordering</i>. This comparator is Serializable. */
-    public static final Comparator NATURAL_REVERSE_COMPARATOR = new NaturalReverseComparator();
-
-    public static final Comparator NULL_GREATEST_ORDER = new NullGreatestOrderPredicate();
-
-    /** A Comparator for Comparable.objects. The comparator is Serializable. */
-    public static final Comparator NULL_LEAST_ORDER = new NullLeastOrderPredicate();
 
     /** Cannot instantiate. */
     // /CLOVER:OFF

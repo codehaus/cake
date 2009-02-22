@@ -334,12 +334,6 @@ public final class Ops {
 
     // /CLOVER:ON
 
-    public static interface PrimitiveOp extends LongOp, IntOp, DoubleOp, FloatOp {
-
-    }
-    public static interface PrimitiveReducer extends DoubleReducer, FloatReducer, IntReducer, LongReducer {
-
-    }
     // PREDICATES
 
     public static interface Predicate<A> {
