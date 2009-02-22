@@ -10,16 +10,6 @@ import org.junit.Test;
 
 public class ClassEmitterMethodTest extends AbstractClassEmitterTest {
 
-    @Test
-    public void voidInvoke() throws Exception {
-        emitter = new TestEmitter(Object.class, Runnable.class) {
-            {
-                withMethodPublic("run").create();
-            }
-        };
-        assertTrue(newInstance() instanceof Runnable);
-        ((Runnable) newInstance()).run();
-    }
 
     @Test
     public void returnField() throws Exception {
@@ -40,5 +30,18 @@ public class ClassEmitterMethodTest extends AbstractClassEmitterTest {
             }
         };
         assertEquals(1234567, ((IntToInt) newInstance()).get(1234567));
+    }
+    
+
+    @Test
+    public void voidInvoke() throws Exception {
+        emitter = new TestEmitter(Object.class, Runnable.class) {
+            {
+                withMethodPublic("run").create();
+            }
+        };
+        //Javac 1.5.0.11 chokes without the (Object) cast
+        assertTrue(((Object) newInstance()) instanceof Runnable);
+        ((Runnable) newInstance()).run();
     }
 }

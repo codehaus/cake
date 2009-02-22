@@ -3,7 +3,6 @@ package org.codehaus.cake.internal.codegen;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.cake.internal.asm.Type;
-import org.codehaus.cake.internal.codegen.StaticInitializer;
 import org.junit.Test;
 
 public class ClassEmitterStaticInitializerTest extends AbstractClassEmitterTest {

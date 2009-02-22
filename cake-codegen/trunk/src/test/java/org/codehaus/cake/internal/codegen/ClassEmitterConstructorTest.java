@@ -1,12 +1,10 @@
 package org.codehaus.cake.internal.codegen;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.codehaus.cake.internal.codegen.ClassEmitter;
 import org.junit.Test;
 
 public class ClassEmitterConstructorTest extends AbstractClassEmitterTest {

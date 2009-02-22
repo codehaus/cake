@@ -2,8 +2,6 @@ package org.codehaus.cake.internal.codegen;
 
 import java.lang.reflect.Constructor;
 
-import org.codehaus.cake.internal.codegen.ClassEmitter;
-
 public abstract class AbstractClassEmitterTest {
 
     protected ClassEmitter emitter;

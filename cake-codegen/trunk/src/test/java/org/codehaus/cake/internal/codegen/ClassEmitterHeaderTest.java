@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.codehaus.cake.internal.codegen.ClassEmitter;
 import org.junit.Test;
 
 public class ClassEmitterHeaderTest extends AbstractClassEmitterTest {

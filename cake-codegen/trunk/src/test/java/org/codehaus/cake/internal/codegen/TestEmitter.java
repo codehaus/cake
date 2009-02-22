@@ -1,10 +1,9 @@
 package org.codehaus.cake.internal.codegen;
 
-import org.codehaus.cake.internal.codegen.ClassEmitter;
 
 public abstract class TestEmitter extends ClassEmitter {
 
-    public TestEmitter(Class<?>... types) {
+    public TestEmitter(Class... types) {
         ClassHeader f = withClass().setPublic();
         if (types.length > 0) {
             f.setSuper(types[0]);
