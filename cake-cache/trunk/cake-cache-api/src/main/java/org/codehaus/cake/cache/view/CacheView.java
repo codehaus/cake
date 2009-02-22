@@ -66,7 +66,6 @@ public interface CacheView<K, V> {
      */
     View<K> keys();
 
-    
     /**
      * Creates a new map view with the keys and values of this view. The following example extract all key value
      * mappings as a {@link Map}:
@@ -100,7 +99,7 @@ public interface CacheView<K, V> {
      * @return the new view
      */
     <T> CacheView<K, V> orderByAttribute(Attribute<T> attribute, Comparator<? extends T> comparator);
-    
+
     /**
      * Creates a new view where all elements are ordered accordingly to the natural order.
      * 
@@ -120,17 +119,44 @@ public interface CacheView<K, V> {
      */
     CacheView<K, V> orderByAttributeMin(Attribute<?> attribute);
 
+    /**
+     * Creates a new CacheView where the elements are ordered accordingly to the specified Comparator.
+     * 
+     * @return a new query
+     */
     CacheView<K, V> orderByKeys(Comparator<K> comparator);
 
+    /**
+     * Assuming all values are {@link Comparable}, returns a new view of the entries contained in this view. The new
+     * view is backed by the old view, so changes to the old view or the datastructure backing the old view are
+     * reflected in the new view. The entries in the new view are ordered by the natural order of their
+     * {@link CacheEntry#getKey() values}.
+     * <p>
+     * Usage:
+     * 
+     * <pre>
+     * Given a cache with the following entries [&quot;A&quot;-&gt;1, &quot;B&quot; -&gt;0, &quot;C&quot;-&gt;3, &quot;D&quot; -&gt;4]
+     * 
+     * cache.view().orderByKeysMax().entries().toList();
+     * 
+     * will return a list with the following entries [&quot;D&quot;-&gt;4, &quot;C&quot;-&gt;3, &quot;A&quot;-&gt;1, &quot;B&quot;-&gt;0]
+     * </pre>
+     * 
+     * @return the new view
+     */
     CacheView<K, V> orderByKeysMax();
 
+    /**
+     * Assuming all keys are {@link Comparable}, creates a new view where all entries are ordered according to the
+     * natural order of their keys.
+     * 
+     * @return the new view
+     */
     CacheView<K, V> orderByKeysMin();
 
     /**
-     * Creates a new CacheQuery where the result is ordered accordingly to the specified Comparator.
+     * Creates a new CacheView where the elements are ordered accordingly to the specified Comparator.
      * 
-     * @throws ClassCastException
-     *             if any value is not Comparable.
      * @return a new query
      */
     CacheView<K, V> orderByValues(Comparator<V> comparator);
@@ -163,8 +189,36 @@ public interface CacheView<K, V> {
      */
     CacheView<K, V> orderByValuesMin();
 
+    /**
+     * Creates a new view which limits the number of mappings in this view. If the mappings in this view are ordered,
+     * for example, if this view has been created by calling {@link #orderBy(Comparator)} on an existing view. The
+     * elements in the new view will keep this ordering.
+     * <p>
+     * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
+     * 
+     * <pre>
+     * View&lt;Integer&gt; v=...
+     * List&lt;Integer&gt; list = v.orderByMax().setLimit(10).toList();
+     * </pre>
+     * 
+     * @param limit
+     *            the maximum number of mappings in the new view
+     * @throws IllegalArgumentException
+     *             if the limit is not positive (>0)
+     * @return a new view
+     */
     CacheView<K, V> setLimit(long limit);
 
+    /**
+     * Returns an array containing all of the elements in this view. If this view is ordered, the array will keep the
+     * elements in the same order.
+     * <p>
+     * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
+     * method must allocate a new array even if this view is backed in any way by an array). The caller is thus free to
+     * modify the returned array.
+     * 
+     * @return an array containing all of the elements in this view
+     */
     CacheEntry<K, V>[] toArray();
 
     /**

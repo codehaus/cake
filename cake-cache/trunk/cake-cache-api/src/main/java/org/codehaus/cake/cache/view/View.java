@@ -8,7 +8,7 @@ import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.ops.Ops.Reducer;
 
 /**
- * A view of elements.
+ * A view of objects.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: Cache.java 239 2008-12-23 20:29:21Z kasper $
@@ -18,12 +18,12 @@ import org.codehaus.cake.ops.Ops.Reducer;
 public interface View<T> {
 
     /**
-     * Returns any element matching filter constraints and mappings, or <code>null</code> if this view is empty.
+     * Returns any element from this view (matching available filter constraints), otherwise <code>null</code>.
      * <p>
      * The element returned is not guaranteed to be a random selection of the elements in this view. Most likely it will
-     * be the first element matching filter constraints and mappings.
+     * be the first element in this view (matching available filter constraints).
      * 
-     * @return an element, or null if this view is empty
+     * @return an element from this view, otherwise null
      */
     T any();
 
@@ -71,7 +71,7 @@ public interface View<T> {
     T max();
 
     /**
-     * Returns the maximum element, or null if empty
+     * Returns the maximum element using the specified comparator, or null if empty
      * 
      * @param comparator
      *            the comparator
@@ -91,7 +91,7 @@ public interface View<T> {
     T min();
 
     /**
-     * Returns the minimum element, or null if empty
+     * Returns the minimum element using the specified comparator, or null if empty
      * 
      * @param comparator
      *            the comparator
@@ -140,9 +140,9 @@ public interface View<T> {
     T reduce(Reducer<T> reducer, T base);
 
     /**
-     * Creates a new View which limits the number of elements in this view. If the element in this view are ordered, for
-     * example, by calling {@link #orderBy(Comparator)}, {@link #orderByMax()} or {@link #orderByMin()}. The elements
-     * in the returned view will keep this ordering.
+     * Creates a new view which limits the number of elements in this view. If the elements in this view are ordered,
+     * for example, if this view has been created by calling {@link #orderBy(Comparator)}, {@link #orderByMax()} or
+     * {@link #orderByMin()} on an existing view. The elements in the new view will keep this ordering.
      * <p>
      * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
      * 
@@ -154,7 +154,7 @@ public interface View<T> {
      * @param limit
      *            the maximum number of elements in the new view
      * @throws IllegalArgumentException
-     *             if the limit is less then <tt>1</tt>
+     *             if the limit is not positive (>0)
      * @return a new view
      */
     View<T> setLimit(long limit);
@@ -163,8 +163,8 @@ public interface View<T> {
     long size();
 
     /**
-     * Returns an array containing all of the elements in this view. If this view is ordered, this method must return
-     * the elements in the same order.
+     * Returns an array containing all of the elements in this view. If this view is ordered, the array will keep the
+     * elements in the same order.
      * <p>
      * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
      * method must allocate a new array even if this view is backed in any way by an array). The caller is thus free to
@@ -209,7 +209,7 @@ public interface View<T> {
     <E> E[] toArray(E[] a);
 
     /**
-     * Creates a new {@link List} with all the elements in this view applying any mapping, filtering or ordering.
+     * Creates a new {@link List} with all the elements in this view.
      * <p>
      * The returned list will be "safe" in that no references to it or any of its elements are maintained by this view.
      * (In other words, this method must allocate a new list even if this view is backed by an list).

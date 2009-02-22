@@ -5,6 +5,14 @@ import java.util.Map;
 
 import org.codehaus.cake.ops.Ops.BinaryProcedure;
 
+/**
+ * A view of key value mappings.
+ * 
+ * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
+ * @version $Id: Cache.java 239 2008-12-23 20:29:21Z kasper $
+ * @param <T>
+ *            the type of elements
+ */
 public interface MapView<K, V> {
 
     /**
@@ -16,8 +24,9 @@ public interface MapView<K, V> {
     void apply(BinaryProcedure<? super K, ? super V> procedure);
 
     /**
-     * Creates a new view with all entries in this view. Is primarily used for extracting data from the view. The
-     * following example extract all entries in this view as a {@link List}:
+     * Creates a new view with all entries in this view.
+     * <p>
+     * The following example extract all entries in this view as a {@link List}:
      * 
      * <pre>
      * List&lt;Map.Entry&lt;K, V&gt;&gt; list = mapview.entries().toList();
@@ -28,7 +37,7 @@ public interface MapView<K, V> {
     View<Map.Entry<K, V>> entries();
 
     /**
-     * Creates a new view with the key for each entry {@link Map.Entry#getKey()}. The following example extract all
+     * Creates a new view with all the keys in this view {@link Map.Entry#getKey()}. The following example extract all
      * keys in this view as a {@link List}:
      * 
      * <pre>
@@ -43,7 +52,7 @@ public interface MapView<K, V> {
     long size();
 
     /**
-     * Creates a new {@link Map} with all the mappings in this view applying any mapping, filtering and ordering.
+     * Creates a new {@link Map} with all the mappings in this view.
      * <p>
      * The returned map will be "safe" in that no references to it or any of its elements are maintained by this view.
      * (In other words, this method must allocate a new map even if this view is backed by a map).
@@ -53,7 +62,7 @@ public interface MapView<K, V> {
     Map<K, V> toMap();
 
     /**
-     * Creates a new view with the value for each entry {@link Map.Entry#getValue()}. The following example extract all
+     * Creates a new view with all the values in this view {@link Map.Entry#getValue()}. The following example extract all
      * values in this view as a {@link List}:
      * 
      * <pre>
