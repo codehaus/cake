@@ -3,48 +3,59 @@ package org.codehaus.cake.cache.service.memorystore;
 import org.codehaus.cake.cache.CacheEntry;
 
 /**
- * Normally all data is accepted by a cache.
- * 
- *  cache will accept all entries in which case <code>true</code> should be returned from this method.
- * However, some policies might want to tell the cache to not cache a specific entry. Consider a simple scenario where
- * Web pages are being cached. The type of keys are <tt>Strings</tt> and the type of values are <tt>byte[]</tt>. If
- * we do not want to cache pages that are requested through the <tt>https</tt> protocol, but only pages that are
- * requested through the <tt>http</tt> protocol. In which case we would write an add method similar to this:
+ * Normally there a no restrictions on what type of data that is added to a cache. However, in some situations it might
+ * make sense to choose not cache an entry.
+ * <p>
+ * Consider a simple scenario where Web pages are being cached. The type of keys are <tt>Strings</tt> urls and the
+ * type of values are <tt>byte[]</tt>. If we want to avoid caching pages that are requested through the
+ * <tt>https</tt> protocol, but only pages that are requested through the <tt>http</tt> protocol. We can write an
+ * IsCacheablePredicate like this:
  * 
  * <pre>
- * public boolean add(CacheEntry&lt;String, byte[]&gt; entry) {
- *     if (entry.getKey().startsWith(&quot;https://&quot;)) {
- *         return false; //tell the cache to *not* add the entry.
+ * class NoHttps implements IsCacheablePredicate&lt;String, byte[]&gt; {
+ *     public boolean add(CacheEntry&lt;String, byte[]&gt; entry) {
+ *         return !entry.getKey().startsWith(&quot;https://&quot;));
  *     }
- *     //cache the entry in the policy
- *     return true; //tell the cache to add the entry.
+ *     public CacheEntry&lt;K, V&gt; replace(CacheEntry&lt;K, V&gt; existing, CacheEntry&lt;K, V&gt; entry) {
+ *         return add(entry) ? entry : null;
+ *     }
  * }
  * </pre>
  * 
- * IMPORTANT: entries that are rejected by this method should also be rejected by the
- * {@link #replace(CacheEntry, CacheEntry)} method.
+ * IMPORTANT: entries that are rejected when calling {@link #add(CacheEntry)} should also be rejected when calling
+ * {@link #replace(CacheEntry, CacheEntry)}.
  * 
  */
 public interface IsCacheablePredicate<K, V> {
+
+    /**
+     * Called before the cache adds the specified entry to the cache. If this method returns <code>true</code> the
+     * cache will add the entry to the cache, otherwise it will not be added to the cache.
+     * 
+     * @param entry
+     *            the entry that is about to be added
+     * @return whether or not the entry should be added
+     */
     boolean add(CacheEntry<K, V> entry);
 
     /**
-     * The implementation of this policy must now choose between
+     * Called whenever an entry is being added to the cache and there already exist an entry with the same key.
+     * Depending on the return value of this method the cache can either keep the existing entry, replaces the existing
+     * entry with the new entry, or keep neither of the entries.
      * <ul>
-     * <li> Accepting the new entry, and removing the old entry (normal behaviour). In which case it should return the
-     * new entry to indicate to the cache that it should remove the old entry and keep the entry.</li>
-     * <li> Rejecting the new entry and keeping the old entry. In which case it should return the previous.</li>
-     * <li> Reject the new entry and removing the old entry. In which case <code>null</code> should be returned.</li>
+     * <li> Returns newEntry: Accepts the new entry, and removes the existing entry.</li>
+     * <li> Returns existingEntry: Rejects the new entry and keeps the existing entry.</li>
+     * <li> Returns <code>null</code>: Rejects the new entry and removes the existing entry.</li>
      * </ul>
-     * IMPORTANT: new entries that are rejected by this method should also be rejected by the {@link #add(CacheEntry)}
-     * method.
+     * <p>
+     * IMPORTANT: entries that are rejected by this method should also be rejected when using {@link #add(CacheEntry)} .
      * 
-     * @param previous
-     *            the previous entry
+     * @param existingEntry
+     *            the existing entry
      * @param newEntry
      *            the new entry
-     * @return <tt>newEntry</tt> if the policy accepted the new entry, <tt>previous</tt> if the policy wants to keep
-     *         the previous entry, <code>null</code> if neither entries should be keept in the cache.
+     * @return <tt>newEntry</tt> if the policy accepted the new entry, <tt>existingEntry</tt> if the policy wants to
+     *         keep the existing entry, <code>null</code> if neither entries should be keept in the cache.
      */
-    CacheEntry<K, V> replace(CacheEntry<K, V> existing, CacheEntry<K, V> entry);
+    CacheEntry<K, V> replace(CacheEntry<K, V> existingEntry, CacheEntry<K, V> newEntry);
 }
