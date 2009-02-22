@@ -18,6 +18,8 @@ package org.codehaus.cake.internal.sourcegenerator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -44,7 +46,9 @@ public class GeneratorBuilder {
             e.printStackTrace();
         }
     }
-
+    public GeneratorBuilder(String name) {
+        
+    }
     public GeneratorBuilder setPackage(String packageName) {
         context.put("package", packageName);
         return this;
@@ -88,6 +92,61 @@ public class GeneratorBuilder {
         Template template = Velocity.getTemplate(templateFile);
         template.merge(context, writer);
 
+        writer.flush();
+        writer.close();
+    }
+
+    public void generateWithBody(String template, String typeTemplate, String target,
+            Iterable<GenerationType> iter) throws Exception {
+        String t = createDestination(target);
+        Writer writer = new BufferedWriter(new FileWriter(t));
+        context.put("Id", "$Id");
+        context.put("imports", imports);
+        Velocity.getTemplate(HEADER).merge(context, writer);
+        context.put("body", createFrom(typeTemplate, context, iter));
+        Velocity.getTemplate(template).merge(new VelocityContext(context), writer);
+
+        writer.flush();
+        writer.close();
+    }
+
+    private String createFrom(String template, VelocityContext parent, Iterable<GenerationType> iter) throws Exception {
+        StringWriter body = new StringWriter();
+        Template t = Velocity.getTemplate(template);
+        for (GenerationType gt : iter) {
+            Context c = new VelocityContext(context);
+            gt.add(c);
+            t.merge(c, body);
+        }
+        return body.getBuffer().toString();
+    }
+
+    private String createDestination(String target) {
+        String t = target + "/" + context.get("package").toString().replace('.', '/') + "/";
+        t += context.get("this").toString() + ".java";
+        File f = new File(t);
+        f.getParentFile().mkdirs();
+        return t;
+    }
+
+    public void generateWithHeaderFooter(String header, String typeTemplate, String footer, String target,
+            Iterable<GenerationType> iter) throws Exception {
+        String t = target + "/" + context.get("package").toString().replace('.', '/') + "/";
+        t += context.get("this").toString() + ".java";
+        File f = new File(t);
+        f.getParentFile().mkdirs();
+        Writer writer = new BufferedWriter(new FileWriter(t));
+        context.put("Id", "$Id");
+        context.put("imports", imports);
+        Velocity.getTemplate(header).merge(new VelocityContext(context), writer);
+        Template template = Velocity.getTemplate(typeTemplate);
+
+        for (GenerationType gt : iter) {
+            Context c = new VelocityContext(context);
+            gt.add(c);
+            template.merge(c, writer);
+        }
+        Velocity.getTemplate(footer).merge(new VelocityContext(context), writer);
         writer.flush();
         writer.close();
     }

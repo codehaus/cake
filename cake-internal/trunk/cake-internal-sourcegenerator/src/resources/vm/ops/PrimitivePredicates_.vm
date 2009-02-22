@@ -1,0 +1,152 @@
+
+
+    /** A ${Type}Predicate that always evaluates to <code>false</code>. */
+    public static final ${Type}Predicate ${Type.toUpperCase()}_FALSE = (${Type}Predicate) Predicates.FALSE;
+
+    /** A ${Type}Predicate that always evaluates to <code>true</code>. */
+    public static final ${Type}Predicate ${Type.toUpperCase()}_TRUE = (${Type}Predicate) Predicates.TRUE;
+    
+    /**
+     * Creates a ${Type}Predicate that performs a logical AND on two supplied predicates. The
+     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is,
+     * if the specified left side predicate evaluates to <code>false</code> the right
+     * side predicate will not be evaluated. More formally
+     *
+     * <pre>
+     * left.evaluate(element) &amp;&amp; right.evaluate(element);
+     * </pre>
+     *
+     * <p>
+     * If both of the supplied predicates are serializable the returned predicate will
+     * also be serializable.
+     *
+     * @param left
+     *            the left side ${Type}Predicate
+     * @param right
+     *            the right side ${Type}Predicate
+     * @return the newly created ${Type}Predicate
+     * @throws NullPointerException
+     *             if any of the specified predicates are <code>null</code>
+     */
+    public static ${Type}Predicate and(${Type}Predicate left, ${Type}Predicate right) {
+        return new And${Type}Predicate(left, right);
+    }
+    
+    /**
+     * Creates a predicate that accepts any value that is equal to the value specified.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the value of the equals predicate
+     * @return a predicate that accepts any value that is equal to the value specified
+     */
+    public static ${Type}Predicate equalsTo($type element) {
+        return new EqualsTo${Type}Predicate(element);
+    }
+    
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is greater then the element being used to construct the predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate greaterThen($type element) {
+        return new GreaterThen${Type}Predicate(element);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is greater then or equals to the element being used to construct the
+     * predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate greaterThenOrEquals($type element) {
+        return new GreaterThenOrEquals${Type}Predicate(element);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is less then the element being used to construct the predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate lessThen($type element) {
+        return new LessThen${Type}Predicate(element);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that evaluates to <code>true</code> if the element being
+     * tested is less then or equals to the element being used to construct the predicate.
+     * <p>
+     * The returned predicate is serializable.
+     *
+     * @param element
+     *            the element to compare with
+     * @return the newly created ${Type}Predicate
+     */
+    public static ${Type}Predicate lessThenOrEquals($type element) {
+        return new LessThenOrEquals${Type}Predicate(element);
+    }
+    
+    /**
+     * Creates a ${Type}Predicate that performs a logical logical NOT on the supplied
+     * ${Type}Predicate. More formally
+     *
+     * <pre>
+     * !predicate.evaluate(value);
+     * </pre>
+     *
+     * <p>
+     * If the specified predicate is serializable the returned predicate will also be
+     * serializable.
+     *
+     * @param predicate
+     *            the predicate to negate
+     * @return the newly created ${Type}Predicate
+     * @throws NullPointerException
+     *             if the specified predicate is <code>null</code>
+     */
+    public static ${Type}Predicate not(${Type}Predicate predicate) {
+        return new Not${Type}Predicate(predicate);
+    }
+
+    /**
+     * Creates a ${Type}Predicate that performs a logical OR on two supplied predicates. The
+     * returned predicate uses short-circuit evaluation (or minimal evaluation). That is,
+     * if the specified left side predicate evaluates to <code>true</code> the right
+     * side predicate will not be evaluated. More formally
+     *
+     * <pre>
+     * left.evaluate(element) || right.evaluate(element);
+     * </pre>
+     *
+     * <p>
+     * If both of the supplied predicates are serializable the returned predicate will
+     * also be serializable.
+     *
+     * @param left
+     *            the left side ${Type}Predicate
+     * @param right
+     *            the right side ${Type}Predicate
+     * @return the newly created ${Type}Predicate
+     * @throws NullPointerException
+     *             if any of the specified predicates are <code>null</code>
+     */
+    public static ${Type}Predicate or(${Type}Predicate left, ${Type}Predicate right) {
+        return new Or${Type}Predicate(left, right);
+    }
+ 

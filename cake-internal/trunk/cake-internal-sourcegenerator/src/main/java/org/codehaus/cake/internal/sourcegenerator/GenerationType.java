@@ -41,6 +41,9 @@ public class GenerationType {
             SHORT);
     public static final Collection<GenerationType> ALL_NUMBERS = Arrays.asList(BYTE, CHAR, DOUBLE, FLOAT, INT, LONG,
             SHORT);
+
+    public static final Collection<GenerationType> BIG_4 = Arrays.asList(DOUBLE, FLOAT, INT, LONG);
+
     /** BigInteger, Integer.class, .. */
     private final Class type;
 
@@ -133,13 +136,13 @@ public class GenerationType {
     }
 
     public void add(Context context) {
-
         context.put("type", type.getSimpleName());
         context.put("Type", capitalize(type.getSimpleName()));
+        context.put("upper", type.getSimpleName().toUpperCase());
         context.put("a", type.getSimpleName().startsWith("I") ? "an" : "a");
         context.put("object", fromPrimitive(type).getSimpleName());
         context.put("isReal", type == Double.TYPE || type == Float.TYPE);
-        context.put("is16Or8Bit", type == Character.TYPE || type == Short.TYPE || type==Byte.TYPE);
+        context.put("is16Or8Bit", type == Character.TYPE || type == Short.TYPE || type == Byte.TYPE);
         context.put("equalTest", type == Double.TYPE || type == Float.TYPE ? ",0" : "");
         context.put("isObject", isObject());
         context.put("isPrimitive", !isObject());

@@ -1,8 +1,9 @@
-import static org.codehaus.cake.ops.${Type}Predicates.*;
+import org.codehaus.cake.ops.PrimitivePredicates;
+import static org.codehaus.cake.ops.PrimitivePredicates.*;
+import static org.codehaus.cake.internal.ops.InternalPrimitivePredicateDefinition.*;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.junit.Assert.*;
 
-import org.codehaus.cake.ops.${Type}Predicates.*;
 import org.codehaus.cake.ops.Ops.*;
 import org.codehaus.cake.test.util.TestUtil;
 import org.junit.Test;
@@ -10,7 +11,7 @@ import org.junit.Test;
  * Various tests for {@link ${Type}Predicates}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id${this}.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id: TYPEpredicatesTest.vm 227 2008-11-30 22:13:02Z kasper ${this}.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class ${this} {
 
@@ -19,19 +20,19 @@ public final class ${this} {
      */
     @Test
     public void and() {
-        assertTrue(${Type}Predicates.and(TRUE, TRUE).op($util.val(1)));
-        assertFalse(${Type}Predicates.and(TRUE, FALSE).op($util.val(1)));
-        assertFalse(${Type}Predicates.and(FALSE, TRUE).op($util.val(1)));
-        assertFalse(${Type}Predicates.and(FALSE, FALSE).op($util.val(1)));
+        assertTrue(PrimitivePredicates.and(${upper}_TRUE, ${upper}_TRUE).op($util.val(1)));
+        assertFalse(PrimitivePredicates.and(${upper}_TRUE, ${upper}_FALSE).op($util.val(1)));
+        assertFalse(PrimitivePredicates.and(${upper}_FALSE, ${upper}_TRUE).op($util.val(1)));
+        assertFalse(PrimitivePredicates.and(${upper}_FALSE, ${upper}_FALSE).op($util.val(1)));
 
-        ${Type}Predicates.And${Type}Predicate p = new ${Type}Predicates.And${Type}Predicate(FALSE, TRUE);
-        assertSame(p.getLeft(), FALSE);
-        assertSame(p.getRight(), TRUE);
+        And${Type}Predicate p = new And${Type}Predicate(${upper}_FALSE, ${upper}_TRUE);
+        assertSame(p.getLeft(), ${upper}_FALSE);
+        assertSame(p.getRight(), ${upper}_TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
 
         // shortcircuted evaluation
-        ${Type}Predicates.and(FALSE, TestUtil.dummy(${Type}Predicate.class)).op($util.val(1));
+        PrimitivePredicates.and(${upper}_FALSE, TestUtil.dummy(${Type}Predicate.class)).op($util.val(1));
     }
 
     /**
@@ -41,7 +42,7 @@ public final class ${this} {
      */
     @Test(expected = NullPointerException.class)
     public void andNPE() {
-        ${Type}Predicates.and(null, TRUE);
+        PrimitivePredicates.and(null, ${upper}_TRUE);
     }
 
     /**
@@ -51,13 +52,13 @@ public final class ${this} {
      */
     @Test(expected = NullPointerException.class)
     public void andNPE1() {
-        ${Type}Predicates.and(TRUE, null);
+        PrimitivePredicates.and(${upper}_TRUE, null);
     }
     
     /* Test greater then */
     @Test
     public void equalsTo() {
-        ${Type}Predicate f = ${Type}Predicates.equalsTo($util.val(5));
+        ${Type}Predicate f = PrimitivePredicates.equalsTo($util.val(5));
         assertEquals($util.val(5), new EqualsTo${Type}Predicate($util.val(5)).getEqualsTo()${equalTest});
         assertFalse(f.op($util.val(4)));
         assertTrue(f.op($util.val(5)));
@@ -73,17 +74,17 @@ public final class ${this} {
      */
     @Test
     public void falsePredicate() {
-        assertFalse(FALSE.op($util.val(2)));
-        assertFalse(FALSE.op(${object}.MIN_VALUE));
-        FALSE.toString(); // does not fail
-        assertIsSerializable(FALSE);
-        assertSame(FALSE, TestUtil.serializeAndUnserialize(FALSE));
+        assertFalse(${upper}_FALSE.op($util.val(2)));
+        assertFalse(${upper}_FALSE.op(${object}.MIN_VALUE));
+        ${upper}_FALSE.toString(); // does not fail
+        assertIsSerializable(${upper}_FALSE);
+        assertSame(${upper}_FALSE, TestUtil.serializeAndUnserialize(${upper}_FALSE));
     }
    
     /* Test greater then */
     @Test
     public void greaterThen() {
-        ${Type}Predicate f = ${Type}Predicates.greaterThen($util.val(5));
+        ${Type}Predicate f = PrimitivePredicates.greaterThen($util.val(5));
         assertEquals($util.val(5), new GreaterThen${Type}Predicate($util.val(5)).getGreaterThen()${equalTest});
         assertFalse(f.op($util.val(4)));
         assertFalse(f.op($util.val(5)));
@@ -96,7 +97,7 @@ public final class ${this} {
 
     @Test
     public void greaterThenOrEquals() {
-        ${Type}Predicate f = ${Type}Predicates.greaterThenOrEquals($util.val(5));
+        ${Type}Predicate f = PrimitivePredicates.greaterThenOrEquals($util.val(5));
         assertEquals($util.val(5), new GreaterThenOrEquals${Type}Predicate($util.val(5)).getGreaterThenOrEquals()${equalTest});
         assertFalse(f.op($util.val(4)));
         assertTrue(f.op($util.val(5)));
@@ -110,7 +111,7 @@ public final class ${this} {
     /* Test greater then */
     @Test
     public void lessThen() {
-        ${Type}Predicate f = ${Type}Predicates.lessThen($util.val(5));
+        ${Type}Predicate f = PrimitivePredicates.lessThen($util.val(5));
         assertEquals($util.val(5), new LessThen${Type}Predicate($util.val(5)).getLessThen()${equalTest});
         assertTrue(f.op($util.val(4)));
         assertFalse(f.op($util.val(5)));
@@ -124,7 +125,7 @@ public final class ${this} {
     /* Test greater then */
     @Test
     public void lessThenOrEquals() {
-        ${Type}Predicate f = ${Type}Predicates.lessThenOrEquals($util.val(5));
+        ${Type}Predicate f = PrimitivePredicates.lessThenOrEquals($util.val(5));
         assertEquals($util.val(5), new LessThenOrEquals${Type}Predicate($util.val(5)).getLessThenOrEquals()${equalTest});
         assertTrue(f.op($util.val(4)));
         assertTrue(f.op($util.val(5)));
@@ -142,7 +143,7 @@ public final class ${this} {
      */
     @Test(expected = NullPointerException.class)
     public void notNPE() {
-        ${Type}Predicates.not(null);
+        PrimitivePredicates.not((${Type}Predicate) null);
     }
 
     /**
@@ -150,11 +151,11 @@ public final class ${this} {
      */
     @Test
     public void notPredicate() {
-        assertFalse(${Type}Predicates.not(TRUE).op($util.val(2)));
-        assertTrue(${Type}Predicates.not(FALSE).op($util.val(2)));
-        ${Type}Predicates.not(TRUE).toString(); // does not fail
-        assertIsSerializable(${Type}Predicates.not(TRUE));
-        assertSame(TRUE, ((Not${Type}Predicate) ${Type}Predicates.not(TRUE)).getPredicate());
+        assertFalse(PrimitivePredicates.not(${upper}_TRUE).op($util.val(2)));
+        assertTrue(PrimitivePredicates.not(${upper}_FALSE).op($util.val(2)));
+        PrimitivePredicates.not(${upper}_TRUE).toString(); // does not fail
+        assertIsSerializable(PrimitivePredicates.not(${upper}_TRUE));
+        assertSame(${upper}_TRUE, ((Not${Type}Predicate) PrimitivePredicates.not(${upper}_TRUE)).getPredicate());
     }
 
     /**
@@ -162,19 +163,19 @@ public final class ${this} {
      */
     @Test
     public void or() {
-        assertTrue(${Type}Predicates.or(TRUE, TRUE).op($util.val(1)));
-        assertTrue(${Type}Predicates.or(TRUE, FALSE).op($util.val(1)));
-        assertTrue(${Type}Predicates.or(FALSE, TRUE).op($util.val(1)));
-        assertFalse(${Type}Predicates.or(FALSE, FALSE).op($util.val(1)));
+        assertTrue(PrimitivePredicates.or(${upper}_TRUE, ${upper}_TRUE).op($util.val(1)));
+        assertTrue(PrimitivePredicates.or(${upper}_TRUE, ${upper}_FALSE).op($util.val(1)));
+        assertTrue(PrimitivePredicates.or(${upper}_FALSE, ${upper}_TRUE).op($util.val(1)));
+        assertFalse(PrimitivePredicates.or(${upper}_FALSE, ${upper}_FALSE).op($util.val(1)));
 
-        ${Type}Predicates.Or${Type}Predicate p = new ${Type}Predicates.Or${Type}Predicate(FALSE, TRUE);
-        assertSame(p.getLeft(), FALSE);
-        assertSame(p.getRight(), TRUE);
+        Or${Type}Predicate p = new Or${Type}Predicate(${upper}_FALSE, ${upper}_TRUE);
+        assertSame(p.getLeft(), ${upper}_FALSE);
+        assertSame(p.getRight(), ${upper}_TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
 
         // shortcircuted evaluation
-        ${Type}Predicates.or(TRUE, TestUtil.dummy(${Type}Predicate.class)).op($util.val(1));
+        PrimitivePredicates.or(${upper}_TRUE, TestUtil.dummy(${Type}Predicate.class)).op($util.val(1));
     }
 
     /**
@@ -184,7 +185,7 @@ public final class ${this} {
      */
     @Test(expected = NullPointerException.class)
     public void orNPE() {
-        ${Type}Predicates.or(null, TRUE);
+        PrimitivePredicates.or(null, ${upper}_TRUE);
     }
 
     /**
@@ -194,7 +195,7 @@ public final class ${this} {
      */
     @Test(expected = NullPointerException.class)
     public void orNPE1() {
-        ${Type}Predicates.or(TRUE, null);
+        PrimitivePredicates.or(${upper}_TRUE, null);
     }
    
     
@@ -203,10 +204,10 @@ public final class ${this} {
      */
     @Test
     public void truePredicate() {
-        assertTrue(TRUE.op($util.val(2)));
-        assertTrue(TRUE.op(${object}.MIN_VALUE));
-        TRUE.toString(); // does not fail
-        assertIsSerializable(TRUE);
-        assertSame(TRUE, TestUtil.serializeAndUnserialize(TRUE));
+        assertTrue(${upper}_TRUE.op($util.val(2)));
+        assertTrue(${upper}_TRUE.op(${object}.MIN_VALUE));
+        ${upper}_TRUE.toString(); // does not fail
+        assertIsSerializable(${upper}_TRUE);
+        assertSame(${upper}_TRUE, TestUtil.serializeAndUnserialize(${upper}_TRUE));
     }
 }
