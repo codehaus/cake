@@ -56,7 +56,7 @@ import org.codehaus.cake.util.Logger;
  * @param <V>
  *            the type of mapped values
  */
-public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
+public class CacheConfiguration<K, V> extends ContainerConfiguration {
 
     /** The attributes that can be attached to each cache entry. */
     private LinkedHashSet<Attribute<?>> entryAttributes = new LinkedHashSet<Attribute<?>>();
@@ -134,20 +134,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         return new ArrayList<Attribute<?>>(entryAttributes);
     }
 
-    /**
-     * Creates a new Cache of the type set using {@link #setType(Class)} from this configuration.
-     * 
-     * @return the newly created Cache
-     * @throws IllegalArgumentException
-     *             if a cache of the specified type could not be created
-     * @throws IllegalStateException
-     *             if no cache type has been set using {@link #setType(Class)}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Cache<K, V> newInstance() {
-        return super.newInstance();
-    }
+
 
     /**
      * Runs the specified procedure after the cache has started. This is basically equivalent to
@@ -198,12 +185,6 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration<Cache> {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public CacheConfiguration<K, V> setType(Class<? extends Cache> type) {
-        super.setType(type);
-        return this;
-    }
 
     /**
      * Returns a configuration object that can be used to control how exceptions are handled within the cache

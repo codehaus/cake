@@ -30,7 +30,7 @@ import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 
 /**
- * Provides the type of all common replacement policies available in cake. In addition to this, provides a number of
+ * Provides the type of all common replacement policies available in Cake. In addition to this, provides a number of
  * method that useful for creating {@link PolicyContext} instances that can be used while testing.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
@@ -70,9 +70,10 @@ public final class Policies {
     /**
      * Creates a new ReplacementPolicy of the specified type.
      * 
-     * If the specified replacement type has a constructor taking a {@link PolicyContext}, this method will create a
-     * context that can be used. This is especially usefull while testing replacement policies that needs a
-     * {@link PolicyContext} instance.
+     * If the specified replacement type has a constructor taking a {@link PolicyContext}, this method will
+     * automatically create a policy context. This is especially usefull while testing replacement policies that needs a
+     * {@link PolicyContext} instance. If the specified replacement type does not a constructor taking a policy context,
+     * this method will attempt to create an instance of the replacement policy using a public empty constructor.
      * 
      * @param <T>
      *            the type of replacement policy

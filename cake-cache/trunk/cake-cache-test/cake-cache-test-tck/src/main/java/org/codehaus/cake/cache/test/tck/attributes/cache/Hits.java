@@ -18,6 +18,7 @@ package org.codehaus.cake.cache.test.tck.attributes.cache;
 import static org.codehaus.cake.cache.CacheEntry.HITS;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.junit.Test;
 
 /**
  * Tests the size attribute of {@link CacheEntry}.
@@ -30,28 +31,28 @@ public class Hits extends AbstractAttributeTest {
         super(HITS);
     }
 
-    // /**
-    // * Tests default size of 1.
-    // */
-    // @SuppressWarnings("unchecked")
-    // @Test
-    // public void put() {
-    // put(M1);
-    // assertAttribute(M1);
-    // putAll(M1, M2);
-    // assertAttribute(M1);
-    // assertAttribute(M2);
-    // }
-    //
-    // /**
-    // * Tests that put overrides the cost of an existing item.
-    // */
-    // @Test
-    // public void putOverride() {
-    // loader.withLoader(M1).addAttribute(atr, 4l);
-    // assertGet(M1);
-    // assertAttribute(M1, 4l);
-    // put(M1);
-    // assertAttribute(M1);
-    // }
+    /**
+     * Tests default size of 1.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void put() {
+        put(M1);
+        assertAttribute(M1);
+        putAll(M1, M2);
+        assertAttribute(M1);
+        assertAttribute(M2);
+    }
+
+    /**
+     * Tests that put overrides the cost of an existing item.
+     */
+    @Test
+    public void putOverride() {
+        loader.withLoader(M1).addAttribute(atr, 4l);
+        assertGet(M1);
+        assertAttribute(M1, 4l);
+        put(M1);
+        assertAttribute(M1);
+    }
 }

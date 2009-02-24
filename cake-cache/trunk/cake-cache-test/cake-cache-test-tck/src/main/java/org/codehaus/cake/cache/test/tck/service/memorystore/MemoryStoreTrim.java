@@ -19,7 +19,7 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.LongOps;
+import org.codehaus.cake.ops.PrimitiveOps;
 import org.junit.Test;
 
 public class MemoryStoreTrim extends AbstractCacheTCKTest {
@@ -86,7 +86,7 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
 
     @Test
     public void trimToVolume() {
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
         conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setPolicy(Policies.LRU);
         init();
@@ -123,7 +123,7 @@ public class MemoryStoreTrim extends AbstractCacheTCKTest {
 
     @Test
     public void trimToVolumeNegative() {
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
         conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setPolicy(Policies.LRU);
         init();

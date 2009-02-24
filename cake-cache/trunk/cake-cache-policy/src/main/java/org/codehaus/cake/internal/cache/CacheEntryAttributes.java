@@ -20,7 +20,7 @@ import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 
 /**
- * @author knielsen22
+ * This class is here temporarily because some of the policies needs access to the attributes.
  * 
  */
 public class CacheEntryAttributes {
@@ -72,7 +72,7 @@ public class CacheEntryAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public    static final DoubleAttribute COST = new CacheEntryAttributes.CostAttribute();
+    public static final DoubleAttribute COST = new CacheEntryAttributes.CostAttribute();
     /**
      * A count of how many times an entry has been accessed through {@link Cache#get(Object)} ,
      * {@link Cache#getEntry(Object)} or {@link Cache#getAll(java.util.Collection)} . <p/> The following list describes
@@ -104,13 +104,13 @@ public class CacheEntryAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public   static final LongAttribute HITS = new CacheEntryAttributes.HitsAttribute();
+    public static final LongAttribute HITS = new CacheEntryAttributes.HitsAttribute();
     /**
      * The size of the cache entry. The volume of a cache is defined as the sum of the individual sizes of all entries
      * in the cache. This attribute is also used for deciding which entries to evict first in
      * {@link ReplaceBiggestPolicy}
      */
-    public    static final LongAttribute SIZE = new CacheEntryAttributes.SizeAttribute();
+    public static final LongAttribute SIZE = new CacheEntryAttributes.SizeAttribute();
     /**
      * The time between when the entry was last accessed (through calls to {@link Cache#get(Object)} and midnight,
      * January 1, 1970 UTC. This is also the value returned by {@link System#currentTimeMillis()} .
@@ -134,7 +134,7 @@ public class CacheEntryAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public   static final TimeInstanceAttribute TIME_ACCESSED = new CacheEntryAttributes.TimeAccessedAttribute();
+    public static final TimeInstanceAttribute TIME_ACCESSED = new CacheEntryAttributes.TimeAccessedAttribute();
     /**
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
      * {@link System#currentTimeMillis()} . <p/> The following list describes how this attribute is obtained.
@@ -167,14 +167,14 @@ public class CacheEntryAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public   static final TimeInstanceAttribute TIME_CREATED = new CacheEntryAttributes.TimeCreatedAttribute();
+    public static final TimeInstanceAttribute TIME_CREATED = new CacheEntryAttributes.TimeCreatedAttribute();
     /**
      * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is also the value
      * returned by {@link System#currentTimeMillis()} .
      * <p>
      * The mapped value must be of a type <tt>long</tt> between 1 and {@link Long#MAX_VALUE} .
      */
-    public   static final TimeInstanceAttribute TIME_MODIFIED = new CacheEntryAttributes.TimeModificedAttribute();
+    public static final TimeInstanceAttribute TIME_MODIFIED = new CacheEntryAttributes.TimeModificedAttribute();
     /**
      * A count of how many times the value of an entry has been modified. <p/> The following list describes how this
      * attribute is obtained.
@@ -205,7 +205,7 @@ public class CacheEntryAttributes {
      * </tr>
      * </table> </blockquote>
      */
-    public    static final LongAttribute VERSION = new CacheEntryAttributes.VersionAttribute();
+    public static final LongAttribute VERSION = new CacheEntryAttributes.VersionAttribute();
 
     /** The Cost attribute. */
     static final class CostAttribute extends DoubleAttribute {

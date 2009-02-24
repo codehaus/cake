@@ -20,10 +20,9 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 import java.util.Arrays;
 
 import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
-import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicates;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.LongOps;
 import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.ops.PrimitiveOps;
 import org.junit.Test;
 
 public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
@@ -87,7 +86,7 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
 
     @Test
     public void loadVolume() {
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
         conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setIsCacheableFilter(ivalue);
         init();
@@ -95,7 +94,7 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
         assertSize(2);
         assertVolume(5);
 
-        loader.setAttribute(SIZE, LongOps.add(2));// size=key+2
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(2));// size=key+2
         loader.withLoader(M1).setValue("C");
         withLoadingForced().load(M1.getKey());
         awaitFinishedThreads();
@@ -208,4 +207,6 @@ public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {
         replace(M2.getKey(), "D");
         assertSize(0);// ?? replace
     }
+    
+   
 }

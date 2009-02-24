@@ -23,6 +23,7 @@ import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
+import org.codehaus.cake.internal.cache.CacheEntryAttributes;
 
 /**
  * A <tt>CacheEntry</tt> describes a value-key mapping extending {@link java.util.Map.Entry} with metadata. However,
@@ -89,7 +90,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * </tr>
      * </table> </blockquote>
      */
-    DoubleAttribute COST = new CacheEntryAttributes.CostAttribute();
+    DoubleAttribute COST = CacheEntryAttributes.COST;
 
     /**
      * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
@@ -123,14 +124,14 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * </tr>
      * </table> </blockquote>
      */
-    LongAttribute HITS = new CacheEntryAttributes.HitsAttribute();
+    LongAttribute HITS = CacheEntryAttributes.HITS;
 
     /**
      * The size of the cache entry. The volume of a cache is defined as the sum of the individual sizes of all entries
      * in the cache. This attribute is also used for deciding which entries to evict first in
      * {@link ReplaceBiggestPolicy}
      */
-    LongAttribute SIZE = new CacheEntryAttributes.SizeAttribute();
+    LongAttribute SIZE = CacheEntryAttributes.SIZE;
 
     /**
      * The time between when the entry was last accessed (through calls to {@link Cache#get(Object)} and midnight,
@@ -155,7 +156,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * </tr>
      * </table> </blockquote>
      */
-    TimeInstanceAttribute TIME_ACCESSED = new CacheEntryAttributes.TimeAccessedAttribute();
+    TimeInstanceAttribute TIME_ACCESSED = CacheEntryAttributes.TIME_ACCESSED;
 
     /**
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
@@ -189,7 +190,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * </tr>
      * </table> </blockquote>
      */
-    TimeInstanceAttribute TIME_CREATED = new CacheEntryAttributes.TimeCreatedAttribute();
+    TimeInstanceAttribute TIME_CREATED = CacheEntryAttributes.TIME_CREATED;
 
     /**
      * The time between when the entry was last modified and midnight, January 1, 1970 UTC. This is also the value
@@ -197,7 +198,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * <p>
      * The mapped value must be of a type <tt>long</tt> between 1 and {@link Long#MAX_VALUE}.
      */
-    TimeInstanceAttribute TIME_MODIFIED = new CacheEntryAttributes.TimeModificedAttribute();
+    TimeInstanceAttribute TIME_MODIFIED = CacheEntryAttributes.TIME_MODIFIED;
 
     /**
      * A count of how many times the value of an entry has been modified.
@@ -230,7 +231,7 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * </tr>
      * </table> </blockquote>
      */
-    LongAttribute VERSION = new CacheEntryAttributes.VersionAttribute();
+    LongAttribute VERSION = CacheEntryAttributes.VERSION;
 
     /** {@inheritDoc} */
     V getValue();

@@ -21,6 +21,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest {
@@ -28,14 +29,14 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
     static final Attribute A2 = new LongAttribute() {};
     static final Attribute A3 = new LongAttribute() {};
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalStateException.class) @Ignore
     public void dependHardISE() {
         conf.withMemoryStore().setPolicy(HardPolicy.class).setMaximumSize(5);
         init();
         prestart();
     }
 
-    @Test
+    @Test @Ignore
     public void dependHard() {
         conf.withMemoryStore().setPolicy(HardPolicy.class).setMaximumSize(5);
         conf.addEntryAttributes(A1);

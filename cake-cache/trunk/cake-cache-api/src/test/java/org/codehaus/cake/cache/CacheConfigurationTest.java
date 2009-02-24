@@ -170,15 +170,15 @@ public class CacheConfigurationTest {
         conf.setClock(null);
     }
 
-    /**
-     * Tests {@link CacheConfiguration#setCacheType(Class)} and {@link CacheConfiguration#getCacheType()}.
-     */
-    @Test
-    public void cacheType() {
-        assertNull(conf.getType());
-        assertSame(conf, conf.setType(DummyCache.class));
-        assertEquals(DummyCache.class, conf.getType());
-    }
+//    /**
+//     * Tests {@link CacheConfiguration#setCacheType(Class)} and {@link CacheConfiguration#getCacheType()}.
+//     */
+//    @Test
+//    public void cacheType() {
+//        assertNull(conf.getType());
+//        assertSame(conf, conf.setType(DummyCache.class));
+//        assertEquals(DummyCache.class, conf.getType());
+//    }
 
     /**
      * Tests {@link CacheConfiguration#setDefaultLogger(Logger)} and {@link CacheConfiguration#getDefaultLogger()}.
@@ -305,12 +305,12 @@ public class CacheConfigurationTest {
         assertTrue(c instanceof DummyCache);
         assertEquals("foo", c.getName());
     }
-
-    @Test
-    public void newInstanceType() throws Exception {
-        conf.setType(DummyCache.class);
-        assertTrue(conf.newInstance() instanceof DummyCache);
-    }
+//
+//    @Test
+//    public void newInstanceType() throws Exception {
+//        conf.setType(DummyCache.class);
+//        assertTrue(conf.newInstance() instanceof DummyCache);
+//    }
 
     /**
      * Tests the {@link CacheConfiguration#create(String)} method.

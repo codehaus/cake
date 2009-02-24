@@ -3,8 +3,8 @@ package org.codehaus.cake.internal.cache.view;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.codehaus.cake.cache.view.MapView;
-import org.codehaus.cake.cache.view.View;
+import org.codehaus.cake.collection.view.MapView;
+import org.codehaus.cake.collection.view.View;
 import org.codehaus.cake.ops.Ops.BinaryProcedure;
 
 public class DefaultMapView<K, V> extends AbstractView implements MapView<K, V> {

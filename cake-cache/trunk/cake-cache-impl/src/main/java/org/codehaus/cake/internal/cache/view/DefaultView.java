@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.List;
 
-import org.codehaus.cake.cache.view.View;
+import org.codehaus.cake.collection.view.View;
 import org.codehaus.cake.ops.Comparators;
 import org.codehaus.cake.ops.ObjectOps;
 import org.codehaus.cake.ops.Ops.Op;

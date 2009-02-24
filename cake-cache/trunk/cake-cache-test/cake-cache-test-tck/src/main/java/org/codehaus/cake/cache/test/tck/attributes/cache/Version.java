@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.LongOps;
+import org.codehaus.cake.ops.PrimitiveOps;
 import org.junit.Test;
 
 /**
@@ -38,7 +38,7 @@ public class Version extends AbstractAttributeTest {
     @SuppressWarnings("unchecked")
     @Test
     public void iterator() {
-        loader.setAttribute(VERSION, LongOps.add(5));// size=key+1
+        loader.setAttribute(VERSION, PrimitiveOps.longAdd(5));// size=key+1
         init();
         assertGet(M1);
         Iterator iter = c.values().iterator();

@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.tck.service.memorystore;
 import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.LongOps;
+import org.codehaus.cake.ops.PrimitiveOps;
 import org.junit.Test;
 
 /**
@@ -68,7 +68,7 @@ public class MemoryStoreReplacementPolicyNone extends AbstractCacheTCKTest {
 
     @Test
     public void maximumVolume() {
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
         conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setMaximumVolume(7);
         init();

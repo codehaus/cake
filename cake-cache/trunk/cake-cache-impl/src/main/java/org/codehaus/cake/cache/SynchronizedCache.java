@@ -73,7 +73,10 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
     public SynchronizedCache() {
         this(CacheConfiguration.<K, V> newConfiguration());
     }
-
+    /** Creates a new SynchronizedCache with default configuration. */
+    public SynchronizedCache(Container parent, CacheConfiguration<K, V> configuration) {
+        this(CacheConfiguration.<K, V> newConfiguration());
+    }
     /**
      * Creates a new SynchronizedCache with the specified configuration.
      * 

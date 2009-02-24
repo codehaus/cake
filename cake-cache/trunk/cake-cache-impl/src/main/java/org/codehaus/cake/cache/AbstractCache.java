@@ -11,7 +11,6 @@ import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
-import org.codehaus.cake.cache.view.CacheView;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingMemoryStore;

@@ -31,6 +31,11 @@
       <artifactId>cake-service-api</artifactId>
       <version>0.2-SNAPSHOT</version>
     </dependency>
+        <dependency>
+      <groupId>org.codehaus.cake.cache</groupId>
+      <artifactId>cake-cache-policy</artifactId>
+      <version>0.2-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>

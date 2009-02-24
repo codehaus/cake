@@ -19,8 +19,8 @@ import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.IntPredicates;
 import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.ops.PrimitivePredicates;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.ops.Ops.BytePredicate;
 import org.codehaus.cake.ops.Ops.CharPredicate;
@@ -78,7 +78,7 @@ public enum SelectedCacheType {
                 cache.withCrud().write().put(i, Character.toString((char) (64 + i)),
                         Attributes.from(I_1, i, C_1, (char) (64 + i)));
             }
-            return cache.filter().on(I_1, IntPredicates.lessThen(6)).filter().on(C_1, new CharPredicate() {
+            return cache.filter().on(I_1, PrimitivePredicates.lessThen((char) 6)).filter().on(C_1, new CharPredicate() {
                 public boolean op(char a) {
                     return ((int) a) % 2 == 1;
                 }

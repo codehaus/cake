@@ -27,7 +27,7 @@ import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.LongOps;
+import org.codehaus.cake.ops.PrimitiveOps;
 import org.codehaus.cake.ops.Ops.LongOp;
 import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.util.Loggers;
@@ -97,7 +97,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     @Test
     public void evictorVolume() {
         conf.addEntryAttributes(SIZE);
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
 
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
 
@@ -144,7 +144,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
     @Test
     public void evictorVolumeComparator() {
         loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
         conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setPolicy(Policies.LRU);
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {

@@ -5,9 +5,9 @@ import java.util.Comparator;
 
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.view.CacheView;
-import org.codehaus.cake.cache.view.MapView;
-import org.codehaus.cake.cache.view.View;
+import org.codehaus.cake.cache.CacheView;
+import org.codehaus.cake.collection.view.MapView;
+import org.codehaus.cake.collection.view.View;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.ops.Comparators;
 import org.codehaus.cake.ops.ObjectOps;

@@ -16,8 +16,23 @@
 package org.codehaus.cake.cache;
 
 import org.codehaus.cake.attribute.Attribute;
+import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.attribute.ByteAttribute;
+import org.codehaus.cake.attribute.CharAttribute;
+import org.codehaus.cake.attribute.DoubleAttribute;
+import org.codehaus.cake.attribute.FloatAttribute;
+import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
+import org.codehaus.cake.ops.Ops.BytePredicate;
+import org.codehaus.cake.ops.Ops.CharPredicate;
+import org.codehaus.cake.ops.Ops.DoublePredicate;
+import org.codehaus.cake.ops.Ops.FloatPredicate;
+import org.codehaus.cake.ops.Ops.IntPredicate;
+import org.codehaus.cake.ops.Ops.LongPredicate;
 import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.ops.Ops.ShortPredicate;
 
 /**
  * A CacheSelector is used for creating views of a cache where the ret A CacheSelector is normally acquire through calls
@@ -31,35 +46,60 @@ import org.codehaus.cake.ops.Ops.Predicate;
  *            the type of mapped values
  */
 
-public interface CacheSelector<K, V> extends AttributeSelector<Cache<K, V>> {
+public interface CacheSelector<K, V>  {
+
+    /**
+     * Returns a cache view where the specified attribute.
+     * 
+     * @param a
+     * @param value
+     * @return
+     */
+    Cache<K, V> on(BooleanAttribute attribute, boolean value);
+
+    Cache<K, V> on(ByteAttribute attribute, BytePredicate filter);
+
+    Cache<K, V> on(CharAttribute attribute, CharPredicate filter);
+
+    Cache<K, V> on(DoubleAttribute attribute, DoublePredicate filter);
+
+    Cache<K, V> on(FloatAttribute attribute, FloatPredicate filter);
+
+    Cache<K, V> on(IntAttribute attribute, IntPredicate filter);
+
+    Cache<K, V> on(LongAttribute attribute, LongPredicate filter);
+
+    Cache<K, V> on(ShortAttribute attribute, ShortPredicate filter);
+
     <T> Cache<K, V> on(Attribute<T> a, Predicate<T> p);
 
     Cache<K, V> on(BinaryPredicate<? super K, ? super V> selector);
 
-//    /**
-//     * Returns a cache view where the specified attribute.
-//     * 
-//     * @param a
-//     * @param value
-//     * @return
-//     */
-//    Cache<K, V> on(BooleanAttribute attribute, boolean value);
-//
-//    Cache<K, V> on(ByteAttribute attribute, BytePredicate filter);
-//
-//    Cache<K, V> on(CharAttribute attribute, CharPredicate filter);
-//
-//    Cache<K, V> on(DoubleAttribute attribute, DoublePredicate filter);
-//
-//    Cache<K, V> on(FloatAttribute attribute, FloatPredicate filter);
-//
-//    Cache<K, V> on(IntAttribute attribute, IntPredicate filter);
-//
-//    Cache<K, V> on(LongAttribute attribute, LongPredicate filter);
-//
+    // /**
+    // * Returns a cache view where the specified attribute.
+    // *
+    // * @param a
+    // * @param value
+    // * @return
+    // */
+    // Cache<K, V> on(BooleanAttribute attribute, boolean value);
+    //
+    // Cache<K, V> on(ByteAttribute attribute, BytePredicate filter);
+    //
+    // Cache<K, V> on(CharAttribute attribute, CharPredicate filter);
+    //
+    // Cache<K, V> on(DoubleAttribute attribute, DoublePredicate filter);
+    //
+    // Cache<K, V> on(FloatAttribute attribute, FloatPredicate filter);
+    //
+    // Cache<K, V> on(IntAttribute attribute, IntPredicate filter);
+    //
+    // Cache<K, V> on(LongAttribute attribute, LongPredicate filter);
+    //
     Cache<K, V> on(Predicate<CacheEntry<K, V>> filter);
-//
-//    Cache<K, V> on(ShortAttribute attribute, ShortPredicate filter);
+
+    //
+    // Cache<K, V> on(ShortAttribute attribute, ShortPredicate filter);
 
     /**
      * Returns a filtered view containing only those elements key that are accepted by the specified filter. Given a

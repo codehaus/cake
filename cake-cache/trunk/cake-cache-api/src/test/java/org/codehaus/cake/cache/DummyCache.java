@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.cache.view.CacheView;
 
 /**
  * A dummy implementation of a {@link Cache}.

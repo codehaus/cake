@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentMap;
 import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
 import org.codehaus.cake.cache.service.crud.CrudReader;
 import org.codehaus.cake.cache.service.crud.CrudWriter;
-import org.codehaus.cake.cache.view.CacheView;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 

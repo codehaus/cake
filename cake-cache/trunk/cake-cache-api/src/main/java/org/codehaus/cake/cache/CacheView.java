@@ -1,4 +1,4 @@
-package org.codehaus.cake.cache.view;
+package org.codehaus.cake.cache;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Map;
 import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.common.ComparableObjectAttribute;
-import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.collection.view.MapView;
+import org.codehaus.cake.collection.view.View;
 
 /**
  * A view of the mappings contained in a cache. The view is backed by the cache, so changes to the cache are reflected

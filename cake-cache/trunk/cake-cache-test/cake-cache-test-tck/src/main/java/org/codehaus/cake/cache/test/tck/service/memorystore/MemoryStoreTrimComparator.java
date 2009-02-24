@@ -25,7 +25,7 @@ import java.util.Set;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.LongOps;
+import org.codehaus.cake.ops.PrimitiveOps;
 import org.junit.Test;
 
 public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
@@ -71,7 +71,7 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
     @Test
     public void trimToVolumeComparator() {
         loader.add(M1, M2, M3, M4, M5, M6, M7, M8, M9);
-        loader.setAttribute(SIZE, LongOps.add(1));// size=key+1
+        loader.setAttribute(SIZE, PrimitiveOps.longAdd(1));// size=key+1
         conf.addEntryAttributes(SIZE);
         conf.withMemoryStore().setPolicy(Policies.LRU);
         init();

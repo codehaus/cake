@@ -35,8 +35,8 @@ import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
-import org.codehaus.cake.internal.service.CompositeService;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
+import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
@@ -730,7 +730,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         OpenAdressingEntry<K, V>[] table = this.table;
         for (int i = 0; i < table.length; i++) {
             OpenAdressingEntry<K, V> e = table[i];
-            if (e != null && filter != null && filter.op(e)) {
+            if (e != null && e != TOMBSTONE && filter != null && filter.op(e)) {
                 size++;
             }
         }

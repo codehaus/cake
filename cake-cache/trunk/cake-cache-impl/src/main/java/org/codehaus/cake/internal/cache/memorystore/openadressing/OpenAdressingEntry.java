@@ -33,6 +33,7 @@ public class OpenAdressingEntry<K, V> implements CacheEntry<K, V> {
         this.value = value;
         this.hash = hash;
     }
+
     public boolean equals(Object o) {
         if (!(o instanceof Map.Entry))
             return false;
@@ -57,7 +58,7 @@ public class OpenAdressingEntry<K, V> implements CacheEntry<K, V> {
     }
 
     public Set<Entry<Attribute, Object>> entrySet() {
-       return Collections.EMPTY_SET;
+        return Collections.EMPTY_SET;
     }
 
     public <T> T get(Attribute<T> attribute) {

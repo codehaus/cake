@@ -98,8 +98,8 @@ public class CacheLoadingConfiguration<K, V> {
      * checked when invoking any of the load methods in {@link CacheLoadingService}. If the predicate evaluates to
      * <code>true</code> for the entry the entry will be reloaded.
      * <p>
-     * Cache implementations might also check the predicate on calls to
-     *{@link Cache#get(Object)} but this is not required.
+     * Cache implementations might also check the predicate on calls to {@link Cache#get(Object)} but this is not
+     * required.
      * 
      * @param predicate
      *            the needs reload predicate

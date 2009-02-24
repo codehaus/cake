@@ -45,7 +45,7 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
     private CacheExceptionHandler<K, V> exceptionHandler;
 
     public DefaultCacheExceptionService(Container container, Composer composer,
-            ContainerConfiguration<Cache<K, V>> containerConfiguration,
+            ContainerConfiguration containerConfiguration,
             ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>> configuration) {
         super(container, composer, containerConfiguration, configuration.getExceptionLogger());
         CacheExceptionHandler<K, V> exceptionHandler = configuration.getExceptionHandler();
@@ -57,6 +57,7 @@ public class DefaultCacheExceptionService<K, V> extends AbstractExceptionService
     protected void handle(ExceptionContext<Cache<K, V>> context) {
         exceptionHandler.handle(context);
     }
+
     /** {@inheritDoc} */
     public V loadFailed(Throwable cause, K key, MutableAttributeMap map) {
         String message = "Loading failed [key = " + key + "]";

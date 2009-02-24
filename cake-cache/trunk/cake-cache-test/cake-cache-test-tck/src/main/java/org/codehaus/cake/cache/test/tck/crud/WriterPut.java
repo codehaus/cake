@@ -26,7 +26,7 @@ public class WriterPut {
 
     @Parameters
     public static Collection<Object[]> data() {
-        return params(1, CrudSuite.CrudWriterExtractors.values());
+        return params(1,(Object[]) CrudSuite.CrudWriterExtractors.values());
     }
 
     public void put() {

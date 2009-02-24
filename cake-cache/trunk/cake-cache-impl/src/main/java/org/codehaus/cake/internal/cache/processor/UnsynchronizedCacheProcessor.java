@@ -29,7 +29,7 @@ import org.codehaus.cake.internal.util.ArrayUtils;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
-public class UnsynchronizedCacheProcessor<K, V> extends AbstractCacheProcessor implements CacheProcessor<K, V> {
+public class UnsynchronizedCacheProcessor<K, V>  implements CacheProcessor<K, V> {
     private final MemoryStore<K, V> memoryStore;
     private final RunState runState;
     private final InternalCacheLoadingService<K, V> loading;
