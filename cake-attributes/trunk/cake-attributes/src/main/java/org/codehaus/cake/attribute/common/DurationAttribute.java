@@ -17,10 +17,9 @@ package org.codehaus.cake.attribute.common;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.WithAttributes;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 
 /**
  * An attribute mapping to an amount of time. The unit of time is nanoseconds.

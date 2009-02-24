@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.attribute;
 
-import java.util.Comparator;
 import java.io.Serializable;
+import java.util.Comparator;
 /**
  * An implementation of an {@link Attribute} mapping to a boolean. This implementation adds a number of
  * methods that works on primitive booleans instead of their object counterpart.

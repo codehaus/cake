@@ -22,10 +22,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AtrStubs;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.junit.Test;
 /**
  * 

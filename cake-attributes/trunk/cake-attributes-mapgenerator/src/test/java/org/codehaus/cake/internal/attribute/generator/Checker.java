@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.attribute.ByteAttribute;
 import org.codehaus.cake.attribute.CharAttribute;
@@ -39,6 +38,7 @@ import org.codehaus.cake.attribute.DoubleAttribute;
 import org.codehaus.cake.attribute.FloatAttribute;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.internal.attribute.SecurityTools;

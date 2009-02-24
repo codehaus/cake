@@ -36,5 +36,17 @@
       <artifactId>cake-attributes</artifactId>
       <version>${pom.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.collection</groupId>
+      <artifactId>cake-collection</artifactId>
+      <scope>test</scope>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.ops</groupId>
+      <artifactId>cake-ops</artifactId>
+      <scope>test</scope>
+      <version>${pom.version}</version>
+    </dependency>
   </dependencies>
 </project>

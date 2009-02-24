@@ -18,8 +18,8 @@ package org.codehaus.cake.attribute.common;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
+import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.junit.Test;
 /**
  * 
