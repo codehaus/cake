@@ -27,6 +27,11 @@
   <name>Cake Collection</name>
   <description>This library contains Collection classes that are used across all Cake projects</description>
   <dependencies>
+      <dependency>
+      <groupId>org.codehaus.cake.ops</groupId>
+      <artifactId>cake-ops</artifactId>
+      <version>0.2-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
