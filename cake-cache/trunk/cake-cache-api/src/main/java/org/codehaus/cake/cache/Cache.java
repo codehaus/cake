@@ -20,9 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
-import org.codehaus.cake.cache.service.crud.CrudReader;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.crud.CrudReader;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
 
@@ -64,6 +62,20 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  */
 public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<CacheEntry<K, V>> {
 
+// drop concurrentMap, can be optained by calling write()?
+//    get() <- CacheReader
+//    R get(K key, Op<CacheEntry<K,V>,R> mapper);
+//      <-basically
+//      getAttribute(K, Attribute A);
+//      getAttribute(K, AttributeMap AM A);
+//
+//    view() <-CacheView with defaultSettings
+//    withView() returns CacheViewFactory
+//
+//    write() <-CacheWriter (was CrudWriter)
+//    writeBatch() <-CacheWriter (was CrudWriter)
+//    withWriter() <-CacheWriterFactory();
+//    
     /**
      * Removes all entries from this cache. This method will not attempt to remove entries that are stored externally,
      * for example, on disk. The cache will be empty after this call returns.
@@ -212,7 +224,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @throws IllegalStateException
      *             if the cache has been shutdown
      */
-    Map<K, V> getAll(Iterable<? extends K> keys);
+    CacheView<K, V> getAll(Iterable<? extends K> keys);
 
     /**
      * Works as {@link #get(Object)} with the following modification except that it returns an immutable
@@ -541,8 +553,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     CacheServices<K, V> with();
 
     /**
-     * @return a factory that can be used to create various instances of {@link CrudReader}, {@link CrudWriter} and
-     *         {@link CrudBatchWriter}
+     * @return a factory that can be used to create various instances of {@link CrudReader}, {@link CacheWriter} and
+     *         {@link CacheBatchWriter}
      */
     CacheCrud<K, V> withCrud();
 }

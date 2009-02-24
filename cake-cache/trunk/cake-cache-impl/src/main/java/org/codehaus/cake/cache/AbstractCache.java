@@ -9,8 +9,6 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingMemoryStore;
@@ -48,10 +46,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     private final CacheRequestFactory<K, V> requestFactory;
 
-    private final CrudWriter<K, V, Boolean> returnPreviousNotNull;
-    private final CrudBatchWriter<K, V, Void> returnPreviousNull;
+    private final CacheWriter<K, V, Boolean> returnPreviousNotNull;
+    private final CacheBatchWriter<K, V, Void> returnPreviousNull;
 
-    private final CrudWriter<K, V, V> returnPreviousValue;
+    private final CacheWriter<K, V, V> returnPreviousValue;
     private CacheServices<K, V> services;
 
     private Collection<V> values;
@@ -119,7 +117,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
-    public Map<K, V> getAll(Iterable<? extends K> keys) {
+    public CacheView<K, V> getAll(Iterable<? extends K> keys) {
         return processor.getAll(filter, keys, CacheDataExtractor.ONLY_VALUE);
     }
 

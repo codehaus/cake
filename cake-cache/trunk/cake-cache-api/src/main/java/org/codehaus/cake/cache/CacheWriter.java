@@ -13,13 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.cache.service.crud;
+package org.codehaus.cake.cache;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.attribute.ObjectAttribute;
-import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ContainerAlreadyShutdownException;
@@ -37,7 +35,7 @@ import org.codehaus.cake.util.Pair;
  * @param <R>
  *            the type returned from methods, this is ordinarily determined by the {@link #WRITE_TRANSFORMER} used
  */
-public interface CrudWriter<K, V, R> {
+public interface CacheWriter<K, V, R> {
     // CacheWriter??
 
     /**

@@ -196,7 +196,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         for (Map.Entry<Integer, String> entry : entries) {
             keys.add(entry.getKey());
         }
-        Map<Integer, String> map = c.getAll(keys);
+        Map<Integer, String> map = c.getAll(keys).keysValues().toMap();
         assertEquals(keys.size(), map.size());
         for (Map.Entry<Integer, String> entry : entries) {
             assertEquals(entry.getValue(), map.get(entry.getKey()));
@@ -331,7 +331,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         for (Map.Entry<Integer, String> e : entries) {
             keys.add(e.getKey());
         }
-        return c.getAll(keys);
+        return c.getAll(keys).keysValues().toMap();
     }
 
     protected CacheEntry<Integer, String> peekEntry(Map.Entry<Integer, String> e) {

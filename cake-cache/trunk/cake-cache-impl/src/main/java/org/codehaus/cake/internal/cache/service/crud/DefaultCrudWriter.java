@@ -3,7 +3,7 @@ package org.codehaus.cake.internal.cache.service.crud;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.cache.CacheWriter;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -57,17 +57,17 @@ public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
         return previous == null ? null : previous.op(r.getPreviousEntry());
     }
 
-    public static <K, V> CrudWriter<K, V, Boolean> previousNotNull(CacheRequestFactory<K, V> factory,
+    public static <K, V> CacheWriter<K, V, Boolean> previousNotNull(CacheRequestFactory<K, V> factory,
             CacheProcessor<K, V> processor) {
         return new DefaultCrudWriter<K, V, Boolean>(factory, processor, CacheDataExtractor.IS_NOT_NULL, null);
     }
 
-    public static <K, V> CrudWriter<K, V, V> returnPreviousValue(CacheRequestFactory<K, V> factory,
+    public static <K, V> CacheWriter<K, V, V> returnPreviousValue(CacheRequestFactory<K, V> factory,
             CacheProcessor<K, V> processor) {
         return new DefaultCrudWriter<K, V, V>(factory, processor, CacheDataExtractor.ONLY_VALUE, null);
     }
 
-    public static <K, V, R> CrudWriter<K, V, R> withPrevious(CacheRequestFactory<K, V> factory,
+    public static <K, V, R> CacheWriter<K, V, R> withPrevious(CacheRequestFactory<K, V> factory,
             CacheProcessor<K, V> processor, Op<CacheEntry<K, V>, R> previous) {
         return new DefaultCrudWriter<K, V, R>(factory, processor, previous, null);
     }

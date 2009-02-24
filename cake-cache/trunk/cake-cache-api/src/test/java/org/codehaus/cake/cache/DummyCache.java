@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.collection.view.MapView;
 
 /**
  * A dummy implementation of a {@link Cache}.
@@ -102,7 +103,7 @@ public class DummyCache<K, V> implements Cache<K, V> {
     }
 
     /** {@inheritDoc} */
-    public Map<K, V> getAll(Iterable<? extends K> keys) {
+    public CacheView<K, V> getAll(Iterable<? extends K> keys) {
         return null;
     }
 

@@ -7,17 +7,17 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collection;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.cache.CacheWriter;
 import org.codehaus.cake.util.Pair;
 import org.junit.runners.Parameterized.Parameters;
 
 public class WriterPut {
     private Cache<Integer, String> c;
-    CrudWriter<Integer, String, ?> writer;
+    CacheWriter<Integer, String, ?> writer;
     CrudSuite.CrudWriterExtractors extractor;
     
     public WriterPut(CrudSuite.CrudWriterExtractors extractor) {
-        Pair<Cache<Integer, String>, CrudWriter> p = extractor.both();
+        Pair<Cache<Integer, String>, CacheWriter> p = extractor.both();
         c = p.getFirst();
         writer = p.getSecond();
         assertNotNull(writer);

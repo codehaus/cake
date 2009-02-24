@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.cache.service.crud;
+package org.codehaus.cake.cache;
 
 import java.util.Map;
 
@@ -36,7 +36,7 @@ import org.omg.CORBA.Object;
  * @param <R>
  *            the type returned from methods, this is ordinarily determined by the {@link #WRITE_TRANSFORMER} used
  */
-public interface CrudBatchWriter<K, V, R> {
+public interface CacheBatchWriter<K, V, R> {
 
     /**
      * This attribute can be used to indicate that a given operation should be performed atomically. This can be

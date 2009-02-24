@@ -5,14 +5,14 @@ import java.util.Map;
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
+import org.codehaus.cake.cache.CacheBatchWriter;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.ops.Ops.Op;
 
-public class DefaultCrudBatchWriter<K, V, R> implements CrudBatchWriter<K, V, R> {
+public class DefaultCrudBatchWriter<K, V, R> implements CacheBatchWriter<K, V, R> {
 
     private final CacheRequestFactory<K, V> factory;
     private final Op<CacheEntry<K, V>, R> newEntry;

@@ -130,9 +130,9 @@ public class CachesTest {
         assertNull(emptyCache().getEntry(2));
         assertNull(emptyCache().peek(2));
         assertNull(emptyCache().peekEntry(2));
-        assertEquals(2, emptyCache().getAll(Arrays.asList(1, 2)).size());
-        assertTrue(emptyCache().getAll(Arrays.asList(1, 2)).containsKey(1));
-        assertNull(emptyCache().getAll(Arrays.asList(1, 2)).get(1));
+        assertEquals(2, emptyCache().getAll(Arrays.asList(1, 2)).keysValues().size());
+        assertTrue(emptyCache().getAll(Arrays.asList(1, 2)).keysValues().toMap().containsKey(1));
+        assertNull(emptyCache().getAll(Arrays.asList(1, 2)).keysValues().toMap().get(1));
         assertFalse(Caches.emptyCache().equals(new HashSet()));
 
         try {
@@ -182,11 +182,11 @@ public class CachesTest {
         assertFalse(emptyCache().hasService(CacheLoadingService.class));
     }
 
-    @Test(expected=UnsupportedOperationException.class)
-    public void emptyCrud() {
-        ObjectAttribute<String> oa=new ObjectAttribute<String>(String.class,"foo"){};
-        assertEquals("foo", emptyCache().withCrud().attribute(oa));
-    }
+//    @Test(expected=UnsupportedOperationException.class)
+//    public void emptyCrud() {
+//        ObjectAttribute<String> oa=new ObjectAttribute<String>(String.class,"foo"){};
+//        assertEquals("foo", emptyCache().withCrud().attribute(oa));
+//    }
     @Test
     public void emptyCacheSelection() {
         assertSame(emptyCache(), emptyCache().filter().on(new BinaryPredicate() {

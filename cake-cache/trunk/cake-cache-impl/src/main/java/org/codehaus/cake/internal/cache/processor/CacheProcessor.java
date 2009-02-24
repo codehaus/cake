@@ -2,10 +2,10 @@ package org.codehaus.cake.internal.cache.processor;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.CacheView;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
@@ -43,7 +43,7 @@ public interface CacheProcessor<K, V> {
 
     <T> T get(Predicate<CacheEntry<K, V>> selector, K key, AttributeMap attributes, Op<CacheEntry<K, V>, T> extractor);
 
-    <T> Map<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> key,
+    <T> CacheView<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> key,
             Op<CacheEntry<K, V>, T> extractor);
 
     // Iterable<K> getKeys(Predicate<CacheEntry<K, V>> predicate);

@@ -17,7 +17,7 @@ package org.codehaus.cake.cache.service.loading;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.cache.CacheWriter;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
 
@@ -26,7 +26,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
  * <p>
  * If no loader is specified the {@link CacheLoadingService} will not be available at runtime. All values must then be
  * put into the cache by using {@link Cache#put(Object, Object)}, {@link Cache#putAll(java.util.Map)} or some of the
- * methods in {@link CrudWriter}.
+ * methods in {@link CacheWriter}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$

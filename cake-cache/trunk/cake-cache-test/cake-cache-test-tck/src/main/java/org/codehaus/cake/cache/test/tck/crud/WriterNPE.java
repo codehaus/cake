@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.cache.service.crud.CrudWriter;
+import org.codehaus.cake.cache.CacheWriter;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite.LazyOp;
 import org.codehaus.cake.ops.Predicates;
 import org.codehaus.cake.ops.Ops.Op;
@@ -20,7 +20,7 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class WriterNPE {
 
-    CrudWriter<Integer, String, ?> writer;
+    CacheWriter<Integer, String, ?> writer;
 
     public WriterNPE(CrudSuite.CrudWriterExtractors extractor) {
         this.writer = extractor.create();

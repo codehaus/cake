@@ -11,6 +11,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.CacheView;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
@@ -74,7 +75,7 @@ public class UnsynchronizedCacheProcessor<K, V>  implements CacheProcessor<K, V>
 
     }
 
-    public <T> Map<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> keys,
+    public <T> CacheView<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> keys,
             Op<CacheEntry<K, V>, T> extractor) {
         if (keys == null) {
             throw new NullPointerException("keys is null");
@@ -84,7 +85,7 @@ public class UnsynchronizedCacheProcessor<K, V>  implements CacheProcessor<K, V>
         for (K key : keys) {
             result.put(key, get(selector, key, Attributes.EMPTY_ATTRIBUTE_MAP, extractor));
         }
-        return result;
+        return null; // result;
     }
 
     public void process(AddEntriesRequest<K, V> r) {

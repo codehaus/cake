@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -43,19 +42,16 @@ import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.collection.view.MapView;
 import org.codehaus.cake.collection.view.View;
+import org.codehaus.cake.collection.view.Views;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.ops.Ops.BinaryPredicate;
-import org.codehaus.cake.ops.Ops.BinaryProcedure;
 import org.codehaus.cake.ops.Ops.BytePredicate;
 import org.codehaus.cake.ops.Ops.CharPredicate;
 import org.codehaus.cake.ops.Ops.DoublePredicate;
 import org.codehaus.cake.ops.Ops.FloatPredicate;
 import org.codehaus.cake.ops.Ops.IntPredicate;
 import org.codehaus.cake.ops.Ops.LongPredicate;
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Ops.Procedure;
-import org.codehaus.cake.ops.Ops.Reducer;
 import org.codehaus.cake.ops.Ops.ShortPredicate;
 
 /**
@@ -64,6 +60,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
+@SuppressWarnings("unchecked")
 public final class Caches {
 
     /**
@@ -77,10 +74,8 @@ public final class Caches {
     static final CacheEntry[] EMPTY_CACHE_ENTRY_ARRAY = new CacheEntry[0];
 
     static final CacheView EMPTY_CACHE_VIEW = new EmptyCacheView();
-    static final MapView EMPTY_MAP_VIEW = new EmptyMapView();
     /** A CacheSelector that returns the empty cache for all argument. */
     static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
-    static final View EMPTY_VIEW = new EmptyView();
 
     // /CLOVER:ON
     /** Cannot instantiate. */
@@ -163,7 +158,7 @@ public final class Caches {
     static class ClearRunnable implements Runnable {
 
         /** The cache to call clear on. */
-        private final Cache<?, ?> cache;
+        private final Map<?, ?> map;
 
         /**
          * Creates a new ClearRunnable.
@@ -171,16 +166,16 @@ public final class Caches {
          * @param cache
          *            the cache to call clear on
          */
-        ClearRunnable(Cache<?, ?> cache) {
-            if (cache == null) {
-                throw new NullPointerException("cache is null");
+        ClearRunnable(Map<?, ?> map) {
+            if (map == null) {
+                throw new NullPointerException("map is null");
             }
-            this.cache = cache;
+            this.map = map;
         }
 
         /** {@inheritDoc} */
         public void run() {
-            cache.clear();
+            map.clear();
         }
     }
 
@@ -207,13 +202,13 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public Map<K, V> getAll(Iterable<? extends K> keys) {
+        public CacheView<K, V> getAll(Iterable<? extends K> keys) {
             CollectionUtils.checkCollectionForNulls(keys);
             Map<K, V> result = new HashMap<K, V>();
             for (K key : keys) {
                 result.put(key, null);
             }
-            return result;
+            return null;
         }
 
         /** {@inheritDoc} */
@@ -398,16 +393,19 @@ public final class Caches {
 
     static class EmptyCacheView<K, V> implements CacheView<K, V>, Serializable {
 
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+
         public View<CacheEntry<K, V>> entries() {
-            return EMPTY_VIEW;
+            return Views.EMPTY_VIEW;
         }
 
         public View<K> keys() {
-            return EMPTY_VIEW;
+            return Views.EMPTY_VIEW;
         }
 
         public MapView<K, V> keysValues() {
-            return EMPTY_MAP_VIEW;
+            return Views.EMPTY_MAP_VIEW;
         }
 
         public CacheView<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator) {
@@ -459,103 +457,7 @@ public final class Caches {
         }
 
         public View<V> values() {
-            return EMPTY_VIEW;
-        }
-    }
-
-    static class EmptyMapView<K, V> implements MapView<K, V>, Serializable {
-
-        public void apply(BinaryProcedure<? super K, ? super V> procedure) {
-        }
-
-        public View<Entry<K, V>> entries() {
-            return EMPTY_VIEW;
-        }
-
-        public View<K> keys() {
-            return EMPTY_VIEW;
-        }
-
-        public long size() {
-            return 0;
-        }
-
-        public Map<K, V> toMap() {
-            return Collections.EMPTY_MAP;
-        }
-
-        public View<V> values() {
-            return EMPTY_VIEW;
-        }
-    }
-
-    static class EmptyView<T> implements View<T>, Serializable {
-        public T any() {
-            return null;
-        }
-
-        public void apply(Procedure<? super T> procedure) {
-
-        }
-
-        public boolean isEmpty() {
-            return true;
-        }
-
-        public <E> View<E> map(Op<? super T, ? extends E> mapper) {
-            return (View) this;
-        }
-
-        public T max() {
-            return null;
-        }
-
-        public T max(Comparator<? super T> comparator) {
-            return null;
-        }
-
-        public T min() {
-            return null;
-        }
-
-        public T min(Comparator<? super T> comparator) {
-            return null;
-        }
-
-        public View<T> orderBy(Comparator<? super T> comparator) {
-            return this;
-        }
-
-        public View<T> orderByMax() {
-            return this;
-        }
-
-        public View<T> orderByMin() {
-            return this;
-        }
-
-        public T reduce(Reducer<T> reducer, T base) {
-            return base;
-        }
-
-        public View<T> setLimit(long limit) {
-            return this;
-        }
-
-        public long size() {
-            return 0;
-        }
-
-        public Object[] toArray() {
-            return Collections.EMPTY_LIST.toArray();
-        }
-
-        public <E> E[] toArray(E[] a) {
-            return (E[]) Collections.EMPTY_LIST.toArray(a);
-        }
-
-        public List<T> toList() {
-            return Collections.EMPTY_LIST;
+            return Views.EMPTY_VIEW;
         }
     }
 

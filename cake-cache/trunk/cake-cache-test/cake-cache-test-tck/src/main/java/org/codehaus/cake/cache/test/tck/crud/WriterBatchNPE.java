@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collection;
 
 import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.cache.service.crud.CrudBatchWriter;
+import org.codehaus.cake.cache.CacheBatchWriter;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class WriterBatchNPE {
 
-    CrudBatchWriter<Integer, String, ?> writer;
+    CacheBatchWriter<Integer, String, ?> writer;
 
     public WriterBatchNPE(CrudSuite.CrudWriterExtractors extractor) {
         this.writer = extractor.bothBatch().getSecond();
