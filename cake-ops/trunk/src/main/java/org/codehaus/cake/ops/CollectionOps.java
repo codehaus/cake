@@ -29,7 +29,7 @@ import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.ops.Ops.Procedure;
 
 /**
- * Various ops implementations that operate on {@link Collection}, {@link Iterable} and {@link Map}.
+ * Various ops implementations that operate on {@link Collection}s, {@link Iterable}s and {@link Map}s.
  * <p>
  * This class is normally best used via <tt>import static</tt>.
  * 
@@ -37,19 +37,12 @@ import org.codehaus.cake.ops.Ops.Procedure;
  * @version $Id$
  */
 public final class CollectionOps {
-    /**
-     * A comparator for doubles relying on natural ordering. The comparator is Serializable.
-     */
+
+    /** A mapper extracting the key part of a {@link Entry}. The mapper is Serializable. */
     public static final Op MAP_ENTRY_TO_KEY_OP = new KeyFromMapEntry();
 
-    /**
-     * A comparator for doubles relying on natural ordering. The comparator is Serializable.
-     */
+    /** A mapper extracting the value part of a {@link Entry}. The mapper is Serializable. */
     public static final Op MAP_ENTRY_TO_VALUE_OP = new ValueFromMapEntry();
-    /**
-     * A comparator for doubles relying on natural ordering. The comparator is Serializable.
-     */
-    public static final Op MAP_GET_OP = new ValueFromMapEntry();
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
@@ -57,6 +50,7 @@ public final class CollectionOps {
     }
 
     // /CLOVER:ON
+
     /**
      * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.
      * <p>
@@ -86,8 +80,8 @@ public final class CollectionOps {
     }
 
     /**
-     * Filters the specified iterable, returning a new list of those items that evaluated to true given the specified
-     * predicate.
+     * Filters the specified iterable, returning a new list of those items that evaluated to <code>true</code> given
+     * the specified predicate.
      * 
      * @param <E>
      *            the types of items that are filtered
@@ -95,9 +89,9 @@ public final class CollectionOps {
      *            the iterable to filter
      * @param predicate
      *            the predicate to evaluate items accordingly to
-     * @return a collection of filteres items
+     * @return a new list of filteres items
      */
-    public static <E> List<E> filter(Iterable<E> iterable, Predicate<? super E> predicate) {
+    public static <E> List<E> filteredList(Iterable<E> iterable, Predicate<? super E> predicate) {
         if (iterable == null) {
             throw new NullPointerException("iterable is null");
         } else if (predicate == null) {
@@ -113,20 +107,19 @@ public final class CollectionOps {
     }
 
     /**
-     * Filters the specified map, returning a new map of those items that evaluated to true given the specified
-     * predicate.
+     * Returns a new map with only those entries that are accepted by the specified predicate.
      * 
      * @param <K>
      *            the type of keys in the map
      * @param <V>
      *            the type of values in the map
      * @param map
-     *            the map to filter
+     *            the map to extract entries from
      * @param predicate
-     *            the predicate to evaluate items accordingly to
-     * @return a collection of filteres items
+     *            the predicate to evaluate entries accordingly to
+     * @return a new map with only those entries that are accepted by the specified predicate
      */
-    public static <K, V> Map<K, V> filterMap(Map<K, V> map, Predicate<? super Map.Entry<K, V>> predicate) {
+    public static <K, V> Map<K, V> filteredMap(Map<K, V> map, Predicate<? super Map.Entry<K, V>> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");
         } else if (predicate == null) {
@@ -141,8 +134,27 @@ public final class CollectionOps {
         return m;
     }
 
-    public static <K, K1 extends K, V, V1 extends V> Map<K1, V1> filterMapOnTypes(Map<? extends K, ? extends V> map, Class<K1> keyTypes,
-            Class<V1> valueTypes) {
+    /**
+     * Returns a new map with only those entries where the key and value are of the specified types.
+     * 
+     * @param <K>
+     *            the type of keys in the map
+     * @param <K1>
+     *            the type of keys in the new map
+     * @param <V>
+     *            the type of values in the map
+     * @param <V1>
+     *            the type of values in the new map
+     * @param map
+     *            the map to extract entries from
+     * @param keyTypes
+     *            the type of keys allowed for the new map
+     * @param valueTypes
+     *            the type of allowed allowed in the new map
+     * @return a new map where all keys and values are of the specified types
+     */
+    public static <K, K1 extends K, V, V1 extends V> Map<K1, V1> filterMapOnTypes(Map<? extends K, ? extends V> map,
+            Class<K1> keyTypes, Class<V1> valueTypes) {
         if (map == null) {
             throw new NullPointerException("map is null");
         } else if (keyTypes == null) {
@@ -151,7 +163,7 @@ public final class CollectionOps {
             throw new NullPointerException("valueTypes is null");
         }
         Map<K1, V1> m = new HashMap<K1, V1>();
-        for (Map.Entry<? extends K,? extends V> entry : map.entrySet()) {
+        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
             K key = entry.getKey();
             V value = entry.getValue();
             if (key != null && keyTypes.isAssignableFrom(key.getClass()) && value != null
@@ -161,7 +173,7 @@ public final class CollectionOps {
         return m;
     }
 
-    public static <K, V> Map<K, V> filterMapKeys(Map<K, V> map, Predicate<? super K> predicate) {
+    public static <K, V> Map<K, V> filteredMapOnKeys(Map<K, V> map, Predicate<? super K> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");
         } else if (predicate == null) {
@@ -176,7 +188,7 @@ public final class CollectionOps {
         return m;
     }
 
-    public static <K, V> Map<K, V> filterMapValues(Map<K, V> map, Predicate<? super V> predicate) {
+    public static <K, V> Map<K, V> filteredMapOnValues(Map<K, V> map, Predicate<? super V> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");
         } else if (predicate == null) {
@@ -192,15 +204,16 @@ public final class CollectionOps {
     }
 
     /**
-     * Returns whether or not <b>all</b> of elements in the specified can be accepted by the specified predicate.
+     * Returns <code>true</code> if <b>all</b> of elements in the specified iterable can be accepted by the specified
+     * predicate, otherwise <code>false</code>.
      * 
      * @param <E>
-     *            the types accepted
+     *            the types of elements
      * @param iterable
      *            the iterable to check
      * @param predicate
      *            the predicate to test against
-     * @return whether or not all of elements in the specified can be accepted by the specified predicate
+     * @return true if all elements are accepted, otherwise false
      */
     public static <E> boolean isAllTrue(Iterable<E> iterable, Predicate<? super E> predicate) {
         if (iterable == null) {
@@ -279,12 +292,10 @@ public final class CollectionOps {
         }
     }
 
-    /**
-     * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.
-     */
+    /** Wraps the {@link Collection#add(Object)} method in an {@link Procedure}. */
     static final class CollectionAdd<E> implements Procedure<E>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = -7596093393453935419L;
+        private static final long serialVersionUID = 1L;
 
         /** The collection we are wrapping. */
         private final Collection<? super E> collection;
@@ -317,7 +328,7 @@ public final class CollectionOps {
     static final class ContainsPredicate<E> implements Predicate<E>, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
-        private static final long serialVersionUID = -802615306772905787L;
+        private static final long serialVersionUID = 1L;
 
         /** The element to compare with. */
         private final Collection<E> collection;
@@ -349,12 +360,10 @@ public final class CollectionOps {
         }
     }
 
-    /**
-     * TODO Describe.
-     */
+    /** Extracts the key part of a map entry. */
     static class KeyFromMapEntry<K, V> implements Op<Map.Entry<K, V>, K>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = 6825556225078171244L;
+        private static final long serialVersionUID = 1L;
 
         /** {@inheritDoc} */
         public K op(Map.Entry<K, V> t) {
@@ -367,12 +376,10 @@ public final class CollectionOps {
         }
     }
 
-    /**
-     * Wraps the {@link Queue#offer(Object)} method in an {@link Procedure}.
-     */
+    /** Wraps the {@link Queue#offer(Object)} method in an {@link Procedure}. */
     static final class QueueOffer<E> implements Procedure<E>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = 2614647542607064042L;
+        private static final long serialVersionUID = 1L;
 
         /** The queue we are wrapping. */
         private final Queue<? super E> queue;
@@ -398,12 +405,10 @@ public final class CollectionOps {
         }
     }
 
-    /**
-     * TODO Describe.
-     */
+    /** Extracts the value part of a map entry. */
     static class ValueFromMapEntry<K, V> implements Op<Map.Entry<K, V>, V>, Serializable {
         /** serialVersionUID. */
-        private static final long serialVersionUID = -1080832065709931446L;
+        private static final long serialVersionUID = 1L;
 
         /** {@inheritDoc} */
         public V op(Map.Entry<K, V> t) {

@@ -36,17 +36,22 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.AllPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.AndPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.AnyPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.GreaterThenOrEqualPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.GreaterThenPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.IsEqualsPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.IsSamePredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.IsTypePredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.LessThenOrEqualPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.LessThenPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.MapAndEvaluatePredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.NotPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.OrPredicate;
+import org.codehaus.cake.internal.ops.InternalObjectPredicates.XorPredicate;
 import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Predicates.AllPredicate;
-import org.codehaus.cake.ops.Predicates.AnyPredicate;
-import org.codehaus.cake.ops.Predicates.GreaterThenOrEqualPredicate;
-import org.codehaus.cake.ops.Predicates.GreaterThenPredicate;
-import org.codehaus.cake.ops.Predicates.IsEqualsPredicate;
-import org.codehaus.cake.ops.Predicates.IsSamePredicate;
-import org.codehaus.cake.ops.Predicates.IsTypePredicate;
-import org.codehaus.cake.ops.Predicates.LessThenOrEqualPredicate;
-import org.codehaus.cake.ops.Predicates.LessThenPredicate;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.test.util.ComparatorTestUtil.Dummy;
 import org.codehaus.cake.test.util.ComparatorTestUtil.DummyComparator;
@@ -193,7 +198,7 @@ public class PredicatesTest {
         assertFalse(Predicates.and(FALSE, TRUE).op(null));
         assertFalse(Predicates.and(FALSE, FALSE).op(null));
 
-        Predicates.AndPredicate p = new Predicates.AndPredicate(FALSE, TRUE);
+        AndPredicate p = new AndPredicate(FALSE, TRUE);
         assertSame(p.getLeftPredicate(), FALSE);
         assertSame(p.getRightPredicate(), TRUE);
         p.toString(); // no exception
@@ -894,8 +899,8 @@ public class PredicatesTest {
         assertFalse(mapped.op(3));
         assertTrue(mapped.op(4));
 
-        assertSame(p, ((Predicates.MapAndEvaluatePredicate) mapped).getPredicate());
-        assertSame(m, ((Predicates.MapAndEvaluatePredicate) mapped).getMapper());
+        assertSame(p, ((MapAndEvaluatePredicate) mapped).getPredicate());
+        assertSame(m, ((MapAndEvaluatePredicate) mapped).getMapper());
         mapped.toString();
     }
 
@@ -928,7 +933,7 @@ public class PredicatesTest {
                 return true;
             }
         })).op(null)); 
-        Predicates.NotPredicate p = new Predicates.NotPredicate(TRUE);
+        NotPredicate p = new NotPredicate(TRUE);
         assertSame(p.getPredicate(), TRUE);
         p.toString(); // no exception
         assertIsSerializable(p);
@@ -975,7 +980,7 @@ public class PredicatesTest {
         assertTrue(Predicates.or(FALSE, TRUE).op(null));
         assertFalse(Predicates.or(FALSE, FALSE).op(null));
 
-        Predicates.OrPredicate p = new Predicates.OrPredicate(FALSE, TRUE);
+        OrPredicate p = new OrPredicate(FALSE, TRUE);
         assertSame(p.getLeftPredicate(), FALSE);
         assertSame(p.getRightPredicate(), TRUE);
         p.toString(); // no exception
@@ -1026,7 +1031,7 @@ public class PredicatesTest {
         assertTrue(Predicates.xor(FALSE, TRUE).op(null));
         assertFalse(Predicates.xor(FALSE, FALSE).op(null));
 
-        Predicates.XorPredicate p = new Predicates.XorPredicate(FALSE, TRUE);
+        XorPredicate p = new XorPredicate(FALSE, TRUE);
         assertSame(p.getLeftPredicate(), FALSE);
         assertSame(p.getRightPredicate(), TRUE);
         p.toString(); // no exception

@@ -30,8 +30,8 @@ import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.ops.Ops.ShortComparator;
 
 /**
- * Various implementations of {@link Comparator}, {@link LongComparator}, {@link DoubleComparator} and
- * {@link IntComparator}.
+ * Various implementations of {@link Comparator}, {@link FloatComparator}, {@link LongComparator},
+ * {@link DoubleComparator} and {@link IntComparator}.
  * <p>
  * This class is normally best used via <tt>import static</tt>.
  * 
@@ -50,7 +50,7 @@ public final class Comparators {
 
     /** A Comparator for Comparable.objects. The comparator is Serializable. */
     public static final Comparator NULL_LEAST_ORDER = new NullLeastOrderPredicate();
-    
+
     /** A comparator for doubles relying on natural ordering. The comparator is Serializable. */
     public static final DoubleComparator DOUBLE_NATURAL_COMPARATOR = (DoubleComparator) Comparators.NATURAL_COMPARATOR;
 
@@ -62,6 +62,7 @@ public final class Comparators {
 
     /** A comparator that imposes the reverse of the <i>natural ordering</i> on floats. The comparator is Serializable. */
     public static final FloatComparator FLOAT_NATURAL_REVERSE_COMPARATOR = (FloatComparator) Comparators.NATURAL_REVERSE_COMPARATOR;
+    
     /** A comparator for ints relying on natural ordering. The comparator is Serializable. */
     public static final IntComparator INT_NATURAL_COMPARATOR = (IntComparator) Comparators.NATURAL_COMPARATOR;
 
@@ -73,7 +74,6 @@ public final class Comparators {
 
     /** A comparator that imposes the reverse of the <i>natural ordering</i> on longs. The comparator is Serializable. */
     public static final LongComparator LONG_NATURAL_REVERSE_COMPARATOR = (LongComparator) Comparators.NATURAL_REVERSE_COMPARATOR;
-
 
     /** Cannot instantiate. */
     // /CLOVER:OFF

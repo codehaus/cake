@@ -86,7 +86,7 @@ public class CollectionOpsTest {
     public void filter() {
         Predicate<Number> p = Predicates.<Number> equalsToAny(2, 3);
         Collection<Integer> col = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
-        List<Integer> list = CollectionOps.filter(col, p);
+        List<Integer> list = CollectionOps.filteredList(col, p);
         assertEquals(2, list.size());
         assertEquals(2, list.get(0).intValue());// some compilers need intValue()
         assertEquals(3, list.get(1).intValue());// some compilers need intValue()
@@ -94,12 +94,12 @@ public class CollectionOpsTest {
 
     @Test(expected = NullPointerException.class)
     public void filter_NPE1() {
-        CollectionOps.filter(null, dummy(Predicate.class));
+        CollectionOps.filteredList(null, dummy(Predicate.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void filter_NPE2() {
-        CollectionOps.filter(new ArrayList(), null);
+        CollectionOps.filteredList(new ArrayList(), null);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class CollectionOpsTest {
         map.put(2, "2");
         map.put(3, "3");
         map.put(4, "4");
-        Map<Integer, String> filteredMap = CollectionOps.filterMap(map, p);
+        Map<Integer, String> filteredMap = CollectionOps.filteredMap(map, p);
         assertEquals(2, filteredMap.size());
         assertEquals("2", filteredMap.get(2));
         assertEquals("3", filteredMap.get(3));
@@ -122,12 +122,12 @@ public class CollectionOpsTest {
 
     @Test(expected = NullPointerException.class)
     public void filterMap_NPE1() {
-        CollectionOps.filterMap(null, dummy(Predicate.class));
+        CollectionOps.filteredMap(null, dummy(Predicate.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void filterMap_NPE2() {
-        CollectionOps.filterMap(new HashMap(), null);
+        CollectionOps.filteredMap(new HashMap(), null);
     }
 
     @Test
@@ -142,7 +142,7 @@ public class CollectionOpsTest {
         map.put(2, "2");
         map.put(3, "3");
         map.put(4, "4");
-        Map<Integer, String> filteredMap = CollectionOps.filterMapKeys(map, p);
+        Map<Integer, String> filteredMap = CollectionOps.filteredMapOnKeys(map, p);
         assertEquals(2, filteredMap.size());
         assertEquals("2", filteredMap.get(2));
         assertEquals("3", filteredMap.get(3));
@@ -150,12 +150,12 @@ public class CollectionOpsTest {
 
     @Test(expected = NullPointerException.class)
     public void filterMapKey_NPE1() {
-        CollectionOps.filterMapKeys(null, dummy(Predicate.class));
+        CollectionOps.filteredMapOnKeys(null, dummy(Predicate.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void filterMapKey_NPE2() {
-        CollectionOps.filterMapKeys(new HashMap(), null);
+        CollectionOps.filteredMapOnKeys(new HashMap(), null);
     }
 
     @Test
@@ -170,7 +170,7 @@ public class CollectionOpsTest {
         map.put(2, "2");
         map.put(3, "3");
         map.put(4, "4");
-        Map<Integer, String> filteredMap = CollectionOps.filterMapValues(map, p);
+        Map<Integer, String> filteredMap = CollectionOps.filteredMapOnValues(map, p);
         assertEquals(2, filteredMap.size());
         assertEquals("2", filteredMap.get(2));
         assertEquals("3", filteredMap.get(3));
@@ -178,12 +178,12 @@ public class CollectionOpsTest {
 
     @Test(expected = NullPointerException.class)
     public void filterMapValue_NPE1() {
-        CollectionOps.filterMapValues(null, dummy(Predicate.class));
+        CollectionOps.filteredMapOnValues(null, dummy(Predicate.class));
     }
 
     @Test(expected = NullPointerException.class)
     public void filterMapValue_NPE2() {
-        CollectionOps.filterMapValues(new HashMap(), null);
+        CollectionOps.filteredMapOnValues(new HashMap(), null);
     }
 
     @Test
