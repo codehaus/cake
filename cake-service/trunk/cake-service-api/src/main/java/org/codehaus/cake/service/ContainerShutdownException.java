@@ -8,7 +8,7 @@ package org.codehaus.cake.service;
  * It is okay for service to have methods that both silently ignore invocations after a cache has been shutdown, and
  * methods that throw this exception. For example, the {@link org.codehaus.cake.cache.Cache#containsKey(Object)} method return <tt>false</tt>
  * for any argument whenever a cache has been shutdown. While the {@link org.codehaus.cake.cache.Cache#put(Object, Object)} method throws a
- * {@link ContainerAlreadyShutdownException} for any argument when the cache has been shutdown.
+ * {@link ContainerShutdownException} for any argument when the cache has been shutdown.
  * <p>
  * A container is normally shutdown by calling using {@link Container#shutdown()} or {@link Container#shutdownNow()}.
  * However, if a container failed to start up properly the
@@ -16,7 +16,7 @@ package org.codehaus.cake.service;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
-public class ContainerAlreadyShutdownException extends IllegalStateException {
+public class ContainerShutdownException extends IllegalStateException {
     /** <code>serialVersionUID</code>. */
     private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public class ContainerAlreadyShutdownException extends IllegalStateException {
      * Constructs a new ContainerShutdownException with <code>null</code> as its detailed message. The cause is not
      * initialized, and may subsequently be initialized by a call to {@link Throwable#initCause}.
      */
-    public ContainerAlreadyShutdownException() {
+    public ContainerShutdownException() {
     }
 
     /**
@@ -35,7 +35,7 @@ public class ContainerAlreadyShutdownException extends IllegalStateException {
      *            the detailed message. The detailed message is saved for later retrieval by the {@link #getMessage()}
      *            method.
      */
-    public ContainerAlreadyShutdownException(String message) {
+    public ContainerShutdownException(String message) {
         super(message);
     }
 }

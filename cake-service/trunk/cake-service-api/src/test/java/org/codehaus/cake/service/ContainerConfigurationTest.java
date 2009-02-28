@@ -229,13 +229,12 @@ public class ContainerConfigurationTest {
 
     @Test
     public void addService() {
-        assertFalse(((ServiceList) conf.getServices()).getServices().iterator().hasNext());
+        assertFalse(conf.getServices().iterator().hasNext());
         ServiceFactory sf = dummy(ServiceFactory.class);
         conf.addService(5);
         conf.addService(Integer.class, 10);
         conf.addService(Long.class, sf);
-        ServiceList sl = (ServiceList) conf.getServices();
-        Iterator<Object> iter = sl.getServices().iterator();
+        Iterator<Object> iter = conf.getServices().iterator();
         assertEquals(5, iter.next());
         ServiceList.Factory f10 = (Factory) iter.next();
         assertEquals(Integer.class, f10.getKey());
@@ -251,8 +250,7 @@ public class ContainerConfigurationTest {
         for (int i = 0; i < 100; i++) {
             conf.addService(i);
         }
-        ServiceList l = (ServiceList) conf.getServices();
-        Iterator<Object> iter = l.getServices().iterator();
+        Iterator<Object> iter = conf.getServices().iterator();
         for (int i = 0; i < 100; i++) {
             assertEquals(i, iter.next());
         }

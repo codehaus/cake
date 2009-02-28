@@ -7,8 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation can be used for registering for easily attaching an object to a {@link Container} so that it can
- * later be easily retrieved.
+ * This annotation can be used for easily attaching objects to a {@link Container} so that it can later be easily
+ * retrieved.
  * 
  * For example, if you wish to make this object easily available from a container
  * 

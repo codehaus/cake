@@ -41,8 +41,8 @@ public interface Container {
 
     /**
      * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
-     * exists. Calling this method is equivalent to calling {@link #getService(Class, MutableAttributeMap)} with an empty
-     * {@link MutableAttributeMap} as parameter.
+     * exists. Calling this method is equivalent to calling {@link #getService(Class, MutableAttributeMap)} with an
+     * empty {@link AttributeMap} as parameter.
      * 
      * @param <T>
      *            the type of service to retrieve
@@ -76,11 +76,11 @@ public interface Container {
     <T> T getService(Class<T> serviceType, AttributeMap attributes);
 
     /**
-     * Returns whether or not this service manager contains a service of the specified type.
+     * Returns whether or not this container contains a service of the specified type.
      * 
      * @param serviceType
      *            the type of service
-     * @return true if this service manager contains a service of the specified type, otherwise false
+     * @return true if this container contains a service of the specified type, otherwise false
      * @throws NullPointerException
      *             if the specified service type is null
      * 
@@ -168,16 +168,11 @@ public interface Container {
      */
     void shutdownNow();
 
-    /**
-     * Used on a Container implementation to document what type of services the container supports.
-     */
+    /** Used on a Container implementation to document what type of services the container supports. */
     @Target( { ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)
-    /* @Documented */
     @interface SupportedServices {
-        /**
-         * Returns the type of services the container implementation supports.
-         */
+        /** Returns the type of services the container implementation supports. */
         Class<?>[] value();
     }
 }

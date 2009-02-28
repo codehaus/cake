@@ -17,7 +17,7 @@ package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.service.ContainerAlreadyShutdownException;
+import org.codehaus.cake.service.ContainerShutdownException;
 
 public abstract class RunState {
     protected static final int READY = 0;
@@ -79,7 +79,7 @@ public abstract class RunState {
             if (isAtLeastShutdown()) {
                 lifecycleManager.checkExceptions();
                 if (failIfShutdown) {
-                    throw new ContainerAlreadyShutdownException(containerType + " [name=" + containerName
+                    throw new ContainerShutdownException(containerType + " [name=" + containerName
                             + "] has been shutdown, cannot invoke method");
                 } else {
                     return false;

@@ -67,8 +67,8 @@ public class ContainerConfiguration {
     /** Additional configuration objects. */
     private final ServiceList serviceList = new ServiceList();
 
-//    /** The type of container that should be created. */
-//    private Class<? extends T> type;
+    // /** The type of container that should be created. */
+    // private Class<? extends T> type;
 
     /**
      * Adds an instantiated configuration object. Available by calling {@link #getConfigurationOfType(Class)} where
@@ -111,11 +111,16 @@ public class ContainerConfiguration {
     }
 
     /**
-     * Adds the specified service provider to the container. Any methods on the specified provider that is annotated
-     * with any of the 4 standard lifecycle annotations. will be invoked on the respective time.
+     * Adds the specified service factory to the container. Whenever {@link Container#getService(Class)} is called with
+     * a class matching the key specified for this method the
+     * {@link ServiceFactory#lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext)} method is called to
+     * create a new service (
      * 
-     * The provider will be able to provide services using {@link Container#getService(Class)} with the specified key
-     * (class) as parameter.
+     * <p>
+     * The specified service factory can be annotated with any of the 4 standard lifecycle annotations
+     * {@link AfterStart}, {@link OnShutdown}, {@link OnStart} and {@link OnTermination}. However, annotations on
+     * objects returned by {@link ServiceFactory#lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext)}
+     * are ignored.
      * 
      * @param <S>
      *            the type of service
@@ -279,10 +284,9 @@ public class ContainerConfiguration {
      * 
      * @return the objects that have been registered
      */
-    public Object getServices() {
-        return serviceList;
+    public Iterable<Object> getServices() {
+        return serviceList.getServices();
     }
-
 
     /**
      * Creates a new container instance of the specified type using this configuration.
@@ -413,8 +417,8 @@ public class ContainerConfiguration {
     }
 
     /**
-     * Some container implementations might allow additional properties to be set then those defined by this class. This
-     * method can be used to set these additional properties.
+     * A container implementations might allow additional string based properties to be set then those defined by this
+     * class. This method can be used to set these additional properties.
      * 
      * @param key
      *            the key of the property
@@ -434,42 +438,4 @@ public class ContainerConfiguration {
         additionalProperties.put(key, value);
         return this;
     }
-
-
-//    /**
-//     * Returns the type of container set by {@link #setContainerType(Class)}.
-//     * 
-//     * @return the type of container set by {@link #setType(Class)} or <code>null</code> if no type has been set
-//     */
-//    public Class<? extends T> getType() {
-//        return type;
-//    }
-//
-//    /**
-//     * Creates a new Container of the type set using {@link #setType(Class)} from this configuration.
-//     * 
-//     * @return the newly created Container
-//     * @throws IllegalArgumentException
-//     *             if a container of the specified type could not be created
-//     * @throws IllegalStateException
-//     *             if no container type has been set using {@link #setType(Class)}
-//     */
-//    public T newInstance() {
-//        Class<? extends T> typeToInstantiate = getType();
-//        if (typeToInstantiate == null) {
-//            throw new IllegalStateException("no type has been set, using setType(Class)");
-//        }
-//        return newInstance(typeToInstantiate);
-//    }
-//    /**
-//     * Sets the type of container that should be created when calling {@link #newInstance()}.
-//     * 
-//     * @param type
-//     *            the type of container
-//     * @return this configuration
-//     */
-//    public ContainerConfiguration setType(Class<? extends T> type) {
-//        this.type = type;
-//        return this;
-//    }
 }

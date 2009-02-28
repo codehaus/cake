@@ -121,8 +121,7 @@ public class Composer {
                 }
             }
         }
-        ServiceList sl = (ServiceList) conf.getServices();
-        for (Object o : sl.getServices()) {
+        for (Object o : conf.getServices()) {
             result.add(o);
         }
         return result;
