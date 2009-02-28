@@ -21,7 +21,7 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
 
 public class InternalObjectPredicates {
     /** A Predicate that always evaluates to <code>false</code>. */
-    public static final Predicate FALSE = new FalsePredicate();
+    public static final FalsePredicate FALSE = new FalsePredicate();
 
     /** A Predicate that returns <code>false</code> if the element being tested is null. */
     public static final Predicate IS_NOT_NULL = new IsNotNullFilter();
@@ -30,7 +30,7 @@ public class InternalObjectPredicates {
     public static final Predicate IS_NULL = new IsNullFilter();
 
     /** A Predicate that always evaluates to <code>true</code>. */
-    public static final Predicate TRUE = new TruePredicate();
+    public static final TruePredicate TRUE = new TruePredicate();
 
     /** Cannot instantiate. */
     // /CLOVER:OFF
