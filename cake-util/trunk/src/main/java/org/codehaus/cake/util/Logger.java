@@ -19,11 +19,18 @@ package org.codehaus.cake.util;
  * A simple logging interface abstracting logging APIs. The primary reason for using this is to avoid dependencies on
  * any external logging libraries.
  * <p>
- * You shouldn't need to implement this interface, instead use {@link org.codehaus.cake.util.Loggers}to create wrappers
+ * You shouldn't need to implement this interface, instead use {@link org.codehaus.cake.util.Loggers} to create wrappers
  * from popular logging frameworks such as <a
  * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Standard JDK logging </a>, <a
  * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> Log4j </a> or <a
  * href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/logging/package-summary.html"> commons logging </a>.
+ * <p>
+ * For example, to create a Logger that uses Log4j as the underlying logging mechanism, use
+ * 
+ * <pre>
+ * Loggers.Log4j.from(&quot;myLogName&quot;);
+ * </pre>
+ * 
  * <p>
  * This is not an attempt to create a new logging framework. But for some unknown reason, the authors of
  * java.util.logging made {@link java.util.logging.Logger} a class instead of an interface. Furthermore all the classes
@@ -33,6 +40,7 @@ package org.codehaus.cake.util;
  * @version $Id$
  */
 public interface Logger {
+
     /**
      * Logs the message if the logger is currently enabled for the debug log level.
      * 
@@ -214,9 +222,7 @@ public interface Logger {
      */
     void warn(String message, Throwable cause);
 
-    /**
-     * The log level.
-     */
+    /** The log level. */
     public enum Level {
         /** Is a log level providing tracing information. It is the finest level. */
         Debug(1),

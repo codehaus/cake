@@ -381,9 +381,7 @@ public final class Loggers {
         }
     }
 
-    /**
-     * Used for Log4J logging conversion.
-     */
+    /** Used for Log4J logging conversion. */
     public static final class Log4j {
         // /CLOVER:OFF
         /** Cannot instantiate. */
@@ -457,9 +455,7 @@ public final class Loggers {
         }
     }
 
-    /**
-     * The wrapper class for a <a href="http://logging.apache.org/log4j/">Log4j</a> logger.
-     */
+    /** The wrapper class for a <a href="http://logging.apache.org/log4j/">Log4j</a> logger. */
     static final class Log4JLogger extends AbstractLogger {
 
         /** The logger we are wrapping. */
@@ -520,9 +516,7 @@ public final class Loggers {
         }
     }
 
-    /**
-     * A Logger that ignores all input.
-     */
+    /** A Logger that ignores all input. */
     static final class NullLogger extends AbstractLogger implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -4263585629494169814L;
@@ -554,9 +548,7 @@ public final class Loggers {
 
     }
 
-    /**
-     * A simple logger that prints logging information to a PrintStream.
-     */
+    /** A Logger that prints logging information to a PrintStream. */
     static final class PrintStreamLogger extends AbstractLogger {
         /** The level to log at. */
         private final int level;
@@ -602,9 +594,7 @@ public final class Loggers {
         }
     }
 
-    /**
-     * A simple logger that prints logging information to {@link System#err}.
-     */
+    /** A Logger that prints logging information to {@link System#err}. */
     static final class SystemErrLogger extends AbstractLogger implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 3128919839751961759L;
@@ -644,9 +634,7 @@ public final class Loggers {
         }
     }
 
-    /**
-     * A simple logger that prints logging information to {@link System#out}.
-     */
+    /** A Logger that prints logging information to {@link System#out}. */
     static final class SystemOutLogger extends AbstractLogger implements Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = -4803581500251076928L;
