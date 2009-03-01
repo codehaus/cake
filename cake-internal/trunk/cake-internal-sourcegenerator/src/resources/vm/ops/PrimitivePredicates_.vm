@@ -1,10 +1,10 @@
 
 
     /** A ${Type}Predicate that always evaluates to <code>false</code>. */
-    public static final ${Type}Predicate ${upper}_FALSE = (${Type}Predicate) Predicates.FALSE;
+    public static final ${Type}Predicate ${upper}_FALSE = InternalObjectPredicates.FALSE;
 
     /** A ${Type}Predicate that always evaluates to <code>true</code>. */
-    public static final ${Type}Predicate ${upper}_TRUE = (${Type}Predicate) Predicates.TRUE;
+    public static final ${Type}Predicate ${upper}_TRUE = InternalObjectPredicates.TRUE;
     
     /**
      * Creates a ${Type}Predicate that performs a logical AND on two supplied predicates. The
