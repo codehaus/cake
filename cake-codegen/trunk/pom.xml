@@ -24,7 +24,7 @@
   </parent>
   <groupId>org.codehaus.cake.codegen</groupId>
   <artifactId>cake-codegen</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Cake CodeGen</name>
   <description>This library contains the Cake Attributes MapGenerator package</description>
   <dependencies>
@@ -37,7 +37,7 @@
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.util</groupId>
