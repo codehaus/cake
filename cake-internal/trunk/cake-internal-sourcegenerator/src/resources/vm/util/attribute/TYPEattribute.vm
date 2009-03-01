@@ -3,10 +3,10 @@
  * methods that works on primitive ${type}s instead of their object counterpart.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id${Type}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id: TYPEattribute.vm 267 2009-02-02 21:44:13Z kasper ${Type}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
 public abstract class ${Type}Attribute extends Attribute<$object> implements
-         Comparator<WithAttributes>, Serializable {
+         Comparator<AttributeMap>, Serializable {
     
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -88,33 +88,32 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid($type value) {
+    public final void checkValid($type value) {
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
-                    + ", type = " + getClass() + ", value = " + value + "]");
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
         }
     }
 #else        
     /**
      * Analogous to {@link #checkValid($object)} except taking a primitive $type.
-     * 
+     * <p>
+     * The default implementation accept all values.
      * @param value
      *            the value to check
      * @throws IllegalArgumentException
      *             if the specified value is not valid
      */
-    public void checkValid($type value) {
+    public final void checkValid($type value) { 
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Illegal value for attribute [name=" + getName()
-                    + ", type = " + getClass() + ", value = " + value + "]");
+            throw new IllegalArgumentException(checkValidFailureMessage(value));
         }
     }
 #end    
     
     /** {@inheritDoc} */
-    public int compare(WithAttributes w1, WithAttributes w2) {
-        ${type} thisVal = get(w1);
-        ${type} anotherVal = get(w2);
+    public int compare(AttributeMap w1, AttributeMap w2) {
+        ${type} thisVal = w1.get(this);
+        ${type} anotherVal = w2.get(this);
 #if($type=="boolean")
         //fix this to something smarter
         return (thisVal && !anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
@@ -153,50 +152,23 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
     public ${type} getDefaultValue() {
         return defaultValue;
     }
-    
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefaultValue()} will be returned instead.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
-     *         {@link #getDefaultValue()}
-     */
-    public $type get(WithAttributes withAttributes) {
-        return withAttributes.getAttributes().get(this);
-    }
-
-    /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>$type</tt>.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @param defaultValue
-     *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the
-     *         specified default value
-     */
-    public $type get(WithAttributes withAttributes, $type defaultValue) {
-        return withAttributes.getAttributes().get(this, defaultValue);
-    }
 
 #if($isReal)
-    /**
-     * Works as {@link Attribute#isValid(Object)} except taking a primitive $type. The default
-     * implementation returns <code>false</code> for {@link ${object}#NEGATIVE_INFINITY},
-     * {@link ${object}#POSITIVE_INFINITY} and {@link ${object}#NaN}.
-     * 
-     * @return whether or not the value is valid
+   /**
+     * Analogous to {@link Attribute#isValid(Object)} except taking a primitive $type as
+     * parameter.
+     * <p>
+     * The default version returns true for all parameters, except 
+     * {@link ${object}#NEGATIVE_INFINITY}, {@link ${object}#POSITIVE_INFINITY} or {@link ${object}#NaN}.
+     *
      * @param value
      *            the value to check
+     * @return whether or not the value is valid
      */
     public boolean isValid($type value) {
         return !isNaNInfinity(value);
     }
-#else
-
+#else 
    /**
      * Analogous to {@link Attribute#isValid(Object)} except taking a primitive $type as
      * parameter.
@@ -211,72 +183,10 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
         return true;
     }
 #end
-
-    
-    /**
-     * Extracts the attribute map from the specified {@link WithAttributes} and returns the value of
-     * this attribute from the map. If this attribute is not set in the map, the value of
-     * {@link #getDefaultValue()} will be returned instead.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @return the value of this attribute if this attribute is present in the extracted map. Otherwise
-     *         {@link #getDefaultValue()}
-     */
-    public $type get(WithAttributes withAttributes) {
-        return withAttributes.getAttributes().get(this);
-    }
-
-    /**
-     * Analogous to {@link #get(WithAttributes)} except returning a primitive <tt>$type</tt>.
-     * 
-     * @param withAttributes
-     *            an object containing an AttributeMap
-     * @param defaultValue
-     *            the default value to return if this attribute is not present in the map
-     * @return the value of this attribute if this attribute is present in the map. Otherwise the
-     *         specified default value
-     */
-    public $type get(WithAttributes withAttributes, $type defaultValue) {
-        return withAttributes.getAttributes().get(this, defaultValue);
-    }
     /** {@inheritDoc} */
     @Override
     public final boolean isValid($object value) {
         return isValid(value.${type}Value());
-    }
-
-
-    /**
-     * Sets the specified value in the specified attribute map.
-     * 
-     * @param attributes
-     *            the attribute map to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid($type)}
-     */
-    public void set(AttributeMap attributes, $type value) {
-        if (attributes == null) {
-            throw new NullPointerException("attributes is null");
-        }
-        checkValid(value);
-        attributes.put(this, value);
-    }
-
-    /**
-     * Sets the specified value in the specified attribute holder (WithAttributes).
-     * 
-     * @param withAttributes
-     *            the the attribute holder to set the value in.
-     * @param value
-     *            the value that should be set
-     * @throws IllegalArgumentException
-     *             if the specified value is not valid accordingly to {@link #checkValid($type)}
-     */
-    public void set(WithAttributes withAttributes, $type value) {
-        set(withAttributes.getAttributes(), value);
     }
 
     /**
@@ -290,6 +200,15 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
     public AttributeMap singleton($type value) {
         return super.singleton(value);
     }
+    
+#if($type=="boolean")
+    public AttributeMap singletonTrue() {
+        return singleton(true);
+    }
+    public AttributeMap singletonFalse() {
+        return singleton(false);
+    }
+#end        
 #if($isReal)    
   
     /**
@@ -302,44 +221,6 @@ public abstract class ${Type}Attribute extends Attribute<$object> implements
      */
     protected boolean isNaNInfinity($type value) {
         return ${object}.isNaN(value) || ${object}.isInfinite(value);
-    }
-#end
-#if($type=="boolean")
-
-    /**
-     * @param attributes
-     *            the map with attribute
-     * @return true if the attribute is mapped to true in specified map
-     */
-    public boolean isTrue(AttributeMap attributes) {
-        return attributes.get(this);
-    }
-
-    /**
-     * @param withAttributes
-     *            the object containing the attributes
-     * @return true if the attribute is mapped to true, otherwise false
-     */
-    public boolean isTrue(WithAttributes withAttributes) {
-        return isTrue(withAttributes.getAttributes());
-    }
-
-    /**
-     * @param attributes
-     *            the map with attribute
-     * @return true if the attribute is mapped to false in specified map
-     */
-    public boolean isFalse(AttributeMap attributes) {
-        return !attributes.get(this);
-    }
-
-    /**
-     * @param withAttributes
-     *            the object containing the attributes
-     * @return true if the attribute is mapped to false, otherwise false
-     */
-    public boolean isFalse(WithAttributes withAttributes) {
-        return isFalse(withAttributes.getAttributes());
     }
 #end
 }

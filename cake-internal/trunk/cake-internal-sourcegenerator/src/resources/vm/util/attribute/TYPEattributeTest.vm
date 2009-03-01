@@ -8,7 +8,7 @@ import org.junit.Test;
  * Various tests for {@link ${Type}Attribute}.
  *
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id${this}.java 590 2008-03-14 08:16:12Z kasper $
+ * @version $Id: TYPEattributeTest.vm 267 2009-02-02 21:44:13Z kasper ${this}.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class ${this} extends AtrStubs {
     static final ${Type}Attribute ATR0 = new ${Type}Attribute("a0",$util.val(0)) {};

@@ -11,9 +11,9 @@ public class GeneratePrimitivePredicates {
 
     @Test
     public void generatePublicMethods() throws Exception {
-        SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_JAVA, "ops.PrimitivePredicates");
-        g.addImport("static org.codehaus.cake.ops.Ops.*");
-        g.addImport("static org.codehaus.cake.internal.ops.InternalPrimitivePredicates.*");
+        SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_JAVA, "util.ops.PrimitivePredicates");
+        g.addImport("static org.codehaus.cake.util.ops.Ops.*");
+        g.addImport("static org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.*");
         g.generateWithBody(GenerationType.BIG_4);
     }
 
@@ -21,7 +21,7 @@ public class GeneratePrimitivePredicates {
     public void generateTest() throws Exception {
         for (GenerationType cl : GenerationType.BIG_4) {
             SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_TEST,
-                    "internal.ops.InternalPrimitivePredicatesTYPETest", cl);
+                    "internal.util.ops.InternalPrimitivePredicatesTYPETest", cl);
             g.generate();
         }
     }
@@ -29,9 +29,9 @@ public class GeneratePrimitivePredicates {
     @Test
     public void generateInternal() throws Exception {
         SingleFileGenerator g = new SingleFileGenerator(AbstractFileGenerator.FILE_OPS_JAVA,
-                "internal.ops.InternalPrimitivePredicates");
+                "internal.util.ops.InternalPrimitivePredicates");
         g.addImport(Serializable.class);
-        g.addImport("static org.codehaus.cake.ops.Ops.*");
+        g.addImport("static org.codehaus.cake.util.ops.Ops.*");
         g.generateWithBody(GenerationType.BIG_4);
     }
 }

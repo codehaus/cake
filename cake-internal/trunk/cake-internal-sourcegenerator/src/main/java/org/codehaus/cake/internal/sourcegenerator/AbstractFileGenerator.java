@@ -9,8 +9,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 public class AbstractFileGenerator {
-    public static final String FILE_OPS_TEST = "cake-ops/src/test/java/";
-    public static final String FILE_OPS_JAVA = "cake-ops/src/main/java/";
+    public static final String FILE_OPS_TEST = "cake-util/cake-util-ops/src/test/java/";
+    public static final String FILE_OPS_JAVA = "cake-util/cake-util-ops/src/main/java/";
     static final String HEADER = "common/header.vm";
     final VelocityContext context = new VelocityContext();
     final List<String> imports = new ArrayList<String>();

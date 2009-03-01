@@ -29,6 +29,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
+@Deprecated
 public class GeneratorBuilder {
     String packageName;
     List<String> imports = new ArrayList<String>();

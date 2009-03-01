@@ -12,14 +12,14 @@ import static org.codehaus.cake.ops.${Type}Predicates.*;
 import org.codehaus.cake.forkjoin.*;
 
 /**
- * An implementation of an {@link ${Type}Matrix}.
+ * An implementation of an {@link ${Type}Vector}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
+ * @version $Id: AbstractTYPEvector.vm 227 2008-11-30 22:13:02Z kasper ${typecap}Attribute.java,v 1.2 2005/04/27 15:49:16 kasper Exp $
  */
-public abstract class $this extends AbstractMatrix implements ${Type}Matrix {
+public abstract class $this extends AbstractVector implements ${Type}Matrix {
     
-    public ${this}(int n, int m) {
+    public ${this}(int size) {
         super(n, m);
     }
     
