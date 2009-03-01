@@ -22,14 +22,21 @@
     <version>0.2-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>cake-util-collection</artifactId>
-  <name>Cake Util Collection</name>
-  <description>This library contains the Cake util Collection package</description>
+  <artifactId>cake-util</artifactId>
+  <name>Cake Util</name>
+  <description>This library contains the Cake util package</description>
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
-      <artifactId>cake-util-ops</artifactId>
-      <version>${pom.version}</version>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.13</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>

@@ -17,47 +17,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.cake</groupId>
-    <artifactId>cake-parent</artifactId>
-    <version>1</version>
+    <groupId>org.codehaus.cake.util</groupId>
+    <artifactId>cake-util-parent</artifactId>
+    <version>0.2-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <groupId>org.codehaus.cake.concurrent</groupId>
-  <artifactId>cake-concurrent</artifactId>
-  <version>0.2-SNAPSHOT</version>
-  <name>Cake Ops</name>
-  <description>This library contains the Cake Concurrent package</description>
+  <artifactId>cake-util-concurrent</artifactId>
+  <name>Cake Util Concurrent</name>
+  <description>This library contains the Cake util Concurrent package</description>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake.test</groupId>
-      <artifactId>cake-test-util</artifactId>
-      <scope>test</scope>
-      <version>0.2-SNAPSHOT</version>
-    </dependency>
-        <dependency>
-      <groupId>org.codehaus.cake.ops</groupId>
-      <artifactId>cake-ops</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>cake-util-ops</artifactId>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/cake/cake-ops/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-ops/trunk</developerConnection>
-    <url>http://svn.codehaus.org/cake/cake-ops/trunk</url>
-  </scm>
-  <repositories>
-    <repository>
-      <id>codehaus</id>
-      <name>Codehaus Release Repo</name>
-      <url>http://repository.codehaus.org/</url>
-    </repository>
-    <repository>
-      <id>codehaus-snapshot</id>
-      <name>Codehaus Snapshot Repo</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
 </project>
