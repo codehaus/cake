@@ -5,7 +5,7 @@ import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.Test;
 
@@ -22,8 +22,8 @@ public class ServiceFactoryRegistration extends AbstractTCKTest<Container, Conta
         assertEquals(5, getService(Integer.class,TEST_ATR.singleton(5)).intValue());
     }
 
-    public static class TestFactory implements ServiceFactory<Integer> {
-        public Integer lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<Integer> context) {
+    public static class TestFactory implements ServiceProvider<Integer> {
+        public Integer lookup(org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<Integer> context) {
             if (context.getAttributes().isEmpty()) {
                 return -1;
             }

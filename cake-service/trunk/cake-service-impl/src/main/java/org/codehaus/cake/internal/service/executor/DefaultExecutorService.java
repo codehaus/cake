@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.service.OnShutdown;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 
 @UseInternals
 @ExportAsService(ExecutorService.class)
-public class DefaultExecutorService implements ServiceFactory<ExecutorService> {
+public class DefaultExecutorService implements ServiceProvider<ExecutorService> {
 
     /** Default executor service. */
     private volatile ExecutorService defaultExecutor;
@@ -22,7 +22,7 @@ public class DefaultExecutorService implements ServiceFactory<ExecutorService> {
     private final Object poolLock = new Object();
 
     public ExecutorService lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExecutorService> context) {
+            org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ExecutorService> context) {
         ExecutorService s = defaultExecutor;
         if (s == null) {
             synchronized (poolLock) {

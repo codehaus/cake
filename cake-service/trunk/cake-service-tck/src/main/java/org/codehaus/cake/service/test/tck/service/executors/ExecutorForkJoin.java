@@ -3,9 +3,9 @@ package org.codehaus.cake.service.test.tck.service.executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.codehaus.cake.concurrent.ForkJoinPool;
 import org.codehaus.cake.service.test.tck.RequireService;
 import org.codehaus.cake.service.test.util.AssertableForkJoinTask;
+import org.codehaus.cake.util.concurrent.ForkJoinPool;
 import org.junit.Before;
 import org.junit.Test;
 

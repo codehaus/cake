@@ -34,7 +34,7 @@ import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.service.OnShutdown;
 import org.codehaus.cake.service.OnStart;
 import org.codehaus.cake.service.OnTermination;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 
 class LifecycleObject {
 
@@ -128,8 +128,8 @@ class LifecycleObject {
             al.add(o);
         }
         if (serviceFactoryKey != null) {
-            if (o instanceof ServiceFactory) {
-                registrant.registerServiceFactory(serviceFactoryKey, (ServiceFactory) o);
+            if (o instanceof ServiceProvider) {
+                registrant.registerServiceFactory(serviceFactoryKey, (ServiceProvider) o);
             } else {
                 registrant.registerService((Class) serviceFactoryKey, o);
             }
@@ -137,8 +137,8 @@ class LifecycleObject {
         ExportAsService exportedKey = o.getClass().getAnnotation(ExportAsService.class);
         if (exportedKey != null) {
             for (Class c: exportedKey.value()) {
-                if (o instanceof ServiceFactory) {
-                    registrant.registerServiceFactory(c, (ServiceFactory) o);
+                if (o instanceof ServiceProvider) {
+                    registrant.registerServiceFactory(c, (ServiceProvider) o);
                 } else {
                     registrant.registerService(c, o);
                 }

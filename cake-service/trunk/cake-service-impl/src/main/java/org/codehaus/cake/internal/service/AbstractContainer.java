@@ -26,7 +26,7 @@ import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.internal.service.spi.ExportedService;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 
 public abstract class AbstractContainer implements Container {
 
@@ -168,7 +168,7 @@ public abstract class AbstractContainer implements Container {
     }
 
     /**
-     * A {@link ServiceFactory} that returns the same service for any attributes.
+     * A {@link ServiceProvider} that returns the same service for any attributes.
      */
     static class SingleServiceFactory<T> implements ExportedService<T> {
         private final T service;
@@ -187,16 +187,16 @@ public abstract class AbstractContainer implements Container {
     }
 
     static class LookupNextServiceFactory<T> implements ExportedService<T> {
-        private final ServiceFactory<T> factory;
+        private final ServiceProvider<T> factory;
         private final ExportedService<T> next;
 
-        LookupNextServiceFactory(ServiceFactory<T> factory, ExportedService<T> next) {
+        LookupNextServiceFactory(ServiceProvider<T> factory, ExportedService<T> next) {
             this.factory = factory;
             this.next = next;
         }
 
         public T lookup(final Class<T> key, final AttributeMap attributes) {
-            return factory.lookup(new ServiceFactory.ServiceFactoryContext<T>() {
+            return factory.lookup(new ServiceProvider.ServiceFactoryContext<T>() {
                 public AttributeMap getAttributes() {
                     return attributes;
                 }

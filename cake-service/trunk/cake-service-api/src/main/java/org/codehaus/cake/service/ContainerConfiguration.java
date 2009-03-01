@@ -113,13 +113,13 @@ public class ContainerConfiguration {
     /**
      * Adds the specified service factory to the container. Whenever {@link Container#getService(Class)} is called with
      * a class matching the key specified for this method the
-     * {@link ServiceFactory#lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext)} method is called to
+     * {@link ServiceProvider#lookup(org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext)} method is called to
      * create a new service (
      * 
      * <p>
      * The specified service factory can be annotated with any of the 4 standard lifecycle annotations
      * {@link AfterStart}, {@link OnShutdown}, {@link OnStart} and {@link OnTermination}. However, annotations on
-     * objects returned by {@link ServiceFactory#lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext)}
+     * objects returned by {@link ServiceProvider#lookup(org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext)}
      * are ignored.
      * 
      * @param <S>
@@ -130,7 +130,7 @@ public class ContainerConfiguration {
      *            the service provider
      * @return this configuration
      */
-    public <S> ContainerConfiguration addService(Class<? extends S> key, ServiceFactory<S> factory) {
+    public <S> ContainerConfiguration addService(Class<? extends S> key, ServiceProvider<S> factory) {
         serviceList.add(key, factory);
         return this;
     }

@@ -58,7 +58,7 @@ public interface Container {
 
     /**
      * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
-     * exists. The map of attributes will be parsed along to the {@link ServiceFactory} responsible for constructing the
+     * exists. The map of attributes will be parsed along to the {@link ServiceProvider} responsible for constructing the
      * service.
      * 
      * @param <T>

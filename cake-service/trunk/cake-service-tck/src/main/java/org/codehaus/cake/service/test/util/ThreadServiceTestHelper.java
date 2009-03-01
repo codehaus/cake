@@ -25,10 +25,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.service.ExportAsService;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 
 @ExportAsService(ExecutorService.class)
-public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> {
+public class ThreadServiceTestHelper implements ServiceProvider<ExecutorService> {
 
     private static final int PERMITS = 100000;
 
@@ -72,7 +72,7 @@ public class ThreadServiceTestHelper implements ServiceFactory<ExecutorService> 
     }
 
     public ExecutorService lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExecutorService> context) {
+            org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ExecutorService> context) {
         return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>()) {
             @Override
             public void execute(Runnable command) {

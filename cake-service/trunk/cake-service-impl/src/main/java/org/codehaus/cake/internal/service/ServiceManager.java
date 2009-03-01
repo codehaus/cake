@@ -8,7 +8,7 @@ import org.codehaus.cake.internal.service.AbstractContainer.LookupNextServiceFac
 import org.codehaus.cake.internal.service.AbstractContainer.SingleServiceFactory;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.internal.service.spi.ExportedService;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 
 public class ServiceManager {
     private final Map<Class<?>, ExportedService> services = new ConcurrentHashMap<Class<?>, ExportedService>();
@@ -29,7 +29,7 @@ public class ServiceManager {
         services.put(key, new SingleServiceFactory<T>(service));
     }
 
-    <T> void registerServiceFactory(Class<T> key, ServiceFactory<T> serviceFactory) {
+    <T> void registerServiceFactory(Class<T> key, ServiceProvider<T> serviceFactory) {
         ExportedService<?> previous = services.get(key);
         if (ies.isDebugEnabled()) {
             ies.debug("  A ServiceFactory was registered [key=" + key + ", factory=" + serviceFactory + "]");

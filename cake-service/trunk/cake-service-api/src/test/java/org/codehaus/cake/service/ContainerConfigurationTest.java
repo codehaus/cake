@@ -230,7 +230,7 @@ public class ContainerConfigurationTest {
     @Test
     public void addService() {
         assertFalse(conf.getServices().iterator().hasNext());
-        ServiceFactory sf = dummy(ServiceFactory.class);
+        ServiceProvider sf = dummy(ServiceProvider.class);
         conf.addService(5);
         conf.addService(Integer.class, 10);
         conf.addService(Long.class, sf);
@@ -284,7 +284,7 @@ public class ContainerConfigurationTest {
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE4() {
-        conf.addService(Integer.class,(ServiceFactory) null);
+        conf.addService(Integer.class,(ServiceProvider) null);
     }
 //
 //    @Test

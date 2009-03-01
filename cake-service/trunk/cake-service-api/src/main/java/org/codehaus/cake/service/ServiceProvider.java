@@ -28,7 +28,7 @@ import org.codehaus.cake.attribute.MutableAttributeMap;
  * @param <T>
  *            the type of service returned from {@link #lookup(MutableAttributeMap)}
  */
-public interface ServiceFactory<T> {
+public interface ServiceProvider<T> {
 
     /**
      * Called by a {@link Container} to lookup a specific service.
@@ -41,7 +41,7 @@ public interface ServiceFactory<T> {
     T lookup(ServiceFactoryContext<T> context);
 
     /**
-     * A ServiceFactoryContext is used as the parameter to the {@link ServiceFactory#lookup(ServiceFactoryContext)}
+     * A ServiceFactoryContext is used as the parameter to the {@link ServiceProvider#lookup(ServiceFactoryContext)}
      * method.
      */
     interface ServiceFactoryContext<T> {

@@ -2,15 +2,15 @@ package org.codehaus.cake.internal.service.executor;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.concurrent.ForkJoinPool;
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.service.OnShutdown;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
+import org.codehaus.cake.util.concurrent.ForkJoinPool;
 
 @UseInternals
 @ExportAsService(ForkJoinPool.class)
-public class DefaultForkJoinPool implements ServiceFactory<ForkJoinPool> {
+public class DefaultForkJoinPool implements ServiceProvider<ForkJoinPool> {
 
     /** Default executor service. */
     private volatile ForkJoinPool defaultExecutor;
@@ -21,7 +21,7 @@ public class DefaultForkJoinPool implements ServiceFactory<ForkJoinPool> {
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
 
-    public ForkJoinPool lookup(org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ForkJoinPool> context) {
+    public ForkJoinPool lookup(org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ForkJoinPool> context) {
         ForkJoinPool e = defaultExecutor;
         if (e == null) {
             synchronized (poolLock) {
