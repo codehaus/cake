@@ -17,12 +17,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.cake.attributes</groupId>
-    <artifactId>cake-attributes-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <groupId>org.codehaus.cake.util</groupId>
+    <artifactId>cake-util-parent</artifactId>
+    <version>0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cake-attributes</artifactId>
-  <name>Cake Attributes</name>
+  <name>Cake Util Attributes</name>
   <description>This library contains the Cake Attributes package</description>
+  <build>
+    <plugins>
+      <plugin>
+      <!--  We add a test-jar  -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

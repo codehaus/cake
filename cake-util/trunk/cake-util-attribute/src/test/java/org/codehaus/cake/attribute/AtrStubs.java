@@ -72,6 +72,8 @@ public class AtrStubs {
     public static final ObjectAttribute<String> O_1 = new ObjectAttribute<String>("O_1", String.class, "1.5") {};
     public static final ObjectAttribute<String> O_2 = new ObjectAttribute<String>("O_2", String.class, "15") {};
     public static final ObjectAttribute<String> O_3 = new ObjectAttribute<String>("O_3", String.class, null) {};
+    public static final ObjectAttribute<String> O_4 = new ObjectAttribute<String>("O_4", String.class) {};
+
     public static final ShortAttribute S_1 = new ShortAttribute("S_1", (short) 1) {};
     public static final ShortAttribute S_2 = new ShortAttribute("S_2", (short) 2) {};
 

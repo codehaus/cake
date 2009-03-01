@@ -56,10 +56,36 @@
     </repository>
   </repositories>
 
-  <modules>
-    <module>cake-util</module>
-    <module>cake-util-concurrent</module>
-    <module>cake-util-collection</module>
-    <module>cake-util-ops</module>
-  </modules>
+
+
+  <profiles>
+    <profile>
+      <id>normal</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>cake-util</module>
+        <module>cake-util-attribute</module>
+        <module>cake-util-concurrent</module>
+        <module>cake-util-collection</module>
+        <module>cake-util-ops</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>coverage</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>coverage</name>
+        </property>
+      </activation>
+      <modules>
+        <module>cake-util</module>
+        <module>cake-util-attribute</module>
+        <module>cake-util-collection</module>
+        <module>cake-util-ops</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
