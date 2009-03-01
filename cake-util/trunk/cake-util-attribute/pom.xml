@@ -22,7 +22,7 @@
     <version>0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>cake-attributes</artifactId>
+  <artifactId>cake-util-attribute</artifactId>
   <name>Cake Util Attributes</name>
   <description>This library contains the Cake Attributes package</description>
   <build>
