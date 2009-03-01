@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.cake.util</groupId>
   <artifactId>cake-util-parent</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Cake Util Parent</name>
   <packaging>pom</packaging>
   <description>This library contains Utility classes that are used across all Cake projects</description>
@@ -32,7 +32,7 @@
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <scm>
