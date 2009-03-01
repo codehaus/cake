@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.cake.attributes</groupId>
   <artifactId>cake-attributes-parent</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Cake Attributes Parent</name>
   <packaging>pom</packaging>
   <dependencies>
