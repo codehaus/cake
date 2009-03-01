@@ -8,8 +8,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cake-trunks</artifactId>
-  <version>1</version>
-  <name>Cake trunks Parent</name>
+  <version>0.2</version>
+  <name>Cake</name>
   <packaging>pom</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/cake/trunks</connection>
@@ -47,11 +47,9 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>cake-attributes</module>
         <module>cake-cache</module>
-        <module>cake-forkjoin</module>
+        <module>cake-codegen</module>
         <module>cake-management</module>
-        <module>cake-ops</module>
         <module>cake-service</module>
         <module>cake-test</module>
         <module>cake-util</module>
@@ -66,10 +64,8 @@
         </property>
       </activation>
       <modules>
-        <module>cake-attributes</module>
         <module>cake-cache</module>
         <module>cake-management</module>
-        <module>cake-ops</module>
         <module>cake-service</module>
         <module>cake-util</module>
       </modules>
