@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.cake.test</groupId>
   <artifactId>cake-test-parent</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Cake Test Parent</name>
   <packaging>pom</packaging>
   <scm>
