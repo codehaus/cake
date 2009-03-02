@@ -13,9 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.util.attribute.common;
+package org.codehaus.cake.util.attribute;
 
-import org.codehaus.cake.util.attribute.LongAttribute;
 
 /**
  * An attribute mapping to an instance in time relative to the standard base time known as "the epoch", namely January

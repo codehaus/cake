@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.codehaus.cake.internal.util.attribute.AttributeHelper;
-import org.codehaus.cake.util.attribute.common.ComparableObjectAttribute;
 
 /**
  * 

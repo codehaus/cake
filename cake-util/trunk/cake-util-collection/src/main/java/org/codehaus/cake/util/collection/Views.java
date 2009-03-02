@@ -1,4 +1,4 @@
-package org.codehaus.cake.util.collection.view;
+package org.codehaus.cake.util.collection;
 
 import java.io.Serializable;
 import java.util.Collections;

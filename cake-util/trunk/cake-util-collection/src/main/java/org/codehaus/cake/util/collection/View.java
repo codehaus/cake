@@ -1,5 +1,6 @@
-package org.codehaus.cake.util.collection.view;
+package org.codehaus.cake.util.collection;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
@@ -120,9 +121,39 @@ public interface View<T> {
      */
     View<T> orderByMax();
 
+    
+    /**
+     * Sorts the specified array of objects into ascending order, according to
+     * the <i>natural ordering</i> of its elements.  All elements in the array
+     * must implement the <tt>Comparable</tt> interface.  Furthermore, all
+     * elements in the array must be <i>mutually comparable</i> (that is,
+     * <tt>e1.compareTo(e2)</tt> must not throw a <tt>ClassCastException</tt>
+     * for any elements <tt>e1</tt> and <tt>e2</tt> in the array).<p>
+     *
+     * This sort is guaranteed to be <i>stable</i>:  equal elements will
+     * not be reordered as a result of the sort.<p>
+     *
+     * The sorting algorithm is a modified mergesort (in which the merge is
+     * omitted if the highest element in the low sublist is less than the
+     * lowest element in the high sublist).  This algorithm offers guaranteed
+     * n*log(n) performance.
+     * 
+     * @param a the array to be sorted.
+     * @throws  ClassCastException if the array contains elements that are not
+     *      <i>mutually comparable</i> (for example, strings and integers).
+     * @see Comparable
+     */
+
     /**
      * Assuming all elements are Comparable, creates a new View where all values are ordered accordingly to their
-     * natural order. This ordering does not guarantee that elements with equal keys maintain their relative position.
+     * natural order. Furthermore, all elements in the view must be <i>mutually comparable</i> (that is,
+     * <tt>e1.compareTo(e2)</tt> must not throw a <tt>ClassCastException</tt> for any elements <tt>e1</tt> and
+     * <tt>e2</tt> in the view).This ordering does not guarantee that elements with equal keys maintain their relative
+     * position.
+     * <p>
+     * This method does not check that all elements are Comparable. However, subsekvent invocations on the returned view
+     * may fail with {@link ClassCastException} if not all elements are Comparable.
+     * <p>
      * 
      * @return the new view
      */
@@ -130,6 +161,17 @@ public interface View<T> {
 
     /**
      * Returns reduction of elements.
+     * <p>
+     * Usage: Considering a view with BigDecimals, the following example computes the sum of all numbers in the view:
+     * 
+     * <pre>
+     * View&lt;BigDecimal&gt; numbers = null;
+     * BigDecimal sum = numbers.reduce(new Reducer&lt;BigDecimal&gt;() {
+     *     public BigDecimal op(BigDecimal a, BigDecimal b) {
+     *         return a.add(b);
+     *     }
+     * }, BigDecimal.ZERO);
+     * </pre>
      * 
      * @param reducer
      *            the reducer
@@ -140,9 +182,8 @@ public interface View<T> {
     T reduce(Reducer<T> reducer, T base);
 
     /**
-     * Creates a new view which limits the number of elements in this view. If the elements in this view are ordered,
-     * for example, if this view has been created by calling {@link #orderBy(Comparator)}, {@link #orderByMax()} or
-     * {@link #orderByMin()} on an existing view. The elements in the new view will keep this ordering.
+     * Creates a new view with no more then the specified amount of elements. If this view is ordered, the elements
+     * selected for the new view will be returned view will maintain this ordering.
      * <p>
      * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
      * 
@@ -163,8 +204,8 @@ public interface View<T> {
     long size();
 
     /**
-     * Returns an array containing all of the elements in this view. If this view is ordered, the array will keep the
-     * elements in the same order.
+     * Returns an array containing all of the elements in this view. If this view is ordered, the returned array will
+     * maintain this ordering.
      * <p>
      * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
      * method must allocate a new array even if this view is backed in any way by an array). The caller is thus free to
@@ -184,7 +225,7 @@ public interface View<T> {
      * useful in determining the length of this view <i>only</i> if the caller knows that this view does not contain
      * any <tt>null</tt> elements.)
      * <p>
-     * If this view is ordered , this method must return the elements in the same order.
+     * If this view is ordered, the returned array will maintain this ordering.
      * <p>
      * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code can be used to dump
      * the view into a newly allocated array of <tt>String</tt>:
@@ -209,7 +250,8 @@ public interface View<T> {
     <E> E[] toArray(E[] a);
 
     /**
-     * Creates a new {@link List} with all the elements in this view.
+     * Creates a new {@link List} with all the elements in this view. If this view is ordered, the returned list will
+     * maintain this ordering.
      * <p>
      * The returned list will be "safe" in that no references to it or any of its elements are maintained by this view.
      * (In other words, this method must allocate a new list even if this view is backed by an list).

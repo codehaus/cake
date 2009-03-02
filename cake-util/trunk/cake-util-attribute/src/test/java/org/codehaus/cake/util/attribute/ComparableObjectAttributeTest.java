@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.util.attribute.common;
+package org.codehaus.cake.util.attribute;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -23,10 +23,9 @@ import java.util.Comparator;
 
 import org.codehaus.cake.test.util.ComparatorTestUtil.Dummy;
 import org.codehaus.cake.test.util.ComparatorTestUtil.DummyComparator;
-import org.codehaus.cake.util.attribute.AtrStubs;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.Attributes;
-import org.codehaus.cake.util.attribute.common.ComparableObjectAttribute;
+import org.codehaus.cake.util.attribute.ComparableObjectAttribute;
 import org.junit.Test;
 
 /**

@@ -13,12 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.util.attribute.common;
+package org.codehaus.cake.util.attribute;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.util.attribute.AttributeMap;
-import org.codehaus.cake.util.attribute.ObjectAttribute;
 
 /**
  * An abstract attribute that can be used to impose order among the values of said attributes. The values can be ordered

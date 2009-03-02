@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.util.attribute.common;
+package org.codehaus.cake.util.attribute;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,12 +21,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.util.attribute.AtrStubs;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.Attributes;
 import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.DurationAttribute;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
-import org.codehaus.cake.util.attribute.common.DurationAttribute;
 import org.junit.Test;
 /**
  * 

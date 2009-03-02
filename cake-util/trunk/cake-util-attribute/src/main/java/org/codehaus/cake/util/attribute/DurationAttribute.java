@@ -13,13 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.codehaus.cake.util.attribute.common;
+package org.codehaus.cake.util.attribute;
 
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.util.attribute.AttributeMap;
-import org.codehaus.cake.util.attribute.LongAttribute;
-import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
  * An attribute mapping to an amount of time. The unit of time is nanoseconds.

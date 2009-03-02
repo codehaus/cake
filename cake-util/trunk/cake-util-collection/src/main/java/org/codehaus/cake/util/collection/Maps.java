@@ -1,12 +1,14 @@
 package org.codehaus.cake.util.collection;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Reducer;
 
 public class Maps {
 
@@ -21,6 +23,16 @@ public class Maps {
 
     public static <K, V> Op<Map.Entry<K, V>, V> mapEntryToValue() {
         return MAP_ENTRY_TO_VALUE_OP;
+    }
+
+    public static void main(String[] args) {
+        BigDecimal b;
+        View<BigDecimal> numbers = null;
+        BigDecimal sum = numbers.reduce(new Reducer<BigDecimal>() {
+            public BigDecimal op(BigDecimal a, BigDecimal b) {
+                return a.add(b);
+            }
+        }, BigDecimal.ZERO);
     }
 
     /**
@@ -125,7 +137,7 @@ public class Maps {
         map.put(key, value);
         return map;
     }
-    
+
     public static <K, V> Map<K, V> from(K key1, V value1, K key2, V value2) {
         HashMap<K, V> map = new HashMap<K, V>();
         map.put(key1, value1);
@@ -137,12 +149,12 @@ public class Maps {
     static class KeyFromMapEntry<K, V> implements Op<Map.Entry<K, V>, K>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
-    
+
         /** {@inheritDoc} */
         public K op(Map.Entry<K, V> t) {
             return t.getKey();
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return Maps.MAP_ENTRY_TO_KEY_OP;
@@ -153,12 +165,12 @@ public class Maps {
     static class ValueFromMapEntry<K, V> implements Op<Map.Entry<K, V>, V>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
-    
+
         /** {@inheritDoc} */
         public V op(Map.Entry<K, V> t) {
             return t.getValue();
         }
-    
+
         /** @return Preserves singleton property */
         private Object readResolve() {
             return Maps.MAP_ENTRY_TO_VALUE_OP;
