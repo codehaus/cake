@@ -24,7 +24,7 @@
   </parent>
   <groupId>org.codehaus.cake.management</groupId>
   <artifactId>cake-management</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Cake Mangement</name>
   <description>This library contains the Cake Management package</description>
   <dependencies>
@@ -32,7 +32,7 @@
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <scm>
