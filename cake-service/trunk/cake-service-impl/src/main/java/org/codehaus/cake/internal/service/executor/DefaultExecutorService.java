@@ -22,7 +22,7 @@ public class DefaultExecutorService implements ServiceProvider<ExecutorService> 
     private final Object poolLock = new Object();
 
     public ExecutorService lookup(
-            org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ExecutorService> context) {
+            org.codehaus.cake.service.ServiceProvider.Context<ExecutorService> context) {
         ExecutorService s = defaultExecutor;
         if (s == null) {
             synchronized (poolLock) {

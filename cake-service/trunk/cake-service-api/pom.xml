@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.cake.service</groupId>
     <artifactId>cake-service-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cake-service-api</artifactId>
@@ -12,28 +12,28 @@
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.cake.ops</groupId>
-      <artifactId>cake-ops</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <groupId>org.codehaus.cake.util</groupId>
+      <artifactId>cake-util-ops</artifactId>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.cake.attributes</groupId>
-      <artifactId>cake-attributes</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <groupId>org.codehaus.cake.util</groupId>
+      <artifactId>cake-util-attribute</artifactId>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.management</groupId>
       <artifactId>cake-management</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.util</groupId>
       <artifactId>cake-util</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

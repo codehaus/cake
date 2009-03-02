@@ -21,7 +21,7 @@ public class DefaultForkJoinPool implements ServiceProvider<ForkJoinPool> {
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
 
-    public ForkJoinPool lookup(org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ForkJoinPool> context) {
+    public ForkJoinPool lookup(org.codehaus.cake.service.ServiceProvider.Context<ForkJoinPool> context) {
         ForkJoinPool e = defaultExecutor;
         if (e == null) {
             synchronized (poolLock) {

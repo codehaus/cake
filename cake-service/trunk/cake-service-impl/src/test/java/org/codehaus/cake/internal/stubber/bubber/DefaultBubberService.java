@@ -21,14 +21,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubber1Service;
 import org.codehaus.cake.internal.stubber.tubber.DefaultTubberService;
 import org.codehaus.cake.service.ExportAsService;
 import org.codehaus.cake.stubber.StubberConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberService;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 @ExportAsService(BubberService.class)
 public class DefaultBubberService<T> implements BubberService<T>, RuntimeConfigurableService {

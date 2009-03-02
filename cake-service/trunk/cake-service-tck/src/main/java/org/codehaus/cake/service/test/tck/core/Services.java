@@ -17,10 +17,10 @@ package org.codehaus.cake.service.test.tck.core;
 
 import java.util.Set;
 
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
+import org.codehaus.cake.util.attribute.Attributes;
 import org.junit.Test;
 
 public class Services extends AbstractTCKTest<Container, ContainerConfiguration> {

@@ -24,11 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;
+import org.codehaus.cake.util.attribute.AttributeMap;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

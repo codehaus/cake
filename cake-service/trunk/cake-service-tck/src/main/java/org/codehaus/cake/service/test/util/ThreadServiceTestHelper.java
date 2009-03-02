@@ -72,7 +72,7 @@ public class ThreadServiceTestHelper implements ServiceProvider<ExecutorService>
     }
 
     public ExecutorService lookup(
-            org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ExecutorService> context) {
+            org.codehaus.cake.service.ServiceProvider.Context<ExecutorService> context) {
         return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>()) {
             @Override
             public void execute(Runnable command) {

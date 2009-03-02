@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.stubber.bubber;
 
-import org.codehaus.cake.attribute.IntAttribute;
+import org.codehaus.cake.util.attribute.IntAttribute;
 
 public interface BubberService<T> {
     IntAttribute FOOFOO = new IntAttribute(10) {};

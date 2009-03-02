@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.service;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
  * A service factory is used for constructing services of a specific type.
@@ -38,13 +38,13 @@ public interface ServiceProvider<T> {
      * @return a service matching the specified context
      */
     // TODO return null or Throw an UOE??
-    T lookup(ServiceFactoryContext<T> context);
+    T lookup(Context<T> context);
 
     /**
-     * A ServiceFactoryContext is used as the parameter to the {@link ServiceProvider#lookup(ServiceFactoryContext)}
+     * A ServiceFactoryContext is used as the parameter to the {@link ServiceProvider#lookup(Context)}
      * method.
      */
-    interface ServiceFactoryContext<T> {
+    interface Context<T> {
         /**
          * Return the key that is used for acquiring the service, as parsed along to {@link Container#getService(Class)}
          * or {@link Container#getService(Class, MutableAttributeMap)}. This is primaraily used if the ServiceFactory returns

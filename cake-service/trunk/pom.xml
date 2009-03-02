@@ -24,7 +24,7 @@
   </parent>
   <groupId>org.codehaus.cake.service</groupId>
   <artifactId>cake-service-parent</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Cake Service Parent</name>
   <packaging>pom</packaging>
   <scm>

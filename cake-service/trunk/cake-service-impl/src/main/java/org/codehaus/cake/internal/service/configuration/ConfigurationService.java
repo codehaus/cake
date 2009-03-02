@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.service.configuration;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 /**
  * Settings, options, configurations

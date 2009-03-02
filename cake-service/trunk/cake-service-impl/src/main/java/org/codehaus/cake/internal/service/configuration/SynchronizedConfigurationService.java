@@ -2,14 +2,14 @@ package org.codehaus.cake.internal.service.configuration;
 
 import java.util.Collection;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.WithAttributes;
 
 public class SynchronizedConfigurationService implements ConfigurationService {
     private volatile MutableAttributeMap defaults = new DefaultAttributeMap();

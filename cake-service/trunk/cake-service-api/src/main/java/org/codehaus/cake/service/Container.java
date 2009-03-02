@@ -22,8 +22,8 @@ import java.lang.annotation.Target;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
  * A Container is the the in addition providing .

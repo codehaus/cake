@@ -22,11 +22,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.internal.service.spi.ExportedService;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ServiceProvider;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
 
 public abstract class AbstractContainer implements Container {
 
@@ -196,7 +196,7 @@ public abstract class AbstractContainer implements Container {
         }
 
         public T lookup(final Class<T> key, final AttributeMap attributes) {
-            return factory.lookup(new ServiceProvider.ServiceFactoryContext<T>() {
+            return factory.lookup(new ServiceProvider.Context<T>() {
                 public AttributeMap getAttributes() {
                     return attributes;
                 }

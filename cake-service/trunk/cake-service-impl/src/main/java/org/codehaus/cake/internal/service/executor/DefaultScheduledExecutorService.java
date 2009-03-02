@@ -21,7 +21,7 @@ public class DefaultScheduledExecutorService implements ServiceProvider<Schedule
     private final Object poolLock = new Object();
 
     public ScheduledExecutorService lookup(
-            org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext<ScheduledExecutorService> context) {
+            org.codehaus.cake.service.ServiceProvider.Context<ScheduledExecutorService> context) {
         ScheduledExecutorService s = defaultExecutor;
         if (s == null) {
             synchronized (poolLock) {

@@ -15,10 +15,10 @@
  */
 package org.codehaus.cake.stubber.bubber;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.WithAttributes;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.WithAttributes;
 
 public class BubberConfiguration implements WithAttributes {
 
