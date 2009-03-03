@@ -6,13 +6,13 @@ package org.codehaus.cake.cache.examples.management;
 // START SNIPPET: class
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedObject;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 @ManagedObject(defaultValue = "MyCacheLoader", description = "Cache Loading statistics")
 public class CountCacheLoader implements BlockingCacheLoader<String, String> {
     /** Keeping count of the number of loads. */

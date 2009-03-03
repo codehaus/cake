@@ -17,9 +17,9 @@ package org.codehaus.cake.cache.policy.costsize;
 
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.SIZE;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.cache.policy.PolicyContext;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 /**
  * A replacement policy that replaces the entry with the biggest {@link org.codehaus.cake.cache.CacheEntry#SIZE} when evicting. The rational for

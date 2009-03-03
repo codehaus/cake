@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
 
 class CacheAttributes {
 

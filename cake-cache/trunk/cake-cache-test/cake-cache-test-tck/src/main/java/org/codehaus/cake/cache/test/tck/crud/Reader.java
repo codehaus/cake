@@ -1,9 +1,6 @@
 package org.codehaus.cake.cache.test.tck.crud;
 
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.cache.test.util.AtrStubs;
-import org.junit.Test;
 
 public class Reader extends AbstractCacheTCKTest {
 

@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.service.loading;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
  * A <code>cache loader</code> is used for transparent loading or creation of values by a cache. Instead of the user

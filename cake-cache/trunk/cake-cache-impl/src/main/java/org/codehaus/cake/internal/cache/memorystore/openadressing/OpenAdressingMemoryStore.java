@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
@@ -22,9 +19,9 @@ import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
-import org.codehaus.cake.concurrent.collection.ParallelArray;
 import org.codehaus.cake.internal.cache.CachePredicates;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
+import org.codehaus.cake.internal.cache.policy.FakePolicyContext;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
@@ -33,14 +30,19 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
 import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
+import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
-import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.concurrent.collection.ParallelArray;
+import org.codehaus.cake.util.ops.Predicates;
+import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 
 /**
  * An implementation of {@link MemoryStore} using open adressing.
@@ -91,7 +93,8 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         this.attributeService = attributeService;
         this.ies = ies;
         Class<? extends ReplacementPolicy> policy = storeConfiguration.getPolicy();
-        this.policy = policy == null ? null : Policies.create(policy);
+        FakePolicyContext fpc = new FakePolicyContext(Object.class);
+        this.policy = ((MemorySparseAttributeService) attributeService).policy;
         isCacheable = storeConfiguration.getIsCacheableFilter();
         updateConfiguration(storeConfiguration.getAttributes());
         evictor = storeConfiguration.getEvictor();

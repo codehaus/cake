@@ -15,9 +15,9 @@
  */
 package org.codehaus.cake.internal.cache;
 
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.TimeInstanceAttribute;
 
 /**
  * This class is here temporarily because some of the policies needs access to the attributes.

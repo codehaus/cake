@@ -6,8 +6,8 @@ import static org.codehaus.cake.test.util.TestUtil.params;
 
 import java.util.Collection;
 
-import org.codehaus.cake.ops.Ops.Generator;
 import org.codehaus.cake.test.util.CollectionTestUtil;
+import org.codehaus.cake.util.ops.Ops.Generator;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;

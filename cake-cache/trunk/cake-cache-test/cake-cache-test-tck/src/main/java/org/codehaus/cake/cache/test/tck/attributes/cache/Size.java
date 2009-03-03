@@ -19,9 +19,9 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import java.util.Iterator;
 
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.PrimitiveOps;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.ops.PrimitiveOps;
 import org.junit.Test;
 
 /**

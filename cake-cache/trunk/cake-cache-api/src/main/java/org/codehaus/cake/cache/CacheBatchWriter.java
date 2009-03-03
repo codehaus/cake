@@ -17,8 +17,8 @@ package org.codehaus.cake.cache;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
 import org.omg.CORBA.Object;
 
 /**

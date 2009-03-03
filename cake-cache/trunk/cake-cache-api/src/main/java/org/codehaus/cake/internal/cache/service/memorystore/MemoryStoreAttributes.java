@@ -15,9 +15,9 @@
  */
 package org.codehaus.cake.internal.cache.service.memorystore;
 
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.IntAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
 
 public class MemoryStoreAttributes {
 

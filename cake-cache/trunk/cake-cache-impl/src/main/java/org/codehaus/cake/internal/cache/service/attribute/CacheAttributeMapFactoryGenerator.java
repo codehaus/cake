@@ -23,17 +23,12 @@ import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.WeakHashMap;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.internal.asm.ClassVisitor;
 import org.codehaus.cake.internal.asm.ClassWriter;
 import org.codehaus.cake.internal.asm.Label;
 import org.codehaus.cake.internal.asm.MethodVisitor;
 import org.codehaus.cake.internal.asm.Opcodes;
 import org.codehaus.cake.internal.asm.Type;
-import org.codehaus.cake.internal.attribute.SecurityTools;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator;
 import org.codehaus.cake.internal.attribute.generator.PrimType;
 import org.codehaus.cake.internal.attribute.generator.DefaultMapGenerator.MyLoader;
@@ -41,7 +36,12 @@ import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfi
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
+import org.codehaus.cake.internal.util.attribute.SecurityTools;
 import org.codehaus.cake.util.Clock;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public class CacheAttributeMapFactoryGenerator implements Opcodes {
     private static final String ATTRIBUTEMAP_DESCRIPTOR = Type.getType(MutableAttributeMap.class).getDescriptor();

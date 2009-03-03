@@ -18,14 +18,14 @@ package org.codehaus.cake.cache.test.service.loading;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.ops.Ops.LongOp;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.ops.Ops.LongOp;
+import org.codehaus.cake.util.ops.Ops.Op;
 
 public class TestLoader implements BlockingCacheLoader<Integer, String> {
 

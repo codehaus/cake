@@ -15,22 +15,23 @@
  */
 package org.codehaus.cake.cache.test.util;
 
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.ByteAttribute;
-import org.codehaus.cake.attribute.CharAttribute;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.ObjectAttribute;
-import org.codehaus.cake.attribute.ShortAttribute;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.ByteAttribute;
+import org.codehaus.cake.util.attribute.CharAttribute;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.FloatAttribute;
+import org.codehaus.cake.util.attribute.IntAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.ObjectAttribute;
+import org.codehaus.cake.util.attribute.ShortAttribute;
 
 /**
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
-public class AtrStubs {
+@Deprecated
+class AtrStubs {
 
     public static final ByteAttribute B_1 = new ByteAttribute("B_1", (byte) 1) {};
     public static final ByteAttribute B_2 = new ByteAttribute("B_2", (byte) 2) {};

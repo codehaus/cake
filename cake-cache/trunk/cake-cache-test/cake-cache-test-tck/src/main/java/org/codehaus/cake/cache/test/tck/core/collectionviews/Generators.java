@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.Ops.Generator;
+import org.codehaus.cake.util.ops.Ops.Generator;
 
 @SuppressWarnings("unchecked")
 public class Generators {

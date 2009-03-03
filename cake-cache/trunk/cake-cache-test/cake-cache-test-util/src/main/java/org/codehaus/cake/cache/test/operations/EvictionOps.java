@@ -15,7 +15,7 @@
  */
 package org.codehaus.cake.cache.test.operations;
 
-import org.codehaus.cake.ops.Ops;
+import org.codehaus.cake.util.ops.Ops;
 
 public abstract class EvictionOps {
     // @HarnessTest("eviction.trimToSize")

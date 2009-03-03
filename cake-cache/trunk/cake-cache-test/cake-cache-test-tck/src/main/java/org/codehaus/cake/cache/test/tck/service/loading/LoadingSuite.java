@@ -16,8 +16,8 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.test.tck.ServiceSuite;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

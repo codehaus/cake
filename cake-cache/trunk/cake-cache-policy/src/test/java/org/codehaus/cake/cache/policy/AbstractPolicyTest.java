@@ -3,10 +3,10 @@ package org.codehaus.cake.cache.policy;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public abstract class AbstractPolicyTest {
 

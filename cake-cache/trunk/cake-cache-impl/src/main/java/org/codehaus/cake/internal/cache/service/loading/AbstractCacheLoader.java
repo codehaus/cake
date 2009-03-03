@@ -17,12 +17,12 @@ package org.codehaus.cake.internal.cache.service.loading;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
 
 public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingService<K, V> {
 

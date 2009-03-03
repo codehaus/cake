@@ -17,13 +17,13 @@ package org.codehaus.cake.cache.test.tck.service.exceptionhandling;
 
 import java.util.logging.LogManager;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.util.Logger;
+import org.codehaus.cake.util.attribute.AttributeMap;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;

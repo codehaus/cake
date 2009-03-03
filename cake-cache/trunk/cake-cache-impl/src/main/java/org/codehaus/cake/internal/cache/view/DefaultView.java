@@ -4,12 +4,12 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.List;
 
-import org.codehaus.cake.collection.view.View;
-import org.codehaus.cake.ops.Comparators;
-import org.codehaus.cake.ops.ObjectOps;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Procedure;
-import org.codehaus.cake.ops.Ops.Reducer;
+import org.codehaus.cake.util.collection.View;
+import org.codehaus.cake.util.ops.Comparators;
+import org.codehaus.cake.util.ops.ObjectOps;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Procedure;
+import org.codehaus.cake.util.ops.Ops.Reducer;
 
 @SuppressWarnings("unchecked")
 public class DefaultView<T> extends AbstractView implements View<T> {

@@ -5,13 +5,13 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheWriter;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite.LazyOp;
-import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.util.Pair;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.ops.Predicates;
+import org.codehaus.cake.util.ops.Ops.Op;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

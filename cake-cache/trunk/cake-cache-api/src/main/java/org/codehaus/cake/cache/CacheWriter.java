@@ -15,13 +15,13 @@
  */
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.ObjectAttribute;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.service.ContainerAlreadyShutdownException;
+import org.codehaus.cake.service.ContainerShutdownException;
 import org.codehaus.cake.util.Pair;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.ObjectAttribute;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
  * This service can be used to create, update, or delete entries from the cache.
@@ -64,7 +64,7 @@ public interface CacheWriter<K, V, R> {
      *             if the class of the specified key or value prevents it from being stored in this cache.
      * @throws IllegalArgumentException
      *             if some aspect of this key or value prevents it from being stored in this cache.
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws NullPointerException
      *             if the specified key or value is <tt>null</tt>.
@@ -84,12 +84,33 @@ public interface CacheWriter<K, V, R> {
      *     return cache.get(key);
      * </pre>
      * 
-     * except that the action is performed atomically.
+     * except that the action is performed atomically. If no value is currently associated with the specified key,
+     * <code>null</code> is passed to the specified predicate
      * 
      * @param condition
+     *            the predicate used for evaluating, based on the existing entry, whether or not a new entry should be
+     *            inserted
      * @param key
+     *            key with which the specified value is to be associated.
      * @param value
-     * @return
+     *            value to be associated with the specified key.
+     * 
+     * @throws ClassCastException
+     *             if the class of the specified key or value prevents it from being stored in this map
+     * @throws IllegalArgumentException
+     *             if some property of the specified key or value prevents it from being stored in this cache
+     * @throws NullPointerException
+     *             if the specified key or value is null
+     * @throws ContainerShutdownException
+     *             if the cache has been shutdown
+     * @throws SecurityException
+     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation
+     *             of entries.
+     * @throws UnsupportedOperationException
+     *             if the <tt>put</tt> operation is not supported by this map, for example, if the writer has been
+     *             optained from a {@link Cache#filter() filtered cache}.
+     * 
+     * @return the previous value
      */
     R putIf(Predicate<CacheEntry<K, V>> condition, K key, V value);
 
@@ -138,7 +159,8 @@ public interface CacheWriter<K, V, R> {
      *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation
      *             of entries.
      * @throws UnsupportedOperationException
-     *             if the <tt>put</tt> operation is not supported by this map
+     *             if the <tt>put</tt> operation is not supported by this map, for example, if the writer has been
+     *             optained from a {@link Cache#filter() filtered cache}.
      * @see java.util.ConcurrentMap#putIfAbsent(Object, Object)
      */
     R putIfAbsent(K key, V value);
@@ -217,7 +239,7 @@ public interface CacheWriter<K, V, R> {
      *         mapping for the specified <tt>key</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported by this cache
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional)
@@ -245,7 +267,7 @@ public interface CacheWriter<K, V, R> {
      * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key or value is of an inappropriate type for this cache (optional)
@@ -275,7 +297,7 @@ public interface CacheWriter<K, V, R> {
      *         key.
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported by this cache
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional)
@@ -302,7 +324,7 @@ public interface CacheWriter<K, V, R> {
      * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>update</tt> operation is not supported by this cache
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key or value is of an inappropriate type for this cache (optional)
@@ -315,9 +337,10 @@ public interface CacheWriter<K, V, R> {
      * Replace the entry for the specified key only if it is currently mapped to some value. Acts as
      * 
      * <pre>
-     *  if ((cache.containsKey(key)) {
+     * if ((cache.containsKey(key)) {
      *     return cache.put(key, value, attributes);
-     * } else return null;
+     * } 
+     * return null;
      * </pre>
      * 
      * except that the action is performed atomically.
@@ -331,7 +354,7 @@ public interface CacheWriter<K, V, R> {
      * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>update</tt> operation is not supported by this cache
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key or value is of an inappropriate type for this cache (optional)
@@ -341,7 +364,7 @@ public interface CacheWriter<K, V, R> {
     R replace(K key, V value, AttributeMap attributes);
 
     /**
-     * Replace entry for key only if currently mapped to given value. Acts as
+     * Replace the entry for the specified key only if it is currently mapped to the given value. Acts as
      * 
      * <pre>
      *  
@@ -361,7 +384,7 @@ public interface CacheWriter<K, V, R> {
      * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>update</tt> operation is not supported by this cache
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key or any of the values are of an inappropriate type for this cache (optional)
@@ -374,10 +397,10 @@ public interface CacheWriter<K, V, R> {
      * Replace entry for key only if currently mapped to given value. Acts as
      * 
      * <pre>
-     *  
-     *  if ((cache.containsKey(key) &amp;&amp; cache.get(key).equals(oldValue)) {
+     * if ((cache.containsKey(key) &amp;&amp; cache.get(key).equals(oldValue)) {
      *     return cache.put(key, newValue, attributes);
-     * } else return null;
+     * }
+     * else return null;
      * </pre>
      * 
      * except that the action is performed atomically.
@@ -393,7 +416,7 @@ public interface CacheWriter<K, V, R> {
      * @return the previous value associated with the specified key if the value was removed, otherwise <tt>null</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>update</tt> operation is not supported by this cache.
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key or any of the values are of an inappropriate type for this cache (optional)

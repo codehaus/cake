@@ -17,7 +17,6 @@ package org.codehaus.cake.cache.policy;
 
 import static org.junit.Assert.assertEquals;
 
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.junit.Before;
 import org.junit.Test;
 

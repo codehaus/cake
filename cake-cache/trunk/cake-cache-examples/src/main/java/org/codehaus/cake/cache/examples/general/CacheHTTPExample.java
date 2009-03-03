@@ -7,11 +7,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public class CacheHTTPExample {
 

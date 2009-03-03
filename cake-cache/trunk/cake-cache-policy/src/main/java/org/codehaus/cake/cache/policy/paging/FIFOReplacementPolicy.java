@@ -16,7 +16,7 @@
 package org.codehaus.cake.cache.policy.paging;
 
 import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.cache.policy.PolicyContext;
 
 /**
  * A First In, First Out (FIFO) based replacement policy.

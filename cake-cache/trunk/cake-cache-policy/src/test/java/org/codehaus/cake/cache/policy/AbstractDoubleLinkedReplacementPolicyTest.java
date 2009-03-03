@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
 
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.internal.cache.policy.FakePolicyContext;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class AbstractDoubleLinkedReplacementPolicyTest extends AbstractPolicyTes
 
     @Before
     public void before() {
-        tp = new TP(new Policies.FakePolicyContext<Integer>(Integer.class));
+        tp = new TP(new FakePolicyContext<Integer>(Integer.class));
         policy = tp;
         // r = new Random(1243214);
         matching = new LinkedList<Integer>();
@@ -71,7 +71,7 @@ public class AbstractDoubleLinkedReplacementPolicyTest extends AbstractPolicyTes
 
     @Test
     public void clear() {
-        TP tp = new TP(new Policies.FakePolicyContext<Integer>(Integer.class));
+        TP tp = new TP(new FakePolicyContext<Integer>(Integer.class));
         populate();
         tp.clear();
         assertNull(tp.getFirst());

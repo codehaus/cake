@@ -25,8 +25,8 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.cache.test.tck.service.management.AbstractManagementTest;
 import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.ops.PrimitiveOps;
 import org.codehaus.cake.service.test.tck.RequireService;
+import org.codehaus.cake.util.ops.PrimitiveOps;
 import org.junit.Before;
 import org.junit.Test;
 

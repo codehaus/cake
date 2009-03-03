@@ -15,14 +15,14 @@
  */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
-import static org.codehaus.cake.attribute.Attributes.from;
+import static org.codehaus.cake.util.attribute.Attributes.from;
 
 import java.util.Arrays;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.ObjectAttribute;
 import org.junit.Test;
 
 public class LoadAllIterableForced extends AbstractCacheTCKTest {

@@ -2,8 +2,8 @@ package org.codehaus.cake.internal.cache.processor.defaults;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class DefaultRemoveRequest<K, V> implements RemoveEntryRequest<K, V> {
 

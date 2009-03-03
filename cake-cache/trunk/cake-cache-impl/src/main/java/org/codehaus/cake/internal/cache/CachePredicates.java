@@ -1,7 +1,7 @@
 package org.codehaus.cake.internal.cache;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class CachePredicates {
 

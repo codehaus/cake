@@ -15,9 +15,9 @@ import org.codehaus.cake.internal.service.configuration.ConfigurationService;
 import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedObject;
 import org.codehaus.cake.management.ManagedOperation;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ExportAsService;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
  * This class wraps CacheEvictionService as a CacheEvictionMXBean.
@@ -29,7 +29,7 @@ import org.codehaus.cake.service.ServiceFactory;
  */
 @ManagedObject(defaultValue = "MemoryStore", description = "MemoryStore attributes and operations")
 @ExportAsService(MemoryStoreService.class)
-public class ExportedMemoryStoreService<K, V> implements ServiceFactory<ExportedMemoryStoreService<K, V>>,
+public class ExportedMemoryStoreService<K, V> implements ServiceProvider<ExportedMemoryStoreService<K, V>>,
         MemoryStoreService<K, V>, MemoryStoreMXBean {
 
     /** The configuration service. */
@@ -95,7 +95,7 @@ public class ExportedMemoryStoreService<K, V> implements ServiceFactory<Exported
     }
 
     public ExportedMemoryStoreService<K, V> lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExportedMemoryStoreService<K, V>> context) {
+            org.codehaus.cake.service.ServiceProvider.Context<ExportedMemoryStoreService<K, V>> context) {
         Predicate p = context.getAttributes().get(InternalCacheAttributes.CACHE_FILTER);
         return p == null ? this : new ExportedMemoryStoreService<K, V>(this, p);
     }

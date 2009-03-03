@@ -15,10 +15,11 @@
  */
 package org.codehaus.cake.cache;
 
-import static org.codehaus.cake.internal.attribute.AttributeHelper.eq;
+import static org.codehaus.cake.internal.util.attribute.AttributeHelper.eq;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,30 +30,30 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.ByteAttribute;
-import org.codehaus.cake.attribute.CharAttribute;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.ShortAttribute;
-import org.codehaus.cake.collection.view.MapView;
-import org.codehaus.cake.collection.view.View;
-import org.codehaus.cake.collection.view.Views;
 import org.codehaus.cake.internal.util.CollectionUtils;
-import org.codehaus.cake.ops.Ops.BinaryPredicate;
-import org.codehaus.cake.ops.Ops.BytePredicate;
-import org.codehaus.cake.ops.Ops.CharPredicate;
-import org.codehaus.cake.ops.Ops.DoublePredicate;
-import org.codehaus.cake.ops.Ops.FloatPredicate;
-import org.codehaus.cake.ops.Ops.IntPredicate;
-import org.codehaus.cake.ops.Ops.LongPredicate;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Ops.ShortPredicate;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.ByteAttribute;
+import org.codehaus.cake.util.attribute.CharAttribute;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.FloatAttribute;
+import org.codehaus.cake.util.attribute.IntAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.ShortAttribute;
+import org.codehaus.cake.util.collection.MapView;
+import org.codehaus.cake.util.collection.View;
+import org.codehaus.cake.util.collection.Views;
+import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
+import org.codehaus.cake.util.ops.Ops.BytePredicate;
+import org.codehaus.cake.util.ops.Ops.CharPredicate;
+import org.codehaus.cake.util.ops.Ops.DoublePredicate;
+import org.codehaus.cake.util.ops.Ops.FloatPredicate;
+import org.codehaus.cake.util.ops.Ops.IntPredicate;
+import org.codehaus.cake.util.ops.Ops.LongPredicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.ShortPredicate;
 
 /**
  * Various Factory and utility methods.
@@ -62,6 +63,21 @@ import org.codehaus.cake.ops.Ops.ShortPredicate;
  */
 @SuppressWarnings("unchecked")
 public final class Caches {
+
+    public static void main(String[] args) {
+        Cache<String, Person> c = null;
+        Map<String, Person> m = c.getAll(Arrays.asList("Joe", "Peter", "Hannah"));
+//        c.getAll(Arrays.asList("Joe", "Peter", "Hannah")).values().reduce(new Reducer<Person>() {
+//            public Person op(Person a, Person b) {
+//                return a.age() > b.age() ? a : b;
+//            }
+//        }, null);
+
+    }
+
+    static interface Person {
+        int age();
+    }
 
     /**
      * The empty cache (immutable). This cache is serializable.
@@ -202,13 +218,13 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public CacheView<K, V> getAll(Iterable<? extends K> keys) {
+        public Map<K, V> getAll(Iterable<? extends K> keys) {
             CollectionUtils.checkCollectionForNulls(keys);
             Map<K, V> result = new HashMap<K, V>();
             for (K key : keys) {
                 result.put(key, null);
             }
-            return null;
+            return result;
         }
 
         /** {@inheritDoc} */

@@ -15,9 +15,9 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.attribute.generator.DefaultAttributeConfiguration;
+import org.codehaus.cake.util.attribute.Attribute;
 
 public class CacheAttributeMapConfiguration extends DefaultAttributeConfiguration {
 

@@ -2,15 +2,15 @@ package org.codehaus.cake.internal.cache.service.crud;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheBatchWriter;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.ops.Ops.Op;
 
 public class DefaultCrudBatchWriter<K, V, R> implements CacheBatchWriter<K, V, R> {
 

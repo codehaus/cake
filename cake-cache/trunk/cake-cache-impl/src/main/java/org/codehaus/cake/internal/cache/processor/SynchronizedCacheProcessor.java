@@ -5,13 +5,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheView;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
@@ -27,8 +24,11 @@ import org.codehaus.cake.internal.cache.view.query.HashEntryArrayProcessor;
 import org.codehaus.cake.internal.cache.view.util.QueryStack;
 import org.codehaus.cake.internal.service.RunState;
 import org.codehaus.cake.internal.util.ArrayUtils;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
     private final MemoryStore<K, V> memoryStore;
@@ -94,7 +94,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
         return extractor.op(entry);
     }
 
-    public <T> CacheView<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> keys,
+    public <T> Map<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> keys,
             Op<CacheEntry<K, V>, T> extractor) {
         if (keys == null) {
             throw new NullPointerException("keys is null");
@@ -107,7 +107,7 @@ public class SynchronizedCacheProcessor<K, V> implements CacheProcessor<K, V> {
                 result.put(key, get(selector, key, Attributes.EMPTY_ATTRIBUTE_MAP, extractor));
             }
         }
-        return null;
+        return result;
     }
 
     public void process(AddEntriesRequest<K, V> r) {

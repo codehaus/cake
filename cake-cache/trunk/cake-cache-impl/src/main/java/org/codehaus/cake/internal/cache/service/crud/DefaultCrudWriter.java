@@ -1,6 +1,5 @@
 package org.codehaus.cake.internal.cache.service.crud;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheWriter;
@@ -8,9 +7,10 @@ import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.util.Pair;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class DefaultCrudWriter<K, V, R> extends AbstractCrudWriter<K, V, R> {
 

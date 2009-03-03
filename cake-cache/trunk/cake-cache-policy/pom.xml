@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.cake.cache</groupId>
     <artifactId>cake-cache-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cake-cache-policy</artifactId>
@@ -27,20 +27,20 @@
   <description>This library contain a number of replacement policies</description>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake.attributes</groupId>
-      <artifactId>cake-attributes</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <groupId>org.codehaus.cake.util</groupId>
+      <artifactId>cake-util-attribute</artifactId>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.util</groupId>
       <artifactId>cake-util</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

@@ -39,7 +39,7 @@ public class GetAll extends AbstractCacheTCKTest {
     @Test
     public void getAll() {
         c = newCache(4);
-        Map<Integer, String> map = c.getAll(asList(M1.getKey(), M5.getKey(), M4.getKey())).keysValues().toMap();
+        Map<Integer, String> map = c.getAll(asList(M1.getKey(), M5.getKey(), M4.getKey()));
         assertEquals(3, map.size());
         assertEquals(M1.getValue(), map.get(M1.getKey()));
         assertTrue(map.entrySet().contains(M1));

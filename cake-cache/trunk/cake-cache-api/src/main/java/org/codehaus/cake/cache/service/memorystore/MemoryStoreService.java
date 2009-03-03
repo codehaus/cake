@@ -158,15 +158,16 @@ public interface MemoryStoreService<K, V> {
 
     /**
      * If the specified size is <tt>positive or 0</tt> this method will keeps evicting entries until the size of the
-     * cache is equal to the specified size. If the specified size is greater then the current size of the cache no
-     * action is taken.
+     * cache is equal to the specified size. If the specified size is equals to or greater then the current size of the
+     * cache no action is taken.
      * <p>
      * If the specified size is negative this method will evict the number of entries specified. For example, if -10 is
      * specified then 10 entries will be evicted.
      * <p>
-     * The cache will use the replacement policy set using
-     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy)}. If no policy is
-     * set, the cache is free to choose any other way to determine which elements to remove.
+     * If the memory store
+     * {@link MemoryStoreConfiguration#setPolicy(org.codehaus.cake.cache.policy.ReplacementPolicy) uses a replacement policy}
+     * the elements will be removed accordingly to the policy. If no policy has been configured, the cache is free to
+     * choose any other way to determine which elements to remove.
      * 
      * @param size
      *            if positive of 0, the size to the trim the cache down to, otherwise the number of elements to remove
@@ -175,7 +176,7 @@ public interface MemoryStoreService<K, V> {
 
     /**
      * Works analogues to {@link #trimToSize(int)} except that specified comparator will choose the ordering among the
-     * entries. This is basically equivalent to
+     * entries. This is equivalent to
      * 
      * <pre>
      * Cache&lt;K, V&gt; cache = some cache;
@@ -185,8 +186,10 @@ public interface MemoryStoreService<K, V> {
      *     c.remove(entries[i].getKey());
      * </pre>
      * 
-     * only a lot more efficient. However, all entries in the cache needs to be sorted accordingly to the specified
-     * comparator. So either the size of the cache should be small, or this operation should be invoked infrequently.
+     * except that is it atomic.
+     * <p>
+     * However, all entries in the cache needs to be sorted accordingly to the specified comparator. So either the size
+     * of the cache must be small, or this operation should be invoked infrequently.
      * <p>
      * The following snippet will trim the cache downto 70 % of the current size, removing those entries that was
      * created earliest.
@@ -200,22 +203,21 @@ public interface MemoryStoreService<K, V> {
      * @param size
      *            if positive or 0, the size to the trim the cache down to, otherwise the number of elements to remove
      * @param comparator
-     *            used to determind order among entries
+     *            used to determine in which order entries should be evicted
      */
     void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator);
 
     /**
      * If the specified volume is <tt>positive or 0</tt> this method will keeps evicting entries until the volume of
-     * the cache is equal to the specified size. If the specified volume is greater then the current volume of the cache
-     * no action is taken.
+     * the cache is equal to the specified volume. If the specified volume is equal to or greater then the current
+     * volume of the cache no action is taken.
      * <p>
      * If the specified volume is negative this method will evict enough entries to make sure the volume of the cache is
-     * at least reduced with the specified volume.
+     * at least reduced to the specified volume.
      * <p>
-     * This method does not gurantuee that the volume will be exact size as specified in this method because , only that
-     * it will not be greater. Consider, for example, a cache with two elements each of size 2, totalling a volume of 4.
-     * If the cache is asked to trim the volume to 3, the closest it can to is to remove 1 element reducing the volume
-     * of the cache to 2.
+     * This method does not gurantuee that the volume will be exact size as specified in this method because. Consider,
+     * for example, a cache with two elements each of size 2, totalling a volume of 4. If the cache is asked to trim the
+     * volume to 3, the closest it can to is to remove 1 element reducing the volume of the cache to 2.
      * 
      * @param volume
      *            if positive or 0, the maximum volume of the cache after this method returns, otherwise the minimum
@@ -227,8 +229,9 @@ public interface MemoryStoreService<K, V> {
      * Works analogues to {@link #trimToVolume(long)} except that specified comparator will choose the ordering among
      * the entries.
      * <p>
-     * For example the following snippet will trim the cache downto 50 % of the current size, removing those entries
-     * that are less costly to refetch.
+     * Assuming the cache is configured to keep track of the {@link CacheEntry#COST} attribute. The following example
+     * will trim the volume of the cache downto 50 % of the current volume, removing those entries that are less costly
+     * to refetch.
      * 
      * <pre>
      * Cache&lt;?, ?&gt; c = someCache;
@@ -236,15 +239,12 @@ public interface MemoryStoreService<K, V> {
      * mss.trimToVolume((long) (mss.getVolume() * 0.5), CacheEntry.ENTRY_COST);
      * </pre>
      * 
-     * The example assumes that the cache is configured to use the {@link CacheEntry#COST} attribute.
-     * 
      * @param volume
      *            if positive or 0, the maximum volume of the cache after this method returns, otherwise the minimum
      *            amount that the caches volume should be reduced with
      * 
-     * 
      * @param comparator
-     *            used to determine order among entries
+     *            used to determine in which order entries should be evicted
      */
     void trimToVolume(long volume, Comparator<? extends CacheEntry<K, V>> comparator);
 }

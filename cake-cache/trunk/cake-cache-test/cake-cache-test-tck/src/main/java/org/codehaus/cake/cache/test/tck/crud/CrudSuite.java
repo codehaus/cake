@@ -2,21 +2,21 @@ package org.codehaus.cake.cache.test.tck.crud;
 
 import static org.junit.Assert.assertEquals;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheBatchWriter;
 import org.codehaus.cake.cache.CacheWriter;
 import org.codehaus.cake.cache.test.tck.core.collectionviews.Generators;
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.test.tck.ServiceSuite;
 import org.codehaus.cake.util.Pair;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.ops.Ops.Op;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(ServiceSuite.class)
-@Suite.SuiteClasses( { Reader.class, ReaderNPE.class, WriterBatchNPE.class, WriterNPE.class, WriterPutIfAbsent.class })
+@Suite.SuiteClasses( {WriterBatchNPE.class, WriterNPE.class, WriterPutIfAbsent.class })
 public class CrudSuite {
    
 //    public static enum CrudReadExtractors {

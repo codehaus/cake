@@ -1,11 +1,6 @@
 package org.codehaus.cake.cache.test.tck.selection;
 
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.cache.test.util.AtrStubs;
-import org.codehaus.cake.ops.Predicates;
-import org.junit.Test;
 
 public class SelectedCrud extends AbstractCacheTCKTest {
 

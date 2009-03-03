@@ -15,8 +15,7 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
-import org.codehaus.cake.cache.policy.spi.PolicyContext.ObjectAttachment;
+import org.codehaus.cake.cache.policy.PolicyContext.ObjectAttachment;
 
 /**
  * An abstract class that can be used to implements a replacement policy that relies on a double linked list of

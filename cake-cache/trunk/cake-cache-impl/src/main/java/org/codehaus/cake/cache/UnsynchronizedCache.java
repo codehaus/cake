@@ -12,8 +12,8 @@ import org.codehaus.cake.internal.cache.service.memorystore.views.Unsynchronized
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.UnsynchronizedRunState;
 import org.codehaus.cake.internal.service.configuration.SynchronizedConfigurationService;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
  * An <tt>unsynchronized</tt> {@link Cache} implementation.

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
-import org.codehaus.cake.ops.Ops.Generator;
+import org.codehaus.cake.util.ops.Ops.Generator;
 import org.junit.Test;
 
 /**

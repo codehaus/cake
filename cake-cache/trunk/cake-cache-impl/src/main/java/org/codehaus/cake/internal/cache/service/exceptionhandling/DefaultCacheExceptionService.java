@@ -15,7 +15,6 @@
  */
 package org.codehaus.cake.internal.cache.service.exceptionhandling;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.internal.service.Composer;
@@ -25,6 +24,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.exceptionhandling.ExceptionContext;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Logger;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
  * An exception service available as an internal service at runtime.

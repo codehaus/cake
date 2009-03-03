@@ -17,9 +17,9 @@ package org.codehaus.cake.cache.policy.paging;
 
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.HITS;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.cache.policy.PolicyContext;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 /**
  * A Most Frequently Used (MFU) replacement policy.

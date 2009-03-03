@@ -1,36 +1,26 @@
 package org.codehaus.cake.cache.test.tck.selection;
 
-import static org.codehaus.cake.cache.test.util.AtrStubs.B_3;
-import static org.codehaus.cake.cache.test.util.AtrStubs.B_FALSE;
-import static org.codehaus.cake.cache.test.util.AtrStubs.C_1;
-import static org.codehaus.cake.cache.test.util.AtrStubs.D_2;
-import static org.codehaus.cake.cache.test.util.AtrStubs.F_2;
-import static org.codehaus.cake.cache.test.util.AtrStubs.I_1;
-import static org.codehaus.cake.cache.test.util.AtrStubs.I_3;
-import static org.codehaus.cake.cache.test.util.AtrStubs.L_3;
-import static org.codehaus.cake.cache.test.util.AtrStubs.O_2;
-import static org.codehaus.cake.cache.test.util.AtrStubs.S_2;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.PrimitivePredicates;
-import org.codehaus.cake.ops.Ops.BinaryPredicate;
-import org.codehaus.cake.ops.Ops.BytePredicate;
-import org.codehaus.cake.ops.Ops.CharPredicate;
-import org.codehaus.cake.ops.Ops.DoublePredicate;
-import org.codehaus.cake.ops.Ops.FloatPredicate;
-import org.codehaus.cake.ops.Ops.IntPredicate;
-import org.codehaus.cake.ops.Ops.LongPredicate;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Ops.ShortPredicate;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.ops.Predicates;
+import org.codehaus.cake.util.ops.PrimitivePredicates;
+import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
+import org.codehaus.cake.util.ops.Ops.BytePredicate;
+import org.codehaus.cake.util.ops.Ops.CharPredicate;
+import org.codehaus.cake.util.ops.Ops.DoublePredicate;
+import org.codehaus.cake.util.ops.Ops.FloatPredicate;
+import org.codehaus.cake.util.ops.Ops.IntPredicate;
+import org.codehaus.cake.util.ops.Ops.LongPredicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.ShortPredicate;
 
+import static org.codehaus.cake.util.attribute.AtrStubs.*;
 public enum SelectedCacheType {
     ObjectSelection(O_2) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {

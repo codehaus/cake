@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.CacheBatchWriter;
 import org.codehaus.cake.test.util.CollectionTestUtil;
+import org.codehaus.cake.util.attribute.Attributes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

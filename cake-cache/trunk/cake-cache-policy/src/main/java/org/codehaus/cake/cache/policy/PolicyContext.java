@@ -1,7 +1,7 @@
-package org.codehaus.cake.cache.policy.spi;
+package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
+import org.codehaus.cake.util.attribute.Attribute;
 
 /**
  * A PolicyContext can be used by replacement policies to attach data to the elements of the cache.

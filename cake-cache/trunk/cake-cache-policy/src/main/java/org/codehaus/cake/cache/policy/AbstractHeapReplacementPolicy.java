@@ -17,8 +17,7 @@ package org.codehaus.cake.cache.policy;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
-import org.codehaus.cake.cache.policy.spi.PolicyContext.IntAttachment;
+import org.codehaus.cake.cache.policy.PolicyContext.IntAttachment;
 import org.codehaus.cake.internal.util.ArrayUtils;
 
 // TODO shouldn't implement Comparator, much better just to add a method that

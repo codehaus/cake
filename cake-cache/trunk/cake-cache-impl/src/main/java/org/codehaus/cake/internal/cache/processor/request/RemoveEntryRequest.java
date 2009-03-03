@@ -1,8 +1,8 @@
 package org.codehaus.cake.internal.cache.processor.request;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public interface RemoveEntryRequest<K, V> {
     K getKey();

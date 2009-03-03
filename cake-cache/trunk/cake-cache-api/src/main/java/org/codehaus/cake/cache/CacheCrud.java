@@ -15,10 +15,12 @@
  */
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 /**
+ * Rename to CrudWriterFactory
+ * 
  * A utility class to help creating readers and writers for a cache. An instance of this class is normally acquired by
  * calling {@link Cache#withCrud()}.
  */

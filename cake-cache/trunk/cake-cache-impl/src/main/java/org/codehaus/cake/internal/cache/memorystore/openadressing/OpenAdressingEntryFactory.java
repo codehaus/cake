@@ -1,6 +1,6 @@
 package org.codehaus.cake.internal.cache.memorystore.openadressing;
 
-import org.codehaus.cake.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 public interface OpenAdressingEntryFactory<K, V> {
     OpenAdressingEntry<K, V> create(K key, V value, AttributeMap params);
@@ -9,5 +9,5 @@ public interface OpenAdressingEntryFactory<K, V> {
 
     void initialize();
 
-    void access(OpenAdressingEntry<K, V> map);
+    void access(OpenAdressingEntry<K, V> entry);
 }

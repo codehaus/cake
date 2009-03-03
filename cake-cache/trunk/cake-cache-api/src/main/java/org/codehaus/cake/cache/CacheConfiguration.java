@@ -19,18 +19,18 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;
 import org.codehaus.cake.management.ManagementConfiguration;
-import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
 import org.codehaus.cake.service.exceptionhandling.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 
 /**
  * This class is the primary class used for representing the configuration of a {@link Cache}. All general-purpose
@@ -117,7 +117,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration {
 
     /** {@inheritDoc} */
     @Override
-    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, ServiceFactory<S> factory) {
+    public <S> CacheConfiguration<K, V> addService(Class<? extends S> key, ServiceProvider<S> factory) {
         super.addService(key, factory);
         return this;
     }

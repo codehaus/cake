@@ -3,9 +3,9 @@
  */
 package org.codehaus.cake.cache.examples.attributes;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public class CostDecoratedLoader<K, V> implements BlockingCacheLoader<K, V> {
     private final BlockingCacheLoader<K, V> realLoader;

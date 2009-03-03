@@ -4,27 +4,24 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.ObjectAttribute;
-import org.codehaus.cake.attribute.common.ComparableObjectAttribute;
-import org.codehaus.cake.collection.view.MapView;
-import org.codehaus.cake.collection.view.View;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.ComparableObjectAttribute;
+import org.codehaus.cake.util.attribute.ObjectAttribute;
+import org.codehaus.cake.util.collection.MapView;
+import org.codehaus.cake.util.collection.View;
 
 /**
- * A view of the mappings contained in a cache. The view is backed by the cache, so changes to the cache are reflected
- * in the view.
+ * A cache view is a virtual view of a collection of cache entries.
+ * <p>
+ * On way to obtain i The two primary ways for optaining a cache view it either by calling
+ * {@link Cache#getAll(Iterable)} or {@link Cache#view()}.
+ * <p>
  * 
- * A cache view consists of a stored query accessible as a virtual cache composed of the result set of a query. Unlike
- * ordinary tables (base tables) in a relational database, a view is not part of the physical schema: it is a dynamic,
- * virtual table computed or collated from data in the database. Changing the data in a table alters the data shown in
- * the view.
+ * 
  * 
  * A CacheView is normally obtained by calling {@link Cache#view()} can be used to extract data from a {@link Cache},
  * allowing both limiting the number of results (using {@link #setLimit(int)}) and specifying the order that the result
  * should be returned in.
- * 
- * This view does not support filtering of entries, any entries that needs to filtered should filtered using
- * {@link Cache#filter()} before obtaining a view.
  * 
  * For example, given a cache with {@link Integer} keys, we can create a list of all entries with odd keys by using:
  * 
@@ -43,8 +40,8 @@ import org.codehaus.cake.collection.view.View;
 public interface CacheView<K, V> {
 
     /**
-     * Creates a new view with all entries in this view. Is primarily used for extracting data from the view. The
-     * following example extract all entries in this view as a {@link List}:
+     * Creates a new view with all entries in this view. The following example extract all entries in this view as a
+     * {@link List}:
      * 
      * <pre>
      * List&lt;CacheEntry&lt;K, V&gt;&gt; list = cacheview.entries().toList();
@@ -55,7 +52,7 @@ public interface CacheView<K, V> {
     View<CacheEntry<K, V>> entries();
 
     /**
-     * Creates a new view with the key for each entry {@link CacheEntry#getKey()}. The following example extract all
+     * Creates a new view with the {@link CacheEntry#getKey() key} for each entry. The following example extract all
      * keys in this view as a {@link List}:
      * 
      * <pre>
@@ -67,7 +64,7 @@ public interface CacheView<K, V> {
     View<K> keys();
 
     /**
-     * Creates a new map view with the keys and values of this view. The following example extract all key value
+     * Creates a new map view with the keys and values of this view. The following example extract all key-value
      * mappings as a {@link Map}:
      * 
      * <pre>
@@ -79,7 +76,7 @@ public interface CacheView<K, V> {
     MapView<K, V> keysValues();
 
     /**
-     * Creates a new view where all elements are ordered accordingly to the specified comparator.
+     * Creates a new view where all entries are ordered accordingly to the specified comparator.
      * 
      * @param comparator
      *            the comparator
@@ -90,10 +87,10 @@ public interface CacheView<K, V> {
     CacheView<K, V> orderBy(Comparator<? super CacheEntry<K, V>> comparator);
 
     /**
-     * Creates a new view where all elements are ordered accordingly to the specified attribute and comparator.
+     * Creates a new view where all entries are ordered accordingly to the entries value of the specified attribute.
      * 
      * @param attribute
-     *            the attribute to compare against
+     *            the attribute used for sorting
      * @param comparator
      *            the comparator
      * @return the new view
@@ -101,7 +98,7 @@ public interface CacheView<K, V> {
     <T> CacheView<K, V> orderByAttribute(Attribute<T> attribute, Comparator<? extends T> comparator);
 
     /**
-     * Creates a new view where all elements are ordered accordingly to the natural order.
+     * Creates a new view where all elements are ordered accordingly to the natural order of the attribute.
      * 
      * @param attribute
      *            the attribute
@@ -190,9 +187,9 @@ public interface CacheView<K, V> {
     CacheView<K, V> orderByValuesMin();
 
     /**
-     * Creates a new view which limits the number of mappings in this view. If the mappings in this view are ordered,
-     * for example, if this view has been created by calling {@link #orderBy(Comparator)} on an existing view. The
-     * elements in the new view will keep this ordering.
+     * Creates a new cache view which limits the number of mappings in this view. If the mappings in this view are
+     * ordered, for example, if this view has been created by calling {@link #orderBy(Comparator)} on an existing view.
+     * The elements in the new view will keep this ordering.
      * <p>
      * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
      * 
@@ -210,20 +207,21 @@ public interface CacheView<K, V> {
     CacheView<K, V> setLimit(long limit);
 
     /**
-     * Returns an array containing all of the elements in this view. If this view is ordered, the array will keep the
-     * elements in the same order.
+     * Returns an array containing all of the entries in this view. If this view is ordered, the returned array will
+     * preserve this ordering.
      * <p>
      * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
      * method must allocate a new array even if this view is backed in any way by an array). The caller is thus free to
      * modify the returned array.
      * 
-     * @return an array containing all of the elements in this view
+     * @return an array containing all of the entries in this view
      */
     CacheEntry<K, V>[] toArray();
 
     /**
-     * Creates a new view with the value for each entry {@link CacheEntry#getValue()}. The following example extract
-     * all values in this view as a {@link List}:
+     * Creates a new view with the {@link CacheEntry#getValue() value} for each entry.
+     * <p>
+     * The following example extract all values in this view as a {@link List}:
      * 
      * <pre>
      * List&lt;V&gt; list = cacheview.values().toList();
@@ -232,5 +230,4 @@ public interface CacheView<K, V> {
      * @return the new view
      */
     View<V> values();
-
 }

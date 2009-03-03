@@ -17,9 +17,9 @@ package org.codehaus.cake.cache.test.tck.service.loading;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.ObjectAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.ObjectAttribute;
 import org.junit.Test;
 
 public class LoadAllMap extends AbstractCacheTCKTest {

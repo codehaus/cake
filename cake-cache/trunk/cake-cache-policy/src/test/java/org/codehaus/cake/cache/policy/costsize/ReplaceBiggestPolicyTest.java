@@ -19,11 +19,11 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.SIZE;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.cache.policy.Policies;
+import org.codehaus.cake.cache.policy.PolicyContext;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
+import org.codehaus.cake.util.attribute.AttributeMap;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;

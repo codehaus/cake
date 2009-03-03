@@ -38,10 +38,11 @@ public class Hits extends AbstractAttributeTest {
     @Test
     public void put() {
         put(M1);
-        assertAttribute(M1);
+        System.out.println(c.peekEntry(M1.getKey()));
+        assertPeekAttribute(M1);
         putAll(M1, M2);
-        assertAttribute(M1);
-        assertAttribute(M2);
+        assertPeekAttribute(M1);
+        assertPeekAttribute(M2);
     }
 
     /**
@@ -51,8 +52,8 @@ public class Hits extends AbstractAttributeTest {
     public void putOverride() {
         loader.withLoader(M1).addAttribute(atr, 4l);
         assertGet(M1);
-        assertAttribute(M1, 4l);
+        assertPeekAttribute(M1, 5l);
         put(M1);
-        assertAttribute(M1);
+        assertPeekAttribute(M1, 5L);
     }
 }

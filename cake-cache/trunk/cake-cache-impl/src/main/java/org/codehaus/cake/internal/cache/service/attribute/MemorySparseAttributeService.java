@@ -17,20 +17,22 @@ package org.codehaus.cake.internal.cache.service.attribute;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.internal.cache.policy.FakePolicyContext;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.CreateAction;
 import org.codehaus.cake.internal.cache.service.attribute.CacheAttributeMapConfiguration.ModifyAction;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.util.Clock;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public class MemorySparseAttributeService<K, V> implements InternalAttributeService<K, V> {
     private static final AtomicLong al = new AtomicLong();
@@ -43,14 +45,21 @@ public class MemorySparseAttributeService<K, V> implements InternalAttributeServ
     private final InternalExceptionService<?> ies;
     private final Map<Attribute, CacheAttributeMapConfiguration> map = new HashMap<Attribute, CacheAttributeMapConfiguration>();
 
-    private ReplacementPolicy<CacheEntry<K, V>> policy;
+    public final ReplacementPolicy<CacheEntry<K, V>> policy;
 
     public MemorySparseAttributeService(CacheConfiguration configuration, Clock clock, InternalExceptionService<?> ies) {
         this.clock = clock;
         this.ies = ies;
         Class<? extends ReplacementPolicy> pol = configuration.withMemoryStore().getPolicy();
         if (pol != null) {
-            policy = Policies.create(pol);
+            FakePolicyContext<?> fpc = new FakePolicyContext(Object.class);
+            this.policy = pol == null ? null : Policies.create(pol, fpc);
+            for (Attribute a : fpc.getSoftDependencies()) {
+                CacheAttributeMapConfiguration sac = CacheAttributeMapConfiguration.getPredefinedConfiguration(a);
+                map.put(a, sac);
+            }
+        } else {
+            this.policy = null;
         }
         for (Object o : configuration.getAllEntryAttributes()) {
             Attribute a = (Attribute) o;

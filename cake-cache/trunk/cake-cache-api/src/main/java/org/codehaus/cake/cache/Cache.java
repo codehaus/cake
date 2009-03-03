@@ -20,9 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.cake.crud.CrudReader;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.ContainerAlreadyShutdownException;
+import org.codehaus.cake.service.ContainerShutdownException;
 
 /**
  * A <tt>cache</tt> is a collection of data duplicating original values stored elsewhere or computed earlier, where
@@ -62,20 +61,20 @@ import org.codehaus.cake.service.ContainerAlreadyShutdownException;
  */
 public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<CacheEntry<K, V>> {
 
-// drop concurrentMap, can be optained by calling write()?
-//    get() <- CacheReader
-//    R get(K key, Op<CacheEntry<K,V>,R> mapper);
-//      <-basically
-//      getAttribute(K, Attribute A);
-//      getAttribute(K, AttributeMap AM A);
-//
-//    view() <-CacheView with defaultSettings
-//    withView() returns CacheViewFactory
-//
-//    write() <-CacheWriter (was CrudWriter)
-//    writeBatch() <-CacheWriter (was CrudWriter)
-//    withWriter() <-CacheWriterFactory();
-//    
+    // drop concurrentMap, can be optained by calling write()?
+    // get() <- CacheReader
+    // R get(K key, Op<CacheEntry<K,V>,R> mapper);
+    // <-basically
+    // getAttribute(K, Attribute A);
+    // getAttribute(K, AttributeMap AM A);
+    //
+    // view() <-CacheView with defaultSettings
+    // withView() returns CacheViewFactory
+    //
+    // write() <-CacheWriter (was CrudWriter)
+    // writeBatch() <-CacheWriter (was CrudWriter)
+    // withWriter() <-CacheWriterFactory();
+    //    
     /**
      * Removes all entries from this cache. This method will not attempt to remove entries that are stored externally,
      * for example, on disk. The cache will be empty after this call returns.
@@ -200,36 +199,35 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     V get(Object key);
 
     /**
-     * Attempts to retrieve all of the mappings for the specified collection of keys. The effect of this call is
-     * equivalent to that of calling {@link #get(Object)} on this cache once for each key in the specified collection.
-     * However, in some cases it can be much faster to load several cache items at once, for example, if the cache must
-     * fetch the values from a remote host.
+     * Attempts to retrieve a view of all of the mappings for the specified collection of keys. The effect of this call
+     * is equivalent to that of calling {@link #getEntry(Object)} once for each key in the specified collection and then
+     * extracting needed data for each entry. However, in most cases it faster to load several cache items at once, for
+     * example, if the cache must fetch the values from a remote host.
      * <p>
-     * If a value is not contained in the cache and the value cannot be loaded by any of the configured cache backends.
-     * The returned map will contain a mapping from the key to <tt>null</tt>.
+     * Usage:
+     * 
      * <p>
      * The behavior of this operation is unspecified if the specified collection is modified while the operation is in
      * progress.
      * 
      * @param keys
-     *            a collection of keys whose associated values are to be returned.
-     * @return a map with mappings from each key to the corresponding value, or to <tt>null</tt> if no mapping for
-     *         this key exists.
+     *            a iterable of keys whose associated values are to be returned.
+     * @return a virtual cache view with mappings from each key to the corresponding value, or to <tt>null</tt> if no
+     *         mapping for this key exists
      * @throws ClassCastException
      *             if any of the keys in the specified collection are of an inappropriate type for this cache
      *             (optional).
      * @throws NullPointerException
      *             if the specified collection of keys is <tt>null</tt> or the specified collection contains a
      *             <tt>null</tt>
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      */
-    CacheView<K, V> getAll(Iterable<? extends K> keys);
+    Map<K, V> getAll(Iterable<? extends K> keys);
 
+    //CacheView<K, V> getAllNew(Iterable<? extends K> keys);
     /**
-     * Works as {@link #get(Object)} with the following modification except that it returns an immutable
-     * {@link CacheEntry}.
-     * <p>
+     * Analogous to {@link #get(Object)} except that it returns an immutable {@link CacheEntry}.
      * 
      * @param key
      *            whose associated cache entry is to be returned.
@@ -239,7 +237,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the key is of an inappropriate type for this cache (optional).
      * @throws NullPointerException
      *             if the specified key is <tt>null</tt>
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      */
     CacheEntry<K, V> getEntry(K key);
@@ -247,8 +245,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     /**
      * Returns <tt>true</tt> if this cache contains no elements or the cache has been shutdown, otherwise
      * <tt>false</tt>.
-     * <p>
-     * If this cache has not been started a call to this method will automatically start it.
      * 
      * @return <tt>true</tt> if this cache contains no elements or has been shutdown, otherwise <tt>false</tt>
      */
@@ -262,11 +258,9 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * <tt>Iterator.remove</tt>, <tt>Set.remove</tt>, <tt>removeAll</tt>, <tt>retainAll</tt>, and
      * <tt>clear</tt> operations. It does not support the <tt>add</tt> or <tt>addAll</tt> operations.
      * <p>
-     * Unlike {@link Cache#get(Object)} no methods on the view checks if an element has expired. For example, iterating
-     * though key set the view might return a key for an expired element.
-     * <p>
      * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operation will throw an IllegalStateException.
+     * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operation will throw an
+     * {@link ContainerShutdownException}.
      * 
      * @return a set view of the keys contained in this cache
      */
@@ -276,10 +270,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * This method works analogues to the {@link #get(Object)} method with the following modifications.
      * <p>
      * It will not try to fetch missing items, through the use of cache loaders. It will only return a value if it
-     * actually exists in the cache. Furthermore, it will not effect any of the statistics gathered by the cache.
-     * <p>
-     * All implementations of this method should take care to assure that a call to peek does not have any observable
-     * side effects. For example, it should not modify some state in addition to returning a value.
+     * actually exists in the cache. All implementations of this method should take care to assure that a call to peek
+     * does not have any observable side effects. For example, modifying cache usage statistics.
      * <p>
      * If this cache has been shutdown this method returns <tt>null</tt>.
      * 
@@ -295,9 +287,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     V peek(K key);
 
     /**
-     * This method works analogues to the {@link #peek(Object)} method, returning a {@link CacheEntry} instead.
-     * <p>
-     * If this cache has been shutdown this method returns <tt>null</tt>.
+     * Analogous to {@link #get(Object)} except that it returns an immutable {@link CacheEntry}.
      * 
      * @param key
      *            key whose associated cache entry is to be returned.
@@ -316,9 +306,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * to contain a mapping for a key <tt>k</tt> if and only if {@link #containsKey(Object) c.containsKey(k)} would
      * return <tt>true</tt>.))
      * <p>
-     * It is often more effective to specify a {@link org.codehaus.cake.cache.service.loading.CacheLoader} that
-     * implicitly loads values then to explicitly add them to cache using the various <tt>put</tt> and <tt>putAll</tt>
-     * methods.
+     * In most usage scenarios is more effective to specify a cache loader that implicitly loads values, rather then
+     * explicitly adding them to cache using <tt>put</tt>.
      * 
      * @param key
      *            key with which the specified value is to be associated.
@@ -331,7 +320,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the class of the specified key or value prevents it from being stored in this cache.
      * @throws IllegalArgumentException
      *             if some aspect of this key or value prevents it from being stored in this cache.
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws NullPointerException
      *             if the specified key or value is <tt>null</tt>.
@@ -352,7 +341,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the class of a key or value in the specified map prevents it from being stored in this cache
      * @throws NullPointerException
      *             if the specified map is null or if specified map contains null keys or values
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws IllegalArgumentException
      *             if some property of a key or value in the specified map prevents it from being stored in this cache
@@ -408,7 +397,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *         <tt>key</tt>.
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported by this cache
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key is of an inappropriate type for this cache (optional)
@@ -437,7 +426,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @return <tt>true</tt> if the value was removed
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported by this cache
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws ClassCastException
      *             if the key or value is of an inappropriate type for this cache (optional)
@@ -468,7 +457,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the <tt>put</tt> operation is not supported by this cache
      * @throws ClassCastException
      *             if the class of the specified key or value prevents it from being stored in this cache
-     * @throws IllegalStateException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws NullPointerException
      *             if the specified key or value is null
@@ -503,7 +492,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the class of a specified key or value prevents it from being stored in this cache
      * @throws NullPointerException
      *             if a specified key or value is null
-     * @throws ContainerAlreadyShutdownException
+     * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws IllegalArgumentException
      *             if some property of a specified key or value prevents it from being stored in this cache
@@ -537,11 +526,14 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     Collection<V> values();
 
     /**
-     * Returns a new cache view for all the entries in this cache, respecting any predicates that have been set using
-     * {@link #filter()}. This view can be used for extracting entries from the cache and performing calculations with
-     * on data in the cache.
+     * Returns a new cache view for all of the entries currently in this cache, respecting any predicates that have been
+     * set using {@link #filter()}. The returned view can be used for extracting entries from the cache and performing
+     * calculations with the data in the cache.
+     * <p>
+     * The new view is backed by the cache, so changes to the cache are reflected in the view. Changing the data in a
+     * table alters the data shown in the view.
      * 
-     * @return the view
+     * @return a new view
      */
     CacheView<K, V> view();
 
@@ -553,7 +545,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     CacheServices<K, V> with();
 
     /**
-     * @return a factory that can be used to create various instances of {@link CrudReader}, {@link CacheWriter} and
+     * @return a factory that can be used to create various instances of {@link CacheWriter} and
      *         {@link CacheBatchWriter}
      */
     CacheCrud<K, V> withCrud();

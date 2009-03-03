@@ -17,14 +17,14 @@ package org.codehaus.cake.cache.service.loading;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheServices;
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
 import org.omg.CORBA.Object;
 
 /**

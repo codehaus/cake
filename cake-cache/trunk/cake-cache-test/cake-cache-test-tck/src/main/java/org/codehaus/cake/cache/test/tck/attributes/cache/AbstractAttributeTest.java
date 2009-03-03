@@ -17,8 +17,8 @@ package org.codehaus.cake.cache.test.tck.attributes.cache;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.util.attribute.Attribute;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,7 +70,15 @@ public abstract class AbstractAttributeTest extends AbstractCacheTCKTest {
     void assertAttribute(Map.Entry<Integer, String> entry) {
         assertAttribute(entry, atr.getDefault());
     }
+    void assertPeekAttribute(Map.Entry<Integer, String> entry) {
+        assertPeekAttribute(entry, atr.getDefault());
+    }
+    void assertPeekAttribute(Map.Entry<Integer, String> entry, Object value) {
+        assertTrue(c.peekEntry(entry.getKey()).contains(atr));
+        assertEquals(value, getAttribute(entry, atr));
 
+        assertEquals(value, getAttribute(peekEntry(entry), atr));
+    }
     void assertAttribute(Map.Entry<Integer, String> entry, Object value) {
         assertTrue(c.getEntry(entry.getKey()).contains(atr));
         assertEquals(value, getAttribute(entry, atr));

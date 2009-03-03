@@ -2,12 +2,12 @@ package org.codehaus.cake.internal.cache.processor.defaults;
 
 import java.util.List;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.util.Pair;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class DefaultCreateUpdateWithFactoryRequest<K, V> implements AddEntryRequest<K, V> {
     private AttributeMap attributes;

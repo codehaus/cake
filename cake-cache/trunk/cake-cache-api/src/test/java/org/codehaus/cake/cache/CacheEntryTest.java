@@ -26,10 +26,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.test.util.TestUtil;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.TimeInstanceAttribute;
 import org.junit.Test;
 
 public class CacheEntryTest {

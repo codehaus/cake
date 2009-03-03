@@ -12,9 +12,9 @@ import static org.junit.Assert.assertSame;
 
 import java.io.Serializable;
 
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.ops.ObjectOps;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.util.attribute.IntAttribute;
+import org.codehaus.cake.util.ops.ObjectOps;
+import org.codehaus.cake.util.ops.Ops.Op;
 import org.junit.Test;
 
 public class CacheDataExtractorTest {

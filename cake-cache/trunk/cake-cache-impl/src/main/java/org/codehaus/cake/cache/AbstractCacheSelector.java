@@ -1,23 +1,23 @@
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.ByteAttribute;
-import org.codehaus.cake.attribute.CharAttribute;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.ShortAttribute;
-import org.codehaus.cake.ops.Ops.BinaryPredicate;
-import org.codehaus.cake.ops.Ops.BytePredicate;
-import org.codehaus.cake.ops.Ops.CharPredicate;
-import org.codehaus.cake.ops.Ops.DoublePredicate;
-import org.codehaus.cake.ops.Ops.FloatPredicate;
-import org.codehaus.cake.ops.Ops.IntPredicate;
-import org.codehaus.cake.ops.Ops.LongPredicate;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Ops.ShortPredicate;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.ByteAttribute;
+import org.codehaus.cake.util.attribute.CharAttribute;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.FloatAttribute;
+import org.codehaus.cake.util.attribute.IntAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.ShortAttribute;
+import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
+import org.codehaus.cake.util.ops.Ops.BytePredicate;
+import org.codehaus.cake.util.ops.Ops.CharPredicate;
+import org.codehaus.cake.util.ops.Ops.DoublePredicate;
+import org.codehaus.cake.util.ops.Ops.FloatPredicate;
+import org.codehaus.cake.util.ops.Ops.IntPredicate;
+import org.codehaus.cake.util.ops.Ops.LongPredicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.ShortPredicate;
 
 /**
  * An abstract implementation of {@link CacheSelector} where only {@link CacheSelector#on(Predicate)} needs to be

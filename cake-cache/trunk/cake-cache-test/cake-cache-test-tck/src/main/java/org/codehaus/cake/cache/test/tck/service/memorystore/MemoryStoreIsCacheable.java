@@ -21,8 +21,8 @@ import java.util.Arrays;
 
 import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.PrimitiveOps;
+import org.codehaus.cake.util.ops.Predicates;
+import org.codehaus.cake.util.ops.PrimitiveOps;
 import org.junit.Test;
 
 public class MemoryStoreIsCacheable extends AbstractCacheTCKTest {

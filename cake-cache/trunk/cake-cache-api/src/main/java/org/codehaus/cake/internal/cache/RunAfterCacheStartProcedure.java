@@ -16,8 +16,8 @@
 package org.codehaus.cake.internal.cache;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 
 /**
  * Runs the specified procedure after the cache has started. Must be public to allow for introspection.

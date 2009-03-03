@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.cake.cache</groupId>
     <artifactId>cake-cache-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cake-cache-api</artifactId>
@@ -29,18 +29,23 @@
     <dependency>
       <groupId>org.codehaus.cake.service</groupId>
       <artifactId>cake-service-api</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
-        <dependency>
+    <dependency>
+      <groupId>org.codehaus.cake.util</groupId>
+      <artifactId>cake-util-collection</artifactId>
+      <version>0.3-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.cake.cache</groupId>
       <artifactId>cake-cache-policy</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
-      <version>0.2-SNAPSHOT</version>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

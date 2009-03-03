@@ -23,9 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
@@ -36,6 +33,9 @@ import org.codehaus.cake.cache.test.service.loading.TestLoader;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.codehaus.cake.test.util.TestUtil;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
 
 public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>, CacheConfiguration<Integer, String>> {
     public static final Map.Entry<Integer, String> M1 = CollectionTestUtil.M1;
@@ -196,7 +196,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         for (Map.Entry<Integer, String> entry : entries) {
             keys.add(entry.getKey());
         }
-        Map<Integer, String> map = c.getAll(keys).keysValues().toMap();
+        Map<Integer, String> map = c.getAll(keys);
         assertEquals(keys.size(), map.size());
         for (Map.Entry<Integer, String> entry : entries) {
             assertEquals(entry.getValue(), map.get(entry.getKey()));
@@ -331,7 +331,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         for (Map.Entry<Integer, String> e : entries) {
             keys.add(e.getKey());
         }
-        return c.getAll(keys).keysValues().toMap();
+        return c.getAll(keys);
     }
 
     protected CacheEntry<Integer, String> peekEntry(Map.Entry<Integer, String> e) {

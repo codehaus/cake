@@ -15,15 +15,16 @@
  */
 package org.codehaus.cake.cache;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.internal.cache.InternalDataExtractors;
-import org.codehaus.cake.ops.ObjectOps;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.ops.ObjectOps;
+import org.codehaus.cake.util.ops.Ops.Op;
 
 /**
  * A utility class that can ve used for creating transformers that extract data from {@link CacheEntry CacheEntries}.
  * 
  * TODO put in cache.util
+ * or add to Caches
  */
 public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>, T> {
     // // /CLOVER:OFF

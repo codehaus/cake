@@ -8,8 +8,8 @@ import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.service.configuration.ConfigurationService;
 import org.codehaus.cake.management.ManagedAttribute;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ExportAsService;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 @ExportAsService(MemoryStoreService.class)
 public class ExportedSynchronizedMemoryStoreService<K, V> extends ExportedMemoryStoreService<K, V> {
@@ -43,7 +43,7 @@ public class ExportedSynchronizedMemoryStoreService<K, V> extends ExportedMemory
     }
 
     public ExportedMemoryStoreService<K, V> lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<ExportedMemoryStoreService<K, V>> context) {
+            org.codehaus.cake.service.ServiceProvider.Context<ExportedMemoryStoreService<K, V>> context) {
         Predicate p = context.getAttributes().get(InternalCacheAttributes.CACHE_FILTER);
         return p == null ? this : new ExportedSynchronizedMemoryStoreService<K, V>(this, p);
     }

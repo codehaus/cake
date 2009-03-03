@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.internal.cache.service.attribute;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public interface CacheAttributeMapFactory<K, V> {
     MutableAttributeMap create(K key, V value, AttributeMap params, AttributeMap previous);

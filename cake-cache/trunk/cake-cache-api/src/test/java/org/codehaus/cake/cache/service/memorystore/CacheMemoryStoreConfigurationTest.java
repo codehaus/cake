@@ -24,8 +24,8 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
-import org.codehaus.cake.ops.Ops;
-import org.codehaus.cake.ops.Ops.Procedure;
+import org.codehaus.cake.util.ops.Ops;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 import org.junit.Test;
 
 public class CacheMemoryStoreConfigurationTest {

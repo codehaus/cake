@@ -15,12 +15,12 @@
  */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.PolicyContext;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -54,8 +54,8 @@ public class MemoryStoreReplacementPolicyAttributes extends AbstractCacheTCKTest
         put(M1);
         get(M1);
         get(M1);
-        assertEquals(3, getEntry(M1).get(CacheEntry.HITS));
-        assertFalse(getEntry(M1).attributes().contains(CacheEntry.HITS));
+        assertEquals(3, getEntry(M1).get(CacheEntry.HITS)); //Registered lazy
+        //assertFalse(getEntry(M1).attributes().contains(CacheEntry.HITS));
     }
 
     @Test

@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.cache.test.keys;
 
-import org.codehaus.cake.ops.Ops.Generator;
 import org.codehaus.cake.test.util.LoopHelpers;
+import org.codehaus.cake.util.ops.Ops.Generator;
 
 public class RandomKeyGenerator implements Generator<Integer> {
 

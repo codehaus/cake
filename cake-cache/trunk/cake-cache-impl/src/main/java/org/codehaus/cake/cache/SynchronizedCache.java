@@ -19,8 +19,8 @@ import org.codehaus.cake.internal.service.executor.DefaultForkJoinPool;
 import org.codehaus.cake.internal.service.executor.DefaultScheduledExecutorService;
 import org.codehaus.cake.internal.service.management.DefaultManagementService;
 import org.codehaus.cake.management.Manageable;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
  * A <tt>synchronized</tt> {@link Cache} implementation.

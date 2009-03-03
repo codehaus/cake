@@ -19,11 +19,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.ops.Ops.Predicate;
-import org.codehaus.cake.ops.Ops.Procedure;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 
 /**
  * Various Factory and utility methods.

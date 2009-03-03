@@ -3,10 +3,10 @@ package org.codehaus.cake.cache.test.tck.selection;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.Predicates;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.ops.Predicates;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

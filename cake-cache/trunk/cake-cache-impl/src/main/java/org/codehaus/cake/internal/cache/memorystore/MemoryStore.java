@@ -17,7 +17,6 @@ package org.codehaus.cake.internal.cache.memorystore;
 
 import java.util.Iterator;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -25,7 +24,8 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
  * MemoryStore is an in-memory store of data.

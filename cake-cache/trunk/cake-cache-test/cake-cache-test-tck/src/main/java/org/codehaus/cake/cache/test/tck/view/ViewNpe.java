@@ -4,8 +4,8 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.util.Comparator;
 
-import org.codehaus.cake.attribute.IntAttribute;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.util.attribute.IntAttribute;
 import org.junit.Test;
 
 public class ViewNpe extends AbstractCacheTCKTest {

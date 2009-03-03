@@ -15,11 +15,11 @@
  */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
-import org.codehaus.cake.attribute.LongAttribute;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.Ops.Op;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.ops.Ops.Op;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,10 +1,9 @@
 package org.codehaus.cake.cache.test.tck.attributes;
 
-import static org.codehaus.cake.cache.test.util.AtrStubs.I_2;
+import static org.codehaus.cake.util.attribute.AtrStubs.I_2;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
-
 public class PrimitiveAttributes  extends AbstractCacheTCKTest {
     @Test
     public void intAttribute() {

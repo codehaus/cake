@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.codehaus.cake.collection.view.View;
-import org.codehaus.cake.ops.CollectionOps;
-import org.codehaus.cake.ops.StringOps;
+import org.codehaus.cake.util.collection.Iterables;
+import org.codehaus.cake.util.collection.View;
+import org.codehaus.cake.util.ops.StringOps;
 
 public class ViewAsserts {
 
@@ -46,7 +46,7 @@ public class ViewAsserts {
         assertTrue(list.contains(v.any()));
         // apply (currently ignores any ordering)
         Queue<T> res = new ConcurrentLinkedQueue<T>();
-        v.apply(CollectionOps.offerToQueue(res));
+        v.apply(Iterables.offerToQueue(res));
         assertEquals(list.size(), res.size());
         assertEquals(new HashSet<T>(list), new HashSet<T>(res));
         //

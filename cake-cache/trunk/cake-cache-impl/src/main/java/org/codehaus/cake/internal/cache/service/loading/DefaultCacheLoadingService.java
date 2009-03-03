@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
@@ -32,14 +30,16 @@ import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.util.CollectionUtils;
 import org.codehaus.cake.management.ManagedObject;
 import org.codehaus.cake.management.ManagedOperation;
-import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.Predicate;
 import org.codehaus.cake.service.ExportAsService;
-import org.codehaus.cake.service.ServiceFactory;
+import org.codehaus.cake.service.ServiceProvider;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.ops.Predicates;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 @ManagedObject(defaultValue = "Loading", description = "Cache Loading attributes and operations")
 @ExportAsService(CacheLoadingService.class)
-public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoadingService<?, ?>>, CompositeService {
+public class DefaultCacheLoadingService<K, V> implements ServiceProvider<CacheLoadingService<?, ?>>, CompositeService {
 
     private final Collection<Object> childServices;
 
@@ -77,7 +77,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceFactory<CacheLoa
     }
 
     public CacheLoadingService<?, ?> lookup(
-            org.codehaus.cake.service.ServiceFactory.ServiceFactoryContext<CacheLoadingService<?, ?>> context) {
+            org.codehaus.cake.service.ServiceProvider.Context<CacheLoadingService<?, ?>> context) {
         Cache<K, V> cache = context.getAttributes().get(InternalCacheAttributes.CONTAINER);
         assert cache != null;
         if (context.getAttributes().get(CacheLoadingService.IS_FORCED)) {

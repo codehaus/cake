@@ -18,8 +18,8 @@ package org.codehaus.cake.cache.service.loading;
 import static org.codehaus.cake.cache.service.loading.CacheLoadingService.IS_FORCED;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.cake.attribute.BooleanAttribute;
 import org.codehaus.cake.test.util.TestUtil;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
 import org.junit.Test;
 
 public class CacheLoadingServiceTest {

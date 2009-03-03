@@ -19,8 +19,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {
 

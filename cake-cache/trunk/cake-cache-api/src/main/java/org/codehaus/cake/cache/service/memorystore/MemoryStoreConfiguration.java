@@ -15,15 +15,15 @@
  */
 package org.codehaus.cake.cache.service.memorystore;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
-import org.codehaus.cake.attribute.WithAttributes;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
-import org.codehaus.cake.ops.Ops;
-import org.codehaus.cake.ops.Ops.Procedure;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.WithAttributes;
+import org.codehaus.cake.util.ops.Ops;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 
 /**
  * Used for configuring the memory store of a cache prior to usage.

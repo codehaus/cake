@@ -5,10 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.Attributes;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
-import org.codehaus.cake.attribute.MutableAttributeMap;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingMemoryStore;
@@ -27,8 +23,12 @@ import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedObject;
 import org.codehaus.cake.management.ManagedOperation;
-import org.codehaus.cake.ops.Predicates;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.Attributes;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.ops.Predicates;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 @ManagedObject(defaultValue = CacheMXBean.MANAGED_SERVICE_NAME, description = "General Cache attributes and operations")
 public abstract class AbstractCache<K, V> extends AbstractContainer implements Cache<K, V> {
@@ -117,7 +117,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
-    public CacheView<K, V> getAll(Iterable<? extends K> keys) {
+    public Map<K, V> getAll(Iterable<? extends K> keys) {
         return processor.getAll(filter, keys, CacheDataExtractor.ONLY_VALUE);
     }
 

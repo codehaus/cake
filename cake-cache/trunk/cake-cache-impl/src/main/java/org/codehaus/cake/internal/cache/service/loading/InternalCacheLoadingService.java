@@ -17,8 +17,8 @@ package org.codehaus.cake.internal.cache.service.loading;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.util.attribute.AttributeMap;
 
 public interface InternalCacheLoadingService<K, V> {
 

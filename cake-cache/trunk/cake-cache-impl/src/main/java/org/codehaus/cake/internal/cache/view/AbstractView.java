@@ -2,7 +2,7 @@ package org.codehaus.cake.internal.cache.view;
 
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.view.util.QueryStack;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class AbstractView {
     final Object command;

@@ -17,10 +17,10 @@ package org.codehaus.cake.internal.cache;
 
 import java.io.Serializable;
 
-import org.codehaus.cake.attribute.Attribute;
 import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.ops.Ops.Op;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.ops.Ops.Op;
 
 public class InternalDataExtractors {
     public static final Op EXTRACT_BOOLEAN = new InternalExtractIsNotNullOp();

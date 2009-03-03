@@ -2,10 +2,9 @@ package org.codehaus.cake.internal.cache.processor;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheView;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.ClearCacheRequest;
@@ -15,8 +14,9 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.view.AbstractView;
 import org.codehaus.cake.internal.cache.view.util.QueryStack;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public interface CacheProcessor<K, V> {
 
@@ -43,7 +43,7 @@ public interface CacheProcessor<K, V> {
 
     <T> T get(Predicate<CacheEntry<K, V>> selector, K key, AttributeMap attributes, Op<CacheEntry<K, V>, T> extractor);
 
-    <T> CacheView<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> key,
+    <T> Map<K, T> getAll(Predicate<CacheEntry<K, V>> selector, Iterable<? extends K> key,
             Op<CacheEntry<K, V>, T> extractor);
 
     // Iterable<K> getKeys(Predicate<CacheEntry<K, V>> predicate);

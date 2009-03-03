@@ -2,11 +2,11 @@ package org.codehaus.cake.internal.cache.processor.defaults;
 
 import java.util.List;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
-import org.codehaus.cake.ops.Ops.Op;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.ops.Ops.Op;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class DefaultCreateUpdateRequest<K, V> implements AddEntryRequest<K, V> {
     private final K key;

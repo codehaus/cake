@@ -17,24 +17,23 @@ package org.codehaus.cake.cache;
 
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.common.TimeInstanceAttribute;
 import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
 import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.internal.cache.CacheEntryAttributes;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.TimeInstanceAttribute;
 
 /**
- * A <tt>CacheEntry</tt> describes a value-key mapping extending {@link java.util.Map.Entry} with metadata. However,
- * this interface extends it with attribute->value pairs. Holding information such as creation time, access patterns,
- * size, cost etc.
+ * A <tt>CacheEntry</tt> describes a value-key mapping extending {@link java.util.Map.Entry} with metadata. Holding
+ * information such as creation time, access patterns, size, cost etc.
  * <p>
  * Per default the cache does not keep track of any attributes. Attributes that should be retained at runtime must first
- * be added using {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.attribute.Attribute...)} before
+ * be added using {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.util.attribute.Attribute...)} before
  * starting the cache.
  * 
- * For example, this snippet shows how to configure the cache to keep track of when an entry was created and when it was
+ * For example, this snippet shows how to configure the cache to keep track of when an entry was created a and when it was
  * last modified.
  * 
  * <pre>

@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.cake.attribute.AttributeMap;
-import org.codehaus.cake.attribute.DefaultAttributeMap;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.DefaultAttributeMap;
 
 public class DefaultAddAllRequest<K, V> implements AddEntriesRequest<K, V> {
 

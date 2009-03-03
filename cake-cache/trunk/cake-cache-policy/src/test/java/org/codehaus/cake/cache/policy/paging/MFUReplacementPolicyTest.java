@@ -19,10 +19,10 @@ import static org.codehaus.cake.internal.cache.CacheEntryAttributes.HITS;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-import org.codehaus.cake.attribute.AttributeMap;
 import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
+import org.codehaus.cake.util.attribute.AttributeMap;
 import org.junit.Before;
 import org.junit.Test;
 

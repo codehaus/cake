@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.junit.Test;
 
 public class SelectedClear extends AbstractCacheTCKTest {

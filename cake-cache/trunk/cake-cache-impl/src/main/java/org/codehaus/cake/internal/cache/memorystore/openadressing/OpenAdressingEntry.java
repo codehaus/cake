@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.codehaus.cake.attribute.Attribute;
-import org.codehaus.cake.attribute.BooleanAttribute;
-import org.codehaus.cake.attribute.ByteAttribute;
-import org.codehaus.cake.attribute.CharAttribute;
-import org.codehaus.cake.attribute.DoubleAttribute;
-import org.codehaus.cake.attribute.FloatAttribute;
-import org.codehaus.cake.attribute.IntAttribute;
-import org.codehaus.cake.attribute.LongAttribute;
-import org.codehaus.cake.attribute.ShortAttribute;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.util.attribute.Attribute;
+import org.codehaus.cake.util.attribute.BooleanAttribute;
+import org.codehaus.cake.util.attribute.ByteAttribute;
+import org.codehaus.cake.util.attribute.CharAttribute;
+import org.codehaus.cake.util.attribute.DoubleAttribute;
+import org.codehaus.cake.util.attribute.FloatAttribute;
+import org.codehaus.cake.util.attribute.IntAttribute;
+import org.codehaus.cake.util.attribute.LongAttribute;
+import org.codehaus.cake.util.attribute.ShortAttribute;
 
 public class OpenAdressingEntry<K, V> implements CacheEntry<K, V> {
 

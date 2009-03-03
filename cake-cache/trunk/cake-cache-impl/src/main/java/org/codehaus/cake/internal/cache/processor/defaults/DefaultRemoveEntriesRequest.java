@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
-import org.codehaus.cake.ops.Ops.Predicate;
+import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public class DefaultRemoveEntriesRequest<K, V> implements RemoveEntriesRequest<K, V> {
 

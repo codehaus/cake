@@ -15,8 +15,7 @@
  */
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.policy.spi.PolicyContext;
-import org.codehaus.cake.cache.policy.spi.PolicyContext.IntAttachment;
+import org.codehaus.cake.cache.policy.PolicyContext.IntAttachment;
 
 /**
  * An abstract implementation of a replacement policy that uses a list for ordering entries.

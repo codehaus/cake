@@ -5,8 +5,8 @@ import static org.codehaus.cake.test.util.TestUtil.dummy;
 import java.lang.reflect.Method;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.ops.Ops.Procedure;
 import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.util.ops.Ops.Procedure;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
