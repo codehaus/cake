@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.util.ops;
 
@@ -23,12 +23,9 @@ import org.codehaus.cake.internal.util.ops.InternalObjectPredicates;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.AllPredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.AndPredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.AnyPredicate;
-import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.FalsePredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.GreaterThenOrEqualPredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.GreaterThenPredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.IsEqualsPredicate;
-import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.IsNotNullFilter;
-import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.IsNullFilter;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.IsSamePredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.IsTypePredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.LessThenOrEqualPredicate;
@@ -36,7 +33,6 @@ import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.LessThenPred
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.MapAndEvaluatePredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.NotPredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.OrPredicate;
-import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.TruePredicate;
 import org.codehaus.cake.internal.util.ops.InternalObjectPredicates.XorPredicate;
 import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
@@ -190,7 +186,7 @@ public final class Predicates {
         for (Class<?> c : classes) {
             list.add(isTypeOf(c));
         }
-        return anyTrue(list);
+        return anyTrue((List) list);
     }
 
     /**
@@ -208,7 +204,7 @@ public final class Predicates {
         for (Class<?> c : classes) {
             list.add(isTypeOf(c));
         }
-        return anyTrue(list);
+        return anyTrue((List) list);
     }
 
     /**

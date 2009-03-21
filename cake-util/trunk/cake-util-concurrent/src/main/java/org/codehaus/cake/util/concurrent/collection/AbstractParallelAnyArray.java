@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.util.concurrent.ForkJoinPool;
+import org.codehaus.cake.util.ops.PrimitivePredicates;
 import org.codehaus.cake.util.ops.Ops.BinaryDoubleOp;
 import org.codehaus.cake.util.ops.Ops.BinaryDoublePredicate;
 import org.codehaus.cake.util.ops.Ops.BinaryLongOp;
@@ -1399,7 +1400,7 @@ public abstract class AbstractParallelAnyArray {
 
         public ParallelDoubleArrayWithFilter withFilter(DoublePredicate selector) {
             return new DFPap(ex, origin, fence, array,
-                             CommonOps.andPredicate(this.selector, selector));
+                          PrimitivePredicates.and(this.selector, selector));
         }
 
         public ParallelDoubleArrayWithFilter withIndexedFilter
@@ -1577,7 +1578,7 @@ public abstract class AbstractParallelAnyArray {
 
         public ParallelLongArrayWithFilter withFilter(LongPredicate selector) {
             return new LFPap(ex, origin, fence, array,
-                             CommonOps.andPredicate(this.selector, selector));
+                             PrimitivePredicates.and(this.selector, selector));
         }
 
         public ParallelLongArrayWithFilter withIndexedFilter

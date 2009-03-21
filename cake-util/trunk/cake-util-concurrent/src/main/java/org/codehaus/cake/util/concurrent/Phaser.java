@@ -6,11 +6,13 @@
 
 package org.codehaus.cake.util.concurrent;
 
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
+import java.lang.reflect.Field;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
+
 import sun.misc.Unsafe;
-import java.lang.reflect.*;
 
 /**
  * A reusable synchronization barrier, similar in functionality to a

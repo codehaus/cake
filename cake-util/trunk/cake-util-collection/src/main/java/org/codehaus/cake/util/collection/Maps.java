@@ -17,6 +17,13 @@ public class Maps {
     /** A mapper extracting the value part of a {@link Entry}. The mapper is Serializable. */
     public static final Op MAP_ENTRY_TO_VALUE_OP = new ValueFromMapEntry();
 
+    /**
+     * Returns a mapper that extracts the key of any {@link Entry} that will be parsed along to it.
+     * 
+     * @param <K>
+     * @param <V>
+     * @return the mapper
+     */
     public static <K, V> Op<Map.Entry<K, V>, K> mapEntryToKey() {
         return MAP_ENTRY_TO_KEY_OP;
     }
@@ -102,6 +109,19 @@ public class Maps {
         return m;
     }
 
+    /**
+     * Returns a new map with only those entries where the key is accepted by the specified predicate.
+     * 
+     * @param <K>
+     *            the type of keys in the map
+     * @param <V>
+     *            the type of values in the map
+     * @param map
+     *            the map to extract entries from
+     * @param predicate
+     *            the predicate to evaluate the key of each entry accordingly to
+     * @return a new map with only those entries where the key is accepted by the specified predicate
+     */
     public static <K, V> Map<K, V> filteredMapOnKeys(Map<K, V> map, Predicate<? super K> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");
@@ -117,6 +137,19 @@ public class Maps {
         return m;
     }
 
+    /**
+     * Returns a new map with only those entries where the value is accepted by the specified predicate.
+     * 
+     * @param <K>
+     *            the type of keys in the map
+     * @param <V>
+     *            the type of values in the map
+     * @param map
+     *            the map to extract entries from
+     * @param predicate
+     *            the predicate to evaluate the value of each entry accordingly to
+     * @return a new map with only those entries where the value is accepted by the specified predicate
+     */
     public static <K, V> Map<K, V> filteredMapOnValues(Map<K, V> map, Predicate<? super V> predicate) {
         if (map == null) {
             throw new NullPointerException("map is null");

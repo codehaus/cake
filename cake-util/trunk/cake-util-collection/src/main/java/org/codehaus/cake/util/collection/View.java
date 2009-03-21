@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008, 2009 Kasper Nielsen.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
 package org.codehaus.cake.util.collection;
 
 import java.math.BigDecimal;
@@ -121,26 +136,25 @@ public interface View<T> {
      */
     View<T> orderByMax();
 
-    
     /**
-     * Sorts the specified array of objects into ascending order, according to
-     * the <i>natural ordering</i> of its elements.  All elements in the array
-     * must implement the <tt>Comparable</tt> interface.  Furthermore, all
-     * elements in the array must be <i>mutually comparable</i> (that is,
-     * <tt>e1.compareTo(e2)</tt> must not throw a <tt>ClassCastException</tt>
-     * for any elements <tt>e1</tt> and <tt>e2</tt> in the array).<p>
-     *
-     * This sort is guaranteed to be <i>stable</i>:  equal elements will
-     * not be reordered as a result of the sort.<p>
-     *
-     * The sorting algorithm is a modified mergesort (in which the merge is
-     * omitted if the highest element in the low sublist is less than the
-     * lowest element in the high sublist).  This algorithm offers guaranteed
-     * n*log(n) performance.
+     * Sorts the specified array of objects into ascending order, according to the <i>natural ordering</i> of its
+     * elements. All elements in the array must implement the <tt>Comparable</tt> interface. Furthermore, all elements
+     * in the array must be <i>mutually comparable</i> (that is, <tt>e1.compareTo(e2)</tt> must not throw a
+     * <tt>ClassCastException</tt> for any elements <tt>e1</tt> and <tt>e2</tt> in the array).
+     * <p>
      * 
-     * @param a the array to be sorted.
-     * @throws  ClassCastException if the array contains elements that are not
-     *      <i>mutually comparable</i> (for example, strings and integers).
+     * This sort is guaranteed to be <i>stable</i>: equal elements will not be reordered as a result of the sort.
+     * <p>
+     * 
+     * The sorting algorithm is a modified mergesort (in which the merge is omitted if the highest element in the low
+     * sublist is less than the lowest element in the high sublist). This algorithm offers guaranteed n*log(n)
+     * performance.
+     * 
+     * @param a
+     *            the array to be sorted.
+     * @throws ClassCastException
+     *             if the array contains elements that are not <i>mutually comparable</i> (for example, strings and
+     *             integers).
      * @see Comparable
      */
 
@@ -162,10 +176,11 @@ public interface View<T> {
     /**
      * Returns reduction of elements.
      * <p>
-     * Usage: Considering a view with BigDecimals, the following example computes the sum of all numbers in the view:
+     * Usage: Considering a view of {@link BigDecimal}, the following example computes the sum of all numbers in the
+     * view, or returns <tt>BigDecimal.ZERO</tt> if the view is empty :
      * 
      * <pre>
-     * View&lt;BigDecimal&gt; numbers = null;
+     * View&lt;BigDecimal&gt; numbers = ...;
      * BigDecimal sum = numbers.reduce(new Reducer&lt;BigDecimal&gt;() {
      *     public BigDecimal op(BigDecimal a, BigDecimal b) {
      *         return a.add(b);
@@ -208,8 +223,8 @@ public interface View<T> {
      * maintain this ordering.
      * <p>
      * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
-     * method must allocate a new array even if this view is backed in any way by an array). The caller is thus free to
-     * modify the returned array.
+     * method must allocate a new array even if this view is backed by an array). The caller is thus free to modify the
+     * returned array.
      * 
      * @return an array containing all of the elements in this view
      */
@@ -227,11 +242,12 @@ public interface View<T> {
      * <p>
      * If this view is ordered, the returned array will maintain this ordering.
      * <p>
-     * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code can be used to dump
-     * the view into a newly allocated array of <tt>String</tt>:
+     * <b>Sample usage.</b> Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code
+     * can be used to dump the view into a newly allocated array of Strings:
      * 
      * <pre>
-     * String[] x = (String[]) v.toArray(new String[0]);
+     * View&lt;String&gt; v = ...
+     * String[] x = v.toArray(new String[0]);
      * </pre>
      * 
      * <p>
@@ -243,7 +259,7 @@ public interface View<T> {
      * @return an array containing the elements of this view
      * @throws ArrayStoreException
      *             the runtime type of the specified array is not a supertype of the runtime type of every element in
-     *             this collection
+     *             this view
      * @throws NullPointerException
      *             if the specified array is <tt>null</tt>
      */

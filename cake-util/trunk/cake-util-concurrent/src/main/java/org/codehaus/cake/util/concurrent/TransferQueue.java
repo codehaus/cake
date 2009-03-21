@@ -5,7 +5,9 @@
  */
 
 package org.codehaus.cake.util.concurrent;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A {@link BlockingQueue} in which producers may wait for consumers

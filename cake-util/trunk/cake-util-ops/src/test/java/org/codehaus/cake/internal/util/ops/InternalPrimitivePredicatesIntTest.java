@@ -1,29 +1,41 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 /*  This class is automatically generated */ 
 package org.codehaus.cake.internal.util.ops;
 
-import static org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.*;
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
-import static org.codehaus.cake.util.ops.PrimitivePredicates.*;
-import static org.junit.Assert.*;
+import static org.codehaus.cake.util.ops.PrimitivePredicates.INT_FALSE;
+import static org.codehaus.cake.util.ops.PrimitivePredicates.INT_TRUE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.AndIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.EqualsToIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenOrEqualsIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenOrEqualsIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.NotIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.OrIntPredicate;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.ops.PrimitivePredicates;
-import org.codehaus.cake.util.ops.Ops.*;
+import org.codehaus.cake.util.ops.Ops.IntPredicate;
+import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.junit.Test;
 /**
  * Various tests for {@link IntPredicates}.

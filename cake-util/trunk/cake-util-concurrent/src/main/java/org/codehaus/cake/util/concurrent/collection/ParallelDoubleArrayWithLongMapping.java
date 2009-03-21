@@ -6,6 +6,7 @@
 
 package org.codehaus.cake.util.concurrent.collection;
 import org.codehaus.cake.util.concurrent.ForkJoinPool;
+import org.codehaus.cake.util.ops.PrimitiveOps;
 import org.codehaus.cake.util.ops.Ops.BinaryLongOp;
 import org.codehaus.cake.util.ops.Ops.IntAndLongToDouble;
 import org.codehaus.cake.util.ops.Ops.IntAndLongToLong;
@@ -63,7 +64,7 @@ public abstract class ParallelDoubleArrayWithLongMapping extends AbstractParalle
      * @return minimum element, or Long.MAX_VALUE if empty
      */
     public long min() {
-        return reduce(CommonOps.naturalLongMinReducer(), Long.MAX_VALUE);
+        return reduce(PrimitiveOps.LONG_MIN_REDUCER, Long.MAX_VALUE);
     }
 
     /**
@@ -80,7 +81,7 @@ public abstract class ParallelDoubleArrayWithLongMapping extends AbstractParalle
      * @return maximum element, or Long.MIN_VALUE if empty
      */
     public long max() {
-        return reduce(CommonOps.naturalLongMaxReducer(), Long.MIN_VALUE);
+        return reduce(PrimitiveOps.LONG_MAX_REDUCER, Long.MIN_VALUE);
     }
 
     /**
@@ -97,7 +98,7 @@ public abstract class ParallelDoubleArrayWithLongMapping extends AbstractParalle
      * @return the sum of elements
      */
     public long sum() {
-        return reduce(CommonOps.longAdder(), 0);
+        return reduce(PrimitiveOps.LONG_ADD_REDUCER, 0);
     }
 
     /**

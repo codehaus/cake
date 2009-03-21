@@ -172,7 +172,7 @@ public abstract class ParallelLongArrayWithFilter extends ParallelLongArrayWithL
      * @return true if equal
      */
     public boolean hasAllEqualElements(ParallelLongArrayWithLongMapping other) {
-        return withFilter(CommonOps.longInequalityPredicate(),
+        return withFilter( CommonOps.longInequalityPredicate(),
                           other).anyIndex() < 0;
     }
 

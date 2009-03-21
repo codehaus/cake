@@ -24,7 +24,7 @@ public interface MapView<K, V> {
     void apply(BinaryProcedure<? super K, ? super V> procedure);
 
     /**
-     * Creates a new view with all entries in this view.
+     * Returns a view a of all entries in this view as a {@link Map.Entry}.
      * <p>
      * The following example extract all entries in this view as a {@link List}:
      * 
@@ -32,7 +32,7 @@ public interface MapView<K, V> {
      * List&lt;Map.Entry&lt;K, V&gt;&gt; list = mapview.entries().toList();
      * </pre>
      * 
-     * @return the new view
+     * @return a view of the entries in this view.
      */
     View<Map.Entry<K, V>> entries();
 
@@ -48,11 +48,11 @@ public interface MapView<K, V> {
      */
     View<K> keys();
 
-    /** @return the number of mappings in this view */
+    /** @return the number of entries in this view */
     long size();
 
     /**
-     * Creates a new {@link Map} with all the mappings in this view.
+     * Creates a new {@link Map} with all the entries in this view.
      * <p>
      * The returned map will be "safe" in that no references to it or any of its elements are maintained by this view.
      * (In other words, this method must allocate a new map even if this view is backed by a map).

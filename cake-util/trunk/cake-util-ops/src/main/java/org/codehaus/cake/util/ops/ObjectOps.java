@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.util.ops;
 
@@ -261,7 +261,7 @@ public final class ObjectOps {
 
         /** {@inheritDoc} */
         public long op(long a, long b) {
-            return Math.max(a, b);
+            return (a >= b) ? a : b;
         }
 
         /** {@inheritDoc} */
@@ -276,7 +276,7 @@ public final class ObjectOps {
 
         /** {@inheritDoc} */
         public int op(int a, int b) {
-            return Math.max(a, b);
+            return (a >= b) ? a : b;
         }
 
         /** @return Preserves singleton property */
@@ -299,7 +299,7 @@ public final class ObjectOps {
         }
         /** {@inheritDoc} */
         public long op(long a, long b) {
-            return Math.min(a, b);
+            return (a <= b) ? a : b;
         }
 
         /** {@inheritDoc} */
@@ -314,7 +314,7 @@ public final class ObjectOps {
 
         /** {@inheritDoc} */
         public int op(int a, int b) {
-            return Math.min(a, b);
+            return (a <= b) ? a : b;
         }
         /** @return Preserves singleton property */
         private Object readResolve() {

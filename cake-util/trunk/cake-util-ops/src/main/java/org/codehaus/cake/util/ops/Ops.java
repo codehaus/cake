@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 
 /*
@@ -471,27 +471,27 @@ public final class Ops {
     public static interface DoubleComparator {
         int compare(double a, double b);
     }
+//
+//    public static interface Action {
+//        void op();
+//    }
 
-    public static interface Action {
-        void op();
-    }
-
-    // mixed mode ops
+//    // mixed mode ops
     public static interface IntToLong {
         long op(int a);
     }
-
+//
     public static interface IntToDouble {
         double op(int a);
     }
-
+//
     public static interface IntToObject<R> {
         R op(int a);
     }
-
-    public static interface LongToInt {
-        int op(long a);
-    }
+//
+//    public static interface LongToInt {
+//        int op(long a);
+//    }
 
     public static interface LongToDouble {
         double op(long a);
@@ -500,10 +500,10 @@ public final class Ops {
     public static interface LongToObject<R> {
         R op(long a);
     }
-
-    public static interface DoubleToInt {
-        int op(double a);
-    }
+//
+//    public static interface DoubleToInt {
+//        int op(double a);
+//    }
 
     public static interface DoubleToLong {
         long op(double a);
@@ -512,142 +512,142 @@ public final class Ops {
     public static interface DoubleToObject<R> {
         R op(double a);
     }
-
-    public static interface ObjectToInt<A> {
-        int op(A a);
-    }
+//
+//    public static interface ObjectToInt<A> {
+//        int op(A a);
+//    }
 
     public static interface ObjectToLong<A> {
         long op(A a);
     }
 
-    public static interface ObjectToFloat<A> {
-        float op(A a);
-    }
+//    public static interface ObjectToFloat<A> {
+//        float op(A a);
+//    }
 
     public static interface ObjectToDouble<A> {
         double op(A a);
     }
 
-    public static interface IntAndIntProcedure {
-        void op(int a, int b);
-    }
-
-    public static interface IntAndIntToLong {
-        long op(int a, int b);
-    }
-
-    public static interface IntAndIntToDouble {
-        double op(int a, int b);
-    }
-
-    public static interface IntAndIntToObject<R> {
-        R op(int a, int b);
-    }
-
-    public static interface IntAndLongProcedure {
-        void op(int a, long b);
-    }
-
+//    public static interface IntAndIntProcedure {
+//        void op(int a, int b);
+//    }
+//
+//    public static interface IntAndIntToLong {
+//        long op(int a, int b);
+//    }
+//
+//    public static interface IntAndIntToDouble {
+//        double op(int a, int b);
+//    }
+//
+//    public static interface IntAndIntToObject<R> {
+//        R op(int a, int b);
+//    }
+//
+//    public static interface IntAndLongProcedure {
+//        void op(int a, long b);
+//    }
+//
     public static interface IntAndLongPredicate {
         boolean op(int a, long b);
     }
-
-    public static interface IntAndLongToInt {
-        int op(int a, long b);
-    }
-
+//
+//    public static interface IntAndLongToInt {
+//        int op(int a, long b);
+//    }
+//
     public static interface IntAndLongToLong {
         long op(int a, long b);
     }
-
+//
     public static interface IntAndLongToDouble {
         double op(int a, long b);
     }
-
+//
     public static interface IntAndLongToObject<R> {
         R op(int a, long b);
     }
-
-    public static interface IntAndDoubleProcedure {
-        void op(int a, double b);
-    }
-
+//
+//    public static interface IntAndDoubleProcedure {
+//        void op(int a, double b);
+//    }
+//
     public static interface IntAndDoublePredicate {
         boolean op(int a, double b);
     }
-
-    public static interface IntAndDoubleToInt {
-        int op(int a, double b);
-    }
-
+//
+//    public static interface IntAndDoubleToInt {
+//        int op(int a, double b);
+//    }
+//
     public static interface IntAndDoubleToLong {
         long op(int a, double b);
     }
-
+//
     public static interface IntAndDoubleToDouble {
         double op(int a, double b);
     }
-
+//
     public static interface IntAndDoubleToObject<R> {
         R op(int a, double b);
     }
-
-    public static interface IntAndObjectProcedure<A> {
-        void op(int a, A b);
-    }
-
+//
+//    public static interface IntAndObjectProcedure<A> {
+//        void op(int a, A b);
+//    }
+//
     public static interface IntAndObjectPredicate<A> {
         boolean op(int a, A b);
     }
-
-    public static interface IntAndObjectToInt<A> {
-        int op(int a, A b);
-    }
-
+//
+//    public static interface IntAndObjectToInt<A> {
+//        int op(int a, A b);
+//    }
+//
     public static interface IntAndObjectToLong<A> {
         long op(int a, A b);
     }
-
+//
     public static interface IntAndObjectToDouble<A> {
         double op(int a, A b);
     }
-
+//
     public static interface IntAndObjectToObject<A, R> {
         R op(int a, A b);
     }
 
-    public static interface LongAndIntProcedure {
-        void op(long a, int b);
-    }
+//    public static interface LongAndIntProcedure {
+//        void op(long a, int b);
+//    }
+//
+//    public static interface LongAndIntPredicate {
+//        boolean op(long a, int b);
+//    }
+//
+//    public static interface LongAndIntToInt {
+//        int op(long a, int b);
+//    }
+//
+//    public static interface LongAndIntToLong {
+//        long op(long a, int b);
+//    }
+//
+//    public static interface LongAndIntToDouble {
+//        double op(long a, int b);
+//    }
+//
+//    public static interface LongAndIntToObject<R> {
+//        R op(long a, int b);
+//    }
 
-    public static interface LongAndIntPredicate {
-        boolean op(long a, int b);
-    }
-
-    public static interface LongAndIntToInt {
-        int op(long a, int b);
-    }
-
-    public static interface LongAndIntToLong {
-        long op(long a, int b);
-    }
-
-    public static interface LongAndIntToDouble {
-        double op(long a, int b);
-    }
-
-    public static interface LongAndIntToObject<R> {
-        R op(long a, int b);
-    }
-
-    public static interface LongAndLongProcedure {
-        void op(long a, long b);
-    }
-
-    public static interface LongAndLongToInt {
-        int op(long a, long b);
-    }
+//    public static interface LongAndLongProcedure {
+//        void op(long a, long b);
+//    }
+//
+//    public static interface LongAndLongToInt {
+//        int op(long a, long b);
+//    }
 
     public static interface LongAndLongToDouble {
         double op(long a, long b);
@@ -657,17 +657,17 @@ public final class Ops {
         R op(long a, long b);
     }
 
-    public static interface LongAndDoubleProcedure {
-        void op(long a, double b);
-    }
+//    public static interface LongAndDoubleProcedure {
+//        void op(long a, double b);
+//    }
+//
+//    public static interface LongAndDoublePredicate {
+//        boolean op(long a, double b);
+//    }
 
-    public static interface LongAndDoublePredicate {
-        boolean op(long a, double b);
-    }
-
-    public static interface LongAndDoubleToInt {
-        int op(long a, double b);
-    }
+//    public static interface LongAndDoubleToInt {
+//        int op(long a, double b);
+//    }
 
     public static interface LongAndDoubleToLong {
         long op(long a, double b);
@@ -680,18 +680,18 @@ public final class Ops {
     public static interface LongAndDoubleToObject<R> {
         R op(long a, double b);
     }
-
+//
     public static interface LongAndObjectProcedure<A> {
         void op(long a, A b);
     }
-
-    public static interface LongAndObjectPredicate<A> {
-        boolean op(long a, A b);
-    }
-
-    public static interface LongAndObjectToInt<A> {
-        int op(long a, A b);
-    }
+//
+//    public static interface LongAndObjectPredicate<A> {
+//        boolean op(long a, A b);
+//    }
+//
+//    public static interface LongAndObjectToInt<A> {
+//        int op(long a, A b);
+//    }
 
     public static interface LongAndObjectToLong<A> {
         long op(long a, A b);
@@ -705,41 +705,41 @@ public final class Ops {
         R op(long a, A b);
     }
 
-    public static interface DoubleAndIntProcedure {
-        void op(double a, int b);
-    }
+//    public static interface DoubleAndIntProcedure {
+//        void op(double a, int b);
+//    }
+//
+//    public static interface DoubleAndIntPredicate {
+//        boolean op(double a, int b);
+//    }
+//
+//    public static interface DoubleAndIntToInt {
+//        int op(double a, int b);
+//    }
+//
+//    public static interface DoubleAndIntToLong {
+//        long op(double a, int b);
+//    }
+//
+//    public static interface DoubleAndIntToDouble {
+//        double op(double a, int b);
+//    }
+//
+//    public static interface DoubleAndIntToObject<R> {
+//        R op(double a, int b);
+//    }
 
-    public static interface DoubleAndIntPredicate {
-        boolean op(double a, int b);
-    }
-
-    public static interface DoubleAndIntToInt {
-        int op(double a, int b);
-    }
-
-    public static interface DoubleAndIntToLong {
-        long op(double a, int b);
-    }
-
-    public static interface DoubleAndIntToDouble {
-        double op(double a, int b);
-    }
-
-    public static interface DoubleAndIntToObject<R> {
-        R op(double a, int b);
-    }
-
-    public static interface DoubleAndLongProcedure {
-        void op(double a, long b);
-    }
-
-    public static interface DoubleAndLongPredicate {
-        boolean op(double a, long b);
-    }
-
-    public static interface DoubleAndLongToInt {
-        int op(double a, long b);
-    }
+//    public static interface DoubleAndLongProcedure {
+//        void op(double a, long b);
+//    }
+//
+//    public static interface DoubleAndLongPredicate {
+//        boolean op(double a, long b);
+//    }
+//
+//    public static interface DoubleAndLongToInt {
+//        int op(double a, long b);
+//    }
 
     public static interface DoubleAndLongToLong {
         long op(double a, long b);
@@ -752,14 +752,14 @@ public final class Ops {
     public static interface DoubleAndLongToObject<R> {
         R op(double a, long b);
     }
-
-    public static interface DoubleAndDoubleProcedure {
-        void op(double a, double b);
-    }
-
-    public static interface DoubleAndDoubleToInt {
-        int op(double a, double b);
-    }
+//
+//    public static interface DoubleAndDoubleProcedure {
+//        void op(double a, double b);
+//    }
+//
+//    public static interface DoubleAndDoubleToInt {
+//        int op(double a, double b);
+//    }
 
     public static interface DoubleAndDoubleToLong {
         long op(double a, double b);
@@ -772,14 +772,14 @@ public final class Ops {
     public static interface DoubleAndObjectProcedure<A> {
         void op(double a, A b);
     }
-
-    public static interface DoubleAndObjectPredicate<A> {
-        boolean op(double a, A b);
-    }
-
-    public static interface DoubleAndObjectToInt<A> {
-        int op(double a, A b);
-    }
+//
+//    public static interface DoubleAndObjectPredicate<A> {
+//        boolean op(double a, A b);
+//    }
+//
+//    public static interface DoubleAndObjectToInt<A> {
+//        int op(double a, A b);
+//    }
 
     public static interface DoubleAndObjectToLong<A> {
         long op(double a, A b);
@@ -792,30 +792,30 @@ public final class Ops {
     public static interface DoubleAndObjectToObject<A, R> {
         R op(double a, A b);
     }
+//
+//    public static interface ObjectAndIntProcedure<A> {
+//        void op(A a, int b);
+//    }
 
-    public static interface ObjectAndIntProcedure<A> {
-        void op(A a, int b);
-    }
-
-    public static interface ObjectAndIntPredicate<A> {
-        boolean op(A a, int b);
-    }
-
-    public static interface ObjectAndIntToInt<A> {
-        int op(A a, int b);
-    }
-
-    public static interface ObjectAndIntToLong<A> {
-        long op(A a, int b);
-    }
-
-    public static interface ObjectAndIntToDouble<A> {
-        double op(A a, int b);
-    }
-
-    public static interface ObjectAndIntToObject<A, R> {
-        R op(A a, int b);
-    }
+//    public static interface ObjectAndIntPredicate<A> {
+//        boolean op(A a, int b);
+//    }
+//
+//    public static interface ObjectAndIntToInt<A> {
+//        int op(A a, int b);
+//    }
+//
+//    public static interface ObjectAndIntToLong<A> {
+//        long op(A a, int b);
+//    }
+//
+//    public static interface ObjectAndIntToDouble<A> {
+//        double op(A a, int b);
+//    }
+//
+//    public static interface ObjectAndIntToObject<A, R> {
+//        R op(A a, int b);
+//    }
 
     public static interface ObjectAndLongProcedure<A> {
         void op(A a, long b);
@@ -825,9 +825,9 @@ public final class Ops {
         boolean op(A a, long b);
     }
 
-    public static interface ObjectAndLongToInt<A> {
-        int op(A a, long b);
-    }
+//    public static interface ObjectAndLongToInt<A> {
+//        int op(A a, long b);
+//    }
 
     public static interface ObjectAndLongToLong<A> {
         long op(A a, long b);
@@ -844,14 +844,14 @@ public final class Ops {
     public static interface ObjectAndDoubleProcedure<A> {
         void op(A a, double b);
     }
-
-    public static interface ObjectAndDoublePredicate<A> {
-        boolean op(A a, double b);
-    }
-
-    public static interface ObjectAndDoubleToInt<A> {
-        int op(A a, double b);
-    }
+//
+//    public static interface ObjectAndDoublePredicate<A> {
+//        boolean op(A a, double b);
+//    }
+//
+//    public static interface ObjectAndDoubleToInt<A> {
+//        int op(A a, double b);
+//    }
 
     public static interface ObjectAndDoubleToLong<A> {
         long op(A a, double b);
@@ -864,15 +864,15 @@ public final class Ops {
     public static interface ObjectAndDoubleToObject<A, R> {
         R op(A a, double b);
     }
+//
+//    public static interface ObjectAndObjectProcedure<A, B> {
+//        void op(A a, B b);
+//    }
 
-    public static interface ObjectAndObjectProcedure<A, B> {
-        void op(A a, B b);
-    }
-
-    public static interface ObjectAndObjectToInt<A, B> {
-        int op(A a, B b);
-    }
-
+//    public static interface ObjectAndObjectToInt<A, B> {
+//        int op(A a, B b);
+//    }
+//
     public static interface ObjectAndObjectToLong<A, B> {
         long op(A a, B b);
     }
@@ -881,9 +881,9 @@ public final class Ops {
         double op(A a, B b);
     }
 
-    public static interface ObjectAndFloatProcedure<A> {
-        void op(A a, float b);
-    }
+//    public static interface ObjectAndFloatProcedure<A> {
+//        void op(A a, float b);
+//    }
 
     public static interface FloatOp {
         float op(float a);

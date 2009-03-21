@@ -1,23 +1,67 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 /*  This class is automatically generated */ 
 package org.codehaus.cake.util.ops;
 
-import static org.codehaus.cake.util.ops.Ops.*;
-import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.*;
+import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.ABS_OP;
+import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.ADD_REDUCER;
+import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DIVIDE_REDUCER;
+import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.MULTIPLY_REDUCER;
+import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.SUBTRACT_REDUCER;
+
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleAddOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleConstantOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleDivideOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleMaxReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleMinReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleMultiplyOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.DoubleSubtractOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatAddOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatConstantOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatDivideOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatMaxReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatMinReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatMultiplyOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.FloatSubtractOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntAddOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntConstantOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntDivideOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntMaxReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntMinReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntMultiplyOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.IntSubtractOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongAddOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongConstantOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongDivideOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongMaxReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongMinReducer;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongMultiplyOp;
+import org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.LongSubtractOp;
+import org.codehaus.cake.util.ops.Ops.DoubleComparator;
+import org.codehaus.cake.util.ops.Ops.DoubleOp;
+import org.codehaus.cake.util.ops.Ops.DoubleReducer;
+import org.codehaus.cake.util.ops.Ops.FloatComparator;
+import org.codehaus.cake.util.ops.Ops.FloatOp;
+import org.codehaus.cake.util.ops.Ops.FloatReducer;
+import org.codehaus.cake.util.ops.Ops.IntComparator;
+import org.codehaus.cake.util.ops.Ops.IntOp;
+import org.codehaus.cake.util.ops.Ops.IntReducer;
+import org.codehaus.cake.util.ops.Ops.LongComparator;
+import org.codehaus.cake.util.ops.Ops.LongOp;
+import org.codehaus.cake.util.ops.Ops.LongReducer;
 /**
  * Various implementations of primitive ops.
  * <p>

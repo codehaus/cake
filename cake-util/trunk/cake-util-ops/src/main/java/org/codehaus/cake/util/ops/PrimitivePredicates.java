@@ -1,23 +1,57 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 /*  This class is automatically generated */ 
 package org.codehaus.cake.util.ops;
 
-import static org.codehaus.cake.util.ops.Ops.*;
-import static org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.*;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.AndDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.AndFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.AndIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.AndLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.EqualsToDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.EqualsToFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.EqualsToIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.EqualsToLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenOrEqualsDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenOrEqualsFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenOrEqualsIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.GreaterThenOrEqualsLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenOrEqualsDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenOrEqualsFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenOrEqualsIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.LessThenOrEqualsLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.NotDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.NotFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.NotIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.NotLongPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.OrDoublePredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.OrFloatPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.OrIntPredicate;
+import org.codehaus.cake.internal.util.ops.InternalPrimitivePredicates.OrLongPredicate;
+import org.codehaus.cake.util.ops.Ops.DoublePredicate;
+import org.codehaus.cake.util.ops.Ops.FloatPredicate;
+import org.codehaus.cake.util.ops.Ops.IntPredicate;
+import org.codehaus.cake.util.ops.Ops.LongPredicate;
 /**
  * Various implementations of primitive predicates.
  * <p>
@@ -31,8 +65,6 @@ public final class PrimitivePredicates {
     /** Cannot instantiate. */
     private PrimitivePredicates() {}
     ///CLOVER:ON
-    
-    
 
     /** A DoublePredicate that always evaluates to <code>false</code>. */
     public static final DoublePredicate DOUBLE_FALSE = (DoublePredicate) Predicates.FALSE;

@@ -5,13 +5,17 @@
  */
 
 package org.codehaus.cake.util.concurrent;
-import java.util.concurrent.*;
-import java.util.concurrent.locks.*;
-import java.util.concurrent.atomic.*;
-import java.util.*;
-import java.io.*;
+import java.lang.reflect.Field;
+import java.util.AbstractQueue;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.concurrent.locks.LockSupport;
+
 import sun.misc.Unsafe;
-import java.lang.reflect.*;
 
 /**
  * An unbounded {@linkplain TransferQueue} based on linked nodes.

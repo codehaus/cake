@@ -6,11 +6,19 @@
 
 package org.codehaus.cake.util.concurrent;
 import java.io.Serializable;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import sun.misc.Unsafe;
-import java.lang.reflect.*;
 
 /**
  * Abstract base class for tasks that run within a ForkJoinPool.  A

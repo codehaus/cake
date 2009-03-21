@@ -5,12 +5,11 @@
  */
 
 package org.codehaus.cake.util.concurrent;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
-import java.util.concurrent.locks.*;
+import java.lang.reflect.Field;
+import java.util.Random;
+import java.util.concurrent.RejectedExecutionException;
+
 import sun.misc.Unsafe;
-import java.lang.reflect.*;
 
 /**
  * A thread that is internally managed by a ForkJoinPool to execute

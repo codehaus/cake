@@ -1,31 +1,42 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 /*  This class is automatically generated */ 
 package org.codehaus.cake.internal.util.ops;
 
-import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.*;
-import static org.codehaus.cake.test.util.TestUtil.*;
-import static org.codehaus.cake.util.ops.Comparators.*;
-import static org.codehaus.cake.util.ops.PrimitiveOps.*;
-import static org.junit.Assert.*;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
+import static org.codehaus.cake.util.ops.PrimitiveOps.DOUBLE_ADD_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.DOUBLE_DIVISION_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.DOUBLE_MAX_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.DOUBLE_MIN_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.DOUBLE_MULTIPLY_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.DOUBLE_SUBTRACT_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleAdd;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleConstant;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleDivide;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleMax;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleMin;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleMultiply;
+import static org.codehaus.cake.util.ops.PrimitiveOps.doubleSubtract;
+import static org.junit.Assert.assertEquals;
 
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.ops.Comparators;
 import org.codehaus.cake.util.ops.PrimitiveOps;
-import org.codehaus.cake.util.ops.Ops.*;
+import org.codehaus.cake.util.ops.Ops.DoubleReducer;
 import org.junit.Test;
 /**
  * Various tests for {@link DoubleOps}.

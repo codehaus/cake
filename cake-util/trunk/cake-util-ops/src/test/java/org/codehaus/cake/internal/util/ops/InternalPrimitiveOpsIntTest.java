@@ -1,31 +1,42 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 /*  This class is automatically generated */ 
 package org.codehaus.cake.internal.util.ops;
 
-import static org.codehaus.cake.internal.util.ops.InternalPrimitiveOps.*;
-import static org.codehaus.cake.test.util.TestUtil.*;
-import static org.codehaus.cake.util.ops.Comparators.*;
-import static org.codehaus.cake.util.ops.PrimitiveOps.*;
-import static org.junit.Assert.*;
+import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
+import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
+import static org.codehaus.cake.util.ops.PrimitiveOps.INT_ADD_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.INT_DIVISION_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.INT_MAX_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.INT_MIN_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.INT_MULTIPLY_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.INT_SUBTRACT_REDUCER;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intAdd;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intConstant;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intDivide;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intMax;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intMin;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intMultiply;
+import static org.codehaus.cake.util.ops.PrimitiveOps.intSubtract;
+import static org.junit.Assert.assertEquals;
 
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.ops.Comparators;
 import org.codehaus.cake.util.ops.PrimitiveOps;
-import org.codehaus.cake.util.ops.Ops.*;
+import org.codehaus.cake.util.ops.Ops.IntReducer;
 import org.junit.Test;
 /**
  * Various tests for {@link IntOps}.

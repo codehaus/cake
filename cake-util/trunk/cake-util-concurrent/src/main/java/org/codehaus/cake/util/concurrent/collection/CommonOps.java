@@ -15,16 +15,13 @@ import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.util.ops.Ops.DoubleComparator;
 import org.codehaus.cake.util.ops.Ops.DoubleGenerator;
 import org.codehaus.cake.util.ops.Ops.DoubleOp;
-import org.codehaus.cake.util.ops.Ops.DoublePredicate;
 import org.codehaus.cake.util.ops.Ops.DoubleReducer;
 import org.codehaus.cake.util.ops.Ops.DoubleToLong;
 import org.codehaus.cake.util.ops.Ops.DoubleToObject;
 import org.codehaus.cake.util.ops.Ops.IntGenerator;
-import org.codehaus.cake.util.ops.Ops.IntReducer;
 import org.codehaus.cake.util.ops.Ops.LongComparator;
 import org.codehaus.cake.util.ops.Ops.LongGenerator;
 import org.codehaus.cake.util.ops.Ops.LongOp;
-import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.codehaus.cake.util.ops.Ops.LongReducer;
 import org.codehaus.cake.util.ops.Ops.LongToDouble;
 import org.codehaus.cake.util.ops.Ops.LongToObject;
@@ -175,33 +172,12 @@ class CommonOps {
         }
     }
 
-    /**
-     * Returns a reducer returning the maximum of two double elements,
-     * using natural comparator
-     */
-    public static DoubleReducer naturalDoubleMaxReducer() {
-        return NaturalDoubleMaxReducer.max;
-    }
 
     static final class NaturalDoubleMaxReducer
         implements DoubleReducer {
         public static final NaturalDoubleMaxReducer max =
             new NaturalDoubleMaxReducer();
         public double op(double a, double b) { return Math.max(a, b); }
-    }
-
-    /**
-     * Returns a reducer returning the minimum of two double elements,
-     * using natural comparator
-     */
-    public static DoubleReducer naturalDoubleMinReducer() {
-        return NaturalDoubleMinReducer.min;
-    }
-    static final class NaturalDoubleMinReducer
-        implements DoubleReducer {
-        public static final NaturalDoubleMinReducer min =
-            new NaturalDoubleMinReducer();
-        public double op(double a, double b) { return Math.min(a, b); }
     }
 
     /**
@@ -245,34 +221,8 @@ class CommonOps {
         }
     }
 
-    /**
-     * Returns a reducer returning the maximum of two long elements,
-     * using natural comparator
-     */
-    public static LongReducer naturalLongMaxReducer() {
-        return NaturalLongMaxReducer.max;
-    }
 
-    static final class NaturalLongMaxReducer
-        implements LongReducer {
-        public static final NaturalLongMaxReducer max =
-            new NaturalLongMaxReducer();
-        public long op(long a, long b) { return a >= b? a : b; }
-    }
 
-    /**
-     * A reducer returning the minimum of two long elements,
-     * using natural comparator
-     */
-    public static LongReducer naturalLongMinReducer() {
-        return NaturalLongMinReducer.min;
-    }
-    static final class NaturalLongMinReducer
-        implements LongReducer {
-        public static final NaturalLongMinReducer min =
-            new NaturalLongMinReducer();
-        public long op(long a, long b) { return a <= b? a : b; }
-    }
 
     /**
      * Returns a reducer returning the maximum of two long elements,
@@ -625,36 +575,6 @@ class CommonOps {
     }
 
     /**
-     * Returns a predicate evaluating to the negation of its contained predicate
-     */
-    public static <T> Predicate<T> notPredicate
-        (final Predicate<T> pred) {
-        return new Predicate<T>() {
-            public final boolean op(T x) { return !pred.op(x); }
-        };
-    }
-
-    /**
-     * Returns a predicate evaluating to the negation of its contained predicate
-     */
-    public static DoublePredicate notPredicate
-        (final DoublePredicate pred) {
-        return new DoublePredicate() {
-                public final boolean op(double x) { return !pred.op(x); }
-            };
-    }
-
-    /**
-     * Returns a predicate evaluating to the negation of its contained predicate
-     */
-    public static LongPredicate notPredicate
-        (final LongPredicate pred) {
-        return new LongPredicate() {
-                public final boolean op(long x) { return !pred.op(x); }
-            };
-    }
-
-    /**
      * Returns a predicate evaluating to the conjunction of its contained predicates
      */
     public static <S, T extends S> Predicate<T> andPredicate
@@ -681,59 +601,6 @@ class CommonOps {
     }
 
     /**
-     * Returns a predicate evaluating to the conjunction of its contained predicates
-     */
-    public static DoublePredicate andPredicate
-        (final DoublePredicate first,
-         final DoublePredicate second) {
-        return new DoublePredicate() {
-                public final boolean op(double x) {
-                    return first.op(x) && second.op(x);
-                }
-            };
-    }
-
-    /**
-     * Returns a predicate evaluating to the disjunction of its contained predicates
-     */
-    public static DoublePredicate orPredicate
-        (final DoublePredicate first,
-         final DoublePredicate second) {
-        return new DoublePredicate() {
-                public final boolean op(double x) {
-                    return first.op(x) || second.op(x);
-                }
-            };
-    }
-
-
-    /**
-     * Returns a predicate evaluating to the conjunction of its contained predicates
-     */
-    public static LongPredicate andPredicate
-        (final LongPredicate first,
-         final LongPredicate second) {
-        return new LongPredicate() {
-                public final boolean op(long x) {
-                    return first.op(x) && second.op(x);
-                }
-            };
-    }
-
-    /**
-     * Returns a predicate evaluating to the disjunction of its contained predicates
-     */
-    public static LongPredicate orPredicate
-        (final LongPredicate first,
-         final LongPredicate second) {
-        return new LongPredicate() {
-                public final boolean op(long x) {
-                    return first.op(x) || second.op(x);
-                }
-            };
-    }
-
-    /**
      * Returns a predicate evaluating to true if its argument is non-null
      */
     public static  Predicate<Object> isNonNullPredicate() {
@@ -742,20 +609,6 @@ class CommonOps {
     static final class IsNonNullPredicate implements Predicate<Object> {
         static final IsNonNullPredicate predicate =
             new IsNonNullPredicate();
-        public final boolean op(Object x) {
-            return x != null;
-        }
-    }
-
-    /**
-     * Returns a predicate evaluating to true if its argument is null
-     */
-    public static  Predicate<Object> isNullPredicate() {
-        return IsNullPredicate.predicate;
-    }
-    static final class IsNullPredicate implements Predicate<Object> {
-        static final IsNullPredicate predicate =
-            new IsNullPredicate();
         public final boolean op(Object x) {
             return x != null;
         }
@@ -785,32 +638,6 @@ class CommonOps {
         };
     }
 
-    /**
-     * Returns a reducer that adds two double elements
-     */
-    public static DoubleReducer doubleAdder() { return DoubleAdder.adder; }
-    static final class DoubleAdder implements DoubleReducer {
-        static final DoubleAdder adder = new DoubleAdder();
-        public double op(double a, double b) { return a + b; }
-    }
-
-    /**
-     * Returns a reducer that adds two long elements
-     */
-    public static LongReducer longAdder() { return LongAdder.adder; }
-    static final class LongAdder implements LongReducer {
-        static final LongAdder adder = new LongAdder();
-        public long op(long a, long b) { return a + b; }
-    }
-
-    /**
-     * Returns a reducer that adds two int elements
-     */
-    public static IntReducer intAdder() { return IntAdder.adder; }
-    static final class IntAdder implements IntReducer {
-        static final IntAdder adder = new IntAdder();
-        public int op(int a, int b) { return a + b; }
-    }
 
     /**
      * Returns a generator producing uniform random values between
@@ -992,82 +819,6 @@ class CommonOps {
             return ForkJoinWorkerThread.nextRandomInt(range) + least;
         }
     }
-
-    /**
-     * Returns a predicate evaluating to true if the
-     * first argument <tt>equals</tt> the second
-     */
-    public static BinaryPredicate<Object, Object> equalityPredicate() {
-        return EqualityPredicate.predicate;
-    }
-    static final class EqualityPredicate implements BinaryPredicate<Object, Object> {
-        static final EqualityPredicate predicate =
-            new EqualityPredicate();
-        public final boolean op(Object x, Object y) {
-            return x.equals(y);
-        }
-    }
-
-    /**
-     * Returns a predicate evaluating to true if the
-     * first argument <tt>==</tt> the second
-     */
-    public static BinaryPredicate<Object, Object> identityPredicate() {
-        return IdentityPredicate.predicate;
-    }
-    static final class IdentityPredicate implements BinaryPredicate<Object, Object> {
-        static final IdentityPredicate predicate =
-            new IdentityPredicate();
-        public final boolean op(Object x, Object y) {
-            return x == y;
-        }
-    }
-
-    /**
-     * Returns a predicate evaluating to true if the
-     * first argument <tt>==</tt> the second
-     */
-    public static BinaryIntPredicate intEqualityPredicate() {
-        return IntEqualityPredicate.predicate;
-    }
-    static final class IntEqualityPredicate implements BinaryIntPredicate {
-        static final IntEqualityPredicate predicate =
-            new IntEqualityPredicate();
-        public final boolean op(int x, int y) {
-            return x == y;
-        }
-    }
-
-    /**
-     * Returns a predicate evaluating to true if the
-     * first argument <tt>==</tt> the second
-     */
-    public static BinaryLongPredicate longEqualityPredicate() {
-        return LongEqualityPredicate.predicate;
-    }
-    static final class LongEqualityPredicate implements BinaryLongPredicate {
-        static final LongEqualityPredicate predicate =
-            new LongEqualityPredicate();
-        public final boolean op(long x, long y) {
-            return x == y;
-        }
-    }
-
-    /**
-     * Returns a predicate evaluating to true if the
-     * first argument <tt>==</tt> the second
-     */
-    public static BinaryDoublePredicate doubleEqualityPredicate() {
-        return DoubleEqualityPredicate.predicate;
-    }
-    static final class DoubleEqualityPredicate implements BinaryDoublePredicate {
-        static final DoubleEqualityPredicate predicate =
-            new DoubleEqualityPredicate();
-        public final boolean op(double x, double y) {
-            return x == y;
-        }
-    }
-
 
     /**
      * Returns a predicate evaluating to true if the
