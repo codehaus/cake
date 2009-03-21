@@ -1,23 +1,22 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.internal.util;
 
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;
-import org.w3c.dom.Element;
 
 /**
  * Various {@link Logger} utilities.
@@ -30,9 +29,9 @@ import org.w3c.dom.Element;
  */
 public final class LogHelper {
 
-    public static final String LOG_LEVEL_ATRB = "level";
-
-    public static final String LOG_TYPE_ATRB = "type";
+//    public static final String LOG_LEVEL_ATRB = "level";
+//
+//    public static final String LOG_TYPE_ATRB = "type";
 
     /*
      * private static final String COMMONS_LOGGING = "commons";
@@ -95,11 +94,11 @@ public final class LogHelper {
         }
     }
 
-    static Level toLevel(Element e) {
-        String level = e.getAttribute(LOG_LEVEL_ATRB);
-        Level l = Level.valueOf(level);
-        return l;
-    }
+//    static Level toLevel(Element e) {
+//        String level = e.getAttribute(LOG_LEVEL_ATRB);
+//        Level l = Level.valueOf(level);
+//        return l;
+//    }
 
     /**
      * An AbstractLogger that all logger wrappers extend.
