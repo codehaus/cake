@@ -20,29 +20,46 @@
     <groupId>org.codehaus.cake</groupId>
     <artifactId>cake-parent</artifactId>
     <version>1</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>org.codehaus.cake.codegen</groupId>
-  <artifactId>cake-codegen</artifactId>
+  <artifactId>cake-codegen-parent</artifactId>
   <version>0.3-SNAPSHOT</version>
-  <name>Cake CodeGen</name>
-  <description>This library contains the Cake Attributes MapGenerator package</description>
+  <name>Cake Codegen Parent</name>
+  <packaging>pom</packaging>
+  <description>This library contains Utility classes that are used across all Cake projects</description>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.cake.internal</groupId>
-      <artifactId>cake-asm</artifactId>
-      <version>3.1</version>
-    </dependency>
-        <dependency>
       <groupId>org.codehaus.cake.test</groupId>
       <artifactId>cake-test-util</artifactId>
       <scope>test</scope>
       <version>0.3-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.cake.util</groupId>
-      <artifactId>cake-util</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
   </dependencies>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/cake/cake-codegen/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/cake/cake-codegen/trunk</developerConnection>
+    <url>http://svn.codehaus.org/cake/cake-codegen/trunk</url>
+  </scm>
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus Release Repo</name>
+      <url>http://repository.codehaus.org/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+
+
+   <modules>
+    <module>cake-codegen</module>
+    <module>cake-codegen-attribute</module>
+  </modules>
 </project>
