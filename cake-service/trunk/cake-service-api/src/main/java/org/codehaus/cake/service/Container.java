@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.service;
 
@@ -26,13 +26,32 @@ import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
- * A Container is the the in addition providing .
- * 
- * Retrieving services that have been registered using {@link ContainerConfiguration#addService(Object)}.
- * 
+ * The main purpose of the Container interface is to control the lifecycle and publication of services registered with
+ * it. Normally containers are extended with classes that provide additionally functionality then just managing
+ * services. For example, {@link org.codehaus.cake.cache.Cache} which extends this interface with various methods that are relevant to a cache
+ * but uses the functionality provided by this interface to allow users to control the lifecycle of the cache and the
+ * services running within the cache.
  * <p>
- * This interface is normally extended by a concrete container type. {@link org.codehaus.cake.cache.Cache}, for
- * example, inherits from this interface.
+ * The services running within a container can either be (internal) services that are hidden for users of this interface
+ * and are only visible to other internal services running within the container. Or they can be services that can be
+ * retrived by the user, for example, by calling {@link #getService(Class)}.
+ * <p>
+ * All general-purpose <tt>Container</tt> implementation classes should provide two "standard" constructors: a void
+ * (no arguments) constructor, which creates an empty container with default settings, and a constructor with a single
+ * argument of type {@link ContainerConfiguration}. There is no way to enforce this recommendation (as interfaces
+ * cannot contain constructors) but all of the general-purpose container implementations available in Cake comply.
+ * <p>
+ * The lifecycle of the container is 1) A ContainerConfiguration or a subclass of it is created and configured with as
+ * needed. 2) A Container or a subclass hereof is created by passing along the configuration. 3) When the constructor
+ * returns the container is initialized. Which means that the configurat is ready to be started. The first request for
+ * example, by calling {@link #serviceKeySet()} When the container is no longer used the user must call
+ * {@link #shutdown()} which initiate an ordered shutdown of the cache. Allowing all services within the container to
+ * properly shutdown.
+ * <p>
+ * An <tt>Container</tt> can be shut down, which will cause it to stop accepting new tasks. After being shut down, the
+ * container will eventually terminate, at which point no tasks are actively executing within the container, no tasks
+ * are awaiting execution, and no new tasks can be submitted through various methods.
+ * 
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -58,8 +77,8 @@ public interface Container {
 
     /**
      * Returns a service of the specified type or throws an {@link UnsupportedOperationException} if no such service
-     * exists. The map of attributes will be parsed along to the {@link ServiceProvider} responsible for constructing the
-     * service.
+     * exists. The map of attributes will be parsed along to the {@link ServiceProvider} responsible for constructing
+     * the service.
      * 
      * @param <T>
      *            the type of service to retrieve
@@ -145,11 +164,6 @@ public interface Container {
     /**
      * Initiates an orderly shutdown of the container. In which currently running tasks will be executed, but no new
      * tasks will be started. Invocation has no additional effect if already shut down.
-     * 
-     * @throws SecurityException
-     *             if a security manager exists and shutting down this container may manipulate threads that the caller
-     *             is not permitted to modify because it does not hold {@link java.lang.RuntimePermission}
-     *             <tt>("modifyThread")</tt>, or the security manager's <tt>checkAccess</tt> method denies access.
      */
     void shutdown();
 
@@ -157,14 +171,9 @@ public interface Container {
      * Attempts to stop all actively executing tasks within the container and halts the processing of waiting tasks.
      * Invocation has no additional effect if already shut down.
      * <p>
-     * There are no guarantees beyond best-effort attempts to stop processing actively executing tasks in the container.
-     * For example, typical implementations will cancel via {@link Thread#interrupt}, so any task that fails to respond
-     * to interrupts may never terminate.
-     * 
-     * @throws SecurityException
-     *             if a security manager exists and shutting down this container may manipulate threads that the caller
-     *             is not permitted to modify because it does not hold {@link java.lang.RuntimePermission}
-     *             <tt>("modifyThread")</tt>, or the security manager's <tt>checkAccess</tt> method denies access.
+     * There are no guarantees beyond best-effort attempts to stop processing actively executing tasks within the
+     * container. For example, typical implementations will cancel via {@link Thread#interrupt}, so any task that fails
+     * to respond to interrupts may never terminate.
      */
     void shutdownNow();
 
