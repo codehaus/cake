@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache;
 
@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
+import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerShutdownException;
 
@@ -76,14 +77,14 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     // withWriter() <-CacheWriterFactory();
     //    
     /**
-     * Removes all entries from this cache. This method will not attempt to remove entries that are stored externally,
-     * for example, on disk. The cache will be empty after this call returns.
+     * Removes all entries from this cache. The cache will be empty after this call returns.
      * <p>
-     * If this method is used for getting rid of stale data. And alternative, if the cache has a cache loader defined,
-     * might be to call <tt>loadAll()</tt> on {@link CacheServices#loadingForced()} which will forcefully reload all
-     * elements in the cache.
+     * If this method is used for periodically removing stale data. A better solution, if the cache has a cache loader
+     * defined, might be to call <tt>cache.with().loadingForced().loadAll()</tt> which will forcefully reload all
+     * entries in the cache. In this way users of the cache does not pay the cost upfront for repopulating an empty
+     * cache. Instead fresh data will be loaded in the background by the cache.
      * <p>
-     * If the cache has been shutdown calls to this method are ignored.
+     * If the cache has been shutdown calls to this method are ignored (the cache is already empty).
      * 
      * @throws UnsupportedOperationException
      *             if the <tt>clear</tt> operation is not supported by this cache
@@ -138,12 +139,15 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
      * 
      * @return a set view of the mappings contained in this map
+     * @see #view()
      */
     Set<Map.Entry<K, V>> entrySet();
 
     /**
-     * Returns a selector that can be used to create a filtered view of the mappings contained in this cache. The
-     * filtered view is backed by the cache, so changes to the cache are reflected in the view, and vice-versa.
+     * Returns a cache selector that can be used to create a filtered view of the mappings contained in this cache. The
+     * filtered view is backed by the cache, so changes to the cache are reflected in the view, and vice-versa. This is
+     * useful for operating on subsets of the data in a cache. For example, for removing all entries where the value is
+     * of a particular type.
      * 
      * Some cautions should apply, for example the following methods will not work.
      * {@link Container#awaitTermination(long, java.util.concurrent.TimeUnit)}, {@link Container#shutdown()},{@link Container#shutdownNow()},
@@ -153,22 +157,25 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * {@link Cache#size()} of a filtered view, the cache will need to evaluate all elements to see if they match the
      * specified filter.
      * <p>
-     * Usage: The following snippet will create a new cache view that only contains elements that have {@link Integer}
-     * values.
+     * <b>Sample usages.</b> The following snippet will create a new filtered cache view that contains only those
+     * entries where the type of the value is Integer.
      * 
      * <pre>
-     * Cache&lt;String, Number&gt; c = null;
+     * Cache&lt;String, Number&gt; c = ...;
      * Cache&lt;String, Integer&gt; onlyInts = c.filter().onValueType(Integer.class);
      * </pre>
      * 
-     * The next snippet will reload all cache elements that have not been modified doing the last hour (Assuming the
-     * cache has been configured to keep modication timestamp using
+     * The next snippet will reload all cache entries that have not been modified doing the last hour (Assuming the
+     * cache has been configured to keep a modication timestamp using
      * {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.attribute.Attribute...)}.
      * 
      * <pre>
      * long oneHourAgo = new Date().getTime() - 60 * 60 * 1000;
-     * c.filter().on(CacheEntry.TIME_MODIFIED, LongPredicates.lessThen(oneHourAgo)).with().loadingForced().loadAll();
+     * c.filter().on(CacheEntry.TIME_MODIFIED, PrimitivePredicates.lessThen(oneHourAgo)).with().loadingForced().loadAll();
      * </pre>
+     * 
+     * <p>
+     * If the cache has been shutdown all cache views returned by the selector will be empty
      * 
      * @throws UnsupportedOperationException
      *             if the <tt>filter</tt> operation is not supported by this cache
@@ -178,8 +185,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
     /**
      * Works as {@link Map#get(Object)} with the following modifications.
      * <p>
-     * If the cache has a configured CacheLoader. And no mapping exists for the specified key. The cache will
-     * transparently attempt to load a value for the specified key through the cache loader.
+     * If the cache has a configured backend (cache loader) and no mapping exists for the specified key. The cache will
+     * attempt to transparently load a value for the specified key through the backend.
      * <p>
      * The number of cache hits will increase by 1 if a valid mapping is present. Otherwise the number of cache misses
      * will be increased by 1.
@@ -198,16 +205,38 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      */
     V get(Object key);
 
+    Map<K, V> getAllOld(Iterable<? extends K> keys);
+
     /**
-     * Attempts to retrieve a view of all of the mappings for the specified collection of keys. The effect of this call
-     * is equivalent to that of calling {@link #getEntry(Object)} once for each key in the specified collection and then
-     * extracting needed data for each entry. However, in most cases it faster to load several cache items at once, for
-     * example, if the cache must fetch the values from a remote host.
+     * Creates a virtual view of the entries of all of the mappings for the specified keys. The effect of this call is
+     * equivalent to that of calling {@link #getEntry(Object)} once for each of the specified keys and then extracting
+     * needed data for each entry. However, in most cases it is faster to load several cache items at once, for example,
+     * if the cache must fetch the values from a remote host.
      * <p>
-     * Usage:
+     * <b>Sample usages.</b>
+     * 
+     * Given a cache with person names (String) as keys and the age of each person as a value, the following shows some
+     * examples.
+     * 
+     * <pre>
+     * Cache&lt;String, Integer&gt; cache = ...;
+     * Iterable&lt;String&gt; persons = Arrays.asList(&quot;Peter&quot;, &quot;Joe&quot;, &quot;Hahnah&quot;);
+     * 
+     * Returns a map with the name of the person mapping to the age of the person
+     * Map&lt;String, Integer&gt; personAge = cache.getAll(persons).keyValues().toMap();
+     * 
+     * Returns a sorted map (iterators will return entries in sorted order) with the name of the person mapping to the age of the person
+     * Map&lt;String, Integer&gt; personAgeSorted = cache.getAll(persons).orderByValuesMax().keyValues().toMap();
+     * 
+     * Returns the maximum age of any of the 3 persons 
+     * Integer maximumAge = cache.getAll(persons).values().max();
+     * 
+     * Returns the minimum age of any of the 3 persons
+     * Integer minimumAge = cache.getAll(persons).values().max();
+     * </pre>
      * 
      * <p>
-     * The behavior of this operation is unspecified if the specified collection is modified while the operation is in
+     * The behavior of this operation is unspecified if the specified iterable is modified while the operation is in
      * progress.
      * 
      * @param keys
@@ -215,17 +244,18 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @return a virtual cache view with mappings from each key to the corresponding value, or to <tt>null</tt> if no
      *         mapping for this key exists
      * @throws ClassCastException
-     *             if any of the keys in the specified collection are of an inappropriate type for this cache
-     *             (optional).
+     *             if any of the keys in the specified iterable are of an inappropriate type for this cache (optional).
      * @throws NullPointerException
-     *             if the specified collection of keys is <tt>null</tt> or the specified collection contains a
+     *             if the specified iterable of keys is <tt>null</tt> or the specified iterable contains a
      *             <tt>null</tt>
      * @throws ContainerShutdownException
      *             if the cache has been shutdown
      */
-    Map<K, V> getAll(Iterable<? extends K> keys);
+    CacheView<K, V> getAll(Iterable<? extends K> keys);
 
-    //CacheView<K, V> getAllNew(Iterable<? extends K> keys);
+    // CacheView<K, V> getAll(K... keys);
+    // CacheView<K, V> getAllIn(Iterable<? extends K> keys);
+
     /**
      * Analogous to {@link #get(Object)} except that it returns an immutable {@link CacheEntry}.
      * 
@@ -263,6 +293,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * {@link ContainerShutdownException}.
      * 
      * @return a set view of the keys contained in this cache
+     * @see #view()
      */
     Set<K> keySet();
 
@@ -307,7 +338,8 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * return <tt>true</tt>.))
      * <p>
      * In most usage scenarios is more effective to specify a cache loader that implicitly loads values, rather then
-     * explicitly adding them to cache using <tt>put</tt>.
+     * explicitly adding them to cache using <tt>put</tt>, see
+     * {@link CacheLoadingConfiguration#setLoader(org.codehaus.cake.cache.service.loading.BlockingCacheLoader)}.
      * 
      * @param key
      *            key with which the specified value is to be associated.
@@ -324,6 +356,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      *             if the cache has been shutdown
      * @throws NullPointerException
      *             if the specified key or value is <tt>null</tt>.
+     * 
      */
     V put(K key, V value);
 
@@ -340,7 +373,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @throws ClassCastException
      *             if the class of a key or value in the specified map prevents it from being stored in this cache
      * @throws NullPointerException
-     *             if the specified map is null or if specified map contains null keys or values
+     *             if the specified map is null or if the specified map contain null keys or values
      * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws IllegalArgumentException
@@ -503,8 +536,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * Returns the number of elements in this cache. If the cache contains more than <tt>Integer.MAX_VALUE</tt>
      * elements, returns <tt>Integer.MAX_VALUE</tt>.
      * <p>
-     * If this cache has not been started calling this method will automatically start it. If this cache has been
-     * shutdown this method returns <tt>0</tt>.
+     * If this cache has been shutdown this method returns <tt>0</tt>.
      * 
      * @return the number of elements in this cache
      */
@@ -522,18 +554,39 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * If this cache has been shutdown this method returns an empty collection.
      * 
      * @return a collection view of the values contained in this cache
+     * @see #view()
      */
     Collection<V> values();
 
     /**
-     * Returns a new cache view for all of the entries currently in this cache, respecting any predicates that have been
-     * set using {@link #filter()}. The returned view can be used for extracting entries from the cache and performing
-     * calculations with the data in the cache.
+     * Returns a {@link CacheView} view of the mappings contained in this cache, respecting any predicates that have
+     * been set using {@link #filter()}. The set is backed by the cache, so changes to the cache are reflected in the
+     * set, and vice-versa. The returned view can be used for extracting entries from the cache and performing
+     * calculations on the data in the cache.
      * <p>
-     * The new view is backed by the cache, so changes to the cache are reflected in the view. Changing the data in a
-     * table alters the data shown in the view.
+     * <b>Sample usages.</b>
      * 
-     * @return a new view
+     * Given a cache with person names (String) as keys and the age of each person as a value, the following shows some
+     * examples.
+     * 
+     * <pre>
+     * Cache&lt;String, Integer&gt; cache = ...;
+     * Iterable&lt;String&gt; persons = Arrays.asList(&quot;Peter&quot;, &quot;Joe&quot;, &quot;Hahnah&quot;);
+     * 
+     * Returns a map with the name of the person mapping to the age of the person
+     * Map&lt;String, Integer&gt; personAge = cache.getAll(persons).keyValues().toMap();
+     * 
+     * Returns a sorted map (iterators will return entries in sorted order) with the name of the person mapping to the age of the person
+     * Map&lt;String, Integer&gt; personAgeSorted = cache.getAll(persons).orderByValuesMax().keyValues().toMap();
+     * 
+     * Returns the maximum age of any of the 3 persons 
+     * Integer maximumAge = cache.getAll(persons).values().max();
+     * 
+     * Returns the minimum age of any of the 3 persons
+     * Integer minimumAge = cache.getAll(persons).values().max();
+     * </pre>
+     * 
+     * @return a cache view of the entries contained in this cache
      */
     CacheView<K, V> view();
 

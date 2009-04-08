@@ -1,19 +1,21 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache.policy;
+
+import java.util.Map;
 
 import org.codehaus.cake.cache.policy.PolicyContext.ObjectAttachment;
 
@@ -28,7 +30,7 @@ import org.codehaus.cake.cache.policy.PolicyContext.ObjectAttachment;
  * @param <V>
  *            the type of mapped values
  */
-public abstract class AbstractDoubleLinkedReplacementPolicy<T> extends AbstractCakeReplacementPolicy<T> {
+public abstract class AbstractDoubleLinkedReplacementPolicy<T> extends AbstractReplacementPolicy<T> {
     private T first;
 
     private T last;
@@ -158,22 +160,26 @@ public abstract class AbstractDoubleLinkedReplacementPolicy<T> extends AbstractC
         last = entry;
     }
 
-    // /**
-    // * Used for debugging.
-    // */
-    // public void print() {
-    // T e = first;
-    // int count = 0;
-    // System.out.println("first: " + getKey(first));
-    // while (e != null) {
-    // System.out.println(count++ + " " + getKey(prevPointer.get(e)) + "<-" + getKey(e) + "<-"
-    // + getKey(nextPointer.get(e)));
-    // e = nextPointer.get(e);
-    // }
-    // System.out.println("last: " + getKey(last));
-    // System.out.println("-------------------");
-    //
-    // }
+//    /**
+//     * Used for debugging.
+//     */
+//    public void print() {
+//        T e = first;
+//        int count = 0;
+//        System.out.println("first: " + getKey(first));
+//        while (e != null) {
+//            System.out.println(count++ + " " + getKey(getPrevious(e)) + "<-" + getKey(e) + "<-"
+//                    + getKey(getNext(e)));
+//            e = getNext(e);
+//        }
+//        System.out.println("last: " + getKey(last));
+//        System.out.println("-------------------");
+//
+//    }
+//
+//    private Object getKey(Object o) {
+//        return o instanceof Map.Entry ? ((Map.Entry) o).getKey() : o;
+//    }
 
     /** Removes the specified entry from the linked list. */
     public void remove(T t) {

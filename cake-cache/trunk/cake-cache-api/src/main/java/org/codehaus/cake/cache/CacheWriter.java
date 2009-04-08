@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -36,7 +36,6 @@ import org.codehaus.cake.util.ops.Ops.Predicate;
  *            the type returned from methods, this is ordinarily determined by the {@link #WRITE_TRANSFORMER} used
  */
 public interface CacheWriter<K, V, R> {
-    // CacheWriter??
 
     /**
      * Used for transforming the CacheEntry that is created/updated/delete to something the user needs.
@@ -104,8 +103,8 @@ public interface CacheWriter<K, V, R> {
      * @throws ContainerShutdownException
      *             if the cache has been shutdown
      * @throws SecurityException
-     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation
-     *             of entries.
+     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation of
+     *             entries.
      * @throws UnsupportedOperationException
      *             if the <tt>put</tt> operation is not supported by this map, for example, if the writer has been
      *             optained from a {@link Cache#filter() filtered cache}.
@@ -156,8 +155,8 @@ public interface CacheWriter<K, V, R> {
      * @throws NullPointerException
      *             if the specified key or value is null
      * @throws SecurityException
-     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation
-     *             of entries.
+     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation of
+     *             entries.
      * @throws UnsupportedOperationException
      *             if the <tt>put</tt> operation is not supported by this map, for example, if the writer has been
      *             optained from a {@link Cache#filter() filtered cache}.
@@ -166,8 +165,7 @@ public interface CacheWriter<K, V, R> {
     R putIfAbsent(K key, V value);
 
     /**
-     * Analogoues to the {@link #putIfAbsent(Object, Object, MutableAttributeMap)} except that this method also takes a
-     * map of attributes.
+     * Analogous to {@link #putIfAbsent(Object, Object)} except that this method also takes an attribute map.
      * 
      * @param key
      *            key with which the specified value is to be associated
@@ -186,8 +184,8 @@ public interface CacheWriter<K, V, R> {
      * @throws NullPointerException
      *             if the specified key, value or attributemap is null is null
      * @throws SecurityException
-     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation
-     *             of entries.
+     *             If a cache security manager exists and its <tt>checkPermission</tt> method doesn't allow creation of
+     *             entries.
      * @throws UnsupportedOperationException
      *             if the <tt>put</tt> operation is not supported by this map
      * @see java.util.ConcurrentMap#putIfAbsent(Object, Object)
@@ -225,8 +223,8 @@ public interface CacheWriter<K, V, R> {
     /**
      * Removes the mapping for a key from this cache if it is present (optional operation). More formally, if this cache
      * contains a mapping from key <tt>k</tt> to value <tt>v</tt> such that
-     * <code>(key==null ?  k==null : key.equals(k))</code>, that mapping is removed. (The cache can contain at most
-     * one such mapping.)
+     * <code>(key==null ?  k==null : key.equals(k))</code>, that mapping is removed. (The cache can contain at most one
+     * such mapping.)
      * <p>
      * Returns the value to which this cache previously associated the key, or <tt>null</tt> if the cache contained no
      * mapping for the key.
@@ -235,8 +233,8 @@ public interface CacheWriter<K, V, R> {
      * 
      * @param key
      *            key whose mapping is to be removed from the cache
-     * @return the previous value associated with the specified <tt>key</tt>, or <tt>null</tt> if there was no
-     *         mapping for the specified <tt>key</tt>
+     * @return the previous value associated with the specified <tt>key</tt>, or <tt>null</tt> if there was no mapping
+     *         for the specified <tt>key</tt>
      * @throws UnsupportedOperationException
      *             if the <tt>remove</tt> operation is not supported by this cache
      * @throws ContainerShutdownException
@@ -367,7 +365,7 @@ public interface CacheWriter<K, V, R> {
      * Replace the entry for the specified key only if it is currently mapped to the given value. Acts as
      * 
      * <pre>
-     *  
+     * 
      *  if ((cache.containsKey(key) &amp;&amp; cache.get(key).equals(oldValue)) {
      *     return cache.put(key, newValue);
      * } else return null;

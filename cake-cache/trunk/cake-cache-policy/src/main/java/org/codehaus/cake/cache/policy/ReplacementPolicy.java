@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache.policy;
 
@@ -25,8 +25,9 @@ package org.codehaus.cake.cache.policy;
  * <p>
  * All general-purpose replacement policy implementation classes should provide atleast one of the two following
  * constructors: a void (no arguments) constructor, and a constructor with a single argument of type
- * <tt>PolicyContext</tt>, this context can be used to attach data each element. This will, for most cases, have
- * better performance then to keep this information in a list or map that needs to looked up each time.
+ * {@link PolicyContext}, this context can be used to attach data that the replacement policy needs to each element.
+ * This will, for most cases, have a lower memory footprint then if the replacement policy needed to keep this data 
+ * separately in a list or map that needs to looked up each time.
  * <p>
  * Normally instances of this interface are used together with a {@link org.codehaus.cake.cache.Cache}, but most of the
  * implementations in this package are generally purpose replacement policies that can easily be used within another
@@ -100,7 +101,7 @@ public interface ReplacementPolicy<T> {
      * <p>
      * If this replacement policy is used from a {@link org.codehaus.cake.cache.Cache}. An entry is accessed whenever
      * {@link org.codehaus.cake.cache.Cache#get(Object)}, {@link org.codehaus.cake.cache.Cache#getEntry(Object)},
-     * {@link org.codehaus.cake.cache.Cache#getAll(java.util.Collection)} or any of the get methods in
+     * {@link org.codehaus.cake.cache.Cache#getAllOld(java.util.Collection)} or any of the get methods in
      * {@link org.codehaus.cake.cache.service.crud.CrudReader} are called. Accessing an entry while using an iterator
      * returned by {@link org.codehaus.cake.cache.Cache#entrySet()}, {@link org.codehaus.cake.cache.Cache#keySet()} or
      * {@link org.codehaus.cake.cache.Cache#values()} will not result in this method being invoked. Neither will entries

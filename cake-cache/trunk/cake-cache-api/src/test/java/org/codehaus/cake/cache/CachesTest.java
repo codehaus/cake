@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache;
 
@@ -42,7 +42,6 @@ import org.codehaus.cake.util.attribute.DoubleAttribute;
 import org.codehaus.cake.util.attribute.FloatAttribute;
 import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
-import org.codehaus.cake.util.attribute.ObjectAttribute;
 import org.codehaus.cake.util.attribute.ShortAttribute;
 import org.codehaus.cake.util.ops.Predicates;
 import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
@@ -130,9 +129,9 @@ public class CachesTest {
         assertNull(emptyCache().getEntry(2));
         assertNull(emptyCache().peek(2));
         assertNull(emptyCache().peekEntry(2));
-        assertEquals(2, emptyCache().getAll(Arrays.asList(1, 2)).size());
-        assertTrue(emptyCache().getAll(Arrays.asList(1, 2)).containsKey(1));
-        assertNull(emptyCache().getAll(Arrays.asList(1, 2)).get(1));
+        assertEquals(2, emptyCache().getAllOld(Arrays.asList(1, 2)).size());
+        assertTrue(emptyCache().getAllOld(Arrays.asList(1, 2)).containsKey(1));
+        assertNull(emptyCache().getAllOld(Arrays.asList(1, 2)).get(1));
         assertFalse(Caches.emptyCache().equals(new HashSet()));
 
         try {

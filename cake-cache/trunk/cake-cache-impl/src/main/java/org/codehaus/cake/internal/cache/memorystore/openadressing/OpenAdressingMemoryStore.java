@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.cache.service.memorystore.IsCacheablePredicate;
@@ -21,6 +22,7 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.CachePredicates;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
+import org.codehaus.cake.internal.cache.memorystore.attribute.CachePolicyContext;
 import org.codehaus.cake.internal.cache.policy.FakePolicyContext;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
@@ -29,8 +31,6 @@ import org.codehaus.cake.internal.cache.processor.request.RemoveEntryRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.processor.request.Trimable;
-import org.codehaus.cake.internal.cache.service.attribute.InternalAttributeService;
-import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
@@ -59,7 +59,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
 
     final static OpenAdressingEntry TOMBSTONE = new OpenAdressingEntry(null, 0, null);
 
-    private final InternalAttributeService<K, V> attributeService;
+    private final OpenAdressingEntryFactory<K, V> entryFactory;
 
     /** Used for evicting entries if no eviction policy is set. */
     private int clock;
@@ -86,15 +86,15 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
     /** Whether or not we keep track of the volume in the cache. */
     private final boolean volumeEnabled;
 
-    public OpenAdressingMemoryStore(CacheConfiguration cacheConfiguration,
-            MemoryStoreConfiguration<K, V> storeConfiguration, InternalAttributeService<K, V> attributeService,
+    public OpenAdressingMemoryStore(CacheConfiguration<K, V> cacheConfiguration, CachePolicyContext<K, V> context,
+            MemoryStoreConfiguration<K, V> storeConfiguration, OpenAdressingEntryFactory<K, V> entryFactory,
             InternalCacheExceptionService<K, V> ies) {
         volumeEnabled = cacheConfiguration.getAllEntryAttributes().contains(CacheEntry.SIZE);
-        this.attributeService = attributeService;
+        this.entryFactory = entryFactory;
         this.ies = ies;
-        Class<? extends ReplacementPolicy> policy = storeConfiguration.getPolicy();
-        FakePolicyContext fpc = new FakePolicyContext(Object.class);
-        this.policy = ((MemorySparseAttributeService) attributeService).policy;
+
+        policy = context.getPolicy();
+        // this.policy = ((MemorySparseAttributeService) attributeService).policy;
         isCacheable = storeConfiguration.getIsCacheableFilter();
         updateConfiguration(storeConfiguration.getAttributes());
         evictor = storeConfiguration.getEvictor();
@@ -144,12 +144,9 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         V value = request.getValue();
         final OpenAdressingEntry<K, V> ne;
         if (existing == null) {
-            MutableAttributeMap atr = attributeService.create(key, value, request.getAttributes());
-            ne = newEntry(key, hash, value, atr);
+            ne = entryFactory.create(key, hash, value, request.getAttributes());
         } else {
-            MutableAttributeMap atr = attributeService.update(key, value, request.getAttributes(),
-                    ((TmpOpenAdressingEntry<K, V>) existing).getAttributes());
-            ne = newEntry(key, hash, value, atr);
+            ne = entryFactory.update(key, hash, value, request.getAttributes(), existing);
         }
         boolean evicted = false;
         if (existing == null) {
@@ -285,7 +282,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
 
     public void touch(CacheEntry<K, V> entry) {
         // Perhaps we can move .access to outer loop
-        attributeService.access(((TmpOpenAdressingEntry) entry).getAttributes());
+        entryFactory.access((OpenAdressingEntry) entry);
         if (policy != null) {
             policy.touch(entry);
         }
@@ -436,8 +433,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
     public boolean containsValue(Predicate<CacheEntry<K, V>> filter, Object value) {
         if (value == null) {
             throw new NullPointerException("value is null");
-        }
-        if (filter == null) {
+        } else if (filter == null) {
             return containsValue(value);
         }
         OpenAdressingEntry<K, V>[] table = this.table;
@@ -455,7 +451,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         if (policy != null) {
             OpenAdressingEntry<K, V> entry = (OpenAdressingEntry<K, V>) policy.evictNext();
             if (remove(entry.getKey()) == null) {
-                throw new AssertionError();
+                throw new AssertionError("Already removed " + entry.getKey());
             }
             removeEntry(entry, true);
             return entry;
@@ -588,10 +584,6 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
      */
     private OpenAdressingEntry<K, V>[] newElementArray(int s) {
         return new OpenAdressingEntry[s];
-    }
-
-    protected OpenAdressingEntry<K, V> newEntry(K key, int hash, V value, MutableAttributeMap attributes) {
-        return new TmpOpenAdressingEntry<K, V>(key, hash, value, attributes);
     }
 
     public void print() {

@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache.test.tck.core;
 
@@ -39,7 +39,7 @@ public class GetAll extends AbstractCacheTCKTest {
     @Test
     public void getAll() {
         c = newCache(4);
-        Map<Integer, String> map = c.getAll(asList(M1.getKey(), M5.getKey(), M4.getKey()));
+        Map<Integer, String> map = c.getAllOld(asList(M1.getKey(), M5.getKey(), M4.getKey()));
         assertEquals(3, map.size());
         assertEquals(M1.getValue(), map.get(M1.getKey()));
         assertTrue(map.entrySet().contains(M1));
@@ -58,20 +58,20 @@ public class GetAll extends AbstractCacheTCKTest {
     public void getAllLazyStart() {
         c = newCache(0);
         assertFalse(c.isStarted());
-        c.getAll(asList(M1.getKey(), M5.getKey(), M4.getKey()));
+        c.getAllOld(asList(M1.getKey(), M5.getKey(), M4.getKey()));
         checkLazystart();
     }
 
     @Test(expected = NullPointerException.class)
     public void getAllNPE() {
         c = newCache(5);
-        c.getAll(null);
+        c.getAllOld(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void getAllNPE1() {
         c = newCache(5);
-        c.getAll(Arrays.asList(1, null));
+        c.getAllOld(Arrays.asList(1, null));
     }
 
     /**
@@ -84,7 +84,7 @@ public class GetAll extends AbstractCacheTCKTest {
         c.shutdown();
 
         // should fail
-        c.getAll(asList(M1.getKey(), M5.getKey(), M4.getKey()));
+        c.getAllOld(asList(M1.getKey(), M5.getKey(), M4.getKey()));
     }
 
 }

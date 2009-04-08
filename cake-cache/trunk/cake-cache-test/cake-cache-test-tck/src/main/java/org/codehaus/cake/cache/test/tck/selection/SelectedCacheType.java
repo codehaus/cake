@@ -1,5 +1,16 @@
 package org.codehaus.cake.cache.test.tck.selection;
 
+import static org.codehaus.cake.util.attribute.AtrStubs.B_3;
+import static org.codehaus.cake.util.attribute.AtrStubs.B_FALSE;
+import static org.codehaus.cake.util.attribute.AtrStubs.C_1;
+import static org.codehaus.cake.util.attribute.AtrStubs.D_2;
+import static org.codehaus.cake.util.attribute.AtrStubs.F_2;
+import static org.codehaus.cake.util.attribute.AtrStubs.I_1;
+import static org.codehaus.cake.util.attribute.AtrStubs.I_3;
+import static org.codehaus.cake.util.attribute.AtrStubs.L_3;
+import static org.codehaus.cake.util.attribute.AtrStubs.O_2;
+import static org.codehaus.cake.util.attribute.AtrStubs.S_2;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,8 +30,6 @@ import org.codehaus.cake.util.ops.Ops.IntPredicate;
 import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.codehaus.cake.util.ops.Ops.ShortPredicate;
-
-import static org.codehaus.cake.util.attribute.AtrStubs.*;
 public enum SelectedCacheType {
     ObjectSelection(O_2) {
         public Cache<Object, Object> fillAndSelect(Cache<Object, Object> cache) {

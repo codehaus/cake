@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache;
 
@@ -231,13 +231,13 @@ public interface CacheSelector<K, V> {
      * 
      * @param <T>
      *            the type of keys that are accepted
-     * @param clazz
+     * @param type
      *            the type of keys that are accepted
      * @return a new filtered cache view where all keys are of the specified type
      * @throws NullPointerException
      *             if the specified class is null
      */
-    <T extends K> Cache<T, V> onKeyType(Class<T> c);
+    <T extends K> Cache<T, V> onKeyType(Class<T> type);
 
     /**
      * Returns a new filtered cache view containing only those entries where the {@link Entry#getValue() value} is
@@ -283,14 +283,15 @@ public interface CacheSelector<K, V> {
      * 
      * @param <T>
      *            the type of values that are accepted
-     * @param clazz
+     * @param type
      *            the type of values that are accepted
      * @return a new filtered cache view where all values are of the specified type
      * @throws NullPointerException
      *             if the specified class is null
      */
-    <T extends V> Cache<K, T> onValueType(Class<T> clazz);
+    <T extends V> Cache<K, T> onValueType(Class<T> type);
 }
 
 // Cache<K, V> onValue(String method, Predicate<?> filter);
 // <E> Cache<K, V> onValue(String method, Class<E> resultType, Predicate<? super E> filter);
+// <T extends K, U extends V> Cache<T, U> onType(Class<T> keyType, Class<U> valueType);

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.CacheView;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingEntry;
 import org.codehaus.cake.internal.cache.processor.request.AddEntriesRequest;

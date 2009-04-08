@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
+import org.codehaus.cake.internal.cache.memorystore.attribute.CachePolicyContext;
+import org.codehaus.cake.internal.cache.memorystore.openadressing.DefaultOpenAdressingEntryFactory;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingMemoryStore;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
@@ -37,6 +39,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     private Set<Map.Entry<K, V>> entrySet;
 
     private final Predicate<CacheEntry<K, V>> filter;
+
+    public CacheView<K, V> getAll(Iterable<? extends K> keys) {
+        throw new UnsupportedOperationException();
+    }
 
     private final CacheProcessor<K, V> processor;
     
@@ -117,7 +123,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
-    public Map<K, V> getAll(Iterable<? extends K> keys) {
+    public Map<K, V> getAllOld(Iterable<? extends K> keys) {
         return processor.getAll(filter, keys, CacheDataExtractor.ONLY_VALUE);
     }
 
@@ -284,6 +290,8 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         Composer composer = new Composer(Cache.class, configuration);
         //composer.registerImplementation(HashMapMemoryStore.class);
         composer.registerImplementation(ClassDefiner.class);
+        composer.registerImplementation(CachePolicyContext.class);
+        composer.registerImplementation(DefaultOpenAdressingEntryFactory.class);
         composer.registerImplementation(OpenAdressingMemoryStore.class);
         composer.registerInstance(CacheConfiguration.class, configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);

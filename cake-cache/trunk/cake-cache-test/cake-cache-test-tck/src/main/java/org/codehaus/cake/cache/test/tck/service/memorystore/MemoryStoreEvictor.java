@@ -1,17 +1,17 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache.test.tck.service.memorystore;
 
@@ -233,6 +233,26 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         assertValidSizeAndVolume();
     }
 
+    @Test
+    public void evictorVolumeAndSizew() {
+        conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
+            public void op(MemoryStoreService<Integer, String> a) {
+                a.trimToSize(-5);
+            }
+        });
+        conf.withMemoryStore().setPolicy(Policies.LRU);
+        conf.withMemoryStore().setMaximumSize(20);
+        init();
+        final Random r = new Random(1);
+        for (int i = 0; i < 100; i++) {
+            loader.add(i, "" + i);
+        }
+        for (int i = 0; i < 100; i++) {
+            c.get(r.nextInt(120));
+        }
+        assertValidSizeAndVolume();
+    }
+    
     @Test
     public void evictorNoSupportedOperations() {
         final AtomicBoolean hasRun = new AtomicBoolean();

@@ -1,21 +1,19 @@
 /*
- * Copyright 2008 Kasper Nielsen.
+ * Copyright 2008, 2009 Kasper Nielsen.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
  * 
- * http://cake.codehaus.org/LICENSE
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
  */
 package org.codehaus.cake.cache;
-
-import static org.codehaus.cake.internal.util.attribute.AttributeHelper.eq;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
@@ -25,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -45,6 +44,7 @@ import org.codehaus.cake.util.attribute.ShortAttribute;
 import org.codehaus.cake.util.collection.MapView;
 import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.collection.Views;
+import org.codehaus.cake.util.ops.PrimitivePredicates;
 import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.util.ops.Ops.BytePredicate;
 import org.codehaus.cake.util.ops.Ops.CharPredicate;
@@ -55,6 +55,7 @@ import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.codehaus.cake.util.ops.Ops.ShortPredicate;
 
+import static org.codehaus.cake.internal.util.attribute.AttributeHelper.eq;
 /**
  * Various Factory and utility methods.
  * 
@@ -63,21 +64,6 @@ import org.codehaus.cake.util.ops.Ops.ShortPredicate;
  */
 @SuppressWarnings("unchecked")
 public final class Caches {
-
-    public static void main(String[] args) {
-        Cache<String, Person> c = null;
-        Map<String, Person> m = c.getAll(Arrays.asList("Joe", "Peter", "Hannah"));
-//        c.getAll(Arrays.asList("Joe", "Peter", "Hannah")).values().reduce(new Reducer<Person>() {
-//            public Person op(Person a, Person b) {
-//                return a.age() > b.age() ? a : b;
-//            }
-//        }, null);
-
-    }
-
-    static interface Person {
-        int age();
-    }
 
     /**
      * The empty cache (immutable). This cache is serializable.
@@ -218,7 +204,7 @@ public final class Caches {
         }
 
         /** {@inheritDoc} */
-        public Map<K, V> getAll(Iterable<? extends K> keys) {
+        public Map<K, V> getAllOld(Iterable<? extends K> keys) {
             CollectionUtils.checkCollectionForNulls(keys);
             Map<K, V> result = new HashMap<K, V>();
             for (K key : keys) {
@@ -336,6 +322,10 @@ public final class Caches {
         /** {@inheritDoc} */
         public CacheCrud<K, V> withCrud() {
             return new CacheCrud<K, V>(this);
+        }
+
+        public CacheView<K, V> getAll(Iterable<? extends K> keys) {
+            return EMPTY_CACHE_VIEW;
         }
     }
 
@@ -478,8 +468,8 @@ public final class Caches {
     }
 
     /**
-     * A CacheEntry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>.
-     * This class may be convenient in methods that return thread-safe snapshots of key-value mappings.
+     * A CacheEntry maintaining an immutable key and value. This class does not support method <tt>setValue</tt>. This
+     * class may be convenient in methods that return thread-safe snapshots of key-value mappings.
      */
     static class SimpleImmutableEntry<K, V> implements CacheEntry<K, V>, Serializable {
 

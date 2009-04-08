@@ -14,7 +14,7 @@ import org.codehaus.cake.util.collection.View;
  * A cache view is a virtual view of a collection of cache entries.
  * <p>
  * On way to obtain i The two primary ways for optaining a cache view it either by calling
- * {@link Cache#getAll(Iterable)} or {@link Cache#view()}.
+ * {@link Cache#getAllOld(Iterable)} or {@link Cache#view()}.
  * <p>
  * 
  * 

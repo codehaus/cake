@@ -32,7 +32,7 @@
     </dependency>
         <dependency>
       <groupId>org.codehaus.cake.codegen</groupId>
-      <artifactId>cake-codegen</artifactId>
+      <artifactId>cake-codegen-attribute</artifactId>
       <version>${pom.version}</version>
     </dependency>
     <dependency>

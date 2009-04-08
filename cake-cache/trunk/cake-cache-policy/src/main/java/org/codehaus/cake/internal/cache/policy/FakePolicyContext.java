@@ -6,6 +6,7 @@ package org.codehaus.cake.internal.cache.policy;
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import org.codehaus.cake.cache.policy.PolicyContext;
 import org.codehaus.cake.util.attribute.Attribute;
@@ -14,7 +15,6 @@ public class FakePolicyContext<T> implements PolicyContext<T> {
 
     private final Class<T> type;
 
-    private List<Attribute> hardAttachments = new LinkedList<Attribute>();
     private List<Attribute> softAttachments = new LinkedList<Attribute>();
 
     public FakePolicyContext(Class<T> type) {
@@ -45,7 +45,7 @@ public class FakePolicyContext<T> implements PolicyContext<T> {
     }
 
     public void dependHard(Attribute<?> attribute) {
-        hardAttachments.add(attribute);
+
     }
 
     public void dependSoft(Attribute<?> attribute) {
@@ -65,7 +65,7 @@ public class FakePolicyContext<T> implements PolicyContext<T> {
     }
 
     static class BA implements BooleanAttachment {
-        final IdentityHashMap<Object, Boolean> map = new IdentityHashMap<Object, Boolean>();
+        final WeakIdentityHashMap<Object, Boolean> map = new WeakIdentityHashMap<Object, Boolean>();
 
         public boolean get(Object entry) {
             Boolean b = map.get(entry);
@@ -82,7 +82,7 @@ public class FakePolicyContext<T> implements PolicyContext<T> {
 
     static class IA implements IntAttachment {
         int defaultValue;
-        final IdentityHashMap<Object, Integer> map = new IdentityHashMap<Object, Integer>();
+        final WeakIdentityHashMap<Object, Integer> map = new WeakIdentityHashMap<Object, Integer>();
 
         IA(int defaultValue) {
             this.defaultValue = defaultValue;
@@ -102,14 +102,17 @@ public class FakePolicyContext<T> implements PolicyContext<T> {
     }
 
     static class OA implements ObjectAttachment {
-        final IdentityHashMap<Object, Object> map = new IdentityHashMap<Object, Object>();
+        final WeakIdentityHashMap<Object, Object> map = new WeakIdentityHashMap<Object, Object>();
 
         public Object get(Object entry) {
             return map.get(entry);
         }
 
         public void set(Object entry, Object value) {
-            map.put(entry, value);
+            if (value == null) {
+                map.remove(entry);
+            } else
+                map.put(entry, value);
         }
     }
 }
