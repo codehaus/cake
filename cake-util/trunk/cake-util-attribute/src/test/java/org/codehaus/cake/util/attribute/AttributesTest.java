@@ -51,11 +51,23 @@ public class AttributesTest {
     
     @Test
     public void from2() {
-        AttributeMap map=Attributes.from(AtrStubs.B_TRUE, false, AtrStubs.B_FALSE, false);
-        assertEquals(2,map.size());
+        AttributeMap map = Attributes.from(AtrStubs.B_TRUE, false, AtrStubs.B_FALSE, false);
+        assertEquals(2, map.size());
         assertTrue(map.contains(AtrStubs.B_TRUE));
         assertTrue(map.contains(AtrStubs.B_FALSE));
         assertFalse(map.get(AtrStubs.B_TRUE));
         assertFalse(map.get(AtrStubs.B_FALSE));
+    }
+    
+    @Test
+    public void from3() {
+        AttributeMap map = Attributes.from(AtrStubs.B_TRUE, false, AtrStubs.B_FALSE, false, AtrStubs.I_1, 34);
+        assertEquals(3, map.size());
+        assertTrue(map.contains(AtrStubs.B_TRUE));
+        assertTrue(map.contains(AtrStubs.B_FALSE));
+        assertTrue(map.contains(AtrStubs.I_1));
+        assertFalse(map.get(AtrStubs.B_TRUE));
+        assertFalse(map.get(AtrStubs.B_FALSE));
+        assertEquals(34, map.get(AtrStubs.I_1));
     }
 }

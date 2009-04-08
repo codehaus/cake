@@ -17,8 +17,6 @@ package org.codehaus.cake.internal.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ResourceBundle;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,8 +29,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class LogHelperTest {
-    static final ResourceBundle bundle = ResourceBundle
-            .getBundle("org.codehaus.cake.internal.util.loghelper");
+//    static final ResourceBundle bundle = ResourceBundle
+//            .getBundle("org.codehaus.cake.internal.util.loghelper");
 
     Document doc;
 

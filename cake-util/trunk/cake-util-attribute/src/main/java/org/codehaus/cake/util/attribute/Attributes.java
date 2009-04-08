@@ -68,11 +68,53 @@ public final class Attributes {
         map.put(attribute2, value2);
         return map;
     }
-    public static <T> AttributeMap from(AttributeMap attributes, Attribute<T> attribute, T value) {
-        DefaultAttributeMap map = new DefaultAttributeMap(attributes);
-        map.put(attribute, value);
+
+    /**
+     * Creates a new AttributeMap from the 3 specified attributes and respective values.
+     * 
+     * @param <T1>
+     *            the type of the first attribute
+     * @param <T2>
+     *            the type of the second attribute
+     * @param <T3>
+     *            the type of the third attribute
+     * @param attribute1
+     *            the first attribute
+     * @param value1
+     *            the value of the first attribute
+     * @param attribute2
+     *            the second attribute
+     * @param value2
+     *            the value of the second attribute
+     * @param attribute3
+     *            the third attribute
+     * @param value3
+     *            the value of the third attribute
+     * @return a new AttributeMap from the 3 specified attributes and respective values
+     */
+    public static <T1, T2, T3> AttributeMap from(Attribute<T1> attribute1, T1 value1, Attribute<T2> attribute2, T2 value2, Attribute<T3> attribute3, T3 value3) {
+        DefaultAttributeMap map = new DefaultAttributeMap();
+        map.put(attribute1, value1);
+        map.put(attribute2, value2);
+        map.put(attribute3, value3);
         return map;
     }
+//    /**
+//     * Creates a new AttributeMap from the specified attribute and value.
+//     * 
+//     * @param <T>
+//     *            the type of the attribute
+//     * @param attribute
+//     *            the attribute
+//     * @param value
+//     *            the value of the attribute
+//     * @return a new AttributeMap from the specified attribute and value
+//     */
+//    public static <T> AttributeMap from(AttributeMap attributes, Attribute<T> attribute, T value) {
+//        DefaultAttributeMap map = new DefaultAttributeMap(attributes);
+//        map.put(attribute, value);
+//        return map;
+//    }
 
     /**
      * Returns an immutable AttributeMap containing only the specified attribute mapping to the specified value.
@@ -120,7 +162,7 @@ public final class Attributes {
             return new ShortComparatorMin((ShortAttribute) attribute);
         } else {
             throw new IllegalArgumentException(
-                    "ObjectAttribute cannot be used for sorting, Attribute must extend ComparableObjectAttribute");
+                    "ObjectAttribute cannot be used for sorting, Attribute should instead extend ComparableObjectAttribute");
         }
     }
 

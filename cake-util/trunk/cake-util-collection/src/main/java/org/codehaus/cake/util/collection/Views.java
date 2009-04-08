@@ -28,7 +28,10 @@ import org.codehaus.cake.util.ops.Ops.Procedure;
 import org.codehaus.cake.util.ops.Ops.Reducer;
 
 public class Views {
-
+//
+//    Triple<Long,Long,Double> minMaxAverage(LongView view);
+//    Pair<Long,Long> minMax(LongView view);
+//    <T> Pair<T,T> minMax(View<T> view);
     public static final MapView EMPTY_MAP_VIEW = new EmptyMapView();
 
     public static final View EMPTY_VIEW = new EmptyView();
