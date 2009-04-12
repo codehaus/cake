@@ -30,7 +30,7 @@ import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
 import org.codehaus.cake.util.attribute.ShortAttribute;
 
-public class AttributeDecorator extends ClassEmitter {
+public class AttributeMapDecoratoredEmitter extends ClassEmitter {
 
     static final WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
     private final static String KEYSET_NAME = "keyset_ATR";
@@ -63,7 +63,8 @@ public class AttributeDecorator extends ClassEmitter {
 
     private int visibleAttributeCount = 0;
 
-    public AttributeDecorator(String name, Class<? extends AttributeMap> classToExtend, List<FieldDefinition> fields) {
+    public AttributeMapDecoratoredEmitter(String name, Class<? extends AttributeMap> classToExtend,
+            List<FieldDefinition> fields) {
         this.name = name;
         this.classToExtend = classToExtend;
         this.fields = fields;
@@ -113,7 +114,7 @@ public class AttributeDecorator extends ClassEmitter {
         // Static constructor
         StaticInitializer si = withStaticInitializer();
         si.pushConst(getType());
-        si.invokeStatic(AttributeDecorator.class, "remove", aarray, type(Class.class));
+        si.invokeStatic(AttributeMapDecoratoredEmitter.class, "remove", aarray, type(Class.class));
         si.storeLocal(0, aarray);
 
         // Create keyset
@@ -298,9 +299,18 @@ public class AttributeDecorator extends ClassEmitter {
         return conf.getName() + "_ATR";
     }
 
+    public static <T extends AttributeMap> Class<AttributeMap> create(ClassDefiner factory, Class<T> clazz, Package p,
+            String prefix, List<FieldDefinition> fields) {
+        AttributeMapDecoratoredEmitter attributeMapEmitter = new AttributeMapDecoratoredEmitter(factory
+                .createClassName(p, prefix), clazz, fields);
+        Class<AttributeMap> c = (Class<AttributeMap>) factory.define(attributeMapEmitter);
+        initializers.put(c, attributeMapEmitter.attributes.keySet().toArray(new Attribute[0]));
+        return c;
+    }
+
     public static Class<AttributeMap> decorate(ClassDefiner factory, String name, Class<? extends AttributeMap> clazz,
             List<FieldDefinition> fields) {
-        AttributeDecorator decorator = new AttributeDecorator(name, clazz, fields);
+        AttributeMapDecoratoredEmitter decorator = new AttributeMapDecoratoredEmitter(name, clazz, fields);
         Class<AttributeMap> c = (Class<AttributeMap>) factory.define(decorator);
         initializers.put(c, decorator.attributes.keySet().toArray(new Attribute[0]));
         return c;

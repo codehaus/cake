@@ -21,7 +21,16 @@ public class ClassEmitterMethodTest extends AbstractClassEmitterTest {
         };
         assertEquals("test", ((Callable) newInstance()).call());
     }
-
+    @Test
+    public void returnFieldFromMethod() throws Exception {
+        emitter = new TestEmitter(Object.class, Callable.class) {
+            {
+                withField("foo").setStatic().createString("test");
+                withMethodImplement(ClassDefiner.from(Callable.class, "call")).getStatic("foo");
+            }
+        };
+        assertEquals("test", ((Callable) newInstance()).call());
+    }
     @Test
     public void returnParameter() throws Exception {
         emitter = new TestEmitter(Object.class, IntToInt.class) {

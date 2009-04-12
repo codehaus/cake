@@ -41,7 +41,7 @@ import org.codehaus.cake.internal.asm.Type;
  * @author Chris Nokleberg
  * @author Eric Bruneton
  */
-class MethodDef {
+public class MethodDef {
 
     /**
      * The method name.
@@ -74,8 +74,10 @@ class MethodDef {
     /**
      * Creates a new {@link MethodDef}.
      * 
-     * @param name the method's name.
-     * @param desc the method's descriptor.
+     * @param name
+     *            the method's name.
+     * @param desc
+     *            the method's descriptor.
      */
     public MethodDef(final String name, final String desc) {
         this.name = name;
@@ -85,63 +87,56 @@ class MethodDef {
     /**
      * Creates a new {@link MethodDef}.
      * 
-     * @param name the method's name.
-     * @param returnType the method's return type.
-     * @param argumentTypes the method's argument types.
+     * @param name
+     *            the method's name.
+     * @param returnType
+     *            the method's return type.
+     * @param argumentTypes
+     *            the method's argument types.
      */
-    public MethodDef(
-        final String name,
-        final Type returnType,
-        final Type[] argumentTypes)
-    {
+    public MethodDef(final String name, final Type returnType, final Type[] argumentTypes) {
         this(name, Type.getMethodDescriptor(returnType, argumentTypes));
     }
 
     /**
-     * Returns a {@link MethodDef} corresponding to the given Java method
-     * declaration.
+     * Returns a {@link MethodDef} corresponding to the given Java method declaration.
      * 
-     * @param method a Java method declaration, without argument names, of the
-     *        form "returnType name (argumentType1, ... argumentTypeN)", where
-     *        the types are in plain Java (e.g. "int", "float",
-     *        "java.util.List", ...). Classes of the java.lang package can be
-     *        specified by their unqualified name; all other classes names must
-     *        be fully qualified.
-     * @return a {@link MethodDef} corresponding to the given Java method
-     *         declaration.
-     * @throws IllegalArgumentException if <code>method</code> could not get
-     *         parsed.
+     * @param method
+     *            a Java method declaration, without argument names, of the form
+     *            "returnType name (argumentType1, ... argumentTypeN)", where the types are in plain Java (e.g. "int",
+     *            "float", "java.util.List", ...). Classes of the java.lang package can be specified by their
+     *            unqualified name; all other classes names must be fully qualified.
+     * @return a {@link MethodDef} corresponding to the given Java method declaration.
+     * @throws IllegalArgumentException
+     *             if <code>method</code> could not get parsed.
      */
-    public static MethodDef getMethod(final String method)
-            throws IllegalArgumentException
-    {
+    public static MethodDef getMethod(final String method) throws IllegalArgumentException {
         return getMethod(method, false);
     }
 
+    public static MethodDef getMethod(final String name, final Class<?> returnType, final Class<?>... argumentTypes) {
+        return new MethodDef(name, Type.getMethodDescriptor(Type.getType(returnType), ClassEmitter.toTypes(argumentTypes)));
+    }
+
     /**
-     * Returns a {@link MethodDef} corresponding to the given Java method
-     * declaration.
+     * Returns a {@link MethodDef} corresponding to the given Java method declaration.
      * 
-     * @param method a Java method declaration, without argument names, of the
-     *        form "returnType name (argumentType1, ... argumentTypeN)", where
-     *        the types are in plain Java (e.g. "int", "float",
-     *        "java.util.List", ...). Classes of the java.lang package may be
-     *        specified by their unqualified name, depending on the
-     *        defaultPackage argument; all other classes names must be fully
-     *        qualified.
-     * @param defaultPackage true if unqualified class names belong to the
-     *        default package, or false if they correspond to java.lang classes.
-     *        For instance "Object" means "Object" if this option is true, or
-     *        "java.lang.Object" otherwise.
-     * @return a {@link MethodDef} corresponding to the given Java method
-     *         declaration.
-     * @throws IllegalArgumentException if <code>method</code> could not get
-     *         parsed.
+     * @param method
+     *            a Java method declaration, without argument names, of the form
+     *            "returnType name (argumentType1, ... argumentTypeN)", where the types are in plain Java (e.g. "int",
+     *            "float", "java.util.List", ...). Classes of the java.lang package may be specified by their
+     *            unqualified name, depending on the defaultPackage argument; all other classes names must be fully
+     *            qualified.
+     * @param defaultPackage
+     *            true if unqualified class names belong to the default package, or false if they correspond to
+     *            java.lang classes. For instance "Object" means "Object" if this option is true, or "java.lang.Object"
+     *            otherwise.
+     * @return a {@link MethodDef} corresponding to the given Java method declaration.
+     * @throws IllegalArgumentException
+     *             if <code>method</code> could not get parsed.
      */
-    public static MethodDef getMethod(
-        final String method,
-        final boolean defaultPackage) throws IllegalArgumentException
-    {
+    public static MethodDef getMethod(final String method, final boolean defaultPackage)
+            throws IllegalArgumentException {
         int space = method.indexOf(' ');
         int start = method.indexOf('(', space) + 1;
         int end = method.indexOf(')', start);

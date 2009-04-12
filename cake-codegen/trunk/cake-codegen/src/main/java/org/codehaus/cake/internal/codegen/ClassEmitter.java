@@ -35,11 +35,11 @@ public abstract class ClassEmitter {
         try {
             Class c = Class.forName("org.codehaus.cake.internal.asm.util.TraceClassVisitor");
             java.lang.reflect.Constructor<ClassVisitor> con = c.getConstructor(ClassVisitor.class, PrintWriter.class);
-            cw= con.newInstance(writer,  new PrintWriter(System.out));
-           // cw = new TraceClassVisitor(writer, new PrintWriter(System.out));
+            cw = con.newInstance(writer, new PrintWriter(System.out));
+            // cw = new TraceClassVisitor(writer, new PrintWriter(System.out));
 
         } catch (ClassNotFoundException e) {
-            cw=writer;
+            cw = writer;
         } catch (NoSuchMethodException e) {
             throw new Error(e);
         } catch (InstantiationException e) {
@@ -127,10 +127,20 @@ public abstract class ClassEmitter {
         return new MethodHeader(name, access);
     }
 
+    public Method withMethodImplement(java.lang.reflect.Method method) {
+        getType();
+        finish();
+        Method m = new Method(ClassEmitter.this, method, true);
+        current = m;
+        return m;
+    }
+
     public MethodHeader withMethodPublic(String name) {
         return withMethod(name, Opcodes.ACC_PUBLIC);
     }
-
+    public MethodHeader withMethodPrivate(String name) {
+        return withMethod(name, Opcodes.ACC_PRIVATE);
+    }
     public StaticInitializer withStaticInitializer() {
         if (staticInitializerGenerated) {
             throw new IllegalStateException("Can only generate one static initializer");
@@ -385,7 +395,7 @@ public abstract class ClassEmitter {
 
         public FieldHeader setPrivate() {
             checkState();
-            access += Opcodes.ACC_PUBLIC;
+            access += Opcodes.ACC_PRIVATE;
             return this;
         }
 
@@ -475,5 +485,29 @@ public abstract class ClassEmitter {
                 withConstructor().createDefault();
             }
         }
+    }
+
+    public java.lang.reflect.Method findMetod(Class<?> from, String methodName, Class<?>... args) {
+        try {
+            return from.getMethod(methodName, args);
+        } catch (NoSuchMethodException e) {}
+
+        // See if we get just one hit for method name
+        if (args.length == 0) {
+            java.lang.reflect.Method onehit = null;
+            for (java.lang.reflect.Method m : from.getMethods()) {
+                if (m.getName().equals(methodName)) {
+                    if (onehit != null) {
+                        throw new Error("Internal Error (This should never happen), method does not exist [name="
+                                + methodName + "]");
+                    }
+                    onehit = m;
+                }
+            }
+            if (onehit != null) {
+                return onehit;
+            }
+        }
+        throw new Error("Internal Error (This should never happen), method does not exist [name=" + methodName + "]");
     }
 }

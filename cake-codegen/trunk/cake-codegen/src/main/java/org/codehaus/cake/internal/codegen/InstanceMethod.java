@@ -11,10 +11,9 @@ public class InstanceMethod<T extends InstanceMethod<?>> extends AbstractMethod<
         super(emitter, access, name, signature, returnType, types);
     }
 
-   public Type getReturnType() {
+    public Type getReturnType() {
         return returnType;
     }
-    
 
     T loadArg(int... args) {
         for (int i : args) {
@@ -34,6 +33,13 @@ public class InstanceMethod<T extends InstanceMethod<?>> extends AbstractMethod<
 
     public void jumpIfEqual(Class<?> type, Label label) {
         adaptor.ifCmp(type(type), GeneratorAdapter.EQ, label);
+    }
+
+    public T loadArgs(int... args) {
+        for (int arg : args) {
+            adaptor.loadArg(arg);
+        }
+        return op(Operation.LOAD);
     }
 
     public T loadArg(int arg) {

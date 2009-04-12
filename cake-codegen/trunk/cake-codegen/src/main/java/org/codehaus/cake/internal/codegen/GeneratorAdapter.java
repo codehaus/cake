@@ -79,7 +79,7 @@ import org.codehaus.cake.internal.asm.Type;
  * @author Chris Nokleberg
  * @author Eric Bruneton
  */
-class GeneratorAdapter extends LocalVariablesSorter {
+public class GeneratorAdapter extends LocalVariablesSorter {
 
      static final String CLDESC = "Ljava/lang/Class;";
 

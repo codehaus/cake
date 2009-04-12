@@ -23,7 +23,7 @@ public class AttributeDecoratorTest {
         ClassDefiner def = new ClassDefiner();
 
         FieldDefinition conf = new FieldDefinition(ba.getType(), ba.getName()).setAttribute(ba);
-        Class<AttributeMap> c = AttributeDecorator.decorate(def, "any", SingleElement.class, Arrays.asList(conf));
+        Class<AttributeMap> c = AttributeMapDecoratoredEmitter.decorate(def, "any", SingleElement.class, Arrays.asList(conf));
         assertEquals(2, c.getConstructors().length);
         assertNotNull(c.getConstructor(Boolean.TYPE));
         assertNotNull(c.getConstructor(Object.class, Boolean.TYPE));
@@ -40,7 +40,7 @@ public class AttributeDecoratorTest {
         ClassDefiner def = new ClassDefiner();
 
         FieldDefinition conf = new FieldDefinition(la.getType(), la.getName()).setAttribute(la);
-        Class<AttributeMap> c = AttributeDecorator.decorate(def, "any", SingleElement.class, Arrays.asList(conf));
+        Class<AttributeMap> c = AttributeMapDecoratoredEmitter.decorate(def, "any", SingleElement.class, Arrays.asList(conf));
         assertEquals(2, c.getConstructors().length);
         assertNotNull(c.getConstructor(Long.TYPE));
         assertNotNull(c.getConstructor(Object.class, Long.TYPE));

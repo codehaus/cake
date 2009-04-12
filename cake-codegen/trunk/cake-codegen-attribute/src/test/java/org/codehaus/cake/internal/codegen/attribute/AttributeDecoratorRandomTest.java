@@ -43,7 +43,7 @@ public class AttributeDecoratorRandomTest extends AtrStubs {
     }
 
     void run(LinkedHashMap<FieldDefinition, Object> m) throws Exception {
-        Class<AttributeMap> c = AttributeDecorator.decorate(def, "any" + System.nanoTime(), SingleElement.class,
+        Class<AttributeMap> c = AttributeMapDecoratoredEmitter.decorate(def, "any" + System.nanoTime(), SingleElement.class,
                 new ArrayList<FieldDefinition>(m.keySet()));
         assertEquals(2, c.getConstructors().length);
 

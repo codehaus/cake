@@ -26,7 +26,7 @@ public class SingleElementDecorated extends SingleElement {
     }
 
     static {
-        Attribute[] a = AttributeDecorator.remove(SingleElementDecorated.class);
+        Attribute[] a = AttributeMapDecoratoredEmitter.remove(SingleElementDecorated.class);
         keyset_ATR = new HashSet(Arrays.asList(a));
         ba_ATR = (BooleanAttribute) a[0];
     }
