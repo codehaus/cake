@@ -7,7 +7,6 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.memorystore.ExportedSynchronizedMemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.SynchronizedCacheProcessor;
-import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
 import org.codehaus.cake.internal.cache.service.memorystore.views.SynchronizedCollectionViewFactory;
@@ -174,7 +173,6 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
         composer.registerImplementation(DefaultScheduledExecutorService.class);
         composer.registerImplementation(DefaultForkJoinPool.class);
 
-        composer.registerImplementation(MemorySparseAttributeService.class);
         if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(ThreadSafeCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);

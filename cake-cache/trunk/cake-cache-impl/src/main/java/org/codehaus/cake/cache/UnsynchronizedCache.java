@@ -5,7 +5,6 @@ import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.UnsynchronizedCacheProcessor;
-import org.codehaus.cake.internal.cache.service.attribute.MemorySparseAttributeService;
 import org.codehaus.cake.internal.cache.service.loading.DefaultCacheLoadingService;
 import org.codehaus.cake.internal.cache.service.loading.UnsynchronizedCacheLoader;
 import org.codehaus.cake.internal.cache.service.memorystore.views.UnsynchronizedCollectionViewFactory;
@@ -80,9 +79,7 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
         composer.registerImplementation(UnsynchronizedCacheProcessor.class);
 
         // composer.registerImplementation(DefaultAttributeService.class);
-        composer.registerImplementation(MemorySparseAttributeService.class);
-
-        if (configuration.withLoading().getLoader() != null) {
+          if (configuration.withLoading().getLoader() != null) {
             composer.registerImplementation(UnsynchronizedCacheLoader.class);
             composer.registerImplementation(DefaultCacheLoadingService.class);
         }

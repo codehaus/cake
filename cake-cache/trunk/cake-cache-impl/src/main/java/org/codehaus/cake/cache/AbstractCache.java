@@ -9,6 +9,7 @@ import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.attribute.CachePolicyContext;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.DefaultOpenAdressingEntryFactory;
+import org.codehaus.cake.internal.cache.memorystore.openadressing.EnhancedOpenAdressingEntryFactory;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingMemoryStore;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
@@ -291,7 +292,8 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         //composer.registerImplementation(HashMapMemoryStore.class);
         composer.registerImplementation(ClassDefiner.class);
         composer.registerImplementation(CachePolicyContext.class);
-        composer.registerImplementation(DefaultOpenAdressingEntryFactory.class);
+//        composer.registerImplementation(DefaultOpenAdressingEntryFactory.class);
+        composer.registerImplementation(EnhancedOpenAdressingEntryFactory.class);
         composer.registerImplementation(OpenAdressingMemoryStore.class);
         composer.registerInstance(CacheConfiguration.class, configuration);
         composer.registerImplementation(DefaultCacheExceptionService.class);
