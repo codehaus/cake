@@ -2,7 +2,6 @@ package org.codehaus.cake.internal.cache.memorystore.openadressing;
 
 import org.codehaus.cake.internal.cache.memorystore.attribute.CachePolicyContext;
 import org.codehaus.cake.internal.codegen.ClassDefiner;
-import org.codehaus.cake.internal.codegen.attribute.AttributeMapDecoratoredEmitter;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.attribute.AttributeMap;
@@ -28,10 +27,6 @@ public class EnhancedOpenAdressingEntryFactory<K, V> implements OpenAdressingEnt
         return delegateTo.create(key, hash, value, params);
     }
 
-    public void initialize() {
-        delegateTo.initialize();
-    }
-
     public OpenAdressingEntry<K, V> update(K key, int hash, V value, AttributeMap params,
             OpenAdressingEntry<K, V> existing) {
         return delegateTo.update(key, hash, value, params, existing);
@@ -46,13 +41,9 @@ public class EnhancedOpenAdressingEntryFactory<K, V> implements OpenAdressingEnt
             return new OpenAdressingEntry<K, V>(key, hash, value);
         }
 
-        public void initialize() {
-        }
-
         public OpenAdressingEntry<K, V> update(K key, int hash, V value, AttributeMap params,
                 OpenAdressingEntry<K, V> existing) {
             return new OpenAdressingEntry<K, V>(key, hash, value);
         }
-
     }
 }

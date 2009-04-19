@@ -4,20 +4,18 @@
 package org.codehaus.cake.cache.examples.attributes;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
-public class CostDecoratedLoader<K, V> implements BlockingCacheLoader<K, V> {
-    private final BlockingCacheLoader<K, V> realLoader;
+public class CostDecoratedLoader {
+  
 
-    public CostDecoratedLoader(BlockingCacheLoader<K, V> realLoader) {
-        this.realLoader = realLoader;
-    }
-
-    public V load(K key, MutableAttributeMap attributes) throws Exception {
+    @CacheLoader
+    public String load(String key, MutableAttributeMap attributes) throws Exception {
         long start = System.nanoTime();
-        V v = realLoader.load(key, attributes);
+        //DO THE ACTUAL LOADING
+        String result=key.toLowerCase();
         attributes.put(CacheEntry.COST, System.nanoTime() - start);
-        return v;
+        return result;
     }
 }

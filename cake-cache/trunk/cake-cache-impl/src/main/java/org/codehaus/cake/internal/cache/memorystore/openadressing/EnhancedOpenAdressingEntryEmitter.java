@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.WeakHashMap;
-import java.util.concurrent.TimeoutException;
 
 import org.codehaus.cake.internal.asm.Label;
 import org.codehaus.cake.internal.asm.Opcodes;
@@ -33,24 +32,22 @@ import org.codehaus.cake.util.attribute.ObjectAttribute;
 
 public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
 
-    static final WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
-    private static final java.lang.reflect.Method INITIALIZE = from(EnhancedOpenAdressingEntryFactory.class,
-            "initialize");
-    private static final java.lang.reflect.Method CREATE = from(EnhancedOpenAdressingEntryFactory.class, "create");
-    private static final java.lang.reflect.Method UPDATE = from(EnhancedOpenAdressingEntryFactory.class, "update");
     private static final java.lang.reflect.Method ACCESS = from(EnhancedOpenAdressingEntryFactory.class, "access");
+    private static final java.lang.reflect.Method CREATE = from(EnhancedOpenAdressingEntryFactory.class, "create");
+    static final WeakHashMap<Class<?>, Attribute<?>[]> initializers = new WeakHashMap<Class<?>, Attribute<?>[]>();
+    private static final java.lang.reflect.Method UPDATE = from(EnhancedOpenAdressingEntryFactory.class, "update");
 
-    private final String name;
-
-    private Class<?> entryClass;
-
-    private final CachePolicyContext<?, ?> context;
-    private final CacheFieldDefinition<?>[] cacheDefs;
     private final Class<?>[] arguments;
 
+    private final CacheFieldDefinition<?>[] cacheDefs;
+
+    private final CachePolicyContext<?, ?> context;
     private int createReaders;
     private int createReadFromAttributeMapAndTakeTime;
+
+    private Class<?> entryClass;
     private int modifyReadFromAttributeMapAndTakeTime;
+    private final String name;
 
     public EnhancedOpenAdressingEntryEmitter(String name, Class entryClass, CachePolicyContext<?, ?> policyContext) {
         this.name = name;
@@ -78,63 +75,26 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
         arguments = constructor.toArray(new Class[constructor.size()]);
     }
 
-    @Override
-    public void define() {
-        withClass().setPublic().setSuper(Object.class).addInterfaces(OpenAdressingEntryFactory.class).create(name);
-
-        withField("ies").setFinal().setPrivate().create(InternalExceptionService.class);
-        withField("clock").setFinal().setPrivate().create(Clock.class);
-
-        initializeAttributes();
-
-        withConstructor().setPublic().create(InternalExceptionService.class, Clock.class).invokeEmptySuper()
-                .putFieldArg("ies", 0).putFieldArg("clock", 1);
-
-        withMethodImplement(INITIALIZE);
-
-        addCreate();
-        addUpdate();
-        addAccess();
-    }
-
-    void initializeAttributes() {
-        for (CacheFieldDefinition def : cacheDefs) {
-            withField(atrName(def)).setPrivate().setStatic().setFinal()
-                    .create(getAClass(def.getAttribute().getClass()));
-            withField(atrDefault(def)).setPrivate().setStatic().setFinal().create(def.getAttribute().getType());
-
-        }
-        // Static constructor
-        Type aarray = Type.getType(new Attribute[0].getClass());
-        StaticInitializer si = withStaticInitializer();
-        si.pushConst(getType());
-        si.invokeStatic(EnhancedOpenAdressingEntryEmitter.class, "remove", aarray, type(Class.class));
-        si.storeLocal(0, aarray);
-
-        int count = 0;
-        for (CacheFieldDefinition def : cacheDefs) {
-            si.arrayLoadLocal(0, count++);
-            si.checkCast(getAClass(def.getAttribute().getClass())).putStatic(atrName(def));
-            // Default values;
-            si.getStatic(atrName(def));
-            if (def.getAttribute() instanceof ObjectAttribute) {
-                si.invokeVirtual(ObjectAttribute.class, "getDefault", Object.class);
-                si.checkCast(def.getAttribute().getType());
-            } else {
-                si.invokeVirtual(getAClass(def.getAttribute().getClass()), "getDefaultValue", def.getAttribute()
-                        .getType());
+    void addAccess() {
+        Method m = withMethodImplement(ACCESS);
+        m.loadArg(0).checkCast(entryClass).storeLocal(2, type(entryClass));
+        CacheFieldDefinition timeIndex = null;
+        for (CacheFieldDefinition<?> def : cacheDefs) {
+            if (def.getAccessAction() != AccessAction.NOTHING) {
+                if (def.getAccessAction() == AccessAction.TIMESTAMP) {
+                    m.loadLocal(2);
+                    invokeClock(m);
+                    m.adaptor.visitFieldInsn(Opcodes.PUTFIELD, type(entryClass).getInternalName(), def.getName(), def
+                            .getTType().getDescriptor());
+                } else {
+                    m.loadLocal(2).dup();
+                    m.adaptor.getField(type(entryClass), def.getName(), def.getTType());
+                    m.adaptor.visitInsn(Opcodes.LCONST_1);
+                    m.adaptor.visitInsn(Opcodes.LADD);
+                    m.adaptor.visitFieldInsn(Opcodes.PUTFIELD, type(entryClass).getInternalName(), def.getName(), def
+                            .getTType().getDescriptor());
+                }
             }
-            si.putStatic(atrDefault(def));
-        }
-    }
-
-    private void getFromAttributeMap(CacheFieldDefinition<?> def, Method m) {
-        if (getAClass(def.getAttribute().getClass()).equals(ObjectAttribute.class)) {
-            m.loadArg(3).getStatic(atrName(def)).invoke(AttributeMap.class, "get", Attribute.class);
-            m.checkCast(def.getType());
-        } else {
-            m.loadArg(3).getStatic(atrName(def)).invoke(AttributeMap.class, "get",
-                    getAClass(def.getAttribute().getClass()));
         }
     }
 
@@ -165,17 +125,13 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
                 index = m.adaptor.newLocal(def.getTType());
                 map.put(def, index);
                 timeIndex = onCreate(m, def, timeIndex, index);
-
-                // AttributeDefinition ad = new AttributeDefinition(def, Action.from(def.getCreateAction()));
-                // timeIndex = ad.calculateValue(m, timeIndex, index);
             }
         }
         // Default values;
         for (Iterator<CacheFieldDefinition<?>> iterator = defs.iterator(); iterator.hasNext();) {
             CacheFieldDefinition<?> def = iterator.next();
-            if (def.getCreateAction() == CreateAction.DEFAULT
-                    || def.getCreateAction() == CreateAction.SET_VALUE
-                    || (def.getCreateAction() == CreateAction.TIMESTAMP && (createReadFromAttributeMapAndTakeTime < 2 || timeIndex > -1))) {
+            if (def.getCreateAction() != CreateAction.TIMESTAMP || timeIndex > -1
+                    || createReadFromAttributeMapAndTakeTime < 2) {
                 iterator.remove();
                 index = m.getAdapter().newLocal(def.getTType());
 
@@ -189,9 +145,6 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
                 m.getAdapter().goTo(nextnext);
                 m.visitLabel(next);
                 timeIndex = onCreate(m, def, timeIndex, index);
-                //
-                // AttributeDefinition ad = new AttributeDefinition(def, Action.from(def.getCreateAction()));
-                // timeIndex = ad.calculateValue(m, timeIndex, index);
                 m.visitLabel(nextnext);
             }
         }
@@ -217,48 +170,6 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
         m.invokeConstructor(entryClass, arguments);
     }
 
-    void clock(Method m, Label end, int i, int[] indexs, CacheFieldDefinition<?>[] a) {
-        Label next = new Label();
-        m.loadArg(3).getStatic(atrName(a[i])).invoke(AttributeMap.class, "contains");
-        m.getAdapter().visitJumpInsn(Opcodes.IFEQ, next);// if contains attribute jump
-        getFromAttributeMap(a[i], m);
-        m.storeLocal(indexs[i], a[i].getTType());
-        if (i + 1 < indexs.length) {
-            clock(m, end, i + 1, indexs, a);
-        }
-        m.visitLabel(next);
-        invokeClock(m).storeLocal(indexs[i], a[i].getTType()); // read clock once
-        for (int j = i + 1; j < a.length; j++) {
-            m.loadArg(3).getStatic(atrName(a[j])).invoke(AttributeMap.class, "contains");
-            Label n = new Label();
-            Label n1 = new Label();
-            if (j + 1 == a.length) {
-                n1 = end;
-            }
-            m.getAdapter().visitJumpInsn(Opcodes.IFEQ, n);
-            getFromAttributeMap(a[j], m);
-            m.storeLocal(indexs[j], a[j].getTType());
-            m.getAdapter().goTo(n1);
-            m.visitLabel(n);
-            // assign from previous index
-            m.loadLocal(indexs[i]).storeLocal(indexs[j], a[j].getTType());
-            if (j + 1 < a.length) {
-                m.visitLabel(n1);
-            }
-        }
-        if (i != 0) {
-            m.getAdapter().goTo(end);
-        }
-
-    }
-
-    void readClock(Method m, CacheFieldDefinition<?> def, int index, Label next) {
-        m.loadArg(3).getStatic(atrName(def)).invoke(AttributeMap.class, "contains");
-        m.getAdapter().visitJumpInsn(Opcodes.IFEQ, next);
-        getFromAttributeMap(def, m);
-        m.storeLocal(index, def.getTType());
-    }
-
     void addCreateNoParams() {
         Method m = withMethodPrivate("create").setReturnType(OpenAdressingEntry.class).create(Object.class,
                 Integer.TYPE, Object.class);
@@ -276,87 +187,6 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
             index += def.getTType().getSize();
         }
         m.invokeConstructor(entryClass, arguments);
-    }
-
-    int onCreate(Method m, CacheFieldDefinition<?> def, int clockIndex, int index) {
-        switch (def.getCreateAction()) {
-        case SET_VALUE:
-            m.pushConst(def.getInitialValue());
-            break;
-        case DEFAULT:
-            m.getStatic(atrDefault(def));
-            break;
-        case TIMESTAMP:
-            if (clockIndex == -1) {
-                invokeClock(m);
-                clockIndex = index;
-            } else {
-                m.loadLocal(clockIndex);
-            }
-        }
-        m.storeLocal(index, def.getTType());
-        return clockIndex;
-    }
-
-    int onModify(Method m, int entryIndex, CacheFieldDefinition<?> def, int clockIndex, int index) {
-        switch (def.getModifyAction()) {
-        case INCREMENT:
-            if (entryIndex > 0) {
-                m.loadLocal(entryIndex);
-            } else {
-                m.loadArg(3);
-            }
-            m.adaptor.getField(type(entryClass), def.getName(), def.getTType());
-            m.adaptor.visitInsn(Opcodes.LCONST_1);
-            m.adaptor.visitInsn(Opcodes.LADD);
-            break;
-        case DEFAULT:
-            m.getStatic(atrDefault(def));
-            break;
-        case TIMESTAMP:
-            if (clockIndex == -1) {
-                invokeClock(m);
-                clockIndex = index;
-            } else {
-                m.loadLocal(clockIndex);
-            }
-            break;
-        case KEEP_EXISTING:
-            if (entryIndex > 0) {
-                m.loadLocal(entryIndex);
-            } else {
-                m.loadArg(3);
-            }
-            m.adaptor.getField(type(entryClass), def.getName(), def.getTType());
-            break;
-        }
-        m.storeLocal(index, def.getTType());
-        return clockIndex;
-    }
-
-    void addUpdateNoParams() {
-        Method m = withMethodPrivate("update").setReturnType(OpenAdressingEntry.class).create(Object.class,
-                Integer.TYPE, Object.class, entryClass);
-        int timeIndex = -1;
-        int index = 5;
-        for (CacheFieldDefinition<?> def : cacheDefs) {
-            index = m.adaptor.newLocal(def.getTType());
-            // System.err.println("XXXXXXXXXXXXXXXXXXX" + index);
-            timeIndex = onModify(m, -1, def, timeIndex, index);
-        }
-        m.newInstance(entryClass).dup();
-        m.loadArgs(0, 1, 2);
-        index = 5;
-        for (CacheFieldDefinition<?> def : cacheDefs) {
-            m.adaptor.loadLocal(index);
-            index += def.getTType().getSize();
-        }
-        m.invokeConstructor(entryClass, arguments);
-    }
-
-    static Method invokeClock(Method m) {
-        m.loadThis().getStatic("clock").invokeVirtual(Clock.class, "timeOfDay", Long.TYPE);
-        return m;
     }
 
     void addUpdate() {
@@ -434,27 +264,187 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
         m.invokeConstructor(entryClass, arguments);
     }
 
-    void addAccess() {
-        Method m = withMethodImplement(ACCESS);
-        m.loadArg(0).checkCast(entryClass).storeLocal(2, type(entryClass));
-        CacheFieldDefinition timeIndex = null;
+    void addUpdateNoParams() {
+        Method m = withMethodPrivate("update").setReturnType(OpenAdressingEntry.class).create(Object.class,
+                Integer.TYPE, Object.class, entryClass);
+        int timeIndex = -1;
+        int index = 5;
         for (CacheFieldDefinition<?> def : cacheDefs) {
-            if (def.getAccessAction() != AccessAction.NOTHING) {
-                if (def.getAccessAction() == AccessAction.TIMESTAMP) {
-                    m.loadLocal(2);
-                    invokeClock(m);
-                    m.adaptor.visitFieldInsn(Opcodes.PUTFIELD, type(entryClass).getInternalName(), def.getName(), def
-                            .getTType().getDescriptor());
-                } else {
-                    m.loadLocal(2).dup();
-                    m.adaptor.getField(type(entryClass), def.getName(), def.getTType());
-                    m.adaptor.visitInsn(Opcodes.LCONST_1);
-                    m.adaptor.visitInsn(Opcodes.LADD);
-                    m.adaptor.visitFieldInsn(Opcodes.PUTFIELD, type(entryClass).getInternalName(), def.getName(), def
-                            .getTType().getDescriptor());
-                }
+            index = m.adaptor.newLocal(def.getTType());
+            timeIndex = onModify(m, -1, def, timeIndex, index);
+        }
+        m.newInstance(entryClass).dup();
+        m.loadArgs(0, 1, 2);
+        index = 5;
+        for (CacheFieldDefinition<?> def : cacheDefs) {
+            m.adaptor.loadLocal(index);
+            index += def.getTType().getSize();
+        }
+        m.invokeConstructor(entryClass, arguments);
+    }
+
+    void clock(Method m, Label end, int i, int[] indexs, CacheFieldDefinition<?>[] a) {
+        Label next = new Label();
+        m.loadArg(3).getStatic(atrName(a[i])).invoke(AttributeMap.class, "contains");
+        m.getAdapter().visitJumpInsn(Opcodes.IFEQ, next);// if contains attribute jump
+        getFromAttributeMap(a[i], m);
+        m.storeLocal(indexs[i], a[i].getTType());
+        if (i + 1 < indexs.length) {
+            clock(m, end, i + 1, indexs, a);
+        }
+        m.visitLabel(next);
+        invokeClock(m).storeLocal(indexs[i], a[i].getTType()); // read clock once
+        for (int j = i + 1; j < a.length; j++) {
+            m.loadArg(3).getStatic(atrName(a[j])).invoke(AttributeMap.class, "contains");
+            Label n = new Label();
+            Label n1 = new Label();
+            if (j + 1 == a.length) {
+                n1 = end;
+            }
+            m.getAdapter().visitJumpInsn(Opcodes.IFEQ, n);
+            getFromAttributeMap(a[j], m);
+            m.storeLocal(indexs[j], a[j].getTType());
+            m.getAdapter().goTo(n1);
+            m.visitLabel(n);
+            // assign from previous index
+            m.loadLocal(indexs[i]).storeLocal(indexs[j], a[j].getTType());
+            if (j + 1 < a.length) {
+                m.visitLabel(n1);
             }
         }
+        if (i != 0) {
+            m.getAdapter().goTo(end);
+        }
+
+    }
+
+    @Override
+    public void define() {
+        withClass().setPublic().setSuper(Object.class).addInterfaces(OpenAdressingEntryFactory.class).create(name);
+
+        withField("ies").setFinal().setPrivate().create(InternalExceptionService.class);
+        withField("clock").setFinal().setPrivate().create(Clock.class);
+
+        initializeAttributes();
+
+        withConstructor().setPublic().create(InternalExceptionService.class, Clock.class).invokeEmptySuper()
+                .putFieldArg("ies", 0).putFieldArg("clock", 1);
+
+        addCreate();
+        addUpdate();
+        addAccess();
+    }
+
+    Class getAClass(Class c) {
+        while (c.getSuperclass() != Attribute.class) {
+            c = c.getSuperclass();
+        }
+        return c;
+    }
+
+    private void getFromAttributeMap(CacheFieldDefinition<?> def, Method m) {
+        if (getAClass(def.getAttribute().getClass()).equals(ObjectAttribute.class)) {
+            m.loadArg(3).getStatic(atrName(def)).invoke(AttributeMap.class, "get", Attribute.class);
+            m.checkCast(def.getType());
+        } else {
+            m.loadArg(3).getStatic(atrName(def)).invoke(AttributeMap.class, "get",
+                    getAClass(def.getAttribute().getClass()));
+        }
+    }
+
+    void initializeAttributes() {
+        for (CacheFieldDefinition def : cacheDefs) {
+            withField(atrName(def)).setPrivate().setStatic().setFinal()
+                    .create(getAClass(def.getAttribute().getClass()));
+            withField(atrDefault(def)).setPrivate().setStatic().setFinal().create(def.getAttribute().getType());
+
+        }
+        // Static constructor
+        Type aarray = Type.getType(new Attribute[0].getClass());
+        StaticInitializer si = withStaticInitializer();
+        si.pushConst(getType());
+        si.invokeStatic(EnhancedOpenAdressingEntryEmitter.class, "remove", aarray, type(Class.class));
+        si.storeLocal(0, aarray);
+
+        int count = 0;
+        for (CacheFieldDefinition def : cacheDefs) {
+            si.arrayLoadLocal(0, count++);
+            si.checkCast(getAClass(def.getAttribute().getClass())).putStatic(atrName(def));
+            // Default values;
+            si.getStatic(atrName(def));
+            if (def.getAttribute() instanceof ObjectAttribute) {
+                si.invokeVirtual(ObjectAttribute.class, "getDefault", Object.class);
+                si.checkCast(def.getAttribute().getType());
+            } else {
+                si.invokeVirtual(getAClass(def.getAttribute().getClass()), "getDefaultValue", def.getAttribute()
+                        .getType());
+            }
+            si.putStatic(atrDefault(def));
+        }
+    }
+
+    int onCreate(Method m, CacheFieldDefinition<?> def, int clockIndex, int index) {
+        switch (def.getCreateAction()) {
+        case SET_VALUE:
+            m.pushConst(def.getInitialValue());
+            break;
+        case DEFAULT:
+            m.getStatic(atrDefault(def));
+            break;
+        case TIMESTAMP:
+            if (clockIndex == -1) {
+                invokeClock(m);
+                clockIndex = index;
+            } else {
+                m.loadLocal(clockIndex);
+            }
+        }
+        m.storeLocal(index, def.getTType());
+        return clockIndex;
+    }
+
+    int onModify(Method m, int entryIndex, CacheFieldDefinition<?> def, int clockIndex, int index) {
+        switch (def.getModifyAction()) {
+        case INCREMENT:
+            if (entryIndex > 0) {
+                m.loadLocal(entryIndex);
+            } else {
+                m.loadArg(3);
+            }
+            m.adaptor.getField(type(entryClass), def.getName(), def.getTType());
+            m.adaptor.visitInsn(Opcodes.LCONST_1);
+            m.adaptor.visitInsn(Opcodes.LADD);
+            break;
+        case DEFAULT:
+            m.getStatic(atrDefault(def));
+            break;
+        case TIMESTAMP:
+            if (clockIndex == -1) {
+                invokeClock(m);
+                clockIndex = index;
+            } else {
+                m.loadLocal(clockIndex);
+            }
+            break;
+        case KEEP_EXISTING:
+            if (entryIndex > 0) {
+                m.loadLocal(entryIndex);
+            } else {
+                m.loadArg(3);
+            }
+            m.adaptor.getField(type(entryClass), def.getName(), def.getTType());
+            break;
+        }
+        m.storeLocal(index, def.getTType());
+        return clockIndex;
+    }
+
+    private static String atrDefault(FieldDefinition conf) {
+        return conf.getName() + "_ATR_DEFAULT";
+    }
+
+    private static String atrName(FieldDefinition conf) {
+        return conf.getName() + "_ATR";
     }
 
     static <K, V> OpenAdressingEntryFactory<K, V> create(ClassDefiner definer, CachePolicyContext<K, V> policyContext,
@@ -476,23 +466,13 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
         return definer.instantiate(factoryClass, exceptionService, clock);
     }
 
+    static Method invokeClock(Method m) {
+        m.loadThis().getStatic("clock").invokeVirtual(Clock.class, "timeOfDay", Long.TYPE);
+        return m;
+    }
+
     public static Attribute<?>[] remove(Class<?> clazz) {
         Attribute<?>[] a = initializers.remove(clazz);
         return a;
-    }
-
-    private static String atrName(FieldDefinition conf) {
-        return conf.getName() + "_ATR";
-    }
-
-    private static String atrDefault(FieldDefinition conf) {
-        return conf.getName() + "_ATR_DEFAULT";
-    }
-
-    public Class getAClass(Class c) {
-        while (c.getSuperclass() != Attribute.class) {
-            c = c.getSuperclass();
-        }
-        return c;
     }
 }

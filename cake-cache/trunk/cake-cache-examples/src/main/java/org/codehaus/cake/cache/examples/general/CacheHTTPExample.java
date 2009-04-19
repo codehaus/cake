@@ -10,7 +10,7 @@ import java.net.URL;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public class CacheHTTPExample {
@@ -30,7 +30,8 @@ public class CacheHTTPExample {
                 + " ms");
     }
 
-    public static class UrlLoader implements BlockingCacheLoader<String, String> {
+    public static class UrlLoader {
+        @CacheLoader
         public String load(String key, MutableAttributeMap ignore) throws Exception {
             URL url = new URL(key);
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));

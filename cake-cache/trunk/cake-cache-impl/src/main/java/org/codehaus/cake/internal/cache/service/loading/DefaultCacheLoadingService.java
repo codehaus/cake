@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.service.spi.CompositeService;
 import org.codehaus.cake.internal.util.CollectionUtils;
@@ -142,8 +142,8 @@ public class DefaultCacheLoadingService<K, V> implements ServiceProvider<CacheLo
             if (!needsNotRefreshCache.isShutdown()) {
                 Map<? extends K, ? extends AttributeMap> m = mapWithAttributes;
                 if (!isForced) {
-                    //TODO should have a check whether or not the size of the cache is 0
-                    //in which case we should just reload everything
+                    // TODO should have a check whether or not the size of the cache is 0
+                    // in which case we should just reload everything
                     m = new HashMap<K, AttributeMap>(mapWithAttributes);
                     for (Iterator<? extends K> iterator = m.keySet().iterator(); iterator.hasNext();) {
                         K key = iterator.next();

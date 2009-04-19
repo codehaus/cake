@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.service.loading;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.Attributes;
 import org.codehaus.cake.util.attribute.DefaultAttributeMap;
@@ -27,13 +27,14 @@ import org.codehaus.cake.util.attribute.MutableAttributeMap;
 import org.codehaus.cake.util.ops.Ops.LongOp;
 import org.codehaus.cake.util.ops.Ops.Op;
 
-public class TestLoader implements BlockingCacheLoader<Integer, String> {
+public class TestLoader {
 
     private final ConcurrentHashMap<Integer, SingleLoader> map = new ConcurrentHashMap<Integer, SingleLoader>();
 
     private volatile Integer latestKey;
     private volatile MutableAttributeMap latestAttributeMap;
 
+    @CacheLoader
     public String load(Integer key, MutableAttributeMap attributes) throws Exception {
         latestKey = key;
         latestAttributeMap = attributes;

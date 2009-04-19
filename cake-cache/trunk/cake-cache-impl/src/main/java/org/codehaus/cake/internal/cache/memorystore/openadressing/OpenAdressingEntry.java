@@ -20,6 +20,7 @@ import org.codehaus.cake.util.attribute.ShortAttribute;
 
 public class OpenAdressingEntry<K, V> implements CacheEntry<K, V> {
 
+    @SuppressWarnings("unchecked")
     final static OpenAdressingEntry[] EMPTY_ARRAY = new OpenAdressingEntry[0];
     /** The hash of this entry's key. */
     final int hash;

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerShutdownException;
 

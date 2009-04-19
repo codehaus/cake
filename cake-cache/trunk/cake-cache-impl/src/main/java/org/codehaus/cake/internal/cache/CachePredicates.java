@@ -6,9 +6,6 @@ import org.codehaus.cake.util.ops.Ops.Predicate;
 public class CachePredicates {
 
     public static <K, V> Predicate<CacheEntry<K, V>> valueEquals(V value) {
-        if (value == null) {
-            throw new NullPointerException("value is null");
-        }
         return new CacheValueEquals<K, V>(value);
     }
 
@@ -16,12 +13,14 @@ public class CachePredicates {
         private final V value;
 
         public CacheValueEquals(V value) {
+            if (value == null) {
+                throw new NullPointerException("value is null");
+            }
             this.value = value;
         }
 
         public boolean op(CacheEntry<K, V> a) {
-            V v = a.getValue();
-            return value.equals(v);
+            return value.equals(a.getValue());
         }
 
     }

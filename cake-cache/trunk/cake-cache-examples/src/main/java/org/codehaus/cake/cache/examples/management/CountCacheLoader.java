@@ -9,12 +9,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.SynchronizedCache;
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedObject;
-import org.codehaus.cake.util.attribute.MutableAttributeMap;
+
 @ManagedObject(defaultValue = "MyCacheLoader", description = "Cache Loading statistics")
-public class CountCacheLoader implements BlockingCacheLoader<String, String> {
+public class CountCacheLoader {
     /** Keeping count of the number of loads. */
     private final AtomicLong numberOfLoads = new AtomicLong();
 
@@ -23,7 +23,8 @@ public class CountCacheLoader implements BlockingCacheLoader<String, String> {
         return numberOfLoads.get();
     }
 
-    public String load(String key, MutableAttributeMap attributes) {
+    @CacheLoader
+    public String load(String key) {
         numberOfLoads.incrementAndGet();
         return key.toLowerCase();
     }

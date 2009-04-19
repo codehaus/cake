@@ -20,7 +20,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
 import org.codehaus.cake.test.util.TestUtil;
 import org.jmock.Expectations;

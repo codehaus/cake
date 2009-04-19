@@ -37,6 +37,7 @@ public abstract class ClassEmitter {
             java.lang.reflect.Constructor<ClassVisitor> con = c.getConstructor(ClassVisitor.class, PrintWriter.class);
             cw = con.newInstance(writer, new PrintWriter(System.out));
             // cw = new TraceClassVisitor(writer, new PrintWriter(System.out));
+            cw = writer;
 
         } catch (ClassNotFoundException e) {
             cw = writer;
@@ -138,9 +139,11 @@ public abstract class ClassEmitter {
     public MethodHeader withMethodPublic(String name) {
         return withMethod(name, Opcodes.ACC_PUBLIC);
     }
+
     public MethodHeader withMethodPrivate(String name) {
         return withMethod(name, Opcodes.ACC_PRIVATE);
     }
+
     public StaticInitializer withStaticInitializer() {
         if (staticInitializerGenerated) {
             throw new IllegalStateException("Can only generate one static initializer");
@@ -424,13 +427,6 @@ public abstract class ClassEmitter {
             access += Opcodes.ACC_VOLATILE;
             return this;
         }
-    }
-
-    public static void main(String[] args) {
-        int access = 17;
-        System.out.println(access & ~8);
-        System.out.println(13 | Opcodes.ACC_STATIC);
-        System.out.println(Opcodes.ACC_STATIC);
     }
 
     public class MethodHeader extends AbstractMemberHeader<FieldHeader> {

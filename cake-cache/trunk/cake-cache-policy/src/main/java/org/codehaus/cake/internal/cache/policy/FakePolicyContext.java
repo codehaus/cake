@@ -3,10 +3,12 @@
  */
 package org.codehaus.cake.internal.cache.policy;
 
-import java.util.IdentityHashMap;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.WeakHashMap;
+import java.util.Map;
 
 import org.codehaus.cake.cache.policy.PolicyContext;
 import org.codehaus.cake.util.attribute.Attribute;
@@ -113,6 +115,60 @@ public class FakePolicyContext<T> implements PolicyContext<T> {
                 map.remove(entry);
             } else
                 map.put(entry, value);
+        }
+    }
+
+    static class WeakIdentityHashMap<K, V> {
+        private final ReferenceQueue<K> queue = new ReferenceQueue<K>();
+        private Map<IdentityWeakReference, V> backingStore = new HashMap<IdentityWeakReference, V>();
+
+        V get(Object key) {
+            reap();
+            return backingStore.get(new IdentityWeakReference(key));
+        }
+
+        V put(K key, V value) {
+            reap();
+            return backingStore.put(new IdentityWeakReference(key), value);
+        }
+
+        V remove(Object key) {
+            reap();
+            return backingStore.remove(new IdentityWeakReference(key));
+        }
+
+        private synchronized void reap() {
+            Object zombie = queue.poll();
+            while (zombie != null) {
+                IdentityWeakReference victim = (IdentityWeakReference) zombie;
+                backingStore.remove(victim);
+                zombie = queue.poll();
+            }
+        }
+
+        class IdentityWeakReference extends WeakReference<K> {
+            int hash;
+
+            @SuppressWarnings("unchecked")
+            IdentityWeakReference(Object obj) {
+                super((K) obj, queue);
+                hash = System.identityHashCode(obj);
+            }
+
+            public int hashCode() {
+                return hash;
+            }
+
+            public boolean equals(Object o) {
+                if (this == o) {
+                    return true;
+                }
+                IdentityWeakReference ref = (IdentityWeakReference) o;
+                if (this.get() == ref.get()) {
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }

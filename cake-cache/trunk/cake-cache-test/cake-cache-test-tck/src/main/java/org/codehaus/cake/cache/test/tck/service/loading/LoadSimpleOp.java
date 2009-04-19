@@ -16,6 +16,7 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.util.attribute.LongAttribute;
@@ -122,8 +123,9 @@ public class LoadSimpleOp extends AbstractCacheTCKTest {
         assertEquals(10, c.peekEntry(3).get(CacheEntry.TIME_CREATED));
     }
 
-    static class SimpleLoader1 implements Op<Integer, String> {
+   public static class SimpleLoader1 implements Op<Integer, String> {
 
+        @CacheLoader
         public String op(Integer a) {
             if (a == 0) {
                 throw RuntimeException1.INSTANCE;

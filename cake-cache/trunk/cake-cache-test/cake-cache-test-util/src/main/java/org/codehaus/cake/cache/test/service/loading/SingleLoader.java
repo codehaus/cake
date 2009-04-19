@@ -18,12 +18,12 @@ package org.codehaus.cake.cache.test.service.loading;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.DefaultAttributeMap;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
-public class SingleLoader implements BlockingCacheLoader<Integer, String> {
+public class SingleLoader {
 
     private MutableAttributeMap initialParameters;
 
@@ -56,7 +56,8 @@ public class SingleLoader implements BlockingCacheLoader<Integer, String> {
     public MutableAttributeMap getParameters() {
         return initialParameters;
     }
-
+    
+    @CacheLoader
     public String load(Integer key, MutableAttributeMap attributes) throws Exception {
         if (key.equals(this.key)) {
             initialParameters = attributes;

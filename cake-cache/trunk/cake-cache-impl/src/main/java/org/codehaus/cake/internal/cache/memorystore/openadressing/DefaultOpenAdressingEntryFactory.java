@@ -74,11 +74,6 @@ public class DefaultOpenAdressingEntryFactory<K, V> implements OpenAdressingEntr
         return new DefaultOpenAdressingEntry(key, hash, value, attributes);
     }
 
-    public void initialize() {
-        // TODO Auto-generated method stub
-
-    }
-
     public OpenAdressingEntry<K, V> update(K key, int hash, V value, AttributeMap params,
             OpenAdressingEntry<K, V> existing) {
         DefaultAttributeMap attributes = new DefaultAttributeMap();
@@ -108,12 +103,15 @@ public class DefaultOpenAdressingEntryFactory<K, V> implements OpenAdressingEntr
 
         public long ff;
         public long hits;
+
         public DefaultOpenAdressingEntry(K key, int hash, V value, AttributeMap attributes) {
             this(key, hash, value, new DefaultAttributeMap(attributes));
         }
+
         public DefaultOpenAdressingEntry(K key, int hash, V value, String goo) {
             this(key, hash, value, new DefaultAttributeMap());
         }
+
         DefaultOpenAdressingEntry(K key, int hash, V value, MutableAttributeMap attributes) {
             super(key, hash, value);
             this.attributes = attributes;

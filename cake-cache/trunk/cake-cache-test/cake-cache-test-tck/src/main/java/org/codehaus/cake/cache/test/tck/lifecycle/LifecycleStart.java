@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.tck.lifecycle;
 import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.CacheConfiguration;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.management.ManagementConfiguration;

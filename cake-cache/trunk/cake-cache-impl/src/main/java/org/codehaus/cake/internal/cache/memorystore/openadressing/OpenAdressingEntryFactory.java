@@ -7,7 +7,5 @@ public interface OpenAdressingEntryFactory<K, V> {
 
     OpenAdressingEntry<K, V> update(K key, int hash, V value, AttributeMap params, OpenAdressingEntry<K, V> existing);
 
-    void initialize();
-
     void access(OpenAdressingEntry<K, V> entry);
 }

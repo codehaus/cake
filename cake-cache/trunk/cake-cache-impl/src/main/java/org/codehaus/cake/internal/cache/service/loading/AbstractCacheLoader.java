@@ -15,10 +15,12 @@
  */
 package org.codehaus.cake.internal.cache.service.loading;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.loading.CacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
@@ -40,15 +42,32 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingS
         }
     }
 
-    static <K, V> BlockingCacheLoader<K, V> getSimpleLoader(CacheLoadingConfiguration<K, V> conf) {
-        Object loader = conf.getLoader();
-        if (loader instanceof Op) {
-            return new OpToSimpleLoader((Op) loader);
-        } else if (loader instanceof BlockingCacheLoader) {
-            return (BlockingCacheLoader) loader;
-        } else {
-            throw new IllegalArgumentException("Unknown loader type [type =" + loader.getClass() + "]");
+     static <K, V> BlockingCacheLoader<K, V> getSimpleLoader(CacheLoadingConfiguration<K, V> conf) {
+        final Object loader = conf.getLoader();
+        Class loaderClass = loader.getClass();
+        for (final Method m : loaderClass.getDeclaredMethods()) {
+            CacheLoader cl = m.getAnnotation(CacheLoader.class);
+            if (cl != null) {
+                return new BlockingCacheLoader<K, V>() {
+                    public V load(K key, MutableAttributeMap attributes) throws Exception {
+                        try {
+                        if (m.getParameterTypes().length == 2) {
+                            return (V) m.invoke(loader, key, attributes);
+                        } else {
+                            return (V) m.invoke(loader, key);
+                        }} catch (InvocationTargetException e) {
+                            if (e.getCause() instanceof Exception) {
+                                throw (Exception) e.getCause();
+                            } else if (e.getCause() instanceof Error) {
+                                throw (Error) e.getCause();
+                            }
+                            throw new RuntimeException(e);
+                        }
+                    }
+                };
+            }
         }
+        throw new IllegalArgumentException("Unknown loader type [type =" + loader.getClass() + "]");
     }
 
     static class OpToSimpleLoader<K, V> implements BlockingCacheLoader<K, V> {
@@ -65,7 +84,7 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingS
 
     public void loadAsync(Map<? extends K, AttributeMap> map) {
         for (Map.Entry<? extends K, AttributeMap> e : map.entrySet()) {
-           loadAsync(e.getKey(), e.getValue());
+            loadAsync(e.getKey(), e.getValue());
         }
     }
 }

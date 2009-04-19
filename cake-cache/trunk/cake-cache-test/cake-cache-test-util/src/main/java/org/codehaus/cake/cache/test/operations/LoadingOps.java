@@ -15,8 +15,7 @@
  */
 package org.codehaus.cake.cache.test.operations;
 
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
-import org.omg.CORBA.Object;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 
 
 /**

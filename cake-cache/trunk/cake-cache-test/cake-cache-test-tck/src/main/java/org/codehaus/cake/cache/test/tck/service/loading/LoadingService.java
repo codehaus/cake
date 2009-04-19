@@ -17,12 +17,10 @@
  * Licensed under the Apache 2.0 License. */
 package org.codehaus.cake.cache.test.tck.service.loading;
 
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.attribute.Attributes;
-import org.codehaus.cake.util.ops.Ops.Op;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,7 +63,7 @@ public class LoadingService extends AbstractCacheTCKTest {
      */
     @Test
     public void loadingServiceAvailableOp() {
-        conf.withLoading().setLoader(TestUtil.dummy(Op.class));
+        conf.withLoading().setLoader(new DummyLoader());
         init();
         assertTrue(c.hasService(CacheLoadingService.class));
         // check that it doesn't fail with a classcast exception
@@ -74,17 +72,10 @@ public class LoadingService extends AbstractCacheTCKTest {
         assertTrue(c.getService(CacheLoadingService.class, Attributes.EMPTY_ATTRIBUTE_MAP) instanceof CacheLoadingService);
     }
 
-    /**
-     * Tests that a cache that has a configured cache loader. Will have a {@link CacheLoadingService} available.
-     */
-    @Test
-    public void loadingServiceAvailableSimpleCacheLoader() {
-        conf.withLoading().setLoader(TestUtil.dummy(BlockingCacheLoader.class));
-        init();
-        assertTrue(c.hasService(CacheLoadingService.class));
-        // check that it doesn't fail with a classcast exception
-        assertNotNull(c.getService(CacheLoadingService.class));
-        assertTrue(c.serviceKeySet().contains(CacheLoadingService.class));
-        assertTrue(c.getService(CacheLoadingService.class, Attributes.EMPTY_ATTRIBUTE_MAP) instanceof CacheLoadingService);
+    public static class DummyLoader {
+        @CacheLoader
+        public Object load(Object key) {
+            return key;
+        }
     }
 }

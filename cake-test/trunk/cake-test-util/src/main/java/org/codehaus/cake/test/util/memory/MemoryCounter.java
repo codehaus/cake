@@ -18,6 +18,7 @@ package org.codehaus.cake.test.util.memory;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -29,10 +30,17 @@ public final class MemoryCounter {
 
     private final Stack stack = new Stack();
 
+    private final Map<Class, Long> statistics = new HashMap<Class, Long>();
+
     public static long calc(Object obj) {
         return new MemoryCounter().op(obj);
     }
 
+    public void printStatistics() {
+        for (Map.Entry<Class, Long> e : statistics.entrySet()) {
+            System.out.println(e.getKey() + " " +e.getValue());
+        }
+    }
     public synchronized long op(Object obj) {
         assert visited.isEmpty();
         assert stack.isEmpty();
@@ -41,7 +49,7 @@ public final class MemoryCounter {
             result += _estimate(stack.pop());
         }
         visited.clear();
-
+        //statistics.clear();
         return result;
     }
 
@@ -98,6 +106,8 @@ public final class MemoryCounter {
             clazz = clazz.getSuperclass();
         }
         result += sizes.getClassSize();
+        Long current = statistics.get(obj.getClass());
+        statistics.put(obj.getClass(), current == null ? result : result + current);
         return roundUpToNearestEightBytes(result);
     }
 
@@ -121,6 +131,8 @@ public final class MemoryCounter {
                 }
             }
         }
+        Long current = statistics.get(obj.getClass());
+        statistics.put(obj.getClass(), current == null ? result : result + current);
         return result;
     }
 

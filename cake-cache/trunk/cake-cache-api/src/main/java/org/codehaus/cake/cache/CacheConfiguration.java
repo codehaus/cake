@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;
 import org.codehaus.cake.management.ManagementConfiguration;
@@ -195,7 +195,7 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration {
     public ExceptionHandlingConfiguration<CacheExceptionHandler<K, V>> withExceptionHandling() {
         return getConfigurationOfType(ExceptionHandlingConfiguration.class);
     }
-
+    
     /**
      * Returns a configuration object that can be used to control how loading is done in the cache.
      * 

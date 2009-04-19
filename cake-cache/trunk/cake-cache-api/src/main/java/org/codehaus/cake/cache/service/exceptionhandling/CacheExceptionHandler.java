@@ -16,7 +16,8 @@
 package org.codehaus.cake.cache.service.exceptionhandling;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.service.spi.ExceptionContext;
 import org.codehaus.cake.service.spi.ExceptionHandler;
 import org.codehaus.cake.util.attribute.AttributeMap;

@@ -16,7 +16,7 @@
 package org.codehaus.cake.cache.test.tck.service.loading;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
@@ -41,10 +41,11 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
         assertEquals(1, loader.count);
     }
 
-    public static class TestLoader implements BlockingCacheLoader {
+    public static class TestLoader {
 
         volatile int count;
 
+        @CacheLoader
         public Object load(Object key, MutableAttributeMap attributes) throws Exception {
             return "foo";
         }

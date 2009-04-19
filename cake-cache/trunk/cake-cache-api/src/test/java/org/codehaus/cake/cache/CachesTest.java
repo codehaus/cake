@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.cake.cache.service.loading.CacheLoadingService;
+import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.Attributes;
 import org.codehaus.cake.util.attribute.BooleanAttribute;

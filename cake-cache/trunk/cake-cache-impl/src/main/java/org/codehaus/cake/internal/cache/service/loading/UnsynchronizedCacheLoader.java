@@ -16,8 +16,7 @@
 package org.codehaus.cake.internal.cache.service.loading;
 
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
-import org.codehaus.cake.cache.service.loading.CacheLoadingConfiguration;
+import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
