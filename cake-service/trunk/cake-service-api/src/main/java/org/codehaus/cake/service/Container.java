@@ -116,7 +116,7 @@ public interface Container {
 
     /**
      * Returns the name of this container. If no name has been specified while configuring the container. The container
-     * chooses a valid name on contruction time. A valid name contains no other characters then alphanumeric characters
+     * chooses a valid name on construction time. A valid name contains no other characters then alphanumeric characters
      * and '_' or '-'.
      * 
      * @return the name of the container

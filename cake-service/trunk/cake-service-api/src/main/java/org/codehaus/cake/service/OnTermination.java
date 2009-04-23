@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * {@link ContainerConfiguration#addService(Class, ServiceProvider)} will be invoked after the container has been fully
  * shutdown when the container has terminated. This method is invoked as the last method in the lifecycle of a
  * container. This method is also called if the container failed to initialize or start. But only if the service was
- * succesfully initialized was run without failing.
+ * successfully initialized was run without failing.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: OnTermination.java 225 2008-11-30 20:53:08Z kasper $
