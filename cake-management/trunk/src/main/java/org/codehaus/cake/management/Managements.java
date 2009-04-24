@@ -33,10 +33,7 @@ import javax.management.ObjectName;
 public final class Managements {
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private Managements() {}
-
-    // /CLOVER:ON
 
     /**
      * Copies the specified array.

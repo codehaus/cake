@@ -43,10 +43,8 @@ import javax.management.ReflectionException;
 final class ManagementUtil {
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private ManagementUtil() {}
 
-    // /CLOVER:ON
     /**
      * Filters the specified string, currently does nothing.
      * 

@@ -37,11 +37,8 @@ import org.codehaus.cake.util.ops.Ops.Procedure;
 public final class Iterables {
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private Iterables() {
     }
-
-    // /CLOVER:ON
 
     /**
      * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.

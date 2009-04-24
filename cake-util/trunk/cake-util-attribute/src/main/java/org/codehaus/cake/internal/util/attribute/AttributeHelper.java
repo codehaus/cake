@@ -33,11 +33,9 @@ import org.codehaus.cake.util.attribute.Attributes;
  */
 public final class AttributeHelper {
 
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private AttributeHelper() {
     }
-    // /CLOVER:ON
     /**
      * @param o1
      *            the first object to compare

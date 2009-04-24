@@ -61,10 +61,8 @@ import org.codehaus.cake.util.ops.Ops.LongPredicate;
  * @version $Id: PrimitivePredicates.vm 245 2008-12-27 16:17:02Z kasper PrimitivePredicates.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class PrimitivePredicates {
-    ///CLOVER:OFF
     /** Cannot instantiate. */
     private PrimitivePredicates() {}
-    ///CLOVER:ON
 
     /** A DoublePredicate that always evaluates to <code>false</code>. */
     public static final DoublePredicate DOUBLE_FALSE = (DoublePredicate) Predicates.FALSE;

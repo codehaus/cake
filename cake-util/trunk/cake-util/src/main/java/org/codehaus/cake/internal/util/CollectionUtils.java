@@ -32,11 +32,8 @@ import java.util.Map.Entry;
  * @version $Id$
  */
 public final class CollectionUtils {
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private CollectionUtils() {}
-
-    // /CLOVER:ON
 
     /**
      * Checks whether or not the specified collection contains a <code>null</code>.

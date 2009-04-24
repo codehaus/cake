@@ -33,11 +33,9 @@ public final class StringOps {
     final static Op TO_STRING_OP = new ToStringOp();
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private StringOps() {
     }
 
-    // /CLOVER:ON
     /**
      * Creates a Predicate that will accept any String that contains the specified CharSequence. The returned predicate
      * is serializable.

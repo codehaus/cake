@@ -38,12 +38,9 @@ public final class Attributes {
     /** The empty attribute map (immutable). This attribute map is serializable. */
     public static final MutableAttributeMap EMPTY_ATTRIBUTE_MAP = new EmptyAttributeMap();
 
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private Attributes() {
     }
-
-    // /CLOVER:ON
 
     /**
      * Creates a new AttributeMap from the 2 specified attributes and respective values.

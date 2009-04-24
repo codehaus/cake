@@ -48,7 +48,6 @@ public class InternalObjectPredicates {
     public static final TruePredicate TRUE = new TruePredicate();
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private InternalObjectPredicates() {
     }
 

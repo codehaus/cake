@@ -71,10 +71,8 @@ import org.codehaus.cake.util.ops.Ops.LongReducer;
  * @version $Id: PrimitivePredicates.vm 245 2008-12-27 16:17:02Z kasper PrimitiveOps.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class PrimitiveOps {
-    ///CLOVER:OFF
     /** Cannot instantiate. */
     private PrimitiveOps() {}
-    ///CLOVER:ON
     
         /**
      * A reducer returning the maximum of two double elements, using natural comparator.

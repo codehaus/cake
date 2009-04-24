@@ -46,11 +46,8 @@ public final class LogHelper {
      * 
      * private static final String SYSTEM_OUT_LOGGER = "system.out-logger";
      */
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private LogHelper() {}
-
-    // /CLOVER:ON
 
     static Level getLogLevel(Logger logger) {
         if (!logger.isFatalEnabled()) {

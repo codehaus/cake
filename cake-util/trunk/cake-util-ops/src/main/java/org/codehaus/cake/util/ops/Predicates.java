@@ -60,11 +60,9 @@ public final class Predicates {
     public static final Predicate TRUE = InternalObjectPredicates.TRUE;
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private Predicates() {
     }
 
-    // /CLOVER:ON
     /**
      * As {@link #allTrue(Predicate...)} except taking an {@link Iterable} as parameter.
      * 

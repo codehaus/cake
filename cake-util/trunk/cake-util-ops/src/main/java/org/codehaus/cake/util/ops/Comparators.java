@@ -76,7 +76,6 @@ public final class Comparators {
     public static final LongComparator LONG_NATURAL_REVERSE_COMPARATOR = (LongComparator) Comparators.NATURAL_REVERSE_COMPARATOR;
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private Comparators() {
     }
 
@@ -134,7 +133,6 @@ public final class Comparators {
         return new NullLeastOrderComparatorPredicate<T>(comparator);
     }
 
-    // /CLOVER:ON
 
     // public static <T> Comparator<T> mappedComparator(ObjectToLong<? super T> mapper) {
     // throw new UnsupportedOperationException();

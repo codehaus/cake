@@ -33,12 +33,9 @@ public final class Loggers {
     /** A logger that ignores all input. */
     public static final Logger NULL_LOGGER = new NullLogger();
 
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private Loggers() {
     }
-
-    // /CLOVER:ON
 
     /**
      * Returns the name of the specified logger or <code>null</code> if the name could not be determinded.
@@ -96,12 +93,10 @@ public final class Loggers {
      */
     public static final class Commons {
 
-        // /CLOVER:OFF
         /** Cannot instantiate. */
         private Commons() {
         }
 
-        // /CLOVER:ON
         /**
          * Shorthand for {@link #from(String)}.
          * 
@@ -268,12 +263,10 @@ public final class Loggers {
      * logging</a> conversion.
      */
     public static final class JDK {
-        // /CLOVER:OFF
         /** Cannot instantiate. */
         private JDK() {
         }
 
-        // /CLOVER:ON
         /**
          * Shorthand for {@link #from(String)}.
          * 
@@ -383,12 +376,10 @@ public final class Loggers {
 
     /** Used for Log4J logging conversion. */
     public static final class Log4j {
-        // /CLOVER:OFF
         /** Cannot instantiate. */
         private Log4j() {
         }
 
-        // /CLOVER:ON
         /**
          * Shorthand for {@link #from(String)}.
          * 

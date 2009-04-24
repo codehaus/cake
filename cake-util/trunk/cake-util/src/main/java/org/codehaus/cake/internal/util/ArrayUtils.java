@@ -30,7 +30,6 @@ import java.util.Comparator;
  */
 public final class ArrayUtils {
 
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private ArrayUtils() {}
 
@@ -148,7 +147,6 @@ public final class ArrayUtils {
         queue[k] = x;
     }
 
-    // /CLOVER:ON
     /**
      * Copies the specified array.
      * 

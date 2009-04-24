@@ -58,11 +58,9 @@ public final class Procedures {
     public static final Procedure SYS_OUT_PRINTLN_PROCEDURE = new SystemOutPrintlnProcedure();
 
     /** Cannot instantiate. */
-    // /CLOVER:OFF
     private Procedures() {
     }
 
-    // /CLOVER:ON
     /**
      * Returns a Procedure that does nothing.
      * <p>

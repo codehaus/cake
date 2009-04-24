@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.cake</groupId>
   <artifactId>cake-parent</artifactId>
-  <version>1</version>
+  <version>2</version>
   <packaging>pom</packaging>
   <name>Cake</name>
   <description>Cake</description>
@@ -144,17 +144,21 @@
         <plugins>
           <plugin>
             <groupId>com.atlassian.maven.plugins</groupId>
-            <artifactId>maven-clover-plugin</artifactId>
+            <artifactId>maven-clover2-plugin</artifactId>
             <configuration>
               <!-- <targetPercentage>80%</targetPercentage> -->
               <includesTestSourceRoots>false</includesTestSourceRoots>
-              <licenseLocation>${user.home}/.licenses/clover.license</licenseLocation>
+              <licenseLocation>${user.home}/.cake/clover.license</licenseLocation>
               <excludes>
                 <exclude>**/tck/service/**/*.java</exclude>
                 <!-- <exclude>**/examples/**/*.java</exclude> -->
                 <!-- <exclude>**/test/**/*.java</exclude>  -->
               </excludes>
               <jdk>1.5</jdk>
+               <methodContexts>
+                   <private-constructor>(.* )?private +[a-zA-Z0-9_$]+ *\( *\).*</private-constructor>
+               </methodContexts>
+               <contextFilters>private-constructor</contextFilters>
             </configuration>
           </plugin>
         </plugins>

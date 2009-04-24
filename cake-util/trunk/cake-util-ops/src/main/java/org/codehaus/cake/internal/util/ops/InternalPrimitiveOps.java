@@ -39,10 +39,8 @@ import org.codehaus.cake.util.ops.Ops.LongReducer;
  * @version $Id: PrimitivePredicates.vm 245 2008-12-27 16:17:02Z kasper InternalPrimitiveOps.java 590 2008-03-14 08:16:12Z kasper $
  */
 public final class InternalPrimitiveOps {
-    ///CLOVER:OFF
     /** Cannot instantiate. */
     private InternalPrimitiveOps() {}
-    ///CLOVER:ON
 
 	    public final static PrimitiveAbsOp ABS_OP = new PrimitiveAbsOp();
     public final static PrimitiveAddReducer ADD_REDUCER = new PrimitiveAddReducer();
