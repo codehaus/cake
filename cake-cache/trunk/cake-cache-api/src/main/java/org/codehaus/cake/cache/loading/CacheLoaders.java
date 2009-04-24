@@ -12,12 +12,9 @@ import org.codehaus.cake.util.ops.Ops.Procedure;
 
 public class CacheLoaders {
 
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private CacheLoaders() {
     }
-
-    // /CLOVER:ON
 
     // TODO Schedule full reload (forced / non forced)
 

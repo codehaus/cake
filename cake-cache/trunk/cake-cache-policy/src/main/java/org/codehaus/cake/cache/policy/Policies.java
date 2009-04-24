@@ -58,12 +58,9 @@ public final class Policies {
     /** A Random replacement policy. */
     public final static Class<? extends ReplacementPolicy> RANDOM = RandomReplacementPolicy.class;
 
-    // /CLOVER:OFF
     /** Cannot instantiate. */
     private Policies() {
     }
-
-    // /CLOVER:ON
 
     /**
      * Creates a new ReplacementPolicy of the specified type.

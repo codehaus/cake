@@ -27,12 +27,10 @@ import org.codehaus.cake.util.ops.Ops.Op;
  * or add to Caches
  */
 public abstract class CacheDataExtractor<K, V, T> implements Op<CacheEntry<K, V>, T> {
-    // // /CLOVER:OFF
     // /** Cannot instantiate. */
     // private CacheDataExtractor() {
     // }
     //
-    // // /CLOVER:ON
 
     /**
      * If the entry being passed to the transformer is <code>null</code> return {@link Boolean#FALSE} otherwise

@@ -15,15 +15,15 @@
  */
 package org.codehaus.cake.cache;
 
+import static org.codehaus.cake.internal.util.attribute.AttributeHelper.eq;
+
 import java.io.Serializable;
 import java.util.AbstractMap;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -44,7 +44,6 @@ import org.codehaus.cake.util.attribute.ShortAttribute;
 import org.codehaus.cake.util.collection.MapView;
 import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.collection.Views;
-import org.codehaus.cake.util.ops.PrimitivePredicates;
 import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.util.ops.Ops.BytePredicate;
 import org.codehaus.cake.util.ops.Ops.CharPredicate;
@@ -54,8 +53,6 @@ import org.codehaus.cake.util.ops.Ops.IntPredicate;
 import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.codehaus.cake.util.ops.Ops.ShortPredicate;
-
-import static org.codehaus.cake.internal.util.attribute.AttributeHelper.eq;
 /**
  * Various Factory and utility methods.
  * 
@@ -79,12 +76,9 @@ public final class Caches {
     /** A CacheSelector that returns the empty cache for all argument. */
     static final CacheSelector EMPTY_SELECTOR = new EmptyCacheSelector();
 
-    // /CLOVER:ON
     /** Cannot instantiate. */
     private Caches() {
     }
-
-    // /CLOVER:OFF
 
     /**
      * Returns a {@link Runnable} that when executed will call the {@link Cache#clear()} method on the specified cache.
