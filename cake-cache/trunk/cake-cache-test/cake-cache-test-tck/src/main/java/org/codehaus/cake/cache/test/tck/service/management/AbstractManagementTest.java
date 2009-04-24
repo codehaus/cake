@@ -26,7 +26,7 @@ import javax.management.ObjectInstance;
 
 import org.codehaus.cake.cache.CacheMXBean;
 import org.codehaus.cake.cache.loading.CacheLoadingMXBean;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreMXBean;
+import org.codehaus.cake.cache.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.After;
 import org.junit.Before;

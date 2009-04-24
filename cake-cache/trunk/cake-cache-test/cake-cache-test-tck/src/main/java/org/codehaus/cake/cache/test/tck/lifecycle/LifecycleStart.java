@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
+import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.service.OnStart;

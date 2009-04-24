@@ -17,7 +17,7 @@ package org.codehaus.cake.cache.test.tck.lifecycle;
 
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 

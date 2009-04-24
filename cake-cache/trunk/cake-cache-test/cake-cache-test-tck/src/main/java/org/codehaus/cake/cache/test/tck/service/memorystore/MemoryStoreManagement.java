@@ -19,9 +19,9 @@ import static org.codehaus.cake.cache.CacheEntry.SIZE;
 
 import javax.management.RuntimeMBeanException;
 
+import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
+import org.codehaus.cake.cache.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.policy.Policies;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreConfiguration;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreMXBean;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.cache.test.tck.service.management.AbstractManagementTest;
 import org.codehaus.cake.management.Manageable;

@@ -1,7 +1,7 @@
 package org.codehaus.cake.cache;
 
 import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.memorystore.ExportedMemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.UnsynchronizedCacheProcessor;

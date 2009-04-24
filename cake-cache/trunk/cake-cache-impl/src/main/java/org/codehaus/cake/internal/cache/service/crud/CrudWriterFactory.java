@@ -2,7 +2,7 @@ package org.codehaus.cake.internal.cache.service.crud;
 
 import org.codehaus.cake.cache.CacheBatchWriter;
 import org.codehaus.cake.cache.CacheWriter;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.service.ExportAsService;

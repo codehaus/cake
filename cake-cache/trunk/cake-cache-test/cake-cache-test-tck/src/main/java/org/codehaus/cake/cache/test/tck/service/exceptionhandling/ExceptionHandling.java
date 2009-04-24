@@ -18,7 +18,7 @@ package org.codehaus.cake.cache.test.tck.service.exceptionhandling;
 import java.util.logging.LogManager;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.service.exceptionhandling.CacheExceptionHandler;
+import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.codehaus.cake.service.spi.ExceptionContext;
 import org.codehaus.cake.test.util.throwables.Exception1;

@@ -27,7 +27,7 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.service.exceptionhandling.CacheTestExceptionHandler;
 import org.codehaus.cake.cache.test.service.loading.TestLoader;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;

@@ -97,17 +97,6 @@
           <showDeprecation>true</showDeprecation>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.cake.test</groupId>
-            <artifactId>cake-test-util</artifactId>
-            <version>0.1-SNAPSHOT</version>
-          </dependency>
-        </dependencies>
-      </plugin>
     </plugins>
   </build>
   <reporting>

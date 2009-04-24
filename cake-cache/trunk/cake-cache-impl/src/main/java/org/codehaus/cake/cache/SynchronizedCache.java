@@ -3,7 +3,7 @@ package org.codehaus.cake.cache;
 import java.util.concurrent.ExecutorService;
 
 import org.codehaus.cake.cache.loading.CacheLoadingService;
-import org.codehaus.cake.cache.service.memorystore.MemoryStoreService;
+import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.internal.cache.memorystore.ExportedSynchronizedMemoryStoreService;
 import org.codehaus.cake.internal.cache.processor.DefaultCacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.SynchronizedCacheProcessor;
