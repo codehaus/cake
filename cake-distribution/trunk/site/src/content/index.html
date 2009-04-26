@@ -1,0 +1,92 @@
+<html>
+<!--
+ Copyright 2008, 2009 Kasper Nielsen
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+ Created on 5. March 2009 by Kasper Nielsen
+ -->
+  <head>
+    <title>Caching</title>
+    <meta name="short" content="About Cake"/>
+  </head>
+  <body>
+    <p>Cake is a key-value based caching and data processing framework available under the Apache License, Version 2.0.</p>
+    <h1 id="features">Features</h1>
+    <ul>
+        <li><b>Ease of use.</b> A Simple API (resembles java.util.Map) with a DSL like syntax.</li>
+        <li><b>Embeddable.</b> Single jar, no dependencies, no static singletons, flexible exception handling, integration with popular logging frameworks.</li>
+        <li><b>Java 5 based.</b> Generics + JMX support.</li>
+        <li><b>Performance.</b> Small (default) memory footprint (50% less then other popular caching frameworks).</li>
+        <li><b>Batch processing.</b> Create, Read, Update, Delete in batches.</li>
+        <li><b>Multi-core friendly.</b> Parallel aggregation and querying processing on cached data.</li>
+    </ul>
+    
+    <h1 id="limitations">Known Limitations</h1>
+    <p>Currently Cake only supports storing data in memory. Support for external storage (disk) and clustering is planned.</p>
+
+    <h1 id="getting-started">Getting Started</h1>
+    <ul>
+      <li><a href="download.html">Download it</a>.</li>
+      <li><a href="download.html">Use it</a>.</li>
+    </ul>
+
+     <h1 id="samples">Snippets</h1>
+     <p>Given a fictional Person class the following section contains some cake snippets.
+<div class="Source Java"><pre>
+interface Person {
+    String id();
+    String name();
+    int age();
+}
+</pre></div>
+   Creating a in-memory synchronized cache with a maximum size of 10000 using a LRU policy for eviction.
+<div class="Source Java"><pre>
+CacheConfiguration&lt;String, Person&gt; conf = CacheConfiguration.newConfiguration();
+conf.withMemoryStore().setMaximumSize(10000).setPolicy(Policies.LRU);
+
+SynchronizedCache&lt;String, Person&gt; cache = SynchronizedCache.from(conf);
+cache.put("121-22-2323", new Person(){...}); // Adding a single person
+</pre></div>
+   Retrieve a list of all persons that are over 85 years old in the cache.
+<div class="Source Java"><pre>
+List&lt;Person&gt; personsOver85 = cache.filter().onValue(new Predicate&lt;Person&gt;() {
+    public boolean op(Person a) {
+        return a.age() &gt; 85;
+    }
+}).values().toList();
+</pre></div>
+Retrieves the 5 youngest persons in the cache named 'Peter'.
+<div class="Source Java"><pre>
+List&lt;Person&gt; p = cache.filter().onValue(new Predicate&lt;Person&gt;() {
+    public boolean op(Person person) {
+        return person.name().equals("Peter");
+    }
+}).values().orderBy(new Comparator&lt;Person&gt;() {
+    public int compare(Person o1, Person o2) {
+        return o2.age() - o1.age();
+    }
+}).setLimit(5).toList();
+</pre></div>
+Reload all entries in the cache that has not been modified the last hour. See the <a href="cache-views.html">section on loading</a> for details on how to configure a cache loader.
+<div class="Source Java"><pre>
+CacheConfiguration&lt;String, Person&gt; conf = CacheConfiguration.newConfiguration();
+conf.withLoading.setLoader(new MyPersonLoader&lt;String, Person&gt;{}); // Set (background) cache loader
+conf.addEntryAttributes(CacheEntry.TIME_MODIFIED); // Keep track of modification timestamps
+Cache&lt;String, Person&gt; cache = SynchronizedCache.from(conf);
+
+LongPredicate one_hour_ago = PrimitivePredicates.longLessThen(System.currentTimeMillis() - 60 * 60 * 1000);
+cache.filter().on(CacheEntry.TIME_MODIFIED, one_hour_ago).with().loadingForced().loadAll();
+</pre></div>
+</p>
+  </body>
+</html>
