@@ -36,7 +36,7 @@
     position: absolute;
     z-index: 1;
     right: 8px;
-    width: 184px;
+    width: 214px;
     top: 107px;
     bottom: 8px;
     margin: 0px;
@@ -48,7 +48,7 @@
     top: 107px;
     bottom: 8px;
     left: 208px;
-    right: 216px;
+    right: 246px;
 }
 
 .Content2Column {
@@ -242,6 +242,23 @@ ul, ol {
 }
 
 .Source:before {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-size: inherit;
+    line-spacing: 100%;
+}
+
+.SourceSmall pre {
+    padding: 1px;
+    font-family: courier new, monospace;
+    font-size: 9px;
+    border: 1px solid #080;
+    background-color: #cfc;
+    color: black;
+}
+
+.SourceSmall:before {
     margin: 0px;
     padding: 0px;
     border: 0px;

@@ -1,0 +1,149 @@
+<html>
+<!--
+ Copyright 2008, 2009 Kasper Nielsen
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+ Created on 5. March 2009 by Kasper Nielsen
+ -->
+  <head>
+    <title>Cache Filtering</title>
+    <meta name="short" content="Cache Filtering"/>
+  </head>
+  <body>
+    <p>
+    A filtered cache is the result of applying a predicate (boolean function) on every entry in a cache.
+    Only those entries on which the predicate returns true are contained in the filtered cache.
+    The filtered cache is backed by the original cache, so changes to the original cache are reflected in
+    the the filtered cache, and vice-versa.
+   </p>
+   <p>
+   Consider, for example, the following cache definition
+   
+   <div class="Source Java"><pre>
+Cache&lt;String, Integer&gt; cache = new SynchronizedCache&lt;String, Integer&gt;&lt;();
+cache.put("A", 1);
+cache.put("B", 2);
+cache.put("C", 3);
+cache.put("D", 4);
+System.out.println(cache); //Prints {A=1, B=2, C=3, D=4}
+</pre></div>
+   
+   To create a filtered cache we use the <code>cache.filter()</code> method on the cache. In this case we will create a filtered cache
+   containing only those cache entries where the integer value is odd:
+   <div class="Source Java"><pre>
+Cache&lt;String, Integer&gt; oddNumbers = cache.filter().onValue(new Predicate&lt;Integer&gt;() {
+    public boolean op(Integer value) {
+        return value % 2 == 1;
+    }
+});
+</pre></div>
+
+   The filtered cache (oddNumbers) we have created works like other cache with a few modification that can be read about later in this section
+   <div class="Source Java"><pre>
+System.out.println(oddNumbers.size()); //Prints 2
+System.out.println(oddNumbers); // Prints {A=1, C=3}
+
+oddNumbers.clear(); //Removes all entries contained in the oddNumbers filtered cache.
+System.out.println(oddNumbers); //Prints {}
+System.out.println(cache); //Prints {B=2, D=4}, (oddNumbers was just cleared) 
+</pre></div>    	
+
+  There are some additional ways for creating a filtered cache then just evaluating a property on the value part of a <code>CacheEntry</code>
+   <div class="Source Java"><pre>
+
+</pre></div>
+
+  Filtering goes hand in hand with <a href="cache-views.html">Cache Views</a> as a way of querying the cache. So for example to create a list of all those keys that have
+  an odd value you could use:
+   <div class="Source Java"><pre>
+List&lt;String&gt; oddNumbersKeys = cache.filter().onValue(new Predicate&lt;Integer&gt;() {
+    public boolean op(Integer value) {
+        return value % 2 == 1;
+    }
+}).view().keys().toList();
+   </pre></div>
+   View creation is very cheap, creating just a single object holding the definition of the view.
+   So even for small datasets the cost of doing the actual querying will dominate the cost of creating the actual views. 
+ </p>
+    
+    <h1 id="limitations">Limitations</h1>
+    there are some strange situations.
+    
+    "A"->1, "B"->2, "C"->3, "D"->4
+    if you call get("B") you would get null, so its fair
+    . but since its backed
+    
+    
+		Create, read, update, delete
+		
+	Even though it
+	is still going to be added to the cache
+		Cache Loading
+
+
+    <h1 id="important-considarations">Important Considerations</h1>
+
+   <p>
+   First of all creating a filtered cache is a very fast operation with almost no memory overhead. So 
+   there 
+   </p>
+    <p>
+    There are some important points that must be kept in the back of the head when using a filtered cache view.
+    First, if multiple threads are accessing the cache simultanious it is important for that the
+    predicate is thread safe.
+    
+    you are using the cache in m
+    </p>
+    <p>
+    Second, some operations are no longer constant time operations. Consider, for example, the java.util.HashMap.size() operation which
+    normally is a constant time operation. Internally HashMap has a <tt>int size</tt>tt> field, which keeps the current size of the map
+    , and when a user invokes the size() operation on the HashMap the HashMap will just return the value of that field.
+    However when working on a filtered cache the predicate that is used for construction the filtered cache must evaluate every time.
+    So, for example, to calculate the size of a filtered cache, the filtered cache must check the predicate against all entries
+    in the original 
+    
+    . It is not as bad as it sounds, if the p
+    if you have a small cache the cost of invocation the size() operation is fairly small
+    If you have a large cache and are using a multi-core processor it is fairly easy for the cache to use multiple threads to evaluate
+    the size of the cache. For example, if you have a quad core processor, the cache can split the cache up in 4 parts 
+    and let each processor calculate the size for one of the parts. 
+    When that is complete the cache can then return the sum of the individual results from each processor. 
+    
+    
+     
+    especially 
+    
+     of all it
+    There are some performance considerations that must be done.
+      	Obvious there are some downside to operation on filtered views, 
+  	for example, the size() operation which normally is constant size operation
+  	However, a filtered cache view needs to evaluate all elements that are in the real cache each time size is called
+  	to see if it matches the predicate(s) that have been used to create the view
+  	
+    There are a number of restrictions on a cache views created by filter operations.
+    </p>
+ 
+    <p>While series of filters are allowed, it is usually more efficient to combine them into single filters
+       when possible. For example <tt>cache.filter().onValue(isBlue).filter().onValue(isRound)</tt> is generally
+  less efficient than <tt>cache.filter.onValue(isBlueAndIsRound)</tt>.   
+  
+    <h1 id="summary">Summary</h1>
+        <p>To recap:</p>
+    <ul>
+        <li>A filtered cache  backed by the original cache <code style="white-space: nowrap">xstream.alias(String elementName, Class cls);</code></li>
+        <li>Convert an object to XML using <code style="white-space: nowrap">xstream.toXML(Object obj);</code></li>
+        <li>Convert XML back to an object using <code style="white-space: nowrap">xstream.fromXML(String xml);</code></li>
+    </ul>
+    
+  </body>
+</html>

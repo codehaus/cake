@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Cake - ${title}</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  ${head}
+  <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"/>     
+  <script type="text/javascript">_uacct = "UA-125781-5";urchinTracker();</script>
+</head>
+
+<body>
+  <div id="banner"><a href="index.html"><img id="logo" src="logo.GIF" alt="Cake" /></a></div>
+      <#if page.index>
+  <div id="center" class="Content3Column">
+      <#else>
+  <div id="center" class="Content2Column">
+      </#if>
+    <div id="content">
+      <h1 class="FirstChild">${title}</h1>
+      ${body}<br />
+    </div>
+  </div>
+
+  <div class="SidePanel" id="left">
+  <#list sitemap.sections as section>
+    <div class="MenuGroup">
+      <h1>${section.name}</h1>
+        <ul>
+          <#list section.entries as entry> 
+            <#if entry = page>
+              <li class="currentLink">${entry.title}</li>
+            <#else>
+              <li><a href="${entry.href}">${entry.title}</a></li>
+            </#if> 
+          </#list>
+       </ul>
+    </div>
+  </#list>
+  </div>
+  <#if page.index>
+      <div class="SidePanel" id="right">
+        <#include "src/templates/download.html"> 
+        <#include "src/templates/news.html"> 
+      </div>
+      </#if>
+</body>
+</html>
