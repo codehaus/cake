@@ -20,7 +20,6 @@ import org.codehaus.cake.internal.cache.processor.request.TrimToSizeRequest;
 import org.codehaus.cake.internal.cache.processor.request.TrimToVolumeRequest;
 import org.codehaus.cake.internal.cache.service.loading.InternalCacheLoadingService;
 import org.codehaus.cake.internal.cache.view.AbstractView;
-import org.codehaus.cake.internal.cache.view.query.HashEntryArrayProcessor;
 import org.codehaus.cake.internal.cache.view.util.QueryStack;
 import org.codehaus.cake.internal.service.RunState;
 import org.codehaus.cake.internal.util.ArrayUtils;
