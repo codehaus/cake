@@ -4,6 +4,7 @@
 package org.codehaus.cake.cache.examples.general;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -11,14 +12,13 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheConfiguration;
 import org.codehaus.cake.cache.UnsynchronizedCache;
 import org.codehaus.cake.cache.loading.CacheLoader;
-import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 public class CacheHTTPExample {
 
     public static void main(String[] args) {
         CacheConfiguration<String, String> cc = CacheConfiguration.newConfiguration();
         cc.withLoading().setLoader(new UrlLoader());
-        UnsynchronizedCache<String, String> c = UnsynchronizedCache.from(cc);
+        Cache<String, String> c = UnsynchronizedCache.from(cc);
         readGoogle(c, "Not Cached : ");
         readGoogle(c, "Cached     : ");
     }
@@ -32,7 +32,7 @@ public class CacheHTTPExample {
 
     public static class UrlLoader {
         @CacheLoader
-        public String load(String key, MutableAttributeMap ignore) throws Exception {
+        public String load(String key) throws IOException {
             URL url = new URL(key);
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
             StringBuilder sb = new StringBuilder();

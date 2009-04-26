@@ -7,7 +7,6 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.UnsynchronizedCache;
 
 // START SNIPPET: class
-
 public class HelloworldExample {
     public static void main(String[] args) {
         Cache<String, String> c = new UnsynchronizedCache<String, String>();
