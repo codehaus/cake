@@ -31,7 +31,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 public @interface ManagedOperation {
 
     /** The name of the operation. */

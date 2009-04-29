@@ -40,7 +40,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 public @interface ManagedAttribute {
 
     /** The name of the attribute. */

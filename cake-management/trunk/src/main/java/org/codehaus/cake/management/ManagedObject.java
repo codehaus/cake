@@ -16,7 +16,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 public @interface ManagedObject {
     /** The name of the object. */
     String defaultValue() default "";
