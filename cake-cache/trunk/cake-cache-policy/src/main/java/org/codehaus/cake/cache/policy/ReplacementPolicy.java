@@ -86,10 +86,9 @@ public interface ReplacementPolicy<T> {
     void remove(T element);
 
     /**
-     * The specified <tt>previous</tt>element was updated with a new value, for example, through a call to
-     * {@link org.codehaus.cake.cache.Cache#replace(Object, Object).
+     * The specified <tt>previous</tt> element was updated with a new value§.
      * <p>
-     * Ir order to avoid memory leaks it is important that all references to the previous element is removed from the
+     * In order to avoid memory leaks it is important that all references to the previous element is removed from the
      * policy.
      * 
      * @see #add(Object)

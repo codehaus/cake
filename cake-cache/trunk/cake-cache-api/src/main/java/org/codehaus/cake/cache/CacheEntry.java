@@ -33,8 +33,8 @@ import org.codehaus.cake.util.attribute.TimeInstanceAttribute;
  * be added using {@link CacheConfiguration#addEntryAttributes(org.codehaus.cake.util.attribute.Attribute...)} before
  * starting the cache.
  * 
- * For example, this snippet shows how to configure the cache to keep track of when an entry was created a and when it was
- * last modified.
+ * For example, this snippet shows how to configure the cache to keep track of when an entry was created a and when it
+ * was last modified.
  * 
  * <pre>
  * CacheConfiguration&lt;Integer, String&gt; conf = CacheConfiguration.newConfiguration();
@@ -48,8 +48,8 @@ import org.codehaus.cake.util.attribute.TimeInstanceAttribute;
  * <p>
  * Unless otherwise specified a cache entry obtained from a cache is always an immmutable copy of the existing entry. If
  * the value for a given key is updated while another thread holds a cache entry for the key. It will not be reflected
- * in calls to {@link #getValue()}. Some implementations might allow for certain attributes to be continuesly updated
- * in the entry returned for purely performance reasons. For example {@link #TIME_ACCESSED} and {@link #HITS}.
+ * in calls to {@link #getValue()}. Some implementations might allow for certain attributes to be continuesly updated in
+ * the entry returned for purely performance reasons. For example {@link #TIME_ACCESSED} and {@link #HITS}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
@@ -61,15 +61,16 @@ import org.codehaus.cake.util.attribute.TimeInstanceAttribute;
 public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
 
     /**
-     * The <tt>Cost attribute</tt> is used to indicate the cost of retrieving an entry. The idea is that when memory
-     * is sparse the cache can choose to evict entries that are least costly to retrieve again. Currently this attribute
-     * is used only by the {@link ReplaceCostliestPolicy}.
+     * The <tt>Cost attribute</tt> is used to indicate the cost of retrieving an entry. The idea is that when memory is
+     * sparse the cache can choose to evict entries that are least costly to retrieve again. Currently this attribute is
+     * used only by the {@link ReplaceCostliestPolicy}.
      * <p>
      * A frequent used unit for this attribute is time. For example, how many milliseconds does it take to retrieve the
      * entry. However, any unit can be used. Because any policy should only use the relative cost difference between
      * entries to determine what entries to evict.
      * <p>
-     * <blockquote> <table border>
+     * <blockquote>
+     * <table border>
      * <tr>
      * <td>Type</td>
      * <td>double</td>
@@ -80,14 +81,14 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * </tr>
      * <tr>
      * <td>Valid Values</td>
-     * <td>All values, except {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY} and
-     * {@link Double#NaN}</td>
+     * <td>All values, except {@link Double#NEGATIVE_INFINITY}, {@link Double#POSITIVE_INFINITY} and {@link Double#NaN}</td>
      * </tr>
      * <tr>
      * <td>Unit</td>
      * <td>Primarily <tt>time</tt>, but any unit is acceptable</td>
      * </tr>
-     * </table> </blockquote>
+     * </table>
+     * </blockquote>
      */
     DoubleAttribute COST = CacheEntryAttributes.COST;
 
@@ -95,16 +96,18 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * A count of how many times an entry has been accessed through {@link Cache#get(Object)},
      * {@link Cache#getEntry(Object)} or {@link Cache#getAllOld(java.util.Collection)}.
      * 
-     * <p/> The following list describes how this attribute is obtained.
+     * <p/>
+     * The following list describes how this attribute is obtained.
      * <ul>
-     * <li> If an entry is being put or loaded and the <tt>HITS</tt> attribute has been set the cache will use this
+     * <li>If an entry is being put or loaded and the <tt>HITS</tt> attribute has been set the cache will use this
      * value.</li>
-     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry will be used. </li>
-     * <li> Else if this entry is accessed through <tt>get</tt>, <tt>getEntry</tt> or <tt>getAll</tt> the hit
-     * count is incremented by 1</li>
+     * <li>Else if this entry is replacing an existing entry the hit count from the existing entry will be used.</li>
+     * <li>Else if this entry is accessed through <tt>get</tt>, <tt>getEntry</tt> or <tt>getAll</tt> the hit count is
+     * incremented by 1</li>
      * </ul>
      * <p>
-     * <blockquote> <table border>
+     * <blockquote>
+     * <table border>
      * <tr>
      * <td>Type</td>
      * <td>long</td>
@@ -121,7 +124,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * <td>Unit</td>
      * <td>Number of Accesses</td>
      * </tr>
-     * </table> </blockquote>
+     * </table>
+     * </blockquote>
      */
     LongAttribute HITS = CacheEntryAttributes.HITS;
 
@@ -136,7 +140,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * The time between when the entry was last accessed (through calls to {@link Cache#get(Object)} and midnight,
      * January 1, 1970 UTC. This is also the value returned by {@link System#currentTimeMillis()}.
      * <p>
-     * <blockquote> <table border>
+     * <blockquote>
+     * <table border>
      * <tr>
      * <td>Type</td>
      * <td>long</td>
@@ -153,24 +158,27 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * <td>Unit</td>
      * <td>Milliseconds</td>
      * </tr>
-     * </table> </blockquote>
+     * </table>
+     * </blockquote>
      */
     TimeInstanceAttribute TIME_ACCESSED = CacheEntryAttributes.TIME_ACCESSED;
 
     /**
      * The time between when the entry was created and midnight, January 1, 1970 UTC. This is also the value returned by
-     * {@link System#currentTimeMillis()}. <p/> The following list describes how this attribute is obtained.
+     * {@link System#currentTimeMillis()}.
+     * <p/>
+     * The following list describes how this attribute is obtained.
      * <ul>
-     * <li> If the entry is being put or loaded and the <tt>TIME_CREATED</tt> attribute has been set the cache will
-     * use this value.</li>
-     * <li> Else if this entry is replacing an existing entry the creation time from the existing entry will be used.
-     * </li>
-     * <li> Else if a clock is set through {@link CacheConfiguration#setClock(org.codehaus.cake.util.Clock)} a timestamp
-     * is obtained by calling {@link org.codehaus.cake.util.Clock#timeOfDay()}. </li>
-     * <li> Else if no clock has been set System#currentTimeMillis() is used for obtaining a timestamp. </li>
+     * <li>If the entry is being put or loaded and the <tt>TIME_CREATED</tt> attribute has been set the cache will use
+     * this value.</li>
+     * <li>Else if this entry is replacing an existing entry the creation time from the existing entry will be used.</li>
+     * <li>Else if a clock is set through {@link CacheConfiguration#setClock(org.codehaus.cake.util.Clock)} a timestamp
+     * is obtained by calling {@link org.codehaus.cake.util.Clock#timeOfDay()}.</li>
+     * <li>Else if no clock has been set System#currentTimeMillis() is used for obtaining a timestamp.</li>
      * </ul>
      * <p>
-     * <blockquote> <table border>
+     * <blockquote>
+     * <table border>
      * <tr>
      * <td>Type</td>
      * <td>long</td>
@@ -187,7 +195,8 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * <td>Unit</td>
      * <td>Milliseconds</td>
      * </tr>
-     * </table> </blockquote>
+     * </table>
+     * </blockquote>
      */
     TimeInstanceAttribute TIME_CREATED = CacheEntryAttributes.TIME_CREATED;
 
@@ -202,16 +211,16 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
     /**
      * A count of how many times the value of an entry has been modified.
      * 
-     * <p/> The following list describes how this attribute is obtained.
+     * <p/>
+     * The following list describes how this attribute is obtained.
      * <ul>
-     * <li> If the entry is being loaded and the <tt>VERSION</tt> attribute has been set the cache will use this
-     * value.</li>
-     * <li> Else if this entry is replacing an existing entry the hit count from the existing entry + 1 will be used.
-     * </li>
-     * <li> Else the version is initialized to 1</li>
+     * <li>If the entry is being loaded and the <tt>VERSION</tt> attribute has been set the cache will use this value.</li>
+     * <li>Else if this entry is replacing an existing entry the hit count from the existing entry + 1 will be used.</li>
+     * <li>Else the version is initialized to 1</li>
      * </ul>
      * <p>
-     * <blockquote> <table border>
+     * <blockquote>
+     * <table border>
      * <tr>
      * <td>Type</td>
      * <td>long</td>
@@ -228,11 +237,24 @@ public interface CacheEntry<K, V> extends Map.Entry<K, V>, AttributeMap {
      * <td>Unit</td>
      * <td>Number of modifications</td>
      * </tr>
-     * </table> </blockquote>
+     * </table>
+     * </blockquote>
      */
     LongAttribute VERSION = CacheEntryAttributes.VERSION;
 
+    /**
+     * Inherits the equals contract from {@link Entry}. So two entries with equal key and value but different
+     * attributes attached are still equal.
+     * 
+     * @param o
+     *            object to be compared for equality with this cache entry
+     * 
+     * @return <tt>true</tt> if the specified object is equal to this cache entry
+     */
+    boolean equals(Object o);
+
+    // Logger <-detailed logging about an entry.
+
     /** {@inheritDoc} */
     V getValue();
-    // Logger <-detailed logging about an entry.
 }
