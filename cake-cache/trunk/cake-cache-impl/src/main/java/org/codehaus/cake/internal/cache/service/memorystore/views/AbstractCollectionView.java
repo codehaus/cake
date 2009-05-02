@@ -41,6 +41,7 @@ abstract class AbstractCollectionView<E> extends AbstractCollection<E> {
     }
 
     public final int size() {
-        return cache.size();
+        long size = cache.size();
+        return size < Integer.MAX_VALUE ? (int) size : Integer.MAX_VALUE;
     }
 }

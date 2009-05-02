@@ -58,7 +58,7 @@ public interface MemoryStoreService<K, V> {
      * @see #setMaximumSize(int)
      * @see #getSize()
      */
-    int getMaximumSize();
+    long getMaximumSize();
 
     /**
      * Returns the maximum allowed volume of the cache or {@link Long#MAX_VALUE} if there is no limit.
@@ -77,7 +77,7 @@ public interface MemoryStoreService<K, V> {
      * @return the current size of the cache
      * @see Cache#size()
      */
-    int getSize();
+    long getSize();
 
     /**
      * Returns the current volume of this cache. If the current volume of this cache is greater then Long.MAX_VALUE,
@@ -136,7 +136,7 @@ public interface MemoryStoreService<K, V> {
      * @throws UnsupportedOperationException
      *             if the cache does not support changing the maximum size at runtime
      */
-    void setMaximumSize(int maximumSize);
+    void setMaximumSize(long maximumSize);
 
     /**
      * Sets that maximum volume of the cache. The total volume of the cache is the sum of all the individual element
@@ -172,7 +172,7 @@ public interface MemoryStoreService<K, V> {
      * @param size
      *            if positive of 0, the size to the trim the cache down to, otherwise the number of elements to remove
      */
-    void trimToSize(int size);
+    void trimToSize(long size);
 
     /**
      * Works analogues to {@link #trimToSize(int)} except that specified comparator will choose the ordering among the
@@ -205,7 +205,7 @@ public interface MemoryStoreService<K, V> {
      * @param comparator
      *            used to determine in which order entries should be evicted
      */
-    void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator);
+    void trimToSize(long size, Comparator<? extends CacheEntry<K, V>> comparator);
 
     /**
      * If the specified volume is <tt>positive or 0</tt> this method will keeps evicting entries until the volume of

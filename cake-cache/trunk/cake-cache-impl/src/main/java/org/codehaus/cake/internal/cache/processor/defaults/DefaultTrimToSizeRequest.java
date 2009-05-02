@@ -11,8 +11,8 @@ public class DefaultTrimToSizeRequest<K, V> implements TrimToSizeRequest<K, V> {
     private int sizeToTrimTo;
     private Comparator comparator;
 
-    public DefaultTrimToSizeRequest(int sizeToTrimTo, Comparator comperator) {
-        this.sizeToTrimTo = sizeToTrimTo;
+    public DefaultTrimToSizeRequest(long sizeToTrimTo, Comparator comperator) {
+        this.sizeToTrimTo = (int) sizeToTrimTo;
         this.comparator = comperator;
     }
 

@@ -68,7 +68,7 @@ public class ExportedMemoryStoreService<K, V> implements ServiceProvider<Exporte
     }
 
     /** {@inheritDoc} */
-    public int getMaximumSize() {
+    public long getMaximumSize() {
         return configurationService.getAttributes().get(MemoryStoreAttributes.MAX_SIZE);
     }
 
@@ -79,7 +79,7 @@ public class ExportedMemoryStoreService<K, V> implements ServiceProvider<Exporte
 
     /** {@inheritDoc} */
     @ManagedAttribute(description = "The current size of the cache")
-    public int getSize() {
+    public long getSize() {
         return memoryStore.size(filter);
     }
 
@@ -107,7 +107,7 @@ public class ExportedMemoryStoreService<K, V> implements ServiceProvider<Exporte
 
     /** {@inheritDoc} */
     @ManagedAttribute(description = "The maximum size of the cache")
-    public void setMaximumSize(int maximumSize) {
+    public void setMaximumSize(long maximumSize) {
         configurationService.update(MemoryStoreAttributes.MAX_SIZE, maximumSize);
     }
 
@@ -119,13 +119,13 @@ public class ExportedMemoryStoreService<K, V> implements ServiceProvider<Exporte
 
     /** {@inheritDoc} */
     @ManagedOperation(description = "Trims the cache to the specified size")
-    public void trimToSize(int size) {
+    public void trimToSize(long size) {
         TrimToSizeRequest<K, V> r = requestFactory.createTrimToSizeRequest(size, null);
         processor.process(r);
     }
 
     /** {@inheritDoc} */
-    public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
+    public void trimToSize(long size, Comparator<? extends CacheEntry<K, V>> comparator) {
         if (comparator == null) {
             throw new NullPointerException("comparator is null");
         }

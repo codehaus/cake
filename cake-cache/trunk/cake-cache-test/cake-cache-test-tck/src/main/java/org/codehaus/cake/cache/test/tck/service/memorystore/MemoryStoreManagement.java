@@ -52,7 +52,7 @@ public class MemoryStoreManagement extends AbstractManagementTest {
      */
     @Test
     public void maximumSize() {
-        assertEquals(Integer.MAX_VALUE, mxBean().getMaximumSize());
+        assertEquals(Long.MAX_VALUE, mxBean().getMaximumSize());
         mxBean().setMaximumSize(1000);
         assertEquals(1000, mxBean().getMaximumSize());
         assertEquals(1000, withMemoryStore().getMaximumSize());

@@ -28,6 +28,6 @@ public class SelectedClear extends AbstractCacheTCKTest {
         assertEquals(step / 3 + 1, selected.size());
         selected.clear();
         assertSize(keyset.size());
-        assertEquals(keyset, new TreeSet(c.keySet()));
+        assertEquals(keyset, new TreeSet(c.asMap().keySet()));
     }
 }

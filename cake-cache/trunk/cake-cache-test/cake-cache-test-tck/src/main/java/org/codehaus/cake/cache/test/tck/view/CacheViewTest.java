@@ -16,7 +16,7 @@ public class CacheViewTest extends AbstractCacheTCKTest {
     public void test() {
         newCache(5);
         ViewAsserts.assertViewEquals(c.view().keys(), Arrays.asList(1, 2, 3, 4, 5), Integer.class);
-        ViewAsserts.assertViewEquals(c.view().keys(), c.keySet(), Integer.class);
+        ViewAsserts.assertViewEquals(c.view().keys(), c.asMap().keySet(), Integer.class);
     }
 
     public void testSetLimit() {
@@ -28,7 +28,7 @@ public class CacheViewTest extends AbstractCacheTCKTest {
         assertEquals(new HashSet(c.view().values().toList()), new HashSet(STRING_F5));
         
         ViewAsserts.assertViewEquals(c.view().values(), Arrays.asList("A", "B", "C", "D", "E"), String.class);
-        ViewAsserts.assertViewEquals(c.view().values(), c.values(), String.class);
+        ViewAsserts.assertViewEquals(c.view().values(), c.asMap().values(), String.class);
         //c.view().orderByValuesMax()
     }
 

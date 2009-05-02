@@ -39,9 +39,9 @@ public class CacheOps {
         /** {@inheritDoc} */
         public void run() {
             synchronized (cache) {
-                int currentSize = cache.size();
+                int currentSize = cache.asMap().size();
                 int size = 0;
-                for (Object o : cache.entrySet()) {
+                for (Object o : cache.asMap().entrySet()) {
                     size++;
                 }
                 if (size != currentSize) {

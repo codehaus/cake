@@ -138,7 +138,7 @@ public class SynchronizedCache<K, V> extends AbstractCache<K, V> {
 
     /** {@inheritDoc} */
     @Override
-    public int size() {
+    public long size() {
         synchronized (mutex) {
             return super.size();
         }

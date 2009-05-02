@@ -60,5 +60,5 @@ public interface CacheMXBean {
      * 
      * @return the number of elements in the cache
      */
-    int getSize();
+    long getSize();
 }

@@ -41,7 +41,7 @@ public class Size extends AbstractAttributeTest {
         loader.setAttribute(SIZE, PrimitiveOps.longAdd(5));// size=key+1
         init();
         assertGet(M1);
-        Iterator iter = c.values().iterator();
+        Iterator iter = c.asMap().values().iterator();
         iter.next();
         iter.remove();
         assertVolume(0);

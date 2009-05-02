@@ -53,7 +53,7 @@ public class CacheMemoryStoreConfigurationTest {
     public void maximumSize() {
         MemoryStoreConfiguration<Integer, String> c = new MemoryStoreConfiguration<Integer, String>();
         assertEquals(Integer.MAX_VALUE, c.getMaximumSize());
-        assertEquals(Integer.MAX_VALUE, c.getAttributes().get(MemoryStoreAttributes.MAX_SIZE));
+        assertEquals(Long.MAX_VALUE, c.getAttributes().get(MemoryStoreAttributes.MAX_SIZE));
 
         assertSame(c, c.setMaximumSize(1));
         assertEquals(1, c.getMaximumSize());

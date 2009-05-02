@@ -72,7 +72,7 @@ public class SelectedCache extends AbstractCacheTCKTest {
         newConfiguration().addEntryAttributes(type.getAttribute().toArray(new Attribute[0]));
         Cache orig = newCache();
         c = (Cache) type.fillAndSelect(orig);
-        int initSize = orig.size();
+        long initSize = orig.size();
         clear();
         assertSize(0);
         assertEquals(initSize - 3, orig.size());

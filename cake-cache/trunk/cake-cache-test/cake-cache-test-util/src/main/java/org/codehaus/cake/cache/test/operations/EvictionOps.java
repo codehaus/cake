@@ -22,8 +22,8 @@ public abstract class EvictionOps {
     public static class TrimToSize<K, V> implements Ops.Procedure<CacheHarnessContext<K, V>> {
         /** {@inheritDoc} */
         public void op(CacheHarnessContext<K, V> context) {
-            int size = context.cache().size();
-            context.eviction().trimToSize(context.randomInt(size));
+            long size = context.cache().size();
+            context.eviction().trimToSize(context.randomLong(size));
         }
     }
 

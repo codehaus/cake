@@ -2,9 +2,13 @@ package org.codehaus.cake.util.collection;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
@@ -16,6 +20,8 @@ public class Maps {
     public static final Op MAP_ENTRY_TO_KEY_OP = new KeyFromMapEntry();
     /** A mapper extracting the value part of a {@link Entry}. The mapper is Serializable. */
     public static final Op MAP_ENTRY_TO_VALUE_OP = new ValueFromMapEntry();
+
+    public static final ConcurrentMap EMPTY_CONCURRENTMAP = new EmptyConcurrentMap();
 
     /**
      * Returns a mapper that extracts the key of any {@link Entry} that will be parsed along to it.
@@ -208,5 +214,80 @@ public class Maps {
         private Object readResolve() {
             return Maps.MAP_ENTRY_TO_VALUE_OP;
         }
+    }
+
+    static class EmptyConcurrentMap<K, V> implements ConcurrentMap<K, V>, Serializable {
+
+        public V putIfAbsent(K key, V value) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public boolean remove(Object key, Object value) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        public V replace(K key, V value) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public boolean replace(K key, V oldValue, V newValue) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        public void clear() {
+        }
+
+        public boolean containsKey(Object key) {
+            return false;
+        }
+
+        public boolean containsValue(Object value) {
+            return false;
+        }
+
+        public Set<Entry<K, V>> entrySet() {
+            return Collections.EMPTY_MAP.entrySet();
+        }
+
+        public V get(Object key) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public boolean isEmpty() {
+            return true;
+        }
+
+        public Set<K> keySet() {
+            return Collections.EMPTY_MAP.keySet();
+        }
+
+        public V put(K key, V value) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public void putAll(Map<? extends K, ? extends V> m) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public V remove(Object key) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public int size() {
+            return 0;
+        }
+
+        public Collection<V> values() {
+            return Collections.EMPTY_MAP.values();
+        }
+
     }
 }

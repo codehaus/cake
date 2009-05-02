@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.util.CollectionUtils;
@@ -42,6 +43,7 @@ import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
 import org.codehaus.cake.util.attribute.ShortAttribute;
 import org.codehaus.cake.util.collection.MapView;
+import org.codehaus.cake.util.collection.Maps;
 import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.collection.Views;
 import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
@@ -53,6 +55,7 @@ import org.codehaus.cake.util.ops.Ops.IntPredicate;
 import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.codehaus.cake.util.ops.Ops.ShortPredicate;
+
 /**
  * Various Factory and utility methods.
  * 
@@ -154,7 +157,7 @@ public final class Caches {
     static class ClearRunnable implements Runnable {
 
         /** The cache to call clear on. */
-        private final Map<?, ?> map;
+        private final Cache<?, ?> map;
 
         /**
          * Creates a new ClearRunnable.
@@ -162,7 +165,7 @@ public final class Caches {
          * @param cache
          *            the cache to call clear on
          */
-        ClearRunnable(Map<?, ?> map) {
+        ClearRunnable(Cache<?, ?> map) {
             if (map == null) {
                 throw new NullPointerException("map is null");
             }
@@ -176,7 +179,7 @@ public final class Caches {
     }
 
     /** The empty cache. */
-    static class EmptyCache<K, V> extends AbstractMap<K, V> implements Cache<K, V>, Serializable {
+    static class EmptyCache<K, V> implements Cache<K, V>, Serializable {
 
         /** serialVersionUID. */
         private static final long serialVersionUID = -5245003832315997155L;
@@ -184,13 +187,6 @@ public final class Caches {
         /** {@inheritDoc} */
         public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
             return false;
-        }
-
-        /** {@inheritDoc} */
-        @SuppressWarnings("unchecked")
-        @Override
-        public Set<java.util.Map.Entry<K, V>> entrySet() {
-            return Collections.EMPTY_MAP.entrySet();
         }
 
         public CacheSelector<K, V> filter() {
@@ -321,7 +317,47 @@ public final class Caches {
         public CacheView<K, V> getAll(Iterable<? extends K> keys) {
             return EMPTY_CACHE_VIEW;
         }
+
+        public ConcurrentMap<K, V> asMap() {
+            return Maps.EMPTY_CONCURRENTMAP;
+        }
+
+        public void clear() {
+        }
+
+        public boolean containsKey(Object key) {
+            return false;
+        }
+
+        public boolean containsValue(Object value) {
+            return false;
+        }
+
+        public V get(Object key) {
+            return null;
+        }
+
+        public boolean isEmpty() {
+            return true;
+        }
+
+        public V put(K key, V value) {
+            return (V) Collections.emptyMap().put(key, value);
+        }
+
+        public void putAll(Map<? extends K, ? extends V> m) {
+            Collections.EMPTY_MAP.putAll(m);
+        }
+
+        public V remove(Object key) {
+            return (V) Collections.emptyMap().remove(key);
+        }
+
+        public long size() {
+            return 0;
+        }
     }
+
 
     /** A cache selector that always returns the empty cache. */
     @SuppressWarnings("unchecked")

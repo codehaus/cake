@@ -61,7 +61,7 @@ public class MemoryStoreGeneral extends AbstractCacheTCKTest {
      */
     @Test
     public void maximumSize() {
-        assertEquals(Integer.MAX_VALUE, withMemoryStore().getMaximumSize());
+        assertEquals(Long.MAX_VALUE, withMemoryStore().getMaximumSize());
         withMemoryStore().setMaximumSize(1000);
         assertEquals(1000, withMemoryStore().getMaximumSize());
 

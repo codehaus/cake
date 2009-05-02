@@ -43,17 +43,17 @@ public class MemoryStoreTrimComparator extends AbstractCacheTCKTest {
             }
         });
         assertSize(5);
-        assertEquals(c.keySet(), new HashSet(Arrays.asList(1, 2, 3, 4, 5)));
+        assertEquals(c.asMap().keySet(), new HashSet(Arrays.asList(1, 2, 3, 4, 5)));
         put(10);
         assertSize(10);
-        Set<Integer> s = new HashSet(c.keySet());
+        Set<Integer> s = new HashSet(c.asMap().keySet());
         withMemoryStore().trimToSize(-5, new Comparator<CacheEntry<Integer, String>>() {
 
             public int compare(CacheEntry<Integer, String> o1, CacheEntry<Integer, String> o2) {
                 return o1.getKey() - o2.getKey();
             }
         });
-        s.addAll(c.keySet());
+        s.addAll(c.asMap().keySet());
         assertEquals(10, s.size());
         assertSize(5);
     }

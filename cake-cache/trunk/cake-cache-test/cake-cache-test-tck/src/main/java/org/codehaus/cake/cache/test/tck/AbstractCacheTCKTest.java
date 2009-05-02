@@ -132,14 +132,14 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
             m.put(i, "" + (char) (i + 64));
         }
         c.putAll(m);
-        return new ArrayList<Map.Entry<Integer, String>>(c.entrySet());
+        return new ArrayList<Map.Entry<Integer, String>>(c.asMap().entrySet());
     }
 
     protected Collection<Map.Entry<Integer, String>> put(int from, int to) {
         for (int i = from; i <= to; i++) {
             c.put(i, "" + (char) (i + 64));
         }
-        return new ArrayList<Map.Entry<Integer, String>>(c.entrySet());
+        return new ArrayList<Map.Entry<Integer, String>>(c.asMap().entrySet());
     }
 
     public static <T> List<T> asList(T... a) {
@@ -371,7 +371,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         return this;
     }
 
-    public int size() {
+    public long size() {
         return c.size();
     }
 

@@ -115,7 +115,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceProvider<CacheLo
         void doLoadAll(AttributeMap attributes) {
             if (!needsRefreshCache.isShutdown()) {
                 HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
-                Object[] keys = needsRefreshCache.keySet().toArray();
+                Object[] keys = needsRefreshCache.asMap().keySet().toArray();
                 for (Object key : keys) {
                     if (key == null) {
                         throw new NullPointerException("key is null");

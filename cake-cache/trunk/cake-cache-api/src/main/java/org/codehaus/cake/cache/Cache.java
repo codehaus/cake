@@ -15,9 +15,7 @@
  */
 package org.codehaus.cake.cache;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
@@ -60,22 +58,22 @@ import org.codehaus.cake.service.ContainerShutdownException;
  * @param <V>
  *            the type of mapped values
  */
-public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<CacheEntry<K, V>> {
+public interface Cache<K, V> extends Container, Iterable<CacheEntry<K, V>> {
 
-    // drop concurrentMap, can be optained by calling write()?
-    // get() <- CacheReader
-    // R get(K key, Op<CacheEntry<K,V>,R> mapper);
-    // <-basically
-    // getAttribute(K, Attribute A);
-    // getAttribute(K, AttributeMap AM A);
-    //
-    // view() <-CacheView with defaultSettings
-    // withView() returns CacheViewFactory
-    //
-    // write() <-CacheWriter (was CrudWriter)
-    // writeBatch() <-CacheWriter (was CrudWriter)
-    // withWriter() <-CacheWriterFactory();
-    //    
+    /**
+     * Returns a ConcurrentMap view of the mappings contained in this cache. The map is backed by the cache, so changes to
+     * the cache are reflected in the map, and vice-versa. If the cache is modified while an iteration over one of the maps collection views are
+     * in progress (except through the iterator's own <tt>remove</tt> operation, or through the <tt>setValue</tt>
+     * operation on a map entry returned by the iterator) the results of the iteration are undefined. 
+     * <p>
+     * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
+     * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
+     * 
+     * @return a ConcurrentMap view of this cache
+     * @see #view()
+     */
+    ConcurrentMap<K, V> asMap();
+    
     /**
      * Removes all entries from this cache. The cache will be empty after this call returns.
      * <p>
@@ -141,7 +139,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @return a set view of the mappings contained in this map
      * @see #view()
      */
-    Set<Map.Entry<K, V>> entrySet();
+ //   Set<Map.Entry<K, V>> entrySet();
 
     /**
      * Returns a cache selector that can be used to create a filtered view of the mappings contained in this cache. The
@@ -279,23 +277,6 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * @return <tt>true</tt> if this cache contains no elements or has been shutdown, otherwise <tt>false</tt>
      */
     boolean isEmpty();
-
-    /**
-     * Returns a {@link Set} view of the keys contained in this cache. The set is backed by the cache, so changes to the
-     * cache are reflected in the set, and vice-versa. If the cache is modified while an iteration over the set is in
-     * progress (except through the iterator's own <tt>remove</tt> operation), the results of the iteration are
-     * undefined. The set supports element removal, which removes the corresponding mapping from the cache, via the
-     * <tt>Iterator.remove</tt>, <tt>Set.remove</tt>, <tt>removeAll</tt>, <tt>retainAll</tt>, and
-     * <tt>clear</tt> operations. It does not support the <tt>add</tt> or <tt>addAll</tt> operations.
-     * <p>
-     * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operation will throw an
-     * {@link ContainerShutdownException}.
-     * 
-     * @return a set view of the keys contained in this cache
-     * @see #view()
-     */
-    Set<K> keySet();
 
     /**
      * This method works analogues to the {@link #get(Object)} method with the following modifications.
@@ -540,23 +521,7 @@ public interface Cache<K, V> extends ConcurrentMap<K, V>, Container, Iterable<Ca
      * 
      * @return the number of elements in this cache
      */
-    int size();
-
-    /**
-     * Returns a {@link Collection} view of the values contained in this cache. The collection is backed by the cache,
-     * so changes to the cache are reflected in the collection, and vice-versa. If the cache is modified while an
-     * iteration over the collection is in progress (except through the iterator's own <tt>remove</tt> operation), the
-     * results of the iteration are undefined. The collection supports element removal, which removes the corresponding
-     * mapping from the cache, via the <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>, <tt>removeAll</tt>,
-     * <tt>retainAll</tt> and <tt>clear</tt> operations. It does not support the <tt>add</tt> or <tt>addAll</tt>
-     * operations.
-     * <p>
-     * If this cache has been shutdown this method returns an empty collection.
-     * 
-     * @return a collection view of the values contained in this cache
-     * @see #view()
-     */
-    Collection<V> values();
+    long size();
 
     /**
      * Returns a {@link CacheView} view of the mappings contained in this cache, respecting any predicates that have

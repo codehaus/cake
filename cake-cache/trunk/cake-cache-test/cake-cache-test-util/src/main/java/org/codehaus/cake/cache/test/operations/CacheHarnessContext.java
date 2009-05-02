@@ -53,4 +53,7 @@ public class CacheHarnessContext<K, V> {
     public int randomInt(int n) {
         return random.nextInt(n);
     }
+    public long randomLong(long n) {
+        return random.nextInt((int)n);
+    }
 }

@@ -4,11 +4,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.internal.cache.InternalCacheAttributes;
 import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.memorystore.attribute.CachePolicyContext;
-import org.codehaus.cake.internal.cache.memorystore.openadressing.DefaultOpenAdressingEntryFactory;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.EnhancedOpenAdressingEntryFactory;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingMemoryStore;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
@@ -35,6 +36,10 @@ import org.codehaus.cake.util.ops.Ops.Predicate;
 
 @ManagedObject(defaultValue = CacheMXBean.MANAGED_SERVICE_NAME, description = "General Cache attributes and operations")
 public abstract class AbstractCache<K, V> extends AbstractContainer implements Cache<K, V> {
+    public ConcurrentMap<K, V> asMap() {
+        return new ConcurrentMapView();
+    }
+
     private CacheCrud<K, V> crud;
 
     private Set<Map.Entry<K, V>> entrySet;
@@ -46,7 +51,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     private final CacheProcessor<K, V> processor;
-    
+
     private Set<K> keySet;
 
     private final MemoryStore<K, V> memoryCache;
@@ -152,7 +157,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     @ManagedAttribute(description = "The number of elements contained in the cache")
-    public int getSize() {
+    public long getSize() {
         return size();
     }
 
@@ -207,12 +212,11 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         return returnPreviousValue.putIfAbsent(key, value);
     }
 
-    
     /** {@inheritDoc} */
     public CacheView<K, V> view() {
         return new DefaultCacheView<K, V>(processor, filter);
     }
-    
+
     /** {@inheritDoc} */
     public V remove(Object key) {
         return returnPreviousValue.remove((K) key);
@@ -236,7 +240,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     /** {@inheritDoc} */
-    public int size() {
+    public long size() {
         super.lazyStart();
         return memoryCache.size(filter);
     }
@@ -246,7 +250,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         if (!isStarted()) {
             return "{}";
         }
-        Iterator<Entry<K, V>> i = entrySet().iterator();
+        Iterator<Entry<K, V>> i = asMap().entrySet().iterator();
         if (!i.hasNext())
             return "{}";
 
@@ -289,10 +293,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     static Composer newComposer(CacheConfiguration<?, ?> configuration) {
         Composer composer = new Composer(Cache.class, configuration);
-        //composer.registerImplementation(HashMapMemoryStore.class);
+        // composer.registerImplementation(HashMapMemoryStore.class);
         composer.registerImplementation(ClassDefiner.class);
         composer.registerImplementation(CachePolicyContext.class);
-//        composer.registerImplementation(DefaultOpenAdressingEntryFactory.class);
+        // composer.registerImplementation(DefaultOpenAdressingEntryFactory.class);
         composer.registerImplementation(EnhancedOpenAdressingEntryFactory.class);
         composer.registerImplementation(OpenAdressingMemoryStore.class);
         composer.registerInstance(CacheConfiguration.class, configuration);
@@ -301,4 +305,71 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         return composer;
     }
 
+    class ConcurrentMapView implements ConcurrentMap<K, V> {
+
+        public V putIfAbsent(K key, V value) {
+            return AbstractCache.this.putIfAbsent(key, value);
+        }
+
+        public boolean remove(Object key, Object value) {
+            return AbstractCache.this.remove(key, value);
+        }
+
+        public V replace(K key, V value) {
+            return AbstractCache.this.replace(key, value);
+        }
+
+        public boolean replace(K key, V oldValue, V newValue) {
+            return AbstractCache.this.replace(key, oldValue, newValue);
+        }
+
+        public void clear() {
+            AbstractCache.this.clear();
+        }
+
+        public boolean containsKey(Object key) {
+            return AbstractCache.this.containsKey(key);
+        }
+
+        public boolean containsValue(Object value) {
+            return AbstractCache.this.containsValue(value);
+        }
+
+        public Set<Entry<K, V>> entrySet() {
+            return AbstractCache.this.entrySet();
+        }
+
+        public V get(Object key) {
+            return AbstractCache.this.get(key);
+        }
+
+        public boolean isEmpty() {
+            return AbstractCache.this.isEmpty();
+        }
+
+        public Set<K> keySet() {
+            return AbstractCache.this.keySet();
+        }
+
+        public V put(K key, V value) {
+            return AbstractCache.this.put(key, value);
+        }
+
+        public void putAll(Map<? extends K, ? extends V> m) {
+            AbstractCache.this.putAll(m);
+        }
+
+        public V remove(Object key) {
+            return AbstractCache.this.remove(key);
+        }
+
+        public int size() {
+            long size = AbstractCache.this.size();
+            return size < Integer.MAX_VALUE ? (int) size : Integer.MAX_VALUE;
+        }
+
+        public Collection<V> values() {
+            return AbstractCache.this.values();
+        }
+    }
 }

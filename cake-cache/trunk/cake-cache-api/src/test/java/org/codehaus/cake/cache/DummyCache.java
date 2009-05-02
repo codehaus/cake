@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.util.attribute.AttributeMap;
@@ -207,7 +208,7 @@ public class DummyCache<K, V> implements Cache<K, V> {
     public void shutdownNow() {}
 
     /** {@inheritDoc} */
-    public int size() {
+    public long size() {
         return 0;
     }
 
@@ -341,5 +342,9 @@ public class DummyCache<K, V> implements Cache<K, V> {
     public CacheView<K, V> getAll(Iterable<? extends K> keys) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
+    }
+
+    public ConcurrentMap<K, V> asMap() {
+        return null;
     }
 }

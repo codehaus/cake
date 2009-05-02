@@ -40,15 +40,15 @@ public class PutAll extends AbstractCacheTCKTest {
         init();
         c.putAll(asMap_(M1, M5));
         assertEquals(2, c.size());
-        assertTrue(c.entrySet().contains(M1));
-        assertTrue(c.entrySet().contains(M5));
+        assertTrue(c.asMap().entrySet().contains(M1));
+        assertTrue(c.asMap().entrySet().contains(M5));
 
         c.putAll(asMap_(M1, M5));
         assertEquals(2, c.size());
 
         c.putAll(asMap_(MNAN1, M4));
         assertEquals(3, c.size());
-        assertFalse(c.entrySet().contains(M1));
+        assertFalse(c.asMap().entrySet().contains(M1));
 
     }
 

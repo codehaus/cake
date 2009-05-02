@@ -50,17 +50,17 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         for (int i = 0; i < 5; i++) {
             c.put(i, Integer.toString(i));
         }
-        assertEquals(asKeySet(0, 1, 2, 3, 4), c.keySet());
+        assertEquals(asKeySet(0, 1, 2, 3, 4), c.asMap().keySet());
         c.put(5, "");
-        assertEquals(asKeySet(1, 2, 3, 4, 5), c.keySet());
+        assertEquals(asKeySet(1, 2, 3, 4, 5), c.asMap().keySet());
         c.put(6, "");
-        assertEquals(asKeySet(2, 3, 4, 5, 6), c.keySet());
+        assertEquals(asKeySet(2, 3, 4, 5, 6), c.asMap().keySet());
 
         c.put(7, "");
-        assertEquals(asKeySet(3, 4, 5, 6, 7), c.keySet());
+        assertEquals(asKeySet(3, 4, 5, 6, 7), c.asMap().keySet());
 
         c.put(8, "");
-        assertEquals(asKeySet(4, 5, 6, 7, 8), c.keySet());
+        assertEquals(asKeySet(4, 5, 6, 7, 8), c.asMap().keySet());
     }
 
     @Test
@@ -98,11 +98,11 @@ public class MemoryStoreReplacementPolicy extends AbstractCacheTCKTest {
         }
         peek(0);
         peek(M2);
-        assertEquals(asKeySet(0, 1, 2, 3, 4), c.keySet());
+        assertEquals(asKeySet(0, 1, 2, 3, 4), c.asMap().keySet());
         c.put(5, "");
-        assertEquals(asKeySet(1, 2, 3, 4, 5), c.keySet());
+        assertEquals(asKeySet(1, 2, 3, 4, 5), c.asMap().keySet());
         c.put(6, "");
-        assertEquals(asKeySet(2, 3, 4, 5, 6), c.keySet());
+        assertEquals(asKeySet(2, 3, 4, 5, 6), c.asMap().keySet());
     }
 
     void replaceAndCheck(Integer newKey, Integer oldKey) {

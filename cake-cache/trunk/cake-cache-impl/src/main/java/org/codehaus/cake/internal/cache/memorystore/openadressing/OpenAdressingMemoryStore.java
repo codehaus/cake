@@ -744,7 +744,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
 
     public void updateConfiguration(AttributeMap attributes) {
         isDisabled = attributes.get(MemoryStoreAttributes.IS_DISABLED, isDisabled);
-        maximumSize = attributes.get(MemoryStoreAttributes.MAX_SIZE, maximumSize);
+        maximumSize =(int) attributes.get(MemoryStoreAttributes.MAX_SIZE, maximumSize);
         if (maximumSize == 0) {
             maximumSize = Integer.MAX_VALUE;
         }
@@ -828,7 +828,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         Integer newSize;
         Long newVolume;
 
-        public int getMaximumSize() {
+        public long getMaximumSize() {
             return maximumSize;
         }
 
@@ -836,7 +836,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
             return maximumVolume;
         }
 
-        public int getSize() {
+        public long getSize() {
             return size;
         }
 
@@ -852,7 +852,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
             throw new UnsupportedOperationException("cannot call this method from here");
         }
 
-        public void setMaximumSize(int maximumSize) {
+        public void setMaximumSize(long maximumSize) {
             throw new UnsupportedOperationException("cannot call this method from here");
         }
 
@@ -860,12 +860,12 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
             throw new UnsupportedOperationException("cannot call this method from here");
         }
 
-        public void trimToSize(int size) {
-            this.newSize = size;
+        public void trimToSize(long size) {
+            this.newSize = (int) size;
         }
 
-        public void trimToSize(int size, Comparator<? extends CacheEntry<K, V>> comparator) {
-            this.newSize = size;
+        public void trimToSize(long size, Comparator<? extends CacheEntry<K, V>> comparator) {
+            this.newSize = (int) size;
             this.comparator = comparator;
         }
 

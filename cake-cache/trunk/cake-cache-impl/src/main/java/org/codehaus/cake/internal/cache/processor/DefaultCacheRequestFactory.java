@@ -44,7 +44,7 @@ public class DefaultCacheRequestFactory<K, V> implements CacheRequestFactory<K, 
         return new DefaultAddAllRequest<K, V>(t, attributes);
     }
 
-    public TrimToSizeRequest<K, V> createTrimToSizeRequest(int trimToSize,
+    public TrimToSizeRequest<K, V> createTrimToSizeRequest(long trimToSize,
             Comparator<? extends CacheEntry<K, V>> comparator) {
         return new DefaultTrimToSizeRequest<K, V>(trimToSize, comparator);
     }

@@ -17,7 +17,7 @@ import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 
 public interface CacheRequestFactory<K, V> {
-    TrimToSizeRequest<K, V> createTrimToSizeRequest(int trimToSize, Comparator<? extends CacheEntry<K, V>> comparator);
+    TrimToSizeRequest<K, V> createTrimToSizeRequest(long trimToSize, Comparator<? extends CacheEntry<K, V>> comparator);
 
     TrimToVolumeRequest<K, V> createTrimToVolumeRequest(long volume, Comparator<? extends CacheEntry<K, V>> comparator);
 

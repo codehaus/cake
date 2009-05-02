@@ -16,13 +16,12 @@
 package org.codehaus.cake.internal.cache.service.memorystore;
 
 import org.codehaus.cake.util.attribute.BooleanAttribute;
-import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
 
 public class MemoryStoreAttributes {
 
     public static final BooleanAttribute IS_DISABLED = new IsDisabledAttribute();
-    public static final IntAttribute MAX_SIZE = new MaximumSizeAttribute();
+    public static final LongAttribute MAX_SIZE = new MaximumSizeAttribute();
     public static final LongAttribute MAX_VOLUME = new MaximumVolumeAttribute();
 
     static class IsDisabledAttribute extends BooleanAttribute {
@@ -35,22 +34,22 @@ public class MemoryStoreAttributes {
         }
     }
 
-    static class MaximumSizeAttribute extends IntAttribute {
+    static class MaximumSizeAttribute extends LongAttribute {
 
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
 
         MaximumSizeAttribute() {
-            super(Integer.MAX_VALUE);
+            super(Long.MAX_VALUE);
         }
 
         @Override
-        protected String checkValidFailureMessage(Integer value) {
+        protected String checkValidFailureMessage(Long value) {
             return "Size must be positive, was " + value;
         }
 
         @Override
-        public boolean isValid(int value) {
+        public boolean isValid(long value) {
             return value >= 0;
         }
 

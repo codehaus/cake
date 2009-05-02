@@ -48,7 +48,7 @@ public class Put extends AbstractCacheTCKTest {
             int key = r.nextInt(250);
             c.put(key, "" + key);
         }
-        assertEquals(c.size(), new ArrayList(c.entrySet()).size());
+        assertEquals(c.size(), new ArrayList(c.asMap().entrySet()).size());
     }
 
     /**

@@ -32,7 +32,7 @@ public interface MemoryStoreMXBean {
      * @see #setMaximumSize(int)
      * @see MemoryStoreService#getMaximumSize()
      */
-    int getMaximumSize();
+    long getMaximumSize();
 
     long getMaximumVolume();
 
@@ -42,7 +42,7 @@ public interface MemoryStoreMXBean {
      * 
      * @return the size of the cache
      */
-    int getSize();
+    long getSize();
 
     /**
      * Returns the current volume of the cache. If the current volume of the cache is greater then Long.MAX_VALUE, this
@@ -52,7 +52,7 @@ public interface MemoryStoreMXBean {
      */
     long getVolume();
 
-    void setMaximumSize(int maximumSize);
+    void setMaximumSize(long maximumSize);
 
     void setMaximumVolume(long maximumVolume);
 
@@ -72,7 +72,7 @@ public interface MemoryStoreMXBean {
      * @param size
      *            if positive of 0, the size to the trim the cache down to, otherwise the number of elements to remove
      */
-    void trimToSize(int size);
+    void trimToSize(long size);
 
     /**
      * Keeps evicting entries until the volume of the cache is equal to or less then the specified volume. If the

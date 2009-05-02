@@ -15,9 +15,9 @@
  */
 package org.codehaus.cake.cache.test.tck.core;
 
-import org.codehaus.cake.cache.test.tck.core.entryset.EntrySetSuite;
-import org.codehaus.cake.cache.test.tck.core.keyset.KeySetSuite;
-import org.codehaus.cake.cache.test.tck.core.values.ValuesSuite;
+import org.codehaus.cake.cache.test.tck.asmap.entryset.EntrySetSuite;
+import org.codehaus.cake.cache.test.tck.asmap.keyset.KeySetSuite;
+import org.codehaus.cake.cache.test.tck.asmap.values.ValuesSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

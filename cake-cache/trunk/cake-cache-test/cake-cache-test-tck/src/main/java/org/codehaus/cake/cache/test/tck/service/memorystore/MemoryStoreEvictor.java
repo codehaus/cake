@@ -72,7 +72,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         init();
         put(11);
         assertSize(5);
-        assertEquals(c.keySet(), new HashSet(Arrays.asList(1, 2, 3, 4, 5)));
+        assertEquals(c.asMap().keySet(), new HashSet(Arrays.asList(1, 2, 3, 4, 5)));
 
         newConfiguration();
         conf.withMemoryStore().setEvictor(new Procedure<MemoryStoreService<Integer, String>>() {
@@ -91,7 +91,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         init();
         put(11);
         assertSize(6);
-        assertEquals(c.keySet(), new HashSet(Arrays.asList(6, 7, 8, 9, 10, 11)));
+        assertEquals(c.asMap().keySet(), new HashSet(Arrays.asList(6, 7, 8, 9, 10, 11)));
     }
 
     @Test
@@ -167,7 +167,7 @@ public class MemoryStoreEvictor extends AbstractCacheTCKTest {
         assertGet(M9);
         assertSize(4);
         assertVolume(14);
-        assertEquals(c.keySet(), new HashSet(Arrays.asList(1, 2, 3, 4)));
+        assertEquals(c.asMap().keySet(), new HashSet(Arrays.asList(1, 2, 3, 4)));
     }
 
     @Test

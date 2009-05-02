@@ -29,7 +29,7 @@ public class ExportedSynchronizedMemoryStoreService<K, V> extends ExportedMemory
     }
 
     @ManagedAttribute(description = "The current size of the cache")
-    public int getSize() {
+    public long getSize() {
         synchronized (mutex) {
             return super.getSize();
         }
