@@ -1,0 +1,82 @@
+<html>
+<!--
+ Copyright 2008, 2009 Kasper Nielsen
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+ Created on 5. March 2009 by Kasper Nielsen
+ -->
+  <head>
+    <title>Cache Attributes</title>
+    <meta name="short" content="Cache Attributes"/>
+  </head>
+  <body>
+    <p>
+    Cache attributes are meta data attached to a CacheEntry.
+     
+    Cake supports a number of ways to query and filter the contents of a cache.
+	Sorting, 
+	Querying is performed by creating views of a Cache, much like you would create views in a database.
+	Or the views that can be obtained by calling map.keySet()
+	However, in cake there are no difference between a view and a query
+	
+	
+	
+	CacheView is a view that contains a set of CacheEntry instances.
+	
+	MapView is a virtual view of a Map with unique keys mapping to a value.
+	
+	View is a virtual view of a Collection/List/Set.
+	
+    <h1 id="features">Filtering</h1>
+      A filtered cache view represents a subset of the data contained in a cache.
+      For example to create a cache view, all those cache entries where the string key starts with 'https'
+<div class="Source Java"><pre>
+Cache<String, String> c = new SynchronizedCache<String, String>();
+Cache<String, String> secure = c.filter().onKey(new Predicate<String>() {
+    public boolean op(String key) {return key.startsWith("https");}
+});
+</pre></div>    	
+      Or from where the value is an Integer
+       
+      show example  
+    The cache returned by the filter operation() is backed by the original cache, so changes to
+    
+    the old cache are reflected in the the new cache, and vice-versa.
+
+    <p>While series of filters are allowed, it is usually more efficient to combine them into single filters
+       when possible. For example <tt>cache.filter().onValue(isBlue).filter().onValue(isRound)</tt> is generally
+  less efficient than <tt>cache.filter.onValue(isBlueAndIsRound)</tt>.
+
+      Filtering is the operations of restricting what data is in the much like you would use 
+      the a 'WHERE' clause in SQL.
+
+    For example, calling size() on a cache view is no longer a constant time operation.
+    Instead all elements in the cache from which the view originated must be evaluated to
+    see if it is included in the view.
+    
+  	Obvious there are some downside to operation on filtered views, 
+  	for example, the size() operation which normally is constant size operation
+  	However, a filtered cache view needs to evaluate all elements that are in the real cache each time size is called
+  	to see if it matches the predicate(s) that have been used to create the view
+  	
+    There are a number of restrictions on a cache views created by filter operations.
+    
+    <h1 id="custom-attributes">Custom Attributes</h1>
+	Sometimes you need other attributes then the predefined attributes we listed in the previous section.
+	
+	A Group <- ID 
+	
+	
+
+  </body>
+</html>

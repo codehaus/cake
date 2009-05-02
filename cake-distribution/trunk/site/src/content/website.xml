@@ -49,7 +49,7 @@
     </section>
     <section>
         <name>Developing Cake</name>
-        <page>how-to-contribute.html</page>
+<!--         <page>how-to-contribute.html</page> -->
         <page>list-dev.html</page>
         <page>team.html</page>
         <page>repository.html</page>

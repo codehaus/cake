@@ -1,0 +1,75 @@
+<html>
+<!--
+ Copyright 2008, 2009 Kasper Nielsen
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+ Created on 5. March 2009 by Kasper Nielsen
+ -->
+  <head>
+    <title>Cache Views</title>
+    <meta name="short" content="Cache Views"/>
+  </head>
+  <body>
+    <p>
+    
+    In cake views are using for querying a cache.
+    
+    
+    Cake supports a number of ways to query and filter the contents of a cache.
+	Sorting, 
+	Querying is performed by creating views of a Cache, much like you would create views in a database.
+	Or the views that can be obtained by calling map.keySet()
+	However, in cake there are no difference between a view and a query
+	
+	
+	
+	CacheView is a view that contains a set of CacheEntry instances.
+	
+	MapView is a virtual view of a Map with unique keys mapping to a value.
+	
+	View is a virtual view of a Collection/List/Set.
+	
+    <h1 id="features">Filtering</h1>
+      A filtered cache view represents a subset of the data contained in a cache.
+      For example to create a cache view, all those cache entries where the string key starts with 'https'
+<div class="Source Java"><pre>
+Cache<String, String> c = new SynchronizedCache<String, String>();
+Cache<String, String> secure = c.filter().onKey(new Predicate<String>() {
+    public boolean op(String key) {return key.startsWith("https");}
+});
+</pre></div>    	
+      Or from where the value is an Integer
+       
+      show example  
+    The cache returned by the filter operation() is backed by the original cache, so changes to
+    
+    the old cache are reflected in the the new cache, and vice-versa.
+
+      Filtering is the operations of restricting what data is in the much like you would use 
+      the a 'WHERE' clause in SQL.
+
+  	
+    There are a number of restrictions on a cache views created by filter operations.
+Views are 
+<h1 id="getAll">getAll()</h1>
+Another way to obtain a CacheView is to call <tt>getAll(keys)</tt> which will create a CacheView
+over values. 
+
+For example, suppose you want to find out which choose the 5 biggest webpages.
+
+getAllIn("www.google.com", .....).orderby(CacheEntry.SIZE).setLimit(1).keys().one();
+For example, consider a cache will, gerne noget med reduce
+    <h3 id="features">CacheView</h3>
+    There two ways to optain CacheView. Either by calling cache.view() or cache.getAll().<a></a> 
+  </body>
+</html>

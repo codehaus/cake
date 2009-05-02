@@ -39,8 +39,47 @@
   </div>
   <#if page.index>
       <div class="SidePanel" id="right">
-        <#include "src/templates/download.html"> 
-        <#include "src/templates/news.html"> 
+
+<div class="NewsGroup">
+   <h1>Latest Version 0.3</h1>
+  <div class="NewsItem">
+    <p><a href="download.html#stable">Download Single jar</a><br/>
+       <a href="download.html#stable">Download Binary Distribution</a><br/>
+       <a href="download.html#stable">Download Source Distribution</a><br/>
+       <b>Distribution:</b> <span class="NewsVersion"><a href="download.html#stable">BIN.ZIP</a><a href="download.html#stable">SRC.ZIP</a></span>
+    <div class="SourceSmall Java"><pre>
+&lt;dependency&gt;
+ &lt;groupId&gt;org.codehaus.cake&lt;/groupId&gt;
+ &lt;artifactId&gt;cake&lt;/artifactId&gt;
+ &lt;version&gt;0.3&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+</p>
+  </div>
+    <h1>Next Version 0.4-SNAPSHOT</h1>
+  <div class="NewsItem">
+    <p><a href="download.html#stable">Download Single jar</a><br/>
+       <a href="download.html#stable">Download Binary Distribution</a><br/>
+       <a href="download.html#stable">Download Source Distribution</a><br/>
+       <a href="download.html#stable">Javadoc</a><br/>
+       <b>Distribution:</b> <span class="NewsVersion"><a href="download.html#stable">BIN.ZIP</a><a href="download.html#stable">SRC.ZIP</a></span>
+    <div class="SourceSmall Java"><pre>
+&lt;dependency&gt;
+ &lt;groupId&gt;org.codehaus.cake&lt;/groupId&gt;
+ &lt;artifactId&gt;cake&lt;/artifactId&gt;
+ &lt;version&gt;0.4-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+</p>
+  </div>
+</div>
+ 
+        <div class="NewsGroup">
+          <h1>News</h1>
+            <div class="NewsItem">
+              <p><b>Apr 28, 2009</b><br/><a href="news.html#20090428">Cake 0.3 released</a></p>
+            </div>
+        </div>
       </div>
       </#if>
 </body>

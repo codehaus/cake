@@ -1,0 +1,159 @@
+<html>
+<!--
+ Copyright 2008, 2009 Kasper Nielsen
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+ Created on 5. March 2009 by Kasper Nielsen
+ -->
+  <head>
+    <title>Cache Loading</title>
+    <meta name="short" content="Loading"/>
+  </head>
+  <body>
+   <p>
+   Cache loading refers to the process whereby a cache transparently (lazy) load or generate values for requested key(s).
+   This technique can often be more efficient then requiring a user to fill up the cache in advance. 
+   A cache loader might load data from an external site, a databases or just a plain text-based file. 
+   Data can also be generated on the fly, for example, as the result of a calculation.
+   </p>
+
+   <h1 id="cache-loader">Cache Loader</h1>
+   <p>
+   A cache loader implementation is provided by the user of the cache and is responsible for loading or creating the data that should be inserted into the cache for a specified key.
+   </p>
+<div class="Source Java"><pre>
+public interface BlockingCacheLoader&lt;K, V&gt; {
+    V load(K key, MutableAttributeMap attributes) throws Exception;
+}
+</pre></div>
+   The specified key should contain enough information to allow the cache loader to retrieve the matching value. 
+   The MutableAttributeMap can be be used by the cache to specify additional properties that the cache loader can use.
+   It it also used by the cache loader to transfer metadata about the loaded value back to the caller. For example, the size of the value or the cost of retrieving the value.
+   Simple cache loader will most likely just ignore the specified attribute map. 
+
+   The following example shows a cache loader taking a String formatted as an url and retrieves the corresponding content as a String:
+   <div class="Source Java"><pre>
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import org.codehaus.cake.cache.service.loading.BlockingCacheLoader;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
+
+public class SimpleUrlLoader implements BlockingCacheLoader&lt;String, String&gt; {
+    public String load(String key, MutableAttributeMap ignore) throws Exception {
+        BufferedReader in = new BufferedReader(new InputStreamReader(new URL(key).openStream()));
+        StringBuilder sb = new StringBuilder();
+        int str;
+        while ((str = in.read()) != -1) {
+            sb.append((char) str);
+        }
+        in.close();
+        return sb.toString();
+    }
+}
+</pre></div>
+To create a cache that uses this cache loader, we use:
+<div class="Source Java"><pre>
+CacheConfiguration&lt;String, String&gt; conf = CacheConfiguration.newConfiguration();
+conf.withLoading().setLoader(new SimpleUrlLoader());
+Cache&lt;String, String&gt; cache = new SynchronizedCache(conf);
+
+System.out.println(cache.get("http://www.java.net")); // 1. hit - Uses the cache loader
+System.out.println(cache.get("http://www.java.net")); // 2. hit - Returns the cached version
+</pre></div>
+Now when cache.get("http://www.java.net") is called the first time, the cache will use SimpleUrlLoader to retrieve the web page. 
+But when cache.get() is called the second time, the cache will return the cached content instead of retrieving the web page again.
+
+
+<h1 id="features">Prefetching</h1>
+Prefetching is the process of getting a value from an external location into the cache well before it will need it. 
+An immediate example is prefetching the second page of a result set whenever a query is submitted by a user. 
+In this way the cache can return the second page without any delay.
+The CacheLoadingService interface supports a number of methods for doing this. 
+
+<div class="Source Java"><pre>
+cache.with().loading().load("http://www.wikipedia.org"); //will load the specified url only if it is not already present in the cache or if it is expired or needs refreshing 
+cache.with().loading().loadAll(); // will reload all elements in the cache that is expired or needs refreshing
+</pre></div>
+Unless otherwise specified all methods are asynchronous and will return immediately. 
+
+The cache loading service can also be used for refreshing/reloading existing entries. For example, if the content has expired
+and you want the old content to available until 
+<p>
+but you want it to be available until it has been refreshed.
+A number of methods starting with *load*, for example, load(K key), which will load the value if it is not already present in the cache or if it expired. The other group of methods starts with forceLoad* and will always load a new value even if valid one is already present in the cache. Unless otherwise specified the cache will load the values asynchronously.
+
+Ordinary loading
+Examples of various loading calls:
+
+Will load the front of page of java.net into the cache if it is not already present. Or if an entry already exist
+and a needs-reload-predicate has been configured and evaluates the existing to true. 
+<div class="Source Java"><pre>
+cache.with().loading().load("http://www.java.net"); //will load the specified url even if it already present in the cache
+</pre></div>
+The next example only makes sense if a needs-reload-predicate has been defined. The example will reload 
+and replace t
+
+
+Calling loadAll () The next example will reload all entries in theeWill attempt to load
+<div class="Source Java"><pre>
+cache.with().loading().loadAll();
+</pre></div>
+
+//(Ordinary) loading will only load the specified elements if they are either not present in the cache or needs refreshing
+<div class="Source Java"><pre>
+cache.with().loading().load("http://www.wikipedia.org"); //will load the specified url only if it is not already present in the cache or if it is expired or needs refreshing 
+cache.with().loading().loadAll(); // will reload all elements in the cache that is expired or needs refreshing
+</pre></div>
+
+
+<h1 id="forced-loading">Explicit loading</h1>
+Data can also be asynchronoEntries 
+Reloading will forcefully load entries even if a valid entry in already in the cache.
+A forced CacheLoadingService can be obtained by calling cache.with().forcedLoading().
+
+The first example, will load the front page of java.net into the cache even if it is already in the cache: 
+<div class="Source Java"><pre>
+cache.with().loadingForced().load("http://www.java.net");
+</pre></div>
+
+This example shows how to reload <b>all</b> elements that are currently in the cache:
+<div class="Source Java"><pre>
+cache.with().loadingForced().loadAll(); 
+</pre></div>
+
+Reloading of entries can easily be combined with cache filtering to reload parts of the cache. 
+The last example, reloads all those cached web pages that have a size greather then 10 kB: 
+<div class="Source Java"><pre>
+cache.filter().onValue(new Predicate&lt;String&gt;() {
+    public boolean op(String content) {
+        return content.length() &gt; 10 * 1024;
+    }
+}).with().loadingForced().loadAll();
+</pre></div>
+
+   <h1 id="loading-utils">CacheLoadingUtils</h1>
+<p>
+The CacheLoadingUtils class contains a number of useful utilities.
+</p>
+
+   <h3 id="loading-utils-scheduling">Scheduling reloads</h3>
+
+   <h3 id="loading-utils-scheduling">Spreading the loads</h3>
+
+Consider, for example, . Instead we want to spread out the reloading over the day.
+
+
+  </body>
+</html>
