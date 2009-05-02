@@ -25,21 +25,27 @@
     </section>
     <section>
         <name>Caching</name>
+        <page>cache/cache-overview.html</page>
         <link title="Getting Started">http://cake.codehaus.org/apidocs/</link>
-        <page>loading.html</page>
-        <link title="Memory Store">http://cake.codehaus.org/apidocs/</link>
-        <link title="Replacement Policies">http://cake.codehaus.org/apidocs/</link>
-        <page>cache-attributes.html</page>
-        <page>cache-filtering.html</page>
-        <page>cache-views.html</page>
+        <page>cache/loading.html</page>
+        <page>cache/replacement-policies.html</page>
+        <page>cache/attributes.html</page>
+        <page>cache/filtering.html</page>
+        <page>cache/views.html</page>
     </section>
     <section>
-        <name>Util Libraries</name>
-        <page>attributes.html</page>
-         <link title="Collection">http://cake.codehaus.org/apidocs/</link>
-        <page>management.html</page>
-        <link title="Concurrent">http://cake.codehaus.org/apidocs/</link>
-        <link title="Ops">http://cake.codehaus.org/apidocs/</link>
+        <name>Services</name>
+        <page>service/service-overview.html</page>
+        <page>service/container.html</page>
+        <page>service/lifecycle.html</page>
+    </section>
+    <section>
+        <name>Utils</name>
+        <page>util/attributes.html</page>
+        <page>util/collection.html</page>
+        <page>util/concurrent.html</page>
+        <page>util/management.html</page>
+        <page>util/ops.html</page>
     </section>
     <section>
         <name>Developing Cake</name>

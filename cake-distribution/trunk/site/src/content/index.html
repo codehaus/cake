@@ -77,7 +77,7 @@ List&lt;Person&gt; p = cache.filter().onValue(new Predicate&lt;Person&gt;() {
     }
 }).setLimit(5).toList();
 </pre></div>
-Reload all entries in the cache that has not been modified the last hour. See the <a href="cache-views.html">section on loading</a> for details on how to configure a cache loader.
+Reload all entries in the cache that has not been modified the last hour. See the <a href="loading.html">section on loading</a> for details on how to configure a cache loader.
 <div class="Source Java"><pre>
 CacheConfiguration&lt;String, Person&gt; conf = CacheConfiguration.newConfiguration();
 conf.withLoading.setLoader(new MyPersonLoader&lt;String, Person&gt;{}); // Set (background) cache loader
