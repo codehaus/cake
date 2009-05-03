@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.service.ContainerShutdownException;
 import org.junit.Test;
 
 /**
  * Tests put operations for a cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: PutIfAbsent.java 327 2009-04-08 09:34:27Z kasper $
  */
-public class PutIfAbsent extends AbstractCacheTCKTest {
+public class PutIfAbsent extends AbstractAsMapTCKTest {
 
     /**
      * Tests the putIfAbsent(K key, V value) method.
      */
     @Test
     public void putIfAbsent() {
-        assertNull(c.putIfAbsent(M1.getKey(), M1.getValue()));
+        assertNull(putIfAbsent(M1.getKey(), M1.getValue()));
         assertEquals(M1.getValue(), peek(M1));
-        assertEquals(M1.getValue(), c.putIfAbsent(M1.getKey(), M2.getValue()));
-        assertFalse(c.containsValue(M2.getValue()));
+        assertEquals(M1.getValue(), putIfAbsent(M1.getKey(), M2.getValue()));
+        assertNotContainsValue(M2);
     }
 
     /**
@@ -45,8 +45,8 @@ public class PutIfAbsent extends AbstractCacheTCKTest {
     public void putIfAbsentLazyStart() {
         init();
         assertNotStarted();
-        c.putIfAbsent(M1.getKey(), M1.getValue());
-        checkLazystart();
+        putIfAbsent(M1.getKey(), M1.getValue());
+        assertStarted();
     }
 
     /**
@@ -55,20 +55,20 @@ public class PutIfAbsent extends AbstractCacheTCKTest {
     @Test(expected = NullPointerException.class)
     public void putIfAbsentKeyNPE() {
         init();
-        c.putIfAbsent(null, "A");
+        putIfAbsent(null, "A");
     }
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ContainerShutdownException.class)
     public void putIfAbsentShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
         // should fail
-        c.putIfAbsent(M1.getKey(), M1.getValue());
+        putIfAbsent(M1.getKey(), M1.getValue());
     }
 
     /**
@@ -77,6 +77,6 @@ public class PutIfAbsent extends AbstractCacheTCKTest {
     @Test(expected = NullPointerException.class)
     public void putIfAbsentValueNPE() {
         init();
-        c.putIfAbsent(1, null);
+        putIfAbsent(1, null);
     }
 }

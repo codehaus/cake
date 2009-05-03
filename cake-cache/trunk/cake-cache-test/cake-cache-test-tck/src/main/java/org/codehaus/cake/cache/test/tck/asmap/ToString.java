@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
-public class ToString extends AbstractCacheTCKTest {
+public class ToString extends AbstractAsMapTCKTest {
 
     /**
      * Just test that the toString() method works on an empty cache.
@@ -27,7 +26,7 @@ public class ToString extends AbstractCacheTCKTest {
     @Test
     public void toStringEmpty() {
         init();
-        assertEquals("{}", c.toString());
+        assertEquals("{}", asMap().toString());
     }
 
     /**
@@ -36,8 +35,8 @@ public class ToString extends AbstractCacheTCKTest {
     @Test
     public void toStringStartedEmpty() {
         init();
-        size();// lazy start
-        assertEquals("{}", c.toString());
+        asMap().size();// lazy start
+        assertEquals("{}", asMap().toString());
     }
 
     /**
@@ -45,8 +44,8 @@ public class ToString extends AbstractCacheTCKTest {
      */
     @Test
     public void toStringX() {
-       init(5);
-        String s = c.toString();
+        init(5);
+        String s = asMap().toString();
         try {
             for (int i = 1; i < 6; i++) {
                 assertTrue(s.indexOf(String.valueOf(i)) >= 0);
@@ -65,9 +64,11 @@ public class ToString extends AbstractCacheTCKTest {
     @Test
     public void toStringCacheInCache() {
         Cache c = newCache();
-        c.put(c, "foo");
+        c.put(c.asMap(), "foo");
+        asMap().toString();
         c.toString();
-        c.put("foo", c);
+        c.put("foo", c.asMap());
+        asMap().toString();
         c.toString();
     }
 }

@@ -48,7 +48,7 @@ public class Constructors extends AbstractCacheTCKTest {
         Constructor con = getClazz().getConstructor((Class[]) null);
         Cache c = (Cache) con.newInstance((Object[]) null);
         assertNotNull(c);
-        assertTrue(c.isEmpty());
+        assertIsEmpty();
     }
 
     /**

@@ -35,8 +35,8 @@ public class KeySetRetain extends AbstractAsMapTCKTest {
      */
     @Test
     public void retainAllLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().retainAll(Collections.singleton(M1.getKey()));
         checkLazystart();
     }
@@ -44,15 +44,15 @@ public class KeySetRetain extends AbstractAsMapTCKTest {
     @SuppressWarnings("unchecked")
     @Test
     public void retainAll() {
-        c = newCache(1);
+       init(1);
         asMap().keySet().retainAll(Collections.singleton(M1.getKey()));
-        assertEquals(1, c.size());
+        assertSize(1);
 
         asMap().keySet().retainAll(Collections.singleton(M2.getKey()));
-        assertEquals(0, c.size());
-        c = newCache(5);
+        assertSize(0);
+       init(5);
         asMap().keySet().retainAll(Arrays.asList(M1.getKey(), "F", M3.getKey(), "G", M5.getKey()));
-        assertEquals(3, c.size());
+        assertSize(3);
         assertTrue(asMap().keySet().contains(M1.getKey()) && asMap().keySet().contains(M3.getKey())
                 && asMap().keySet().contains(M5.getKey()));
 

@@ -13,58 +13,44 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.asmap.values;
+package org.codehaus.cake.cache.test.tck.asmap;
 
-import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.cake.cache.test.tck.asmap.AbstractAsMapTCKTest;
 import org.junit.Test;
 
 /**
+ * This class tests the {@link ConcurrentMap#clear()} operation.
+ * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: Clear.java 327 2009-04-08 09:34:27Z kasper $
  */
-public class ValuesClear extends AbstractAsMapTCKTest {
+public class Clear extends AbstractAsMapTCKTest {
 
-    /**
-     * {@link Set#clear()} removes all mappings.
-     */
+    /** {@link ConcurrentMap#clear()} removes all mappings. */
     @Test
-    public void clearValues() {
-       init(5);
-        assertEquals(asMap().values().size(), 5);
-        assertFalse(asMap().values().isEmpty());
+    public void clearRemoves() {
+        init(5);
         assertSize(5);
-        assertIsNotEmpty();
-
-
-        asMap().values().clear();
-
-        assertEquals(asMap().values().size(), 0);
-        assertTrue(asMap().values().isEmpty());
+        clear();
         assertSize(0);
-        assertIsEmpty();
     }
 
-    /**
-     * {@link Set#clear()} lazy starts the cache.
-     */
+    /** {@link ConcurrentMap#clear()} lazy starts the cache. */
     @Test
     public void clearLazyStart() {
-        init();
         assertNotStarted();
-        asMap().values().clear();
-        checkLazystart();
+        clear();
+        assertStarted();
     }
 
-    /**
-     * {@link Set#clear()} fails when the cache is shutdown.
-     */
+    /** {@link ConcurrentMap#clear()} should not fail when cache has been shutdown */
     @Test
     public void clearShutdown() {
-       init(5);
-        assertStarted();
+        init(5);
         shutdown();
-        asMap().values().clear();
+        clear();
+        awaitTermination();
+        clear();
     }
 }

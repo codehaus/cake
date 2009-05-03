@@ -39,7 +39,7 @@ public class KeySetToArray extends AbstractAsMapTCKTest {
         assertEquals(new HashSet(), new HashSet(Arrays.asList(asMap().keySet().toArray())));
 
         assertEquals(new HashSet(), new HashSet(Arrays.asList(asMap().keySet().toArray(new Integer[0]))));
-        c = newCache(5);
+       init(5);
         assertEquals(new HashSet(M1_TO_M5_KEY_SET), new HashSet(Arrays.asList(asMap().keySet().toArray())));
 
         assertEquals(new HashSet(M1_TO_M5_KEY_SET), new HashSet(Arrays.asList(asMap().keySet().toArray(new Integer[0]))));
@@ -51,8 +51,8 @@ public class KeySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().toArray();
         checkLazystart();
     }
@@ -62,8 +62,8 @@ public class KeySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayLazyStart1() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().toArray(new Integer[5]);
         checkLazystart();
     }
@@ -76,9 +76,9 @@ public class KeySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         assertEquals(0, asMap().keySet().toArray().length);
@@ -92,9 +92,9 @@ public class KeySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayShutdown1() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         assertEquals(5, asMap().keySet().toArray(new Integer[5]).length);

@@ -35,7 +35,7 @@ public class KeySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void contains() {
-        c = newCache(5);
+       init(5);
         assertTrue(asMap().keySet().contains(1));
         assertFalse(asMap().keySet().contains(1111));
         assertFalse(asMap().keySet().contains(6));
@@ -43,7 +43,7 @@ public class KeySetContains extends AbstractAsMapTCKTest {
 
     @Test
     public void containsAll() {
-        c = newCache(5);
+       init(5);
         assertTrue(asMap().keySet().containsAll(Arrays.asList(1, 5)));
         assertFalse(asMap().keySet().containsAll(Arrays.asList(1, 6)));
     }
@@ -53,8 +53,8 @@ public class KeySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsAllLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().containsAll(Arrays.asList(1, 5));
         checkLazystart();
     }
@@ -83,14 +83,14 @@ public class KeySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsAllShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().keySet().containsAll(Arrays.asList(1, 5));
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean containsKeys = asMap().keySet().containsAll(Arrays.asList(1, 5));
         assertFalse(containsKeys);// cache should be empty
@@ -101,8 +101,8 @@ public class KeySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().contains(1);
         checkLazystart();
     }
@@ -123,14 +123,14 @@ public class KeySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().keySet().contains(1);
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean containsKey = asMap().keySet().contains(1);
         assertFalse(containsKey);// cache should be empty

@@ -39,7 +39,7 @@ public class EntrySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void contains() {
-        c = newCache(5);
+       init(5);
         assertTrue(asMap().entrySet().contains(M1));
         assertFalse(asMap().entrySet().contains(M1_NULL));
         assertFalse(asMap().entrySet().contains(M6));
@@ -50,7 +50,7 @@ public class EntrySetContains extends AbstractAsMapTCKTest {
 
     @Test
     public void containsAll() {
-        c = newCache(5);
+       init(5);
         assertTrue(asMap().entrySet().containsAll(M1_TO_M5_SET));
         assertFalse(asMap().entrySet().containsAll(Arrays.asList(M1, M2, M3, M4, M5, M6)));
         assertFalse(asMap().entrySet().containsAll(Arrays.asList(M1, M1.getKey())));
@@ -62,8 +62,8 @@ public class EntrySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsAllLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().containsAll(new ArrayList((M1_TO_M5_SET)));
         checkLazystart();
     }
@@ -94,14 +94,14 @@ public class EntrySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsAllShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().entrySet().containsAll(M1_TO_M5_SET);
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean containsKeys = asMap().entrySet().containsAll(M1_TO_M5_SET);
         assertFalse(containsKeys);// cache should be empty
@@ -112,8 +112,8 @@ public class EntrySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().contains(M1);
         checkLazystart();
     }
@@ -135,14 +135,14 @@ public class EntrySetContains extends AbstractAsMapTCKTest {
      */
     @Test
     public void containsShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().entrySet().contains(M1);
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean containsKey = asMap().entrySet().contains(M1);
         assertFalse(containsKey);// cache should be empty

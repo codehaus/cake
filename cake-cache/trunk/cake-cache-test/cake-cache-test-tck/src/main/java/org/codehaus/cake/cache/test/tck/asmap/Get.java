@@ -13,68 +13,59 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
-import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import java.util.concurrent.ConcurrentMap;
+
+import org.codehaus.cake.service.ContainerShutdownException;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link Cache#containsKey}.
+ * Tests {@link ConcurrentMap#get(Object)}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: Get.java 327 2009-04-08 09:34:27Z kasper $
  */
-public class Get extends AbstractCacheTCKTest {
+public class Get extends AbstractAsMapTCKTest {
 
     @Before
     public void setup() {
         conf = newConfigurationClean();
     }
 
-    /**
-     * Test simple get.
-     */
+    /** Test simple get. */
     @Test
     public void get() {
-       init(5);
-        assertEquals(M1.getValue(), c.get(M1.getKey()));
-        assertEquals(M5.getValue(), c.get(M5.getKey()));
-        assertNull(c.get(M6.getKey()));
+        init(5);
+        assertGet(M1);
+        assertGet(M5);
+        assertGet(M6, null);
     }
 
-    /**
-     * {@link Cache#get} lazy starts the cache.
-     */
+    /** {@link ConcurrentMap#get} lazy starts the cache. */
     @Test
     public void getLazyStart() {
         init();
         assertNotStarted();
-        c.get(M6.getKey());
-        checkLazystart();
+        assertGet(M6, null);
+        assertStarted();
     }
 
-    /**
-     * get(null) throws NPE.
-     */
+    /** {@link ConcurrentMap#get} throws {@link NullPointerException} for <tt>null</tt> key. */
     @Test(expected = NullPointerException.class)
     public void getNPE() {
-       init(5);
-        c.get(null);
+        init(5);
+        get(null);
     }
 
-    /**
-     * {@link Cache#containsKey()} should not fail when cache is shutdown.
-     */
-    @Test(expected = IllegalStateException.class)
+    /** {@link ConcurrentMap#containsKey()} should not fail when cache is shutdown. */
+    @Test(expected = ContainerShutdownException.class)
     public void getShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
-
-        // should fail
-        c.get(M1.getKey());
+        get(M1); // should fail after shutdown has been called
     }
 
 }

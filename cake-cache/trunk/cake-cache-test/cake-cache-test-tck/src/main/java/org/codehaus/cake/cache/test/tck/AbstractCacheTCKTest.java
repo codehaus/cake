@@ -141,6 +141,9 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         }
         return new ArrayList<Map.Entry<Integer, String>>(c.asMap().entrySet());
     }
+    protected void assertIsEmpty() {
+        assertTrue(isEmpty());
+    }
 
     public static <T> List<T> asList(T... a) {
         return Arrays.asList(a);

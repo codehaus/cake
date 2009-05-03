@@ -46,8 +46,8 @@ public class ValuesToString extends AbstractAsMapTCKTest {
      */
     @Test
     public void toStringLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().values().toString();
         checkLazystart();
     }
@@ -60,14 +60,14 @@ public class ValuesToString extends AbstractAsMapTCKTest {
      */
     @Test
     public void toStringShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().values().toString();
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         String s = asMap().values().toString();;
         assertEquals("[]", s);// cache should be empty

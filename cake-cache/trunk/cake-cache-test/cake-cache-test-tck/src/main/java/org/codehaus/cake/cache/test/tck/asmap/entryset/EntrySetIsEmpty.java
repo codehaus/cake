@@ -43,8 +43,8 @@ public class EntrySetIsEmpty extends AbstractAsMapTCKTest {
      */
     @Test
     public void isEmptyLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().isEmpty();
         checkLazystart();
     }
@@ -57,14 +57,14 @@ public class EntrySetIsEmpty extends AbstractAsMapTCKTest {
      */
     @Test
     public void isEmptyShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().entrySet().isEmpty();
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean isEmpty = asMap().entrySet().isEmpty();
         assertTrue(isEmpty);// cache should be empty

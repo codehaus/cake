@@ -13,30 +13,29 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN1;
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN2;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
-public class Remove extends AbstractCacheTCKTest {
+public class Remove extends AbstractAsMapTCKTest {
 
     @Test
     public void remove() {
-        init();
-        assertNull(c.remove(MNAN2.getKey()));
-        assertNull(c.remove(MNAN1.getKey()));
+        init(0);
+        assertNull(remove(MNAN2));
+        assertNull(remove(MNAN1));
 
-       init(5);
-        assertEquals(M1.getValue(), c.remove(M1.getKey()));
-        assertEquals(4, c.size());
-        assertFalse(c.containsKey(M1.getKey()));
+        init(5);
+        assertEquals(M1.getValue(), remove(M1));
+        assertSize(4);
+        assertNotContainsKey(M1);
 
-       init(1);
-        assertEquals(M1.getValue(), c.remove(M1.getKey()));
+        init(1);
+        assertEquals(M1.getValue(), remove(M1));
         assertIsEmpty();
     }
 
@@ -44,12 +43,12 @@ public class Remove extends AbstractCacheTCKTest {
     public void removeMany() {
         int step = 1000;
         for (int i = 0; i < step; i++) {
-            c.put(i, "" + i);
+            put(i, "" + i);
         }
-        
+
         for (int i = 0; i < step; i++) {
             assertSize(step - i);
-            assertEquals("" + i, c.remove(i));
+            assertEquals("" + i, remove(i));
         }
     }
 
@@ -57,32 +56,32 @@ public class Remove extends AbstractCacheTCKTest {
     public void removeManyStep100() {
         int step = 1000;
         for (int i = 0; i < step; i++) {
-            c.put(i * 100, "" + i);
+            put(i * 100, "" + i);
         }
         for (int i = 0; i < step; i++) {
             assertSize(step - i);
-            assertEquals("" + i, c.remove(i * 100));
+            assertEquals("" + i, remove(i * 100));
         }
     }
 
     @Test
     public void removeManyReverse() {
         for (int i = 0; i < 1000; i++) {
-            c.put(i, "" + i);
+            put(i, "" + i);
         }
         for (int i = 999; i >= 0; i--) {
             assertSize(i + 1);
-            assertEquals("" + i, c.remove(i));
+            assertEquals("" + i, remove(i));
         }
     }
 
     @Test
     public void remove2() {
-        c = newCache(2);
-        assertTrue(c.remove(M2.getKey(), M2.getValue()));
-        assertEquals(1, c.size());
-        assertFalse(c.remove(M1.getKey(), M2.getValue()));
-        assertEquals(1, c.size());
+        init(2);
+        assertTrue(remove(M2.getKey(), M2.getValue()));
+        assertSize(1);
+        assertFalse(remove(M1.getKey(), M2.getValue()));
+        assertSize(1);
     }
 
     /**
@@ -90,8 +89,8 @@ public class Remove extends AbstractCacheTCKTest {
      */
     @Test(expected = NullPointerException.class)
     public void remove2KeyNPE() {
-       init(1);
-        c.remove(null, M1.getValue());
+        init(1);
+        remove(null, M1.getValue());
     }
 
     /**
@@ -101,8 +100,8 @@ public class Remove extends AbstractCacheTCKTest {
     public void remove2LazyStart() {
         init();
         assertNotStarted();
-        c.remove(M1.getKey(), M2.getValue());
-        checkLazystart();
+        remove(M1.getKey(), M2.getValue());
+        assertStarted();
     }
 
     /**
@@ -110,12 +109,11 @@ public class Remove extends AbstractCacheTCKTest {
      */
     @Test
     public void remove2ShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
-        // should fail
-        assertFalse(c.remove(M1.getKey(), M2.getValue()));
+        assertFalse(remove(M1.getKey(), M2.getValue())); // should fail
     }
 
     /**
@@ -124,7 +122,7 @@ public class Remove extends AbstractCacheTCKTest {
     @Test(expected = NullPointerException.class)
     public void remove2ValueNPE() {
         init();
-        c.remove(M1.getKey(), null);
+        remove(M1.getKey(), null);
     }
 
     /**
@@ -134,18 +132,20 @@ public class Remove extends AbstractCacheTCKTest {
     public void removeLazyStart() {
         init();
         assertNotStarted();
-        c.remove(M1.getKey());
-        checkLazystart();
+        remove(M1.getKey());
+        assertStarted();
     }
 
     @Test(expected = NullPointerException.class)
     public void removeNPE() {
-        newCache(0).remove(null);
+        init(0);
+        asMap().remove(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void removeNPE1() {
-        newCache(5).remove(null);
+        init(5);
+        asMap().remove(null);
     }
 
     /**
@@ -153,11 +153,10 @@ public class Remove extends AbstractCacheTCKTest {
      */
     @Test
     public void removeShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
-        // should fail
-        assertNull(c.remove(MNAN1.getKey()));
+        assertNull(remove(MNAN1)); // should fail
     }
 }

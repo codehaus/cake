@@ -13,70 +13,56 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
 import org.junit.Test;
 
 /**
  * Tests {@link Cache#containsValue}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: ContainsValue.java 327 2009-04-08 09:34:27Z kasper $
  */
-public class ContainsValue extends AbstractCacheTCKTest {
+public class ContainsValue extends AbstractAsMapTCKTest {
 
-    /**
-     * {@link Cache#containsValue} returns <code>true</code> for contained values.
-     */
+    /** {@link ConcurrentMap#containsValue} returns <code>true</code> for contained values. */
     @Test
     public void containsValue() {
-       init(5);
-        assertTrue(c.containsValue("A"));
-        assertFalse(c.containsValue("Z"));
+        init(5);
+        assertContainsValue(M1);
+        assertNotContainsValue(M6);
     }
 
-    /**
-     * <code>null</code> parameter to {@link Cache#containsValue} throws {@link NullPointerException}.
-     */
+    /** <code>null</code> parameter to {@link ConcurrentMap#containsValue} throws {@link NullPointerException}. */
     @Test(expected = NullPointerException.class)
     public void containsValueNPE() {
-       init(5);
-        c.containsValue(null);
+        init(5);
+        containsValue(null);
     }
 
-    /**
-     * {@link Cache#containsValue} lazy starts the cache.
-     */
+    /** {@link ConcurrentMap#containsValue} lazy starts the cache. */
     @Test
     public void containsValueLazyStart() {
         init();
         assertNotStarted();
-        c.containsValue("A");
-        checkLazystart();
+        assertNotContainsValue(M1);
+        assertStarted();
     }
 
-    /**
-     * {@link Cache#containsValue()} should not fail when cache is shutdown.
-     * 
-     * @throws InterruptedException
-     *             was interrupted
-     */
+    /** {@link ConcurrentMap#containsValue()} should not fail when cache is shutdown. */
     @Test
     public void containsValueShutdown() throws InterruptedException {
-       init(5);
-        assertStarted();
+        init(5);
+        assertContainsValue(M1);
         shutdown();
 
-        // should not fail, but result is undefined until terminated
-        c.containsValue("A");
+        containsValue(M1);// should not fail, but result is undefined until terminated
 
-        shutdownAndAwaitTermination();
-
-        boolean containsValue = c.containsValue("A");
-        assertFalse(containsValue);// cache should be empty
+        awaitTermination();
+        assertFalse(containsKey(M1));
     }
 }

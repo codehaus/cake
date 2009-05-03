@@ -46,8 +46,8 @@ public class KeySetToString extends AbstractAsMapTCKTest {
      */
     @Test
     public void toStringLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().toString();
         checkLazystart();
     }
@@ -60,14 +60,14 @@ public class KeySetToString extends AbstractAsMapTCKTest {
      */
     @Test
     public void toStringShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().keySet().toString();
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         String s = asMap().keySet().toString();;
         assertEquals("[]", s);// cache should be empty

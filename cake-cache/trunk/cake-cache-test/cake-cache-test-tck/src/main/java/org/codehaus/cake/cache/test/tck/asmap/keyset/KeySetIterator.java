@@ -42,7 +42,7 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
             count++;
         }
         assertEquals(0, count);
-        c = newCache(5);
+       init(5);
         Iterator<Integer> iter = asMap().keySet().iterator();
         while (iter.hasNext()) {
             assertTrue(M1_TO_M5_KEY_SET.contains(iter.next()));
@@ -56,14 +56,14 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
      */
     @Test
     public void iteratorLazyStart() {
-        c = newCache(0);
+        init();
         asMap().keySet().iterator();
         checkLazystart();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void iteratorNextNSE() {
-        c = newCache(1);
+       init(1);
         Iterator<Integer> iter = asMap().keySet().iterator();
         iter.next();
         iter.next();
@@ -72,7 +72,7 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
     @Test
     public void iteratorCME() {
         try {
-        c = newCache(1);
+       init(1);
         Iterator<Integer> iter = asMap().keySet().iterator();
         Iterator<Integer> iter2 = asMap().keySet().iterator();
         iter.next();
@@ -88,7 +88,7 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
 
     @Test
     public void iteratorRemove() {
-        c = newCache(5);
+       init(5);
         Iterator<Integer> iter = asMap().keySet().iterator();
         while (iter.hasNext()) {
             int next = iter.next();
@@ -96,7 +96,7 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
                 iter.remove();
             }
         }
-        assertEquals(3, c.size());
+        assertSize(3);
         assertTrue(asMap().keySet().contains(M1.getKey()));
         assertFalse(asMap().keySet().contains(M2.getKey()));
         assertTrue(asMap().keySet().contains(M3.getKey()));
@@ -116,7 +116,7 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
 
     @Test(expected = IllegalStateException.class)
     public void iteratorRemoveISE2() {
-        c = newCache(1);
+       init(1);
         Iterator<Integer> iter = asMap().keySet().iterator();
         iter.next();
         iter.remove();
@@ -128,9 +128,9 @@ public class KeySetIterator extends AbstractAsMapTCKTest {
      */
     @Test
     public void iteratorShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
         assertFalse(asMap().keySet().iterator().hasNext());
     }
 }

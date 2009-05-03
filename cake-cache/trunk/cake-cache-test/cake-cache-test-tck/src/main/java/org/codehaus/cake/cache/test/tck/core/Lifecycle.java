@@ -31,7 +31,7 @@ public class Lifecycle extends AbstractCacheTCKTest {
     @Test
     public void initialStatus() {
         init();
-        assertFalse(c.isStarted());
+        assertNotStarted();
         assertFalse(c.isTerminated());
         assertFalse(c.isShutdown());
     }
@@ -45,7 +45,7 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void lazyStart() {
         init();
         startCache();
-        assertTrue(c.isStarted());
+        assertStarted();
         assertFalse(c.isTerminated());
         assertFalse(c.isShutdown());
     }
@@ -53,10 +53,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
     @Test
     public void shutdownNoOp() {
         init();
-        c.shutdown();
+        shutdown();
         assertTrue(c.isShutdown());
         assertTrue(c.isTerminated());
-        c.shutdown();
+        shutdown();
         assertTrue(c.isShutdown());
         // TODO c is started???
 
@@ -78,10 +78,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void shutdownCache() {
         init();
         startCache();
-        assertTrue(c.isStarted());
+        assertStarted();
         assertFalse(c.isShutdown());
-        c.shutdown();
-        assertTrue(c.isStarted());
+        shutdown();
+        assertStarted();
         assertTrue(c.isShutdown());
     }
 
@@ -89,10 +89,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void shutdownNow() {
         init();
         startCache();
-        assertTrue(c.isStarted());
+        assertStarted();
         assertFalse(c.isShutdown());
         c.shutdownNow();
-        assertTrue(c.isStarted());
+        assertStarted();
         assertTrue(c.isShutdown());
     }
 
@@ -100,10 +100,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void shutdownTerminated() throws InterruptedException {
         init();
         startCache();
-        assertTrue(c.isStarted());
-        c.shutdown();
+        assertStarted();
+        shutdown();
         assertTrue(c.awaitTermination(10, TimeUnit.SECONDS));
-        assertTrue(c.isStarted());
+        assertStarted();
         assertTrue(c.isShutdown());
         assertTrue(c.isTerminated());
     }
@@ -112,10 +112,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void shutdownNowTerminated() throws InterruptedException {
         init();
         startCache();
-        assertTrue(c.isStarted());
+        assertStarted();
         c.shutdownNow();
         assertTrue(c.awaitTermination(10, TimeUnit.SECONDS));
-        assertTrue(c.isStarted());
+        assertStarted();
         assertTrue(c.isShutdown());
         assertTrue(c.isTerminated());
     }

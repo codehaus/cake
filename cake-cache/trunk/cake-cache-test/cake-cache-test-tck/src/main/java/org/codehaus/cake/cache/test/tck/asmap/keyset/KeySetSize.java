@@ -43,8 +43,8 @@ public class KeySetSize extends AbstractAsMapTCKTest {
      */
     @Test
     public void sizeLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().size();
         checkLazystart();
     }
@@ -57,14 +57,14 @@ public class KeySetSize extends AbstractAsMapTCKTest {
      */
     @Test
     public void sizeShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().keySet().size();
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         int size = asMap().keySet().size();
         assertEquals(0, size);// cache should be empty

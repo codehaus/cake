@@ -29,9 +29,9 @@ public class KeySet extends AbstractAsMapTCKTest {
      */
     @Test
     public void noLazyStart() {
-        c = newCache(0);
+        init();
         asMap().keySet();
-        assertFalse(c.isStarted());
+        assertNotStarted();
     }
 
     /**
@@ -39,9 +39,9 @@ public class KeySet extends AbstractAsMapTCKTest {
      */
     @Test
     public void noFailOnShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
         asMap().keySet(); // should not fail
     }
 }

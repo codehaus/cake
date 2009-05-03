@@ -39,7 +39,7 @@ public class ValuesIterator extends AbstractAsMapTCKTest {
             count++;
         }
         assertEquals(0, count);
-        c = newCache(5);
+       init(5);
         Iterator<String> iter = asMap().values().iterator();
         while (iter.hasNext()) {
             assertTrue(M1_TO_M5_VALUES.contains(iter.next()));
@@ -53,14 +53,14 @@ public class ValuesIterator extends AbstractAsMapTCKTest {
      */
     @Test
     public void iteratorLazyStart() {
-        c = newCache(0);
+        init();
         asMap().values().iterator();
         checkLazystart();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void iteratorNextNSE() {
-        c = newCache(1);
+       init(1);
         Iterator<String> iter = asMap().values().iterator();
         iter.next();
         iter.next();
@@ -68,7 +68,7 @@ public class ValuesIterator extends AbstractAsMapTCKTest {
 
     @Test
     public void iteratorRemove() {
-        c = newCache(5);
+       init(5);
         Iterator<String> iter = asMap().values().iterator();
         while (iter.hasNext()) {
             String next = iter.next();
@@ -76,7 +76,7 @@ public class ValuesIterator extends AbstractAsMapTCKTest {
                 iter.remove();
             }
         }
-        assertEquals(3, c.size());
+        assertSize(3);
         assertTrue(asMap().values().contains(M1.getValue()));
         assertFalse(asMap().values().contains(M2.getValue()));
         assertTrue(asMap().values().contains(M3.getValue()));
@@ -96,7 +96,7 @@ public class ValuesIterator extends AbstractAsMapTCKTest {
 
     @Test(expected = IllegalStateException.class)
     public void iteratorRemoveISE2() {
-        c = newCache(1);
+       init(1);
         Iterator<String> iter = asMap().values().iterator();
         iter.next();
         iter.remove();
@@ -108,9 +108,9 @@ public class ValuesIterator extends AbstractAsMapTCKTest {
      */
     @Test
     public void iteratorShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
         assertFalse(asMap().values().iterator().hasNext());
     }
 }

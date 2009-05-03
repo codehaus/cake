@@ -40,7 +40,7 @@ public class EntrySetToArray extends AbstractAsMapTCKTest {
         assertEquals(new HashSet(), new HashSet(Arrays.asList(asMap().entrySet().toArray())));
 
         assertEquals(new HashSet(), new HashSet(Arrays.asList(asMap().entrySet().toArray(new Map.Entry[0]))));
-        c = newCache(5);
+       init(5);
         asMap().entrySet().toArray();
         assertEquals(new HashSet(M1_TO_M5_SET), new HashSet(Arrays.asList(asMap().entrySet().toArray())));
 
@@ -53,8 +53,8 @@ public class EntrySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().toArray();
         checkLazystart();
     }
@@ -64,8 +64,8 @@ public class EntrySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayLazyStart1() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().toArray(new Map.Entry[5]);
         checkLazystart();
     }
@@ -78,9 +78,9 @@ public class EntrySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         assertEquals(0, asMap().entrySet().toArray().length);
@@ -91,9 +91,9 @@ public class EntrySetToArray extends AbstractAsMapTCKTest {
      */
     @Test
     public void toArrayShutdown1() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         assertEquals(5, asMap().entrySet().toArray(new Map.Entry[5]).length);

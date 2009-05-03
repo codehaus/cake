@@ -1,5 +1,6 @@
 package org.codehaus.cake.cache;
 
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -37,9 +38,11 @@ import org.codehaus.cake.util.ops.Ops.Predicate;
 @ManagedObject(defaultValue = CacheMXBean.MANAGED_SERVICE_NAME, description = "General Cache attributes and operations")
 public abstract class AbstractCache<K, V> extends AbstractContainer implements Cache<K, V> {
     public ConcurrentMap<K, V> asMap() {
-        return new ConcurrentMapView();
+        ConcurrentMap<K, V> es = mapView;
+        return (es != null) ? es : (mapView = new ConcurrentMapView());
     }
 
+    private ConcurrentMapView mapView;
     private CacheCrud<K, V> crud;
 
     private Set<Map.Entry<K, V>> entrySet;
@@ -305,7 +308,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         return composer;
     }
 
-    class ConcurrentMapView implements ConcurrentMap<K, V> {
+    class ConcurrentMapView extends AbstractMap<K, V> implements ConcurrentMap<K, V> {
 
         public V putIfAbsent(K key, V value) {
             return AbstractCache.this.putIfAbsent(key, value);
@@ -370,6 +373,30 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
         public Collection<V> values() {
             return AbstractCache.this.values();
+        }
+
+        @Override
+        public String toString() {
+            if (!isStarted()) {
+                return "{}";
+            }
+            Iterator<Entry<K, V>> i = entrySet().iterator();
+            if (!i.hasNext())
+                return "{}";
+
+            StringBuilder sb = new StringBuilder();
+            sb.append('{');
+            for (;;) {
+                Entry<K, V> e = i.next();
+                K key = e.getKey();
+                V value = e.getValue();
+                sb.append(key == AbstractCache.this ? "(this Cache)" : key == this ? "(this Map)" : key);
+                sb.append('=');
+                sb.append(value == AbstractCache.this ? "(this Cache)" : value == this ? "(this Map)" : value);
+                if (!i.hasNext())
+                    return sb.append('}').toString();
+                sb.append(", ");
+            }
         }
     }
 }

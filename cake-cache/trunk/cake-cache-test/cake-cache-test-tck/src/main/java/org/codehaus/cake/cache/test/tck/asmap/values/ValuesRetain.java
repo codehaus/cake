@@ -35,8 +35,8 @@ public class ValuesRetain extends AbstractAsMapTCKTest {
      */
     @Test
     public void retainAllLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().keySet().retainAll(Collections.singleton(M1.getValue()));
         checkLazystart();
     }
@@ -44,15 +44,15 @@ public class ValuesRetain extends AbstractAsMapTCKTest {
     @SuppressWarnings("unchecked")
     @Test
     public void retainAll() {
-        c = newCache(1);
+       init(1);
         asMap().values().retainAll(Collections.singleton(M1.getValue()));
-        assertEquals(1, c.size());
+        assertSize(1);
 
         asMap().values().retainAll(Collections.singleton(M2.getValue()));
-        assertEquals(0, c.size());
-        c = newCache(5);
+        assertSize(0);
+       init(5);
         asMap().values().retainAll(Arrays.asList(M1.getValue(), 1, M3.getValue(), 2, M5.getValue()));
-        assertEquals(3, c.size());
+        assertSize(3);
         assertTrue(asMap().values().contains(M1.getValue()) && asMap().values().contains(M3.getValue())
                 && asMap().values().contains(M5.getValue()));
 

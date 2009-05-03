@@ -31,18 +31,18 @@ public class KeySetClear extends AbstractAsMapTCKTest {
      */
     @Test
     public void clearKeySet() {
-        c = newCache(5);
+       init(5);
         assertEquals(asMap().keySet().size(), 5);
         assertFalse(asMap().keySet().isEmpty());
-        assertEquals(c.size(), 5);
-        assertFalse(c.isEmpty());
+        assertSize(5);
+        assertIsNotEmpty();
 
         asMap().keySet().clear();
 
         assertEquals(asMap().keySet().size(), 0);
         assertTrue(asMap().keySet().isEmpty());
-        assertEquals(c.size(), 0);
-        assertTrue(c.isEmpty());
+        assertSize(0);
+        assertIsEmpty();
     }
 
     /**
@@ -50,7 +50,7 @@ public class KeySetClear extends AbstractAsMapTCKTest {
      */
     @Test
     public void clearLazyStart() {
-        c = newCache(0);
+        init();
         asMap().keySet().clear();
         checkLazystart();
     }
@@ -60,9 +60,9 @@ public class KeySetClear extends AbstractAsMapTCKTest {
      */
     @Test
     public void clearShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
         asMap().keySet().clear();
     }
 }

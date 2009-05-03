@@ -13,40 +13,30 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.asmap.values;
-
-import java.util.concurrent.TimeUnit;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.asmap.AbstractAsMapTCKTest;
 import org.junit.Test;
 
-/**
- * 
- * 
- * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
- */
-public class ValuesSize extends AbstractAsMapTCKTest {
+public class Size extends AbstractAsMapTCKTest {
 
-    /**
-     * size returns the correct values.
-     */
+    /** size returns the correct values. */
     @Test
-    public void sizeValues() {
-        assertEquals(0, newCache().asMap().keySet().size());
-        assertEquals(5, newCache(5).asMap().values().size());
+    public void sizeBasic() {
+        init(0);
+        assertSize(0);
+        init(5);
+        assertSize(5);
     }
 
-    /**
-     * {@link Cache#size()} lazy starts the cache.
-     */
+    /** {@link Cache#size()} lazy starts the cache. */
     @Test
     public void sizeLazyStart() {
         init();
+        asMap();// shoudnt start it
         assertNotStarted();
-        asMap().values().size();
-        checkLazystart();
+        asMap().size();
+        assertStarted();
     }
 
     /**
@@ -56,18 +46,13 @@ public class ValuesSize extends AbstractAsMapTCKTest {
      *             was interrupted
      */
     @Test
-    public void sizeShutdown() throws InterruptedException {
-       init(5);
+    public void sizeShutdown() {
+        init(5);
         assertStarted();
         shutdown();
-
-        // should not fail, but result is undefined until terminated
-        asMap().values().size();
-
-        shutdownAndAwaitTermination();
-
-        int size = asMap().values().size();
-        assertEquals(0, size);// cache should be empty
+        asMap().size();// shouldnt fail
+        awaitTermination();
+        assertSize(0);
     }
 
 }

@@ -31,18 +31,18 @@ public class EntrySetClear extends AbstractAsMapTCKTest {
      */
     @Test
     public void clearEntrySet() {
-        c = newCache(5);
+       init(5);
         assertEquals(asMap().entrySet().size(), 5);
         assertFalse(asMap().entrySet().isEmpty());
         assertSize(5);
-        assertFalse(c.isEmpty());
+        assertIsNotEmpty();
 
         asMap().entrySet().clear();
 
         assertEquals(asMap().entrySet().size(), 0);
         assertTrue(asMap().entrySet().isEmpty());
         assertSize(0);
-        assertTrue(c.isEmpty());
+        assertIsEmpty();
     }
 
     /**
@@ -50,8 +50,8 @@ public class EntrySetClear extends AbstractAsMapTCKTest {
      */
     @Test
     public void clearLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().clear();
         checkLazystart();
     }
@@ -61,10 +61,10 @@ public class EntrySetClear extends AbstractAsMapTCKTest {
      */
     @Test
     public void clearShutdown() {
-        c = newCache(5);
+       init(5);
         // put(1);
-        assertTrue(c.isStarted());
-        c.shutdown();
+        assertStarted();
+        shutdown();
         asMap().entrySet().clear();
     }
 }

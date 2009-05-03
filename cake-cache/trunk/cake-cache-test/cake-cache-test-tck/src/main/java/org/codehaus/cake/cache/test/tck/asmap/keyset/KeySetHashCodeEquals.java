@@ -41,14 +41,14 @@ public class KeySetHashCodeEquals extends AbstractAsMapTCKTest {
         assertFalse(asMap().keySet().equals(null));
         assertFalse(asMap().keySet().equals(newCache(1).asMap().keySet()));
 
-        c = newCache(5);
+       init(5);
         assertFalse(asMap().keySet().equals(null));
         assertFalse(asMap().keySet().equals(newCache(4).asMap().keySet()));
 
-        c = newCache(5);
+       init(5);
         assertFalse(asMap().keySet().equals(newCache(6).asMap().keySet()));
 
-        c = newCache(5);
+       init(5);
         assertFalse(asMap().keySet().equals(new HashSet<Integer>(Arrays.asList(1, 2, 3, 4, null))));
         assertFalse(asMap().keySet().equals(new HashSet(Arrays.asList("1", "2", "3", "4", "5"))));
         assertTrue(asMap().keySet().equals(asMap().keySet()));
@@ -62,14 +62,14 @@ public class KeySetHashCodeEquals extends AbstractAsMapTCKTest {
      */
     @Test
     public void equalsShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().keySet().equals(new HashSet());
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean equals = asMap().keySet().equals(new HashSet());
         assertTrue(equals);// cache should be empty
@@ -79,7 +79,7 @@ public class KeySetHashCodeEquals extends AbstractAsMapTCKTest {
 
     @Test
     public void testHashCode() {
-        c = newCache(5);
+       init(5);
         assertEquals(asMap().keySet().hashCode(), 1 + 2 + 3 + 4 + 5);
     }
 

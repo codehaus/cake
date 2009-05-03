@@ -35,23 +35,23 @@ public class EntrySetRetain extends AbstractAsMapTCKTest {
      */
     @Test
     public void retainAllLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         asMap().entrySet().retainAll(Collections.singleton(M1));
         checkLazystart();
     }
 
     @Test
     public void retainAll() {
-        c = newCache(1);
+       init(1);
         asMap().entrySet().retainAll(Collections.singleton(M1));
         assertSize(1);
         asMap().entrySet().retainAll(Collections.singleton(M1_NULL));
         assertSize(0);
-        c = newCache(1);
+       init(1);
         asMap().entrySet().retainAll(Collections.singleton(M2));
         assertSize(0);
-        c = newCache(5);
+       init(5);
         asMap().entrySet().retainAll(Arrays.asList(M1, "F", M3, "G", M5));
         assertSize(3);
         assertTrue(asMap().entrySet().contains(M1) && asMap().entrySet().contains(M3) && asMap().entrySet().contains(M5));

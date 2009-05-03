@@ -30,7 +30,7 @@ public class GetEntry extends AbstractCacheTCKTest {
 
     @Test
     public void getEntry() {
-        c = newCache(5);
+       init(5);
         assertNull(c.getEntry(6));
         assertEquals(M1.getValue(), c.getEntry(M1.getKey()).getValue());
         assertEquals(M1.getKey(), c.getEntry(M1.getKey()).getKey());
@@ -43,8 +43,8 @@ public class GetEntry extends AbstractCacheTCKTest {
      */
     @Test
     public void getLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         c.getEntry(M6.getKey());
         checkLazystart();
     }
@@ -54,7 +54,7 @@ public class GetEntry extends AbstractCacheTCKTest {
      */
     @Test(expected = NullPointerException.class)
     public void getNPE() {
-        c = newCache(5);
+       init(5);
         c.getEntry(null);
     }
 
@@ -64,9 +64,9 @@ public class GetEntry extends AbstractCacheTCKTest {
      */
     @Test(expected = IllegalStateException.class)
     public void getShutdownISE() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should fail
         c.getEntry(M1.getKey());
@@ -86,9 +86,9 @@ public class GetEntry extends AbstractCacheTCKTest {
     public void get() {
         newConfigurationClean();
         init();
-        c = newCache(0);
+        init();
         assertNull(c.getEntry(M1.getKey()));
-        c = newCache(1);
+       init(1);
         CacheEntry<Integer, String> ce = c.getEntry(M1.getKey());
         assertEquals(M1.getKey(), ce.getKey());
         assertEquals(M1.getValue(), ce.getValue());
@@ -98,9 +98,9 @@ public class GetEntry extends AbstractCacheTCKTest {
     public void put() {
         newConfigurationClean();
         init();
-        c = newCache(0);
+        init();
         assertNull(c.getEntry(M1.getKey()));
-        c = newCache(1);
+       init(1);
         CacheEntry<Integer, String> ce = c.getEntry(M1.getKey());
         c.put(M1.getKey(), M2.getValue());
         ce = c.getEntry(M1.getKey());

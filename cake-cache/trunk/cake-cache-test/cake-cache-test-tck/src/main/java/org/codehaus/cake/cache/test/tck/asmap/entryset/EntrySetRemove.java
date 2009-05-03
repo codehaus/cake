@@ -47,14 +47,14 @@ public class EntrySetRemove extends AbstractAsMapTCKTest {
         init();
         assertFalse(asMap().entrySet().remove(1));
         assertFalse(asMap().entrySet().remove(MNAN1));
-        c = newCache(5);
+       init(5);
         assertTrue(asMap().entrySet().remove(M1));
         assertSize(4);
         assertFalse(asMap().entrySet().contains(M1));
 
-        c = newCache(1);
+       init(1);
         assertTrue(asMap().entrySet().remove(M1));
-        assertTrue(c.isEmpty());
+        assertIsEmpty();
     }
 
     /**
@@ -63,7 +63,7 @@ public class EntrySetRemove extends AbstractAsMapTCKTest {
     @Test
     public void removeLazyStart() {
         init();
-        assertFalse(c.isStarted());
+        assertNotStarted();
         asMap().entrySet().remove(MNAN1);
         checkLazystart();
     }
@@ -73,9 +73,9 @@ public class EntrySetRemove extends AbstractAsMapTCKTest {
      */
     @Test
     public void removeShutdownISE() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should fail
         asMap().entrySet().remove(MNAN1);
@@ -84,7 +84,7 @@ public class EntrySetRemove extends AbstractAsMapTCKTest {
     @SuppressWarnings("unchecked")
     @Test
     public void removeAll() {
-        c = newCache(5);
+       init(5);
         assertFalse(asMap().entrySet().removeAll(Arrays.asList(MNAN1, MNAN2)));
         assertTrue(asMap().entrySet().removeAll(Arrays.asList(MNAN1, M2, MNAN2)));
         assertSize(4);
@@ -116,7 +116,7 @@ public class EntrySetRemove extends AbstractAsMapTCKTest {
     @Test
     public void removeAllLazyStart() {
         init();
-        assertFalse(c.isStarted());
+        assertNotStarted();
         asMap().entrySet().removeAll(Arrays.asList(M1, M4));
         checkLazystart();
     }
@@ -126,9 +126,9 @@ public class EntrySetRemove extends AbstractAsMapTCKTest {
      */
     @Test
     public void removeAllShutdownISE() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should fail
         assertFalse(asMap().entrySet().removeAll(Arrays.asList(M1, M4)));

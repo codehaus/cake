@@ -36,11 +36,11 @@ public class EntrySetIterator extends AbstractAsMapTCKTest {
     public void iterator() {
         int count = 0;
         init();
-        for (Integer entry : c.asMap().keySet()) {
+        for (Integer entry : asMap().keySet()) {
             count++;
         }
         assertEquals(0, count);
-        c = newCache(5);
+       init(5);
         Iterator<Map.Entry<Integer, String>> iter = asMap().entrySet().iterator();
         while (iter.hasNext()) {
             assertTrue(M1_TO_M5_SET.contains(iter.next()));
@@ -54,14 +54,14 @@ public class EntrySetIterator extends AbstractAsMapTCKTest {
      */
     @Test
     public void iteratorLazyStart() {
-        c = newCache(0);
+        init();
         asMap().entrySet().iterator();
         checkLazystart();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void iteratorNextNSE() {
-        c = newCache(1);
+       init(1);
         Iterator<Map.Entry<Integer, String>> iter = asMap().entrySet().iterator();
         iter.next();
         iter.next();
@@ -69,7 +69,7 @@ public class EntrySetIterator extends AbstractAsMapTCKTest {
 
     @Test
     public void iteratorRemove() {
-        c = newCache(5);
+       init(5);
         Iterator<Map.Entry<Integer, String>> iter = asMap().entrySet().iterator();
         while (iter.hasNext()) {
             int next = iter.next().getKey();
@@ -98,7 +98,7 @@ public class EntrySetIterator extends AbstractAsMapTCKTest {
 
     @Test(expected = IllegalStateException.class)
     public void iteratorRemoveISE2() {
-        c = newCache(1);
+       init(1);
         Iterator<Map.Entry<Integer, String>> iter = asMap().entrySet().iterator();
         iter.next();
         iter.remove();
@@ -110,9 +110,9 @@ public class EntrySetIterator extends AbstractAsMapTCKTest {
      */
     @Test
     public void iteratorShutdown() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
         asMap().entrySet().iterator();
     }
 }

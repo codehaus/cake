@@ -36,7 +36,7 @@ public class PeekEntry extends AbstractCacheTCKTest {
 
     @Test
     public void peekEntry() {
-        c = newCache(5);
+       init(5);
         assertNull(peekEntry(M6));
         assertEquals(M1.getValue(), peekEntry(M1).getValue());
         assertEquals(M1.getKey(), peekEntry(M1).getKey());
@@ -49,15 +49,15 @@ public class PeekEntry extends AbstractCacheTCKTest {
      */
     @Test
     public void peekEntryLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         peekEntry(M1);
         checkLazystart();
     }
 
     @Test(expected = NullPointerException.class)
     public void peekEntryNPE() {
-        c = newCache(5);
+       init(5);
         peekEntry(null);
     }
 
@@ -69,14 +69,14 @@ public class PeekEntry extends AbstractCacheTCKTest {
      */
     @Test
     public void peekEntryShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         peekEntry(M1);
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         Object peekEntry = peekEntry(M1);
         assertNull(peekEntry);// cache should be empty

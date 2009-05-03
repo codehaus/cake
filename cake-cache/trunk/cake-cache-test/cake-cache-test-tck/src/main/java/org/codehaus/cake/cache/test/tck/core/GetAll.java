@@ -56,21 +56,21 @@ public class GetAll extends AbstractCacheTCKTest {
      */
     @Test
     public void getAllLazyStart() {
-        c = newCache(0);
-        assertFalse(c.isStarted());
+        init();
+        assertNotStarted();
         c.getAllOld(asList(M1.getKey(), M5.getKey(), M4.getKey()));
         checkLazystart();
     }
 
     @Test(expected = NullPointerException.class)
     public void getAllNPE() {
-        c = newCache(5);
+       init(5);
         c.getAllOld(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void getAllNPE1() {
-        c = newCache(5);
+       init(5);
         c.getAllOld(Arrays.asList(1, null));
     }
 
@@ -79,9 +79,9 @@ public class GetAll extends AbstractCacheTCKTest {
      */
     @Test(expected = IllegalStateException.class)
     public void getAllShutdownISE() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should fail
         c.getAllOld(asList(M1.getKey(), M5.getKey(), M4.getKey()));

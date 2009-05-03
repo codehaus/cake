@@ -47,10 +47,10 @@ public class EntrySetHashCodeEquals extends AbstractAsMapTCKTest {
 
         // abstractCacheEntry corner case
         init();
-        c.put(M1.getKey(), M2.getValue());
+        put(M1.getKey(), M2.getValue());
         assertFalse(asMap().entrySet().equals(new HashSet(Collections.singletonList(M1))));
 
-        c = newCache(5);
+       init(5);
         assertTrue(M1_TO_M5_SET.equals(asMap().entrySet()));
         assertTrue(asMap().entrySet().equals(M1_TO_M5_SET));
 
@@ -68,14 +68,14 @@ public class EntrySetHashCodeEquals extends AbstractAsMapTCKTest {
      */
     @Test
     public void equalsShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().entrySet().equals(new HashSet());
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean equals = asMap().entrySet().equals(new HashSet());
         assertTrue(equals);// cache should be empty
@@ -95,14 +95,14 @@ public class EntrySetHashCodeEquals extends AbstractAsMapTCKTest {
      */
     // @Test TODO fix
     public void hashCodeShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().entrySet().hashCode();
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         assertEquals(asMap().entrySet().hashCode(), new HashSet().hashCode());// cache should be
     }

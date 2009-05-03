@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.service.ContainerShutdownException;
 import org.junit.Test;
 
 /**
  * Tests put operations for a cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: Put.java 356 2009-05-02 11:59:51Z kasper $
  */
-public class Put extends AbstractCacheTCKTest {
+public class Put extends AbstractAsMapTCKTest {
 
     @Test
     public void put() {
         init();
-        c.put(1, "B");
-        assertEquals(1, c.size());
-        c.put(1, "C");
-        assertEquals(1, c.size());
+        assertNull(put(1, "B"));
+        assertSize(1);
+        assertEquals("B", put(1, "C"));
+        assertSize(1);
         assertEquals("C", peek(M1));
     }
 
@@ -46,44 +47,39 @@ public class Put extends AbstractCacheTCKTest {
         Random r = new Random(1123123);
         for (int i = 0; i < count; i++) {
             int key = r.nextInt(250);
-            c.put(key, "" + key);
+            put(key, "" + key);
         }
-        assertEquals(c.size(), new ArrayList(c.asMap().entrySet()).size());
+        assertSize(asMap().entrySet().size());
     }
 
-    /**
-     * {@link Cache#put(Object, Object)} lazy starts the cache.
-     */
+    /** {@link ConcurrentMap#put(Object, Object)} lazy starts the cache. */
     @Test
     public void putLazyStart() {
         init();
         assertNotStarted();
-        c.put(1, "B");
-        checkLazystart();
+        put(1, "B");
+        assertStarted();
     }
 
-    /**
-     * {@link Cache#containsKey()} should fail when cache is shutdown.
-     */
-    @Test(expected = IllegalStateException.class)
+    /** {@link ConcurrentMap#put(Object, Object)} should fail when cache is shutdown. */
+    @Test(expected = ContainerShutdownException.class)
     public void putShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
-        // should fail
-        c.put(1, "B");
+        put(1, "B");// should fail
     }
 
     @Test(expected = NullPointerException.class)
     public void putKeyNPE() {
         init();
-        c.put(null, "A");
+        put(null, "A");
     }
 
     @Test(expected = NullPointerException.class)
     public void putValueNPE() {
         init();
-        c.put(1, null);
+        put(1, null);
     }
 }

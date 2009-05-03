@@ -44,18 +44,18 @@ public class ValuesRemove extends AbstractAsMapTCKTest {
 
     @Test
     public void remove() {
-        c = newCache(0);
+        init();
         assertFalse(asMap().values().remove(MNAN2.getValue()));
         assertFalse(asMap().values().remove(MNAN1.getValue()));
 
-        c = newCache(5);
+       init(5);
         assertTrue(asMap().values().remove(M1.getValue()));
-        assertEquals(4, c.size());
+        assertSize(4);
         assertFalse(asMap().values().contains(M1.getValue()));
 
-        c = newCache(1);
+       init(1);
         assertTrue(asMap().values().remove(M1.getValue()));
-        assertTrue(c.isEmpty());
+        assertIsEmpty();
     }
 
     /**
@@ -64,7 +64,7 @@ public class ValuesRemove extends AbstractAsMapTCKTest {
     @Test
     public void removeLazyStart() {
         init();
-        assertFalse(c.isStarted());
+        assertNotStarted();
         asMap().values().remove(MNAN1.getValue());
         checkLazystart();
     }
@@ -77,9 +77,9 @@ public class ValuesRemove extends AbstractAsMapTCKTest {
      */
     @Test
     public void removeShutdownISE() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should fail
         assertFalse(asMap().values().remove(M1.getValue()));
@@ -88,15 +88,15 @@ public class ValuesRemove extends AbstractAsMapTCKTest {
     @SuppressWarnings("unchecked")
     @Test
     public void removeAll() {
-        c = newCache(5);
+       init(5);
         assertFalse(asMap().values().removeAll(Arrays.asList(1, 3)));
         assertTrue(asMap().values().removeAll(Arrays.asList(4, M2.getValue(), 5)));
-        assertEquals(4, c.size());
+        assertSize(4);
         assertFalse(asMap().values().contains(M2.getValue()));
         assertTrue(asMap().values().removeAll(Arrays.asList(M1.getValue(), M4.getValue())));
         assertFalse(asMap().values().contains(M4.getValue()));
         assertFalse(asMap().values().contains(M1.getValue()));
-        assertEquals(2, c.size());
+        assertSize(2);
     }
 
     @Test(expected = NullPointerException.class)
@@ -122,7 +122,7 @@ public class ValuesRemove extends AbstractAsMapTCKTest {
     @Test
     public void removeAllLazyStart() {
         init();
-        assertFalse(c.isStarted());
+        assertNotStarted();
         asMap().values().removeAll(Arrays.asList(M1.getValue(), M2.getValue()));
         checkLazystart();
     }
@@ -135,9 +135,9 @@ public class ValuesRemove extends AbstractAsMapTCKTest {
      */
     @Test
     public void removeAllShutdownISE() {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should fail
         assertFalse(asMap().values().removeAll(Arrays.asList(M1.getValue(), M2.getValue())));

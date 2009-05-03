@@ -13,86 +13,78 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_NULL;
 import static org.codehaus.cake.test.util.CollectionTestUtil.MNAN1;
 import static org.codehaus.cake.test.util.CollectionTestUtil.NULL_A;
-import static org.codehaus.cake.test.util.CollectionTestUtil.asMap_;
 
 import java.util.Map;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.service.ContainerShutdownException;
 import org.junit.Test;
 
 /**
- * Tests put operations for a cache.
+ * Tests putAll operations for a cache.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: PutAll.java 356 2009-05-02 11:59:51Z kasper $
  */
-public class PutAll extends AbstractCacheTCKTest {
+public class PutAll extends AbstractAsMapTCKTest {
 
-    @SuppressWarnings("unchecked")
     @Test
     public void putAll() {
         init();
-        c.putAll(asMap_(M1, M5));
-        assertEquals(2, c.size());
-        assertTrue(c.asMap().entrySet().contains(M1));
-        assertTrue(c.asMap().entrySet().contains(M5));
+        putAll(M1, M5);
+        assertSize(2);
+        assertTrue(entrySet().contains(M1));
+        assertTrue(entrySet().contains(M5));
 
-        c.putAll(asMap_(M1, M5));
-        assertEquals(2, c.size());
+        putAll(M1, M5);
+        assertSize(2);
+        assertSize(2);
 
-        c.putAll(asMap_(MNAN1, M4));
-        assertEquals(3, c.size());
-        assertFalse(c.asMap().entrySet().contains(M1));
+        putAll(MNAN1, M4);
+        assertSize(3);
+        assertFalse(entrySet().contains(M1));
 
     }
 
-    /**
-     * {@link Cache#put(Object, Object)} lazy starts the cache.
-     */
+    /** {@link ConcurrentMap#put(Object, Object)} lazy starts the cache. */
     @Test
     public void putAllLazyStart() {
         init();
         assertNotStarted();
-        c.putAll(asMap_(M1, M5));
-        checkLazystart();
+        putAll(M1, M5);
+        assertStarted();
     }
 
-    /**
-     * {@link Cache#putAll(Map)} should fail when the cache is shutdown.
-     */
-    @Test(expected = IllegalStateException.class)
+    /** {@link ConcurrentMap#putAll(Map)} should fail when the cache is shutdown. */
+    @Test(expected = ContainerShutdownException.class)
     public void putAllShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
-        // should fail
-        c.putAll(asMap_(M1, M5));
+        putAll(M1, M5); // should fail
     }
 
     @Test(expected = NullPointerException.class)
     public void putAllNPE() {
         init();
-        putAll((Map.Entry) null);
+        asMap().putAll(null);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = NullPointerException.class)
     public void putAllKeyMappingNPE() {
         init();
-        c.putAll(asMap_(M1, NULL_A));
+        putAll(M1, NULL_A);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = NullPointerException.class)
     public void putAllValueMappingNPE() {
         init();
-        c.putAll(asMap_(M1, M1_NULL));
+        putAll(M1, M1_NULL);
     }
 }

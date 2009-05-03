@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
+import org.codehaus.cake.cache.test.tck.asmap.entryset.EntrySetSuite;
+import org.codehaus.cake.cache.test.tck.asmap.keyset.KeySetSuite;
+import org.codehaus.cake.cache.test.tck.asmap.values.ValuesSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { Clear.class, Constructors.class, ContainsKey.class, ContainsValue.class, 
-        EqualsHashcode.class, Get.class, GetAll.class, GetEntry.class, IsEmpty.class, 
-        Lifecycle.class, Peek.class, PeekEntry.class, Put.class, PutAll.class, PutIfAbsent.class, Remove.class,
-        Replace.class, Size.class, ToString.class, WithServices.class })
-public class CoreSuite {}
+@Suite.SuiteClasses( { Clear.class, ContainsKey.class, ContainsValue.class, EntrySetSuite.class, EqualsHashcode.class,
+        Get.class, IsEmpty.class, KeySetSuite.class, Put.class, PutAll.class, PutIfAbsent.class, Remove.class,
+        Replace.class, Size.class, ToString.class, ValuesSuite.class })
+public class AsMapSuite {}

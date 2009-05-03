@@ -13,32 +13,32 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.test.tck.core;
+package org.codehaus.cake.cache.test.tck.asmap;
 
 import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.service.ContainerShutdownException;
 import org.junit.Test;
 
 /**
  * Tests {@link ConcurrentMap#replace(Object, Object)} and {@link ConcurrentMap#replace(Object, Object, Object)}.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
- * @version $Id$
+ * @version $Id: Replace.java 327 2009-04-08 09:34:27Z kasper $
  */
-public class Replace extends AbstractCacheTCKTest {
+public class Replace extends AbstractAsMapTCKTest {
 
     @Test
     public void replace2() {
-       init(1);
-        assertNull(c.replace(M2.getKey(), M2.getValue()));
-        c = newCache(2);
-        assertEquals(M1.getValue(), c.replace(M1.getKey(), M3.getValue()));
-        assertEquals(M3.getValue(), c.get(M1.getKey()));
-        assertNull(c.replace(M4.getKey(), M4.getValue()));
-        assertFalse(c.containsValue(M4.getValue()));
-        assertFalse(c.containsValue(M1.getValue()));
+        init(1);
+        assertNull(replace(M2.getKey(), M2.getValue()));
+        init(2);
+        assertEquals(M1.getValue(), replace(M1.getKey(), M3.getValue()));
+        assertEquals(M3.getValue(), get(M1));
+        assertNull(replace(M4.getKey(), M4.getValue()));
+        assertNotContainsValue(M4);
+        assertNotContainsValue(M1);
     }
 
     /**
@@ -46,8 +46,8 @@ public class Replace extends AbstractCacheTCKTest {
      */
     @Test(expected = NullPointerException.class)
     public void replace2NPE1() {
-       init(1);
-        c.replace(M1.getKey(), null);
+        init(1);
+        replace(M1.getKey(), null);
     }
 
     /**
@@ -55,8 +55,8 @@ public class Replace extends AbstractCacheTCKTest {
      */
     @Test(expected = NullPointerException.class)
     public void replace2NPE2() {
-       init(1);
-        c.replace(null, M2.getValue());
+        init(1);
+        replace(null, M2.getValue());
     }
 
     /**
@@ -66,30 +66,30 @@ public class Replace extends AbstractCacheTCKTest {
     public void replace2LazyStart() {
         init();
         assertNotStarted();
-        c.replace(M2.getKey(), M2.getValue());
-        checkLazystart();
+        replace(M2.getKey(), M2.getValue());
+        assertStarted();
     }
 
     /**
      * {@link Cache#containsKey()} should not fail when cache is shutdown.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ContainerShutdownException.class)
     public void replace2ShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
         // should fail
-        c.replace(M2.getKey(), M2.getValue());
+        replace(M2.getKey(), M2.getValue());
     }
 
     @Test
     public void replace3() {
-        c = newCache(2);
-        assertTrue(c.replace(M1.getKey(), M1.getValue(), M3.getValue()));
-        assertEquals(M3.getValue(), c.get(M1.getKey()));
-        assertFalse(c.replace(M1.getKey(), M1.getValue(), M3.getValue()));
-        assertFalse(c.containsValue(M1.getValue()));
+        init(2);
+        assertTrue(replace(M1.getKey(), M1.getValue(), M3.getValue()));
+        assertEquals(M3.getValue(), get(M1));
+        assertFalse(replace(M1.getKey(), M1.getValue(), M3.getValue()));
+        assertNotContainsValue(M1);
     }
 
     /**
@@ -99,8 +99,8 @@ public class Replace extends AbstractCacheTCKTest {
     public void replace3LazyStart() {
         init();
         assertNotStarted();
-        c.replace(M1.getKey(), M1.getValue(), M3.getValue());
-        checkLazystart();
+        replace(M1.getKey(), M1.getValue(), M3.getValue());
+        assertStarted();
     }
 
     /**
@@ -108,39 +108,33 @@ public class Replace extends AbstractCacheTCKTest {
      */
     @Test(expected = IllegalStateException.class)
     public void replace3ShutdownISE() {
-       init(5);
+        init(5);
         assertStarted();
         shutdown();
 
         // should fail
-        c.replace(M1.getKey(), M1.getValue(), M3.getValue());
+        replace(M1.getKey(), M1.getValue(), M3.getValue());
     }
 
-    /**
-     * replace(Key,null) throws NPE.
-     */
+    /** replace(Key,null) throws NPE. */
     @Test(expected = NullPointerException.class)
     public void replace3OldValueNPE() {
-       init(1);
-        c.replace(M1.getKey(), null, M2.getValue());
+        init(1);
+        replace(M1.getKey(), null, M2.getValue());
     }
 
-    /**
-     * replace(null,Value) throws NPE.
-     */
+    /** replace(null,Value) throws NPE. */
     @Test(expected = NullPointerException.class)
     public void replace3NewValueNPE() {
-       init(1);
-        c.replace(M1.getKey(), M1.getValue(), null);
+        init(1);
+        replace(M1.getKey(), M1.getValue(), null);
     }
 
-    /**
-     * replace(null,Value) throws NPE.
-     */
+    /** replace(null,oldValue,newValue) throws NPE. */
     @Test(expected = NullPointerException.class)
     public void replace3KeyNPE() {
-       init(1);
-        c.replace(null, M1.getValue(), M2.getValue());
+        init(1);
+        replace(null, M1.getValue(), M2.getValue());
     }
 
 }

@@ -16,6 +16,7 @@
 package org.codehaus.cake.cache.test.tck;
 
 import org.codehaus.cake.cache.CacheConfiguration;
+import org.codehaus.cake.cache.test.tck.asmap.AsMapSuite;
 import org.codehaus.cake.cache.test.tck.attributes.AttributeSuite;
 import org.codehaus.cake.cache.test.tck.core.CoreSuite;
 import org.codehaus.cake.cache.test.tck.crud.CrudSuite;
@@ -46,6 +47,7 @@ public class CacheTckRunner extends TckRunner {
 
         add(new ServiceSuite(ManagementSuite.class));
         add(new ServiceSuite(CoreSuite.class));
+        add(new ServiceSuite(AsMapSuite.class));
         add(new ServiceSuite(LifecycleSuite.class));
         // services
         add(new ServiceSuite(SuiteMemoryStore.class));

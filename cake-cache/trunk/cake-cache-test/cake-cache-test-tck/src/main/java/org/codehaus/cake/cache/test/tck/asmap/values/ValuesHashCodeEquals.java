@@ -39,7 +39,7 @@ public class ValuesHashCodeEquals extends AbstractAsMapTCKTest {
         init();
         assertFalse(asMap().values().equals(null));
         assertFalse(asMap().values().equals(newCache(1).asMap().values()));
-        c = newCache(5);
+       init(5);
         assertFalse(asMap().values().equals(null));
         assertFalse(asMap().values().equals(newCache(4).asMap().values()));
         assertFalse(asMap().values().equals(newCache(6).asMap().values()));
@@ -54,14 +54,14 @@ public class ValuesHashCodeEquals extends AbstractAsMapTCKTest {
      */
     // @Test TODO fix
     public void equalsShutdown() throws InterruptedException {
-        c = newCache(5);
-        assertTrue(c.isStarted());
-        c.shutdown();
+       init(5);
+        assertStarted();
+        shutdown();
 
         // should not fail, but result is undefined until terminated
         asMap().values().equals(new HashSet());
 
-        assertTrue(c.awaitTermination(1, TimeUnit.SECONDS));
+        shutdownAndAwaitTermination();
 
         boolean equals = asMap().values().equals(new HashSet());
         assertTrue(equals);// cache should be empty
