@@ -74,7 +74,7 @@ public class ManagementConfigurationTest {
 
     @Test
     public void registrant() {
-        ManagedVisitor mgv = dummy(ManagedVisitor.class);
+        ManagedVisitor<?> mgv = dummy(ManagedVisitor.class);
         assertNull(m.getRegistrant());
         assertSame(m, m.setRegistrant(mgv));
         assertSame(mgv, m.getRegistrant());

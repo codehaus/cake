@@ -102,7 +102,7 @@ public class DefaultManagedGroup extends AbstractManagedGroup {
 
     /** {@inheritDoc} */
     public Collection<?> getObjects() {
-        return new ArrayList(os);
+        return new ArrayList<Object>(os);
     }
 
     /** {@inheritDoc} */

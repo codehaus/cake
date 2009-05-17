@@ -114,7 +114,7 @@ class DefaultManagedOperation extends AbstractManagedOperation {
                 DefaultManagedOperation dmo = new DefaultManagedOperation(obj, pd.getMethod(), name, description);
                 // create String[] signature
                 List<String> p = new ArrayList<String>();
-                for (Class c : pd.getMethod().getParameterTypes()) {
+                for (Class<?> c : pd.getMethod().getParameterTypes()) {
                     p.add(c.getName());
                 }
                 result.put(new OperationKey(name, p.toArray(new String[0])), dmo);

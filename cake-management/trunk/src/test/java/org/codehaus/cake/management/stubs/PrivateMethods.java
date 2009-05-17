@@ -15,6 +15,8 @@
  */
 package org.codehaus.cake.management.stubs;
 
+
+@SuppressWarnings("unused")
 public class PrivateMethods {
     private String getIllegal() {
         return null;

@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.management.MBeanServer;
@@ -121,7 +120,7 @@ public class ManagementsTest {
         SingleOperation childOpr = new SingleOperation();
         dmg.addChild("c", "desc").add(childOpr).addChild("d", "desc").add(new SingleOperation());
 
-        ManagedVisitor mgv = Managements
+        ManagedVisitor<?> mgv = Managements
                 .hierarchicalRegistrant(server, "org.coconut.management.test", "l1", "l2", "l3");
         assertSame(Void.TYPE, mgv.traverse(dmg));
         assertEquals(3 + initCount, server.getMBeanCount().intValue());
@@ -199,7 +198,7 @@ public class ManagementsTest {
 
     @Test
     public void unregister() throws Exception {
-        ManagedVisitor mv = Managements.unregister();
+        ManagedVisitor<?> mv = Managements.unregister();
         final ManagedGroup mg = context.mock(ManagedGroup.class);
         final ManagedGroup c1 = context.mock(ManagedGroup.class, "c1");
         final ManagedGroup c2 = context.mock(ManagedGroup.class, "c2");
@@ -217,7 +216,7 @@ public class ManagementsTest {
                 one(mg).unregister();
             }
         });
-        assertEquals(new HashMap(), mv.traverse(mg));
+        assertEquals(Collections.emptyMap(), mv.traverse(mg));
     }
 
     @Test

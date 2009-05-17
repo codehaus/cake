@@ -33,21 +33,29 @@ import javax.management.ObjectName;
 public final class Managements {
 
     /** Cannot instantiate. */
-    private Managements() {}
+    private Managements() {
+    }
 
     /**
      * Copies the specified array.
-     * @param original the array to copy
+     * 
+     * @param original
+     *            the array to copy
      * @return a copy of the specified array
      */
+    @SuppressWarnings("unchecked")
     static <T> T[] copyOf(T[] original) {
         return (T[]) copyOf(original, original.length, original.getClass());
     }
 
-    @SuppressWarnings("cast")
+    @SuppressWarnings("unchecked")
     static <T, U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
-        T[] copy = (Object) newType == (Object) Object[].class ? (T[]) new Object[newLength] : (T[]) Array.newInstance(
-                newType.getComponentType(), newLength);
+        T[] copy;
+        if (newType == (Object) Object[].class) {
+            copy = (T[]) new Object[newLength];
+        } else {
+            copy = (T[]) Array.newInstance(newType.getComponentType(), newLength);
+        }
         System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
         return copy;
     }
@@ -117,13 +125,14 @@ public final class Managements {
             public void unregister() throws JMException {
                 group.unregister();
             }
+
             public ManagedGroup getChild(String name) {
                 return group.getChild(name);
             }
         };
     }
 
-    public static ManagedVisitor hierarchicalRegistrant(MBeanServer server, String domain, String... levels) {
+    public static ManagedVisitor<?> hierarchicalRegistrant(MBeanServer server, String domain, String... levels) {
         return new HierarchicalRegistrant(server, domain, levels);
     }
 
@@ -138,7 +147,7 @@ public final class Managements {
         return new UnregisterAll();
     }
 
-    static class HierarchicalRegistrant implements ManagedVisitor {
+    static class HierarchicalRegistrant implements ManagedVisitor<Class<Void>> {
         /** The base domain to register at. */
         private final String domain;
 
@@ -166,8 +175,12 @@ public final class Managements {
         }
 
         // /CLOVER:ON
-        /** {@inheritDoc} */
-        public Object traverse(Object node) throws JMException {
+        /**
+         * {@inheritDoc}
+         * 
+         * @return
+         */
+        public Class<Void> traverse(Object node) throws JMException {
             visitManagedGroup((ManagedGroup) node);
             return Void.TYPE;
         }
@@ -191,7 +204,8 @@ public final class Managements {
 
         // /CLOVER:OFF
         /** {@inheritDoc} */
-        public void visitManagedObject(Object o) throws JMException {}
+        public void visitManagedObject(Object o) throws JMException {
+        }
         // /CLOVER:ON
     }
 
@@ -222,7 +236,8 @@ public final class Managements {
 
         /** {@inheritDoc} */
         // /CLOVER:OFF
-        public void visitManagedObject(Object o) throws JMException {}
+        public void visitManagedObject(Object o) throws JMException {
+        }
         // /CLOVER:ON
     }
 }
