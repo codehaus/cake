@@ -21,6 +21,9 @@ package org.codehaus.cake.test.util.throwables;
  * @version $Id$
  */
 public class Exception3 extends Exception {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 1L;
+
     /** The default instance. */
     public static Exception3 INSTANCE = new Exception3();
 }

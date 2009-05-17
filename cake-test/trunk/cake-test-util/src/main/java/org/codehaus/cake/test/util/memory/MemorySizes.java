@@ -19,7 +19,9 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class MemorySizes {
-    private final Map primitiveSizes = new IdentityHashMap() {
+    private final Map<Object, Object> primitiveSizes = new IdentityHashMap<Object, Object>() {
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
         {
             put(boolean.class, new Integer(1));
             put(byte.class, new Integer(1));
@@ -32,11 +34,11 @@ public class MemorySizes {
         }
     };
 
-    public int getPrimitiveFieldSize(Class clazz) {
+    public int getPrimitiveFieldSize(Class<?> clazz) {
         return ((Integer) primitiveSizes.get(clazz)).intValue();
     }
 
-    public int getPrimitiveArrayElementSize(Class clazz) {
+    public int getPrimitiveArrayElementSize(Class<?> clazz) {
         return getPrimitiveFieldSize(clazz);
     }
 

@@ -56,7 +56,6 @@ public class TestUtil {
 
     }
 
-    @SuppressWarnings("unchecked")
     public static <V> V dummy(Class<V> arg) {
         return new Mockery().mock(arg);
     }
@@ -92,7 +91,8 @@ public class TestUtil {
         }
     }
 
-    static Object readWrite(Object o) throws NotSerializableException {
+    @SuppressWarnings("unchecked")
+    static <T> T readWrite(T o) throws NotSerializableException {
         try {
             ByteArrayOutputStream bout = new ByteArrayOutputStream(20000);
             ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(bout));
@@ -100,7 +100,7 @@ public class TestUtil {
             out.close();
             ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
             ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(bin));
-            return in.readObject();
+            return (T) in.readObject();
         } catch (NotSerializableException nse) {
             throw nse;
         } catch (ClassNotFoundException e) {

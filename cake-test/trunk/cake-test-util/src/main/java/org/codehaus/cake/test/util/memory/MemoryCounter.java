@@ -26,18 +26,18 @@ import java.util.Stack;
 public final class MemoryCounter {
     private static final MemorySizes sizes = new MemorySizes();
 
-    private final Map visited = new IdentityHashMap();
+    private final Map<Object, Object> visited = new IdentityHashMap<Object, Object>();
 
-    private final Stack stack = new Stack();
+    private final Stack<Object> stack = new Stack<Object>();
 
-    private final Map<Class, Long> statistics = new HashMap<Class, Long>();
+    private final Map<Class<?>, Long> statistics = new HashMap<Class<?>, Long>();
 
     public static long calc(Object obj) {
         return new MemoryCounter().op(obj);
     }
 
     public void printStatistics() {
-        for (Map.Entry<Class, Long> e : statistics.entrySet()) {
+        for (Map.Entry<Class<?>, Long> e : statistics.entrySet()) {
             System.out.println(e.getKey() + " " +e.getValue());
         }
     }
@@ -79,7 +79,7 @@ public final class MemoryCounter {
         }
         visited.put(obj, null);
         long result = 0;
-        Class clazz = obj.getClass();
+        Class<?> clazz = obj.getClass();
         if (clazz.isArray()) {
             return _estimateArray(obj);
         }
@@ -122,7 +122,7 @@ public final class MemoryCounter {
         long result = 16;
         int length = Array.getLength(obj);
         if (length != 0) {
-            Class arrayElementClazz = obj.getClass().getComponentType();
+            Class<?> arrayElementClazz = obj.getClass().getComponentType();
             if (arrayElementClazz.isPrimitive()) {
                 result += length * sizes.getPrimitiveArrayElementSize(arrayElementClazz);
             } else {

@@ -21,6 +21,9 @@ package org.codehaus.cake.test.util.throwables;
  * @version $Id$
  */
 public class Error2 extends Error {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 1L;
+
     /** The default instance. */
     public static Error2 INSTANCE = new Error2();
 }

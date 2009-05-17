@@ -20,6 +20,9 @@ import java.util.Comparator;
 
 public class ComparatorTestUtil {
     public static final class Dummy implements Serializable {
+        /** serialVersionUID */
+        private static final long serialVersionUID = -3644310163377995269L;
+
         public static final Dummy D1 = new Dummy(1);
 
         public static final Dummy D2 = new Dummy(2);
@@ -38,6 +41,10 @@ public class ComparatorTestUtil {
     }
 
     public static final class DummyComparator implements Comparator<Dummy>, Serializable {
+
+        /** serialVersionUID */
+        private static final long serialVersionUID = 1L;
+
         public int compare(Dummy o1, Dummy o2) {
             return (o1.i < o2.i ? -1 : (o1.i == o2.i ? 0 : 1));
         }

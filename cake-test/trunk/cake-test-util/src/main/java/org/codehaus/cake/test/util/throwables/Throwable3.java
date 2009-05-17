@@ -21,6 +21,9 @@ package org.codehaus.cake.test.util.throwables;
  * @version $Id$
  */
 public class Throwable3 extends Throwable {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 1L;
+
     /** The default instance. */
     public static Throwable3 INSTANCE = new Throwable3();
 }

@@ -21,6 +21,9 @@ package org.codehaus.cake.test.util.throwables;
  * @version $Id$
  */
 public class RuntimeException3 extends RuntimeException {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 1L;
+
     /** The default instance. */
     public static RuntimeException3 INSTANCE = new RuntimeException3();
 }
