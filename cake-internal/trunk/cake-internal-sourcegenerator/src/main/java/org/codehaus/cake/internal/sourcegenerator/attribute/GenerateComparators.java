@@ -5,6 +5,7 @@ import java.util.Comparator;
 import org.codehaus.cake.internal.sourcegenerator.GenerationType;
 import org.codehaus.cake.internal.sourcegenerator.GeneratorBuilder;
 
+@SuppressWarnings("deprecation")
 public class GenerateComparators {
     public static void main(String[] args) throws Exception {
         new GenerateComparators().generate();

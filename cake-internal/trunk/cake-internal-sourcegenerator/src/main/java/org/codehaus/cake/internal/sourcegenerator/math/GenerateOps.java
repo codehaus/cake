@@ -21,6 +21,7 @@ import java.util.Arrays;
 import org.codehaus.cake.internal.sourcegenerator.GenerationType;
 import org.codehaus.cake.internal.sourcegenerator.GeneratorBuilder;
 
+@SuppressWarnings("deprecation")
 public class GenerateOps extends GeneratorBuilder {
 
     public static void main(String[] args) throws Exception {

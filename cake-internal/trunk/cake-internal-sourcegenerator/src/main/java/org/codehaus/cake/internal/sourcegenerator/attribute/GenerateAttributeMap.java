@@ -20,6 +20,7 @@ import java.util.Comparator;
 import org.codehaus.cake.internal.sourcegenerator.GenerationType;
 import org.codehaus.cake.internal.sourcegenerator.GeneratorBuilder;
 
+@SuppressWarnings("deprecation")
 public class GenerateAttributeMap extends GeneratorBuilder {
 
     public static void main(String[] args) throws Exception {

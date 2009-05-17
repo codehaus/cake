@@ -45,9 +45,9 @@ public class GenerationType {
     public static final Collection<GenerationType> BIG_4 = Arrays.asList(DOUBLE, FLOAT, INT, LONG);
 
     /** BigInteger, Integer.class, .. */
-    private final Class type;
+    private final Class<?> type;
 
-    GenerationType(Class type) {
+    GenerationType(Class<?> type) {
         this.type = type;
     }
 
@@ -197,7 +197,7 @@ public class GenerationType {
      *            the class to convert
      * @return the converted class
      */
-    public static Class fromPrimitive(Class c) {
+    public static Class<?> fromPrimitive(Class<?> c) {
         if (c.equals(Integer.TYPE)) {
             return Integer.class;
         } else if (c.equals(Double.TYPE)) {
