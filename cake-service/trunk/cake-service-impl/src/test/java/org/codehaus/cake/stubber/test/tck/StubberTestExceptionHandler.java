@@ -35,7 +35,7 @@ public class StubberTestExceptionHandler<T> extends StubberExceptionHandler<T> {
     }
 
     public void eat(Throwable cause, Level level) {
-        ExceptionContext context = q.poll();
+        ExceptionContext<?> context = q.poll();
         assertSame(cause, context.getCause());
         assertSame(level, context.getLevel());
     }

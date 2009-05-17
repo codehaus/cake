@@ -45,7 +45,7 @@ public class ManagementServiceRegistrant extends AbstractTCKTest<Container, Cont
         });
         conf.setName("managementtest");
         withConf(ManagementConfiguration.class).setEnabled(true).setMBeanServer(mbs).setRegistrant(
-                new ManagedVisitor() {
+                new ManagedVisitor<?>() {
                     public Object traverse(Object node) throws JMException {
                         assertTrue(node instanceof ManagedGroup);
                         ManagedGroup mg = (ManagedGroup) node;
@@ -77,7 +77,7 @@ public class ManagementServiceRegistrant extends AbstractTCKTest<Container, Cont
 
     @Test(expected = RuntimeException.class)
     public void registrantFailed() throws Exception {
-        withConf(ManagementConfiguration.class).setEnabled(true).setRegistrant(new ManagedVisitor() {
+        withConf(ManagementConfiguration.class).setEnabled(true).setRegistrant(new ManagedVisitor<?>() {
             public Object traverse(Object node) throws JMException {
                 throw new JMException();
             }

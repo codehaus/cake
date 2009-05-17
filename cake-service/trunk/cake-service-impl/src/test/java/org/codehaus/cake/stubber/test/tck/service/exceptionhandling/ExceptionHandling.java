@@ -191,7 +191,7 @@ public class ExceptionHandling extends AbstraktStubberTCKTst {
     }
 
     static class LoaderVerifyingExceptionHandler extends BaseExceptionHandler {
-        ExceptionContext expected;
+        ExceptionContext<?> expected;
 
         public Integer tFailed(ExceptionContext<Stubber<Integer>> context, Integer key) {
             assertSame(expected.getCause(), context.getCause());

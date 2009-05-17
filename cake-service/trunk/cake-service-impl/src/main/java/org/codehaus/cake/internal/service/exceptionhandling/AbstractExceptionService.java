@@ -33,6 +33,7 @@ public abstract class AbstractExceptionService<T extends Container> implements I
 
     private final Logger infoLogger;// might be null
 
+    @SuppressWarnings("unchecked")
     public AbstractExceptionService(Container container, Composer composer,
             ContainerConfiguration containerConfiguration, Logger exceptionLogger) {
         this.container = (T) container;

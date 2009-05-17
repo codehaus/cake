@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import org.codehaus.cake.util.concurrent.RecursiveAction;
 
 public class AssertableForkJoinTask extends RecursiveAction {
+    /** serialVersionUID */
+    private static final long serialVersionUID = 1L;
     private final CountDownLatch cdl;
 
     public AssertableForkJoinTask() {

@@ -120,6 +120,7 @@ class LifecycleObject {
         m.invoke(o, obs);
     }
 
+    @SuppressWarnings("unchecked")
     void runStart(Set<?> all, ContainerConfiguration configuration, ServiceManager registrant, InternalExceptionService<?> ies) {
         ArrayList<Object> al = new ArrayList<Object>();
         al.add(configuration);
@@ -128,7 +129,7 @@ class LifecycleObject {
             al.add(o);
         }
         if (serviceFactoryKey != null) {
-            if (o instanceof ServiceProvider) {
+            if (o instanceof ServiceProvider<?>) {
                 registrant.registerServiceFactory(serviceFactoryKey, (ServiceProvider) o);
             } else {
                 registrant.registerService((Class) serviceFactoryKey, o);
@@ -137,7 +138,7 @@ class LifecycleObject {
         ExportAsService exportedKey = o.getClass().getAnnotation(ExportAsService.class);
         if (exportedKey != null) {
             for (Class c: exportedKey.value()) {
-                if (o instanceof ServiceProvider) {
+                if (o instanceof ServiceProvider<?>) {
                     registrant.registerServiceFactory(c, (ServiceProvider) o);
                 } else {
                     registrant.registerService(c, o);

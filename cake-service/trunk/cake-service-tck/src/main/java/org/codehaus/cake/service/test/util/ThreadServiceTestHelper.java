@@ -52,8 +52,8 @@ public class ThreadServiceTestHelper implements ServiceProvider<ExecutorService>
         public void run() {
             try {
                 r.run();
-                if (r instanceof Future) {
-                    Future ft = ((FutureTask) r);
+                if (r instanceof Future<?>) {
+                    Future<?> ft = ((FutureTask<?>) r);
                     if (ft.isDone()) {
                         try {
                             ft.get();

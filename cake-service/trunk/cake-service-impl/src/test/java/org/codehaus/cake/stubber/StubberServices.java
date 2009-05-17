@@ -55,6 +55,7 @@ public class StubberServices<T> {
      * @param <V>
      *            the type of mapped values
      */
+    @SuppressWarnings("unchecked")
     public BubberService<T> bubber() {
         return getService(BubberService.class);
     }
@@ -70,7 +71,7 @@ public class StubberServices<T> {
      * @throws UnsupportedOperationException
      *             if no service of the specified type is available
      */
-    protected <T> T getService(Class<T> serviceType) {
+    protected <S> S getService(Class<S> serviceType) {
         return stubber.getService(serviceType);
     }
 

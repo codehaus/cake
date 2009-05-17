@@ -12,7 +12,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.util.Logger;
 
 public abstract class AbstractStubber<T> extends AbstractContainer implements Stubber<T> {
-    final InternalExceptionService exceptionService;
+    final InternalExceptionService<?> exceptionService;
 
     public AbstractStubber(Composer composer) {
         super(composer);
@@ -34,7 +34,7 @@ public abstract class AbstractStubber<T> extends AbstractContainer implements St
         return composer;
     }
 
-    void fail(InternalExceptionService ies, Logger.Level level, String message, Throwable cause) {
+    void fail(InternalExceptionService<?> ies, Logger.Level level, String message, Throwable cause) {
         if (level == Logger.Level.Fatal) {
             if (cause == null) {
                 ies.fatal(message);

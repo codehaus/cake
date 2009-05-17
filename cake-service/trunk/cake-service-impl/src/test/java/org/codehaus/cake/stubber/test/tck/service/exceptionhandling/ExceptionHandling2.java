@@ -78,7 +78,7 @@ public class ExceptionHandling2 extends AbstraktStubberTCKTst {
 
     }
 
-    public void assertEquals(ExceptionContext context, Level level, String message, Throwable cause, Logger logger) {
+    public void assertEquals(ExceptionContext<?> context, Level level, String message, Throwable cause, Logger logger) {
         assertSame(c, context.getContainer());
         assertSame(level, context.getLevel());
         assertSame(cause, context.getCause());
@@ -96,7 +96,7 @@ public class ExceptionHandling2 extends AbstraktStubberTCKTst {
             last = context;
         }
 
-        ExceptionContext last;
+        ExceptionContext<?> last;
 
         public Integer tFailed(ExceptionContext<Stubber<Integer>> context, Integer key) {
 

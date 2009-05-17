@@ -96,7 +96,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         this.failText = text;
     }
 
-    public AbstractTCKTest awaitTermination() {
+    public AbstractTCKTest<C,T> awaitTermination() {
         try {
             long start = System.nanoTime();
             assertTrue(c.awaitTermination(10, TimeUnit.SECONDS));
@@ -120,11 +120,13 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         awaitTermination();
     }
 
+    @SuppressWarnings("unchecked")
     protected final C newContainer() {
         c = (C) TckUtil.newContainer(conf);
         return c;
     }
 
+    @SuppressWarnings("unchecked")
     protected final T newConfigurationClean() {
         conf = (T) TckUtil.newConfiguration();
         return (T) conf;
@@ -152,6 +154,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         return (T) conf;
     }
 
+    @SuppressWarnings("unchecked")
     public <S> S withConf(Class<S> confType) {
         for (Object o : conf.getConfigurations()) {
             if (confType.isAssignableFrom(o.getClass())) {
@@ -161,10 +164,10 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         throw new IllegalArgumentException("Unknown Type " + confType);
     }
 
-    public Class getContainerInterface() {
-        Class someImpl = c.getClass();
+    public Class<?> getContainerInterface() {
+        Class<?> someImpl = c.getClass();
         while (someImpl != null) {
-            for (Class c : allInterfaces(someImpl)) {
+            for (Class<?> c : allInterfaces(someImpl)) {
                 if (c != Container.class && Arrays.asList(c.getInterfaces()).contains(Container.class)) {
                     return c;
                 }
@@ -174,9 +177,9 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         throw new IllegalStateException("Unknown type");
     }
 
-    Set<Class> allInterfaces(Class c) {
-        Set s = new HashSet();
-        for (Class cl : c.getInterfaces()) {
+    Set<Class<?>> allInterfaces(Class<?> c) {
+        Set<Class<?>> s = new HashSet<Class<?>>();
+        for (Class<?> cl : c.getInterfaces()) {
             s.add(cl);
             s.addAll(allInterfaces(cl));
         }
@@ -188,11 +191,11 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
      */
     public C cheatInstantiate() throws Throwable {
 
-        for (Constructor con : c.getClass().getConstructors()) {
+        for (Constructor<C> con : c.getClass().getConstructors()) {
             if (con.getParameterTypes().length == 1
                     && ContainerConfiguration.class.isAssignableFrom(con.getParameterTypes()[0])) {
                 try {
-                    return (C) con.newInstance(conf);
+                    return con.newInstance(conf);
                 } catch (InvocationTargetException e) {
                     throw e.getCause();
                 } catch (Exception e) {

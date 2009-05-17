@@ -103,14 +103,17 @@ public class Composer {
      * @param serviceType
      * @return
      */
+    @SuppressWarnings("unchecked")
     public <T> Set<T> getAll(Class<T> serviceType) {
         return new LinkedHashSet<T>(container.getComponentInstancesOfType(serviceType));
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T get(Class<T> serviceType) {
         return (T) container.getComponentInstanceOfType(serviceType);
     }
 
+    @SuppressWarnings("unchecked")
     Set<?> initializeComponents() {
         ContainerConfiguration conf = get(ContainerConfiguration.class);
         Set<Object> result = new LinkedHashSet<Object>(container.getComponentInstances());

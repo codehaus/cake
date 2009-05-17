@@ -10,6 +10,7 @@ import org.codehaus.cake.util.attribute.IntAttribute;
 import org.junit.Test;
 
 public class ServiceFactoryRegistration extends AbstractTCKTest<Container, ContainerConfiguration> {
+    @SuppressWarnings("serial")
     private static final Attribute<Integer> TEST_ATR = new IntAttribute() {};
 
     @Test

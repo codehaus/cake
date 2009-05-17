@@ -23,5 +23,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RequireService {
-    public Class[] value();
+    Class<?>[] value();
 }

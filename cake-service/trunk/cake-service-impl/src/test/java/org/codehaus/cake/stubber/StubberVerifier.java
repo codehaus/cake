@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class StubberVerifier {
 
     private static final int STEP_0_UNINITIALIZE = 1 << 0;
@@ -43,7 +44,7 @@ public class StubberVerifier {
 
     private static final int STEP_9_NONE = 1 << 9;
 
-    private final Set happenings = new HashSet();
+    private final Set<Object> happenings = new HashSet<Object>();
     int step = STEP_0_UNINITIALIZE;
 
     public synchronized void constructor(Object happening) {

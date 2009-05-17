@@ -21,15 +21,16 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.management.ManagementConfiguration;
+import org.codehaus.cake.service.spi.ExceptionHandler;
 import org.codehaus.cake.service.spi.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.attribute.AttributeMap;
 
-public class TstStubs {
+public class TstStubs { 
     public interface Stubber<T> extends Container {}
 
     public static class StubberConfiguration extends ContainerConfiguration {
         public StubberConfiguration() {
-            addConfiguration(new ExceptionHandlingConfiguration());
+            addConfiguration(new ExceptionHandlingConfiguration<ExceptionHandler<?>>());
             addConfiguration(new ManagementConfiguration());
         }
 

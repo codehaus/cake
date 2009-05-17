@@ -27,6 +27,7 @@ import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Container.SupportedServices;
 
+@SuppressWarnings("unchecked")
 class TckUtil {
 
     static Class<? extends Container> containerImplementation;
@@ -49,7 +50,7 @@ class TckUtil {
     }
 
     static boolean isThreadSafe() {
-        Set<Class> supportedServices = new HashSet(Arrays.asList(containerImplementation.getAnnotation(
+        Set<Class<?>> supportedServices = new HashSet(Arrays.asList(containerImplementation.getAnnotation(
                 SupportedServices.class).value()));
         return supportedServices.contains(ExecutorService.class);
     }

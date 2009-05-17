@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Container.SupportedServices;
 import org.codehaus.cake.service.test.tck.core.CoreSuite;
@@ -31,15 +32,13 @@ import org.junit.internal.runners.CompositeRunner;
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.Description;
-import org.junit.runner.manipulation.Filter;
-import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runner.manipulation.Sorter;
 import org.junit.runner.notification.RunNotifier;
 
 public abstract class TckRunner extends CompositeRunner {
 
-    Class containerImplementation;
-    Class configuration;
+    Class<? extends Container> containerImplementation;
+    Class<? extends ContainerConfiguration> configuration;
 
     @Override
     public void run(RunNotifier notifier) {
@@ -48,7 +47,7 @@ public abstract class TckRunner extends CompositeRunner {
         super.run(notifier);
     }
 
-    private final Set<Class> supportedServices;
+    private final Set<Class<?>> supportedServices;
 
     /**
      * If the file test-tck/src/main/resources/defaulttestclass exists. We will try to open it and read which cache
@@ -57,6 +56,7 @@ public abstract class TckRunner extends CompositeRunner {
      * This is very usefull if you just want to run a subset of the tests in an IDE.
      */
 
+    @SuppressWarnings("unchecked")
     public TckRunner(Class<?> clazz, Class<? extends ContainerConfiguration> configuration) throws InitializationError {
         super(clazz.getSimpleName() + " TCK");
         TckUtil.containerImplementation = clazz.getAnnotation(TckImplementationSpecifier.class).value();
@@ -88,40 +88,6 @@ public abstract class TckRunner extends CompositeRunner {
 
     boolean isSupported(Object service) {
         return supportedServices.contains(service);
-    }
-
-    private void filter() {
-        try {
-            filter(new Filter() {
-                public String describe() {
-                    return "filtered";
-                }
-
-                public boolean shouldRun(Description description) {
-                    RequireService rs = description.getAnnotation(RequireService.class);
-                    if (rs != null) {
-                        for (Class c : rs.value()) {
-                            if (!isSupported(c)) {
-                                return false;
-                            }
-                        }
-                    }
-                    UnsupportedServices us = description.getAnnotation(UnsupportedServices.class);
-                    if (us != null) {
-                        System.out.println(description);
-                        System.out.println(description.getAnnotations());
-                        for (Class c : us.value()) {
-                            if (isSupported(c)) {
-                                return false;
-                            }
-                        }
-                    }
-                    return true;
-                }
-            });
-        } catch (NoTestsRemainException e) {
-            e.printStackTrace();
-        }
     }
 
     protected boolean isThreadSafe() {

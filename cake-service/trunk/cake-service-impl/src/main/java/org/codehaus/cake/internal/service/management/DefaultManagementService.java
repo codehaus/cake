@@ -50,6 +50,7 @@ import org.codehaus.cake.service.OnShutdown;
 public class DefaultManagementService extends DefaultManagedGroup implements CompositeService {
 
     /** Whether or not this service has been shutdown. */
+    @SuppressWarnings("unused")
     private volatile boolean isShutdown;
 
     /** Used to register all services. */
@@ -86,7 +87,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
         }
     }
 
-    public void register(Composer composer, Set objects) throws JMException {
+    public void register(Composer composer, Set<?> objects) throws JMException {
         debugService.debug("  Manageable.manage()");
         ManagedGroup group = Managements.delegatedManagedGroup(this);
         for (Object o : objects) {

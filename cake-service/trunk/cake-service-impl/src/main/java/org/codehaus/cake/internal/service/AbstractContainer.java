@@ -16,7 +16,6 @@
 package org.codehaus.cake.internal.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +39,7 @@ public abstract class AbstractContainer implements Container {
 
     private final AbstractContainer parent;
 
-    private final List<AbstractContainer> children = null;
+    //private final List<AbstractContainer> children = null;
 
     protected AbstractContainer(Composer composer) {
         name = composer.getContainerName();
@@ -83,6 +82,7 @@ public abstract class AbstractContainer implements Container {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     public <T> T getService(Class<T> serviceType, AttributeMap attributes) {
         if (serviceType == null) {
             throw new NullPointerException("serviceType is null");
@@ -91,7 +91,7 @@ public abstract class AbstractContainer implements Container {
         }
         Map<Class<?>, ExportedService> services = this.services;// volatile read
 
-        ExportedService<T> f = services.get(serviceType);
+        ExportedService f = (ExportedService) services.get(serviceType);
         if (f == null && services.size() == 0) {// No services registered, most likely the container hasn't been started
             lazyStart(); // make sure its started
             this.services = services = new HashMap<Class<?>, ExportedService>(sm.getAll());
@@ -103,12 +103,12 @@ public abstract class AbstractContainer implements Container {
                     "No service or service factory has been registered for the specified type [type="
                             + serviceType.getCanonicalName() + "]");
         }
-        T service = f.lookup(serviceType, attributes);
+        Object service = f.lookup(serviceType, attributes);
         if (service == null) {
             throw new UnsupportedOperationException("Unknown service [type=" + serviceType.getCanonicalName()
                     + ", attributes=" + attributes + "]");
         }
-        return service;
+        return (T) service;
     }
 
     /** {@inheritDoc} */
@@ -125,7 +125,7 @@ public abstract class AbstractContainer implements Container {
         }
         return false;
     }
-
+    
     /** {@inheritDoc} */
     public boolean isShutdown() {
         return runState.isAtLeastShutdown();
@@ -170,14 +170,14 @@ public abstract class AbstractContainer implements Container {
     /**
      * A {@link ServiceProvider} that returns the same service for any attributes.
      */
-    static class SingleServiceFactory<T> implements ExportedService<T> {
-        private final T service;
+    static class SingleServiceFactory implements ExportedService {
+        private final Object service;
 
-        SingleServiceFactory(T service) {
+        SingleServiceFactory(Object service) {
             this.service = service;
         }
 
-        public T lookup(Class<T> key, AttributeMap attributes) {
+        public Object lookup(Class<?> key, AttributeMap attributes) {
             return service;
         }
 
@@ -186,32 +186,34 @@ public abstract class AbstractContainer implements Container {
         }
     }
 
-    static class LookupNextServiceFactory<T> implements ExportedService<T> {
+    static class LookupNextServiceFactory<T> implements ExportedService {
         private final ServiceProvider<T> factory;
-        private final ExportedService<T> next;
+        private final ExportedService next;
 
-        LookupNextServiceFactory(ServiceProvider<T> factory, ExportedService<T> next) {
+        LookupNextServiceFactory(ServiceProvider<T> factory, ExportedService next) {
             this.factory = factory;
             this.next = next;
         }
 
-        public T lookup(final Class<T> key, final AttributeMap attributes) {
+        public Object lookup(final Class<?> key, final AttributeMap attributes) {
             return factory.lookup(new ServiceProvider.Context<T>() {
                 public AttributeMap getAttributes() {
                     return attributes;
                 }
 
+                @SuppressWarnings("unchecked")
                 public Class<? extends T> getKey() {
-                    return key;
+                    return (Class<? extends T>) key;
                 }
 
+                @SuppressWarnings("unchecked")
                 public T handleNext() {
                     if (next == null) {
                         throw new UnsupportedOperationException(
                                 "No other services registered for the specified key, [key=" + key.getCanonicalName()
                                         + "]");
                     }
-                    return next.lookup(key, attributes);
+                    return (T) next.lookup(key, attributes);
                 }
             });
         }

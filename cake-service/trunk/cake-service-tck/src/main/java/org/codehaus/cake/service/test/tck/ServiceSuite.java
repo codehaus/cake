@@ -27,8 +27,9 @@ import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runners.Suite;
 
 public class ServiceSuite extends Suite {
-    private final Set<Class> supportedServices;
+    private final Set<Class<?>> supportedServices;
 
+    @SuppressWarnings("unchecked")
     public ServiceSuite(Class<?> klass) throws InitializationError {
         super(klass);
 
@@ -51,7 +52,7 @@ public class ServiceSuite extends Suite {
                 public boolean shouldRun(Description description) {
                     RequireService rs = description.getAnnotation(RequireService.class);
                     if (rs != null) {
-                        for (Class c : rs.value()) {
+                        for (Class<?> c : rs.value()) {
                             if (!isSupported(c)) {
                                 return false;
                             }
@@ -59,7 +60,7 @@ public class ServiceSuite extends Suite {
                     }
                     UnsupportedServices us = description.getAnnotation(UnsupportedServices.class);
                     if (us != null) {
-                        for (Class c : us.value()) {
+                        for (Class<?> c : us.value()) {
                             if (isSupported(c)) {
                                 return false;
                             }

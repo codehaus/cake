@@ -17,6 +17,7 @@ package org.codehaus.cake.stubber;
 
 import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.spi.ExceptionHandler;
 import org.codehaus.cake.service.spi.ExceptionHandlingConfiguration;
 import org.codehaus.cake.stubber.bubber.BubberConfiguration;
 import org.codehaus.cake.stubber.exceptionhandling.StubberExceptionHandler;
@@ -29,7 +30,7 @@ public class StubberConfiguration<T> extends ContainerConfiguration {
     private String dada;
 
     public StubberConfiguration() {
-        addConfiguration(new ExceptionHandlingConfiguration());
+        addConfiguration(new ExceptionHandlingConfiguration<ExceptionHandler<?>>());
         addConfiguration(new ManagementConfiguration());
         addConfiguration(new BubberConfiguration());
     }
@@ -57,6 +58,7 @@ public class StubberConfiguration<T> extends ContainerConfiguration {
         return getConfigurationOfType(ManagementConfiguration.class);
     }
 
+    @SuppressWarnings("unchecked")
     public ExceptionHandlingConfiguration<StubberExceptionHandler<T>> withExceptions() {
         return getConfigurationOfType(ExceptionHandlingConfiguration.class);
     }

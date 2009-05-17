@@ -34,7 +34,6 @@ import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.service.TstStubs.PrivateConstructorStubber;
 import org.codehaus.cake.service.TstStubs.Stubber;
 import org.codehaus.cake.service.TstStubs.StubberConfiguration;
-import org.codehaus.cake.service.TstStubs.StubberImpl;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.util.Clock;
 import org.codehaus.cake.util.Logger;
@@ -163,16 +162,17 @@ public class ContainerConfigurationTest {
     public void propertiesSetNPE() {
         conf.setProperty(null, "A");
     }
-//
-//    /**
-//     * Tests {@link ContainerConfiguration#setType(Class)} and {@link ContainerConfiguration#getType()}.
-//     */
-//    @Test
-//    public void type() {
-//        assertNull(conf.getType());
-//        assertSame(conf, conf.setType(StubberImpl.class));
-//        assertEquals(StubberImpl.class, conf.getType());
-//    }
+
+    //
+    // /**
+    // * Tests {@link ContainerConfiguration#setType(Class)} and {@link ContainerConfiguration#getType()}.
+    // */
+    // @Test
+    // public void type() {
+    // assertNull(conf.getType());
+    // assertSame(conf, conf.setType(StubberImpl.class));
+    // assertEquals(StubberImpl.class, conf.getType());
+    // }
 
     /**
      * Tests that a configuration service added through
@@ -230,7 +230,7 @@ public class ContainerConfigurationTest {
     @Test
     public void addService() {
         assertFalse(conf.getServices().iterator().hasNext());
-        ServiceProvider sf = dummy(ServiceProvider.class);
+        ServiceProvider<?> sf = dummy(ServiceProvider.class);
         conf.addService(5);
         conf.addService(Integer.class, 10);
         conf.addService(Long.class, sf);
@@ -284,19 +284,20 @@ public class ContainerConfigurationTest {
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE4() {
-        conf.addService(Integer.class,(ServiceProvider) null);
+        conf.addService(Integer.class, (ServiceProvider<?>) null);
     }
-//
-//    @Test
-//    public void newInstance() {
-//        conf.setType(StubberImpl.class);
-//        assertTrue(conf.newInstance() instanceof StubberImpl);
-//    }
-//
-//    @Test(expected = IllegalStateException.class)
-//    public void newInstanceISE() {
-//        conf.newInstance();
-//    }
+
+    //
+    // @Test
+    // public void newInstance() {
+    // conf.setType(StubberImpl.class);
+    // assertTrue(conf.newInstance() instanceof StubberImpl);
+    // }
+    //
+    // @Test(expected = IllegalStateException.class)
+    // public void newInstanceISE() {
+    // conf.newInstance();
+    // }
 
     /**
      * Tests that {@link ContainerConfiguration#newCacheInstance(Class)} throws a {@link NullPointerException} when
@@ -415,7 +416,7 @@ public class ContainerConfigurationTest {
          * @param additionalConfigurationTypes
          *            service types to instantiate
          */
-        public ExtendConfiguration(Collection additionalConfigurationTypes) {
+        public ExtendConfiguration(Collection<?> additionalConfigurationTypes) {
             for (Object o : additionalConfigurationTypes) {
                 super.addConfiguration(o);
             }

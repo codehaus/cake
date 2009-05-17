@@ -195,11 +195,13 @@ public class ContainerConfiguration {
      * @param <U>
      *            the type of the configuration
      */
+    @SuppressWarnings("unchecked")
     public <U> U getConfigurationOfType(Class<U> configurationType) {
         Object o = configurations.get(configurationType);
         if (o == null) {
             throw new IllegalArgumentException("Unknown service configuration [ type = " + configurationType + "]");
         }
+
         return (U) o;
     }
 
@@ -307,11 +309,11 @@ public class ContainerConfiguration {
         if (type == null) {
             throw new NullPointerException("type is null");
         }
-        Constructor c = null;
-        Class clazz = getClass();
+        Constructor<S> c = null;
+        Class<?> clazz = getClass();
         while (!clazz.equals(ContainerConfiguration.class)) {
             try {
-                c = (Constructor) type.getDeclaredConstructor(clazz);
+                c = (Constructor<S>) type.getDeclaredConstructor(clazz);
             } catch (NoSuchMethodException e) {/* Should never happen */
             }
             clazz = clazz.getSuperclass();
@@ -321,7 +323,7 @@ public class ContainerConfiguration {
                     + "taking a single ContainerConfiguration instance for the specified class [class = " + type + "]");
         }
         try {
-            c = (Constructor) type.getDeclaredConstructor(getClass());
+            c = (Constructor<S>) type.getDeclaredConstructor(getClass());
         } catch (NoSuchMethodException e) {/* Should never happen */
         }
         try {

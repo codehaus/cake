@@ -27,6 +27,6 @@ public class SynchronizedStubberTest extends AbstraktStubberTCKTst {
 
     @Test
     public void testInstance() {
-        assertTrue(c instanceof SynchronizedStubber);
+        assertTrue(c instanceof SynchronizedStubber<?>);
     }
 }

@@ -36,7 +36,7 @@ public class DefaultBubberService<T> implements BubberService<T>, RuntimeConfigu
     public static final Object C = new String("DefaultBubberService_constructor");
     int foofoo;
 
-    public DefaultBubberService(StubberConfiguration conf, DefaultTubberService s, DefaultTubber1Service s1) {
+    public DefaultBubberService(StubberConfiguration<?> conf, DefaultTubberService s, DefaultTubber1Service s1) {
         conf.verifier().hasHappenend(DefaultTubber1Service.c);
         conf.verifier().constructor(C);
         assertEquals("ok", s.get());

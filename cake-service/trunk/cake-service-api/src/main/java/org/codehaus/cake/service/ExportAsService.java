@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
  * 
  * <p>
  * If the service is exported with a key that conflicts with the key-type of any of the build-in services. The
- * registered service will replace the build-in service when trying to retrive using {@link Container#getService(Class)}
+ * registered service will replace the build-in service when calling {@link Container#getService(Class)}
  * or {@link Container#getService(Class, org.codehaus.cake.attribute.AttributeMap)}.
  */
 @Target(ElementType.TYPE)

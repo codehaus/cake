@@ -26,6 +26,7 @@ import org.codehaus.cake.util.Logger;
  * @param <T>
  *            the type ExceptionHandler that is used
  */
+@SuppressWarnings("unchecked")
 public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
 
     /** The exception handler used for handling erroneous conditions in the container. */

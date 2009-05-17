@@ -19,7 +19,6 @@ import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 /**
- * 
  * A service provider is used for constructing services of a specific type.
  * 
  * The following can be used to introduce A service factory can be implemented for
@@ -62,7 +61,7 @@ public interface ServiceProvider<T> {
         /**
          * This method can be called to allow other service providers to provide a service for the specified type.
          * 
-         * @return an instanceof the service
+         * @return an instance of the service
          */
         T handleNext();
     }

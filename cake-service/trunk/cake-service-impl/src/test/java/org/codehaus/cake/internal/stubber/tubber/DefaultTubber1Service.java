@@ -20,7 +20,7 @@ import org.codehaus.cake.stubber.StubberConfiguration;
 public class DefaultTubber1Service {
     public static final Object c = "DefaultTubberService_constructor";
 
-    public DefaultTubber1Service(StubberConfiguration conf) {
+    public DefaultTubber1Service(StubberConfiguration<?> conf) {
         conf.verifier().constructor(c);
     }
 
