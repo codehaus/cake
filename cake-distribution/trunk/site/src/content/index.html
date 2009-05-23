@@ -23,7 +23,7 @@
     <p>Cake is a key-value based caching and data processing framework available under the Apache License, Version 2.0.</p>
     <h1 id="features">Features</h1>
     <ul>
-        <li><b>Ease of use.</b> A Simple API (resembles java.util.Map) with a DSL like syntax.</li>
+        <li><b>Ease of use.</b> A Simple API (resembling java.util.Map) with a DSL like syntax.</li>
         <li><b>Embeddable.</b> Single jar, no dependencies, no static singletons, flexible exception handling, integration with popular logging frameworks.</li>
         <li><b>Java 5 based.</b> Generics + JMX support.</li>
         <li><b>Performance.</b> Small (default) memory footprint (50% less then other popular caching frameworks).</li>
@@ -32,7 +32,11 @@
     </ul>
     
     <h1 id="limitations">Known Limitations</h1>
-    <p>Currently Cake only supports storing data in memory. Support for external storage (disk) and clustering is planned.</p>
+    <p>
+    Currently Cake only supports storing data in memory. 
+    Support for external storage (disk) and clustering is planned.
+    See Jira-xxx and Jira-xxx respectively.
+    </p>
 
     <h1 id="getting-started">Getting Started</h1>
     <ul>
@@ -41,7 +45,7 @@
     </ul>
 
      <h1 id="samples">Snippets</h1>
-     <p>Given a fictional Person class the following section contains some cake snippets.
+     <p>Given a fictional Person class the following section contains some Cake snippets.
 <div class="Source Java"><pre>
 interface Person {
     String id();
@@ -55,7 +59,7 @@ CacheConfiguration&lt;String, Person&gt; conf = CacheConfiguration.newConfigurat
 conf.withMemoryStore().setMaximumSize(10000).setPolicy(Policies.LRU);
 
 SynchronizedCache&lt;String, Person&gt; cache = SynchronizedCache.from(conf);
-cache.put("121-22-2323", new Person(){...}); // Adding a single person
+cache.put("121-22-2323", new Person(){...}); // Adding a single person to the cache
 </pre></div>
    Retrieve a list of all persons that are over 85 years old in the cache.
 <div class="Source Java"><pre>
@@ -77,7 +81,8 @@ List&lt;Person&gt; p = cache.filter().onValue(new Predicate&lt;Person&gt;() {
     }
 }).setLimit(5).toList();
 </pre></div>
-Reload all entries in the cache that has not been modified the last hour. See the <a href="loading.html">section on loading</a> for details on how to configure a cache loader.
+Reload all entries in the cache that has not been modified the last hour. 
+See the <a href="loading.html">section on loading</a> for details on configuring a cache loader.
 <div class="Source Java"><pre>
 CacheConfiguration&lt;String, Person&gt; conf = CacheConfiguration.newConfiguration();
 conf.withLoading.setLoader(new MyPersonLoader&lt;String, Person&gt;{}); // Set (background) cache loader

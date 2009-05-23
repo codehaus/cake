@@ -25,17 +25,60 @@
    This technique can often be more efficient then requiring a user to fill up the cache in advance. 
    A cache loader might load data from an external site, a databases or just a plain text-based file. 
    Data can also be generated on the fly, for example, as the result of a calculation.
+   Finally, a cache cache can be used for prefetching, that is getting data into the cache well before it is needed.
+   So data can be served immediatly when it is first requested, thereby reducing the latency of requests.
    </p>
 
    <h1 id="cache-loader">Cache Loader</h1>
    <p>
-   A cache loader implementation is provided by the user of the cache and is responsible for loading or creating the data that should be inserted into the cache for a specified key.
+   A cache loader implementation is provided by the user of the cache and is responsible for loading or creating the value for a specified key.
    </p>
-<div class="Source Java"><pre>
-public interface BlockingCacheLoader&lt;K, V&gt; {
-    V load(K key, MutableAttributeMap attributes) throws Exception;
+   <p>
+   	There are current two ways to create a CacheLoader:
+   	1) Creating a simple function implementing the Op interface.
+   	2) Annotate a public method with the CacheLoader annotation.
+  </p>
+  
+  <h3 id="op">Using the Op interface</h1>
+  <p>
+  The Op interface is used in a lot of places around Cake and instead of creating a new interface we will
+  use it here as well. The interface takes a single argument which is the key that the user specifies to the
+  caches get() method. And returns the corresponding value. For example, if we want to create a cache the caches 
+  the result of complex math operations in order to avoid repeating the computations constantly we could define this
+  cache loader:
+  </p>
+  <div class="Source Java"><pre>
+public class ComplexMathOp implements Op&lt;Integer, Integer&gt; {
+    public Integer op(Integer i) {
+				return i+i+i+i+i; //well maybe not that complex
+    }
 }
 </pre></div>
+  <p>
+	We would then configure the cache to call the loader when a value for a requested key is not in the cache.
+  </p>
+<div class="Source Java"><pre>
+CacheConfiguration&lt;Integer, Integer&gt; conf = CacheConfiguration.newConfiguration();
+conf.withLoading().setLoader(new ComplexMathOperation());
+Cache&lt;String, String&gt; cache = new SynchronizedCache(conf);
+
+ // 1. hit - Uses the cache loader
+System.out.println(cache.get(1)); // outputs 5
+
+ // 2. hit - Returns the cached version
+System.out.println(cache.get(1)); // outputs 5
+</pre></div>
+  <p>
+  Now when cache.get(1) is called the first time, the cache will use ComplexMathOp to calculate the value. 
+  But when cache.get(1) is called the second time, the cache will return the cached content instead of 
+	calculating the value again.
+  </p>
+
+  <h3 id="op">Using the CacheLoader annotation</h1>
+  <p>
+  Instead of implementing the Op interface you can also annotate a method with the CacheLoader annotation.
+  Which allows for some additional functionality
+  </p>
    The specified key should contain enough information to allow the cache loader to retrieve the matching value. 
    The MutableAttributeMap can be be used by the cache to specify additional properties that the cache loader can use.
    It it also used by the cache loader to transfer metadata about the loaded value back to the caller. For example, the size of the value or the cost of retrieving the value.
@@ -83,7 +126,7 @@ In this way the cache can return the second page without any delay.
 The CacheLoadingService interface supports a number of methods for doing this. 
 
 <div class="Source Java"><pre>
-cache.with().loading().load("http://www.wikipedia.org"); //will load the specified url only if it is not already present in the cache or if it is expired or needs refreshing 
+cache.with().loading().load("http://www.wikipedia.org"); //will load the specified url only if it is not already present in the cache or if it needs refreshing 
 cache.with().loading().loadAll(); // will reload all elements in the cache that is expired or needs refreshing
 </pre></div>
 Unless otherwise specified all methods are asynchronous and will return immediately. 
@@ -143,17 +186,30 @@ cache.filter().onValue(new Predicate&lt;String&gt;() {
 }).with().loadingForced().loadAll();
 </pre></div>
 
-   <h1 id="loading-utils">CacheLoadingUtils</h1>
-<p>
-The CacheLoadingUtils class contains a number of useful utilities.
-</p>
 
-   <h3 id="loading-utils-scheduling">Scheduling reloads</h3>
+    <h1 id="loading-faq">Loading FAQ</h1>
+    <!-- ...................................................... -->
+    <h2 id="good-filtering-predicate">How do I make sure my cached data are fresh?</h2>
+    <p>
+    	One way to make your data is fresh is to schedule full reloads of cache every xx minute/hour.
+    </p>	
+    <p>
+    	You can also schedule partial reloads of the cache instead of full reloads. This might be 
+    	usefull if you want to avoid overloading the source you fetching data from.
+    </p>
 
-   <h3 id="loading-utils-scheduling">Spreading the loads</h3>
-
-Consider, for example, . Instead we want to spread out the reloading over the day.
-
+    <h2 id="good-filtering-predicate">Does Cake support expiration of entries?</h2>
+    <p>
+    	Not directly. But you can easily emulate.
+    	
+    	//Create Attribute and add it to cache
+    	
+    	//Setup scheduler
+    	cache.filter().on(ExpiresAt, LongPredicates.lessThen(System.currentMillies)).clear();
+    	
+    	//insert entries, with expiration time.
+    	
+    </p>	
 
   </body>
 </html>

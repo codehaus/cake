@@ -20,6 +20,58 @@
     <meta name="short" content="Containers"/>
   </head>
   <body>
-    <p>Bla bla bla bla</p>
+    <p>
+    The Container interface provides 2 kinds of functionality.
+    1) Looking up services that has been registered in the container.
+    2) Starting and stopping the container and the services registered within the container.
+    </p>
+    <p>
+    Normally the Container interface is extend with an interface providing additional domain specific functionality.
+    For example, the Cache interface which specifies methods for insertion and retrievel of data. But inherits
+    the methods for starting, stopping and looking up services from the Container interface.
+    </p>
+    <p>
+    Containers can be arranged in a hierachy so services register in one container
+    can be available in multiple child containers. This is useful, for example,
+    sharing a single ThreadPool among multiple containers.
+    </p>
+    <p>
+    
+    </p>	
+    
+    For example, if you shutdown a container that has any children, all its
+    children will also be shutdown. 
+    
+    When a user tries to look
+    up a service 
+    If a specific service is not found in a container
+    it will automatically look in the parent container (if it has one). The parent 
+    might look in its parent and so on.
+    
+    Instead you create a parent container that is shared among all cache instances 
+    <p>
+    
+    </p>
+    
+    
+    <h1 id="features">Single Container</h1>
+      A single container is a container that has no parent or child containers.
+      
+    <h1 id="features">Hirachy Containers</h1>
+    
+    <h1 id="features">Container and lifecycles</h1>
+    
+    initialized
+    starting
+    running : Normal state
+    shutdown
+    terminated 
+    
+    Once stopped you cannot restart a container.
+    
+    <p>
+    <p>Looking up a service</p>
+    
+    Lifecycle.... see for Lifecycle.hmtl for complete details
   </body>
 </html>

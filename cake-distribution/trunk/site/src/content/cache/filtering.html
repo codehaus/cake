@@ -21,26 +21,32 @@
   <link rel="stylesheet" type="text/css" href="../../resources/style.css" />
   </head>
   <body>
-    <p>
-       	Cache Filtering is used to select a subset of a cache and work on it.
-     You can select, for example, on all entries that been inserted into the cache within the last hour, all entries that have a String key,
-     or all those entries that have Integer keys.
-   </p> <p> 	
+   <p> 	
     A filtered cache is the result of applying a predicate (boolean function) on every entry in a cache.
-    Only those entries on which the predicate evaluates to true are contained in the filtered cache.
+    Only those entries on which the predicate evaluates to true are retained in the filtered cache.
     The filtered cache is backed by the original cache, so changes to the original cache are reflected in
-    the the filtered cache, and vice-versa.
+    the filtered cache, and vice-versa.
    </p>
    <p>
-   Consider, for example, the following cache definition</p><div class="Source Java"><pre>Cache&lt;String, Integer&gt; cache = new SynchronizedCache&lt;String, Integer&gt;&lt;();
-cache.put("A", 1);
-cache.put("B", 2);
-cache.put("C", 3);
-cache.put("D", 4);
+    A filtered cache can be combined with almost all other cache operations, allowing:
+    </p>
+    <ul>
+    <li>Removing all those entries that a specific attribute.</li>
+    <li>Updating only those entries that has some specific property.</li>
+    <li>Reloading only those entries that hasn't .</li>
+    <li>Returning a list of all those values with some specific property (querying).</li>
+    </ul>
+   <p>
+    Consider, for example, the following cache definition:
+   </p>
+    <div class="Source Java"><pre>Cache&lt;String, Integer&gt; cache = new SynchronizedCache&lt;String, Integer&gt;&lt;();
+cache.put("A", 1).put("B", 2).put("C", 3).put("D", 4);
 System.out.println(cache); //Prints {A=1, B=2, C=3, D=4}
 </pre></div>
-<p>To create a filtered cache we use the <code>cache.filter()</code> method on Cache. In this case we will create a filtered cache
-   containing only those cache entries where the integer value is odd:</p>
+   <p>
+    To create a filtered cache we use the <code>cache.filter()</code> method on Cache. In this case we will 
+    create a filtered cache containing only those cache entries where the integer value is odd:
+   </p>
    <div class="Source Java"><pre>
 Cache&lt;String, Integer&gt; oddNumbers = cache.filter().onValue(new Predicate&lt;Integer&gt;() {
     public boolean op(Integer value) {
@@ -48,56 +54,68 @@ Cache&lt;String, Integer&gt; oddNumbers = cache.filter().onValue(new Predicate&l
     }
 });
 </pre></div>
-<p>   The filtered cache we have created works a normal cache instance with a few modification, that we will tell you about later in this section<p>
+   <p>
+   	The filtered cache we have created works as a normal cache instance with a few modifications 
+   	(see the FAQ later on this page).
+   </p>
    <div class="Source Java"><pre>
 System.out.println(oddNumbers.size()); //Prints 2
 System.out.println(oddNumbers); // Prints {A=1, C=3}
 
-oddNumbers.clear(); //Removes all entries contained in the oddNumbers filtered cache.
+oddNumbers.clear(); //Removes all entries with odd values.
 System.out.println(oddNumbers); //Prints {}
-System.out.println(cache); //Prints {B=2, D=4}, (only entries oddNumbers was removed) 
+System.out.println(cache); //Prints {B=2, D=4}, (only entries in oddNumbers was removed) 
 </pre></div>    	
-
-    <h1 id="limitations">Cache Selector</h1>
+    <h1 id="cache-selector">Cache Selector</h1>
     <p>
-  There are some additional ways for creating a filtered cache then just evaluating a property on the value part of a <code>CacheEntry</code>
-
-A <a href="http://cake.codehaus.org/apidocs/org/codehaus/cake/cache/CacheSelector.html">Cache Selector</a> is used 
-for filtering a cache and can be obtained by calling <tt>cache.filter()</tt>.</p>
-
+    Its easy to create a filtered cache that like in the above 
+    There are number of different properties that can evaluated some additional 
+    ways for creating a filtered cache then just evaluating a property on the value part of a <code>CacheEntry</code>
+    When calling <tt>cache.filter()</tt> a <a href="http://cake.codehaus.org/apidocs/org/codehaus/cake/cache/CacheSelector.html">Cache Selector</a> is returned.
+    This selector is used for determining which properties to filter on.
+    </p>
    <div class="Source Java"><pre>
-List methods
+List methods except primitive attributes
+
 </pre></div>
+Besides the methods listed here there are also additional methods that takes primitive attributes
+and primitive predicates.
 
     <h1 id="limitations">Filtering and Views</h1>
-  Filtering goes hand in hand with <a href="views.html">Cache Views</a> as a way of querying the cache. For example, to create a list of all those keys that have
-  an odd value you could use:
+    <p>
+    Filtering goes hand in hand with <a href="views.html">Cache Views</a> as a way of querying the cache. 
+    For example, to create a list of all those keys that have an odd value. You first create a filtered cache 
+    selecting the elements, after which you create a view of the keys in that filtered cache:
    <div class="Source Java"><pre>
-List&lt;String&gt; oddNumbersKeys = cache.filter().onValue(new Predicate&lt;Integer&gt;() {
+Cache<String, Integer> filtered = cache.filter().onValue(new Predicate&lt;Integer&gt;() {
     public boolean op(Integer value) {
         return value % 2 == 1;
     }
-}).keys().toList();
+});
+View<String> keys = filtered.keys();
+List<String> keyList = keys.toList();
    </pre></div>
-   View creation is very cheap, creating just a single object holding the definition of the view.
-   So even for small datasets the cost of doing the actual querying will dominate the cost of creating the actual views. 
 
-    <h1 id="important-considarations">Filtering FAQ</h1>
+    <h1 id="filtering-faq">Filtering FAQ</h1>
+    
     <!-- ...................................................... -->
-    <h2 id="restrictions">What characterizes a good filtering predicate function?</h2>
+    <h2 id="good-filtering-predicate">What characterizes a good filtering predicate function?</h2>
     <p>
     A couple of things:
     </p>
     <ul>
-    <li><b>Fast</b> asdasd.</li>
-    <li><b>Thread-safe</b> Keep a configured instanc</li>
-    <li><b>Lock-less</b>  asdasdasdasd.</li>
-    <li><b>Stateless</b>  asdasd</li>
+    <li><b>Consistent:</b> A predicate should always return the same truth value for equivalent elements.</li>
+    <li><b>Fast:</b> Since the predicate is applied to each entry it must be very fast.</li>
+    <li><b>Thread-safe:</b> The predicate supplied must be thread-safe so multiple threads can evaluate entries concurrently.</li>
+    <li><b>Lock-less:</b> The predicate should not rely on locks.</li>
+    <li><b>No side effects:</b>Invoking a predicate should not have any visible side effects.</li>
     </ul>
     
     <!-- ...................................................... -->
     <h2 id="restrictions">Are there any restrictions on the cache created by a filtering operation?</h2>
     <p>
+      Yes there are some restrictions, they may be lifted in future version, but for the time being there enforced by the cache.
+      Add, Put, compute cannot insert into empty
  there are some strange situations.
     
     "A"->1, "B"->2, "C"->3, "D"->4
@@ -114,36 +132,44 @@ List&lt;String&gt; oddNumbersKeys = cache.filter().onValue(new Predicate&lt;Inte
    </p>
 
     <!-- ...................................................... -->
-    <h2 id="performance1">Is creating a filtered view a fast operation?</h2>
+    <h2 id="overhead">How many filtered cache instances can I create?</h2>
     <p>
-   Yes! Creating a filtered cache is a very fast operation with almost no memory overhead.
-   </p>
-
-    <h2 id="performance2">Is using a filtered just as fast as using a normal cache?</h2>
-   <p>Yes and No. While most operations are just as fast as operation on a normal cache, others are a lot slower<p> 
-   </p>
-    <p>
-    Consider, for example, the <tt>cache.size()</tt> operation which normally is a constant time operation. Internally a cache has a <tt>long size</tt> field, 
-    which keeps the current size of the cache and when a user invokes the size() operation on the Cache the Cache just returns the value of the size field.
-    However, when working on a filtered cache <b>every</b> entry in the original cache must be evaluate against the filtered caches predicate each time the size needs to calculated.
-<p>  
-    Unless you invoke <tt>size()</tt> very frequently it is not as bad as it sounds.
-    if you have a small cache the cost of invocation the size() operation is fairly small
-    If you have a large cache and are using a multi-core processor it is fairly easy for the cache to use multiple threads to evaluate
-    the size of the cache. For example, if you have a quad core processor, the cache can split the cache up in 4 parts 
-    and let each processor calculate the size for one of the parts. 
-    When that is complete the cache can then return the sum of the individual results from each processor. 
+    As many as you want! Creating a filtered cache is a very fast operation with almost 
+    no memory overhead. Basically a filtered view is just a single predicate holding the definition 
+    of the view and a reference to the original cache. So you easily have thousands of views 
+    available at the same time. And since views are immutable, you easily cache and share them 
+    among different threads.
     </p>
-    <h2 id="filter-series">Can I create a filter cache from a filtered Cache?</h2>
-     <p>While series of filters are allowed, it is usually more efficient to combine them into single filters
-       when possible. For example <tt>cache.filter().onValue(isBlue).filter().onValue(isRound)</tt> is generally
-  less efficient than <tt>cache.filter.onValue(isBlueAndRound)</tt>.   
- </p> 
-    <h1 id="summary">Summary</h1>
-        <p>To recap:</p>
-    <ul>
-        <li>A filtered cache  backed by the original cache <tt>cache.filter().on();</tt></li>
-    </ul>
-    
+
+    <!-- ...................................................... -->
+    <h2 id="runtime-performance">Are there any performance issues when operating on a filtered cache?</h2>
+    <p>
+    It depends. While most filtered operations are just as fast as operation on a normal cache, others are a lot slower. 
+    </p>
+    <p>
+    Consider, for example, the <tt>cache.size()</tt> operation which normally is a constant time operation. 
+    Internally a cache might keep a <tt>long sized</tt> field, which records the current size of the cache and 
+    when a user invokes the size() operation on the cache, it can just return the value of the field.
+    However, when working on a filtered cache, <b>every</b> entry in the original cache must be evaluated 
+    each time the size() operation is called. To see if the entry belongs in the filtered view and therefore must 
+    be included in the filtered cache size.
+    </p>
+    <p>  
+    Unless you invoke <tt>size()</tt> very frequently there not to much to worry about.
+    If you have a small cache the cost of invocation the size() operation is fairly small, because there are only
+    a limited number of entries that must be evaluated each time. If you have a large cache and are using a 
+    multi-core processor it is fairly easy for the cache to use multiple threads to evaluate the size of the cache. 
+    For example, if you have a quad core processor, the cache can split the entries up into 4 separate parts 
+    and let each processor calculate the size for a part.
+    The cache can then return the sum of the individual results from each processor. 
+    </p>
+
+    <!-- ...................................................... -->  
+    <h2 id="series-of-filteres">Can I create a filtered cache from a filtered cache?</h2>
+    <p>
+    While series of filters are allowed, it is usually more efficient to combine them into single filters
+    when possible. For example, <tt>cache.filter().onValue(isBlue).filter().onValue(isRound)</tt> is generally
+    less efficient than <tt>cache.filter.onValue(isBlueAndRound)</tt>. Even though they are semantically equivalent.
+    </p> 
   </body>
 </html>

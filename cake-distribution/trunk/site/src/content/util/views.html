@@ -20,8 +20,39 @@
     <meta name="short" content="Views"/>
   </head>
   <body>
+    A view allows a datastructure such Collection, Set, Map, List to be viewed
+    
+    Views has very low memory overhead only containing the definition of the view.
+    
+    views are immutable, there is no way to change the definition of it.
+    
+    Views are often chained together to create a new 
+    
+    
+     if the a new view is re
+    
+     
+    in another way
+     is read-only
+    
+    views can be transformed without effecting the underlying data structure
+    Much like the the collection views available for java.util.Map j.u.Map
+    
+     which
+ * allow a map's contents to be viewed as a set of keys, collection of values,
+ * or set of key-value mappings.
+ 
+ 
     <p>Resembling apaches commons collections or googles collection with some overlap
     
+	There are number of different views.
+	
+	Object view is probably the most common and is a view
+	
+	A view can be both have an order (a list), only contain unique values (a set).
+	Th
+	    
+    	View is a virtual view of a Collection/List/Set.
     A View defines a "virtual collection", 
     i.e., a description of  column selection filters (but with no permanent storage space allocated).
      When used in place of a table, a View selects the specified rows and/or columns from one or more real tables. 
@@ -33,5 +64,25 @@ Views can represent a subset of the data contained in a table
 # Views can hide the complexity of data; for example a view could appear as Sales2000 or Sales2001, transparently partitioning the actual underlying store
 # Views take very little space to store; cake contains only the definition of a view, not a copy of all the data it presents
     </p>
+    
+<h1 id="features">Element views</h1>
+An element view is a collection of Objects, longs or doubles.
+
+
+    
+<h1 id="features">MapView</h1>
+Mapviews are views of keys mapping to values.
+
+<h1 id="features">MultiMapped views</h1>
+A multimapped view is a views mapping from a key to a collection of values.
+This support running map-reduce queries some powerful queries. Consider, for example,
+An Object key mapping to a collection of Objects, longs or doubles.
+
+Consider, for example, the person that we use in most examples.
+Lets say we 
+
+
+
+
   </body>
 </html>

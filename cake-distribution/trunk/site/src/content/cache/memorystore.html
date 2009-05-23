@@ -18,11 +18,57 @@
   <head>
     <title>MemoryStore</title>
   </head>
+  
   <body>
+  	<p>
+      A MemoryStore is the in-memory-container where the cache stores all its cache entries. When
+      a user requests a value for a particular key the cache checks its memorystore to see if it has a corresponding
+      value. In which case it returns it to the user.
+    </p>
+<h1 id="challenge">Configuring a Replacement Policy</h1>
+
+You are not required to 
+
 <h1 id="challenge">MemoryStore</h1>
 <h1 id="challenge">Disable Caching</h1>
-<h1 id="challenge">Trimming the cache</h1>
-Cache trimming is the process of evicting entries such that the cache upholds a certain size or volume. 
+<p>
+  Sometimes it might be desirable to disabling the memory store. For example, if you are trying to
+  track down a bug, and you suspect it might be stale data in the cache. In this
+  
+  when you are testing
+</p>
+<p>
+Disabling the cache does remove any entries. If you want to remove all entries you can do so after disabling the cache by
+invoking clear().
+</p>
+<p>
+When you are want the start storing data that is cached you can enabled the memory store again by calling MSS.setEnabled(true) .
+</p>
+
+<h1 id="challenge">Controlling the size and volume of the cache at runtime</h1>
+<h1 id="challenge">Trimming the cache manually</h1>
+<p>
+ Cache trimming is the process of evicting entries such that the cache upholds a certain size or volume.
+ In all the above examples, the cache had required no interactions by the user.
+ The size was kept down automatically.
+ 
+ The downside to this is that the must maintaing ekstra bookkeeping state in order to decide which entries to evict.
+ 
+ 
+ 
+</p>
 <p>Limiting size and volume, Trimming, Disabling cacheing </p>
+  
+    <h1 id="loading-faq">MemoryStore FAQ</h1>
+    <!-- ...................................................... -->
+    <h2 id="good-filtering-predicate">Why can´t I just specify that the cache m do I make sure my cached data are fresh?</h2>
+    <p>
+    	One way to make your data is fresh is to schedule full reloads of cache every xx minute/hour.
+    </p>	
+    <p>
+    	You can also schedule partial reloads of the cache instead of full reloads. This might be 
+    	usefull if you want to avoid overloading the source you fetching data from.
+    </p>
+
   </body>
 </html>

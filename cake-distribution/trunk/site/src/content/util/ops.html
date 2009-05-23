@@ -4,9 +4,27 @@
     <meta name="short" content="Ops"/>
   </head>
   <body>
-    <p>The Ops package is a are a collection of interfaces taking combinations of objects and primitives (primitives such as longs, doubles,..)</p>
+    <p>
+    The Ops (org.codehaus.cake.util.ops) library is a are a collection of interfaces taking combinations of objects and primitives (primitives such as longs, doubles,..).
+    Think of the interfaces as poor mans closures.
+    </p>
+    <p>
+    Much of the complexity of this library stems from the fact that you cannot reify generics.
+    Consider, for example, the Op interface
+    
+    list it...
+    
+    While it
+    But cake aims to process millions of records in parallel. In which case relying on Op insteadof a special Longop can be 
+    a magnitude slower. What's you new quad core good for then?
+    </p>
+    
   The name of the single method declared in each interface is simply <b>op</b> (short for "operate")
  
+ Name, Descriptor, Example
+ Op 					Op, LongOp, DoubleOp   
+ 
+ BinaryOp Maps two arguments to a result. 
    <li> A <tt>BinaryOp</tt> maps two arguments to a result. Example: dividing two numbers
   
   <li>A <tt>Reducer</tt> is an <em>associative</em> binary op accepting and returning values of the same type;
@@ -33,5 +51,7 @@
     
 Tabel, med 
 Predicate | accepts a value and returns a boolean indicator that the argument obeys some property. | class isNull implements Predicate
+
+  
   </body>
 </html>
