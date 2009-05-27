@@ -17,6 +17,8 @@ package org.codehaus.cake.internal.service;
 
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.cake.service.Container.State;
+
 public class UnsynchronizedRunState extends RunState {
 
     private int state;
@@ -66,5 +68,10 @@ public class UnsynchronizedRunState extends RunState {
     @Override
     protected int get() {
         return state;
+    }
+
+    @Override
+    boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException {
+        return state==State.TERMINATED && isTerminated();
     }
 }

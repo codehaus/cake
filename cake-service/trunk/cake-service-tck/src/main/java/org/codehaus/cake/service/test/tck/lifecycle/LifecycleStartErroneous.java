@@ -17,7 +17,8 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.OnStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
@@ -176,50 +177,50 @@ public class LifecycleStartErroneous extends AbstractTCKTest<Container, Containe
     }
 
     public static class StartRuntimeException {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(ContainerConfiguration conf) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
     public static class StartException {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(ContainerConfiguration conf) throws Exception {
             throw Exception1.INSTANCE;
         }
     }
 
     public static class StartError {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(ContainerConfiguration conf) {
             throw Error1.INSTANCE;
         }
     }
 
     public static class StartContainer {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(Container conf) {}
     }
 
     public static class StartThrowable {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(ContainerConfiguration conf) throws Throwable {
             throw Throwable1.INSTANCE;
         }
     }
 
     public static class StartObject {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(Object object) {}
     }
 
     public static class StartUnknown {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start(Integer unknown) {}
     }
 
     public static class StartPackageProtected {
-        @OnStart
+        @RunAfter(State.STARTING)
         void start(Integer unknown) {}
     }
 }

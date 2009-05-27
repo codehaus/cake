@@ -26,6 +26,7 @@ import junit.framework.AssertionFailedError;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.codehaus.cake.util.attribute.AttributeMap;
@@ -99,7 +100,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
     public AbstractTCKTest<C,T> awaitTermination() {
         try {
             long start = System.nanoTime();
-            assertTrue(c.awaitTermination(10, TimeUnit.SECONDS));
+            assertTrue(c.awaitState(State.TERMINATED, 10, TimeUnit.SECONDS));
             long finish = System.nanoTime();
             if (finish - start > 1000000) {
                 // System.out.println(finish - start);
@@ -112,7 +113,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
     }
 
     public void checkLazystart() {
-        assertTrue(c.isStarted());
+        assertTrue(c.getState().isStarted());
     }
 
     protected void shutdownAndAwaitTermination() {

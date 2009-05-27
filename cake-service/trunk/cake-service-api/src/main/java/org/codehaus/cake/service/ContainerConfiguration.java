@@ -118,7 +118,7 @@ public class ContainerConfiguration {
      * 
      * <p>
      * The specified service factory can be annotated with any of the 4 standard lifecycle annotations
-     * {@link AfterStart}, {@link OnShutdown}, {@link OnStart} and {@link OnTermination}. However, annotations on
+     * {@link RunAfter}. However, annotations on
      * objects returned by {@link ServiceProvider#lookup(org.codehaus.cake.service.ServiceProvider.ServiceFactoryContext)}
      * are ignored.
      * 

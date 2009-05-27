@@ -44,7 +44,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
     public void serviceGet() {
         conf.addService(Integer.class, new Integer(1000));
         newContainer();
-        assertFalse(c.isStarted());
+        assertFalse(c.getState().isStarted());
         assertNotNull(getService(Integer.class));
         checkLazystart();
     }
@@ -65,7 +65,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
     public void serviceNoHas() {
         conf.addService(Integer.class, new Integer(1000));
         newContainer();
-        assertFalse(c.isStarted());
+        assertFalse(c.getState().isStarted());
         assertFalse(c.hasService(Double.class));
         checkLazystart();
     }
@@ -74,7 +74,7 @@ public class Services extends AbstractTCKTest<Container, ContainerConfiguration>
     public void serviceHas() {
         conf.addService(Integer.class, new Integer(1000));
         newContainer();
-        assertFalse(c.isStarted());
+        assertFalse(c.getState().isStarted());
         assertTrue(c.hasService(Integer.class));
         checkLazystart();
     }

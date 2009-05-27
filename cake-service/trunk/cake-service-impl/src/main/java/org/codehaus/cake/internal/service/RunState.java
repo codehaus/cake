@@ -18,6 +18,7 @@ package org.codehaus.cake.internal.service;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.service.ContainerShutdownException;
+import org.codehaus.cake.service.Container.State;
 
 public abstract class RunState {
     protected static final int READY = 0;
@@ -34,6 +35,23 @@ public abstract class RunState {
         this.containerType = composer.getContainerTypeName();
         this.containerName = composer.getContainerName();
         this.lifecycleManager = lifecycleManager;
+    }
+
+    final org.codehaus.cake.service.Container.State getState() {
+        int state = get();
+        if (state == READY) {
+            return State.INITIALIZED;
+        } else if (state == STARTING) {
+            return State.STARTING;
+        } else if (state == RUNNING) {
+            return State.RUNNING;
+        } else if (state == SHUTDOWN) {
+            return State.SHUTDOWN;
+        } else if (state == STOPPING) {
+            return State.SHUTDOWN;
+        } else /*if (state == TERMINATED)*/ {
+            return State.TERMINATED;
+        }
     }
 
     final boolean isRunning() {
@@ -93,8 +111,7 @@ public abstract class RunState {
     abstract int get();
 
     abstract boolean transitionTo(int state);
-
-    abstract boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
+    abstract boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException;
 
     abstract void shutdown(boolean shutdownNow);
 

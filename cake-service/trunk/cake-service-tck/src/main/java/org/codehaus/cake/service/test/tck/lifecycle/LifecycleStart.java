@@ -19,7 +19,8 @@ import java.util.concurrent.CountDownLatch;
 
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.OnStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
@@ -34,68 +35,62 @@ public class LifecycleStart extends AbstractTCKTest<Container, ContainerConfigur
 
     @Test
     public void noArg() {
-        assertFalse(c.isStarted());
-        assertFalse(c.isShutdown());
-        assertFalse(c.isTerminated());
+        assertEquals(State.INITIALIZED, c.getState());
         latch = new CountDownLatch(1);
         conf.addService(new Started1());
         newContainer();
-        assertFalse(c.isStarted());
-        assertFalse(c.isShutdown());
-        assertFalse(c.isTerminated());
+        assertEquals(State.INITIALIZED, c.getState());
         prestart();
-        assertTrue(c.isStarted());
-        assertFalse(c.isShutdown());
-        assertFalse(c.isTerminated());
+        assertEquals(State.RUNNING, c.getState());
     }
 
-//    @Test
-//    public void twoMethod() {
-//        latch = new CountDownLatch(2);
-//        conf.addToLifecycle(new Started2());
-//        newContainer();
-//        prestart();
-//    }
-//
-//    @Test
-//    public void twoMethodWithArgs() {
-//        latch = new CountDownLatch(2);
-//        conf.addToLifecycle(new Started3());
-//        newContainer();
-//        prestart();
-//    }
+    // @Test
+    // public void twoMethod() {
+    // latch = new CountDownLatch(2);
+    // conf.addToLifecycle(new Started2());
+    // newContainer();
+    // prestart();
+    // }
+    //
+    // @Test
+    // public void twoMethodWithArgs() {
+    // latch = new CountDownLatch(2);
+    // conf.addToLifecycle(new Started3());
+    // newContainer();
+    // prestart();
+    // }
 
     public class Started1 {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start() {
             latch.countDown();
         }
     }
 
-//    public class Started2 {
-//        @Startable
-//        public void start1() {
-//            latch.countDown();
-//        }
-//
-//        @Startable
-//        public void start2(ServiceRegistrant registrant) {
-//            assertNotNull(registrant);
-//            latch.countDown();
-//        }
-//    }
-//
-//    public class Started3 {
-//        @Startable
-//        public void start(ContainerConfiguration configuration) {
-//            assertSame(conf, configuration);
-//            latch.countDown();
-//        }
-//
-//        @Startable
-//        public void start(ServiceRegistrant registrant) {
-//            assertNotNull(registrant);
-//            latch.countDown();
-//        }
-//    }
+    // public class Started2 {
+    // @Startable
+    // public void start1() {
+    // latch.countDown();
+    // }
+    //
+    // @Startable
+    // public void start2(ServiceRegistrant registrant) {
+    // assertNotNull(registrant);
+    // latch.countDown();
+    // }
+    // }
+    //
+    // public class Started3 {
+    // @Startable
+    // public void start(ContainerConfiguration configuration) {
+    // assertSame(conf, configuration);
+    // latch.countDown();
+    // }
+    //
+    // @Startable
+    // public void start(ServiceRegistrant registrant) {
+    // assertNotNull(registrant);
+    // latch.countDown();
+    // }
+    // }
 }

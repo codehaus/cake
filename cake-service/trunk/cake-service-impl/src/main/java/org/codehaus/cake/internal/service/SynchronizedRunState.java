@@ -15,26 +15,33 @@
  */
 package org.codehaus.cake.internal.service;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.Container.State;
 
 public final class SynchronizedRunState extends RunState {
     private final Object mutex;
     private final AtomicInteger state = new AtomicInteger();
 
     /** CountDownLatch used for signaling termination. */
-    private final CountDownLatch terminationLatch = new CountDownLatch(1);
+    private final Map<State, CountDownLatch> latches = new ConcurrentHashMap<State, CountDownLatch>();
 
     public SynchronizedRunState(Container container, Composer composer, LifecycleManager lifecycleManager) {
         super(composer, lifecycleManager);
         mutex = container;
+        for (State s : State.values()) {
+            latches.put(s, new CountDownLatch(1));
+        }
     }
 
-    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return terminationLatch.await(timeout, unit);
+    @Override
+    boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException {
+        return latches.get(state).await(timeout, unit);
     }
 
     @Override
@@ -65,7 +72,7 @@ public final class SynchronizedRunState extends RunState {
                     state = TERMINATED;
                 }
                 if (state == TERMINATED) {
-                    terminationLatch.countDown();
+                    latches.get(State.TERMINATED).countDown();
                 }
                 return true;
             }

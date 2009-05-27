@@ -1,19 +1,4 @@
-/*
- * Copyright 2008, 2009 Kasper Nielsen.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
- * you may not use this file except in compliance with the License. 
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License.
- */
-package org.codehaus.cake.service.test.tck.lifecycle;
+package org.codehaus.cake.service.test.tck.lifecycle.runafter;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -25,7 +10,8 @@ import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
 
-public class LifecycleDisposable extends AbstractTCKTest<Container, ContainerConfiguration> {
+public class RunAfterTerminated extends AbstractTCKTest<Container, ContainerConfiguration> {
+
     private CountDownLatch latch = new CountDownLatch(0);
 
     @After
@@ -33,18 +19,21 @@ public class LifecycleDisposable extends AbstractTCKTest<Container, ContainerCon
         assertEquals(0, latch.getCount());
     }
 
+    public void assertState(State state) {
+        assertSame("expected state " + state + " but was " + c.getState(), c.getState(),state);
+    }
     @Test
     public void noArg() {
         latch = new CountDownLatch(1);
         conf.addService(new Disposable1());
         newContainer();
-        assertEquals(State.INITIALIZED, c.getState());
+        assertState(State.INITIALIZED);
         prestart();
         assertEquals(State.RUNNING, c.getState());
         c.shutdown();
         assertTrue(c.getState().isShutdown());
         awaitTermination();
-        assertEquals(State.TERMINATED, c.getState());
+        assertState(State.TERMINATED);
     }
 
     public class Disposable1 {
@@ -53,5 +42,4 @@ public class LifecycleDisposable extends AbstractTCKTest<Container, ContainerCon
             latch.countDown();
         }
     }
-
 }

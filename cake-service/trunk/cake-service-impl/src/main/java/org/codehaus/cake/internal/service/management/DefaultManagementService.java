@@ -33,7 +33,8 @@ import org.codehaus.cake.management.ManagedObject;
 import org.codehaus.cake.management.ManagedVisitor;
 import org.codehaus.cake.management.ManagementConfiguration;
 import org.codehaus.cake.management.Managements;
-import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 
 /**
  * The default implementation of the {@link MapManagementService} interface. All methods exposed through the
@@ -129,7 +130,7 @@ public class DefaultManagementService extends DefaultManagedGroup implements Com
     }
 
     /** {@inheritDoc} */
-    @OnShutdown
+    @RunAfter(State.SHUTDOWN)
     public synchronized void stop() throws JMException {
         try {
             // TODO we should log any exceptions returned by traverse

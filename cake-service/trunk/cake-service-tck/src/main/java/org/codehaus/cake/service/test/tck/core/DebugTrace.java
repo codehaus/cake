@@ -16,12 +16,10 @@
 package org.codehaus.cake.service.test.tck.core;
 
 import org.codehaus.cake.internal.util.LogHelper;
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.OnShutdown;
-import org.codehaus.cake.service.OnStart;
-import org.codehaus.cake.service.OnTermination;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
@@ -103,28 +101,28 @@ public class DebugTrace extends AbstractTCKTest<Container, ContainerConfiguratio
             this.t4 = t4;
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void afterStart() throws Throwable {
             if (t2 != null) {
                 throw t2;
             }
         }
 
-        @OnTermination
+        @RunAfter(State.TERMINATED)
         public void dispose() throws Throwable {
             if (t4 != null) {
                 throw t4;
             }
         }
 
-        @OnShutdown
+        @RunAfter(State.SHUTDOWN)
         public void shutdown() throws Throwable {
             if (t3 != null) {
                 throw t3;
             }
         }
 
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start() throws Throwable {
             if (t1 != null) {
                 throw t1;

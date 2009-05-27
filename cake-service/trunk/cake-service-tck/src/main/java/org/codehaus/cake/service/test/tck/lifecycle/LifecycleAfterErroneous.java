@@ -17,9 +17,10 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import java.util.concurrent.CountDownLatch;
 
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
@@ -203,53 +204,53 @@ public class LifecycleAfterErroneous extends AbstractTCKTest<Container, Containe
     // }
 
     public class StartRuntimeException {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(ContainerConfiguration conf) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
     public class StartException {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(ContainerConfiguration conf) throws Exception {
             throw Exception1.INSTANCE;
         }
     }
 
     public class StartError {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(ContainerConfiguration conf) {
             throw Error1.INSTANCE;
         }
     }
 
     public class StartContainer {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Container conf) {
         }
     }
 
     public class StartThrowable {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(ContainerConfiguration conf) throws Throwable {
             throw Throwable1.INSTANCE;
         }
     }
 
     public class StartObject {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Object object) {
         }
     }
 
     public class StartUnknown {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Integer unknown) {
         }
     }
 
     public class StartPackageProtected {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         void start(Integer unknown) {
         }
     }

@@ -39,7 +39,7 @@ public abstract class AbstractContainer implements Container {
 
     private final AbstractContainer parent;
 
-    //private final List<AbstractContainer> children = null;
+    // private final List<AbstractContainer> children = null;
 
     protected AbstractContainer(Composer composer) {
         name = composer.getContainerName();
@@ -68,7 +68,12 @@ public abstract class AbstractContainer implements Container {
 
     /** {@inheritDoc} */
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return runState.awaitTermination(timeout, unit);
+        return runState.awaitState(State.TERMINATED,timeout, unit);
+    }
+
+    /** {@inheritDoc} */
+    public boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException {
+        return runState.awaitState(state, timeout, unit);
     }
 
     /** {@inheritDoc} */
@@ -125,7 +130,11 @@ public abstract class AbstractContainer implements Container {
         }
         return false;
     }
-    
+
+    public State getState() {
+        return runState.getState();
+    }
+
     /** {@inheritDoc} */
     public boolean isShutdown() {
         return runState.isAtLeastShutdown();

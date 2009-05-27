@@ -17,9 +17,10 @@ package org.codehaus.cake.service.test.tck.lifecycle;
 
 import java.util.concurrent.CountDownLatch;
 
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.junit.After;
 import org.junit.Test;
@@ -73,19 +74,19 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
 //    }
 
     public class Started1 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start() {
             latch.countDown();
         }
     }
 
     public class Started2 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start1() {
             latch.countDown();
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start2(Container container) {
             assertNotNull(container);
             latch.countDown();
@@ -93,13 +94,13 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     }
 
     public class Started3 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(ContainerConfiguration configuration) {
             assertSame(conf, configuration);
             latch.countDown();
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Container container) {
             assertSame(c, container);
             latch.countDown();
@@ -127,7 +128,7 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
 
     public class CheckRegister {
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Container i) {
             assertEquals(1000, i.getService(Integer.class).intValue());
             latch.countDown();
@@ -135,13 +136,13 @@ public class LifecycleAfterStart extends AbstractTCKTest<Container, ContainerCon
     }
 
     public class WithRegisteredService {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(ContainerConfiguration configuration) {
             assertSame(conf, configuration);
             latch.countDown();
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Container container) {
             assertSame(c, container);
             latch.countDown();

@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.codehaus.cake.internal.UseInternals;
@@ -27,14 +28,12 @@ import org.codehaus.cake.internal.picocontainer.defaults.AmbiguousComponentResol
 import org.codehaus.cake.internal.picocontainer.defaults.DefaultPicoContainer;
 import org.codehaus.cake.internal.service.ServiceList.Factory;
 import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.ExportAsService;
-import org.codehaus.cake.service.OnShutdown;
-import org.codehaus.cake.service.OnStart;
-import org.codehaus.cake.service.OnTermination;
+import org.codehaus.cake.service.RunAfter;
 import org.codehaus.cake.service.ServiceProvider;
+import org.codehaus.cake.service.Container.State;
 
 class LifecycleObject {
 
@@ -65,7 +64,15 @@ class LifecycleObject {
     }
 
     boolean isStoppableOrDisposable() {
-        return hasAnnotation(OnShutdown.class) || hasAnnotation(OnTermination.class);
+        for (Method m : o.getClass().getMethods()) {
+            RunAfter aa = m.getAnnotation(RunAfter.class);
+            if (aa != null
+                    && (Arrays.asList(aa.value()).contains(State.SHUTDOWN) || Arrays.asList(aa.value()).contains(
+                            State.TERMINATED))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void matchAndInvoke(Method m, Iterable<?> parameters, boolean start) throws IllegalArgumentException,
@@ -99,14 +106,13 @@ class LifecycleObject {
                 if (start) {
                     if (Container.class.isAssignableFrom(type)) {
                         e = new IllegalStateException("An instance of " + type.getSimpleName()
-                                + " is not available while running methods annotated with @"
-                                + OnStart.class.getSimpleName() + ". The @" + AfterStart.class.getSimpleName()
-                                + " annotation can be used instead if a " + type.getSimpleName() + " is needed."
-                                + " [method = " + m + "]");
+                                + " is not available while running methods annotated with @RunAfter(State.STARTING)"
+                                + ". The @RunAfter(State.RUNNING)" + " annotation can be used instead if a "
+                                + type.getSimpleName() + " is needed." + " [method = " + m + "]");
                     } else {
                         e = new IllegalStateException("An object of type " + type.getName()
-                                + " is not available for methods with @" + OnStart.class.getSimpleName()
-                                + " [method = " + m + "]");
+                                + " is not available for methods with @RunAfter(State.STARTING)" + " [method = " + m
+                                + "]");
                     }
                 } else {
                     e = new IllegalStateException("Instances of " + type.getName() + " cannot be injected [method = "
@@ -121,7 +127,8 @@ class LifecycleObject {
     }
 
     @SuppressWarnings("unchecked")
-    void runStart(Set<?> all, ContainerConfiguration configuration, ServiceManager registrant, InternalExceptionService<?> ies) {
+    void runStart(Set<?> all, ContainerConfiguration configuration, ServiceManager registrant,
+            InternalExceptionService<?> ies) {
         ArrayList<Object> al = new ArrayList<Object>();
         al.add(configuration);
         al.add(registrant);
@@ -137,7 +144,7 @@ class LifecycleObject {
         }
         ExportAsService exportedKey = o.getClass().getAnnotation(ExportAsService.class);
         if (exportedKey != null) {
-            for (Class c: exportedKey.value()) {
+            for (Class c : exportedKey.value()) {
                 if (o instanceof ServiceProvider<?>) {
                     registrant.registerServiceFactory(c, (ServiceProvider) o);
                 } else {
@@ -147,8 +154,8 @@ class LifecycleObject {
         }
         for (Method m : o.getClass().getMethods()) {
             boolean isInternal = m.getAnnotation(UseInternals.class) != null;
-            Annotation a = m.getAnnotation(OnStart.class);
-            if (a != null) {
+            RunAfter ra = m.getAnnotation(RunAfter.class);
+            if (ra != null && Arrays.asList(ra.value()).contains(State.STARTING)) {
                 if (ies.isDebugEnabled()) {
                     ies.debug("@Startable (Invoking) -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
                 }
@@ -187,8 +194,8 @@ class LifecycleObject {
             objectsAvailable.add(o); // add each sub configuration
         }
         for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(AfterStart.class);
-            if (a != null) {
+            RunAfter ra = m.getAnnotation(RunAfter.class);
+            if (ra != null && Arrays.asList(ra.value()).contains(State.RUNNING)) {
                 if (ies.isDebugEnabled()) {
                     ies.debug("@AfterStart -> " + m.getDeclaringClass().getName() + "." + m.getName() + "()");
                 }
@@ -218,20 +225,17 @@ class LifecycleObject {
 
     void runStop(InternalExceptionService<?> ies) {
         for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(OnShutdown.class);
-            if (a != null) {
+            RunAfter ra = m.getAnnotation(RunAfter.class);
+            if (ra != null && Arrays.asList(ra.value()).contains(State.SHUTDOWN)) {
                 if (m.getParameterTypes().length > 0) {
-                    ies.error("@" + OnShutdown.class.getSimpleName()
+                    ies.error("@RunAfter(Shutdown)"
                             + " annotation does not accept arguments, method will not be run [method=" + m + "]");
                 } else {
                     try {
                         m.invoke(o);
                     } catch (InvocationTargetException e) {
                         ies.error("Shutdown of service failed [method=" + m + "]", e.getCause());// ies
-                        // .
-                        // error
-                        // rethrows
-                        // errors
+                        // error rethrows errors
                     } catch (IllegalAccessException e) {
                         // Should never happen because we only iterating on
                         // public methods
@@ -244,17 +248,17 @@ class LifecycleObject {
 
     void runDispose(InternalExceptionService<?> ies) {
         for (Method m : o.getClass().getMethods()) {
-            Annotation a = m.getAnnotation(OnTermination.class);
-            if (a != null) {
+            RunAfter ra = m.getAnnotation(RunAfter.class);
+            if (ra != null && Arrays.asList(ra.value()).contains(State.TERMINATED)) {
                 if (m.getParameterTypes().length > 0) {
-                    ies.error("@" + OnTermination.class.getSimpleName()
+                    ies.error("@RunAfter(Termination)"
                             + " annotation does not accept arguments, method will not be run [method=" + m + "]");
                 } else {
                     try {
                         m.invoke(o);
                     } catch (InvocationTargetException e) {
                         // ies.error rethrows errors
-                        ies.error("Disposal of service failed [method=" + m + "]", e.getCause()); 
+                        ies.error("Disposal of service failed [method=" + m + "]", e.getCause());
                     } catch (IllegalAccessException e) {
                         // Should never happen because we only iterating on public methods
                         ies.error("Disposal of service failed [method=" + m + "]", e.getCause());

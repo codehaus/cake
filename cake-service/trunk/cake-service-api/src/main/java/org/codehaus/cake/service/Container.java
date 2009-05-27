@@ -125,41 +125,38 @@ public interface Container {
     String getName();
 
     /**
-     * Blocks until all services within the container have completed execution after a shutdown request, or the timeout
-     * occurs, or the current thread is interrupted, whichever happens first.
+     * Blocks until the container has reached the requested state, or the
+     * timeout occurs, or the current thread is interrupted, whichever happens
+     * first.
+     * <p>
+     * If the container has already reached or passed the specified state this
+     * method returns immediately. For example, if awaiting on the
+     * {@link State#RUNNING} state and the container has already been shutdown.
+     * This method will return immediately with <tt>true</tt>.
      * 
+     * @param state
+     *            the state to wait on
      * @param timeout
      *            the maximum time to wait
      * @param unit
      *            the time unit of the timeout argument
-     * @return <tt>true</tt> if this container terminated and <tt>false</tt> if the timeout elapsed before
-     *         termination
+     * @return <tt>true</tt> if this container is in or passed the specified
+     *         state and <tt>false</tt> if the timeout elapsed before reaching
+     *         the state
      * @throws InterruptedException
      *             if interrupted while waiting
      */
-    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
+    boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException;
 
-    /**
-     * Returns <tt>true</tt> if this container has been shut down.
-     * 
-     * @return <tt>true</tt> if this container has been shut down
-     */
-    boolean isShutdown();
-
-    /**
-     * Returns <tt>true</tt> if this container has been started.
-     * 
-     * @return <tt>true</tt> if this container has been started
-     */
-    boolean isStarted();
-
-    /**
-     * Returns <tt>true</tt> if all services have been terminated following shut down. Note that <tt>isTerminated</tt>
-     * is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
-     * 
-     * @return <tt>true</tt> if all tasks have completed following shut down
-     */
-    boolean isTerminated();
+//
+//    /**
+//     * Returns <tt>true</tt> if all services have been terminated following shut down. Note that <tt>isTerminated</tt>
+//     * is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
+//     * 
+//     * @return <tt>true</tt> if all tasks have completed following shut down
+//     */
+//    @Deprecated
+//    boolean isTerminated();
 
     /**
      * Initiates an orderly shutdown of the container. In which currently running tasks will be executed, but no new
@@ -177,11 +174,89 @@ public interface Container {
      */
     void shutdownNow();
 
+    
+    /** @return the current state of the container */
+    State getState();
+
     /** Used on a Container implementation to document what type of services the container supports. */
     @Target( { ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)
     @interface SupportedServices {
         /** Returns the type of services the container implementation supports. */
         Class<?>[] value();
+    }
+    
+    /** The state of a container. */
+    public enum State {
+        /**
+         * The initial state of the container. The container will remain in this
+         * from when the constructor of the container returns to the container
+         * being started by an external action. After which it will transition
+         * to the {@link #STARTING} state.
+         */
+        INITIALIZED,
+
+        /**
+         * The container has been started by an external action. However all
+         * services has not yet completed startup. When all internal services
+         * has been properly started the container will transition to the
+         * {@link #RUNNING} state.
+         */
+        STARTING,
+
+        /**
+         * The container is running. The container will retain this state until
+         * {@link Container#shutdown()} or {@link Container#shutdownNow()} is
+         * invoked. After which it will transition to the {@link #SHUTDOWN}
+         * state.
+         */
+        RUNNING,
+
+        /**
+         * The user has invoked {@link Container#shutdown()} or
+         * {@link Container#shutdownNow()} and the container is currently in the
+         * process of shutting down all internal services. After all services
+         * has been shutdown the container will transition to the
+         * {@link #STARTING} state.
+         */
+        SHUTDOWN,
+        /**
+         * All services has been terminated within the container. The container
+         * will never transition to another state after it has reached <tt>TERMINATED</tt>.
+         */
+        TERMINATED;
+
+        /**
+         * Returns <tt>true</tt> if this container is currently running.
+         * 
+         * @return <tt>true</tt> if this container is currently running
+         */
+        public boolean isRunning() {
+            return this == RUNNING;
+        }
+        public boolean isStarted() {
+            return this == TERMINATED || this == SHUTDOWN || this == RUNNING;
+        }
+
+        /**
+         * Returns <tt>true</tt> if this container has been shut down.
+         * 
+         * @return <tt>true</tt> if this container has been shut down
+         */
+        public boolean isShutdown() {
+            return this == TERMINATED || this == SHUTDOWN;
+        }
+
+        /**
+         * Returns <tt>true</tt> if all services have been terminated following
+         * shut down. Note that <tt>isTerminated</tt> is never <tt>true</tt>
+         * unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called
+         * first.
+         * 
+         * @return <tt>true</tt> if all tasks have completed following shut down
+         */
+        public  boolean isTerminated() {
+            return this == TERMINATED;
+        }
     }
 }

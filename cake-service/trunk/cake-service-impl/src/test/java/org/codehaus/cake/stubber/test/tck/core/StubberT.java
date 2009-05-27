@@ -15,7 +15,8 @@
  */
 package org.codehaus.cake.stubber.test.tck.core;
 
-import org.codehaus.cake.service.OnStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.stubber.test.tck.AbstraktStubberTCKTst;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class StubberT extends AbstraktStubberTCKTst {
     }
 
     public class Register {
-        @OnStart
+        @RunAfter(State.STARTING)
         public void start() {
             c.getIt(5);
         }

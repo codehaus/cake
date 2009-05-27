@@ -4,8 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.service.ExportAsService;
-import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.service.RunAfter;
 import org.codehaus.cake.service.ServiceProvider;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.concurrent.ForkJoinPool;
 
 @UseInternals
@@ -41,7 +42,7 @@ public class DefaultForkJoinPool implements ServiceProvider<ForkJoinPool> {
         return e;
     }
 
-    @OnShutdown
+    @RunAfter(State.SHUTDOWN)
     public void shutdown() throws InterruptedException {
         // TODO fix async shutdown
         synchronized (poolLock) {
