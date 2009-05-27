@@ -30,6 +30,7 @@ import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.memorystore.MemoryStoreService;
 import org.codehaus.cake.cache.test.service.exceptionhandling.CacheTestExceptionHandler;
 import org.codehaus.cake.cache.test.service.loading.TestLoader;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
 import org.codehaus.cake.test.util.CollectionTestUtil;
 import org.codehaus.cake.test.util.TestUtil;
@@ -122,6 +123,9 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
         return conf;
     }
 
+    protected void assertState(State state) {
+        assertEquals(state, c.getState());
+    }
     protected Collection<Map.Entry<Integer, String>> put(int to) {
         return put(1, to);
     }
@@ -217,7 +221,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     }
 
     public AbstractCacheTCKTest assertNotStarted() {
-        assertFalse(c.isStarted());
+        assertState(State.INITIALIZED);
         return this;
     }
 
@@ -254,7 +258,7 @@ public class AbstractCacheTCKTest extends AbstractTCKTest<Cache<Integer, String>
     }
 
     public AbstractCacheTCKTest assertStarted() {
-        assertTrue(c.isStarted());
+        assertTrue(c.getState().isStarted());
         return this;
     }
 

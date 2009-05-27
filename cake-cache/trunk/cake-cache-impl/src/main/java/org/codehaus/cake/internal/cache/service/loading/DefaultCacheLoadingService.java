@@ -107,13 +107,13 @@ public class DefaultCacheLoadingService<K, V> implements ServiceProvider<CacheLo
         }
 
         void doLoad(K key, AttributeMap attributes) {
-            if (!needsRefreshCache.isShutdown() && (isForced || !needsNotRefreshCache.containsKey(key))) {
+            if (!needsRefreshCache.getState().isShutdown() && (isForced || !needsNotRefreshCache.containsKey(key))) {
                 loader.loadAsync(key, attributes);
             }
         }
 
         void doLoadAll(AttributeMap attributes) {
-            if (!needsRefreshCache.isShutdown()) {
+            if (!needsRefreshCache.getState().isShutdown()) {
                 HashMap<K, AttributeMap> map = new HashMap<K, AttributeMap>();
                 Object[] keys = needsRefreshCache.asMap().keySet().toArray();
                 for (Object key : keys) {
@@ -139,7 +139,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceProvider<CacheLo
         }
 
         void doLoadAll(Map<? extends K, ? extends AttributeMap> mapWithAttributes) {
-            if (!needsNotRefreshCache.isShutdown()) {
+            if (!needsNotRefreshCache.getState().isShutdown()) {
                 Map<? extends K, ? extends AttributeMap> m = mapWithAttributes;
                 if (!isForced) {
                     // TODO should have a check whether or not the size of the cache is 0

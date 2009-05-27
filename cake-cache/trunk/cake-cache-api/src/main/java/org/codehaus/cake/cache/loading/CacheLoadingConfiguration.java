@@ -18,7 +18,6 @@ package org.codehaus.cake.cache.loading;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheWriter;
-import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
@@ -75,7 +74,7 @@ public class CacheLoadingConfiguration<K, V> {
     public CacheLoadingConfiguration<K, V> setLoader(Object loader) {
         this.loader = loader;
         // verify loader
-        if (loader instanceof Class) {
+        if (loader instanceof Class<?>) {
             //check public constructor
         }
         //verify one and only one method

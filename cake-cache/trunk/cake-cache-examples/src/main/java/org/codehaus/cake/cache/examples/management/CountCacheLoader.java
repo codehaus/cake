@@ -27,7 +27,7 @@ public class CountCacheLoader {
     public String load(String key) {
         numberOfLoads.incrementAndGet();
         return key.toLowerCase();
-    }
+    } 
 
     public static void main(String[] args) throws InterruptedException {
         CacheConfiguration<String, String> conf = CacheConfiguration.newConfiguration("CountCacheUsage");

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.loading.CacheLoadingService;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.Attributes;
 import org.codehaus.cake.util.attribute.BooleanAttribute;
@@ -110,16 +111,13 @@ public class CachesTest {
     public void emptyCache_() throws Exception {
         Cache<Integer, String> c = Caches.emptyCache();
         assertSame(c, Caches.emptyCache());
-        assertFalse(emptyCache().awaitTermination(1, TimeUnit.NANOSECONDS));
+        assertFalse(emptyCache().awaitState(State.TERMINATED, 1, TimeUnit.NANOSECONDS));
         assertFalse(Caches.emptyCache().containsKey(1));
         assertFalse(Caches.emptyCache().containsValue(2));
         assertEquals(0, Caches.emptyCache().asMap().entrySet().size());
    //     assertEquals(new HashMap(), Caches.emptyCache());
         assertEquals("emptymap", emptyCache().getName());
 //        assertEquals(new HashMap().hashCode(), Caches.emptyCache().hashCode());
-        assertFalse(emptyCache().isShutdown());
-        assertFalse(emptyCache().isStarted());
-        assertFalse(emptyCache().isTerminated());
         assertEquals(0, Caches.emptyCache().size());
         assertTrue(Caches.emptyCache().isEmpty());
         assertFalse(Caches.emptyCache().iterator().hasNext());

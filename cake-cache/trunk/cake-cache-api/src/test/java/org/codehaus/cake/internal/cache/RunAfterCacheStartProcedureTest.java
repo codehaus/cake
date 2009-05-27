@@ -3,9 +3,11 @@ package org.codehaus.cake.internal.cache;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.ops.Ops.Procedure;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -37,7 +39,9 @@ public class RunAfterCacheStartProcedureTest {
         });
         RunAfterCacheStartProcedure run = new RunAfterCacheStartProcedure(p);
         for (Method m : run.getClass().getMethods()) {
-            if (m.getAnnotation(AfterStart.class) != null) {
+            RunAfter ra=m.getAnnotation(RunAfter.class);
+            
+            if (ra!=null && Arrays.asList(ra.value()).contains(State.RUNNING)) {
                 m.invoke(run, cache);
             }
         }

@@ -105,7 +105,7 @@ public class AbstractBaseCacheTCKTest extends
     }
 
     public AbstractBaseCacheTCKTest assertNotStarted() {
-        assertFalse(c.isStarted());
+        assertFalse(c.getState().isStarted());
         return this;
     }
 
@@ -146,7 +146,7 @@ public class AbstractBaseCacheTCKTest extends
     }
 
     public AbstractBaseCacheTCKTest assertStarted() {
-        assertTrue(c.isStarted());
+        assertTrue(c.getState().isStarted());
         return this;
     }
 

@@ -28,8 +28,8 @@ import org.codehaus.cake.service.ContainerShutdownException;
  * cache. Once the data are stored in the cache, future use can be made by accessing the cached copy rather than
  * refetching or recomputing the original data, so that the average access time is lowered.
  * <p>
- * Currently two implementations exist: {@link org.codehaus.cake.cache.UnsynchronizedCache} and
- * {@link org.codehaus.cake.cache.SynchronizedCache}.
+ * Currently two implementations exist: {@link org.codehaus.cake.cache.UnsynchronizedCache} which is a cache that should only be accessed by an single thread and
+ * {@link org.codehaus.cake.cache.SynchronizedCache} which can be used concurrently by multiple threads.
  * <p>
  * The three collection views, which allow a cache's contents to be viewed as a set of keys, collection of values, or
  * set of key-value mappings only shows values contained in the actual cache. Furthermore, the cache will <tt>not</tt>

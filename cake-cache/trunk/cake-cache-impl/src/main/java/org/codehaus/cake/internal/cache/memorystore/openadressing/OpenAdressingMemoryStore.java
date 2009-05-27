@@ -32,7 +32,8 @@ import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheE
 import org.codehaus.cake.internal.cache.service.memorystore.MemoryStoreAttributes;
 import org.codehaus.cake.internal.service.configuration.RuntimeConfigurableService;
 import org.codehaus.cake.internal.service.spi.CompositeService;
-import org.codehaus.cake.service.OnShutdown;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.concurrent.array.ParallelArray;
@@ -266,7 +267,7 @@ public class OpenAdressingMemoryStore<K, V> implements MemoryStore<K, V>, Compos
         trimToVolume(r, comparator, volume);
     }
 
-    @OnShutdown
+    @RunAfter(State.SHUTDOWN)
     public final void stop() {
         size = 0;
         volume = 0;

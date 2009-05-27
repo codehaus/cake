@@ -347,4 +347,14 @@ public class DummyCache<K, V> implements Cache<K, V> {
     public ConcurrentMap<K, V> asMap() {
         return null;
     }
+
+    public State getState() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

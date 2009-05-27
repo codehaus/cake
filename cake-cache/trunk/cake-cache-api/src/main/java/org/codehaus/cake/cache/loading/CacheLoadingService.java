@@ -30,7 +30,7 @@ import org.omg.CORBA.Object;
 /**
  * The cache loading service can be used for prefetching entries into the cache. When an cache entry is actually needed,
  * the data can be accessed much more quickly from the cache than if it had to make a request from external storage. The
- * easist way to obtain a {@link CacheLoadingService} is by using {@link CacheServices}.
+ * easiest way to obtain a {@link CacheLoadingService} is by using {@link CacheServices}.
  * 
  * <pre>
  * Cache&lt;?, ?&gt; c = someCache;

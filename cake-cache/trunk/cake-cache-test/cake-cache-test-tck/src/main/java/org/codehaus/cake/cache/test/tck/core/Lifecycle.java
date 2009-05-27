@@ -18,6 +18,7 @@ package org.codehaus.cake.cache.test.tck.core;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
+import org.codehaus.cake.service.Container.State;
 import org.junit.Test;
 
 /**
@@ -32,8 +33,6 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void initialStatus() {
         init();
         assertNotStarted();
-        assertFalse(c.isTerminated());
-        assertFalse(c.isShutdown());
     }
 
     private void startCache() {
@@ -46,18 +45,16 @@ public class Lifecycle extends AbstractCacheTCKTest {
         init();
         startCache();
         assertStarted();
-        assertFalse(c.isTerminated());
-        assertFalse(c.isShutdown());
+        assertEquals(State.RUNNING, c.getState());
     }
 
     @Test
     public void shutdownNoOp() {
         init();
         shutdown();
-        assertTrue(c.isShutdown());
-        assertTrue(c.isTerminated());
+        assertTrue(c.getState().isShutdown());
         shutdown();
-        assertTrue(c.isShutdown());
+        assertTrue(c.getState().isShutdown());
         // TODO c is started???
 
     }
@@ -66,10 +63,9 @@ public class Lifecycle extends AbstractCacheTCKTest {
     public void shutdownNowNoOp() {
         init();
         c.shutdownNow();
-        assertTrue(c.isShutdown());
-        assertTrue(c.isTerminated());
+        assertTrue(c.getState().isShutdown());
         c.shutdownNow();
-        assertTrue(c.isShutdown());
+        assertTrue(c.getState().isShutdown());
         // TODO c is started???
 
     }
@@ -79,10 +75,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
         init();
         startCache();
         assertStarted();
-        assertFalse(c.isShutdown());
+        assertFalse(c.getState().isShutdown());
         shutdown();
         assertStarted();
-        assertTrue(c.isShutdown());
+        assertTrue(c.getState().isShutdown());
     }
 
     @Test
@@ -90,10 +86,10 @@ public class Lifecycle extends AbstractCacheTCKTest {
         init();
         startCache();
         assertStarted();
-        assertFalse(c.isShutdown());
+        assertFalse(c.getState().isShutdown());
         c.shutdownNow();
         assertStarted();
-        assertTrue(c.isShutdown());
+        assertTrue(c.getState().isShutdown());
     }
 
     @Test
@@ -102,10 +98,9 @@ public class Lifecycle extends AbstractCacheTCKTest {
         startCache();
         assertStarted();
         shutdown();
-        assertTrue(c.awaitTermination(10, TimeUnit.SECONDS));
+        assertTrue(c.awaitState(State.TERMINATED,10, TimeUnit.SECONDS));
         assertStarted();
-        assertTrue(c.isShutdown());
-        assertTrue(c.isTerminated());
+        assertState(State.TERMINATED);
     }
 
     @Test
@@ -114,9 +109,7 @@ public class Lifecycle extends AbstractCacheTCKTest {
         startCache();
         assertStarted();
         c.shutdownNow();
-        assertTrue(c.awaitTermination(10, TimeUnit.SECONDS));
+        assertTrue(c.awaitState(State.TERMINATED,10, TimeUnit.SECONDS));
         assertStarted();
-        assertTrue(c.isShutdown());
-        assertTrue(c.isTerminated());
-    }
+        assertState(State.TERMINATED);    }
 }

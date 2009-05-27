@@ -40,6 +40,7 @@ public interface CacheWriter<K, V, R> {
     /**
      * Used for transforming the CacheEntry that is created/updated/delete to something the user needs.
      */
+    @SuppressWarnings({ "unchecked", "serial" })
     ObjectAttribute<Op<?, ?>> WRITE_TRANSFORMER = (ObjectAttribute) new ObjectAttribute<Op>(Op.class) {};
 
     /**

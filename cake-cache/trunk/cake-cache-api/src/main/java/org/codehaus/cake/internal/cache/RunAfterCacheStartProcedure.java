@@ -16,7 +16,8 @@
 package org.codehaus.cake.internal.cache;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.ops.Ops.Procedure;
 
 /**
@@ -52,7 +53,7 @@ public class RunAfterCacheStartProcedure<K, V> {
      * @param cache
      *            the cache that has been started
      */
-    @AfterStart
+    @RunAfter(State.RUNNING)
     public void runAfterStart(Cache<K, V> cache) {
         afterStartProcedure.op(cache);
     }

@@ -18,7 +18,8 @@ package org.codehaus.cake.cache.test.tck.service.loading;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
             return "foo";
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void started() {
             count++;
         }
@@ -64,7 +65,7 @@ public class LoadingLifecycle extends AbstractCacheTCKTest {
             return true;
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void started(Cache cache) {
             count++;
             assertSame(c, cache);

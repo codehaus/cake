@@ -12,7 +12,8 @@ import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.Caches;
 import org.codehaus.cake.management.ManagedAttribute;
 import org.codehaus.cake.management.ManagedObject;
-import org.codehaus.cake.service.AfterStart;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 @ManagedObject(defaultValue = "ClearCache", description = "Controls Clearing of the cache")
 public class ScheduledClearManagement {
     private long scheduleMs;
@@ -36,7 +37,7 @@ public class ScheduledClearManagement {
         sf = ses.scheduleAtFixedRate(runnable, scheduleMs, scheduleMs, TimeUnit.MILLISECONDS);
     }
 
-    @AfterStart
+    @RunAfter(State.RUNNING)
     public synchronized void started(final Cache<?, ?> cache) {
         ses = cache.with().scheduledExecutor();
         runnable = Caches.clearAsRunnable(cache);

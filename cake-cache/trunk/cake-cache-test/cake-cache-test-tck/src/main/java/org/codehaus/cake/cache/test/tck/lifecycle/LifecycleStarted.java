@@ -20,8 +20,9 @@ import java.util.concurrent.CountDownLatch;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.test.util.throwables.RuntimeException1;
 import org.codehaus.cake.util.Logger.Level;
@@ -110,32 +111,32 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     public class Started1 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start() {
             latch.countDown();
         }
     }
 
     public class Started2 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start1() {
             latch.countDown();
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start2() {
             latch.countDown();
         }
     }
 
     public class Started8 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Cache<?, ?> cache) {
             assertSame(c, cache);
             latch.countDown();
         }
 
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void start(Container cache) {
             assertSame(c, cache);
             latch.countDown();
@@ -143,7 +144,7 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     public class Started4 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void hullabulla(Cache<?, ?> cache) {
             assertSame(c, cache);
             assertSame(withMemoryStore(), cache.with().memoryStore());
@@ -153,21 +154,21 @@ public class LifecycleStarted extends AbstractCacheTCKTest {
     }
 
     public class Started5 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void hullabulla(Cache<?, ?> cache, CacheLoadingService<?, ?> ls) {
             fail("should not have been run");
         }
     }
 
     public class Started6 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void hullabulla(Cache<?, ?> cache, CacheLoadingService<?, ?> ls) {
             throw RuntimeException1.INSTANCE;
         }
     }
 
     public class Started7 {
-        @AfterStart
+        @RunAfter(State.RUNNING)
         public void hullabulla(Cache<?, ?> cache, CacheLoadingService<?, ?> ls) throws Exception {
             throw Exception1.INSTANCE;
         }

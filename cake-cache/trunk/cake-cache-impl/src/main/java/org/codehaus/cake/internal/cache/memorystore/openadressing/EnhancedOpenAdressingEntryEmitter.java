@@ -464,6 +464,8 @@ public class EnhancedOpenAdressingEntryEmitter extends ClassEmitter {
         Class<?> factoryClass = definer.define(emitter);
         initializers.put(factoryClass, attributes.toArray(new Attribute[attributes.size()]));
         return definer.instantiate(factoryClass, exceptionService, clock);
+        //TODO should we assert that class has been removed from initializers??
+        
     }
 
     static Method invokeClock(Method m) {

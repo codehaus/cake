@@ -27,10 +27,9 @@ import org.codehaus.cake.internal.cache.memorystore.MemoryStore;
 import org.codehaus.cake.internal.cache.processor.CacheRequestFactory;
 import org.codehaus.cake.internal.cache.processor.request.AddEntryRequest;
 import org.codehaus.cake.internal.cache.service.exceptionhandling.InternalCacheExceptionService;
-import org.codehaus.cake.service.AfterStart;
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.OnShutdown;
-import org.codehaus.cake.service.OnTermination;
+import org.codehaus.cake.service.RunAfter;
+import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.DefaultAttributeMap;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
@@ -54,7 +53,7 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         this.store = store;
     }
 
-    @AfterStart
+    @RunAfter(State.RUNNING)
     public void setExecutor(Container s) {
         // TODO fix after start
         this.loadExecutor = s.getService(ExecutorService.class);
@@ -108,12 +107,12 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         }
     }
 
-    @OnTermination
+    @RunAfter(State.TERMINATED)
     public void dispose() {
         futures.clear();
     }
 
-    @OnShutdown
+    @RunAfter(State.SHUTDOWN)
     public void stop() {
         for (Future<?> f : futures.values()) {
             f.cancel(false);

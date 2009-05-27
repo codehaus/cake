@@ -18,7 +18,6 @@ package org.codehaus.cake.cache;
 import static org.codehaus.cake.internal.util.attribute.AttributeHelper.eq;
 
 import java.io.Serializable;
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -120,7 +119,6 @@ public final class Caches {
      * 
      * @see #EMPTY_CACHE
      */
-    @SuppressWarnings("unchecked")
     public static <K, V> Cache<K, V> emptyCache() {
         return EMPTY_CACHE;
     }
@@ -188,7 +186,11 @@ public final class Caches {
         public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
             return false;
         }
-
+        /** {@inheritDoc} */
+        public boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException {
+            return false;
+        }
+        
         public CacheSelector<K, V> filter() {
             return EMPTY_SELECTOR;
         }
@@ -356,11 +358,14 @@ public final class Caches {
         public long size() {
             return 0;
         }
+
+        public State getState() {
+            return State.RUNNING;
+        }
     }
 
 
     /** A cache selector that always returns the empty cache. */
-    @SuppressWarnings("unchecked")
     static class EmptyCacheSelector<K, V> implements CacheSelector<K, V>, Serializable {
 
         /** serialVersionUID. */
