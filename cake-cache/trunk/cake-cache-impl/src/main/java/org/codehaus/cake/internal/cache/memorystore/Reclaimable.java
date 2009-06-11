@@ -1,0 +1,1 @@
+package org.codehaus.cake.internal.cache.memorystore;/** * An object that may be subject to cleanup operations when * removed from a {@link java.lang.ref.ReferenceQueue} */public interface Reclaimable {    /**     * The action taken upon removal of this object     * from a ReferenceQueue.     */    void onReclamation();}
