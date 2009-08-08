@@ -7,10 +7,10 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import org.codehaus.cake.internal.codegen.ClassDefiner;
+import org.codehaus.cake.util.Maps;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.BooleanAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
-import org.codehaus.cake.util.collection.Maps;
 import org.junit.Test;
 
 public class AttributeDecoratorTest {

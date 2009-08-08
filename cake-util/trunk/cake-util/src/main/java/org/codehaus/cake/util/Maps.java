@@ -1,4 +1,4 @@
-package org.codehaus.cake.util.collection;
+package org.codehaus.cake.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
+import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.codehaus.cake.util.ops.Ops.Reducer;

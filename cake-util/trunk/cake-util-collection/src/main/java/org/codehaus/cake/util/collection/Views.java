@@ -35,7 +35,7 @@ public class Views {
     // <T> List<T> top(View<T> view, int count);
 
     public static <T, V> View<T> mapToLong(View<V> v, String method) {
-        
+        return null;
     }
     public static <T, V> View<T> map(View<V> v, String method) {
         return null;

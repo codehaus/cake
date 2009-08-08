@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.codehaus.cake.util.Maps;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.BooleanAttribute;
@@ -16,7 +17,6 @@ import org.codehaus.cake.util.attribute.FloatAttribute;
 import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
 import org.codehaus.cake.util.attribute.ShortAttribute;
-import org.codehaus.cake.util.collection.Maps;
 
 public class AttributeMapChecker {
 

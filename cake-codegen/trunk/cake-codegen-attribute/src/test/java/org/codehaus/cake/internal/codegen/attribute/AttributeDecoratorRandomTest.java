@@ -8,9 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.codehaus.cake.internal.codegen.ClassDefiner;
+import org.codehaus.cake.util.Lists;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.AttributeMap;
-import org.codehaus.cake.util.collection.Lists;
 import org.junit.Test;
 
 public class AttributeDecoratorRandomTest extends AtrStubs {

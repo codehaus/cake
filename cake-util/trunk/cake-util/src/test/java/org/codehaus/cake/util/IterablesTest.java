@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.util.collection;
+package org.codehaus.cake.util;
 
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1;
 import static org.codehaus.cake.test.util.CollectionTestUtil.M1_NULL;
@@ -36,6 +36,8 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.codehaus.cake.test.util.TestUtil;
+import org.codehaus.cake.util.Iterables;
+import org.codehaus.cake.util.Maps;
 import org.codehaus.cake.util.ops.ObjectOps;
 import org.codehaus.cake.util.ops.Predicates;
 import org.codehaus.cake.util.ops.Ops.Predicate;

@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
@@ -32,7 +30,7 @@ import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
-import org.codehaus.cake.test.util.AssertableState;
+import org.codehaus.cake.test.util.verifier.AssertableState;
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.junit.After;
@@ -80,9 +78,6 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
             for (AssertableState as : stateAsserts) {
                 as.assertEndState();
             }
-        }
-        for (Runnable r : asserts) {
-            r.run();
         }
         // exceptionHandler.assertCleared();
         if (failText != null) {

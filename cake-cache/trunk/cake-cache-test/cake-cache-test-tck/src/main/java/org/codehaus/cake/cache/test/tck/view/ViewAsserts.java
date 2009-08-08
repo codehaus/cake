@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.codehaus.cake.util.collection.Iterables;
+import org.codehaus.cake.util.Iterables;
 import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.ops.StringOps;
 

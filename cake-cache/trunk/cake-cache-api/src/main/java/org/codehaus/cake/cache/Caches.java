@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 import org.codehaus.cake.internal.util.CollectionUtils;
+import org.codehaus.cake.util.Maps;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.Attributes;
@@ -42,7 +43,6 @@ import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
 import org.codehaus.cake.util.attribute.ShortAttribute;
 import org.codehaus.cake.util.collection.MapView;
-import org.codehaus.cake.util.collection.Maps;
 import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.collection.Views;
 import org.codehaus.cake.util.ops.Ops.BinaryPredicate;

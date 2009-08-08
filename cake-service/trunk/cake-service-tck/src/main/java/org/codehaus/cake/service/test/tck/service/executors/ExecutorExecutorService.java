@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.codehaus.cake.service.test.tck.RequireService;
-import org.codehaus.cake.test.util.AssertableRunnable;
+import org.codehaus.cake.test.util.verifier.AssertableRunnable;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

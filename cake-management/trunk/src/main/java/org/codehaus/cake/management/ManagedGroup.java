@@ -21,7 +21,6 @@ import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-ManagedNode????
 /**
  * A ManagedGroup is passive collection of attributes pretty similar to a MBean. Easy to register as
  * MBean.

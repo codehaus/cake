@@ -12,7 +12,7 @@ import org.codehaus.cake.cache.CacheDataExtractor;
 import org.codehaus.cake.internal.cache.memorystore.openadressing.OpenAdressingEntry;
 import org.codehaus.cake.internal.cache.view.ViewCommands;
 import org.codehaus.cake.internal.cache.view.util.QueryStack;
-import org.codehaus.cake.util.collection.Maps;
+import org.codehaus.cake.util.Maps;
 import org.codehaus.cake.util.concurrent.array.ParallelArray;
 import org.codehaus.cake.util.ops.Comparators;
 import org.codehaus.cake.util.ops.ObjectOps;
