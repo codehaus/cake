@@ -15,8 +15,10 @@
  */
 package org.codehaus.cake.service.exceptionhandling;
 
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.spi.ExceptionContext;
 import org.codehaus.cake.service.spi.ExceptionHandler;
+import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.util.Logger;
@@ -32,30 +34,32 @@ import org.junit.runner.RunWith;
 public class ExceptionHandlerTest {
     Mockery context = new JUnit4Mockery();
 
+    Container c1 = TestUtil.dummy(Container.class);
+
     @Test
     public void lifecycle() throws Exception {
-        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>() {};
+        ExceptionHandler<Container> eh = new ExceptionHandler<Container>() {};
         eh.initialize(null);
         eh.terminated();
     }
 
     @Test
     public void noError() throws Exception {
-        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>() {};
+        ExceptionHandler<Container> eh = new ExceptionHandler<Container>() {};
         final Logger logger = context.mock(Logger.class);
         context.checking(new Expectations() {
             {
                 one(logger).log(Logger.Level.Error, "foo", Exception1.INSTANCE);
             }
         });
-        eh.handle(new ExceptionContext<Integer>() {
+        eh.handle(new ExceptionContext<Container>() {
             public Throwable getCause() {
                 return Exception1.INSTANCE;
             }
 
             @Override
-            public Integer getContainer() {
-                return 4;
+            public Container getContainer() {
+                return c1;
             }
 
             @Override
@@ -72,26 +76,32 @@ public class ExceptionHandlerTest {
             public String getMessage() {
                 return "foo";
             }
+
+            @Override
+            public ExceptionHandler<Container> getParent() {
+                // TODO Auto-generated method stub
+                return null;
+            }
         });
     }
 
     @Test(expected = Error1.class)
     public void error() throws Exception {
-        ExceptionHandler<Integer> eh = new ExceptionHandler<Integer>() {};
+        ExceptionHandler<Container> eh = new ExceptionHandler<Container>() {};
         final Logger logger = context.mock(Logger.class);
         context.checking(new Expectations() {
             {
                 one(logger).log(Logger.Level.Fatal, "foo", Error1.INSTANCE);
             }
         });
-        eh.handle(new ExceptionContext<Integer>() {
+        eh.handle(new ExceptionContext<Container>() {
             public Throwable getCause() {
                 return Error1.INSTANCE;
             }
 
             @Override
-            public Integer getContainer() {
-                return 4;
+            public Container getContainer() {
+                return c1;
             }
 
             @Override
@@ -107,6 +117,11 @@ public class ExceptionHandlerTest {
             @Override
             public String getMessage() {
                 return "foo";
+            }
+
+            @Override
+            public ExceptionHandler<Container> getParent() {
+                return null;
             }
         });
     }

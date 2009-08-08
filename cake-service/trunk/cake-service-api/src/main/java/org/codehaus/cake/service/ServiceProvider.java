@@ -21,7 +21,7 @@ import org.codehaus.cake.util.attribute.MutableAttributeMap;
 /**
  * A service provider is used for constructing services of a specific type.
  * 
- * The following can be used to introduce A service factory can be implemented for
+ * The following can be used to introduce A service provider can be implemented for
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$ *
@@ -44,14 +44,14 @@ public interface ServiceProvider<T> {
 
         /**
          * Return the key that is used for acquiring the service, as parsed along to {@link Container#getService(Class)}
-         * or {@link Container#getService(Class, MutableAttributeMap)}.
+         * or {@link Container#getService(Class, AttributeMap)}.
          * 
-         * @return the key that used for looking of the service.
+         * @return the key that used for looking up the service.
          */
         Class<? extends T> getKey();
 
         /**
-         * Return the attributes parsed to {@link Container#getService(Class, MutableAttributeMap)} or an empty
+         * Return the attributes parsed to {@link Container#getService(Class, AttributeMap)} or an empty
          * attribute map if {@link Container#getService(Class)} was called.
          * 
          * @return attribute map that was used for looking up the service
@@ -64,5 +64,8 @@ public interface ServiceProvider<T> {
          * @return an instance of the service
          */
         T handleNext();
+        
+        //Container getRequester();Get this
+        //Container getRequester();
     }
 }

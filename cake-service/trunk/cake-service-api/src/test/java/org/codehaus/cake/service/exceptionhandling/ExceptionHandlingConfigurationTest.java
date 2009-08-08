@@ -19,6 +19,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.spi.ExceptionHandler;
 import org.codehaus.cake.service.spi.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Logger;
@@ -49,6 +50,6 @@ public class ExceptionHandlingConfigurationTest {
         assertSame(l, e.getExceptionLogger());
     }
 
-    static class DummyExceptionHandler extends ExceptionHandler<Integer> {
+    static class DummyExceptionHandler extends ExceptionHandler<Container> {
     }
 }

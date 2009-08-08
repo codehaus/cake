@@ -274,7 +274,7 @@ public class ContainerConfigurationTest {
 
     @Test(expected = NullPointerException.class)
     public void addToLifecycleAndExportNPE2() {
-        conf.addService(Integer.class, null);
+        conf.addService(Integer.class,(Class) null);
     }
 
     @Test(expected = NullPointerException.class)

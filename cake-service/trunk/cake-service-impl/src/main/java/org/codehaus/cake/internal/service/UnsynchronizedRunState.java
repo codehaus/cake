@@ -15,27 +15,25 @@
  */
 package org.codehaus.cake.internal.service;
 
-import java.util.concurrent.TimeUnit;
-
-import org.codehaus.cake.service.Container.State;
+import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 
 public class UnsynchronizedRunState extends RunState {
 
     private int state;
 
-    public UnsynchronizedRunState(Composer composer, LifecycleManager lifecycleManager) {
-        super(composer, lifecycleManager);
+    public UnsynchronizedRunState(Composer composer, InternalExceptionService<?> ies) {
+        super(composer, ies);
     }
 
     void tryStart() {
-        lifecycleManager.checkExceptions();
-        if (isStarting()) {
+        checkExceptions();
+        if (get() == STARTING) {
             throw new IllegalStateException(
-                    "Cannot invoke this method from a @Startable method, should be invoked from an @AfterStart method");
+                    "Cannot invoke this method from a method annotated with @RunAfter(STARTING), should be annotated with @RunAfter(RUNNING)");
         }
         if (state < STARTING) {
             state = STARTING;
-            lifecycleManager.start(this);
+            start();
         }
     }
 
@@ -45,7 +43,7 @@ public class UnsynchronizedRunState extends RunState {
             return false;
         this.state = state;
         if (state == RUNNING) {
-            // startedPhase.run(this);
+
         } else if (state == TERMINATED) {
 
         }
@@ -53,25 +51,15 @@ public class UnsynchronizedRunState extends RunState {
     }
 
     void shutdown(boolean shutdownNow) {
-        if (!isAtLeastShutdown()) {
-            lifecycleManager.runShutdown();
+        if (!getState().isShutdown()) {
+            runShutdown();
             transitionTo(SHUTDOWN);
             transitionTo(TERMINATED);
         }
     }
 
-    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return isTerminated();
-    }
-
-
     @Override
     protected int get() {
         return state;
-    }
-
-    @Override
-    boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException {
-        return state==State.TERMINATED && isTerminated();
     }
 }

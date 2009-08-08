@@ -17,9 +17,13 @@ package org.codehaus.cake.service.test.tck;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
@@ -28,6 +32,7 @@ import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.util.ThreadServiceTestHelper;
+import org.codehaus.cake.test.util.AssertableState;
 import org.codehaus.cake.util.Clock.DeterministicClock;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.junit.After;
@@ -47,6 +52,8 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
 
     private volatile String failText;
 
+    private List<AssertableState> stateAsserts;
+
     @Before
     public void setupConf() {
         failure = null;
@@ -59,8 +66,24 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         c = newContainer();
     }
 
+    protected synchronized <T extends AssertableState> T addAssert(T as) {
+        if (stateAsserts == null) {
+            stateAsserts = new ArrayList<AssertableState>(2);
+        }
+        stateAsserts.add(as);
+        return as;
+    }
+
     @After
     public final void noFailures() throws Throwable {
+        if (stateAsserts != null) {
+            for (AssertableState as : stateAsserts) {
+                as.assertEndState();
+            }
+        }
+        for (Runnable r : asserts) {
+            r.run();
+        }
         // exceptionHandler.assertCleared();
         if (failText != null) {
             throw new AssertionError(failText);
@@ -97,7 +120,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         this.failText = text;
     }
 
-    public AbstractTCKTest<C,T> awaitTermination() {
+    public AbstractTCKTest<C, T> awaitTermination() {
         try {
             long start = System.nanoTime();
             assertTrue(c.awaitState(State.TERMINATED, 10, TimeUnit.SECONDS));
@@ -119,6 +142,17 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
     protected void shutdownAndAwaitTermination() {
         c.shutdown();
         awaitTermination();
+    }
+
+    protected void assertState(State... states) {
+        State current = c.getState();
+        for (State s : states) {
+            if (current == s) {
+                return;
+            }
+        }
+        throw new AssertionFailedError("expected of the following states " + Arrays.toString(states) + " but was "
+                + current);
     }
 
     @SuppressWarnings("unchecked")
@@ -150,7 +184,7 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
         if (TckUtil.isThreadSafe()) {
             threadHelper = new ThreadServiceTestHelper();
             conf.addService(threadHelper);
-            //conf.addServiceFactory(ExecutorService.class, threadHelper);
+            // conf.addServiceFactory(ExecutorService.class, threadHelper);
         }
         return (T) conf;
     }
@@ -191,7 +225,6 @@ public class AbstractTCKTest<C extends Container, T extends ContainerConfigurati
      * Bypasses some checks in {@link ContainerConfiguration#newInstance(Class)}.
      */
     public C cheatInstantiate() throws Throwable {
-
         for (Constructor<C> con : c.getClass().getConstructors()) {
             if (con.getParameterTypes().length == 1
                     && ContainerConfiguration.class.isAssignableFrom(con.getParameterTypes()[0])) {

@@ -20,6 +20,7 @@ import org.codehaus.cake.internal.util.LazyLogger;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.spi.ExceptionContext;
+import org.codehaus.cake.service.spi.ExceptionHandler;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Loggers;
 import org.codehaus.cake.util.Logger.Level;
@@ -144,6 +145,12 @@ public abstract class AbstractExceptionService<T extends Container> implements I
         @Override
         public String getMessage() {
             return message;
+        }
+
+        @Override
+        public ExceptionHandler<Container> getParent() {
+            // TODO Auto-generated method stub
+            return null;
         }
     }
     /** {@inheritDoc} */

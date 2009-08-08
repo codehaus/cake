@@ -9,11 +9,21 @@ import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.Attributes;
 import org.codehaus.cake.util.attribute.DefaultAttributeMap;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
+import org.codehaus.cake.util.attribute.ObjectAttribute;
 import org.codehaus.cake.util.attribute.WithAttributes;
 
 public class SynchronizedConfigurationService implements ConfigurationService {
     private volatile MutableAttributeMap defaults = new DefaultAttributeMap();
     private final Collection<RuntimeConfigurableService> services;
+
+    static final ObjectAttribute<String> nyAttribute = new ObjectAttribute<String>(String.class) {
+        private static final long serialVersionUID = 1L;
+
+        /** @return Preserves singleton property */
+        private Object readResolve() {
+            return nyAttribute;
+        }
+    };
 
     public SynchronizedConfigurationService(ContainerConfiguration configurations, Composer composer) {
         for (Object o : configurations.getConfigurations()) {

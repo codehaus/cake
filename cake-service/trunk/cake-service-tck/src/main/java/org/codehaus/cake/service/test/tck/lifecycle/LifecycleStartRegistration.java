@@ -22,19 +22,14 @@ import org.junit.Test;
 
 public class LifecycleStartRegistration extends AbstractTCKTest<Container, ContainerConfiguration> {
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void registerNone() {
-        newContainer();
-        c.getService(Integer.class).intValue();
-    }
-//
-//    @Test
-//    public void register() {
+
+    @Test
+    public void register() {
 //        conf.addToLifecycle(new Register1());
 //        newContainer();
 //        prestart();
 //        assertEquals(1, c.getService(Integer.class).intValue());
-//    }
+    }
 //
 //    @Test(expected = NullPointerException.class)
 //    public void registerNullKey() {

@@ -15,21 +15,22 @@
  */
 package org.codehaus.cake.service.spi;
 
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;
 
 /**
- * A ExceptionContext is created by the container whenever an exceptional state is raised and parsed along to the
- * various methods defined in {@link ExceptionHandler} .
+ * An ExceptionContext is created by a {@link Container} whenever an exceptional state is raised. The context is
+ * consumed by the various methods defined in {@link ExceptionHandler}.
  * <p>
- * Users will most likely never need to create instances of this class.
+ * Normal users will most likely never need to create instances of this class.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: ExceptionContext.java 225 2008-11-30 20:53:08Z kasper $
  * @param <T>
  *            the type of container
  */
-public abstract class ExceptionContext<T> {
+public abstract class ExceptionContext<T extends Container> {
 
     /**
      * Returns the container in which the failure occurred.
@@ -66,4 +67,6 @@ public abstract class ExceptionContext<T> {
      * @return the level of the failure
      */
     public abstract Level getLevel();
+    
+    public abstract ExceptionHandler<Container> getParent();
 }

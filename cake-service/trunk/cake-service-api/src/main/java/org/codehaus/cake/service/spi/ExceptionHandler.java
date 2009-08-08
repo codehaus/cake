@@ -15,6 +15,7 @@
  */
 package org.codehaus.cake.service.spi;
 
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
 
 /**
@@ -31,7 +32,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
  * @param <T>
  *            the type of the container
  */
-public abstract class ExceptionHandler<T> {
+public class ExceptionHandler<T extends Container> {
 
     /**
      * Called to initialize the ExceptionHandler. This method will be called as the first operation from within the
@@ -42,7 +43,8 @@ public abstract class ExceptionHandler<T> {
      * @param configuration
      *            the configuration of the container
      */
-    public void initialize(ContainerConfiguration configuration) {}
+    public void initialize(ContainerConfiguration configuration) {
+    }
 
     /**
      * The default exception handler. Logs all exceptions and rethrows any errors.
@@ -62,5 +64,6 @@ public abstract class ExceptionHandler<T> {
      * Called as the last action by the container once it has been fully terminated. The default implementation does
      * nothing.
      */
-    public void terminated() {}
+    public void terminated() {
+    }
 }

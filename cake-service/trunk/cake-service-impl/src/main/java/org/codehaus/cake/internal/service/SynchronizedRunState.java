@@ -21,6 +21,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.codehaus.cake.internal.service.exceptionhandling.InternalExceptionService;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.Container.State;
 
@@ -31,8 +32,8 @@ public final class SynchronizedRunState extends RunState {
     /** CountDownLatch used for signaling termination. */
     private final Map<State, CountDownLatch> latches = new ConcurrentHashMap<State, CountDownLatch>();
 
-    public SynchronizedRunState(Container container, Composer composer, LifecycleManager lifecycleManager) {
-        super(composer, lifecycleManager);
+    public SynchronizedRunState(Container container, InternalExceptionService<?> ies, Composer composer) {
+        super(composer, ies);
         mutex = container;
         for (State s : State.values()) {
             latches.put(s, new CountDownLatch(1));
@@ -51,7 +52,7 @@ public final class SynchronizedRunState extends RunState {
 
     void shutdown(boolean shutdownNow) {
         synchronized (mutex) {
-            if (!isAtLeastShutdown()) {
+            if (!getState().isShutdown()) {
                 transitionTo(SHUTDOWN);
             }
         }
@@ -64,10 +65,10 @@ public final class SynchronizedRunState extends RunState {
                 return false;
             if (this.state.compareAndSet(s, state)) {
                 if (state == STARTING) {
-                    lifecycleManager.start(this);
+                    start();
                 }
                 if (state == SHUTDOWN) {
-                    lifecycleManager.runShutdown();
+                    runShutdown();
                     this.state.set(TERMINATED);
                     state = TERMINATED;
                 }
@@ -81,8 +82,8 @@ public final class SynchronizedRunState extends RunState {
 
     void tryStart() {
         synchronized (mutex) {
-            lifecycleManager.checkExceptions();
-            if (isStarting()) {
+            checkExceptions();
+            if (get() == STARTING) {
                 throw new IllegalStateException(
                         "Cannot invoke this method from a @Startable method, should be invoked from an @AfterStart method");
             }

@@ -3,6 +3,7 @@ package org.codehaus.cake.internal.service;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Deprecated
 public class ServiceList {
     private Set<Object> services = new LinkedHashSet<Object>();
 

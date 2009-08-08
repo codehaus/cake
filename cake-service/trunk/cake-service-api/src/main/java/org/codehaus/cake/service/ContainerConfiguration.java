@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -66,6 +67,8 @@ public class ContainerConfiguration {
 
     /** Additional configuration objects. */
     private final ServiceList serviceList = new ServiceList();
+
+    private final Map<Object, Class<?>[]> services = new LinkedHashMap<Object, Class<?>[]>();
 
     // /** The type of container that should be created. */
     // private Class<? extends T> type;
@@ -136,7 +139,7 @@ public class ContainerConfiguration {
     }
 
     /**
-     * Adds an object to the lifecycle of the container.
+     * Adds a service to to the container.
      * <p>
      * If the object is annotated with the {@link ExportAsService} annotation the object can then later be retrieved by
      * calling {@link org.codehaus.cake.container.Container#getService(Class)}
@@ -169,8 +172,16 @@ public class ContainerConfiguration {
      * @throws IllegalArgumentException
      *             in case of an argument of invalid type or if the object has already been registered.
      */
-    public ContainerConfiguration addService(Object o) {
-        serviceList.addLifecycle(o);
+    public ContainerConfiguration addService(Object service, Class<?>... exportAs) {
+        if (service == null) {
+            throw new NullPointerException("service is null");
+        } else if (exportAs == null) {
+            throw new NullPointerException("exportAs is null");
+        } else if (services.containsKey(service)) {
+            throw new IllegalArgumentException("Service has already been registered");
+        }
+        serviceList.addLifecycle(service);
+        services.put(service, exportAs);
         return this;
     }
 
@@ -196,7 +207,7 @@ public class ContainerConfiguration {
      *            the type of the configuration
      */
     @SuppressWarnings("unchecked")
-    public <U> U getConfigurationOfType(Class<U> configurationType) {
+    protected <U> U getConfigurationOfType(Class<U> configurationType) {
         Object o = configurations.get(configurationType);
         if (o == null) {
             throw new IllegalArgumentException("Unknown service configuration [ type = " + configurationType + "]");

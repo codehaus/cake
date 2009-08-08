@@ -49,8 +49,7 @@ public class Composer {
         }
         container = baseContainer.makeChildContainer();
         container.registerComponentInstance(this);
-        container.registerComponentImplementation(LifecycleManager.class);
-        container.registerComponentImplementation(ServiceManager.class);
+         container.registerComponentImplementation(ServiceManager.class);
         this.clazz = clazz;
         String name = configuration.getName();
         if (name == null) {

@@ -32,14 +32,24 @@ public class ServiceManager {
     public ServiceManager(InternalExceptionService<?> ies) {
         this.ies = ies;
     }
-    
+
     public Map<Class<?>, ExportedService> getAll() {
         return services;
     }
 
     <T> void registerService(Class<T> key, T service) {
-        if (ies.isDebugEnabled()) {
-            ies.debug("  A Service was registered [key=" + key + ", service=" + service + "]");
+        ExportedService previous = services.get(key);
+        if (previous == null) {
+            ies.debug("  Service registered [key=" + key + ", service=" + service + "]");
+        } else {
+            if (previous instanceof SingleServiceFactory) {
+                ies.debug("  Service registered, replacing existing service [key=" + key + ", service=" + service
+                        + ", existing=" + ((SingleServiceFactory) previous).service + "]");
+            } else {
+                ies.debug("  Service registered, replacing existing serviceprovider [key=" + key + ", service="
+                        + service + ", existing=" + ((LookupNextServiceFactory<?>) previous).factory + "]");
+
+            }
         }
         services.put(key, new SingleServiceFactory(service));
     }
@@ -47,7 +57,19 @@ public class ServiceManager {
     <T> void registerServiceFactory(Class<T> key, ServiceProvider<T> provider) {
         ExportedService previous = services.get(key);
         if (ies.isDebugEnabled()) {
-            ies.debug("  A ServiceProvider was registered [key=" + key + ", provider=" + provider + "]");
+            if (previous == null) {
+                ies.debug("  ServiceProvider registered [key=" + key + ", provider=" + provider + "]");
+            } else {
+                if (previous instanceof SingleServiceFactory) {
+                    ies.debug("  ServiceProvider registered, replacing existing service [key=" + key + ", provider="
+                            + provider + ", existing=" + ((SingleServiceFactory) previous).service + "]");
+                } else {
+                    ies.debug("  ServiceProvider registered, replacing existing serviceprovider [key=" + key
+                            + ", provider=" + provider + ", existing="
+                            + ((LookupNextServiceFactory<?>) previous).factory + "]");
+
+                }
+            }
         }
         services.put(key, new LookupNextServiceFactory<T>(provider, previous));
     }

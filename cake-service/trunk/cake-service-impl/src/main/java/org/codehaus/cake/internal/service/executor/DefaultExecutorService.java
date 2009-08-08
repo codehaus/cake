@@ -22,8 +22,7 @@ public class DefaultExecutorService implements ServiceProvider<ExecutorService> 
     /** Lock for on-demand initialization of executors */
     private final Object poolLock = new Object();
 
-    public ExecutorService lookup(
-            org.codehaus.cake.service.ServiceProvider.Context<ExecutorService> context) {
+    public ExecutorService lookup(Context<ExecutorService> context) {
         ExecutorService s = defaultExecutor;
         if (s == null) {
             synchronized (poolLock) {
@@ -34,8 +33,8 @@ public class DefaultExecutorService implements ServiceProvider<ExecutorService> 
                 if (s == null) {
                     ThreadPoolExecutor tpe = new ThreadPoolExecutor(2000, 3000, 60L, TimeUnit.SECONDS,
                             new LinkedBlockingQueue<Runnable>());
-//                    tpe=new ThreadPoolExecutor(0, 3000, 60L, TimeUnit.SECONDS,
-//                            new SynchronousQueue<Runnable>());
+                    // tpe=new ThreadPoolExecutor(0, 3000, 60L, TimeUnit.SECONDS,
+                    // new SynchronousQueue<Runnable>());
                     defaultExecutor = s = tpe;
                 }
             }

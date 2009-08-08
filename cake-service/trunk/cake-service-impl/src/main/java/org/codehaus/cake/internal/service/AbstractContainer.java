@@ -39,8 +39,6 @@ public abstract class AbstractContainer implements Container {
 
     private final AbstractContainer parent;
 
-    // private final List<AbstractContainer> children = null;
-
     protected AbstractContainer(Composer composer) {
         name = composer.getContainerName();
         composer.registerInstance(Container.class, this);
@@ -64,11 +62,6 @@ public abstract class AbstractContainer implements Container {
         sm = composer.get(ServiceManager.class);
         runState = composer.get(RunState.class);
         this.parent = parent;
-    }
-
-    /** {@inheritDoc} */
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return runState.awaitState(State.TERMINATED,timeout, unit);
     }
 
     /** {@inheritDoc} */
@@ -136,21 +129,6 @@ public abstract class AbstractContainer implements Container {
     }
 
     /** {@inheritDoc} */
-    public boolean isShutdown() {
-        return runState.isAtLeastShutdown();
-    }
-
-    /** {@inheritDoc} */
-    public boolean isStarted() {
-        return runState.isAtLeastRunning();
-    }
-
-    /** {@inheritDoc} */
-    public boolean isTerminated() {
-        return runState.isTerminated();
-    }
-
-    /** {@inheritDoc} */
     protected void lazyStart() {
         runState.isRunningLazyStart(false);
     }
@@ -180,7 +158,7 @@ public abstract class AbstractContainer implements Container {
      * A {@link ServiceProvider} that returns the same service for any attributes.
      */
     static class SingleServiceFactory implements ExportedService {
-        private final Object service;
+        final Object service;
 
         SingleServiceFactory(Object service) {
             this.service = service;
@@ -196,7 +174,7 @@ public abstract class AbstractContainer implements Container {
     }
 
     static class LookupNextServiceFactory<T> implements ExportedService {
-        private final ServiceProvider<T> factory;
+        final ServiceProvider<T> factory;
         private final ExportedService next;
 
         LookupNextServiceFactory(ServiceProvider<T> factory, ExportedService next) {

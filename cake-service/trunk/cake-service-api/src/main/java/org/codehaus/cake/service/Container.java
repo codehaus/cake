@@ -28,18 +28,18 @@ import org.codehaus.cake.util.attribute.MutableAttributeMap;
 /**
  * The main purpose of the Container interface is to control the lifecycle and publication of services registered with
  * it. Normally containers are extended with classes that provide additionally functionality then just managing
- * services. For example, {@link org.codehaus.cake.cache.Cache} which extends this interface with various methods that are relevant to a cache
- * but uses the functionality provided by this interface to allow users to control the lifecycle of the cache and the
- * services running within the cache.
+ * services. For example, {@link org.codehaus.cake.cache.Cache} which extends this interface with various methods that
+ * are relevant to a cache but uses the functionality provided by this interface to allow users to control the lifecycle
+ * of the cache and the services running within the cache.
  * <p>
  * The services running within a container can either be (internal) services that are hidden for users of this interface
  * and are only visible to other internal services running within the container. Or they can be services that can be
  * retrived by the user, for example, by calling {@link #getService(Class)}.
  * <p>
- * All general-purpose <tt>Container</tt> implementation classes should provide two "standard" constructors: a void
- * (no arguments) constructor, which creates an empty container with default settings, and a constructor with a single
- * argument of type {@link ContainerConfiguration}. There is no way to enforce this recommendation (as interfaces
- * cannot contain constructors) but all of the general-purpose container implementations available in Cake comply.
+ * All general-purpose <tt>Container</tt> implementation classes should provide two "standard" constructors: a void (no
+ * arguments) constructor, which creates an empty container with default settings, and a constructor with a single
+ * argument of type {@link ContainerConfiguration}. There is no way to enforce this recommendation (as interfaces cannot
+ * contain constructors) but all of the general-purpose container implementations available in Cake comply.
  * <p>
  * The lifecycle of the container is 1) A ContainerConfiguration or a subclass of it is created and configured with as
  * needed. 2) A Container or a subclass hereof is created by passing along the configuration. 3) When the constructor
@@ -125,14 +125,12 @@ public interface Container {
     String getName();
 
     /**
-     * Blocks until the container has reached the requested state, or the
-     * timeout occurs, or the current thread is interrupted, whichever happens
-     * first.
+     * Blocks until the container has reached the requested state, or the timeout occurs, or the current thread is
+     * interrupted, whichever happens first.
      * <p>
-     * If the container has already reached or passed the specified state this
-     * method returns immediately. For example, if awaiting on the
-     * {@link State#RUNNING} state and the container has already been shutdown.
-     * This method will return immediately with <tt>true</tt>.
+     * If the container has already reached or passed the specified state this method returns immediately. For example,
+     * if awaiting on the {@link State#RUNNING} state and the container has already been shutdown. This method will
+     * return immediately with <tt>true</tt>.
      * 
      * @param state
      *            the state to wait on
@@ -140,23 +138,22 @@ public interface Container {
      *            the maximum time to wait
      * @param unit
      *            the time unit of the timeout argument
-     * @return <tt>true</tt> if this container is in or passed the specified
-     *         state and <tt>false</tt> if the timeout elapsed before reaching
-     *         the state
+     * @return <tt>true</tt> if this container is in or passed the specified state and <tt>false</tt> if the timeout
+     *         elapsed before reaching the state
      * @throws InterruptedException
      *             if interrupted while waiting
      */
     boolean awaitState(State state, long timeout, TimeUnit unit) throws InterruptedException;
 
-//
-//    /**
-//     * Returns <tt>true</tt> if all services have been terminated following shut down. Note that <tt>isTerminated</tt>
-//     * is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
-//     * 
-//     * @return <tt>true</tt> if all tasks have completed following shut down
-//     */
-//    @Deprecated
-//    boolean isTerminated();
+    //
+    // /**
+    // * Returns <tt>true</tt> if all services have been terminated following shut down. Note that <tt>isTerminated</tt>
+    // * is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called first.
+    // *
+    // * @return <tt>true</tt> if all tasks have completed following shut down
+    // */
+    // @Deprecated
+    // boolean isTerminated();
 
     /**
      * Initiates an orderly shutdown of the container. In which currently running tasks will be executed, but no new
@@ -174,7 +171,6 @@ public interface Container {
      */
     void shutdownNow();
 
-    
     /** @return the current state of the container */
     State getState();
 
@@ -185,44 +181,39 @@ public interface Container {
         /** Returns the type of services the container implementation supports. */
         Class<?>[] value();
     }
-    
+
     /** The state of a container. */
     public enum State {
+      
         /**
-         * The initial state of the container. The container will remain in this
-         * from when the constructor of the container returns to the container
-         * being started by an external action. After which it will transition
-         * to the {@link #STARTING} state.
+         * The initial state of the container. This is the state of the container once its constructor has finished
+         * executing. The contain will remain in this state until it is started by an external action. After which it
+         * will transition to the {@link #STARTING} state.
          */
         INITIALIZED,
 
         /**
-         * The container has been started by an external action. However all
-         * services has not yet completed startup. When all internal services
-         * has been properly started the container will transition to the
-         * {@link #RUNNING} state.
+         * The container has been started by an external action. However all services has not yet completed startup.
+         * When all internal services has been properly started the container will transition to the {@link #RUNNING}
+         * state.
          */
         STARTING,
 
         /**
-         * The container is running. The container will retain this state until
-         * {@link Container#shutdown()} or {@link Container#shutdownNow()} is
-         * invoked. After which it will transition to the {@link #SHUTDOWN}
-         * state.
+         * The container is running. The container will retain this state until {@link Container#shutdown()} or
+         * {@link Container#shutdownNow()} is invoked. After which it will transition to the {@link #SHUTDOWN} state.
          */
         RUNNING,
 
         /**
-         * The user has invoked {@link Container#shutdown()} or
-         * {@link Container#shutdownNow()} and the container is currently in the
-         * process of shutting down all internal services. After all services
-         * has been shutdown the container will transition to the
-         * {@link #STARTING} state.
+         * The user has invoked {@link Container#shutdown()} or {@link Container#shutdownNow()} and the container is
+         * currently in the process of shutting down all internal services. After all services has been shutdown the
+         * container will transition to the {@link #STARTING} state.
          */
         SHUTDOWN,
         /**
-         * All services has been terminated within the container. The container
-         * will never transition to another state after it has reached <tt>TERMINATED</tt>.
+         * All services has been terminated within the container. The container will never transition to another state
+         * after it has reached <tt>TERMINATED</tt>.
          */
         TERMINATED;
 
@@ -234,6 +225,7 @@ public interface Container {
         public boolean isRunning() {
             return this == RUNNING;
         }
+
         public boolean isStarted() {
             return this == TERMINATED || this == SHUTDOWN || this == RUNNING;
         }
@@ -248,14 +240,13 @@ public interface Container {
         }
 
         /**
-         * Returns <tt>true</tt> if all services have been terminated following
-         * shut down. Note that <tt>isTerminated</tt> is never <tt>true</tt>
-         * unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was called
-         * first.
+         * Returns <tt>true</tt> if all services have been terminated following shut down. Note that
+         * <tt>isTerminated</tt> is never <tt>true</tt> unless either <tt>shutdown</tt> or <tt>shutdownNow</tt> was
+         * called first.
          * 
          * @return <tt>true</tt> if all tasks have completed following shut down
          */
-        public  boolean isTerminated() {
+        public boolean isTerminated() {
             return this == TERMINATED;
         }
     }
