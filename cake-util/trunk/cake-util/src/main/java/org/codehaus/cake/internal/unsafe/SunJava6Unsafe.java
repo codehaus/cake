@@ -1,7 +1,5 @@
 package org.codehaus.cake.internal.unsafe;
 
-import java.lang.reflect.Field;
-import java.security.ProtectionDomain;
 
 class SunJava6Unsafe extends CakeUnsafe {
 //    static SunJava6Unsafe UNSAFE;

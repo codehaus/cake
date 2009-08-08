@@ -25,4 +25,12 @@
   <artifactId>cake-util-ops</artifactId>
   <name>Cake Util Ops</name>
   <description>This library contains the Cake util ops package</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cake.util</groupId>
+      <artifactId>cake-util</artifactId>
+      <scope>test</scope>
+      <version>0.3-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 </project>

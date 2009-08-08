@@ -36,8 +36,6 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.codehaus.cake.test.util.TestUtil;
-import org.codehaus.cake.util.Iterables;
-import org.codehaus.cake.util.Maps;
 import org.codehaus.cake.util.ops.ObjectOps;
 import org.codehaus.cake.util.ops.Predicates;
 import org.codehaus.cake.util.ops.Ops.Predicate;

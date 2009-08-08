@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 /*  This class is automatically generated */ 
-package org.codehaus.cake.util.ops;
+package org.codehaus.cake.util;
 
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.codehaus.cake.test.util.TestUtil.serializeAndUnserialize;
-import static org.codehaus.cake.util.ops.Comparators.DOUBLE_NATURAL_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.DOUBLE_NATURAL_REVERSE_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.FLOAT_NATURAL_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.FLOAT_NATURAL_REVERSE_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.INT_NATURAL_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.INT_NATURAL_REVERSE_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.LONG_NATURAL_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.LONG_NATURAL_REVERSE_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.DOUBLE_NATURAL_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.DOUBLE_NATURAL_REVERSE_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.FLOAT_NATURAL_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.FLOAT_NATURAL_REVERSE_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.INT_NATURAL_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.INT_NATURAL_REVERSE_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.LONG_NATURAL_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.LONG_NATURAL_REVERSE_COMPARATOR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

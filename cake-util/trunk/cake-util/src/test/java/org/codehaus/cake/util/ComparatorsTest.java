@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.util.ops;
+package org.codehaus.cake.util;
 
 import static org.codehaus.cake.test.util.TestUtil.assertIsSerializable;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
-import static org.codehaus.cake.util.ops.Comparators.NATURAL_COMPARATOR;
-import static org.codehaus.cake.util.ops.Comparators.NATURAL_REVERSE_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.NATURAL_COMPARATOR;
+import static org.codehaus.cake.util.Comparators.NATURAL_REVERSE_COMPARATOR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;

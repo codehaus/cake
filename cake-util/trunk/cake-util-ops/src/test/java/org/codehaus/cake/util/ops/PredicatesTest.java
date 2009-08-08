@@ -25,6 +25,7 @@ import static org.codehaus.cake.util.ops.Predicates.lessThen;
 import static org.codehaus.cake.util.ops.Predicates.lessThenOrEqual;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -580,7 +581,7 @@ public class PredicatesTest {
     public void greaterThenComparable() {
         GreaterThenPredicate<Integer> f = (GreaterThenPredicate) greaterThen(5);
         assertEquals(5, f.getObject().intValue());
-        assertSame(Comparators.NATURAL_COMPARATOR, f.getComparator());
+        assertNull(f.getComparator());
         TestUtil.assertIsSerializable(f);
         assertFalse(f.op(4));
         assertFalse(f.op(5));
@@ -622,7 +623,7 @@ public class PredicatesTest {
     public void greaterThenOrEqualComparable() {
         GreaterThenOrEqualPredicate<Integer> f = (GreaterThenOrEqualPredicate) greaterThenOrEqual(5);
         assertEquals(5, f.getObject().intValue());
-        assertSame(Comparators.NATURAL_COMPARATOR, f.getComparator());
+        assertNull(f.getComparator());
         TestUtil.assertIsSerializable(f);
         assertFalse(f.op(4));
         assertTrue(f.op(5));
@@ -806,7 +807,7 @@ public class PredicatesTest {
     public void lessThenComparable() {
         LessThenPredicate<Integer> f = (LessThenPredicate) lessThen(5);
         assertEquals(5, f.getObject().intValue());
-        assertSame(Comparators.NATURAL_COMPARATOR, f.getComparator());
+        assertNull(f.getComparator());
         TestUtil.assertIsSerializable(f);
         assertTrue(f.op(4));
         assertFalse(f.op(5));
@@ -849,7 +850,7 @@ public class PredicatesTest {
     public void lessThenOrEqualComparable() {
         LessThenOrEqualPredicate<Integer> f = (LessThenOrEqualPredicate) lessThenOrEqual(5);
         assertEquals(5, f.getObject().intValue());
-        assertSame(Comparators.NATURAL_COMPARATOR, f.getComparator());
+        assertNull(f.getComparator());
         TestUtil.assertIsSerializable(f);
         assertTrue(f.op(4));
         assertTrue(f.op(5));

@@ -34,7 +34,7 @@ import static org.codehaus.cake.util.ops.PrimitiveOps.floatSubtract;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.cake.test.util.TestUtil;
-import org.codehaus.cake.util.ops.Comparators;
+import org.codehaus.cake.util.Comparators;
 import org.codehaus.cake.util.ops.PrimitiveOps;
 import org.codehaus.cake.util.ops.Ops.FloatReducer;
 import org.junit.Test;

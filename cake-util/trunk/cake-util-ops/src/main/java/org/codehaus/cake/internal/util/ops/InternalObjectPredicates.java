@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.codehaus.cake.util.ops.Comparators;
 import org.codehaus.cake.util.ops.Ops.BytePredicate;
 import org.codehaus.cake.util.ops.Ops.CharPredicate;
 import org.codehaus.cake.util.ops.Ops.DoublePredicate;
@@ -400,7 +399,7 @@ public class InternalObjectPredicates {
                 throw new NullPointerException("element is null");
             }
             this.object = object;
-            this.comparator = Comparators.NATURAL_COMPARATOR;
+            this.comparator = null;
         }
 
         /**
@@ -422,7 +421,7 @@ public class InternalObjectPredicates {
         /** {@inheritDoc} */
         @SuppressWarnings("unchecked")
         public boolean op(E element) {
-            return comparator.compare(object, element) <= 0;
+            return (comparator == null ? ((Comparable) object).compareTo(element) : comparator.compare(object, element)) <= 0;
         }
 
         /** {@inheritDoc} */
@@ -475,7 +474,7 @@ public class InternalObjectPredicates {
                 throw new NullPointerException("element is null");
             }
             this.object = object;
-            this.comparator = Comparators.NATURAL_COMPARATOR;
+            this.comparator = null;
         }
 
         /**
@@ -497,7 +496,7 @@ public class InternalObjectPredicates {
         /** {@inheritDoc} */
         @SuppressWarnings("unchecked")
         public boolean op(E element) {
-            return comparator.compare(object, element) < 0;
+            return (comparator == null ? ((Comparable) object).compareTo(element) : comparator.compare(object, element)) < 0;
         }
 
         /** {@inheritDoc} */
@@ -755,7 +754,7 @@ public class InternalObjectPredicates {
                 throw new NullPointerException("element is null");
             }
             this.object = object;
-            this.comparator = Comparators.NATURAL_COMPARATOR;
+            this.comparator=null;
         }
 
         /**
@@ -777,7 +776,7 @@ public class InternalObjectPredicates {
         /** {@inheritDoc} */
         @SuppressWarnings("unchecked")
         public boolean op(E element) {
-            return comparator.compare(object, element) >= 0;
+            return (comparator == null ? ((Comparable) object).compareTo(element) : comparator.compare(object, element)) >= 0;
         }
 
         /** {@inheritDoc} */
@@ -833,7 +832,7 @@ public class InternalObjectPredicates {
                 throw new NullPointerException("element is null");
             }
             this.object = object;
-            this.comparator = Comparators.NATURAL_COMPARATOR;
+            this.comparator = null;
         }
 
         /**
@@ -855,7 +854,7 @@ public class InternalObjectPredicates {
         /** {@inheritDoc} */
         @SuppressWarnings("unchecked")
         public boolean op(E element) {
-            return comparator.compare(object, element) > 0;
+            return (comparator == null ? ((Comparable) object).compareTo(element) : comparator.compare(object, element)) > 0;
         }
 
         /** {@inheritDoc} */
