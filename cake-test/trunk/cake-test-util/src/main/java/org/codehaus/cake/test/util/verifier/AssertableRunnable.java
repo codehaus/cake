@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.test.util;
+package org.codehaus.cake.test.util.verifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class AssertableRunnable implements Runnable {
+public class AssertableRunnable implements Runnable, Verifier {
     private final CountDownLatch cdl;
 
     public AssertableRunnable() {
@@ -44,12 +44,12 @@ public class AssertableRunnable implements Runnable {
         cdl.countDown();
     }
 
-    public void assertDone() {
-        assertEquals(0, cdl.getCount());
-    }
-
     public void awaitAndAssertDone() throws InterruptedException {
         cdl.await(10, TimeUnit.SECONDS);
-        assertDone();
+        verify();
+    }
+
+    public void verify() {
+        assertEquals(0, cdl.getCount());
     }
 }
