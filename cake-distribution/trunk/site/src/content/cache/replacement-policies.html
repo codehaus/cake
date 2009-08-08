@@ -33,7 +33,7 @@ tendency to be accessed again in the near future. This concept is known as <i>te
 This is probably best embodied in the Least Recently Used (LRU) replacement policy which is 
 commonly used in many computer systems. While LRU works great for many workloads the 
 naive randomized implementation work better for other workloads, for example, if a cache is all entries are 
-continuesly accessed in a circular pattern.
+continuously accessed in a circular pattern.
     </p>
 
 
@@ -41,7 +41,7 @@ continuesly accessed in a circular pattern.
    <p>
     A replacement policy based on paging is a policy where all elements have uniform sizes and cost to retrieve. 
     That is a document with a size of 1 MB and one with a size of 10 MB is treated equally by the policy both in respect to 
-    memory usage and cost to retrive.
+    memory usage and cost to retrieve.
 
     The best, offline cache replacement policy is Belady's MIN that replaces the page that is used farthest in the future[1]. 
     Of course, in practice, we are only interested in online cache replacement policies that do not demand any prior knowledge of the workload.
@@ -49,8 +49,8 @@ continuesly accessed in a circular pattern.
     <h1>Cost/Size based replacement policies</h1>
     <p>
     Consider a small application that consists of 10 documents that the users access randomly. 
-    9 of the documents needs 1 mb to be stored while the last document needs 5 mb to be stored.
-	  If we only have 10 mb available to store documents, we can either choose     
+    9 of the documents needs 1 MB to be stored while the last document needs 5 MB to be stored.
+	If we only have 10 MB available to store documents, we can either choose     
     </p>
   </body>
 </html>

@@ -21,16 +21,46 @@
   </head>
   <body>
     <p>
-    Services,
+   	Cake has a simple service model that 
+   	allows easy integration between cake components and user provided components.
+    Its not aiming to replace frameworks such as Spring or Guice. However, 
+    it provides a solution for small containers.
+    
+
+   	I 
+   	for integration user components and services with various cake containers and their lifecycle
+   	that can be used for bla bla holding services and controlling their lifecycle
+
+    There are two kinds of services:
+    <ul>
+      <li>Internal services that Looking up services that has been registered in the container.</li>
+      <li>User defined services that Starting and stopping the container and the services registered within the container.</li>
+    </ul>
     is provided by containers.
     
     Services can either be built-in services
     or user defined services.
     
-    Not aiming to replace containers such as Spring or Guice. But instead provide a really simple solution
-    that works 80 % of the time
     can be 
     
-    	Bla bla bla bla</p>
+    <h1 id="features">A simple service</h1>
+
+    <h1 id="runafter">RunAfter - lifecycle integration</h1>
+    <p>
+    The RunAfter annotation can be used to integrate the lifecycle of a container with your components.
+    You can annotate methods that you want to run whenever a container transitions from one state to another.
+    For example, if you want to start some scheduled jobs after the a container has started and stop it again
+    
+  </p>
+    
+  <h1 id="default-services">Default services</h1>  
+  <p>
+  This is a list of services that are available from all container implementation
+  ExecutorService
+  Clock
+  ScheduledExecutorService
+  ClassMonger <- The ClassMonger interface is used by the container 
+                 to load and create classes at runtime
+  </p>  
   </body>
 </html>

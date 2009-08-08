@@ -25,63 +25,70 @@
     as creation time, hit count, and size to individual entries.
     </p>
     <p>
-    Consider, for example, an application where you need to keep track of the creation time for a specific entry.
-    One way to do so would be to attach the information in the value part of a objects you insert in the database,
-    however, this would require you to change every class you put into the cache and a field containing the creation time.
+    Consider, for example, an application where you need to keep track of the creation time for each entry 
+    in the cache. One way to do so would be to attach the information in the value part (entry.getValue()) 
+    of the objects you insert in the cache. However, this would require you to change the class of every 
+    object you put into the cache adding a field containing the creation time.
     </p>
     <p>
-    Instead you use caches funtionality for attaching attributes to each entry 
+    An easier solution is to use the built-on functionality for attaching metadata to each entry in the cache.
+    The following example configures the cache so it keeps track of the creation time for when
+    an entry for a given key was first inserted into the cache.
+    </p> 
 <div class="Source Java"><pre>
 CacheConfiguration<String, String> conf = CacheConfiguration.create();
 conf.add(CacheEntry.CREATION_TIME);
 
-Cache<String, String> c = SynchronizedCache.from(conf);
-c.put("Test","Test");
-long creationTime = c.getEntry("Test").get(CacheEntry.CREATION_TIME);
+Cache<String, String> cache = SynchronizedCache.from(conf);
+cache.put("Test", "Test");
+long creationTime = cache.getEntry("Test").get(CacheEntry.CREATION_TIME);
 });
 </pre></div>    	
      
-    </p>
-     
-   <h1 id="features">Build-in attributes</h1>
+   <h1 id="buildin-attributes">Build-in attributes</h1>
    <p>
    Build-in attributes, are attributes that have are treated specially by the cache.
-   For example, if the CreationTime attribute has been enabled, the cache knows that it must
-   set creation time whenever an entry is created.
+   For example, if the cache has been configured to with the CreationTime attributes.
+   It knows that it must add the creation time to the set of each entries attributes 
+   when it is first created.
    </p>
    <p>
-   The following list of attributes are currently available:
+   The following list of build-on attributes are currently defined:
 COST : The cost, in some arbitrary scale, of bringing the entry into the cache. 
 HITS : The number of times the entry has been accessed through get operations.
-SIZE : The individual size, in some arbitrary scale (for example bytes), of a cached value.
+SIZE : The individual size, in an arbitrary scale (for example bytes), of a cached value.
 TIME_ACCESSED : The time when the entry was last accessed through get operations.
 TIME_CREATED : The time when the entry was initially added to the cache.
 TIME_MODIFIED : The time when the entry was last modified through put or replace operations.
 VERSION : The number of times the entry has been modified through put or replace operations.
-
    </p>
-   <p>To enable, for example, the Version attribute and the Time created attribute you will
+   <p>
+   To enable, for example, the version attribute and the time accessed attribute you just need to call:
+<div class="Source Java"><pre>
+CacheConfiguration<String, String> conf = CacheConfiguration.create();
+conf.add(CacheEntry.VERSION, CacheEntry.TIME_ACCESSED);
+</pre></div>        
    
-   
-   
-      A filtered cache view represents a subset of the data contained in a cache.
-      For example to create a cache view, all those cache entries where the string key starts with 'https'
-
    <h1 id="features">Used defined attributes</h1>
    <p>
    User defined attributes are attributes that are created by the user and that has no semantically 
    meaning to the cache. So, for example, instead of the cache implicit setting the creation time of an 
-   entry whenever it is first inserted. The user must explicit set it whenever an entry is created or modified.
+   entry when it is first inserted. The user must explicit set the value of user defined attributes whenever 
+   an entry is created or modified.
    </p>
    <p>
-   Consider, for example, a cache maintaining various documents and you only want to allow the owner of
-   these documents to be able to modify them.
+   Consider, for example, a cache maintaining various documents and for some reason you need to keep 
+   track of who has inserted each document.
    </p>
    <p>
-     First you must create the attribute that will hold the definition if the user. In this case we store the owner as a
-     single non-null String.
+     First you will need to the attribute under which the user should be stored. 
+     In this case we store the owner as a single non-null String.
    </p>
-
+<div class="Source Java"><pre>
+CacheConfiguration<String, String> conf = CacheConfiguration.create();
+conf.add(OwnerAttribute.INSTANCE);
+});
+</pre></div>
    <p>
      Next, you need to tell the cache that it should store this attribute for each entry. Otherwise
      it will just ignore the entry whenever it is encountered.
@@ -92,20 +99,17 @@ conf.add(OwnerAttribute.INSTANCE);
 });
 </pre></div>    	
   <p>
-  	To set the attribute of an 
-  Whenever you insert or modify entries in the cache you will need to specify the value of the attribute.
-  
-  And then add it to the cache like any other attribute
+  To set the owner for an entry you need to eksplicit set it when adding a new entry to the cache.  
   </p>
      <div class="Source Java"><pre>
 Cache<String, String> c = SynchronizedCache.from(conf);
-c.put("MyDoc1", "blablabla", OwnerAttribute.INSTANCE.singleton("myusername"));
+c.put("MyDoc1", "document_content", OwnerAttribute.INSTANCE.singleton("myusername"));
 
 //Get the owner of a single document
 String owner = c.getEntry("MyDoc1").get(OwnerAttribute.INSTANCE);
 
-//Get all documents for a specified user.
-List<String> mydocuments=c.filter.on(OwnerAttribute.INSTANCE, Predicates.equalsTo("myusername").values.toList();
+//Get all documents for a specified owner.
+List<String> mydocuments=c.filter().on(OwnerAttribute.INSTANCE, Predicates.equalsTo("myusername").values().toList();
 });
 </pre></div>    	
     <h1 id="important-considarations">Cache Attribute FAQ</h1>

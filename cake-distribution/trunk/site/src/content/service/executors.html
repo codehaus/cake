@@ -29,34 +29,17 @@
     </p>
     <p>
     Normally the Container interface is extended with an interface providing additional domain specific functionality.
-    For example, the Cache interface has additional methods for insertion and retrieval of data. Inheriting
+    For example, the Cache interface which specifies methods for insertion and retrieval of data. Inheriting
     methods for starting, stopping and looking up services from the Container interface.
     </p>
     <p>
-    Containers can be arranged in a hierarchy so services register in a parent container is available from child containers. 
-    This is useful, for example, for sharing a single ExecutorService (threadpool) among multiple containers in order to reduce the number
+    Containers can be arranged in a hierachy so services register in one container is available from child containers. 
+    This is useful, for example, for sharing a single ThreadPool among multiple containers in order to reduce the number
     of threads that need to be created. 
     </p>
     <h1 id="features">Single Container</h1>
-      A standalone container is a container that has no parent or child containers.
+      A single container is a container that has no parent or child containers.
 
-    Container c= new DefaultContainer();
- the initial service of the container is INITIALIZED
- 
- Now lets try and retrieve the the build-in ScheduledExecutorService
-   ScheduledExecutorService ses=c.getService(ScheduledExecutorService.class);
- If we call getState() we can the container has trasionioned to the RUNNING state
-
-   ses.execute(some job)
-
- When we are done with the container (and the executor) we can shutdown the container by calling
- c.shutdown();
- This will also shutdown the sceduled executor.
-   
-  
-   
- 
-    the initial state of the container    
     <h1 id="lifecycle">Container Lifecycle</h1>
       The container parses through five different phases:
         <ul>
@@ -87,7 +70,7 @@
     ExecutorService, ScheduledExecutorService, ForkjoinExecutor. 
     
     If you want to provide your own services you can just override the existing services.
-    For example, lets say you want to replace   
+    For example, lets  
     <h1 id="features">Hirachy Containers</h1>
     Hic containers are.
     
