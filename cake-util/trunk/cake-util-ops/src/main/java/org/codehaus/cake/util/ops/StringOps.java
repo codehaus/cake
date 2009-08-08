@@ -30,6 +30,7 @@ import org.codehaus.cake.util.ops.Ops.Predicate;
  */
 public final class StringOps {
 
+    @SuppressWarnings("unchecked")
     final static Op TO_STRING_OP = new ToStringOp();
 
     /** Cannot instantiate. */
@@ -103,6 +104,7 @@ public final class StringOps {
      * @param <T>
      * @return the mapper
      */
+    @SuppressWarnings("unchecked")
     public static <T> Op<T, String> toStringOp() {
         return TO_STRING_OP;
     }
@@ -311,7 +313,7 @@ public final class StringOps {
         }
     }
 
-    static final class ToString implements Op {
+    static final class ToString implements Op<Object, Object> {
 
         public Object op(Object a) {
             return a == null ? "null" : a.toString();
@@ -319,7 +321,7 @@ public final class StringOps {
     }
 
     /** An Op that calls Object#toString. */
-    static final class ToStringOp implements Op, Serializable {
+    static final class ToStringOp implements Op<Object, Object>, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 1L;

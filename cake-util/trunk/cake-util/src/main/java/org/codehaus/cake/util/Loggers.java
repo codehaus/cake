@@ -17,6 +17,7 @@ package org.codehaus.cake.util;
 
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.codehaus.cake.internal.util.LogHelper;
@@ -86,6 +87,32 @@ public final class Loggers {
      */
     public static Logger systemOutLogger(Logger.Level level) {
         return new SystemOutLogger(level);
+    }
+
+    public static final String LOG4J_LOGGER_CLASS = "java.util.logging.Logger";
+
+    public static boolean isLogger(Object logger) throws Exception {
+        if (logger == null) {
+            throw new NullPointerException("logger is null");
+        }
+        return logger instanceof Logger || logger.getClass().equals(LOG4J_LOGGER_CLASS);
+    }
+
+    public static Logger from(Object logger) throws Exception {
+        if (logger == null) {
+            throw new NullPointerException("logger is null");
+        }
+        if (logger instanceof Logger) {
+            return (Logger) logger;
+        }
+        Class<?> src = logger.getClass();
+        // TODO we should check if it inherits from JDK
+        if (src.getName().equals(LOG4J_LOGGER_CLASS)) {
+            Class clz = Class.forName("org.codehaus.cake.util.Loggers$JDK");
+            Method m = clz.getMethod("from", src);
+            return (Logger) m.invoke(null, logger);
+        }
+        throw new IllegalArgumentException("Not a logger");
     }
 
     /**
@@ -169,6 +196,16 @@ public final class Loggers {
     static final class CommonsLogger extends AbstractLogger {
         /** The commons Log class we are wrapping. */
         private final org.apache.commons.logging.Log log;
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof JDKLogger && ((CommonsLogger) obj).log == log;
+        }
+
+        @Override
+        public int hashCode() {
+            return log.hashCode();
+        }
 
         /**
          * Creates a new Logger by wrapping a commons Log class.
@@ -338,6 +375,16 @@ public final class Loggers {
      */
     static final class JDKLogger extends AbstractLogger {
 
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof JDKLogger && ((JDKLogger) obj).logger == logger;
+        }
+
+        @Override
+        public int hashCode() {
+            return logger.hashCode();
+        }
+
         /** The logger we are wrapping. */
         private final java.util.logging.Logger logger;
 
@@ -452,6 +499,16 @@ public final class Loggers {
         /** The logger we are wrapping. */
         private final org.apache.log4j.Logger logger;
 
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof JDKLogger && ((Log4JLogger) obj).logger == logger;
+        }
+
+        @Override
+        public int hashCode() {
+            return logger.hashCode();
+        }
+
         /**
          * Creates a new Log4JLogger from the specified logger.
          * 
@@ -547,6 +604,20 @@ public final class Loggers {
         /** The PrintStream to write to. */
         private final PrintStream stream;
 
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof PrintStreamLogger && equals((PrintStreamLogger) obj);
+        }
+
+        public boolean equals(PrintStreamLogger logger) {
+            return logger.level == level && stream.equals(logger.stream);
+        }
+
+        @Override
+        public int hashCode() {
+            return stream.hashCode();
+        }
+
         /**
          * Creates a new SimpleLogger that logs to the specified print stream at the specified level.
          * 
@@ -593,6 +664,16 @@ public final class Loggers {
         /** The level to log at. */
         private final int level;
 
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof SystemErrLogger && ((SystemErrLogger) obj).level == level;
+        }
+
+        @Override
+        public int hashCode() {
+            return level;
+        }
+
         /**
          * Creates a new SystemErrLogger.
          * 
@@ -632,6 +713,16 @@ public final class Loggers {
 
         /** The level to log at. */
         private final int level;
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof SystemOutLogger && ((SystemOutLogger) obj).level == level;
+        }
+
+        @Override
+        public int hashCode() {
+            return level;
+        }
 
         /**
          * Creates a new SystemErrLogger.

@@ -161,4 +161,12 @@ public final class ArrayUtils {
         return (T[]) copyOf(original, original.length, original.getClass());
     }
 
+    public static boolean containsInstance(Object[] states, Object state) {
+        for (Object s : states) {
+            if (s == state) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -28,7 +28,7 @@ import org.codehaus.cake.util.Logger.Level;
  * @version $Id$
  */
 public final class LogHelper {
-
+    
 //    public static final String LOG_LEVEL_ATRB = "level";
 //
 //    public static final String LOG_TYPE_ATRB = "type";

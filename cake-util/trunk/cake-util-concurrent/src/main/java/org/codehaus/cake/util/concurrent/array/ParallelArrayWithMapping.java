@@ -64,9 +64,9 @@ public abstract class ParallelArrayWithMapping<T,U> extends AbstractParallelAnyA
      * constraints, or null if none.
      * @return an element, or null if none.
      */
-    public U any() {
+    public U any(U base) {
         int i = anyIndex();
-        return (i < 0)? null : (U)oget(i);
+        return (i < 0)? base : (U)oget(i);
     }
 
     /**

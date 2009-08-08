@@ -132,7 +132,7 @@ public final class Procedures {
     }
 
     /** A Procedure that does nothing. */
-    static final class NoopProcedure implements Procedure, Serializable {
+    static final class NoopProcedure implements Procedure<Object>, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 1L;

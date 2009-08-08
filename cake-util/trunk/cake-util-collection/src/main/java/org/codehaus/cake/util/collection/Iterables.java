@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
 
@@ -39,6 +40,25 @@ public final class Iterables {
     /** Cannot instantiate. */
     private Iterables() {
     }
+
+    public static <T> Iterable<T> reverse(final List<T> list) {
+        return new Iterable<T>() {
+          public Iterator<T> iterator() {
+            final ListIterator<T> listIter = list.listIterator(list.size());
+            return new Iterator<T>() {
+              public boolean hasNext() {
+                return listIter.hasPrevious();
+              }
+              public T next() {
+                return listIter.previous();
+              }
+              public void remove() {
+                listIter.remove();
+              }
+            };
+          }
+        };
+      }
 
     /**
      * Wraps the {@link Collection#add(Object)} method in an {@link Procedure}.

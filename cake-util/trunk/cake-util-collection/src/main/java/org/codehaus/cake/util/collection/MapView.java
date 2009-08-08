@@ -48,7 +48,12 @@ public interface MapView<K, V> {
      */
     View<K> keys();
 
-    /** @return the number of entries in this view */
+    /**
+     * Returns the number of elements in this view. If this view contains more than <tt>Long.MAX_VALUE</tt> elements,
+     * returns <tt>Long.MAX_VALUE</tt>.
+     * 
+     * @return the number of elements in this view
+     */
     long size();
 
     /**

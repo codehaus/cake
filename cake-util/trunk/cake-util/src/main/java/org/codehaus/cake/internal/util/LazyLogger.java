@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import org.codehaus.cake.internal.util.LogHelper.AbstractLogger;
 
 /**
- * A LazyLogger is lazily initialised only whenever an exception is raisde.
+ * A LazyLogger is lazily initialised whenever the first exception is raised.
  * <p>
  * NOTICE: This is an internal class and should not be directly referred. No guarantee is made to the compatibility of
  * this class between different releases.

@@ -27,9 +27,11 @@ import java.io.Serializable;
  */
 public abstract class ObjectAttribute<T> extends Attribute<T> implements Serializable {
 
+    /** serialVersionUID */
+    private static final long serialVersionUID = 1L;
+
     /**
-     * Creates a new ObjectAttribute with the specified datatype, a generated name and a default
-     * value of <tt>null</tt>.
+     * Creates a new ObjectAttribute with the specified datatype, a generated name and a default value of <tt>null</tt>.
      * 
      * @param clazz
      *            the type of the values
@@ -43,16 +45,14 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
     }
 
     /**
-     * Creates a new ObjectAttribute with the specified datatype and default value, and a generated
-     * name.
+     * Creates a new ObjectAttribute with the specified datatype and default value, and a generated name.
      * 
      * @param clazz
      *            the type of the values
      * @param defaultValue
      *            default value of this attribute
      * @throws IllegalArgumentException
-     *             if the specified default value is not a valid value according to
-     *             {@link #checkValid(Object)}
+     *             if the specified default value is not a valid value according to {@link #checkValid(Object)}
      * @throws NullPointerException
      *             if the specified class is null
      */
@@ -105,6 +105,7 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
      *             if a valid attribute value could not be created from the string.
      */
     public T fromString(String str) {
+        //TODO should we allow parsing string that not #isValid()???
         throw new UnsupportedOperationException();
     }
 
@@ -132,8 +133,8 @@ public abstract class ObjectAttribute<T> extends Attribute<T> implements Seriali
     }
 
     /**
-     * Returns an AttributeMap containing only this attribute mapping to the specified value. The
-     * returned map is immutable.
+     * Returns an AttributeMap containing only this attribute mapping to the specified value. The returned map is
+     * immutable.
      * 
      * @param value
      *            the value to create the singleton from

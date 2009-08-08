@@ -70,7 +70,7 @@ public final class Pair<T1, T2> implements java.io.Serializable {
     /** {@inheritDoc} */
     @Override
     public boolean equals(Object other) {
-        return other instanceof Pair && equals((Pair<?, ?>) other);
+        return other instanceof Pair<?,?> && equals((Pair<?, ?>) other);
     }
 
     /**

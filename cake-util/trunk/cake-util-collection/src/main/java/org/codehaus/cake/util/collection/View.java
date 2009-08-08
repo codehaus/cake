@@ -34,32 +34,37 @@ import org.codehaus.cake.util.ops.Ops.Reducer;
 public interface View<T> {
 
     /**
-     * Returns any element from this view (matching available filter constraints), otherwise <code>null</code>.
+     * Returns any element from this view, or the specified value if this view contains no elements.
      * <p>
-     * The element returned is not guaranteed to be a random selection of the elements in this view. Most likely it will
-     * be the first element in this view (matching available filter constraints).
+     * The element returned by this method is not guaranteed to be a random selection among all the elements in this
+     * view. Most likely it will be the first element in this view.
      * 
-     * @return an element from this view, otherwise null
+     * @param base
+     *            the value to return for an empty view
+     * @return an element from this view, or the specified value if this view contains no elements.
      */
-    T any();
+    T any(T base);
 
     /**
-     * Applies the specified procedure to the elements in this view. The specified procedure must be safe for usage by
-     * multiple threads.
+     * Applies the specified procedure to all the elements in this view.
+     * <p>
+     * The specified procedure must be safe for concurrent usage by multiple threads.
      * 
      * @param procedure
      *            the procedure to apply
+     * @throws NullPointerException
+     *             if the specified procedure is <tt>null</tt>
      */
     void apply(Procedure<? super T> procedure);
 
-    /** @return whether or not this view contains any elements */
-    boolean isEmpty();
+    /** @return <tt>true</tt> if this view contains no elements, otherwise <tt>false</tt> */
+    boolean isEmpty();// OK
 
     /**
      * Returns a new view where all elements of this view is mapped using the specified mapper.
      * <p>
-     * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code creates a new view
-     * that contains the upper case version for each element.
+     * Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code creates a new (virtual)
+     * view that contains the upper cased version for each element.
      * 
      * <pre>
      * View&lt;String&gt; x = v.map(new Op&lt;String, String&gt;() {
@@ -78,24 +83,13 @@ public interface View<T> {
     <E> View<E> map(Op<? super T, ? extends E> mapper);
 
     /**
-     * Returns the maximum element, or null if empty, assuming that all elements are Comparables
+     * Returns the maximum element, or null if empty, assuming that all elements are Comparable instances.
      * 
      * @return maximum element, or null if empty
      * @throws ClassCastException
      *             if any element is not Comparable
      */
     T max();
-
-    /**
-     * Returns the maximum element using the specified comparator, or null if empty
-     * 
-     * @param comparator
-     *            the comparator
-     * @return maximum element, or null if empty
-     * @throws NullPointerException
-     *             if the specified comparator is <tt>null</tt>
-     */
-    T max(Comparator<? super T> comparator);
 
     /**
      * Returns the minimum element, or null if empty, assuming that all elements are Comparables
@@ -106,16 +100,52 @@ public interface View<T> {
      */
     T min();
 
+    /** @return a new view retaining all <tt>non-null</tt> values from this view */
+    View<T> notNull();
+
     /**
-     * Returns the minimum element using the specified comparator, or null if empty
+     * Assuming this view only contains a single element, return that element. Otherwise throw an
+     * {@link IllegalStateException}.
+     * <p>
+     * This is equivalent to;
      * 
-     * @param comparator
-     *            the comparator
-     * @return minimum element, or null if empty
-     * @throws NullPointerException
-     *             if the specified comparator is <tt>null</tt>
+     * <pre>
+     * if (view.size() != 1) {
+     *     throw new IllegalArgumentException(&quot;view does not contain exactly 1 element&quot;);
+     * }
+     * return view.toList().get(0);
+     * </pre>
+     * 
+     * only atomically.
+     * 
+     * @throws IllegalStateException
+     *             if the view does not contain exactly one element
+     * @return the only element in this view
      */
-    T min(Comparator<? super T> comparator);
+    T one();
+
+    /**
+     * Assuming this view contains one or zero elements, return the single element or the specified value if the view is
+     * empty. Otherwise throw an {@link IllegalStateException}
+     * <p>
+     * This is equivalent to
+     * 
+     * <pre>
+     * if (view.size() &gt; 1) {
+     *     throw new IllegalArgumentException(&quot;size is greater then 1&quot;);
+     * }
+     * return view.any(defaultValue);
+     * </pre>
+     * 
+     * only atomically
+     * 
+     * @param base
+     *            the result for a view containing no elements
+     * @return the only element in this view, or the specified base if this view contains no elements
+     * @throws IllegalStateException
+     *             if the view contains more then one element
+     */
+    T one(T base);
 
     /**
      * Creates a new view where all elements are ordered accordingly to the specified comparator.
@@ -160,7 +190,7 @@ public interface View<T> {
 
     /**
      * Assuming all elements are Comparable, creates a new View where all values are ordered accordingly to their
-     * natural order. Furthermore, all elements in the view must be <i>mutually comparable</i> (that is,
+     * reverse natural order. Furthermore, all elements in the view must be <i>mutually comparable</i> (that is,
      * <tt>e1.compareTo(e2)</tt> must not throw a <tt>ClassCastException</tt> for any elements <tt>e1</tt> and
      * <tt>e2</tt> in the view).This ordering does not guarantee that elements with equal keys maintain their relative
      * position.
@@ -191,14 +221,21 @@ public interface View<T> {
      * @param reducer
      *            the reducer
      * @param base
-     *            the result for an empty array
-     * @return reduction
+     *            the result for an empty view
+     * @return reduction of elements in this view
+     * @throws NullPointerException
+     *             if the specified reducer is <tt>null</tt>
      */
     T reduce(Reducer<T> reducer, T base);
 
     /**
-     * Creates a new view with no more then the specified amount of elements. If this view is ordered, the elements
-     * selected for the new view will be returned view will maintain this ordering.
+     * Creates a new view retaining no more then the specified amount of elements.
+     * <p>
+     * If this view has been ordered, the elements retained will be the top xx number of elements, and for the new view
+     * will maintain this ordering.
+     * <p>
+     * If this view has not been ordered the new view will most likely contain the first <tt>n</tt> elements in this
+     * view (matching any filter constraints). However no such guarantee can be made.
      * <p>
      * Usage: Returning a list of the 10 highest numbers in a view containing only integers:
      * 
@@ -210,21 +247,27 @@ public interface View<T> {
      * @param limit
      *            the maximum number of elements in the new view
      * @throws IllegalArgumentException
-     *             if the limit is not positive (>0)
-     * @return a new view
+     *             if the limit is a non positive number (<=0)
+     * @return the new view
      */
     View<T> setLimit(long limit);
 
-    /** @return the number of elements in this view */
+    /**
+     * Returns the number of elements in this view. If this view contains more than <tt>Long.MAX_VALUE</tt> elements,
+     * returns <tt>Long.MAX_VALUE</tt>.
+     * 
+     * @return the number of elements in this view
+     */
     long size();
 
     /**
      * Returns an array containing all of the elements in this view. If this view is ordered, the returned array will
-     * maintain this ordering.
+     * maintain this ordering. Returning {@link #max()} as element with <tt>index 0</tt> in the array and {@link #min()}
+     * as element with <tt>index size-1</tt> in the array.
      * <p>
      * The returned array will be "safe" in that no references to it are maintained by this view. (In other words, this
-     * method must allocate a new array even if this view is backed by an array). The caller is thus free to modify the
-     * returned array.
+     * method must allocate a new array even if this view is somehow backed by an array). The caller is thus free to
+     * modify the returned array.
      * 
      * @return an array containing all of the elements in this view
      */
@@ -236,14 +279,15 @@ public interface View<T> {
      * allocated with the runtime type of the specified array and the size of this view.
      * <p>
      * If this view fits in the specified array with room to spare (i.e., the array has more elements than this view),
-     * the element in the array immediately following the end of the collection is set to <tt>null</tt>. This is
-     * useful in determining the length of this view <i>only</i> if the caller knows that this view does not contain
-     * any <tt>null</tt> elements.)
+     * the element in the array immediately following the end of the collection is set to <tt>null</tt>. This is useful
+     * in determining the length of this view <i>only</i> if the caller knows that this view does not contain any
+     * <tt>null</tt> elements.)
      * <p>
-     * If this view is ordered, the returned array will maintain this ordering.
+     * If this view is ordered, the returned array will maintain this ordering. Returning {@link #max()} as element with
+     * <tt>index 0</tt> in the array and {@link #min()} as element with <tt>index size-1</tt> in the array.
      * <p>
-     * <b>Sample usage.</b> Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code
-     * can be used to dump the view into a newly allocated array of Strings:
+     * <b>Sample usage.</b> Suppose <tt>v</tt> is a <tt>View</tt> known to contain only strings. The following code can
+     * be used to dump the view into a newly allocated array of Strings:
      * 
      * <pre>
      * View&lt;String&gt; v = ...
@@ -263,16 +307,17 @@ public interface View<T> {
      * @throws NullPointerException
      *             if the specified array is <tt>null</tt>
      */
-    <E> E[] toArray(E[] a);
+    <E> E[] toArray(E[] a); // OK
 
     /**
      * Creates a new {@link List} with all the elements in this view. If this view is ordered, the returned list will
-     * maintain this ordering.
+     * maintain this ordering. Returning {@link #max()} as element with <tt>index 0</tt> in the list and {@link #min()}
+     * as element with <tt>index size-1</tt> in the list.
      * <p>
      * The returned list will be "safe" in that no references to it or any of its elements are maintained by this view.
-     * (In other words, this method must allocate a new list even if this view is backed by an list).
+     * (In other words, this method must allocate a new list even if this view is somehow backed by a list).
      * 
-     * @return the new list
+     * @return a list containing all the elements in this view
      */
     List<T> toList();
 }

@@ -207,7 +207,7 @@ public final class CollectionUtils {
          */
         @Override
         public boolean contains(Object o) {
-            if (!(o instanceof Map.Entry)) {
+            if (!(o instanceof Map.Entry<?,?>)) {
                 return false;
             }
             return col.contains(new SimpleImmutableEntry<K, V>((Map.Entry<K, V>) o));

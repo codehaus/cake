@@ -17,4 +17,9 @@ public class StringAttribute extends ObjectAttribute<String> {
         super(name, String.class, defaultValue);
     }
 
+    @Override
+    public String fromString(String str) {
+        return str;
+    }
+
 }

@@ -23,6 +23,8 @@ package org.codehaus.cake.util.attribute;
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */
+//TODO Rename to EpochTimeAttribute???????? or EpochInstanceAttribute
+//Kig i den time jsr xxx
 public abstract class TimeInstanceAttribute extends LongAttribute {
     /** serialVersionUID. */
     private static final long serialVersionUID = 1;

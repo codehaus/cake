@@ -33,10 +33,10 @@ public abstract class DurationAttribute extends LongAttribute {
     protected static final long DEFAULT_DURATION = Long.MAX_VALUE;
 
     /** A value that indicates forever. */
-    protected static final long FOREVER = Long.MAX_VALUE;
+    public static final long FOREVER = Long.MAX_VALUE;
 
     /** The time unit of this attribute. */
-    protected static final TimeUnit TIME_UNIT = TimeUnit.NANOSECONDS;
+    public static final TimeUnit TIME_UNIT = TimeUnit.NANOSECONDS;
 
     /**
      * Creates a new DurationAttribute. The default duration value is {@link Long#MAX_VALUE} indicating forever.
@@ -94,7 +94,7 @@ public abstract class DurationAttribute extends LongAttribute {
      *            the time unit to return the value in
      * @return the value of this attribute
      */
-    public long getValue(AttributeMap attributes, TimeUnit unit) {
+    public long get(AttributeMap attributes, TimeUnit unit) {
         return convertTo(attributes.get(this), unit);
     }
 
@@ -109,7 +109,7 @@ public abstract class DurationAttribute extends LongAttribute {
      *            the default value to return if this attribute is not set in the AttributeMap
      * @return the value of this attribute
      */
-    public long getValue(AttributeMap attributes, TimeUnit unit, long defaultValue) {
+    public long get(AttributeMap attributes, TimeUnit unit, long defaultValue) {
         long val = attributes.get(this, 0);
         if (val == 0) {
             return defaultValue;

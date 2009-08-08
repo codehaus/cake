@@ -39,9 +39,11 @@ public class InternalObjectPredicates {
     public static final FalsePredicate FALSE = new FalsePredicate();
 
     /** A Predicate that returns <code>false</code> if the element being tested is null. */
+    @SuppressWarnings("unchecked")
     public static final Predicate IS_NOT_NULL = new IsNotNullFilter();
 
     /** A Predicate that returns <code>true</code> if the element being tested is null. */
+    @SuppressWarnings("unchecked")
     public static final Predicate IS_NULL = new IsNullFilter();
 
     /** A Predicate that always evaluates to <code>true</code>. */
@@ -430,15 +432,13 @@ public class InternalObjectPredicates {
         }
     }
 
-    /** A greather-then predicate as per Comparable/Comparator contract. */
+    /** A greater-then predicate as per Comparable/Comparator contract. */
     public static final class GreaterThenPredicate<E> implements Predicate<E>, Serializable {
 
         /** <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 1L;
 
-        /**
-         * The comparator to compare elements with or null if the objects natural comparator should be used.
-         */
+        /** The comparator to compare elements with or null if the objects natural comparator should be used. */
         private final Comparator comparator;
 
         /** The object to compare against. */
@@ -508,8 +508,8 @@ public class InternalObjectPredicates {
     }
 
     /**
-     * A Predicate that evaluates to <code>true</code> iff the element being evaluated is {@link Object#equals equal}
-     * to the element being specified.
+     * A Predicate that evaluates to <code>true</code> iff the element being evaluated is {@link Object#equals equal} to
+     * the element being specified.
      */
     public static final class IsEqualsPredicate<E> implements Predicate<E>, Serializable {
 
@@ -556,7 +556,7 @@ public class InternalObjectPredicates {
     }
 
     /** A Predicate that returns <code>true</code> if the element being tested is not null. */
-    public static final class IsNotNullFilter implements Predicate, Serializable {
+    public static final class IsNotNullFilter implements Predicate<Object>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
@@ -583,7 +583,7 @@ public class InternalObjectPredicates {
     /**
      * A Predicate that returns <code>true</code> if the element being tested is null.
      */
-    public static final class IsNullFilter implements Predicate, Serializable {
+    public static final class IsNullFilter implements Predicate<Object>, Serializable {
         /** serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
@@ -1055,8 +1055,8 @@ public class InternalObjectPredicates {
      * 
      * @see FalsePredicate
      */
-    public static final class TruePredicate implements Predicate<Object>, BytePredicate, CharPredicate, DoublePredicate,
-            FloatPredicate, IntPredicate, LongPredicate, ShortPredicate, Serializable {
+    public static final class TruePredicate implements Predicate<Object>, BytePredicate, CharPredicate,
+            DoublePredicate, FloatPredicate, IntPredicate, LongPredicate, ShortPredicate, Serializable {
 
         /** Default <code>serialVersionUID</code>. */
         private static final long serialVersionUID = 1L;
@@ -1193,8 +1193,8 @@ public class InternalObjectPredicates {
         if (iterable == null) {
             throw new NullPointerException("iterable is null");
         }
-        ArrayList list = new ArrayList();
-        for (Predicate p : iterable) {
+        ArrayList<Predicate<?>> list = new ArrayList<Predicate<?>>();
+        for (Predicate<?> p : iterable) {
             if (p == null) {
                 throw new NullPointerException("iterable contained a null");
             }

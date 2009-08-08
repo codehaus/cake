@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A Clock instance is a factory for creating timestamps. Normally {@link System#currentTimeMillis()} and
- * {@link System#nanoTime()} is used, however, there are number of situations where its useful to allow different ways to
+ * {@link System#nanoTime()} is used, however, there are some situations where it is useful to allow different ways to
  * create timestamps.
  * <ul>
  * <li>For simulation, if you have enough CPU/memory, a simulated environment can run much much faster than a real

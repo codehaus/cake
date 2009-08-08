@@ -129,7 +129,7 @@ public abstract class CharAttribute extends Attribute<Character> implements
      */
     public char fromString(String str) {
         if (str.length() != 1) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("expected a string containing exactly 1 char");
         }
         return str.charAt(0);
     }

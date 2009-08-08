@@ -28,10 +28,29 @@ import org.codehaus.cake.util.ops.Ops.Procedure;
 import org.codehaus.cake.util.ops.Ops.Reducer;
 
 public class Views {
-//
-//    Triple<Long,Long,Double> minMaxAverage(LongView view);
-//    Pair<Long,Long> minMax(LongView view);
-//    <T> Pair<T,T> minMax(View<T> view);
+
+    // Triple<Long,Long,Double> minMaxAverage(LongView view);
+    // Pair<Long,Long> minMax(LongView view);
+    // <T> Pair<T,T> minMax(View<T> view);
+    // <T> List<T> top(View<T> view, int count);
+
+    public static <T, V> View<T> mapToLong(View<V> v, String method) {
+        
+    }
+    public static <T, V> View<T> map(View<V> v, String method) {
+        return null;
+    }
+
+    public static <T> List<T> top(View<T> view, int count) {
+        return null;
+    }
+
+    public static void main(String[] args) {
+        View<Integer> v = null;
+        List<Integer> tops = top(v, 10);
+        View<String> vv = map(v, "toString");
+    }
+
     public static final MapView EMPTY_MAP_VIEW = new EmptyMapView();
 
     public static final View EMPTY_VIEW = new EmptyView();
@@ -78,8 +97,16 @@ public class Views {
         /** serialVersionUID */
         private static final long serialVersionUID = 1L;
 
-        public T any() {
-            return null;
+        public T any(T base) {
+            return base;
+        }
+
+        public T one() {
+            throw new IllegalStateException("view is empty");
+        }
+
+        public T one(T base) {
+            return base;
         }
 
         public void apply(Procedure<? super T> procedure) {
@@ -148,6 +175,10 @@ public class Views {
         /** @return Preserves singleton property */
         private Object readResolve() {
             return EMPTY_VIEW;
+        }
+
+        public View<T> notNull() {
+            return this;
         }
     }
 
