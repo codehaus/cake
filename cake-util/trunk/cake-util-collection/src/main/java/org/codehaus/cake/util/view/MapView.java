@@ -1,4 +1,4 @@
-package org.codehaus.cake.util.collection;
+package org.codehaus.cake.util.view;
 
 import java.util.List;
 import java.util.Map;

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.util.collection;
+package org.codehaus.cake.util.view;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -28,6 +29,16 @@ import org.codehaus.cake.util.ops.Ops.Procedure;
 import org.codehaus.cake.util.ops.Ops.Reducer;
 
 public class Views {
+
+    public static void main2(String[] args) {
+        BigDecimal b;
+        View<BigDecimal> numbers = null;
+        BigDecimal sum = numbers.reduce(new Reducer<BigDecimal>() {
+            public BigDecimal op(BigDecimal a, BigDecimal b) {
+                return a.add(b);
+            }
+        }, BigDecimal.ZERO);
+    }
 
     // Triple<Long,Long,Double> minMaxAverage(LongView view);
     // Pair<Long,Long> minMax(LongView view);
