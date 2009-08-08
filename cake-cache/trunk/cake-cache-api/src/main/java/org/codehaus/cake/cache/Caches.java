@@ -42,9 +42,6 @@ import org.codehaus.cake.util.attribute.FloatAttribute;
 import org.codehaus.cake.util.attribute.IntAttribute;
 import org.codehaus.cake.util.attribute.LongAttribute;
 import org.codehaus.cake.util.attribute.ShortAttribute;
-import org.codehaus.cake.util.collection.MapView;
-import org.codehaus.cake.util.collection.View;
-import org.codehaus.cake.util.collection.Views;
 import org.codehaus.cake.util.ops.Ops.BinaryPredicate;
 import org.codehaus.cake.util.ops.Ops.BytePredicate;
 import org.codehaus.cake.util.ops.Ops.CharPredicate;
@@ -54,6 +51,9 @@ import org.codehaus.cake.util.ops.Ops.IntPredicate;
 import org.codehaus.cake.util.ops.Ops.LongPredicate;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 import org.codehaus.cake.util.ops.Ops.ShortPredicate;
+import org.codehaus.cake.util.view.MapView;
+import org.codehaus.cake.util.view.View;
+import org.codehaus.cake.util.view.Views;
 
 /**
  * Various Factory and utility methods.

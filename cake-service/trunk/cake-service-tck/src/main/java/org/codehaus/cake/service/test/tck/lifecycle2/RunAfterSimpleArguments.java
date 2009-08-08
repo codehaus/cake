@@ -5,7 +5,7 @@ import org.codehaus.cake.service.ContainerConfiguration;
 import org.codehaus.cake.service.RunAfter;
 import org.codehaus.cake.service.Container.State;
 import org.codehaus.cake.service.test.tck.AbstractTCKTest;
-import org.codehaus.cake.test.util.AssertableState;
+import org.codehaus.cake.test.util.verifier.AssertableState;
 import org.junit.Ignore;
 import org.junit.Test;
 

@@ -7,8 +7,8 @@ import java.util.Map;
 import org.codehaus.cake.util.attribute.Attribute;
 import org.codehaus.cake.util.attribute.ComparableObjectAttribute;
 import org.codehaus.cake.util.attribute.ObjectAttribute;
-import org.codehaus.cake.util.collection.MapView;
-import org.codehaus.cake.util.collection.View;
+import org.codehaus.cake.util.view.MapView;
+import org.codehaus.cake.util.view.View;
 
 /**
  * A cache view is a virtual view of a collection of cache entries.

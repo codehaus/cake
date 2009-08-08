@@ -1,7 +1,6 @@
 package org.codehaus.cake.util;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,10 +9,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.cake.util.collection.View;
 import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Predicate;
-import org.codehaus.cake.util.ops.Ops.Reducer;
 
 public class Maps {
 
@@ -37,16 +34,6 @@ public class Maps {
 
     public static <K, V> Op<Map.Entry<K, V>, V> mapEntryToValue() {
         return MAP_ENTRY_TO_VALUE_OP;
-    }
-
-    public static void main(String[] args) {
-        BigDecimal b;
-        View<BigDecimal> numbers = null;
-        BigDecimal sum = numbers.reduce(new Reducer<BigDecimal>() {
-            public BigDecimal op(BigDecimal a, BigDecimal b) {
-                return a.add(b);
-            }
-        }, BigDecimal.ZERO);
     }
 
     /**

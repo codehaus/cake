@@ -6,12 +6,12 @@ import java.util.Comparator;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheView;
 import org.codehaus.cake.internal.cache.processor.CacheProcessor;
+import org.codehaus.cake.util.Comparators;
 import org.codehaus.cake.util.attribute.Attribute;
-import org.codehaus.cake.util.collection.MapView;
-import org.codehaus.cake.util.collection.View;
-import org.codehaus.cake.util.ops.Comparators;
 import org.codehaus.cake.util.ops.ObjectOps;
 import org.codehaus.cake.util.ops.Ops.Predicate;
+import org.codehaus.cake.util.view.MapView;
+import org.codehaus.cake.util.view.View;
 
 public class DefaultCacheView<K, V> extends AbstractView implements CacheView<K, V> {
 
