@@ -20,10 +20,9 @@ import org.codehaus.cake.management.ManagementConfiguration;
 /**
  * The management interface for the loading service.
  * <p>
- * This managed bean is only available at runtime if a cache loader has been set using
- * {@link CacheLoadingConfiguration#setLoader(BlockingCacheLoader)} or
- * {@link CacheLoadingConfiguration#setLoader(org.codehaus.cake.ops.Ops.Op)} and
- * {@link ManagementConfiguration#setEnabled(boolean)} has been set to <code>true</code>.
+ * This managed bean is only available at runtime if a cache loader has been set up using
+ * {@link CacheLoadingConfiguration#setLoader(Object) and {@link ManagementConfiguration#setEnabled(boolean)} has been
+ * set to <code>true</code>.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id: CacheLoadingMXBean.java 327 2009-04-08 09:34:27Z kasper $

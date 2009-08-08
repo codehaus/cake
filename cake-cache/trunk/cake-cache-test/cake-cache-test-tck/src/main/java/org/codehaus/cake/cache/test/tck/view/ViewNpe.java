@@ -66,16 +66,6 @@ public class ViewNpe extends AbstractCacheTCKTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void viewMax() {
-        c.view().values().max(null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void viewMin() {
-        c.view().values().min(null);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void viewReduce() {
         c.view().values().reduce(null, "");
     }

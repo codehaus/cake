@@ -16,19 +16,6 @@ public class CacheLoaders {
     private CacheLoaders() {
     }
 
-    // TODO Schedule full reload (forced / non forced)
-
-    /**
-     * Schedules a periodic reloading of a cache.
-     * 
-     * @param cache
-     * @param period
-     * @param unit
-     */
-    public void scheduleReload(Cache<?, ?> cache, int period, TimeUnit unit) {
-
-    }
-
     /**
      * Equivalent to {@link #scheduleForcedPartialReload(Cache, ScheduledExecutorService, int, long, TimeUnit)} except
      * that the caches default scheduler will be used (<tt>cache.with().scheduledExecutor()).
@@ -39,9 +26,9 @@ public class CacheLoaders {
      * @param TimeUnit
      *            the time unit of the period parameter
      */
-    public static ScheduledFuture<?> scheduleForcedPartialReload(Cache<?, ?> cache, int parts, long period,
+    public static ScheduledFuture<?> schedulePartialReload(Cache<?, ?> cache, boolean isForced, int parts, long period,
             TimeUnit unit) {
-        return scheduleForcedPartialReload(cache, cache.with().scheduledExecutor(), parts, period, unit);
+        return schedulePartialReload(cache, isForced, cache.with().scheduledExecutor(), parts, period, unit);
     }
 
     /**
@@ -57,9 +44,9 @@ public class CacheLoaders {
      * @param TimeUnit
      *            the time unit of the period parameter
      */
-    public static ScheduledFuture<?> scheduleForcedPartialReload(Cache<?, ?> cache, ScheduledExecutorService ses,
-            int parts, long period, TimeUnit unit) {
-        return ses.scheduleAtFixedRate(new ModuloRefreshCache(cache, parts), period, period, unit);
+    public static ScheduledFuture<?> schedulePartialReload(Cache<?, ?> cache, boolean isForced,
+            ScheduledExecutorService ses, int parts, long period, TimeUnit unit) {
+        return ses.scheduleAtFixedRate(new ModuloRefreshCache(cache, isForced, parts), period, period, unit);
     }
 
     /**
@@ -79,13 +66,36 @@ public class CacheLoaders {
      *            the time unit of the period parameter
      */
     @SuppressWarnings("unchecked")
-    public static void scheduleForcedPartialReload(CacheConfiguration<?, ?> configuration, final int parts,
-            final long period, final TimeUnit unit) {
+    public static void schedulePartialReload(CacheConfiguration<?, ?> configuration, final boolean isForced,
+            final int parts, final long period, final TimeUnit unit) {
+        // TODO verify parameters, since we dispatch async
         configuration.runAfterStart((Procedure) new Procedure<Cache<?, ?>>() {
             public void op(Cache<?, ?> cache) {
-                scheduleForcedPartialReload(cache, parts, period, unit);
+                schedulePartialReload(cache, isForced, parts, period, unit);
             }
         });
+    }
+
+    /**
+     * Schedules a periodic reloading of a cache.
+     * 
+     * @param cache
+     * @param period
+     * @param unit
+     */
+    public static void scheduleReload(Cache<?, ?> cache, boolean isForced, long period, TimeUnit unit) {
+
+    }
+
+    public static void scheduleReload(CacheConfiguration<?, ?> configuration, final boolean isForced,
+            final long period, final TimeUnit unit) {
+        // TODO verify parameters, since we dispatch async
+        configuration.runAfterStart((Procedure) new Procedure<Cache<?, ?>>() {
+            public void op(Cache<?, ?> cache) {
+                scheduleReload(cache, isForced, period, unit);
+            }
+        });
+
     }
 
     /** An Attribute indicating whether or not a loading should be forced. */
@@ -108,12 +118,19 @@ public class CacheLoaders {
     static class ModuloRefreshCache implements Runnable {
         private final Cache<?, ?> cache;
         private int index;
+        private final boolean isForced;
         private final Object lock = new Object();
         private final int modulo;
 
-        public ModuloRefreshCache(Cache<?, ?> cache, int modulo) {
+        public ModuloRefreshCache(Cache<?, ?> cache, boolean isForced, int modulo) {
+            if (cache == null) {
+                throw new NullPointerException("cache is null");
+            } else if (modulo < 1) {
+                throw new IllegalArgumentException("modulo must be a postive number (>0)");
+            }
             this.cache = cache;
             this.modulo = modulo;
+            this.isForced = isForced;
         }
 
         public void run() {
@@ -129,7 +146,11 @@ public class CacheLoaders {
                     }
                 };
             }
-            cache.filter().onKey(p).with().loadingForced().loadAll();
+            if (isForced) {
+                cache.filter().onKey(p).with().loadingForced().loadAll();
+            } else {
+                cache.filter().onKey(p).with().loading().loadAll();
+            }
         }
 
         static int hash(int h) {
@@ -139,4 +160,27 @@ public class CacheLoaders {
             return h ^ (h >>> 7) ^ (h >>> 4);
         }
     }
+
+    static class ReloadCache implements Runnable {
+        private final Cache<?, ?> cache;
+        private final boolean isForced;
+
+        public ReloadCache(Cache<?, ?> cache, boolean isForced) {
+            if (cache == null) {
+                throw new NullPointerException("cache is null");
+            }
+            this.cache = cache;
+            this.isForced = isForced;
+        }
+
+        public void run() {
+            if (isForced) {
+                cache.with().loadingForced().loadAll();
+            } else {
+                cache.with().loading().loadAll();
+            }
+        }
+
+    }
+
 }

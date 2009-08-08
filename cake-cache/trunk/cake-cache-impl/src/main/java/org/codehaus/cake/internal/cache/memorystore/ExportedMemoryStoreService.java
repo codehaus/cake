@@ -59,7 +59,7 @@ public class ExportedMemoryStoreService<K, V> implements ServiceProvider<Exporte
         this.filter = null;
     }
 
-    ExportedMemoryStoreService(ExportedMemoryStoreService parent, Predicate<CacheEntry<K, V>> predicate) {
+    ExportedMemoryStoreService(ExportedMemoryStoreService<K, V> parent, Predicate<CacheEntry<K, V>> predicate) {
         this.configurationService = parent.configurationService;
         this.memoryStore = parent.memoryStore;
         this.requestFactory = parent.requestFactory;

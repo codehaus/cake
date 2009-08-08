@@ -24,7 +24,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandler;
+import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.spi.ExceptionContext;
+import org.codehaus.cake.service.spi.ExceptionHandler;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;
 import org.junit.Test;
@@ -64,6 +66,11 @@ public class CacheExceptionHandlerTest {
         }
 
         public String getMessage() {
+            return null;
+        }
+
+        @Override
+        public ExceptionHandler<Container> getParent() {
             return null;
         }
 

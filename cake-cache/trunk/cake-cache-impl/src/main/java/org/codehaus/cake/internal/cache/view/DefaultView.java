@@ -19,8 +19,32 @@ public class DefaultView<T> extends AbstractView implements View<T> {
     }
 
     /** {@inheritDoc} */
-    public T any() {
-        return (T) execute(ViewCommands.ANY);
+    public T one() {
+        List<T> result = this.setLimit(2).toList();
+        if (result.size() > 1) {
+            throw new IllegalStateException("view contains more then 1 element");
+        } else if (result.size() == 1) {
+            return result.get(0);
+        } else {
+            throw new IllegalStateException("view is empty");
+        }
+    }
+
+    /** {@inheritDoc} */
+    public T one(T base) {
+        List<T> result = this.setLimit(2).toList();
+        if (result.size() > 1) {
+            throw new IllegalStateException("view contains more then 1 element");
+        } else if (result.size() == 1) {
+            return result.get(0);
+        } else {
+            return base;
+        }
+    }
+
+    /** {@inheritDoc} */
+    public T any(T base) {
+        return (T) execute(ViewCommands.ANY, base);
     }
 
     /** {@inheritDoc} */
@@ -119,5 +143,9 @@ public class DefaultView<T> extends AbstractView implements View<T> {
 
     public boolean isEmpty() {
         return size() == 0;
+    }
+
+    public View<T> notNull() {
+        throw new UnsupportedOperationException();
     }
 }

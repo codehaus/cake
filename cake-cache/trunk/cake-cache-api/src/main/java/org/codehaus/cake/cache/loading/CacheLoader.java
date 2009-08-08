@@ -65,7 +65,11 @@ import java.lang.annotation.Target;
  *     }
  * }
  * </pre>
- * 
+ * <p>
+ * The following three types of signatures are currently supported
+ * load(K key) normal usage
+ * load(K key, AttributeMap) if the method needs parameters specified by the user
+ * load(K key, MutableAttributeMap) if the method needs to parse attribute values back to the cache
  * <p>
  * Cache loader instances <tt>MUST</tt> be thread-safe. Allowing multiple threads to simultaneous load new values.
  * <p>

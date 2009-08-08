@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.internal.cache.service.loading;
+package org.codehaus.cake.internal.cache.loading.util;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import org.codehaus.cake.cache.CacheEntry;
+import org.codehaus.cake.internal.cache.service.loading.ThreadSafeCacheLoader;
 import org.codehaus.cake.util.attribute.MutableAttributeMap;
 
 class LoadableFutureTask<K, V> extends FutureTask<CacheEntry<K, V>> {

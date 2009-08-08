@@ -28,7 +28,6 @@ import org.codehaus.cake.util.attribute.MutableAttributeMap;
 public class UnsynchronizedCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
 
     private final BlockingCacheLoader<K, V> loader;
-
     private final MemoryStore<K, V> store;
     private final CacheRequestFactory<K, V> requestFactory;
 

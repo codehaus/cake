@@ -63,13 +63,13 @@ public class UnsynchronizedCache<K, V> extends AbstractCache<K, V> {
     }
 
     private static Composer createComposer(CacheConfiguration<?, ?> configuration) {
+        if (configuration.withManagement().isEnabled()) {
+            throw new IllegalArgumentException("Cache does not support Management");
+        }
         Composer composer = newComposer(configuration);
 
         // Common components
         composer.registerImplementation(UnsynchronizedRunState.class);
-        if (configuration.withManagement().isEnabled()) {
-            throw new IllegalArgumentException("Cache does not support Management");
-        }
 
         // Cache components
         composer.registerImplementation(ExportedMemoryStoreService.class);

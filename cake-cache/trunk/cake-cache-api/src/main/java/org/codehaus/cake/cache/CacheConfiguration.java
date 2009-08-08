@@ -124,8 +124,8 @@ public class CacheConfiguration<K, V> extends ContainerConfiguration {
 
     /** {@inheritDoc} */
     @Override
-    public CacheConfiguration<K, V> addService(Object o) {
-        super.addService(o);
+    public CacheConfiguration<K, V> addService(Object o, Class<?>... exportAs) {
+        super.addService(o,exportAs);
         return this;
     }
 

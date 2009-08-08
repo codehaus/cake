@@ -117,7 +117,7 @@ public class HashEntryArrayProcessor<K, V> {
         } else if (o == List.class) {
             return Arrays.asList(array.withMapping(mapper).all().getArray());
         } else if (o == ViewCommands.ANY) {
-            return array.withMapping(mapper).any();
+            return array.withMapping(mapper).any(commands.pop());
         } else if (o == Array.class) {
             o = commands.pop();
             if (o == null) {

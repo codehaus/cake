@@ -15,9 +15,14 @@
  */
 package org.codehaus.cake.cache.loading;
 
+import java.lang.reflect.Method;
+
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.cache.CacheWriter;
+import org.codehaus.cake.internal.util.ClassUtils;
+import org.codehaus.cake.util.attribute.AttributeMap;
+import org.codehaus.cake.util.attribute.MutableAttributeMap;
 import org.codehaus.cake.util.ops.Ops.Predicate;
 
 /**
@@ -72,12 +77,34 @@ public class CacheLoadingConfiguration<K, V> {
      * @return this configuration
      */
     public CacheLoadingConfiguration<K, V> setLoader(Object loader) {
-        this.loader = loader;
-        // verify loader
-        if (loader instanceof Class<?>) {
-            //check public constructor
+        // Allow to clear the loader
+        if (loader == null) {
+            this.loader = null;
+            return this;
         }
-        //verify one and only one method
+        // TODO if we allow constructor generation
+        // if (loader instanceof Class<?>) {
+        // // check empty public constructor
+        // }
+        //TODO allow keys taking multiple loaders each taking a different type of keys
+        
+        Method m = ClassUtils.checkExactlyOneMethodWithAnnotation(loader.getClass(), CacheLoader.class);
+        Class<?>[] parameters = m.getParameterTypes();
+        if (parameters.length == 0) {
+            throw new IllegalArgumentException("Method " + m
+                    + " must take a single argument, that is the key the cache is trying to load");
+        } else if (parameters.length == 1) {
+            this.loader = loader; // We assume the single parameter is the key
+        } else if (parameters.length == 2) {
+            if (!(parameters[1].equals(AttributeMap.class) || parameters[1].equals(MutableAttributeMap.class))) {
+                throw new IllegalArgumentException("Method " + m
+                        + " must have a second parameter, that takes either an AttributeMap or a MutableAttributeMap");
+            }
+            this.loader = loader; // We assume the first parameter is the key
+        } else {
+            throw new IllegalArgumentException("Method " + m
+                    + " must take a single argument, that is the key the cache is trying to load");
+        }
         return this;
     }
 

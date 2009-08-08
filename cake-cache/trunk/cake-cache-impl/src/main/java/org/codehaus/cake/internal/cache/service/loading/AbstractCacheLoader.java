@@ -44,7 +44,7 @@ public abstract class AbstractCacheLoader<K, V> implements InternalCacheLoadingS
 
      static <K, V> BlockingCacheLoader<K, V> getSimpleLoader(CacheLoadingConfiguration<K, V> conf) {
         final Object loader = conf.getLoader();
-        Class loaderClass = loader.getClass();
+        Class<?> loaderClass = loader.getClass();
         for (final Method m : loaderClass.getDeclaredMethods()) {
             CacheLoader cl = m.getAnnotation(CacheLoader.class);
             if (cl != null) {

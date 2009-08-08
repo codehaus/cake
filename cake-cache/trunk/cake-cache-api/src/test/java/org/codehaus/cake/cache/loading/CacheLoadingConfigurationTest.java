@@ -26,6 +26,18 @@ import org.junit.Test;
 public class CacheLoadingConfigurationTest {
 
     @Test
+    public void setLoader() {
+        CacheLoadingConfiguration<Integer, String> c = new CacheLoadingConfiguration<Integer, String>();
+        c.setLoader(new Loader());
+    }
+    static class Loader {
+        @CacheLoader
+        public void load(String foo) {
+            
+        }
+        
+    }
+    @Test
     public void filter() {
         CacheLoadingConfiguration<Integer, String> c = new CacheLoadingConfiguration<Integer, String>();
         assertNull(c.getNeedsReloadCondition());
@@ -44,35 +56,35 @@ public class CacheLoadingConfigurationTest {
 
     }
 
-//    @Test
-//    public void loaderOp() {
-//        CacheLoadingConfiguration<Number, Number> c = new CacheLoadingConfiguration<Number, Number>();
-//        assertNull(c.getLoader());
-//        Op<Number, Number> op = dummy(Op.class);
-//
-//        assertSame(c, c.setLoader(op));
-//        assertSame(op, c.getLoader());
-//
-//        Op<Number, Integer> op1 = dummy(Op.class);
-//        c.setLoader(op1);
-//
-//        Op<Object, Number> op2 = dummy(Op.class);
-//        c.setLoader(op2);
-//    }
-//
-//    @Test
-//    public void loaderSimple() {
-//        CacheLoadingConfiguration<Number, Number> c = new CacheLoadingConfiguration<Number, Number>();
-//        assertNull(c.getLoader());
-//        BlockingCacheLoader<Number, Number> scl = dummy(BlockingCacheLoader.class);
-//
-//        assertSame(c, c.setLoader(scl));
-//        assertSame(scl, c.getLoader());
-//
-//        BlockingCacheLoader<Number, Integer> SimpleCacheLoader1 = dummy(BlockingCacheLoader.class);
-//        c.setLoader(SimpleCacheLoader1);
-//
-//        BlockingCacheLoader<Object, Number> SimpleCacheLoader2 = dummy(BlockingCacheLoader.class);
-//        c.setLoader(SimpleCacheLoader2);
-//    }
+    // @Test
+    // public void loaderOp() {
+    // CacheLoadingConfiguration<Number, Number> c = new CacheLoadingConfiguration<Number, Number>();
+    // assertNull(c.getLoader());
+    // Op<Number, Number> op = dummy(Op.class);
+    //
+    // assertSame(c, c.setLoader(op));
+    // assertSame(op, c.getLoader());
+    //
+    // Op<Number, Integer> op1 = dummy(Op.class);
+    // c.setLoader(op1);
+    //
+    // Op<Object, Number> op2 = dummy(Op.class);
+    // c.setLoader(op2);
+    // }
+    //
+    // @Test
+    // public void loaderSimple() {
+    // CacheLoadingConfiguration<Number, Number> c = new CacheLoadingConfiguration<Number, Number>();
+    // assertNull(c.getLoader());
+    // BlockingCacheLoader<Number, Number> scl = dummy(BlockingCacheLoader.class);
+    //
+    // assertSame(c, c.setLoader(scl));
+    // assertSame(scl, c.getLoader());
+    //
+    // BlockingCacheLoader<Number, Integer> SimpleCacheLoader1 = dummy(BlockingCacheLoader.class);
+    // c.setLoader(SimpleCacheLoader1);
+    //
+    // BlockingCacheLoader<Object, Number> SimpleCacheLoader2 = dummy(BlockingCacheLoader.class);
+    // c.setLoader(SimpleCacheLoader2);
+    // }
 }

@@ -31,11 +31,6 @@ import org.codehaus.cake.service.ContainerShutdownException;
  * Currently two implementations exist: {@link org.codehaus.cake.cache.UnsynchronizedCache} which is a cache that should only be accessed by an single thread and
  * {@link org.codehaus.cake.cache.SynchronizedCache} which can be used concurrently by multiple threads.
  * <p>
- * The three collection views, which allow a cache's contents to be viewed as a set of keys, collection of values, or
- * set of key-value mappings only shows values contained in the actual cache. Furthermore, the cache will <tt>not</tt>
- * check whether or not an entry has expired when calling methods on any of the collection views. As a result the cache
- * might return values that have expired.
- * <p>
  * All general-purpose <tt>Cache</tt> implementation classes should provide two "standard" constructors: a void (no
  * arguments) constructor, which creates an empty cache with default settings, and a constructor with a single argument
  * of type {@link CacheConfiguration}. There is no way to enforce this recommendation (as interfaces cannot contain
@@ -61,17 +56,19 @@ import org.codehaus.cake.service.ContainerShutdownException;
 public interface Cache<K, V> extends Container, Iterable<CacheEntry<K, V>> {
 
     /**
-     * Returns a ConcurrentMap view of the mappings contained in this cache. The map is backed by the cache, so changes to
-     * the cache are reflected in the map, and vice-versa. If the cache is modified while an iteration over one of the maps collection views are
-     * in progress (except through the iterator's own <tt>remove</tt> operation, or through the <tt>setValue</tt>
-     * operation on a map entry returned by the iterator) the results of the iteration are undefined. 
+     * Returns a ConcurrentMap view of the mappings contained in this cache. The map is backed by the cache, so changes
+     * to the cache are reflected in the map, and vice-versa. If the cache is modified while an iteration over one of
+     * the maps collection views are in progress (except through the iterator's own <tt>remove</tt> operation, or
+     * through the <tt>setValue</tt> operation on a map entry returned by the iterator) the results of the iteration are
+     * undefined.
      * <p>
-     * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
+     * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>, <tt>removeAll</tt>
+     * and <tt>retainAll</tt> operation will throw an IllegalStateException.
      * 
      * @return a ConcurrentMap view of this cache
      * @see #view()
      */
+    //TODO a concurrent cache kan godt allowe concurrent iterator traversels.
     ConcurrentMap<K, V> asMap();
     
     /**
@@ -123,23 +120,6 @@ public interface Cache<K, V> extends Container, Iterable<CacheEntry<K, V>> {
      *             if the specified value is null
      */
     boolean containsValue(Object value);
-
-    /**
-     * Returns a {@link Set} view of the mappings contained in this cache. The set is backed by the cache, so changes to
-     * the cache are reflected in the set, and vice-versa. If the cache is modified while an iteration over the set is
-     * in progress (except through the iterator's own <tt>remove</tt> operation, or through the <tt>setValue</tt>
-     * operation on a map entry returned by the iterator) the results of the iteration are undefined. The set supports
-     * element removal, which removes the corresponding mapping from the cache, via the <tt>Iterator.remove</tt>,
-     * <tt>Set.remove</tt>, <tt>removeAll</tt>, <tt>retainAll</tt> and <tt>clear</tt> operations. It does not
-     * support the <tt>add</tt> or <tt>addAll</tt> operations.
-     * <p>
-     * If the cache has been shutdown calls to <tt>Iterator.remove</tt>, <tt>Collection.remove</tt>,
-     * <tt>removeAll</tt> and <tt>retainAll</tt> operation will throw an IllegalStateException.
-     * 
-     * @return a set view of the mappings contained in this map
-     * @see #view()
-     */
- //   Set<Map.Entry<K, V>> entrySet();
 
     /**
      * Returns a cache selector that can be used to create a filtered view of the mappings contained in this cache. The

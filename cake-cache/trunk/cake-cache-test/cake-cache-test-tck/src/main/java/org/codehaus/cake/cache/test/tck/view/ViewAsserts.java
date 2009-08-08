@@ -43,7 +43,7 @@ public class ViewAsserts {
 
     static <T> void assertViewEquals(View<T> v, Collection<T> list, Class<T> type, boolean isOrdered) {
         // any
-        assertTrue(list.contains(v.any()));
+        assertTrue(list.contains(v.any(null)));
         // apply (currently ignores any ordering)
         Queue<T> res = new ConcurrentLinkedQueue<T>();
         v.apply(Iterables.offerToQueue(res));
@@ -58,8 +58,8 @@ public class ViewAsserts {
                 assertEquals(Collections.min((Collection) list), v.min());
             }
             if (type == Integer.class) {
-                assertEquals(Collections.max((Collection) list, MAX_EVEN), v.max((Comparator) MAX_EVEN));
-                assertEquals(Collections.min((Collection) list, MAX_EVEN), v.min((Comparator) MAX_EVEN));
+                assertEquals(Collections.max((Collection) list, MAX_EVEN), v.orderBy((Comparator) MAX_EVEN).max());
+                assertEquals(Collections.min((Collection) list, MAX_EVEN), v.orderBy((Comparator) MAX_EVEN).min());
                 List<Integer> numbers = new ArrayList(list);
                 Collections.sort(numbers, MAX_EVEN);
                 assertEquals(numbers, v.orderBy((Comparator) MAX_EVEN).toList());

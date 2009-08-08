@@ -30,9 +30,9 @@ public class UnsynchronizedCacheTest {
     @Test
     public void prestart() {
         UnsynchronizedCache c = new UnsynchronizedCache();
-        assertFalse(c.isStarted());
+        assertFalse(c.getState().isStarted());
         c.prestart();
-        assertTrue(c.isStarted());
+        assertTrue(c.getState().isStarted());
     }
 
     @Test

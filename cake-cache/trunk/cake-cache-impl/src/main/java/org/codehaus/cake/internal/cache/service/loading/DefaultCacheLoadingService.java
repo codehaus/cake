@@ -76,8 +76,7 @@ public class DefaultCacheLoadingService<K, V> implements ServiceProvider<CacheLo
         loadAll.loadAll();
     }
 
-    public CacheLoadingService<?, ?> lookup(
-            org.codehaus.cake.service.ServiceProvider.Context<CacheLoadingService<?, ?>> context) {
+    public CacheLoadingService<?, ?> lookup(Context<CacheLoadingService<?, ?>> context) {
         Cache<K, V> cache = context.getAttributes().get(InternalCacheAttributes.CONTAINER);
         assert cache != null;
         if (context.getAttributes().get(CacheLoadingService.IS_FORCED)) {

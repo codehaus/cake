@@ -90,7 +90,7 @@ public class ThreadSafeCacheLoader<K, V> extends AbstractCacheLoader<K, V> {
         loadExecutor.execute(createFuture(key, attributes));
     }
 
-    CacheEntry<K, V> loadFromFuture(K key, MutableAttributeMap map) {
+    public CacheEntry<K, V> loadFromFuture(K key, MutableAttributeMap map) {
         try {
             V value = doLoad(loader, key, map);
             // TODO cache = weak reference?, for ill behaving loaders?

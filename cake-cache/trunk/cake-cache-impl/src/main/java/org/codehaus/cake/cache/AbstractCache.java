@@ -37,31 +37,23 @@ import org.codehaus.cake.util.ops.Ops.Predicate;
 
 @ManagedObject(defaultValue = CacheMXBean.MANAGED_SERVICE_NAME, description = "General Cache attributes and operations")
 public abstract class AbstractCache<K, V> extends AbstractContainer implements Cache<K, V> {
-    public ConcurrentMap<K, V> asMap() {
-        ConcurrentMap<K, V> es = mapView;
-        return (es != null) ? es : (mapView = new ConcurrentMapView());
-    }
-
-    private ConcurrentMapView mapView;
     private CacheCrud<K, V> crud;
 
     private Set<Map.Entry<K, V>> entrySet;
-
     private final Predicate<CacheEntry<K, V>> filter;
-
-    public CacheView<K, V> getAll(Iterable<? extends K> keys) {
-        throw new UnsupportedOperationException();
-    }
-
-    private final CacheProcessor<K, V> processor;
 
     private Set<K> keySet;
 
+    private ConcurrentMapView mapView;
+
     private final MemoryStore<K, V> memoryCache;
+
+    private final CacheProcessor<K, V> processor;
 
     private final CacheRequestFactory<K, V> requestFactory;
 
     private final CacheWriter<K, V, Boolean> returnPreviousNotNull;
+
     private final CacheBatchWriter<K, V, Void> returnPreviousNull;
 
     private final CacheWriter<K, V, V> returnPreviousValue;
@@ -84,7 +76,6 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
         this.filter = parent.filter == null ? filter : Predicates.<CacheEntry<K, V>> and(parent.filter, filter);
     }
-
     AbstractCache(Composer composer) {
         super(composer);
         views = composer.get(CollectionViewFactory.class);
@@ -97,6 +88,11 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
         returnPreviousNull = DefaultCrudBatchWriter.returnVoid(requestFactory, processor);
 
         filter = null;
+    }
+
+    public ConcurrentMap<K, V> asMap() {
+        ConcurrentMap<K, V> es = mapView;
+        return (es != null) ? es : (mapView = new ConcurrentMapView());
     }
 
     /** {@inheritDoc} */
@@ -129,6 +125,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     public V get(Object key) {
         K k = (K) key;
         return (V) processor.get(filter, k, Attributes.EMPTY_ATTRIBUTE_MAP, CacheDataExtractor.ONLY_VALUE);
+    }
+
+    public CacheView<K, V> getAll(Iterable<? extends K> keys) {
+        throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
@@ -184,7 +184,6 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public V peek(K key) {
-        super.lazyStart();
         CacheEntry<K, V> e = peekEntry(key);
         return e == null ? null : e.getValue();
     }
@@ -213,11 +212,6 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     /** {@inheritDoc} */
     public V putIfAbsent(K key, V value) {
         return returnPreviousValue.putIfAbsent(key, value);
-    }
-
-    /** {@inheritDoc} */
-    public CacheView<K, V> view() {
-        return new DefaultCacheView<K, V>(processor, filter);
     }
 
     /** {@inheritDoc} */
@@ -250,7 +244,7 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
 
     /** {@inheritDoc} */
     public String toString() {
-        if (!isStarted()) {
+        if (!getState().isStarted()) {
             return "{}";
         }
         Iterator<Entry<K, V>> i = asMap().entrySet().iterator();
@@ -276,6 +270,11 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     public Collection<V> values() {
         Collection<V> vs = values;
         return (vs != null) ? vs : (values = views.values(this));
+    }
+
+    /** {@inheritDoc} */
+    public CacheView<K, V> view() {
+        return new DefaultCacheView<K, V>(processor, filter);
     }
 
     /** {@inheritDoc} */
@@ -309,22 +308,6 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
     }
 
     class ConcurrentMapView extends AbstractMap<K, V> implements ConcurrentMap<K, V> {
-
-        public V putIfAbsent(K key, V value) {
-            return AbstractCache.this.putIfAbsent(key, value);
-        }
-
-        public boolean remove(Object key, Object value) {
-            return AbstractCache.this.remove(key, value);
-        }
-
-        public V replace(K key, V value) {
-            return AbstractCache.this.replace(key, value);
-        }
-
-        public boolean replace(K key, V oldValue, V newValue) {
-            return AbstractCache.this.replace(key, oldValue, newValue);
-        }
 
         public void clear() {
             AbstractCache.this.clear();
@@ -362,8 +345,24 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
             AbstractCache.this.putAll(m);
         }
 
+        public V putIfAbsent(K key, V value) {
+            return AbstractCache.this.putIfAbsent(key, value);
+        }
+
         public V remove(Object key) {
             return AbstractCache.this.remove(key);
+        }
+
+        public boolean remove(Object key, Object value) {
+            return AbstractCache.this.remove(key, value);
+        }
+
+        public V replace(K key, V value) {
+            return AbstractCache.this.replace(key, value);
+        }
+
+        public boolean replace(K key, V oldValue, V newValue) {
+            return AbstractCache.this.replace(key, oldValue, newValue);
         }
 
         public int size() {
@@ -371,13 +370,9 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
             return size < Integer.MAX_VALUE ? (int) size : Integer.MAX_VALUE;
         }
 
-        public Collection<V> values() {
-            return AbstractCache.this.values();
-        }
-
         @Override
         public String toString() {
-            if (!isStarted()) {
+            if (!getState().isStarted()) {
                 return "{}";
             }
             Iterator<Entry<K, V>> i = entrySet().iterator();
@@ -397,6 +392,10 @@ public abstract class AbstractCache<K, V> extends AbstractContainer implements C
                     return sb.append('}').toString();
                 sb.append(", ");
             }
+        }
+
+        public Collection<V> values() {
+            return AbstractCache.this.values();
         }
     }
 }

@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.internal.cache.service.loading;
+package org.codehaus.cake.internal.cache.loading.spi;
 
 import java.util.Map;
 
 import org.codehaus.cake.cache.CacheEntry;
 import org.codehaus.cake.util.attribute.AttributeMap;
 
+/**
+ * This interface is used internally for loading entries into the cache
+ *
+ */
 public interface InternalCacheLoadingService<K, V> {
 
     void loadAsync(K key, AttributeMap attributes);
 
     void loadAsync(Map<? extends K, AttributeMap> map);
 
+    // throws errors /runtime exceptions
     /**
      * <p>
      * This method can be called without holding a lock.
