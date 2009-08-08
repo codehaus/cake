@@ -21,4 +21,9 @@ public @interface ManagedObject {
 
     /** The description of the object. */
     String description() default "";
+    
+    /**
+     * @return the path for which this object should be available
+     */
+    String path() default "";
 }

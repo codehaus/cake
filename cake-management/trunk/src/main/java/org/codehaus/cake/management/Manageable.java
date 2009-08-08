@@ -17,7 +17,8 @@ package org.codehaus.cake.management;
 
 /**
  * A mix-in style interface for marking objects that can be registered with a {@link ManagedGroup}.
- * 
+ * <p>
+ * This allows for better control then
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  */

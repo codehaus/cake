@@ -34,9 +34,9 @@ public class ManagementConfiguration {
 
     /** Whether or not JMX management is enabled. */
     private boolean enabled;
-
-    /** The MBeanServer to register the managed beans under. */
-    private MBeanServer mBeanServer;
+//
+//    /** The MBeanServer to register the managed beans under. */
+//    private MBeanServer mBeanServer;
 
     /** The visitor to use for registration of the managed beans. */
     private ManagedVisitor<?> registrant;
@@ -51,13 +51,13 @@ public class ManagementConfiguration {
         return domain;
     }
 
-    /**
-     * @return the configured MBeanServer or <code>null</code> if no mbean server has been set
-     * @see #setMBeanServer(MBeanServer)
-     */
-    public MBeanServer getMBeanServer() {
-        return mBeanServer;
-    }
+//    /**
+//     * @return the configured MBeanServer or <code>null</code> if no mbean server has been set
+//     * @see #setMBeanServer(MBeanServer)
+//     */
+//    public MBeanServer getMBeanServer() {
+//        return mBeanServer;
+//    }
 
     /**
      * Returns the configured registrant.
@@ -117,20 +117,20 @@ public class ManagementConfiguration {
         return this;
     }
 
-    /**
-     * Sets the {@link MBeanServer} that MBeans should register with. If no MBeanServer is set and this service is
-     * enabled; the {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform MBeanServer} will be
-     * used.
-     * 
-     * @param server
-     *            the server that MBeans should register with
-     * @return this configuration
-     * @see #getMBeanServer()
-     */
-    public ManagementConfiguration setMBeanServer(MBeanServer server) {
-        mBeanServer = server;
-        return this;
-    }
+//    /**
+//     * Sets the {@link MBeanServer} that MBeans should register with. If no MBeanServer is set and this service is
+//     * enabled; the {@link java.lang.management.ManagementFactory#getPlatformMBeanServer() platform MBeanServer} will be
+//     * used.
+//     * 
+//     * @param server
+//     *            the server that MBeans should register with
+//     * @return this configuration
+//     * @see #getMBeanServer()
+//     */
+//    public ManagementConfiguration setMBeanServer(MBeanServer server) {
+//        mBeanServer = server;
+//        return this;
+//    }
 
     /**
      * Sets the ManagedVisitor that used for registering all managed objects. This is not intended for normal use. But
