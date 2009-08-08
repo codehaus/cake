@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.codehaus.cake.internal.asm.ClassVisitor;
 import org.codehaus.cake.internal.asm.ClassWriter;
@@ -48,8 +49,8 @@ public abstract class ClassEmitter {
     public ClassEmitter() {
         writer = new ClassWriter(1);
         try {
-            Class c = Class.forName("org.codehaus.cake.internal.asm.util.TraceClassVisitor");
-            java.lang.reflect.Constructor<ClassVisitor> con = c.getConstructor(ClassVisitor.class, PrintWriter.class);
+            Class<?> c = Class.forName("org.codehaus.cake.internal.asm.util.TraceClassVisitor");
+            java.lang.reflect.Constructor<ClassVisitor> con = (java.lang.reflect.Constructor<ClassVisitor>) c.getConstructor(ClassVisitor.class, PrintWriter.class);
             cw = con.newInstance(writer, new PrintWriter(System.out));
             // cw = new TraceClassVisitor(writer, new PrintWriter(System.out));
             cw = writer;

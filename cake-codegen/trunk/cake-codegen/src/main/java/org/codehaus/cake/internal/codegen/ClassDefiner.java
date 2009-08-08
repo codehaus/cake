@@ -48,6 +48,7 @@ public class ClassDefiner {
         String name = emitter.getType().getClassName();
         Class<?> cl = lazy().defineClass(name, b); 
         return cl;
+        
     }
 
     public <T> T defineAndInstantiate(ClassEmitter emitter, Object... args) {
