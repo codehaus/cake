@@ -16,7 +16,7 @@
 package org.codehaus.cake.internal.cache.service.exceptionhandling;
 
 import org.codehaus.cake.cache.Cache;
-import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandler;
+import org.codehaus.cake.cache.CacheExceptionHandler;
 import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.exceptionhandling.AbstractExceptionService;
 import org.codehaus.cake.service.Container;

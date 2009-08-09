@@ -33,7 +33,7 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.cake.util</groupId>
-      <artifactId>cake-util-collection</artifactId>
+      <artifactId>cake-util-view</artifactId>
       <version>0.3-SNAPSHOT</version>
     </dependency>
     <dependency>

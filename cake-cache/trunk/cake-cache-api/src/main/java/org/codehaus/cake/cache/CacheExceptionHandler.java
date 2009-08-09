@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.exceptionhandling;
+package org.codehaus.cake.cache;
 
-import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.loading.CacheLoader;
 import org.codehaus.cake.cache.loading.CacheLoadingService;
 import org.codehaus.cake.service.spi.ExceptionContext;

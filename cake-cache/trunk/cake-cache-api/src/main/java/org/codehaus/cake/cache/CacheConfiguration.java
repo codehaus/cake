@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandler;
 import org.codehaus.cake.cache.loading.CacheLoadingConfiguration;
 import org.codehaus.cake.cache.memorystore.MemoryStoreConfiguration;
 import org.codehaus.cake.internal.cache.RunAfterCacheStartProcedure;

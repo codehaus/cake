@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.exceptionhandling;
+package org.codehaus.cake.cache;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheEntry;
-import org.codehaus.cake.cache.exceptionhandling.CacheExceptionHandler;
+import org.codehaus.cake.cache.CacheExceptionHandler;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.spi.ExceptionContext;
 import org.codehaus.cake.service.spi.ExceptionHandler;

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.codehaus.cake.internal.UseInternals;
 import org.codehaus.cake.internal.picocontainer.MutablePicoContainer;
@@ -39,7 +40,7 @@ public class Composer {
 
     private final Class<?> clazz;
     private final String containerName;
-
+    private static final AtomicLong counter=new AtomicLong();
     public Composer(Class<?> clazz, ContainerConfiguration configuration) {
         baseContainer = new DefaultPicoContainer();
         baseContainer.registerComponentInstance(configuration);
@@ -53,7 +54,7 @@ public class Composer {
         this.clazz = clazz;
         String name = configuration.getName();
         if (name == null) {
-            containerName = UUID.randomUUID().toString();
+            containerName = clazz.getSimpleName() + counter.incrementAndGet(); // UUID.randomUUID().toString();
         } else {
             containerName = name;
         }
