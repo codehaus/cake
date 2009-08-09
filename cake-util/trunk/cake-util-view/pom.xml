@@ -22,8 +22,8 @@
     <version>0.3-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>cake-util-collection</artifactId>
-  <name>Cake Util Collection</name>
+  <artifactId>cake-util-view</artifactId>
+  <name>Cake View Collection</name>
   <description>This library contains the Cake util Collection package</description>
   <dependencies>
     <dependency>

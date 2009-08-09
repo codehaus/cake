@@ -26,7 +26,7 @@ import static org.junit.Assert.assertSame;
 import java.io.Serializable;
 
 import org.codehaus.cake.test.util.TestUtil;
-import org.codehaus.cake.util.Comparators;
+import org.codehaus.cake.util.ops.Comparators;
 import org.codehaus.cake.util.ops.Ops.Op;
 import org.codehaus.cake.util.ops.Ops.Reducer;
 import org.junit.Test;
