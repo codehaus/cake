@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.costsize;
+package org.codehaus.cake.cache.policy;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.COST;
 
-import org.codehaus.cake.cache.policy.AbstractPolicyTest;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.PolicyContext;
+import org.codehaus.cake.cache.policy.ReplaceCostliestPolicy;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.jmock.Expectations;

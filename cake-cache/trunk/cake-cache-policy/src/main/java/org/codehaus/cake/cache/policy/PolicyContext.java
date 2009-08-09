@@ -1,6 +1,5 @@
 package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
 import org.codehaus.cake.util.attribute.Attribute;
 
 /**

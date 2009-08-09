@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.HITS;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-import org.codehaus.cake.cache.policy.AbstractPolicyTest;
+import org.codehaus.cake.cache.policy.MFUReplacementPolicy;
 import org.codehaus.cake.cache.policy.Policies;
 import org.codehaus.cake.cache.policy.ReplacementPolicy;
 import org.codehaus.cake.util.attribute.AttributeMap;

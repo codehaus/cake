@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.service.exceptionhandling;
+package org.codehaus.cake.service;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.spi.ExceptionHandler;
-import org.codehaus.cake.service.spi.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.ExceptionHandler;
+import org.codehaus.cake.service.ExceptionHandlingConfiguration;
 import org.codehaus.cake.util.Logger;
 import org.junit.Before;
 import org.junit.Test;

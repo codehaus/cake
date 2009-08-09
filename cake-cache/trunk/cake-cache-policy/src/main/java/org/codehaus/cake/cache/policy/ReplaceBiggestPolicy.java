@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.costsize;
+package org.codehaus.cake.cache.policy;
 
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.SIZE;
 
-import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
-import org.codehaus.cake.cache.policy.PolicyContext;
 import org.codehaus.cake.util.attribute.AttributeMap;
 
 /**

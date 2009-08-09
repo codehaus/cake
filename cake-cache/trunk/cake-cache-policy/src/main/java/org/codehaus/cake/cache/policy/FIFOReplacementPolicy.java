@@ -13,33 +13,31 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
-import org.codehaus.cake.cache.policy.PolicyContext;
 
 /**
- * A Least Recently Used (LRU) replacement policy.
+ * A First In, First Out (FIFO) based replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  * @param <T>
  *            the type of elements being cached
  */
-public class LRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
+public class FIFOReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
 
     /** The name of the policy. */
-    public static final String NAME = "LRU";
+    public static final String NAME = "FIFO";
 
     /**
-     * Creates a new LRUReplacementPolicy.
+     * Creates a new FIFOReplacementPolicy.
      * 
      * @param context
      *            a policy context instance
      * @throws NullPointerException
      *             if the specified context is null
      */
-    public LRUReplacementPolicy(PolicyContext<T> context) {
+    public FIFOReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
 
@@ -50,12 +48,6 @@ public class LRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPoli
 
     /** {@inheritDoc} */
     public T evictNext() {
-        return removeLast();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void touch(T entry) {
-        moveFirst(entry);
+        return removeFirst();
     }
 }

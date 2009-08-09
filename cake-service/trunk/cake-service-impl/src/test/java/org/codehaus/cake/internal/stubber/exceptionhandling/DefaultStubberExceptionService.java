@@ -19,8 +19,8 @@ import org.codehaus.cake.internal.service.Composer;
 import org.codehaus.cake.internal.service.exceptionhandling.AbstractExceptionService;
 import org.codehaus.cake.service.Container;
 import org.codehaus.cake.service.ContainerConfiguration;
-import org.codehaus.cake.service.spi.ExceptionContext;
-import org.codehaus.cake.service.spi.ExceptionHandlingConfiguration;
+import org.codehaus.cake.service.ExceptionContext;
+import org.codehaus.cake.service.ExceptionHandlingConfiguration;
 import org.codehaus.cake.stubber.Stubber;
 import org.codehaus.cake.stubber.exceptionhandling.StubberExceptionHandler;
 

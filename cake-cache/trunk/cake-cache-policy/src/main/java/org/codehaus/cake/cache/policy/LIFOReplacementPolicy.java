@@ -13,39 +13,37 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
-import org.codehaus.cake.cache.policy.AbstractDoubleLinkedReplacementPolicy;
-import org.codehaus.cake.cache.policy.PolicyContext;
 
 /**
- * A First In, First Out (FIFO) based replacement policy.
+ * A Last In, First Out (LIFO) based replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  * @param <T>
  *            the type of elements being cached
  */
-public class FIFOReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
+public class LIFOReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
 
     /** The name of the policy. */
-    public static final String NAME = "FIFO";
+    public static final String NAME = "LIFO";
 
     /**
-     * Creates a new FIFOReplacementPolicy.
+     * Creates a new LIFOReplacementPolicy.
      * 
      * @param context
      *            a policy context instance
      * @throws NullPointerException
      *             if the specified context is null
      */
-    public FIFOReplacementPolicy(PolicyContext<T> context) {
+    public LIFOReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
 
     /** {@inheritDoc} */
     public void add(T entry) {
-        addFirst(entry);
+        addLast(entry);
     }
 
     /** {@inheritDoc} */

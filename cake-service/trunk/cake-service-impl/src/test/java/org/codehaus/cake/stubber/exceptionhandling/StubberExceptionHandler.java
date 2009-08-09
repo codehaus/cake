@@ -15,8 +15,8 @@
  */
 package org.codehaus.cake.stubber.exceptionhandling;
 
-import org.codehaus.cake.service.spi.ExceptionContext;
-import org.codehaus.cake.service.spi.ExceptionHandler;
+import org.codehaus.cake.service.ExceptionContext;
+import org.codehaus.cake.service.ExceptionHandler;
 import org.codehaus.cake.stubber.Stubber;
 
 public class StubberExceptionHandler<T> extends ExceptionHandler<Stubber<T>> {

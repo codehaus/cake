@@ -17,7 +17,7 @@ package org.codehaus.cake.stubber.test.tck.service.exceptionhandling;
 
 import static org.codehaus.cake.test.util.TestUtil.dummy;
 
-import org.codehaus.cake.service.spi.ExceptionContext;
+import org.codehaus.cake.service.ExceptionContext;
 import org.codehaus.cake.stubber.Stubber;
 import org.codehaus.cake.stubber.exceptionhandling.StubberExceptionHandler;
 import org.codehaus.cake.stubber.test.tck.AbstraktStubberTCKTst;

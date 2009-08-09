@@ -17,8 +17,8 @@ package org.codehaus.cake.cache;
 
 import java.util.Map;
 
-import org.codehaus.cake.cache.policy.costsize.ReplaceBiggestPolicy;
-import org.codehaus.cake.cache.policy.costsize.ReplaceCostliestPolicy;
+import org.codehaus.cake.cache.policy.ReplaceBiggestPolicy;
+import org.codehaus.cake.cache.policy.ReplaceCostliestPolicy;
 import org.codehaus.cake.internal.cache.CacheEntryAttributes;
 import org.codehaus.cake.util.attribute.AttributeMap;
 import org.codehaus.cake.util.attribute.DoubleAttribute;

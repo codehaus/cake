@@ -1,4 +1,4 @@
-package org.codehaus.cake.service.spi;
+package org.codehaus.cake.util;
 
 
 public interface ClassLoaderManager {

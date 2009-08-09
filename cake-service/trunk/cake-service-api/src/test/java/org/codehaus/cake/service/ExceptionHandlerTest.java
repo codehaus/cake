@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.service.exceptionhandling;
+package org.codehaus.cake.service;
 
 import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.spi.ExceptionContext;
-import org.codehaus.cake.service.spi.ExceptionHandler;
+import org.codehaus.cake.service.ExceptionContext;
+import org.codehaus.cake.service.ExceptionHandler;
 import org.codehaus.cake.test.util.TestUtil;
 import org.codehaus.cake.test.util.throwables.Error1;
 import org.codehaus.cake.test.util.throwables.Exception1;

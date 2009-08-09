@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.service.spi;
+package org.codehaus.cake.service;
 
 import org.codehaus.cake.util.Logger;
 
@@ -26,6 +26,7 @@ import org.codehaus.cake.util.Logger;
  * @param <T>
  *            the type ExceptionHandler that is used
  */
+@Deprecated
 @SuppressWarnings("unchecked")
 public class ExceptionHandlingConfiguration<T extends ExceptionHandler> {
 

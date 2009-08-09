@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.service.spi;
+package org.codehaus.cake.service;
 
-import org.codehaus.cake.service.Container;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.Logger.Level;
 

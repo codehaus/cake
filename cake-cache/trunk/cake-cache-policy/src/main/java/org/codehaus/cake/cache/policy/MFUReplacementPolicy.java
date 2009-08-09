@@ -13,40 +13,37 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
 import static org.codehaus.cake.internal.cache.CacheEntryAttributes.HITS;
 
-import org.codehaus.cake.cache.policy.AbstractHeapReplacementPolicy;
-import org.codehaus.cake.cache.policy.PolicyContext;
 import org.codehaus.cake.util.attribute.AttributeMap;
 
 /**
- * A Least Frequently Used (LFU) Replacement policy.
+ * A Most Frequently Used (MFU) replacement policy.
  * <p>
- * The main drawback with the LFU policy is that it requires logarithmic implementation complexity in cache size, pays
- * little attention to recent history, and does not adapt well to changing access patterns since it accumulates stale
- * pages with high frequency counts that may no longer be useful.
+ * This policy is seldom used. However, it can be used in some situations. See, for example,
+ * http://citeseer.ist.psu.edu/mekhiel95multilevel.html
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  * @param <T>
  *            the type of elements being cached
  */
-public class LFUReplacementPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
+public class MFUReplacementPolicy<T extends AttributeMap> extends AbstractHeapReplacementPolicy<T> {
 
     /** The name of the policy. */
-    public static final String NAME = "LFU";
+    public static final String NAME = "MFU";
 
     /**
-     * Creates a new LFUReplacementPolicy.
+     * Creates a new MFUReplacementPolicy.
      * 
      * @param context
      *            a policy context instance
      * @throws NullPointerException
      *             if the specified context is null
      */
-    public LFUReplacementPolicy(PolicyContext<T> context) {
+    public MFUReplacementPolicy(PolicyContext<T> context) {
         super(context);
         // This is used to make sure that the cache will lazy register the HITS attribute
         // if the user has not already done so by using CacheAttributeConfiguration#add(Attribute...)}
@@ -56,12 +53,12 @@ public class LFUReplacementPolicy<T extends AttributeMap> extends AbstractHeapRe
     /** {@inheritDoc} */
     @Override
     protected int compareEntry(T o1, T o2) {
-        return HITS.compare(o1, o2);
+        return HITS.compare(o2, o1);
     }
 
     /** {@inheritDoc} */
     @Override
     public void touch(T entry) {
-        siftDown(entry);// hits has been incremented
+        siftUp(entry);
     }
 }

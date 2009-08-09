@@ -20,7 +20,7 @@ import java.util.logging.LogManager;
 import org.codehaus.cake.cache.Cache;
 import org.codehaus.cake.cache.CacheExceptionHandler;
 import org.codehaus.cake.cache.test.tck.AbstractCacheTCKTest;
-import org.codehaus.cake.service.spi.ExceptionContext;
+import org.codehaus.cake.service.ExceptionContext;
 import org.codehaus.cake.test.util.throwables.Exception1;
 import org.codehaus.cake.util.Logger;
 import org.codehaus.cake.util.attribute.AttributeMap;

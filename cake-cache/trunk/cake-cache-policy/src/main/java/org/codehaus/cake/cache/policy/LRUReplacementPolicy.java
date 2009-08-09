@@ -13,47 +13,47 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
-import java.util.Random;
-
-import org.codehaus.cake.cache.policy.AbstractArrayReplacementPolicy;
-import org.codehaus.cake.cache.policy.PolicyContext;
 
 /**
- * A Random replacement policy. This policy picks a random element to evict.
- * <p>
- * At first selecting a random element might seem like a suboptimal solution, however, it some situations it performs
- * remarkably well. For example, if 
+ * A Least Recently Used (LRU) replacement policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen</a>
  * @version $Id$
  * @param <T>
  *            the type of elements being cached
  */
-public class RandomReplacementPolicy<T> extends AbstractArrayReplacementPolicy<T> {
+public class LRUReplacementPolicy<T> extends AbstractDoubleLinkedReplacementPolicy<T> {
 
     /** The name of the policy. */
-    public static final String NAME = "Random";
-
-    /** Used for selecting which element to evict. */
-    private final Random rnd = new Random();
+    public static final String NAME = "LRU";
 
     /**
-     * Creates a new RandomReplacementPolicy.
+     * Creates a new LRUReplacementPolicy.
      * 
      * @param context
      *            a policy context instance
      * @throws NullPointerException
      *             if the specified context is null
      */
-    public RandomReplacementPolicy(PolicyContext<T> context) {
+    public LRUReplacementPolicy(PolicyContext<T> context) {
         super(context);
     }
 
     /** {@inheritDoc} */
+    public void add(T entry) {
+        addFirst(entry);
+    }
+
+    /** {@inheritDoc} */
     public T evictNext() {
-        int size = size();
-        return size == 0 ? null : removeByIndex(rnd.nextInt(size));
+        return removeLast();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void touch(T entry) {
+        moveFirst(entry);
     }
 }

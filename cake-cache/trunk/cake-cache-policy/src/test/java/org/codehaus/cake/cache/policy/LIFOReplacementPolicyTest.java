@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -21,28 +21,28 @@ import static junit.framework.Assert.assertTrue;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asList;
 import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
 
-import org.codehaus.cake.cache.policy.AbstractPolicyTest;
+import org.codehaus.cake.cache.policy.LIFOReplacementPolicy;
 import org.codehaus.cake.cache.policy.Policies;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test of the MRU policy.
+ * Test of the LIFO policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  */
-public class MRUReplacementPolicyTest extends AbstractPolicyTest {
+public class LIFOReplacementPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
-        policy = Policies.create(MRUReplacementPolicy.class);
+        policy = Policies.create(LIFOReplacementPolicy.class);
     }
 
     /**
      * Test adding of new elements.
      */
     @Test
-    public void testAddAndPeekAll() {
+    public void testAdd() {
         addToPolicy(0, 9);
         assertTrue(empty().containsAll(seq(0, 9)));
     }
@@ -53,7 +53,7 @@ public class MRUReplacementPolicyTest extends AbstractPolicyTest {
     @Test
     public void testRemove() {
         addToPolicy(0, 9);
-        assertEquals(seq(9, 0), empty());
+        assertEquals(seq(0, 9), empty());
     }
 
     /**
@@ -66,7 +66,7 @@ public class MRUReplacementPolicyTest extends AbstractPolicyTest {
         policy.remove(7);
         policy.remove(0);
         policy.remove(9);
-        assertEquals(asList(8, 6, 5, 3, 2, 1), empty());
+        assertEquals(asList(1, 2, 3, 5, 6, 8), empty());
     }
 
     /**
@@ -75,16 +75,14 @@ public class MRUReplacementPolicyTest extends AbstractPolicyTest {
     @Test
     public void testRefresh() {
         addToPolicy(0, 9);
+
         policy.touch(4);
-        // assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
         policy.touch(4);
-        // assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
-        policy.touch(0);
-        // assertEquals(asList(0, 4, 9, 8, 7, 6, 5, 3, 2, 1), policy.peekAll());
         policy.touch(3);
         policy.touch(2);
         policy.touch(9);
-        assertEquals(asList(9, 2, 3, 0, 4, 8, 7, 6, 5, 1), empty());
+        // LIFO queues doesn't care about refreshes
+        assertEquals(seq(0, 9), empty());
     }
 
     @Test
@@ -99,8 +97,8 @@ public class MRUReplacementPolicyTest extends AbstractPolicyTest {
         addToPolicy(0, 9);
         policy.replace(4, 123);
         Integer[] i = evict(10);
-        assertEquals(9, i[0].intValue());
-        assertEquals(123, i[5].intValue());
-        assertEquals(3, i[6].intValue());
+        assertEquals(9, i[9].intValue());
+        assertEquals(3, i[3].intValue());
+        assertEquals(123, i[4].intValue());
     }
 }

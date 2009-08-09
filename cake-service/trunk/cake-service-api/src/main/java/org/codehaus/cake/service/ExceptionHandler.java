@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.service.spi;
+package org.codehaus.cake.service;
 
-import org.codehaus.cake.service.Container;
-import org.codehaus.cake.service.ContainerConfiguration;
 
 /**
  * The purpose of this class is to have one central place where all exceptions that arise within a container or one of

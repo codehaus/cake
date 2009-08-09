@@ -17,13 +17,6 @@ package org.codehaus.cake.cache.policy;
 
 import static org.junit.Assert.assertSame;
 
-import org.codehaus.cake.cache.policy.paging.FIFOReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.LFUReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.LIFOReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.LRUReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.MFUReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.MRUReplacementPolicy;
-import org.codehaus.cake.cache.policy.paging.RandomReplacementPolicy;
 import org.junit.Test;
 
 /**

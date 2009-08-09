@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package org.codehaus.cake.cache.policy.paging;
+package org.codehaus.cake.cache.policy;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -21,28 +21,28 @@ import static junit.framework.Assert.assertTrue;
 import static org.codehaus.cake.test.util.CollectionTestUtil.asList;
 import static org.codehaus.cake.test.util.CollectionTestUtil.seq;
 
-import org.codehaus.cake.cache.policy.AbstractPolicyTest;
+import org.codehaus.cake.cache.policy.MRUReplacementPolicy;
 import org.codehaus.cake.cache.policy.Policies;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test of the FIFO policy.
+ * Test of the MRU policy.
  * 
  * @author <a href="mailto:kasper@codehaus.org">Kasper Nielsen </a>
  */
-public class FIFOReplacementPolicyTest extends AbstractPolicyTest {
+public class MRUReplacementPolicyTest extends AbstractPolicyTest {
 
     @Before
     public void setUp() {
-        policy = Policies.create(FIFOReplacementPolicy.class);
+        policy = Policies.create(MRUReplacementPolicy.class);
     }
 
     /**
      * Test adding of new elements.
      */
     @Test
-    public void testAdd() {
+    public void testAddAndPeekAll() {
         addToPolicy(0, 9);
         assertTrue(empty().containsAll(seq(0, 9)));
     }
@@ -75,15 +75,16 @@ public class FIFOReplacementPolicyTest extends AbstractPolicyTest {
     @Test
     public void testRefresh() {
         addToPolicy(0, 9);
-
         policy.touch(4);
+        // assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
         policy.touch(4);
+        // assertEquals(asList(4, 9, 8, 7, 6, 5, 3, 2, 1, 0), policy.peekAll());
+        policy.touch(0);
+        // assertEquals(asList(0, 4, 9, 8, 7, 6, 5, 3, 2, 1), policy.peekAll());
         policy.touch(3);
         policy.touch(2);
         policy.touch(9);
-
-        // FIFO queues doesn't care about refreshes
-        assertEquals(seq(9, 0), empty());
+        assertEquals(asList(9, 2, 3, 0, 4, 8, 7, 6, 5, 1), empty());
     }
 
     @Test
